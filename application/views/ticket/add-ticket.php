@@ -207,6 +207,7 @@
 
 	});	
 	function tracking_no_check(tracking_no){
+		$("#save_ticket").attr('disabled',true);
 		$.ajax({
 			url:'<?= base_url('ticket/is_open_ticket/')?>'+tracking_no,
 			type:'post',						

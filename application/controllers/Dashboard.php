@@ -622,7 +622,7 @@ $this->load->library('zip');
                             // check device login right
                             if(user_access(133))
                             {
-                            $this->user_model->updateLoginToken($user_data->pk_i_admin_id,$login_token);
+                            $this->user_model->updateLoginToken($user_data->pk_i_admin_id,$login_token,0);
                             }
                         if($user_data->companey_id==57){
                             $user_right = $this->session->user_right;

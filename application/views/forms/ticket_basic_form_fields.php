@@ -131,7 +131,7 @@ echo'<div class="trackingDetails"></div>';
                             },
                             success:function(q)
                             { 
-                              if(q!='0')
+                              if(q!=0)
                               {
                                 $("#old_ticket").show(500);
                                 $(".old_ticket_data").html(q);
