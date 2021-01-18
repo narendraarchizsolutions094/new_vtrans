@@ -249,7 +249,7 @@
 
                     </div>
                   <div class="col-md-12" style="border-top: 1px solid #f4f4f4; padding: 8px;">
-                    <button class="btn btn-success pull-right" type="submit" id="go_filter">Generate Report</button>
+                    <button class="btn btn-success pull-right" type="button" id="go_filter">Generate Report</button>
                 </div>
             </div>
         </div>
@@ -564,7 +564,8 @@ $(document).ready(function(){
     });        
     setCookie('ticket_filter_setting',arr,365);      
     alert('Your custom filters saved successfully.');
-  }) 
+  });
+});
 
 var run = 0 ;
 $(document).ready(function() {
@@ -573,19 +574,20 @@ $(document).ready(function() {
   $('#go_filter').click(function(e) {
         e.preventDefault();
         var form_data = $("#ticket_filter").serialize();       
-       // alert(form_data);
+        //alert(form_data);
         $.ajax({
         url: '<?=base_url()?>ticket/ticket_set_filters_session',
         type: 'post',
         data: form_data,
         success: function(responseData){
+          $("#ticket_filter").submit();
         }
         });
-        $("#ticket_filter").submit();
+        
     });
 });
-
-
+</script>
+<script type="text/javascript">
   <?php  
   if(!empty($_POST)){
   ?>
@@ -626,7 +628,6 @@ $(document).ready(function() {
                       }} 
               ]   <?php  } ?>  
       });
-  });
   });
   <?php
   }

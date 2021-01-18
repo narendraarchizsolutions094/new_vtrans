@@ -121,6 +121,14 @@ class Ticket_datatable_model extends CI_Model{
             $where="(id IN (".$_POST['specific_list'].") ) ";
             $this->db->where($where);
         }
+
+        if(!empty($this->session->process)){              
+        $arr = $this->session->process;           
+            if(is_array($arr)){
+                $this->db->where_in("tbl_ticket.process_id",$arr);
+            }    
+        }
+        $this->db->where('company',$this->session->companey_id);
         return $this->db->count_all_results();
     }
     
@@ -382,8 +390,6 @@ $CHK = 0;
             $where .=  " DATE(tck.coml_date) <=  '".$to_created."'"; 
             $CHK = 1;                                 
         }
-
-        
 
 
         if(!empty($ticket_type)){

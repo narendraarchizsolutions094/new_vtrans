@@ -98,7 +98,7 @@ class Deals extends REST_Controller {
 	        $insurance='Owner Risk';
 	       }
 	       if($value->booking_type==0){
-	        $booking_type='Sundy';
+	        $booking_type='Sundry';
 	       }elseif($value->booking_type==1){
 	        $booking_type='FTL';
 	       }

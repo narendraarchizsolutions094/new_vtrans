@@ -2611,7 +2611,7 @@ class Ticket extends CI_Controller
 
 		public function chk()
 		{
-			if(!empty($this->sessiono->ticket_filters_sess))	
-				print_r($this->session->ticket_filters_sess);
+			if(!empty($this->session->userdata()))
+				print_r($this->session->userdata());
 		}
 }
