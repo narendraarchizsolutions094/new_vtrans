@@ -100,7 +100,7 @@ class Configurations extends CI_Controller {
             //   print_r($_POST);
             //   die();
 
-               if($wid!='NDY='){
+               if($wid!='Mg=='){
                 $this->form_validation->set_rules('e_email','Email','required|max_length[100]|valid_email');
                 }   
         		$this->form_validation->set_rules('e_mobile',display('mobileno')  ,'max_length[20]|required');            
@@ -121,7 +121,7 @@ class Configurations extends CI_Controller {
             $encode=$this->get_enquery_code();
             $createdate = date('d-m-Y h:i:s a');
             $name1=$this->input->post('e_name');
-            if($wid=='NDY='){
+            if($wid=='Mg=='){
                 
                 $data = array(
                     'Enquery_id'  => $encode,
@@ -190,9 +190,9 @@ class Configurations extends CI_Controller {
             /*$data['state_list']=$this->enquiry_model->state_list();*/
             /*$data['customer_types'] = $this->enquiry_model->customers_types();*/
             //$data['channel_p_type'] = $this->enquiry_model->channel_partner_type_list();
-           echo $wid = $this->uri->segment(3);
+            $wid = $this->uri->segment(3);
             $data['wid']=$wid;
-           echo $wid = base64_decode($wid);     
+            $wid = base64_decode($wid);     
             $data['products'] = $this->dash_model->product_list_byqr_comp($wid);
             // print_r($data['products']);exit();
             $data['country_list']=$this->location_model->country();            
@@ -201,7 +201,7 @@ class Configurations extends CI_Controller {
             // echo $wid ;exit();      
             $this->db->where('wid',$wid);            
             $data['qr_row']    =   $this->db->get('website_integration')->row_array();
-            print_r($data);
+            // print_r($data);
             $this->load->view('web_integrationform',$data);
         }
         
