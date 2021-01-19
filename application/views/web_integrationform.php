@@ -54,24 +54,30 @@
                 <?php } ?>
                 <br>
                 <div class="row">
-                    <div class="col-md-4">&nbsp;</div>
+                    <div class="<?php  if($wid=='Mg=='){ echo 'col-md-2';  }else{ echo 'col-md-3'; } ?>">&nbsp;</div>
                     <div class="col-md-4 panel panel-default thumbnail">
                        <form method="post" class="form-inner panel-body">
                             <input type="hidden" id="name" name="create_dby" value="<?=$qr_row['web_created_by']?>">                            
                             <input type="hidden" id="qr_code_id" name="qr_code_id" value="<?=$qr_row['wid']?>">                            
+                            <input type="hidden" id="wid" name="wid" value="<?=$wid?>">                            
                             <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label"><?php echo display('name') ?>  <i class="text-danger">*</i></label>
+                                <label for="description" class="col-xs-5 col-form-label"><?php echo display('name') ?>  
+                               <?php  if($wid!='Mg=='){   ?><i class="text-danger">*</i> <?php } ?></label>
                                 <div class="col-xs-7">
-                                    <input type="text" id="name" class="form-control br_25  m-0 icon_left_input" name="e_name" value="" placeholder="<?php echo display('name') ?>" required>
+                                    <!-- <input type="text" id="name" class="form-control br_25  m-0 icon_left_input" name="e_name" value="" placeholder="<?php echo display('name') ?>" required> -->
+                                    <input type="text" name="enqueryfield[]" id="student-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="">           
+                                 <input type="hidden" name="inputfieldno[]" value="4506">
+                                 <input type="hidden" name="inputtype[]" value="1">
                                 </div>
-                            </div>                           
+                            </div>     
+                            <?php  if($wid!='Mg=='){   ?>
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Mobile  <i class="text-danger">*</i></label>
                                 <div class="col-xs-7">
-                                 <input type="text" class="form-control br_25  m-0 icon_left_input" onchange="checkAlreadyExist(this.value)" name="e_mobile" value="" placeholder="Mobile" required>
+                                <input type="tel" name="enqueryfield[]" class="form-control" id="student-phone-number" placeholder="">
                              </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="form-group row" >
                                 <label for="description" class="col-xs-5 col-form-label">Email  <i class="text-danger">*</i></label>
                                 <div class="col-xs-7">
                                  <input type="text" class="form-control br_25  m-0 icon_left_input" name="e_email" value="" placeholder="Email" required>
@@ -81,19 +87,80 @@
                                 <label class="col-xs-5 col-form-label"><?php echo 'Process' ?> </label>
                                 <div class="col-xs-7">
                                     <select class="form-control br_25  m-0 icon_left_input" name="product_id" >
+                                        
                                     <option value="">---Select---</option>
                                         <?php foreach($products as $product){?>
-                                        <option value="<?=$product->sb_id ?>"><?= ucwords($product->product_name); ?></option>
+                                        <option value="<?=$product->sb_id ?>" <?php 
+                                          if($product->sb_id=='200'){
+                                              echo'selected'; }
+                                            ?>><?= ucwords($product->product_name); ?></option>
                                         <?php } ?>
                                     </select> 
                                 </div>
-                             </div>                              
-                             <div class="form-group row" style="display:none;">
-                                <label for="description" class="col-xs-5 col-form-label">City <i class="text-danger">*</i></label>
+                             </div>
+                            <?php }else{ ?>
+                                <div class="form-group row">
+                                <label for="description" class="col-xs-5 col-form-label">Student Mobile Number </label>
                                 <div class="col-xs-7">
-                                 <select class="form-control br_25  m-0 icon_left_input"  name="fcity" id="fcity"></select> 
+                                <input type="tel" name="enqueryfield[]" class="form-control" id="student-phone-number" placeholder="">
+                                <input type="hidden" name="inputfieldno[]" value="4507">
+                                <input type="hidden" name="inputtype[]" value="18">
+                            </div>
+                            </div>
+                          
+                           <?php } ?>
+                             <!-- //if Mg== exist                            -->
+                                            <?php  if($wid=='Mg=='){   ?>
+                                                <input type="hidden" name="product_id" value="200">
+
+                             <div class="form-group row" >
+                                <label for="description" class="col-xs-5 col-form-label">Parent Name <i class="text-danger">*</i></label>
+                                <div class="col-xs-7">
+                                 <!-- <input type="text" class="form-control br_25  m-0 icon_left_input" name="pname" value="" placeholder="Parent Name " required> -->
+                                 <input type="text" name="enqueryfield[]" id="parent-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="" required>           
+                                 <input type="hidden" name="inputfieldno[]" value="4508">
+                                 <input type="hidden" name="inputtype[]" value="1">
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="description" class="col-xs-5 col-form-label">Parent Mobile Number <i class="text-danger">*</i></label>
+                                <div class="col-xs-7">
+                                 <input type="tel" class="form-control br_25  m-0 icon_left_input" onchange="checkAlreadyExist(this.value)" name="e_mobile" value="" placeholder="Mobile" required>
+                             </div>
+                            </div>
+                            <div class="form-group row" >
+                                <label for="description" class="col-xs-5 col-form-label">Parents 2nd number</label>
+                                <div class="col-xs-7">
+                                 <input type="tel" class="form-control br_25  m-0 icon_left_input" name="other_no" value="" placeholder="Parents 2nd number " >
+
+                                </div>
+                            </div>
+                            <div class="form-group row" >
+                                <label for="description" class="col-xs-5 col-form-label">Pick up locating (PG address)</label>
+                                <div class="col-xs-7">
+                                 <textarea name="enqueryfield[]" id="pick-up-locating" class="form-control form-control br_25  m-0 icon_left_input" placeholder=""></textarea>
+                                 <input type="hidden" name="inputfieldno[]" value="4510">
+                                 <input type="hidden" name="inputtype[]" value="5">            
+                                </div>
+                            </div>
+                            <div class="form-group row" >
+                                <label for="description" class="col-xs-5 col-form-label">Drop off location (Home address)</label>
+                                <div class="col-xs-7">
+                                <textarea name="enqueryfield[]" id="drop-off-location" class="form-control" placeholder="" ></textarea>
+                                <input type="hidden" name="inputfieldno[]" value="4511">
+                                 <input type="hidden" name="inputtype[]" value="5"> 
+                                </div>
+                            </div>
+                            <div class="form-group row" >
+                                <label for="description" class="col-xs-5 col-form-label">Number of boxes required (estimate) (each box approximately 20kgs)<i class="text-danger">*</i></label>
+                                <div class="col-xs-7">
+                                <input type="number" name="enqueryfield[]" id="number-of-boxes-required" placeholder="" required="" class="form-control" value="">                
+                                <input type="hidden" name="inputfieldno[]" value="4512">
+                                 <input type="hidden" name="inputtype[]" value="5">
+                            </div>
+                            </div>
+                          
+                            <?php } ?>            
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Remarks </label>
                                 <div class="col-xs-7">
@@ -113,7 +180,11 @@
                             </div>
                         </form>
                     </div>
-                <div class="col-md-3">&nbsp;</div>
+                <div class="<?php  if($wid=='Mg=='){ echo 'col-md-4';  }else{ echo 'col-md-3'; } ?>">
+				<?php  if($wid=='Mg=='){   ?>
+				<img src="<?php echo base_url();?>assets/images/vtrans-shristi.jpeg" title="" height="70%">
+						<?php } ?>   
+				</div>
             </div>
          </div>
       <div style="<?php if(!empty($this->session->popup)){echo 'display:block';} ?>">
