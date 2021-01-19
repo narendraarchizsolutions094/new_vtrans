@@ -125,13 +125,13 @@
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Parent Mobile Number <i class="text-danger">*</i></label>
                                 <div class="col-xs-7">
-                                 <input type="number" class="form-control br_25  m-0 icon_left_input" onchange="checkAlreadyExist(this.value)" name="e_mobile" value="" placeholder="Mobile" required>
+                                 <input type="tel" class="form-control br_25  m-0 icon_left_input" onchange="checkAlreadyExist(this.value)" name="e_mobile" value="" placeholder="Mobile" required>
                              </div>
                             </div>
                             <div class="form-group row" >
                                 <label for="description" class="col-xs-5 col-form-label">Parents 2nd number</label>
                                 <div class="col-xs-7">
-                                 <input type="number" class="form-control br_25  m-0 icon_left_input" name="other_no" value="" placeholder="Parents 2nd number " >
+                                 <input type="tel" class="form-control br_25  m-0 icon_left_input" name="other_no" value="" placeholder="Parents 2nd number " >
 
                                 </div>
                             </div>
