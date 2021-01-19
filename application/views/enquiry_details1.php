@@ -5890,5 +5890,33 @@ jQuery(document).ready(function(){
    })
 });
 
+<?php
 
+if($this->session->process[0]=='200')
+{
+  //moble number relocate in V-trans process 200
+?>
+
+$(document).ready(function(){
+  relocate_mobile();
+});
+  function relocate_mobile()
+  {
+    var enq_form = $("#basic");
+    var mobile_fld= $(enq_form).find('input[name=mobileno]').parents('div.form-group');
+    var more_phone = $("#add_more_phone");
+    $(mobile_fld).find('label').html('Parents Mobile No <font color="red">*</font>');
+    var mobile_clone = $(mobile_fld).clone();
+    var more_clone = more_phone.clone();
+   $(enq_form).find('#parent-name').parents('div.form-group').after(mobile_clone);
+   //$(enq_form).find('input[name=mobileno]').parents('div.form-group').after(mobile_clone);
+   $(mobile_clone).after(more_clone);
+   $(mobile_fld).remove();
+   $(more_phone).remove();
+
+  }
+<?php
+}
+
+?>
 </script> 
