@@ -129,7 +129,11 @@
       },
       success: function(data) {
         $("#process_basic_fields").append(data);
-        hide_all_dependent_field();
+        if(typeof(hide_all_dependent_field)=== 'function')
+          hide_all_dependent_field();
+
+        if(typeof(relocate_mobile)=== 'function')
+          relocate_mobile();
       }
     });
   }
@@ -292,6 +296,31 @@ if ($this->session->companey_id == 79) {
       $("#vertex-sub-course").html(options);
     }
   </script>
+<?php
+}
+if($this->session->process[0]=='200')
+{
+  //moble number relocate in V-trans process 200
+?>
+
+<script type="text/javascript">
+function relocate_mobile()
+{
+  var enq_form = $("#process_basic_fields");
+  var mobile_fld= $(enq_form).find('input[name=mobileno]').parents('div.form-group');
+  var more_phone = $("#add_more_phone");
+  $(mobile_fld).find('label').html('Parents Mobile No <font color="red">*</font>');
+  var mobile_clone = $(mobile_fld).clone();
+  var more_clone = more_phone.clone();
+ $(enq_form).find('#parent-name').parents('div.form-group').after(mobile_clone);
+ //$(enq_form).find('input[name=mobileno]').parents('div.form-group').after(mobile_clone);
+ $(mobile_clone).after(more_clone);
+ $(mobile_fld).remove();
+ $(more_phone).remove();
+
+}
+</script>
+
 <?php
 }
 ?>
