@@ -62,7 +62,7 @@
                             <input type="hidden" id="wid" name="wid" value="<?=$wid?>">                            
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label"><?php echo display('name') ?>  
-                               <?php  if($wid!='NDY='){   ?><i class="text-danger">*</i> <?php } ?></label>
+                               <?php  if($wid!='Mg=='){   ?><i class="text-danger">*</i> <?php } ?></label>
                                 <div class="col-xs-7">
                                     <!-- <input type="text" id="name" class="form-control br_25  m-0 icon_left_input" name="e_name" value="" placeholder="<?php echo display('name') ?>" required> -->
                                     <input type="text" name="enqueryfield[]" id="student-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="">           
@@ -70,7 +70,7 @@
                                  <input type="hidden" name="inputtype[]" value="1">
                                 </div>
                             </div>     
-                            <?php  if($wid!='NDY='){   ?>
+                            <?php  if($wid!='Mg=='){   ?>
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Mobile  <i class="text-danger">*</i></label>
                                 <div class="col-xs-7">
@@ -110,7 +110,7 @@
                           
                            <?php } ?>
                              <!-- //if Mg== exist                            -->
-                                            <?php  if($wid=='NDY='){   ?>
+                                            <?php  if($wid=='Mg=='){   ?>
                                                 <input type="hidden" name="product_id" value="200">
 
                              <div class="form-group row" >
