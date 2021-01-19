@@ -93,14 +93,22 @@ class Configurations extends CI_Controller {
         public function website_form(){
         
             if(!empty($_POST)){                          
+                // if($)
+
+                $qr_code_id    =   $this->input->post('qr_code_id');  
+                $wid    =   $this->input->post('wid');  
+            //   print_r($_POST);
+            //   die();
+
+               if($wid!='Mg=='){
                 $this->form_validation->set_rules('e_email','Email','required|max_length[100]|valid_email');
+                }   
         		$this->form_validation->set_rules('e_mobile',display('mobileno')  ,'max_length[20]|required');            
                 if ($this->form_validation->run() === false) {
                     $this->session->set_flashdata('SUCCESSMSG',validation_errors());
                     redirect($this->agent->referrer());
             }
             $crtdby = $this->input->post('create_dby');
-            $qr_code_id    =   $this->input->post('qr_code_id');            	
             
             $this->db->where('wid',$qr_code_id);
             $qr_row    =   $this->db->get('website_integration')->row_array();
@@ -113,7 +121,49 @@ class Configurations extends CI_Controller {
             $encode=$this->get_enquery_code();
             $createdate = date('d-m-Y h:i:s a');
             $name1=$this->input->post('e_name');
-            
+            if($wid=='Mg=='){
+                
+                $data = array(
+                    'Enquery_id'  => $encode,
+                    'comp_id'     => $compid,
+                    'phone' 	  => $this->input->post('e_mobile'),
+                    // 'name' 		  => $this->input->post('e_name'),
+                    'aasign_to'   => $assign,
+                    'other_phone' =>$this->input->post('other_no'),
+                    'enquiry' 	  => $this->input->post('e_requirements'),
+                    'product_id'  => $this->input->post('product_id'),
+                    'created_by'  => $crtdby,
+    				'country_id'  => $this->input->post('country_id'),
+                    'created_date'=> date('Y-m-d H:i:s'),
+                    'qr_code_id'  =>  $qr_code_id,
+                    'enquiry_source' => 10,
+                    'ip_address' => $this->input->ip_address(),
+                    'status'     => 1
+            );
+                // $insert_id = $this->Configuration_Model->web_enquiry($data);
+                 $this->db->insert('enquiry', $data); 
+                $insid = $this->db->insert_id();
+                if(isset($_POST['inputfieldno'])) {
+                $inputno   = $this->input->post("inputfieldno", true);
+                $enqinfo   = $this->input->post("enqueryfield", true);
+                $inputtype = $this->input->post("inputtype", true);
+                    foreach($inputno as $ind => $val){
+                        $biarr[] = array( 
+                                        "enq_no"  => $data["Enquery_id"],
+                                          "input"   => $val,
+                                          "parent"  => $insid, 
+                                          "fvalue"  => (!empty($enqinfo[$ind])) ? $enqinfo[$ind] : "",
+                                          "cmp_no"  => $compid,
+                                         ); 	
+                    }
+                
+                    if(!empty($biarr)){
+                        $this->db->insert_batch('extra_enquery', $biarr); 
+                    }
+                }
+                $this->session->set_flashdata('popup','Your Enquiry has been sent Successfully');
+                 redirect($this->agent->referrer());
+            }else{
             $data = array(
                     'Enquery_id'  => $encode,
                     'comp_id'     => $compid,
@@ -131,26 +181,27 @@ class Configurations extends CI_Controller {
                     'ip_address' => $this->input->ip_address(),
                     'status'     => 1
             );
-            
             $insert_id = $this->Configuration_Model->web_enquiry($data);
             $this->session->set_flashdata('popup','Your Enquiry has been sent Successfully');
              redirect($this->agent->referrer());
             }
+        }
             $data['title'] = 'Capture';	
             /*$data['state_list']=$this->enquiry_model->state_list();*/
             /*$data['customer_types'] = $this->enquiry_model->customers_types();*/
             //$data['channel_p_type'] = $this->enquiry_model->channel_partner_type_list();
             $wid = $this->uri->segment(3);
+            $data['wid']=$wid;
             $wid = base64_decode($wid);     
             $data['products'] = $this->dash_model->product_list_byqr_comp($wid);
             // print_r($data['products']);exit();
             $data['country_list']=$this->location_model->country();            
- 
-            
+        
            
             // echo $wid ;exit();      
             $this->db->where('wid',$wid);            
             $data['qr_row']    =   $this->db->get('website_integration')->row_array();
+            // print_r($data);
             $this->load->view('web_integrationform',$data);
         }
         
