@@ -60,21 +60,18 @@
                             <input type="hidden" id="name" name="create_dby" value="<?=$qr_row['web_created_by']?>">                            
                             <input type="hidden" id="qr_code_id" name="qr_code_id" value="<?=$qr_row['wid']?>">                            
                             <input type="hidden" id="wid" name="wid" value="<?=$wid?>">                            
-                            <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label"><?php echo display('name') ?>  
-                               <?php  if($wid!='Mg=='){   ?><i class="text-danger">*</i> <?php } ?></label>
-                                <div class="col-xs-7">
-                                    <!-- <input type="text" id="name" class="form-control br_25  m-0 icon_left_input" name="e_name" value="" placeholder="<?php echo display('name') ?>" required> -->
-                                    <input type="text" name="enqueryfield[]" id="student-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="">           
-                                 <input type="hidden" name="inputfieldno[]" value="4506">
-                                 <input type="hidden" name="inputtype[]" value="1">
-                                </div>
-                            </div>     
+                             
                             <?php  if($wid!='Mg=='){   ?>
+                                <div class="form-group row">
+                                <label for="description" class="col-xs-5 col-form-label">Name  <i class="text-danger">*</i></label>
+                                <div class="col-xs-7">
+                                <input type="tel" name="name" class="form-control" id="student-phone-number" placeholder="Name">
+                             </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Mobile  <i class="text-danger">*</i></label>
                                 <div class="col-xs-7">
-                                <input type="tel" name="enqueryfield[]" class="form-control" id="student-phone-number" placeholder="">
+                                <input type="tel" name="e_mobile" class="form-control" id="student-phone-number" placeholder="">
                              </div>
                             </div>
                             <div class="form-group row" >
@@ -99,6 +96,16 @@
                                 </div>
                              </div>
                             <?php }else{ ?>
+                                <div class="form-group row">
+                            <label for="description" class="col-xs-5 col-form-label">Student Name</label>  
+
+                                <div class="col-xs-7">
+
+                                    <input type="text" name="enqueryfield[]" id="student-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="">           
+                                 <input type="hidden" name="inputfieldno[]" value="4506">
+                                 <input type="hidden" name="inputtype[]" value="1">
+                                </div>
+                            </div>    
                                 <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Student Mobile Number </label>
                                 <div class="col-xs-7">
