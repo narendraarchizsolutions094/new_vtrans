@@ -3,7 +3,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <!-- The above 3 meta tags must come first in the head; any other head content must come after these tags -->
         <title>Archiz Solutions</title>
         <!-- Favicon and touch icons -->
         <!-- <link rel="shortcut icon" href="<?= base_url($this->session->userdata('favicon')) ?>"> -->
@@ -60,18 +60,6 @@
                             <input type="hidden" id="name" name="create_dby" value="<?=$qr_row['web_created_by']?>">                            
                             <input type="hidden" id="qr_code_id" name="qr_code_id" value="<?=$qr_row['wid']?>">                            
                             <input type="hidden" id="wid" name="wid" value="<?=$wid?>">                            
-                             
-                            <?php  if($wid!='Mg=='){   ?>
-                                <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label">Name  <i class="text-danger">*</i></label>
-                                <div class="col-xs-7">
-                                <input type="tel" name="name" class="form-control" id="student-phone-number" placeholder="Name">
-                             </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label">Mobile  <i class="text-danger">*</i></label>
-                                <div class="col-xs-7">
-                                <input type="tel" name="e_mobile" class="form-control" id="student-phone-number" placeholder="">
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label"><?php echo display('name') ?>  
                                <?php  if($wid!='Mg=='){   ?><i class="text-danger">*</i> <?php } ?></label>
@@ -112,22 +100,11 @@
                              </div>
                             <?php }else{ ?>
                                 <div class="form-group row">
-                            <label for="description" class="col-xs-5 col-form-label">Student Name</label>  
-
-                                <div class="col-xs-7">
-
-                                    <input type="text" name="enqueryfield[]" id="student-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="">           
-                                 <input type="hidden" name="inputfieldno[]" value="4506">
-                                 <input type="hidden" name="inputtype[]" value="1">
-                                </div>
-                            </div>    
-                                <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label">Student Mobile Number </label>
+                                <label for="description" class="col-xs-5 col-form-label">Student Mobile No. </label>
                                 <div class="col-xs-7">
                                 <input type="tel" name="enqueryfield[]" class="form-control" id="student-phone-number" placeholder="">
                                 <input type="hidden" name="inputfieldno[]" value="4507">
                                 <input type="hidden" name="inputtype[]" value="18">
-                            </div>   
                             </div>
                             </div>
                           
@@ -151,18 +128,7 @@
                                  <input type="tel" class="form-control br_25  m-0 icon_left_input" onchange="checkAlreadyExist(this.value)" name="e_mobile" value="" placeholder="Mobile" required>
                              </div>
                             </div>
-                            <div class="form-group row" >
-                                <label for="description" class="col-xs-5 col-form-label">Parents 2<sup>nd</sup> No.</label>
-                                <div class="col-xs-7">
-                                 <input type="tel" class="form-control br_25  m-0 icon_left_input" name="other_no" value="" placeholder="Parents 2nd number " >
-
-                                <div class="col-xs-7">
-                                 <!-- <input type="text" class="form-control br_25  m-0 icon_left_input" name="pname" value="" placeholder="Parent Name " required> -->
-                                 <input type="text" name="enqueryfield[]" id="parent-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="" required>           
-                                 <input type="hidden" name="inputfieldno[]" value="4508">
-                                 <input type="hidden" name="inputtype[]" value="1">
-                                </div>
-                            </div>
+                           
                             <div class="form-group row" >
                                 <label for="description" class="col-xs-5 col-form-label">Pickup Location</label>
                                 <div class="col-xs-7">
@@ -189,45 +155,8 @@
                             </div>
                           
                             <?php } ?>            
-                            <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label">Parent Mobile Number <i class="text-danger">*</i></label>
-                                <div class="col-xs-7">
-                                 <input type="tel" class="form-control br_25  m-0 icon_left_input" onchange="checkAlreadyExist(this.value)" name="e_mobile" value="" placeholder="Mobile" required>
-                             </div>
-                            </div>
-                            <div class="form-group row" >
-                                <label for="description" class="col-xs-5 col-form-label">Parents 2nd number</label>
-                                <div class="col-xs-7">
-                                 <input type="tel" class="form-control br_25  m-0 icon_left_input" name="other_no" value="" placeholder="Parents 2nd number " >
-
-                                </div>
-                            </div>
-                            <div class="form-group row" >
-                                <label for="description" class="col-xs-5 col-form-label">Pick up locating (PG address)</label>
-                                <div class="col-xs-7">
-                                 <textarea name="enqueryfield[]" id="pick-up-locating" class="form-control form-control br_25  m-0 icon_left_input" placeholder=""></textarea>
-                                 <input type="hidden" name="inputfieldno[]" value="4510">
-                                 <input type="hidden" name="inputtype[]" value="5">            
-                                </div>
-                            </div>
-                            <div class="form-group row" >
-                                <label for="description" class="col-xs-5 col-form-label">Drop off location (Home address)</label>
-                                <div class="col-xs-7">
-                                <textarea name="enqueryfield[]" id="drop-off-location" class="form-control" placeholder="" ></textarea>
-                                <input type="hidden" name="inputfieldno[]" value="4511">
-                                 <input type="hidden" name="inputtype[]" value="5"> 
-                                </div>
-                            </div>
-                            <div class="form-group row" >
-                                <label for="description" class="col-xs-5 col-form-label">Number of boxes required (estimate) (each box approximately 20kgs)<i class="text-danger">*</i></label>
-                                <div class="col-xs-7">
-                                <input type="number" name="enqueryfield[]" id="number-of-boxes-required" placeholder="" required="" class="form-control" value="">                
-                                <input type="hidden" name="inputfieldno[]" value="4512">
-                                 <input type="hidden" name="inputtype[]" value="5">
-                            </div>
-                            </div>
-                          
-                            <?php } ?>            
+                           
+                                 
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Remarks </label>
                                 <div class="col-xs-7">
