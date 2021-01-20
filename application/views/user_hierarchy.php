@@ -646,7 +646,7 @@ var treeNodes = <?php echo json_encode($nodes_data);?>
 //console.log(treeNodes);
 
   $("#ochart").dtree({
-    isHorizontal: false,
+    isHorizontal: true,
     nodes : treeNodes
   });
 });

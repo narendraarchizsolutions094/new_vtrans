@@ -55,12 +55,14 @@ class User_model extends CI_Model {
                 $sep_arr[] = $key;
             }
         }
-
+        $process=$this->session->userdata('process');
+        // print_r(implode(',', $process));
         $this->load->model('common_model');
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);                      
         $this->db->select("*");
         $this->db->from($this->table);         
         $this->db->join('tbl_user_role', 'tbl_user_role.use_id=tbl_admin.user_permissions', 'left');
+        
         if($hier_wise){
             $where = "  tbl_admin.pk_i_admin_id IN (".implode(',', $all_reporting_ids).')';               
             $where .= "  AND tbl_admin.b_status=1";                                
@@ -76,6 +78,8 @@ class User_model extends CI_Model {
         }else{
             $exclude = $sep_arr;
         }
+        //process wise user select
+        $where .= " AND tbl_admin.process IN (".implode(',', $process).')';               
         if(!empty($exclude) && empty($user_right)){
             foreach($exclude as $rid){
                 $where .= "  AND tbl_admin.user_permissions!='".$rid."'";                                            
