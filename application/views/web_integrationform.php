@@ -3,7 +3,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <!-- The above 3 meta tags must come first in the head; any other head content must come after these tags -->
         <title>Archiz Solutions</title>
         <!-- Favicon and touch icons -->
         <!-- <link rel="shortcut icon" href="<?= base_url($this->session->userdata('favicon')) ?>"> -->
@@ -54,24 +54,27 @@
                 <?php } ?>
                 <br>
                 <div class="row">
-                    <div class="col-md-4">&nbsp;</div>
+                    <div class="<?php  if($wid=='Mg=='){ echo 'col-md-2';  }else{ echo 'col-md-3'; } ?>">&nbsp;</div>
                     <div class="col-md-4 panel panel-default thumbnail">
                        <form method="post" class="form-inner panel-body">
                             <input type="hidden" id="name" name="create_dby" value="<?=$qr_row['web_created_by']?>">                            
                             <input type="hidden" id="qr_code_id" name="qr_code_id" value="<?=$qr_row['wid']?>">                            
                             <input type="hidden" id="wid" name="wid" value="<?=$wid?>">                            
-                             
-                            <?php  if($wid!='Mg=='){   ?>
-                                <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label">Name  <i class="text-danger">*</i></label>
+                            <div class="form-group row">
+                                <label for="description" class="col-xs-5 col-form-label"><?php echo display('name') ?>  
+                               <?php  if($wid!='Mg=='){   ?><i class="text-danger">*</i> <?php } ?></label>
                                 <div class="col-xs-7">
-                                <input type="tel" name="name" class="form-control" id="student-phone-number" placeholder="Name">
-                             </div>
-                            </div>
+                                    <!-- <input type="text" id="name" class="form-control br_25  m-0 icon_left_input" name="e_name" value="" placeholder="<?php echo display('name') ?>" required> -->
+                                    <input type="text" name="enqueryfield[]" id="student-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="">           
+                                 <input type="hidden" name="inputfieldno[]" value="4506">
+                                 <input type="hidden" name="inputtype[]" value="1">
+                                </div>
+                            </div>     
+                            <?php  if($wid!='Mg=='){   ?>
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Mobile  <i class="text-danger">*</i></label>
                                 <div class="col-xs-7">
-                                <input type="tel" name="e_mobile" class="form-control" id="student-phone-number" placeholder="">
+                                <input type="tel" name="enqueryfield[]" class="form-control" id="student-phone-number" placeholder="">
                              </div>
                             </div>
                             <div class="form-group row" >
@@ -97,22 +100,12 @@
                              </div>
                             <?php }else{ ?>
                                 <div class="form-group row">
-                            <label for="description" class="col-xs-5 col-form-label">Student Name</label>  
-
-                                <div class="col-xs-7">
-
-                                    <input type="text" name="enqueryfield[]" id="student-name" placeholder="" class="form-control br_25  m-0 icon_left_input" value="">           
-                                 <input type="hidden" name="inputfieldno[]" value="4506">
-                                 <input type="hidden" name="inputtype[]" value="1">
-                                </div>
-                            </div>    
-                                <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label">Student Mobile Number </label>
+                                <label for="description" class="col-xs-5 col-form-label">Student Mobile No. </label>
                                 <div class="col-xs-7">
                                 <input type="tel" name="enqueryfield[]" class="form-control" id="student-phone-number" placeholder="">
                                 <input type="hidden" name="inputfieldno[]" value="4507">
                                 <input type="hidden" name="inputtype[]" value="18">
-                            </div>   
+                            </div>
                             </div>
                           
                            <?php } ?>
@@ -135,13 +128,7 @@
                                  <input type="tel" class="form-control br_25  m-0 icon_left_input" onchange="checkAlreadyExist(this.value)" name="e_mobile" value="" placeholder="Mobile" required>
                              </div>
                             </div>
-                            <div class="form-group row" >
-                                <label for="description" class="col-xs-5 col-form-label">Parents 2<sup>nd</sup> No.</label>
-                                <div class="col-xs-7">
-                                 <input type="tel" class="form-control br_25  m-0 icon_left_input" name="other_no" value="" placeholder="Parents 2nd number " >
-
-                                </div>
-                            </div>
+                           
                             <div class="form-group row" >
                                 <label for="description" class="col-xs-5 col-form-label">Pickup Location</label>
                                 <div class="col-xs-7">
@@ -168,6 +155,8 @@
                             </div>
                           
                             <?php } ?>            
+                           
+                                 
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Remarks </label>
                                 <div class="col-xs-7">
@@ -187,7 +176,11 @@
                             </div>
                         </form>
                     </div>
-                <div class="col-md-3">&nbsp;</div>
+                <div class="<?php  if($wid=='Mg=='){ echo 'col-md-4';  }else{ echo 'col-md-3'; } ?>">
+				<?php  if($wid=='Mg=='){   ?>
+				<img src="<?php echo base_url();?>assets/images/vtrans-shristi.jpeg" title="" height="70%">
+						<?php } ?>   
+				</div>
             </div>
          </div>
       <div style="<?php if(!empty($this->session->popup)){echo 'display:block';} ?>">
