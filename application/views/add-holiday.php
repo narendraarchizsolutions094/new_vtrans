@@ -6,6 +6,7 @@
 		if($suc = $this->session->flashdata('SUCCESSMSG'))
 			echo '<div class="alert alert-success">'.$suc.'</div>';
 		?>
+		
 		<form action="" method="post">
 		<div class="panel panel-default">
 			<div class="panel-heading">Add Holiday</div>

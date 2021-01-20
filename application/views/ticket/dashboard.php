@@ -19,14 +19,63 @@
 <br>
 <br>
 <style>
+    .card-graph{
+    min-height:250px;
+    max-height:400px;
+    border:1px solid;    
+    /* margin:2px; */
+    box-shadow: 0px 0px 7px -1px;
+    border-radius: 6px;
+    border-color: transparent;
+    overflow: hidden;
+}
+.card-graph_full{
+    min-height:250px;
+    max-height:510px;
+    border:1px solid;    
+    /* margin:2px; */
+    box-shadow: 0px 0px 7px -1px;
+    border-radius: 6px;
+    border-color: transparent;
+    overflow: hidden;
+}
+.card-graph_full2{
+    border:1px solid;    
+    /* margin:2px; */
+    box-shadow: 0px 0px 7px -1px;
+    border-radius: 6px;
+    border-color: transparent;
+    overflow: hidden;
+    padding: 20px;
+}
+.card-graph_full:hover{
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
+.card-graph:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
+.card-graph_full2:hover{
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+
+}
+
+/* @media (min-width: 992px){
+    .card-graph {
+        width:32%;
+    }
+} */
+.pd-10{
+    padding:10px;
+}
+
 #chartdiv {
     width: 100%;
-    height: 300px;
+    height: 250px;
 }
 
 #chartdiv2 {
     width: 100%;
-    height: 300px;
+    height: 250px;
 }
 
 #chartdiv1 {
@@ -43,17 +92,16 @@
 
 #chartdiv6 {
     width: 100%;
-    height: 300px;
+    height: 250px;
 }
 #chartdiv5 {
     width: 100%;
-    height: 500px;
+    height: 600px;
 }
 #product_Ticket {
     width: 100%;
-    height: 300px;
+    height: 250px;
 }
-
 .highcharts-data-table table {
     font-family: Verdana, sans-serif;
     border-collapse: collapse;
@@ -107,55 +155,93 @@
 </style>
 <!-- Resources -->
 <br>
-<div id="chartdiv_datewise"></div><br>
 <br>
+<br>
+<div class="row pd-20" style="width:100%;">
+                <div class="col-md-12" style="padding:10px;">
+                    <div class="card card-graph_full2" >
+<div id="chartdiv_datewise"></div>
+                    </div>
+                </div>
+                </div>
+<br>
+<div class="row pd-20" style="width:100%;">
+                <div class="col-md-12 pd-20">
+                    <div class="card card-graph_full2" >
+                    <br>
 <center>
     <h3>Referred By</h3>
 </center>
 <div id="chartdiv1"></div>
-<div class="row">
-    <div class="col-md-6">
+<br>
+                    </div>
+                </div>
+</div>
+<div class="row pd-20" style="width:100%;">
+                <div class="col-md-6 pd-20" >
+                    <div class="card card-graph" >
+                    <br>
         <center>
             <h3>Priority Wise</h3>
         </center>
         <div id="chartdiv"></div>
     </div>
-    <div class="col-md-6">
+    </div>
+                <div class="col-md-6 pd-20">
+                    <div class="card card-graph" >
+                    <br>
         <center>
             <h3>Type Wise</h3>
         </center>
         <div id="chartdiv2"></div>
     </div>
-</div><br>
-<br><br>
+    </div>
+</div>
+ 
 <br>
-<center>
+<!-- <center>
     <h3>Substage Wise Ticket</h3>
-</center>
+</center> -->
 <!-- HTML -->
 <!-- <div id="chartdiv_substage"></div> -->
 <br>
 <br>
+<div class="row pd-20" style="width:100%;">
+
+<div class="col-md-12 pd-20" style="padding: 10px;">
+<div class="card card-graph_full2">
+<br>
 <center>
     <h3>Stage Wise Ticket</h3>
 </center><!-- HTML -->
+
 <div id="chartdiv5"></div>
+</div>
+</div>
+</div>
 <br>
 <br><!-- HTML -->
-<div class="row">
-    <div class="col-md-6">
-        <center>
-            <h3>Source Wise Ticket</h3>
-        </center>
-        <div id="chartdiv6"></div>
+
+<div class="row pd-20" style="width:100%;">
+
+    <div class="col-md-6 pd-20">
+        <div class="card card-graph"><br>
+            <center>
+                <h3>Source Wise Ticket</h3>
+            </center>
+            <div id="chartdiv6"></div>
+        </div>
     </div>
-    <div class="col-md-6">
-        <center>
-            <h3>Product/Service Wise Ticket </h3>
-        </center>
-        <div id="product_Ticket"></div>
+    <div class="col-md-6 pd-20" >
+        <div class="card card-graph">
+            <br>
+    <center>
+        <h3>Product/Service Wise Ticket </h3>
+    </center>
+    <div id="product_Ticket"></div>
+</div>
     </div>
-</div><br>
+    </div>
 <br><!-- Chart code -->
 <script>
 $(document).ready(function() {
