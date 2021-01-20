@@ -90,6 +90,7 @@ class Configurations extends CI_Controller {
         }
         
         
+           
         public function website_form(){
         
             if(!empty($_POST)){                          
@@ -203,7 +204,7 @@ class Configurations extends CI_Controller {
             $data['qr_row']    =   $this->db->get('website_integration')->row_array();
             // print_r($data);
             $this->load->view('web_integrationform',$data);
-        }
+        }   
         
         
         
