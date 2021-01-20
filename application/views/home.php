@@ -320,10 +320,11 @@
                         </div>
                     </div>
                 </div>
-                <?php } ?>
                
                 <?php
-
+                }
+                
+                if(user_access(553)){ 
 if (!empty($enquiry_separation)) {
   $enquiry_separation = json_decode($enquiry_separation, true);
       foreach ($enquiry_separation as $key => $value) {   
@@ -368,6 +369,8 @@ if (!empty($enquiry_separation)) {
                     <!-- /.info-box -->
                 </div>
                 <?php } } ?>
+                <?php } ?>
+
             </div>
 
             <!------------------------------------------------------------------html widget End-------------------------------------------->
@@ -585,6 +588,7 @@ if (!empty($enquiry_separation)) {
                                             </li>
                                             <?php } ?>
                                             <!-- //dynamic case -->
+                                            <?php  if(user_access(553)){ ?>
                                             <?php
         $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
 
@@ -619,7 +623,7 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                                     <?= $ctitle ?>
                                                 </div>
                                             </li>
-                                            <?php } } ?>
+                                            <?php } }  } ?>
 
 
                                             <!-- // dynamic case end -->
@@ -1184,6 +1188,7 @@ if(user_access('260') || user_access('261') || user_access('250'))
                                         },
                                         <?php } ?>
                                         <?php 
+                                        if(user_access(553)){ 
         $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
 
                  if (!empty($enquiry_separation)) {
@@ -1215,6 +1220,8 @@ if(user_access('260') || user_access('261') || user_access('250'))
                       }
 
                     }
+
+                } 
                 ?>
                                     ]
                                 },
@@ -1252,9 +1259,17 @@ if(user_access('260') || user_access('261') || user_access('250'))
 
                         if (data.status == 'success') {
                             for (var i = 0; i < data.enquiryChartData.length; i++) {
+<?php if(user_access(60)){ ?> 
+
                                 data1.push(parseInt(data.enquiryChartData[i]));
+                                <?php } if(user_access(70)){ ?> 
+
                                 data2.push(parseInt(data.leadChartData[i]));
+<?php } if(user_access(80)){ ?> 
+
                                 data3.push(parseInt(data.clientChartData[i]));
+                                <?php }  ?> 
+
                                 data4.push(data.droplst[i]['drop_reason']);
                             }
                             Highcharts.chart('container2', {
@@ -1308,16 +1323,25 @@ if(user_access('260') || user_access('261') || user_access('250'))
                                         }
                                     }
                                 },
-                                series: [{
+                                series: [
+<?php if(user_access(60)){ ?> 
+                                    
+                                    {
                                         name: '<?php  echo display("enquiry"); ?>',
                                         data: data1,
-                                    }, {
+                                    },
+<?php } if(user_access(70)){ ?> 
+                                     {
                                         name: '<?php echo display("lead"); ?>',
                                         data: data2,
-                                    }, {
+                                    },
+<?php } if(user_access(80)){ ?> 
+                                     {
                                         name: '<?php echo display("Client"); ?>',
                                         data: data3,
                                     },
+<?php } if(user_access(553)){ ?> 
+
                                     <?php   $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
                  if (!empty($enquiry_separation)) {
                   $enquiry_separation = json_decode($enquiry_separation, true);
@@ -1328,7 +1352,7 @@ if(user_access('260') || user_access('261') || user_access('250'))
                                         name: "<?= $ctitle ?>",
                                         data: [<?= implode(',',$count); ?>]
                                     },
-                                    <?php } }  ?>
+                                    <?php } }  } ?>
 
                                 ]
                             });
@@ -1415,16 +1439,21 @@ if(user_access('260') || user_access('261') || user_access('250'))
                                 },
                                 xAxis: {
                                     categories: [
+                                    <?php if(user_access(60)){ ?> 
                                         '<?php echo display("enquiry"); ?>',
+                                    <?php } if(user_access(70)){ ?> 
                                         '<?php echo display("lead"); ?>',
+                                    <?php } if(user_access(80)){ ?>
                                         '<?php echo display("Client"); ?>',
-                                        <?php   $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
+                                        <?php } 
+                                         if(user_access(553)){ 
+                                          $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
                  if (!empty($enquiry_separation)) {
                   $enquiry_separation = json_decode($enquiry_separation, true);
                       foreach ($enquiry_separation as $key => $value) {
                                $ctitle = $enquiry_separation[$key]['title']; 
                          ?> "<?= $ctitle ?>",
-                                        <?php } }  ?>
+                                        <?php } } } ?>
                                     ],
                                     crosshair: true
                                 },
@@ -1678,9 +1707,13 @@ $newDate = date("Y-m-d", strtotime($t_date));
                         var data4 = [];
                         if (data.status == 'success') {                            
                             for (var i = 0; i < data.enquiryChartData.length; i++) {
+                                <?php if(user_access(60)){ ?> 
                                 data1.push(parseInt(data.enquiryChartData[i]));
+                                <?php } if(user_access(70)){ ?> 
                                 data2.push(parseInt(data.leadChartData[i]));
+                                <?php } if(user_access(80)){ ?> 
                                 data3.push(parseInt(data.clientChartData[i]));
+                                <?php } ?>
                                 data4.push(data.desplst[i]['lead_stage_name']);
                             }
                             Highcharts.chart('container', {
@@ -1717,17 +1750,26 @@ $newDate = date("Y-m-d", strtotime($t_date));
                                         borderWidth: 0
                                     }
                                 },
-                                series: [{
+                                series: [
+                                <?php if(user_access(60)){ ?> 
+                                    {
                                         name: '<?php echo display("enquiry"); ?>',
                                         data: data1,
-                                    }, {
+                                    },
+                                <?php } if(user_access(70)){ ?> 
+                                     {
                                         name: '<?php echo display("lead"); ?>',
                                         data: data2,
-                                    }, {
+                                    },
+                                <?php  } if(user_access(80)){ ?> 
+                                     {
                                         name: '<?php echo display("Client"); ?>',
                                         data: data3,
                                     },
-                                    <?php   $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
+                                    <?php 
+                                }
+                                    if(user_access(553)){ 
+                                    $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
                  if (!empty($enquiry_separation)) {
                   $enquiry_separation = json_decode($enquiry_separation, true);
                       foreach ($enquiry_separation as $key => $value) {
@@ -1737,7 +1779,7 @@ $newDate = date("Y-m-d", strtotime($t_date));
                                         name: "<?= $ctitle ?>",
                                         data: [<?= implode(',',$count); ?>]
                                     },
-                                    <?php } }  ?>
+                                    <?php } } } ?>
                                 ]
                             });
                         }
@@ -1769,9 +1811,16 @@ $newDate = date("Y-m-d", strtotime($t_date));
                             //response = JSON.parse(data);
                             console.log(data.enquiryChartData[0]);
                             for (var i = 0; i < data.enquiryChartData.length; i++) {
+                                <?php   if(user_access(60)){ ?> 
+
                                 data1.push(parseInt(data.enquiryChartData[i]));
+                                <?php  } if(user_access(70)){ ?> 
+
                                 data2.push(parseInt(data.leadChartData[i]));
+                                <?php  } if(user_access(80)){ ?> 
+
                                 data3.push(parseInt(data.clientChartData[i]));
+                                <?php } ?>
                                 data4.push(data.srclst[i]['lead_name']);
                             }
                             Highcharts.chart('container1', {
@@ -1815,18 +1864,19 @@ $newDate = date("Y-m-d", strtotime($t_date));
 
                                     },
                                     <?php } 
-        if(user_access(70)){ ?> {
+                                    if(user_access(70)){ ?> {
                                         name: '<?php echo display("lead"); ?>',
                                         data: data2,
                                     },
                                     <?php } 
-        if(user_access(80)){
-        ?> {
+                                        if(user_access(80)){
+                                        ?> {
                                         name: '<?php echo display("Client"); ?>',
                                         data: data3,
                                     },
-                                    <?php } ?>
-                                    <?php   $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
+                                    <?php }  
+                                if(user_access(553)){ 
+                                    $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
                  if (!empty($enquiry_separation)) {
                   $enquiry_separation = json_decode($enquiry_separation, true);
                       foreach ($enquiry_separation as $key => $value) {
@@ -1836,7 +1886,7 @@ $newDate = date("Y-m-d", strtotime($t_date));
                                         name: "<?= $ctitle ?>",
                                         data: [<?= implode(',',$count); ?>]
                                     },
-                                    <?php } }  ?>
+                                    <?php } } } ?>
                                 ]
                             });
                         }
@@ -2130,7 +2180,8 @@ $.ajax({
                                             ]
                                         },
                                         <?php } ?>
-                                        <?php 
+                                        <?php  if(user_access(553)){ 
+
         $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
 
                  if (!empty($enquiry_separation)) {
@@ -2139,8 +2190,7 @@ $.ajax({
                       foreach ($enquiry_separation as $key => $value) {
                               $ctitle = $enquiry_separation[$key]['title']; 
                         $count = $this->enquiry_model->DYdropmonthWiseChart($this->session->user_id,$this->session->companey_id,$key);
-                            ?> {
-                                            label: "<?= $ctitle ?>",
+                            ?> {            label: "<?= $ctitle ?>",
                                             backgroundColor: "<?=  sprintf('#%06X', mt_rand(0, 0xFFFFFF)); ?>",
                                             data: [<?= $count['ejan']?>,
                                                 <?= $count['efeb']?>,
@@ -2156,13 +2206,7 @@ $.ajax({
                                                 <?= $count['edec']?>,
                                             ],
                                         },
-
-                                        <?php 
-
-                      }
-
-                    }
-                ?>
+                                        <?php    }  }  }  ?>
                                     ]
                                 },
                                 options: {

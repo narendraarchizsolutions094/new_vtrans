@@ -3326,7 +3326,10 @@ $cpny_id=$this->session->companey_id;
 
     public function DYprocessWiseChart($userid,$companyid,$process,$status)
     {	
-        $data=[];
+        $enquiry_processWise=[];
+
+        if(user_access(553)){ 
+        
     	$all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
     	$where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
@@ -3335,8 +3338,10 @@ $cpny_id=$this->session->companey_id;
 
     	$enquiry_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name FROM enquiry  LEFT JOIN tbl_product as tp ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = $status AND tp.sb_id In ($process) GROUP BY tp.sb_id");
         $enquiry_processWise = $enquiry_process->result();
-       
+            
+        }
       return $enquiry_processWise;
+
     }
 
     public function dysourceDataChart($userid,$companyid,$status)
@@ -4218,10 +4223,12 @@ $cpny_id=$this->session->companey_id;
             $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
             $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         }
+        $arr1 =$arr2 = $arr3 = array();
+
+       if(user_access(60)) {
         
     	$enquiry_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name,tp.sb_id FROM tbl_product as tp  LEFT JOIN enquiry ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = 1 AND tp.sb_id In ($process) GROUP BY tp.sb_id");
         $enquiry_processWise = $enquiry_process->result_array();
-        $arr1 =$arr2 = $arr3 = array();
         
         if(!empty($enquiry_processWise)){
             foreach($enquiry_processWise as $k=>$v){
@@ -4229,7 +4236,8 @@ $cpny_id=$this->session->companey_id;
                 $arr1[$pid] = array('name'=>$v['product_name'],'data'=>array((int)$v['counter']));
             }
         }
-        
+    }
+       if(user_access(70)){
         $lead_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name,tp.sb_id FROM tbl_product as tp  LEFT JOIN enquiry ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = 2 AND tp.sb_id In ($process) GROUP BY tp.sb_id");
 
         $lead_processWise = $lead_process->result_array();
@@ -4243,6 +4251,8 @@ $cpny_id=$this->session->companey_id;
                 }
             }
         }
+    }
+ if(user_access(80)){
         $client_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name,tp.sb_id FROM tbl_product as tp LEFT JOIN enquiry ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = 3 AND tp.sb_id In ($process) GROUP BY tp.sb_id");
 
 
@@ -4258,9 +4268,10 @@ $cpny_id=$this->session->companey_id;
                 }
             }
         }
-        
+    }
         return array_values($arr1);
     }
+
 
     public function enquiryLeadClientChart($userid,$companyid)
     {	

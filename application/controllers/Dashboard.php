@@ -895,6 +895,8 @@ public function login_in_process(){
  $client=display("client");
  $data[]=['name'=>$client,'value'=>$count3];
  }
+ if(user_access(553)) {
+
 if (!empty($enquiry_separation)) {
     $enquiry_separation = json_decode($enquiry_separation, true);
         foreach ($enquiry_separation as $key => $value) {
@@ -903,6 +905,7 @@ if (!empty($enquiry_separation)) {
             $data[]=['name'=>$ctitle,'value'=>$count];
         }
     }
+}
             echo json_encode(array('data'=>$data,'status'=>'success'));
     }
     public function conversionProbabilityChart()
@@ -911,6 +914,7 @@ if (!empty($enquiry_separation)) {
        // echo "string";die;
         $chartData = $this->enquiry_model->conversionProbabilityChart($this->session->user_id,$this->session->companey_id);
         //print_r($chartData);die;
+
         if(!empty($chartData))
         {
             echo json_encode(array('data'=>$chartData,'status'=>'success'));
@@ -920,7 +924,6 @@ if (!empty($enquiry_separation)) {
             echo json_encode(array('status'=>'fail'));
         }
     }
-    
     public function dropDataChart()
     {   
        // echo "string";die;
@@ -1274,7 +1277,7 @@ if (!empty($enquiry_separation)) {
         // print_r($_FILES['vcfile']['name']);
         // die();
         if (isset($_FILES['vcfile'])) {
-            $path2 = 'assets/images/vc/';
+            $path2 = 'assets/images/user/';
             $config2 = array(
             'upload_path' => $path2,
             'allowed_types' => "gif|jpg|png|jpeg",        
