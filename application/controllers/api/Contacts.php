@@ -8,7 +8,7 @@ class Contacts extends REST_Controller {
   {
       parent::__construct();
       $this->load->library('form_validation');
-	  $this->load->model(array('enquiry_model','common_model','client_model'));
+	  $this->load->model(array('common_model','client_model'));
   }
 
   	public function contacts_list_page_post()
@@ -138,7 +138,7 @@ class Contacts extends REST_Controller {
 
     	if($this->form_validation->run()==true)
     	{
-    		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
+    		$this->load->model(array('Leads_Model'));
 
     		$data = array(
                 'c_name' => $name,
