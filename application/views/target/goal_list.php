@@ -64,10 +64,10 @@ $variable=explode(',',$_COOKIE['goal_filter_setting']);
                       <label>
                       <input type="checkbox" value="matric" id="matriccheckbox" name="filter_checkbox" <?php if(in_array('matric',$variable)){echo'checked';} ?>> Matric</label>
                     </li>                
-                   <li>
+                  <!--  <li>
                       <label>
                       <input type="checkbox" value="goals" id="goalcheckbox" name="filter_checkbox" <?php if(in_array('goals',$variable)){echo'checked';} ?>> Goal Analytics</label>
-                    </li> 
+                    </li> --> 
                    
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
@@ -107,7 +107,6 @@ $variable=explode(',',$_COOKIE['goal_filter_setting']);
 					<input  name="end_date_to" class="form-control form-date" >
 			</div>
 		</div>
-        </div>
 
 	<div class="col-md-3" id="rolefilter" style="<?php if(!in_array('role',$variable)){echo'display:none';} ?>">
 		<div class="form-group">
@@ -130,7 +129,7 @@ $variable=explode(',',$_COOKIE['goal_filter_setting']);
 	</div>
 	
 	<div class="col-md-3" id="userfilter" style="<?php if(!in_array('user',$variable)){echo'display:none';} ?>">
-		<div class="form-group">
+		<!-- <div class="form-group">
 			<label>For User &nbsp;<small><input type="checkbox" name="fetch_type" value="1" checked> Hierarchy wise</small></label>
 			<select class="form-control" name="user_for">
 				<?php
@@ -143,6 +142,30 @@ $variable=explode(',',$_COOKIE['goal_filter_setting']);
 					}
 				}
 				?>
+			</select>
+		</div> -->
+		
+		<label>For &nbsp;<small><input type="checkbox" name="fetch_type" value="2" checked > Hierarchy wise</small></label>
+			<select class="form-control" name="user_for">
+		<?php
+		// $res = $this->db->select('pk_i_admin_id,designation,CONCAT(s_username," ",last_name) as name')->from('tbl_admin')->where('companey_id',$this->session->companey_id)->where('designation is not null and CHAR_LENGTH(designation)>0')->group_by('designation')->get()->result();
+
+		// $res = $this->db->select('admin.pk_i_admin_id,CONCAT(admin.s_display_name," ",admin.last_name) as name, admin.designation, role.user_role')->from('tbl_admin admin')->join('tbl_user_role role','role.use_id=admin.user_type')->where('admin.companey_id',$this->session->companey_id)->where('admin.report_to="'.$this->session->user_id.'" or admin.pk_i_admin_id='.$this->session->user_id)->get()->result();
+		// 		if(!empty($res))
+		// 		{
+		// 			foreach ($res as $key => $row)
+		// 			{
+		// 				echo'<option value="'.$row->pk_i_admin_id.'" '.($row->pk_i_admin_id==$this->session->user_id?'selected':'').'>'.$row->name.' ('.$row->user_role.')</option>';
+		// 			}
+		// 		}
+
+				foreach (json_decode($users) as $key => $value)
+				{
+					echo'<option value="'.$value->id.'">'.$value->user_name.'</option>';
+				}
+
+				?>
+
 			</select>
 		</div>
 	</div>
@@ -228,8 +251,8 @@ $('input[name="filter_checkbox"]').click(function(){
 		
 
 </script>
-<div class="panel">
-	<div class="panel-body" id="goal_graph">
+<div class="panel" id="goal_graph" style="display: none;">
+	<div class="panel-body" >
 		<div class="row">
 			<center><label>Metric Type : Deal Value</label></center>
 			<div class="col-sm-6">
@@ -252,6 +275,14 @@ $('input[name="filter_checkbox"]').click(function(){
 	</div>
 </div>
 <div class="panel">
+	<div class="row" align="right">
+		<div class="col-md-3 pull-right">
+			<!-- <div class="input-group" > -->
+			<input type="search" name="" class="form-control" style="padding-top:0px; padding-bottom: 0px; width: 100%;" placeholder="Search by name" id="keyword" onkeyup="load_table()">
+			
+		<!-- </div> -->
+		</div>
+	</div>
 	<div class="panel-body" id="goal_table">
 
 	</div>
@@ -267,6 +298,7 @@ $("#filter_form").change(function(){
 	function load_table()
 	{
 		var custom_filter = $("#filter_form").serialize();
+		custom_filter+="&keyword="+$("#keyword").val();
 		//alert(custom_filter);
 		$.ajax({
 			url:"<?=base_url('Target/load_goal_table')?>",
@@ -282,7 +314,7 @@ $("#filter_form").change(function(){
 				$("#goal_table").html(p.code);
 				console.log(p.count_goals);
 				if(p.graph)
-				{
+				{	
 					$("#goal_graph").show();
 					// =================================================
 
@@ -554,14 +586,19 @@ chart.cursor.lineY.disabled = true;
         <h4 class="modal-title">ADD GOAL</h4>
       </div>
       <div class="modal-body">  
-      	<div class="row">      
+      	<div class="row">     
+      		<div class="form-group col-sm-12" style="padding: 4px;">  
+	            <label>Goal Name<font color="red">*</font></label>       
+	            <input type="text" name="goal_name" class="form-control" required>
+	        </div>
+
             <div class="form-group col-sm-4" style="padding: 4px;">  
 	            <label>Goal Period <font color="red">*</font></label>       
 	            <select class="form-control"  name="goal_period" onchange="load_range(this.value)">
-	            	<option value="weekly">Weekly</option>
+	            	<!-- <option value="weekly">Weekly</option>
 	            	<option value="monthly">Monthly</option>
-	            	<option value="quarterly">Quarterly</option>
-	            	<option value="yearly">Yearly</option>
+	            	<option value="quarterly">Quarterly</option> -->
+	            	<option value="yearly" selected>Yearly</option>
 	            </select>         
 		    </div>  
 		    <div class="col-sm-8" style="padding: 4px">
@@ -653,7 +690,7 @@ $(document).ready(function(){
 });	
 
 
-load_range('weekly');
+load_range('yearly');
 function load_range(v)
 {
 	var range_list = '';
@@ -675,7 +712,8 @@ function load_range(v)
 		}
 		else if(v=='yearly')
 		{
-			range_list+="<option value='1'>This Year </option><option value='2'>Next Year</option><option value='custom'>Custom period</option>";
+			range_list+="<option value='1'>This Year </option>";
+			//<option value='2'>Next Year</option><option value='custom'>Custom period</option>
 		}
 
 	$("select[name=time_range]").html(range_list);

@@ -104,10 +104,13 @@ class Client_Model extends CI_Model
     }
     
     
-    public function getContactList($specific=array())
+    public function getContactList($specific=array(),$action='data',$comp_id=0,$user_id=0,$limit=-1,$offset=-1)
     {
-        $where = 'enquiry.comp_id='.$this->session->companey_id;
-        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        $comp_id = $comp_id??$this->session->companey_id;
+        $user_id = $user_id??$this->session->user_id;
+
+        $where = 'enquiry.comp_id='.$comp_id;
+        $all_reporting_ids    =   $this->common_model->get_categories($user_id);
         $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
         if($where)
@@ -120,7 +123,16 @@ class Client_Model extends CI_Model
         $this->db->from('tbl_client_contacts contacts');
         $this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
         $this->db->order_by('contacts.cc_id desc');
-        return $this->db->get();
+
+        if($limit!=-1 and $offset!=-1)
+        {
+            $this->db->limit($limit,$offset);
+        }
+
+        if($action=='count')
+           return  $this->db->count_all_results();
+        else
+            return $this->db->get();
         //echo $this->db->last_query(); exit();
     }
 
