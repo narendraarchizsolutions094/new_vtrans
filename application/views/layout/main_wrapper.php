@@ -1,7 +1,9 @@
 <?php
    defined('BASEPATH') OR exit('No direct script access allowed');   
    if(user_access('133')){
-    $count=$this->user_model->checkLoginToken();
+    $token=$this->session->userdata('login_token');
+    $user_id=$this->session->user_id;
+    $count=$this->user_model->checkLoginToken($user_id,$token,0);
     // print_r($this->session->userdata('login_token'));
     if($count==0){
         $this->session->sess_destroy();
@@ -760,6 +762,14 @@ if($root=='https://student.spaceinternationals.com'){  ?>
     .slider.round:before {
         border-radius: 50%;
     }
+    .icon-class{
+    color: #fff;
+    font-size: 17px !important;
+    background: #43AEEF;
+    padding: 7px;
+    border-radius: 4px;
+    width: 30px !important;
+    }
     </style>
     <!------------------------------------------------------------------------------------------------------------alert reminder end----------------------------------------------------->
     <!-- Site wrapper -->
@@ -847,8 +857,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     style="width:77%;">
 
                                 <div class="input-group-prepend">
-                                    <button type="submit" class="input-group-text btn btn-default master-search-icon"
-                                        style=""><i class="fa fa-search" aria-hidden="true"></i></button>&nbsp;
+                                    <button type="submit" class="input-group-text btn btn-default master-search-icon" ><i class="fa fa-search" aria-hidden="true"></i></button>&nbsp;
                                 </div>
 
                             </div>
@@ -1003,8 +1012,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <?php if(($this->session->user_right!=151 && $this->session->user_right!=180 && $this->session->user_right!=186 && $this->session->user_right!=200 && $this->session->userdata('user_right')!=214 && $this->session->userdata('user_right')!=201)){ ?>
                     <li class="<?php echo (($segment1 == 'dashboard') ? "active" : null) ?>">
                         <a href="<?php echo base_url('dashboard') ?>">
-                            <i class="fa fa-home"
-                                style="color:#fff;font-size:17px;background:#2ecc71;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-home icon-class" ></i>
                             &nbsp;<?php echo display('dashboard') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1029,7 +1037,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     echo 'display:none;'; } ?>">
                         <a href="#">
                             <i class="fa fa-map-marker"
-                                style="color:#fff;font-size:20px;background:#e74c3c;padding:7px;border-radius:4px;width:30px;"></i>
+                                style="color:#fff;font-size:17px;background:#43AEEF;padding:7px 7px 7px 10px;border-radius:4px;width:30px;"></i>
                             <?php echo display("location_setting"); ?>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -1080,8 +1088,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($segment1 == "lead" && $segment2 != "index" && $segment2 != "datasourcelist" && $segment2 != "lead_details") ? "active" : null) ?>"
                         >
                         <a href="#">
-                            <i class="fa fa-line-chart"
-                                style="color:#fff;font-size:15px;background:#f1c40f;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-line-chart icon-class"></i>
                             <?php echo display("sales_setting"); ?>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -1241,8 +1248,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             <?php }
                             if ($this->session->companey_id == 83) { 
                             if (user_access('h31')) {  ?>
-                            <li class="<?php echo (in_array($segment2,array('faq','add_faq','edit_faq')) ?"active":'') ?>"
-                                style="">
+                            <li class="<?php echo (in_array($segment2,array('faq','add_faq','edit_faq')) ?"active":'') ?>" >
                                 <a href="<?php echo base_url() ?>lead/faq">
                                     <?php echo display('faq');?>
                                 </a>
@@ -1294,7 +1300,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <?php } ?>
                     <!--    <li class="treeview <?php echo (($segment1 == "inventory") ? "active" : null) ?>"  style="<?php if(in_array(280,$module) || in_array(281,$module) || in_array(282,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                      <a href="#">
-                      <i class="fa fa-cog" style="color:#fff;font-size:15px;background:#f1c40f;padding:7px;border-radius:4px;width:30px;"></i> <?php echo display('Inventory'); ?>
+                      <i class="fa fa-cog icon-class" ></i> <?php echo display('Inventory'); ?>
                       <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                       </span>
@@ -1323,8 +1329,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     if(user_access('1010') || user_access('1011') || user_access('1012')){ ?>
                     <li class="<?=($segment2=='contacts')?'active':''?>">
                         <a href="<?=base_url('client/contacts')?>">
-                            <i class="fa fa-address-book"
-                                style="color:#fff;font-size:20px;background:#008080;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-address-book icon-class" ></i>
                             <?=display('contacts')?>
                         </a>
                     </li>
@@ -1337,8 +1342,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                      <li class="<?=($segment2=='company_list')?'active':''?>">
                         <a href="<?=base_url('client/company_list')?>">
-                            <i class="fa fa-building"
-                                style="color:#fff;font-size:20px;background:#cb6161;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-building icon-class" ></i>
                             <?=display('company_list')?>
                         </a>
                     </li>
@@ -1349,8 +1353,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview"
                         style="<?php if(in_array(440,$module) || in_array(441,$module) || in_array(442,$module) || in_array(443,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="#">
-                            <i class="fa fa-cart-plus"
-                                style="color:#fff;font-size:15px;background:#f1c40f;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-cart-plus icon-class" ></i>
                             E-commerce
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -1390,8 +1393,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                   if (user_access('470')) { ?>
                     <li class="treeview <?php echo (($segment1 == "product") ? "active" : null) ?>">
                         <a href="<?php echo base_url("product/") ?>">
-                            <i class="fa fa-list-alt"
-                                style="color:#fff;font-size:20px;background:#008080;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-list-alt icon-class"
+                                ></i>
                             &nbsp;<?php echo 'Product'; ?>
                         </a>
                     </li>
@@ -1400,8 +1403,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                   if (user_access('300')) { ?>
                     <li class="<?php echo (($segment2 == "inventory") ? "active" : null) ?>">
                         <a href="<?php echo base_url("warehouse/inventory") ?>">
-                            <i class="fa fa-object-group"
-                                style="color:#fff;font-size:20px;background:#008080;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-object-group icon-class" ></i>
                             &nbsp;<?php echo 'Inventory List'; ?>
                         </a>
                     </li>
@@ -1410,8 +1412,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                   if (in_array(460,$module) || in_array(461,$module) || in_array(462,$module) ||  in_array(463,$module)) { ?>
                     <li class="<?php echo (($segment1 == "order") ? "active" : null) ?>">
                         <a href="<?php echo base_url("order/"); ?>">
-                            <i class="fa fa-list"
-                                style="color:#fff;font-size:20px;background:#008080;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-list icon-class" ></i>
                             &nbsp;<?php echo 'Order'; ?>
                         </a>
                     </li>
@@ -1420,8 +1421,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                   if (user_access('480')) { ?>
                     <li class="<?php echo (($segment1 == "buy") ? "active" : null) ?>">
                         <a href="<?php echo base_url("buy/"); ?>">
-                            <i class="fa fa-shopping-bag"
-                                style="color:#fff;font-size:20px;background:#008080;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-shopping-bag icon-class" ></i>
                             &nbsp;<?php echo 'Buy'; ?>
                         </a>
                     </li>
@@ -1451,8 +1451,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         </a>
                         <?php }else{ ?>
                         <a href="#" onclick='window.location = "<?php echo base_url('buy?c='.$ind); ?>"'>
-                            <i class="fa fa-list-alt"
-                                style="color:#fff;font-size:17px;background:#2ecc71;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-list-alt icon-class" ></i>
                             &nbsp;<?php echo $ctg['title']; ?> <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -1486,8 +1485,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo in_array($segment1, array('user','customer','userrights')) ? "active" : null ?>"
                         style="<?php if(in_array(130,$module) || in_array(131,$module) || in_array(132,$module) || in_array(133,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="#">
-                            <i class="fa fa-user-plus"
-                                style="color:#fff;font-size:15px;background:#9b59b6;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-user-plus icon-class" ></i>
                             &nbsp;<?php echo display('User_mgment') ?>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -1566,8 +1564,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                   if ($this->session->user_right == 1) { ?>
                     <li class="treeview <?php echo (($segment1 == "form") ? "active" : null) ?>">
                         <a href="<?php echo base_url("form/form/tabs") ?>">
-                            <i class="fa fa-cogs"
-                                style="color:#fff;font-size:15px;background:#dc7633;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-cogs icon-class" ></i>
                             &nbsp;<?php echo 'TABS Settings' ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1582,8 +1579,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($segment1 == "whatsappapi" || $segment1 == "smsapi" || $segment1 == "configurations" ||$segment1 == "emailapi") ? "active" : null) ?>"
                         style="<?php if(in_array(50,$module) || in_array(51,$module) || in_array(52,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="#">
-                            <i class="fa fa-cog"
-                                style="color:#fff;font-size:20px;background:#00FF00;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-cog icon-class" ></i>
                             &nbsp;<?php echo display('api') ?>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -1650,8 +1646,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($segment1 == "enq" || ($segment1 == "enquiry" && $segment2 == "view")) ? "active" : null) ?>"
                         style="<?php if(in_array(60,$module) || in_array(61,$module) || in_array(62,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("enq/index") ?>">
-                            <i class="fa fa-question-circle-o"
-                                style="color:#fff;font-size:20px;background:#008080;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-question-circle-o icon-class"
+                                ></i>
                             &nbsp;<?php echo display('enquiry') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1667,8 +1663,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         style="<?php if(in_array(70,$module) || in_array(71,$module) || in_array(72,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
 
                         <a href="<?php echo base_url("led/index") ?>">
-                            <i class="fa fa-line-chart"
-                                style="color:#fff;font-size:15px;background:#FA8072;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-line-chart icon-class"
+                                ></i>
                             &nbsp;<?php echo display('lead') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1684,8 +1680,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="<?php echo (($segment1 == "client"   || $segment2 == ""|| $segment1 == "index" ) && empty($_GET['stage'] )  && $segment2!='deals' && $segment2!='visits'? "active" : null) ?>"
                         style="<?php if(in_array(80,$module) || in_array(81,$module) || in_array(82,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("client/index") ?>">
-                            <i class="fa fa-user-circle-o"
-                                style="color:#fff;font-size:20px;background:#3498db;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-user-circle-o icon-class"
+                                ></i>
                             &nbsp;<?php echo display('client') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1710,8 +1706,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         <li class="<?php echo (($segment1 == "client") && (!empty($_GET['stage']) && $_GET['stage'] == $key) ) ? "active" : null ?>"
                             style="<?php if(in_array(80,$module) || in_array(81,$module) || in_array(82,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                             <a href="<?php echo base_url("client/index?stage=").$key ?>">
-                                <i class="<?=$value['icon']?>"
-                                    style="color:#fff;font-size:20px;background:#3498db;padding:7px;border-radius:4px;width:30px;"></i>
+                                <i class="<?=$value['icon']?> icon-class" ></i>
                                 &nbsp;<?php echo $value['title'] ?>
                                 <?php  
                                 if($this->session->menu==1){ ?></br>
@@ -1752,7 +1747,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                        <li class="<?php echo (($segment1 == "client") && (!empty($_GET['desposition']) && $_GET['desposition'] == $des->stage_id) ) ? "active" : null ?>">
                          
                         <a href="<?php echo base_url("client/desposition?desposition=").$des->stage_id; ?>">
-                            <i class="<?=$des->icon;?>" style="color:#fff;font-size:20px;background:#3498db;padding:7px;border-radius:4px;width:30px;"></i> &nbsp;<?=$des_title?>                 
+                            <i class="<?=$des->icon;?> icon-class" ></i> &nbsp;<?=$des_title?>                 
                         </a>
 
                        </li>
@@ -1774,13 +1769,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                 {
                     echo' <li class="'.($segment2=='visits'?'active':'').'" >
                         <a href="'.base_url("client/visits").'">
-                        <i class="fa fa-car"
-                                style="color:#fff;
-                                font-size:20px;
-                                background:#c715b1;
-                                padding:7px;
-                                padding-left:4px;
-                                border-radius:4px;width:30px;"></i>
+                        <i class="fa fa-car icon-class"
+                                ></i>
                          Visits</a>
                         </li>';
                 }
@@ -1789,13 +1779,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                 {
                     echo' <li class="'.($segment2=='deals'?'active':'').'" >
                         <a href="'.base_url("client/deals").'">
-                        <i class="fa fa-handshake-o"
-                                style="color:#fff;
-                                font-size:20px;
-                                background:#22944b;
-                                padding:7px;
-                                padding-left:4px;
-                                border-radius:4px;width:30px;"></i>
+                        <i class="fa fa-handshake-o icon-class"
+                               ></i>
                          Deals</a>
                         </li>';
                 }
@@ -1806,8 +1791,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="<?php echo (($segment1 == "task") ? "active" : null) ?>"
                         style="<?php if(in_array(90,$module) || in_array(91,$module) || in_array(92,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("task/index") ?>">
-                            <i class="fa fa-calendar"
-                                style="color:#fff;font-size:20px;background:#c715b1;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-calendar icon-class"
+                                ></i>
                             &nbsp;<?php echo display('task') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1821,8 +1806,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($segment1 == "target") || ($segment1 == "forecasting" && $segment1=='target_view') ) ? "active" : null ?>"
                         style="<?php if(in_array(210,$module) || in_array(211,$module) || in_array(212,$module) || in_array(213,$module) || in_array(260, $module) || in_array(261, $module) || in_array(262, $module) || in_array(250, $module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="#">
-                            <i class="fa fa-cog"
-                                style="color:#fff;font-size:20px;background:#69e2f7;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-cog icon-class"
+                                ></i>
                             &nbsp;Forecasting
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -1856,8 +1841,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($segment1 == "report") ? "active" : null) ?>"
                         style="<?php if(in_array(120,$module) || in_array(430,$module) || in_array(122,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url('report/index')?>">
-                            <i class="fa fa-bar-chart"
-                                style="color:#fff;font-size:15px;background:#69f794;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-bar-chart icon-class" ></i>
                             &nbsp;<?php echo display('report'); ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1901,8 +1885,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                     <li class="treeview ">
                         <a href="#">
-                            <i class="fa fa-cog"
-                                style="color:#fff;font-size:20px;background:#7e1afe;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-cog icon-class" ></i>
                             &nbsp;<?php echo display('user_activity'); ?>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -1928,8 +1911,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($this->uri->segment(1) == "knowledge_base") ? "active" : null) ?>"
                         style="<?php if(in_array(170,$module) || in_array(171,$module) || in_array(172,$module) || in_array(173,$module) || in_array(174,$module)|| in_array(175,$module)|| in_array(176,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?=base_url().'leave'?>">
-                            <i class="fa fa-quora"
-                                style="color:#fff;font-size:18px;background:#fe1a88;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-quora icon-class" ></i>
                             &nbsp; Knowledge Base
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1962,8 +1944,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($segment1 == "invoice") ? "active" : null) ?>"
                         style="<?php if(in_array(180,$module) || in_array(181,$module) || in_array(182,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("invoice/invoice/index") ?>">
-                            <i class="fa fa-paper-plane-o"
-                                style="color:#fff;font-size:15px;background:#c53636;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-paper-plane-o icon-class" ></i>
                             &nbsp;<?php echo display('invoice') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -1991,8 +1972,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                     <li class="treeview <?php echo (($segment1 == "language") ? "active" : null) ?>"
                         style="<?php if(in_array(190,$module) || in_array(191,$module) || in_array(192,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("language/index") ?>"><i class="fa fa-language"
-                                style="color:#fff;font-size:18px;background:#FF00FF;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("language/index") ?>"><i class="fa fa-language icon-class"></i>
                             &nbsp;<?php echo display('language_setting') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2002,8 +1982,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                     <li class="treeview <?php echo (($segment1 == "schedule") ? "active" : null) ?>"
                         style="<?php if(in_array(320,$module) || in_array(321,$module) || in_array(322,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("schedule/index") ?>"><i class="fa fa-language"
-                                style="color:#fff;font-size:18px;background:#FF00FF;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("schedule/index") ?>"><i class="fa fa-language icon-class" ></i>
                             &nbsp;<?php echo display('schedule') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2015,8 +1994,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     ?>
                     <li class="treeview <?php echo (($segment1 == "ticket") ? "active" : null) ?>"
                         style="<?php if(in_array(310,$module) || in_array(311,$module) || in_array(312,$module) || in_array(313,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("ticket/index") ?>"><i class="fa fa-tasks"
-                                style="color:#fff;font-size:18px;background:#FF00FF;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("ticket/index") ?>"><i class="fa fa-tasks icon-class" ></i>
                             &nbsp;<?php echo display('ticketing') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2049,8 +2027,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($segment1 == "ticket") ? "active" : null) ?>"
                         style="<?php if(in_array(310,$module) || in_array(311,$module) || in_array(312,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="#">
-                            <i class="fa fa-tasks"
-                                style="color:#fff;font-size:20px;background:#8164f9;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-tasks icon-class" "></i>
                             &nbsp;<?php echo display('ticketing') ?>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -2124,8 +2101,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
             ?>
                     <li class="treeview <?php echo (($segment1 == "appointment") ? "active" : null) ?>"
                         style="<?php if(in_array(330,$module) || in_array(331,$module) || in_array(332,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("appointment/index") ?>"><i class="fa fa-language"
-                                style="color:#fff;font-size:18px;background:#FF00FF;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("appointment/index") ?>"><i class="fa fa-language icon-class"
+                                ></i>
                             &nbsp;<?php echo display('appointment') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2135,8 +2112,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                     <li class="treeview <?php echo (($segment2 == "search_programs") ? "active" : null) ?>"
                         style="<?php if(in_array(380,$module) || in_array(381,$module) || in_array(382,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("dashboard/search_programs") ?>"><i class="fa fa-search"
-                                style="color:#fff;font-size:18px;background:#f4d03f;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("dashboard/search_programs") ?>"><i class="fa fa-search icon-class" ></i>
                             &nbsp;<?php echo display('search_program') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2150,8 +2126,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <?php if($this->session->userdata('user_right')==151 || $this->session->userdata('user_right')==180 || $this->session->userdata('user_right')==186 || $this->session->userdata('user_right')==214){ ?>
                     <li class="treeview <?php echo (($segment2 == "meeting_room") ? "active" : null) ?>"
                         style="<?php if(in_array(410,$module) || in_array(411,$module) || in_array(412,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("dashboard/meeting_room") ?>"><i class="fa fa-heart-o"
-                                style="color:#fff;font-size:18px;background:#04e9d1;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("dashboard/meeting_room") ?>"><i class="fa fa-heart-o icon-class"
+                                ></i>
                             &nbsp;<?php echo display('meeting_room') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2161,8 +2137,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                     <li class="treeview <?php echo (($segment2 == "user_profile") ? "active" : null) ?>"
                         style="<?php if(in_array(340,$module) || in_array(341,$module) || in_array(342,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("dashboard/user_profile") ?>"><i class="fa fa-user"
-                                style="color:#fff;font-size:18px;background:#e67e22;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("dashboard/user_profile") ?>"><i class="fa fa-user icon-class" ></i>
                             &nbsp;<?php echo display('user_profile') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2172,8 +2147,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                     <li class="treeview <?php echo (($segment2 == "my_applications") ? "active" : null) ?>"
                         style="<?php if(in_array(400,$module) || in_array(401,$module) || in_array(402,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("dashboard/my_applications") ?>"><i class="fa fa-heart-o"
-                                style="color:#fff;font-size:18px;background:#d35400;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("dashboard/my_applications") ?>"><i class="fa fa-heart-o icon-class" ></i>
                             &nbsp;<?php echo display('my_applications') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2183,8 +2157,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                     <li class="treeview <?php echo (($segment2 == "my_applicants") ? "active" : null) ?>"
                         style="<?php if(in_array(420,$module) || in_array(421,$module) || in_array(422,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("dashboard/my_applicants") ?>"><i class="fa fa-heart-o"
-                                style="color:#fff;font-size:18px;background:#d35400;padding:7px;border-radius:4px;width:30px;"></i>
+                        <a href="<?php echo base_url("dashboard/my_applicants") ?>"><i class="fa fa-heart-o icon-class"
+                                ></i>
                             &nbsp;<?php echo display('my_applications') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2202,8 +2176,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($this->uri->segment(1) == "website") ? "active" : null) ?>"
                         style="<?php if(in_array(490,$module) || in_array(491,$module) || in_array(492,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="#">
-                            <i class="pe-7s-global"
-                                style="color:#fff;font-size:18px;background:#04e9d1;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="pe-7s-global icon-class"
+                                ></i>
                             &nbsp;<?php echo display('website') ?>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -2236,8 +2210,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                           ?>
                     <li class="<?php echo (($segment1 == 'chat') ? "active" : null) ?>">
                         <a href="<?php echo base_url().'chat/chat_admin' ?>">
-                            <i class="fa fa-comment"
-                                style="color:#fff;font-size:17px;background:#2ecc71;padding:7px;border-radius:4px;width:30px;"></i>
+                            <i class="fa fa-comment icon-class" ></i>
                             &nbsp;<?php echo 'Chat' ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;"><?php echo 'Chat' ?>
@@ -2256,7 +2229,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
             </div>
         </aside>
         <!-- =============================================== -->
-        <div class="content-wrapper" style="">
+        <div class="content-wrapper">
             <?php if($this->session->companey_id == 57){ ?>
             <div class="alert alert-info  alert-dismissible fade in text-center ">
                 <a href="#" class="close btn btn-xs btn-danger" data-dismiss="alert" aria-label="close"

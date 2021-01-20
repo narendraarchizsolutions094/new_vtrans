@@ -206,7 +206,7 @@ class Visits extends REST_Controller {
 
         	$all_reporting_ids  = $this->common_model->get_categories($user_id);
 
-	    	$this->db->select('tbl_visit.enquiry_id,CONCAT(enquiry.name," ",enquiry.lastname) as name');
+	    	$this->db->select('tbl_visit.enquiry_id,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
 	        $this->db->from('tbl_visit');
 	        $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
 	        $this->db->where("tbl_visit.comp_id",$comp_id);

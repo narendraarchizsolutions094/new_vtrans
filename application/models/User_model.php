@@ -530,25 +530,23 @@ public function ChangeStatus($data,$user_id,$com_id)
     return $update;
 
 }
-public function checkLoginToken()
+public function checkLoginToken($user_id,$token,$type)
 {
-    $token=$this->session->userdata('login_token');
-    $user_id=$this->session->user_id;
-    $count=$this->db->where(array('uid'=>$user_id,'token'=>$token))->count_all_results('login_log');
+    
+    $count=$this->db->where(array('uid'=>$user_id,'token'=>$token,'device_type'=>$type))->count_all_results('login_log');
     return $count;
-
 }
-public function updateLoginToken($user_id,$token)
+public function updateLoginToken($user_id,$token,$type)
 {
-    $count=$this->db->where(array('uid'=>$user_id))->count_all_results('login_log');
+    $count=$this->db->where(array('uid'=>$user_id,'device_type'=>$type))->count_all_results('login_log');
     if($count==0){
-        $data=['uid'=>$user_id,'token'=>$token];
+        $data=['uid'=>$user_id,'token'=>$token,'device_type'=>$type];
         $insert=$this->db->insert('login_log',$data);
         return $insert;
     }else{
         $data=['token'=>$token];
        
-        $update= $this->db->where(array('uid'=>$user_id));
+        $update= $this->db->where(array('uid'=>$user_id,'device_type'=>$type));
         $update=$this->db->update('login_log',$data);
         return $update;
     }

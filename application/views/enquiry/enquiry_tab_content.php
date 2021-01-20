@@ -277,7 +277,7 @@ $type="text";
             <div class="form-group col-md-6 <?=$fld['input_name']?> " >
                <?php if($fld['input_type']==1){?>
                <label><?php echo(!empty($fld["input_label"])) ?  ucwords($fld["input_label"]) : ""; ?></label>
-               <input type="text" name="enqueryfield[]"  value ="<?php echo  (!empty($fld["fvalue"])) ? $fld["fvalue"] : ""; ?>"  class="form-control">
+               <input type="text" name="enqueryfield[]"  value ="<?php echo  (!empty($fld["fvalue"])) ? $fld["fvalue"] : ""; ?>" id="<?=$fld['input_name']?>"  class="form-control">
                <?php }
                if($fld['input_type']==2){?>
                <label><?php echo(!empty($fld["input_label"])) ?  ucwords($fld["input_label"]) : ""; ?></label>

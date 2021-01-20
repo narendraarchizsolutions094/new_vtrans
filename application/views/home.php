@@ -5,10 +5,56 @@
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/aqua.css">
 <link href="<?php echo base_url()?>custom_dashboard/assets/js/amcharts/fullcalendar.min.css" rel="stylesheet">
 <link href="<?php echo base_url()?>custom_dashboard/assets/js/amcharts/dashforge.calendar.css" rel="stylesheet">
-
-
-
 <style>
+.card-graph{
+    min-height:250px;
+    max-height:400px;
+    border:1px solid;    
+    /* margin:2px; */
+    box-shadow: 0px 0px 7px -1px;
+    border-radius: 6px;
+    border-color: transparent;
+    overflow: hidden;
+}
+.card-graph_full{
+    min-height:250px;
+    max-height:510px;
+    border:1px solid;    
+    /* margin:2px; */
+    box-shadow: 0px 0px 7px -1px;
+    border-radius: 6px;
+    border-color: transparent;
+    overflow: hidden;
+}
+.card-graph_full2{
+    border:1px solid;    
+    /* margin:2px; */
+    box-shadow: 0px 0px 7px -1px;
+    border-radius: 6px;
+    border-color: transparent;
+    overflow: hidden;
+    padding: 20px;
+}
+.card-graph_full:hover{
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
+.card-graph:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
+.card-graph_full2:hover{
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+
+}
+
+/* @media (min-width: 992px){
+    .card-graph {
+        width:32%;
+    }
+} */
+.pd-10{
+    padding:10px;
+}
+
 .highcharts-credits{
   display:none !important;
 }
@@ -175,7 +221,7 @@
             </div>
             <div class="row">
                 <?php  if(user_access(60)){ ?>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-4 col-sm-6 col-xs-12 ">
                     <div class="info-box bg-purple">
                         <span class="info-box-icon"><i class="fa fa-question-circle-o" style="color:#fff;"></i></span>
                         <div class="info-box-content1">
@@ -275,6 +321,7 @@
                     </div>
                 </div>
                 <?php } ?>
+               
                 <?php
 
 if (!empty($enquiry_separation)) {
@@ -285,7 +332,7 @@ if (!empty($enquiry_separation)) {
               $data_s = $this->enquiry_model->Dy_enquiryLeadClientCount($this->session->user_id,$this->session->companey_id,$key);
                    ?>
 
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-4 col-sm-6 col-xs-12 ">
                     <div class="info-box bg-aqua">
                         <span class="info-box-icon"><i class="<?= $enquiry_separation[$key]['icon'] ?>"
                                 style="color:#fff;"></i></span>
@@ -328,96 +375,88 @@ if (!empty($enquiry_separation)) {
             <!------------------------------------------------------------------html FUNNEL START-------------------------------------------->
 
             <div class="row row-xs">
-                <div class="col-lg-12 col-xl-12 mg-t-10">
+                <div class="col-md-12">
                     <hr style="border: 1px solid #3a95e4 !important">
                 </div>
-
-
-
-                <div class="col-lg-12 col-xl-12 mg-t-10">
-                    <div class="card">
-                        <style>
-                        #chartdiv {
-                            width: 100%;
-                            height: 510px;
-                        }
-                        </style>
-                        <div id="chartdiv"></div>
+            </div>
+                <div class="row pd-20" style="width:100%;">
+                <div class="col-md-12" style="padding:10px;">
+                    <div class="card card-graph_full" style="height: 610px;">
+                    <div id="chartdiv" style="height: 510px;"></div>
                     </div>
                 </div>
+                </div>
 
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <hr style="border: 1px solid #3a95e4 !important">
                 </div>
-                <div class="col-lg-8 col-xl-7 mg-t-10">
-                    <div class="card" style="height:100% !important;">
-                        <div class="card-header pd-y-20 d-md-flex align-items-center justify-content-between">
+                <div class="row pd-20" style="width:100%; padding:20px;">
+                <div class="col-md-6 " style="padding:10px;">
+                    <div class="card card-graph" style="height:400px; padding:10px;">
+                        <div class="card-header pd-y-10 d-md-flex align-items-center justify-content-between">
                             <h3 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8"
                                 style="font-size:14px"><?php echo display("enquiries"); ?></h3>
                         </div><!-- card-header -->
-                        <canvas id="bar-chart-grouped" width="800" height="450"></canvas>
+                        <canvas id="bar-chart-grouped" width="800" ></canvas>
                     </div><!-- card -->
                 </div>
-                <div class="col-lg-4 col-xl-4 mg-t-10">
-                    <div class="card" style="height:100%;">
+                <div class="col-md-6 " style="padding:10px;">
+                    <div class="card card-graph" style="height:400px;">
                         <div class="card-header pd-y-20 d-md-flex align-items-center">
                             <h3 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8"
                                 style="font-size:14px"><?php echo display("conversion_probability"); ?></h3>
                         </div>
-                       <div id="chartdiv2" style="margin-top:100px;"></div>
+                       <div id="chartdiv2" style="margin-top: 100px;" ></div>
                     </div>
+                </div>
                 </div>
 
                 <!----------------------------------------------------------------------Process wise charts------------------------------------------>
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <hr style="border: 1px solid #3a95e4 !important">
                 </div>
-
-                <div class="col-lg-4 col-xl-4 mg-t-10">
-                    <div class="card" style="height:100%;">
+                <div class="row pd-20">
+                <div class="col-md-6 " style="padding:20px;">
+                    <div class="card card-graph" style="height:100%;">
                         <figure class="highcharts-figure">
                             <div id="containersss"></div>
                         </figure>
-
                     </div>
-
-
                 </div>
-
-                <div class="col-lg-8 col-xl-8 mg-t-10">
-                    <div class="card" style="height:100%;">
-
+                <div class="col-md-6 " style="padding:20px;">
+                    <div class="card card-graph" style="height:100%;">
                         <figure class="highcharts-figure">
                             <div id="container2"></div>
                         </figure>
-
                     </div>
-
-
                 </div>
+                </div>
+
                 <!------------------------Process wise charts End------------------------------------------->
                 <!--------------------------------html FUNNEL START END-------------------------------------------->
-                <div class="col-lg-12 col-xl-12 mg-t-10">
+                <div class="col-md-12">
                     <hr style="border: 1px solid red !important">
                 </div>
 
                 <!------------------------------------------------------------------HTML Map/Calender START-------------------------------------------->
-                <div class="col-lg-12 col-xl-12 mg-t-10">
-                    <div class="card" style="height:95%;">
-
+                <div class="row pd-20">
+              
+                <div class="col-lg-12" >
+                    <div class="card  " style="height:95% !important;">
                         <style>
                         #calendar {
                             height: 500px;
                         }
-
                         .fc-title {
                             color: black;
                         }
                         </style>
-                        <div id="calendar" class=""></div>
+                        <div id="calendar" ></div>
 
                     </div>
                 </div>
+                </div>
+                <!------------------------------------------------------------------HTML Map/Calender END-------------------------------------------->
 
                 <div class="col-lg-6 col-xl-6 mg-t-10">
                     <div class="card" style="height:95%;">
@@ -444,8 +483,10 @@ if (!empty($enquiry_separation)) {
                 </div>
 
                 <!------------------------------------------------------------------Disposition/Source START-------------------------------------------->
-                <div class="col-lg-6 col-xl-6 mg-t-10">
-                    <div class="card" style="height:95%;">
+                <div class="row pd-20">
+                <div class="col-md-6 pd-20">
+               
+                    <div class="card card-graph" style="height:95%;">
                         <figure class="highcharts-figure">
                             <div id="container"></div>
                         </figure>
@@ -453,8 +494,8 @@ if (!empty($enquiry_separation)) {
                     </div>
                 </div>
 
-                <div class="col-lg-6 col-xl-6 mg-t-10">
-                    <div class="card" style="height:95%;">
+                <div class="col-lg-6 pd-20">
+                    <div class="card card-graph" style="height:95%;">
                         <figure class="highcharts-figure">
                             <div id="container1"></div>
                         </figure>
@@ -468,17 +509,11 @@ if (!empty($enquiry_separation)) {
                 </div>
 
                 <!------------------------------------------------------------------Timeline START-------------------------------------------->
-                <?php
+                <div class="row pd-20">
+                <div class="col-md-12 pd-20">
 
+                    <div class="card card-graph_full2 " style="height:100%; width:100% !important;">
 
-//print_r($eldate);exit;
-?>
-                <div class="col-lg-6 col-xl-12 mg-t-10">
-                    <div class="card" style="height:100%;">
-
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
                                     <div class="page-header">
                                         <h1><?php echo display('average_follow_up_rate'); ?></h1>
                                     </div>
@@ -590,33 +625,57 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                             <!-- // dynamic case end -->
                                         </ul>
                                     </div>
-                                </div>
-                            </div>
                         </div>
 
                     </div>
                 </div>
-      
-<div class="col-lg-12 col-xl-12 mg-t-10">
+                <div class="row row-xs">
+                <div class="col-md-12">
+                    <hr style="border: 1px solid #3a95e4 !important">
+                </div>
+            </div>
+                <div class="row pd-20">
+                <div class="col-md-12 pd-20">
+                <div class="card card-graph_full2 pd-20" style="height:95%;">
+               
     <center><label>Drop Data</label></center>
-    <canvas id="process_Monthwise" width="800" height="450"></canvas>
+    <canvas id="process_Monthwise" width="800" height="350"></canvas>
 </div>
+</div>
+</div>
+<br>
+<div class="row row-xs">
+                <div class="col-md-12">
+                    <hr style="border: 1px solid #3b95e4 !important">
+                </div>
+            </div>
 
-<br>
-<br>
-<br>
 <?php
 if(user_access('260') || user_access('261') || user_access('250'))
 {
 ?>
-<div class="col-lg-12 col-xl-12 mg-t-10">
+ <div class="row pd-20">
+                <div class="col-md-12 pd-20">
+                <div class="card card-graph_full2 pd-20">
+               
     <center><label>Year <?=date('Y')?></label></center>
-    <canvas id="target_forecasting" width="800" height="450"></canvas>
+    <canvas id="target_forecasting" width="800" height="350"></canvas>
 </div>
-
-<div class="col-lg-12 col-xl-12 mg-t-10" style="margin-top: 60px;">
+</div>
+</div>
+<div class="row row-xs">
+                <div class="col-md-12">
+                    <hr style="border: 1px solid #3a95c4 !important">
+                </div>
+            </div>
+<div class="row pd-20">
+                <div class="col-md-12 pd-20">
+                <div class="card card-graph_full2 pd-20" >
+             
     <center><label>Year <?=((int)date('Y'))-1?> VS <?=((int)date('Y'))?></label></center>
-    <canvas id="target_forecasting_previous" width="800" height="450"></canvas>
+    <canvas id="target_forecasting_previous" width="800" height="350"></canvas>
+</div>
+</div>
 </div>
 <?php
 }

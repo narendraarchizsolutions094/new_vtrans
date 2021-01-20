@@ -59,8 +59,16 @@ class Login extends REST_Controller {
                     }
                     $perm    =   $this->User_model->get_user_role($check_user->row()->user_permissions);
                     $permission_list = '';
+                   
+                    $login_token= random_string('alnum', 30);
+
                     if (!empty($perm)) {
                         $permission_list = $perm->user_permissions;
+                        $a=explode(',',$permission_list);
+                        //check mobile login right exist or not
+                        if(array_search("134",$a)){
+                            $this->user_model->updateLoginToken($check_user->row()->pk_i_admin_id,$login_token,1);
+                        };
                     }
                     $data=array(
                         'isLogIn'           => true,
@@ -73,6 +81,7 @@ class Login extends REST_Controller {
                         'phone_no'          => $check_user->row()->s_phoneno,
                         'availability'      => $check_user->row()->availability,
                         'permissions'       => $permission_list,
+                        'login_token'       =>$login_token
                     );
                        $this->set_response([
                     'status' => TRUE,
@@ -91,6 +100,20 @@ class Login extends REST_Controller {
 	
 	
 }
+
+   public function check_login_status_post()
+   {
+        $user_id= $this->input->post('uid');
+        $device_token=$this->input->post('device_token');
+        $this->form_validation->set_rules('email', display('user id'),'required');
+        $this->form_validation->set_rules('password','Device Token','required');
+
+       $data= $this->user_model->checkLoginToken($user_id,$device_token,1);
+        $this->set_response([
+            'status' => TRUE,
+            'message' =>$data,
+        ], REST_Controller::HTTP_OK);
+   }
    public function get_process_post()
 	{
 		$this->load->helper("api");
