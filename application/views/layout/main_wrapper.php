@@ -2090,7 +2090,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     {
                     ?>
                     <li class="">
-                        <a href="<?php echo base_url("holiday/add-holiday") ?>">Add Holiday</a>
+                        <a href="<?php echo base_url("holiday/") ?>">Add Holiday</a>
                     </li>
                     <?php
                     }
