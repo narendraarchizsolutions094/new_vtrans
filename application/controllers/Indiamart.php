@@ -48,7 +48,7 @@ class Indiamart extends CI_Controller {
 							$product_id = 186;
 						}else if($comp_id == 65){
 							$enquiry_source = 135;
-							$created_by = 286;
+							$created_by = 2175;
 							$product_id = 141;
 						}
 						$enq_arr[] = array(
