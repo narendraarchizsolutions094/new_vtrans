@@ -64,7 +64,7 @@ class Target_Model extends CI_model
 		{	//$this->common_model->list = array();
 			$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 		}
-		
+
 		$process = $this->session->process;
 
 		$this->db->select('goals.*,role.user_role,added.s_display_name as added_by');
@@ -77,6 +77,7 @@ class Target_Model extends CI_model
 		$this->db->where('goals.process_id IN ('.implode(',',$process).')');
 		$res =  $this->db->get();
 		$data = array();
+		//print_r($res->result()); exit();
 		foreach ($res->result() as $row)
 		{
 			$a = explode(',', $row->goal_for);
@@ -156,11 +157,18 @@ class Target_Model extends CI_model
 		else
 			return false;
 	}
+
+	public function getTarget($goal_id,$fetch_type,$user)
+	{
+		$goal  =(array) @$this->getGoals(array('goal_id'=>$goal_id),$fetch_type,$user)[0];
+		return (object)array_slice($goal,8,4);
+	}
+
 	public function getUserWiseForecast($goal_id,$user_id)
 	{
 		$goal  = $this->getGoals(array('goal_id'=>$goal_id))[0];
 		if($goal->metric_type=='deal')
-		$this->db->select('*, sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids, ');
+		$this->db->select('*, sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids,role.user_role ');
 		else
 			$this->db->select('*, count(*) as num_value,GROUP_CONCAT(info.id) as info_ids,');
 
@@ -170,6 +178,7 @@ class Target_Model extends CI_model
 	$res =	$this->db->from('tbl_admin admin')
 					->join('commercial_info info','info.createdby=admin.pk_i_admin_id and info.status IN (0,1)','inner')
 					->join('enquiry','enquiry.enquiry_id=info.enquiry_id','inner')
+					->join('tbl_user_role role','admin.user_type=role.use_id','left')
 					->where('enquiry.lead_expected_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'"')
 					->where('admin.pk_i_admin_id',$user_id)
 					->get()->row();

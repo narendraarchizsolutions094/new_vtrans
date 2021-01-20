@@ -176,6 +176,7 @@ class Client_Model extends CI_Model
        {
             $this->db->select('*');
             $this->db->where_in('client',$enquires);
+            $this->db->where_in('process_id',$this->session->process);
           return  $this->db->get('tbl_ticket');
        }
        else if($datatype=='visits')

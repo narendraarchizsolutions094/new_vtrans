@@ -45,8 +45,7 @@
                                     $total_visits  = $this->Client_Model->getCompanyData($enquires,'visits')->num_rows();
 
                                     $total_tickets  = $this->Client_Model->getCompanyData($enquires,'tickets')->num_rows();
-
-
+                                   
                                         echo'<tr>
 
                                              <td>'.$j++.'</td>

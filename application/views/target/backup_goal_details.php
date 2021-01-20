@@ -57,34 +57,10 @@
 				<label>Prodcuts : '.implode(' , ',$products).'</label>
 				</div>';
 			}
-
 			?>
-		<div class="row">
-			<?php
 
-			foreach ($option_list as $key => $opt)
-			{
-			
-			echo'<div class="col-md-4">
-				<label>'.$opt->user_role.'</label>
-				<select class="form-control" onchange="makeTable(this.value)">';
-				$id_list = explode(',', $opt->ids);
-				$name_list = explode(',', $opt->names);
-				foreach ($id_list as $key => $op)
-				{
-					echo'<option value="">Select</option>';
-					echo'<option value="'.$op.'" '.($op==$user_id?'selected':'').'>'.$name_list[$key].'</option>';
-				}
-
-				echo'
-					</select>
-				</div>';
-
-			}
-
-			?>
-		</div>
 			<br>
+
 		<table class="table  table-bordered table-striped">
 				<thead>
 					<tr>
@@ -102,41 +78,25 @@
 						{
 							$this->load->model('Target_Model');
 
-							// if($goal->goal_type=='team')
-							// {
-							// 	$custom_target = (array)json_decode($goal->custom_target);
-							// }
-							// else if($goal->goal_type=='user')
-							// {
-							// 	$target= $goal->target_value;
-							// }
-							if(empty($user_id))
-								$user_id = $this->session->user_id;
-							$user_list = $this->common_model->get_categories($user_id);
-						
-							foreach ($user_list as $user_id)
+							if($goal->goal_type=='team')
 							{
-								$user_forecast= $this->Target_Model->getForecast($goal->goal_id,2,$user_id);
-								$user_achieved= $this->Target_Model->getAchieved($goal->goal_id,2,$user_id);
-								//print_r($user_forecast);exit();
-								//$use_target = $this->Target_Model->ge
-								$user_target = $this->Target_Model->getTarget($goal->goal_id,2,$user_id);
+								$custom_target = (array)json_decode($goal->custom_target);
+							}
+							else if($goal->goal_type=='user')
+							{
+								$target= $goal->target_value;
+							}
 
-								
-								if(!($user_forecast || $user_achieved))
-									continue;
-
+							foreach (explode(',', $goal->goal_for) as $user_id)
+							{
+								$user_forecast = $this->Target_Model->getUserWiseForecast($goal->goal_id,$user_id);
+								$user_achieved= $this->Target_Model->getUserWiseAchieved($goal->goal_id,$user_id);
 
 								if($goal->goal_type=='team')
 								{
-									$target = $user_target->target_value;
+									$target = $custom_target[$user_id];
 								}
-
-								$userdata = $this->db->select('user.s_display_name,user.last_name,role.user_role')
-										->from('tbl_admin user')
-										->join('tbl_user_role role','user.user_type=role.use_id','left')
-										->where('user.pk_i_admin_id',$user_id)
-										->get()->row();
+								
 
 								$foracast_value =(int) ($goal->metric_type=='deal'?$user_forecast->p_amnt:$user_forecast->num_value);
 
@@ -154,7 +114,7 @@
 									$barcolor='success';
 
 								echo'<tr>
-									<td>'.$userdata->s_display_name.' ['.$userdata->user_role.']</td>
+									<td>'.$user_forecast->s_display_name.'</td>
 									<td>'.$target.'</td>
 									<td> <span data-ids="'.$user_forecast->info_ids.'" onclick="view_source(this)" style="cursor:pointer">'.$foracast_value.'</span></td>
 									<td>  <span data-ids="'.$user_achieved->info_ids.'" onclick="view_source(this)" style="cursor:pointer">'.$achieved_value.'</span>
@@ -189,14 +149,6 @@ function view_source(t)
 		window.open(url,'_blank');
 	}
 }
-
-function makeTable(v)
-{
-	//alert(v);
-	var link ="<?=base_url('target/goal_details/'.$goal->goal_id)?>"+"/"+v;
-	location.href=link;
-}
-
 </script>
 <style type="text/css">
 	.content{

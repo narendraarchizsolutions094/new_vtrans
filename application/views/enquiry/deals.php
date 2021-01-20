@@ -44,6 +44,7 @@ if(empty($_COOKIE['deals_filter_setting'])) {
 } else {
 $variable=explode(',',$_COOKIE['deals_filter_setting']);
 }
+
 ?>   
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
   <div class="col-md-4 col-sm-4 col-xs-4"> 
@@ -65,13 +66,37 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
               <ul class="filter-dropdown-menu dropdown-menu">   
                     <li>
                       <label>
-                      <input type="checkbox" value="date" id="datecheckbox" name="filter_checkbox" <?php if(in_array('date',$variable)){echo'checked';} ?>> Date </label>
+                      <input type="checkbox" value="datefilter" id="datecheckbox" name="filter_checkbox" <?php if(in_array('datefilter',$variable)){echo'checked';} ?>> Date </label>
                     </li>  
                     <li>
                       <label>
                       <input type="checkbox" value="for" id="forcheckbox" name="filter_checkbox" <?php if(in_array('for',$variable)){echo'checked';} ?>> For</label>
                     </li> 
-                                  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="booking_type" id="branchcheckbox" name="filter_checkbox" <?php if(in_array('booking_type',$variable)){echo'checked';} ?>> Booking Type</label>
+                    </li>
+                  <!--   <li>
+                      <label>
+                      <input type="checkbox" value="business_type" id="forcheckbox" name="filter_checkbox" <?php if(in_array('business_type',$variable)){echo'checked';} ?>> Business Type</label>
+                    </li>    -->
+                     <li>
+                      <label>
+                      <input type="checkbox" value="booking_branch" id="bookingbox" name="filter_checkbox" <?php if(in_array('booking_branch',$variable)){echo'checked';} ?>> Booking Branch</label>
+                    </li>  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="delivery_branch" id="deliverybox" name="filter_checkbox" <?php if(in_array('delivery_branch',$variable)){echo'checked';} ?>> Delivery Branch</label>
+                    </li>  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="paymode" id="paymodebox" name="filter_checkbox" <?php if(in_array('paymode',$variable)){echo'checked';} ?>> Paymode</label>
+                    </li>    
+
+                    <li>
+                      <label>
+                      <input type="checkbox" value="potential_amount" id="pamountbox" name="filter_checkbox" <?php if(in_array('potential_amount',$variable)){echo'checked';} ?>> Potential Amount</label>
+                    </li>         
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
@@ -90,23 +115,23 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 
 
 
-<div class="row" style=" padding: 5px 0px; <?=!empty($this->uri->segment(3))?'display: none;':''?> <?php if(empty($_COOKIE['_filter_setting'])){ echo'display:none'; }  ?>" id="filter_pannel">
- <div id="datefilter" style="<?php if(!in_array('date',$variable)){echo'display:none';} ?>" >
-	<div class="col-lg-4">
+<div class="row" style=" padding: 5px 0px; <?=!empty($this->uri->segment(3))?'display: none;':''?> <?php if(empty($_COOKIE['deals_filter_setting'])){ echo'display:none'; }  ?>" id="filter_pannel">
+ <div id="datefilter" style="<?php if(!in_array('datefilter',$variable)){echo'display:none';} ?>" >
+	<div class="col-lg-3">
         <div class="form-group">
           <label>From</label>
           <input class="d_filter form-control form-date" name="d_from_date">
         </div>
     </div>
 
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div class="form-group">
           <label>To</label>
            <input  class="d_filter form-control form-date" name="d_to_date">
         </div>
       </div>
  </div>
-    <div class="col-lg-4"  id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
+    <div class="col-lg-3"  id="for" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>For</label>
         	<select class="d_filter form-control" name="d_enquiry_id">
@@ -122,6 +147,74 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         		}
         		?>
         	</select>
+        </div>
+    </div>
+
+<!--     <div class="col-lg-3" style="<?php if(!in_array('business_type',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Business Type</label>
+          <input class="d_filter form-control" name="d_business_type">
+        </div>
+    </div> -->
+
+    <div class="col-lg-3" id="booking_type" style="<?php if(!in_array('booking_type',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Booking Type</label>
+           <select class="d_filter form-control" name="d_booking_type">
+                    <option value="">-Select-</option>
+                    <option value="0" selected>Sundry</option>
+                    <option value="1" >FTL</option>
+                </select>
+        </div>
+    </div>
+
+    <div class="col-lg-3" id="booking_branch" style="<?php if(!in_array('booking_branch',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Booking Branch</label>
+          <select class="d_filter form-control" name="d_booking_branch">
+                  <option value="">-Select-</option>
+                <?php 
+                foreach($branch as $dbranch){ ?>
+                      <option value="<?= $dbranch->branch_id ?>"><?= $dbranch->branch_name ?></option>
+                     <?php }  ?>
+               </select>
+        </div>
+    </div>
+
+    <div class="col-lg-3" id="delivery_branch" style="<?php if(!in_array('delivery_branch',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Delivery Branch</label>
+          <select class="d_filter form-control" name="d_delivery_branch">
+                  <option value="">-Select-</option>
+                <?php 
+                foreach($branch as $dbranch){ ?>
+                      <option value="<?= $dbranch->branch_id ?>"><?= $dbranch->branch_name ?></option>
+                     <?php }  ?>
+               </select>
+        </div>
+    </div>
+
+  <div class="col-lg-3" id="paymode" style="<?php if(!in_array('paymode',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Paymode</label>
+          <select class="d_filter form-control" name="d_paymode">
+                   <option value="1" selected>Paid</option>
+                   <option value="2" >To-Pay</option>
+                   <option value="3" >Tbb</option>
+                </select>
+        </div>
+    </div>
+
+  <div class="col-lg-3" id="potential_amount" style="<?php if(!in_array('potential_amount',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Potential Amount</label>
+
+          <input type="" name="d_p_amnt_from" class="form-control d_filter" style="width: 48%; display:inline-block;" placeholder="From">
+          <input type="" name="d_p_amnt_to" class="form-control d_filter" placeholder="To" style="width: 48%; display: inline-block;">
+          <!-- <input class="d_filter form-control" id="p_amnt_from" name="d_potential_amount_from" style="display: none;">
+          <input class="d_filter form-control" id="p_amnt_to" name="d_potential_amount_to" style="display: none;">
+          <center><span id="range_view"></span></center>
+          <div id="slider-range"></div> -->
         </div>
     </div>
 </div>
@@ -146,31 +239,50 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 
 
 });
-$('input[name="filter_checkbox"]').click(function(){  
-  if($('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")){ 
-    $('#filter_pannel').show();
-  }else{
-    $('#filter_pannel').hide();
-  }
-});
-$('input[name="filter_checkbox"]').click(function(){              
-        if($('#datecheckbox').is(":checked")){
-         $('#datefilter').show();
-        } else{
-           $('#datefilter').hide();
-             }
+// $('input[name="filter_checkbox"]').click(function(){  
+//   if($('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")){ 
+//     $('#filter_pannel').show();
+//   }else{
+//     $('#filter_pannel').hide();
+//   }
+// });
+// $('input[name="filter_checkbox"]').click(function(){              
+//         if($('#datecheckbox').is(":checked")){
+//          $('#datefilter').show();
+//         } else{
+//            $('#datefilter').hide();
+//              }
       
-		if($('#forcheckbox').is(":checked")){
-        $('#forfilter').show();
-            }
-        else{
-          $('#forfilter').hide();
-		}
+// 		if($('#forcheckbox').is(":checked")){
+//         $('#forfilter').show();
+//             }
+//         else{
+//           $('#forfilter').hide();
+// 		}
 		
 		
-});
-		
+// });
 
+$("input[name=filter_checkbox]").click(function(){
+  manage_filters();
+});
+
+function manage_filters()
+{
+ var list2 = $("input[name=filter_checkbox]");
+ $(list2).each(function(k,v){
+    var x = "#"+v.value;
+    if(v.checked)
+      {
+          $(x).show();
+          $("#filter_pannel").show();
+      }
+    else
+      {
+          $(x).hide();
+      }
+ });
+}
 </script>
 
 <div class="row row text-center short_dashboard" id="active_class" style="<?=!empty($this->uri->segment(3))?'display: none;':''?>">
@@ -315,6 +427,13 @@ $(document).ready(function(){
                      d.date_from = $("input[name=d_from_date]").val();
                      d.date_to = $("input[name=d_to_date]").val();
                      d.enq_for = $("select[name=d_enquiry_id]").val();
+                     d.booking_type = $("select[name=d_booking_type]").val();
+                     d.booking_branch  =  $("select[name=d_booking_branch]").val();
+                     d.delivery_branch  =  $("select[name=d_delivery_branch]").val();
+                     d.paymode  =  $("select[name=d_paymode]").val();
+                     d.p_amnt_from  =  $("input[name=d_p_amnt_from]").val();
+                     d.p_amnt_to =  $("input[name=d_p_amnt_to]").val();
+                     
                      // d.from_date = obj[0]['value'];
                      // d.from_time = '';//obj[1]["value"];
                      // d.enquiry_id =obj[2]["value"];
@@ -347,6 +466,7 @@ $("select").select2();
 
 function update_top_filter()
 {
+  //alert(JSON.stringify(TempData));
   TempData.top_filter='';
     $.ajax({
        
@@ -355,7 +475,7 @@ function update_top_filter()
         data:TempData,
         dataType: 'json',
         success: function(responseData){
-          //console.log(responseData);
+          console.log(responseData);
        //alert(JSON.stringify(responseData));
         $('#all_deals').html(responseData.all_deals_num);
         $('#all_done').html(responseData.all_done_num);
@@ -894,4 +1014,43 @@ $('.choose-col').change(function(){
       $('#selectall').prop('checked',false);
 });
 
+
+$(function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: 0,
+      max: 500,
+      values: [ 75, 300 ],
+      slide: function( event, ui ) {
+        var from = ui.values[ 0 ];
+        var to =  ui.values[ 1 ];
+        $( "#p_amnt_from" ).val(from);
+        $("#p_amnt_to").val(to);
+
+        $("#range_view").html("<i class='fa fa-inr'></i> "+from+" - <i class='fa fa-inr'></i> "+to); 
+      }
+    });
+    var from = $( "#slider-range" ).slider( "values", 0 );
+    var to = $( "#slider-range" ).slider( "values", 1 );
+
+    $( "#p_amnt_from" ).val(from);
+     $( "#p_amnt_to" ).val(to);  
+     $("#range_view").html("<i class='fa fa-inr'></i> "+from+" - <i class='fa fa-inr'></i> "+to); 
+
+});
+
 </script>
+<style type="text/css">
+  #slider-range
+  {
+    border:1px solid black;
+  }
+  #slider-range .ui-slider-handle
+  {
+    background: #4f4f4f;
+  }
+  #slider-range .ui-slider-range
+  {
+    background: #26c726;
+  }
+</style>

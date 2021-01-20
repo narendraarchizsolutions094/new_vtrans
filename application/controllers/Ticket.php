@@ -10,6 +10,7 @@ class Ticket extends CI_Controller
 			'Ticket_Model', 'Client_Model', 'User_model', 'Leads_Model', 'Message_models'
 		));
 	}
+	
 	public function natureOfComplaintList()
 	{
 		if(user_role('523')){}
@@ -19,6 +20,7 @@ class Ticket extends CI_Controller
 		$data['content'] = $this->load->view('ticket/natureofcomplain-list', $data, true);
 		$this->load->view('layout/main_wrapper', $data);
 	}
+
 	public function addNatureOfComplaint()
 	{
 		if(user_role('527')){}
@@ -1310,16 +1312,16 @@ class Ticket extends CI_Controller
     <td><?php echo $tck->product_name; ?></td>
     <td><?php echo $tck->category; ?></td>
     <td><?php
-						if ($tck->priority == 1) {
-						?><span class="badge badge-info">Low</span><?php
-																} else if ($tck->priority == 2) {
-																	?><span class="badge badge-warning">Medium</span><?php
-																													} else if ($tck->priority == 2) {
-																														?><span class="badge badge-danger">High</span><?php
-																																									}
-																																										?></td>
-    <td><?php echo $tck->message; ?></td>
-    <td><?php echo date("d, M, Y", strtotime($tck->send_date)); ?></td>
+		if ($tck->priority == 1)
+		{?><span class="badge badge-info">Low</span><?php
+		} else if ($tck->priority == 2) {?>
+			<span class="badge badge-warning">Medium</span>
+			<?php
+		} else if ($tck->priority == 2)
+		{?><span class="badge badge-danger">High</span><?php
+		}?></td>
+		<td><?php echo $tck->message; ?></td>
+		<td><?php echo date("d, M, Y", strtotime($tck->send_date)); ?></td>
     <td style="min-width:125px;"><a class="btn  btn-success"
             href="<?php echo base_url("ticket/view/" . $tck->ticketno) ?>"><i class="fa fa-eye" aria-hidden="true"></i>
             <a class="btn  btn-default" href="<?php echo base_url("ticket/edit/" . $tck->ticketno) ?>"><i
@@ -1335,18 +1337,18 @@ class Ticket extends CI_Controller
 	public function getmail()
 	{
 		$hostname =  '{imappro.zoho.com:993/imap/ssl}INBOX';
-		$username = 'shahnawazbx@gmail.com';
-		$password = 'BuX@76543210';
-		$username = 'shahnawaz@archizsolutions.com';
+		// $username = 'shahnawazbx@gmail.com';
+		// $password = 'BuX@76543210';
+		$username = 'suraj@archiztechnologies.com';
 		$password = 'Archiz321';
 		echo "Hello 1";
 		/* try to connect */
 		$inbox = imap_open($hostname, $username, $password) or die('Cannot connect to Gmail: ' . imap_last_error());
-		echo "<pre>";
-		print_r(imap_errors());
-		echo "</pre>";
-		echo imap_last_error();
-		echo "Hello 2";
+		// echo "<pre>";
+		// print_r(imap_errors());
+		// echo "</pre>";
+		// echo imap_last_error();
+		// echo "Hello 2";
 		/* grab emails */
 		$emails = imap_search($inbox, 'ALL');
 		/* if emails are returned, cycle through each... */
@@ -1357,20 +1359,63 @@ class Ticket extends CI_Controller
 			rsort($emails);
 			/* for every email... */
 			foreach ($emails as $ind => $email_number) {
-				if ($ind > 10) break;
+				if ($ind > 0) break;
 				/* get information specific to this email */
 				$overview = imap_fetch_overview($inbox, $email_number, 0);
 				$message  = imap_fetchbody($inbox, $email_number, 1);
-				echo "<pre>";
-				print_r($message);
-				echo "</pre>";
+				// echo "<pre>";
+				// print_r($message);
+				// echo "</pre>";
+				$output.="<div style='border:1px solid black; padding:10px;'>";
+				$output.=" Subject: ".$overview[0]->subject."<br>";
+				$output.=" Date: ".$overview[0]->date."<br>";
 				$output .= 'Name:  ' . $overview[0]->from . '</br>';
-				$output .= 'Email:  ' . $overview[0]->message_id . '</br>';
+
+				$output .= 'MSG ID:  ' . $overview[0]->message_id . '</br>';
+				// $output .= 'Reference: '.$overview[0]->references.'<br>';
+				$output .= 'UID: '.$overview[0]->uid.'<br>';
+				$output.="<hr>".quoted_printable_decode($message).'<br>';
+				$output.="</div>";
 			}
 			echo $output;
 		}
 		imap_close($inbox);
 	}
+
+	public function auto_add_config()
+	{
+		$data['title'] = "Ticket by Mail ";
+		$this->load->model(array('User_model','dash_model'));
+		$res = $data['row'] = $this->db->where('comp_id',$this->session->companey_id)->get('ticket_email_config')->row();
+
+		$data['user_list'] = $this->User_model->user_list();
+		$data['process_list'] = $this->dash_model->all_process_list();
+		//print_r($res);exit();
+		if($this->input->post())
+		{
+			$data = array('hostname'=>$this->input->post('hostname'),
+							'username' => $this->input->post('username'),
+							'password' => $this->input->post('password'),
+							'comp_id'=> $this->session->companey_id,
+							'belongs_to'=>$this->input->post('belongs_to'),
+							'process_id'=>$this->input->post('process_id')
+							);
+			//print_r($data);exit();
+			if(!empty($res))
+			{
+				$this->db->where('comp_id',$this->session->companey_id)->update('ticket_email_config',$data);
+			}else
+			{
+				$this->db->insert('ticket_email_config',$data);
+			}
+			
+			$this->session->set_flashdata('SUCCESSMSG','Email Configuration Saved Successfully.');
+			redirect(base_url('ticket/'.__FUNCTION__));
+		}
+		$data['content'] = $this->load->view('ticket/ticket-mail-config', $data, true);
+		$this->load->view('layout/main_wrapper', $data);
+	}
+
 	public function tracking_no_check($tn){
 		$comp_id = $this->session->companey_id;
 		$this->db->where('company',$comp_id);
@@ -1711,7 +1756,8 @@ class Ticket extends CI_Controller
 		$response = simplexml_load_string($xml);
 		$ns = $response->getNamespaces(true);		
 		$res = array();
-		if (!empty($response->NewDataSet)) {
+		if (!empty($response->NewDataSet))
+		{
 			$res = (array) $response->NewDataSet;
 		}
 		$gc_extra	=	$this->get_gc_extra_data($gc_no);				
@@ -2182,18 +2228,29 @@ class Ticket extends CI_Controller
 		// tat code end
 		public function getDatafromMail()
 		{
-			$hostname =  '{imappro.zoho.com:993/imap/ssl}INBOX';
-			$username = 'shahnawazbx@gmail.com';
-			$password = 'BuX@76543210';
-			$username = 'shahnawaz@archizsolutions.com';
-			$password = 'Archiz321';
+			$res = $this->db->where('comp_id',$this->session->companey_id)->get('ticket_email_config');
+			if($res->num_rows())
+			{
+				$row = $res->row();
+				$hostname =  $row->hostname;
+				$username = $row->username;
+				$password = $row->password;
+				$user = $row->belongs_to;
+				$process  = $row->process_id;
+			}
+			else{
+				echo'Configuration not done.';
+				exit();
+			}
+
+			//echo $hostname.'<br>'.$username.'<br>'.$password;
 			/* try to connect */
-			$inbox = imap_open($hostname, $username, $password) or die('Cannot connect to Gmail: ' . imap_last_error());
-			echo "<pre>";
-			print_r(imap_errors());
-			echo "</pre>";
-			echo imap_last_error();
-			echo "Hello 2";
+			$inbox = imap_open($hostname, $username, $password) or die('Cannot connect to Mail: ' . imap_last_error());
+			// echo "<pre>";
+			// print_r(imap_errors());
+			// echo "</pre>";
+			// echo imap_last_error();
+			// echo "Hello 2";
 			/* grab emails */
 			$emails = imap_search($inbox, 'ALL');
 			/* if emails are returned, cycle through each... */
@@ -2211,12 +2268,20 @@ class Ticket extends CI_Controller
 					$fromMail = $overview[0]->from ;
 					$message_id = $overview[0]->message_id;
 					$subject = $overview[0]->subject;
-					$count=$this->db->where('email',$fromMail)->count_all_results('tbl_ticket');
+					$y = explode('<',$fromMail);
+					$name = $y[0]??'';
+					$mailid = str_replace('>', '', $y[1]??'');
+					// echo 'Subject- '.$subject.'<br>
+					// 		Mail- '.$mailid.'<br>
+					// 		name- '.$name.'<br>
+					// 		<br>
+					// '; continue;
+					$count=$this->db->where('email',$mailid)->count_all_results('tbl_ticket');
 					if($count==0){
-						$parts = explode("@", $fromMail);
-						$name = $parts[0];
+						// $parts = explode("@", $fromMail);
+						// $name = $parts[0];
 						if(empty($name)){$name='';}
-						$data=['name'=>$name,'email'=>$fromMail,'message_id'=>$message_id,'message'=>$subject,'send_date'=>date("Y-m-d H:i:s"),];
+						$data=['name'=>$name,'email'=>$mailid,'email_message_id'=>$message_id,'message'=>$subject,'send_date'=>date("Y-m-d H:i:s"),'added_by'=>$user,'process_id'=>$process];
 						$this->db->insert("tbl_ticket", $data);
 						$insid = $this->db->insert_id();
 						$tckno = "TCK" . $insid . strtotime(date("y-m-d h:i:s"));
@@ -2225,7 +2290,7 @@ class Ticket extends CI_Controller
 						$this->db->update("tbl_ticket", $updarr);
 						//insert conv
 						$insarr = array(
-							"tck_id" => $tckno,
+							"tck_id" => $insid,
 							"comp_id" => $this->session->companey_id,
 							"parent" => 0,
 							"subj"   => 'Ticket Created by Mail',

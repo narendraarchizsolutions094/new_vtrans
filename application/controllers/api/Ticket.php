@@ -1086,15 +1086,14 @@ class Ticket extends REST_Controller {
     {
       $this->load->model('Ticket_Model');
   
-      $total  = $this->Ticket_Model->getTicketListByCompnyID($company_id,$user_id);
-      $total = count($total);
+      $total  = $this->Ticket_Model->getTicketListByCompnyID('count',$company_id,$user_id);
 
       $res= array();
       $res['offset'] = $offset;
       $res['limit'] = $limit;
       $res['total'] = $total;
 
-      $res['list']  = $this->Ticket_Model->getTicketListByCompnyID($company_id,$user_id,$offset,$limit);
+      $res['list']  = $this->Ticket_Model->getTicketListByCompnyID('data',$company_id,$user_id,$offset,$limit);
 
       if(!empty($res))
       {

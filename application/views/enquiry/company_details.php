@@ -16,16 +16,35 @@
          <a class="nav-link" data-toggle="tab" href="#contacts">Contacts</a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(1)">Enquiry</a>
+         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(1)"><?=display('enquiry')?></a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(2)">Lead</a>
+         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(2)"><?=display('lead')?></a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(3)">Client</a>
+         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(3)"><?=display('client')?></a>
       </li>
+
+      <?php
+      $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
+      if (!empty($enquiry_separation)) 
+      { 
+          $enquiry_separation = json_decode($enquiry_separation,true);
+          foreach ($enquiry_separation as $key => $value)
+          { 
+          // echo'<li class="nav-item">
+          //        <a class="nav-link" data-toggle="tab" href="#'.strtolower(str_replace(' ','_',$value['title'])).'" onclick="load_account('.$key.')">'.$value['title'].'</a>
+          //     </li>';
+
+            echo'<li class="nav-item">
+                 <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account('.$key.')">'.$value['title'].'</a>
+              </li>';
+          }
+      }
+      ?>
+
       <li class="nav-item">
-         <a class="nav-link" data-toggle="tab" href="#tickets">Tickets</a>
+         <a class="nav-link" data-toggle="tab" href="#tickets"><?=display('ticket')?></a>
       </li>
    </ul>
 
@@ -248,6 +267,25 @@
           </table>
       </div>
 
+    <?php
+    // Extra type of data other then lead enquiry client
+
+      // $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
+      // if (!empty($enquiry_separation)) 
+      // { 
+      //     $enquiry_separation = json_decode($enquiry_separation,true);
+      //     foreach ($enquiry_separation as $key => $value)
+      //     { 
+      //       echo'<div id="'.strtolower(str_replace(' ','_',$value['title'])).'" class="container tab-pane fade">
+            
+      //       <br>
+      //       </div>';
+
+
+      //     }
+      // }
+      ?>
+
 
  <?php 
 
@@ -268,11 +306,11 @@
         }       
  ?>
       <div id="tickets" class="container tab-pane fade"><br>
-         <table id="ticket_table" class=" table table-striped table-bordered" style="width:100%;">
+         <table id="ticket_table" class="table table-striped table-bordered" style="width:100%;">
                     <thead>
-                 <!--    <th class="noExport sorting_disabled">
-                    <input type='checkbox' class="checked_all1" value="check all" >
-                     </th> -->
+                    <th class="noExport sorting_disabled" style="display: none;">
+                        <input type='checkbox' class="checked_all1" value="check all" >
+                     </th>
                       <th>S.No.</th>
                       <?=($showall or in_array(1,$acolarr))?'<th>Ticket</th>':''?>
 
@@ -351,10 +389,12 @@ table th
 {
   display: none;
 }
+
 #ticket_table tbody tr td:nth-child(1)
 {
   display: none;
 }
+
 </style>
 
 

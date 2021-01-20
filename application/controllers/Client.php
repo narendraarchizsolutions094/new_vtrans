@@ -1639,7 +1639,7 @@ public function view_editable_aggrement()
         $this->load->model('Enquiry_Model');
         $data['title'] = display('visit_list');
        // print_r($data['contact_list']->result_array()); exit();
-        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries();
+        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
         $data['company_list'] = $this->Client_Model->getCompanyList()->result();
         $data['content'] = $this->load->view('enquiry/visits', $data, true);
         $this->load->view('layout/main_wrapper', $data);
@@ -1658,9 +1658,10 @@ public function view_editable_aggrement()
         $this->load->model('Enquiry_Model');
         $data['title'] = 'Deals'; //display('deal_list');
        
-        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries();
+        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('2,3');
 
         $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
+
         $data['company_list'] = $this->Client_Model->getCompanyList()->result();
         //fetch last entry
         $comm_data=$this->db->where(array('comp_id'=>$this->session->companey_id))->order_by('id',"desc")
@@ -1751,6 +1752,62 @@ public function view_editable_aggrement()
                 $where.=" and ";
 
             $where.=" (info.enquiry_id ='".$_POST['enq_for']."' ) ";
+            $and =1;
+        }
+
+
+
+          if(!empty($_POST['booking_type']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.booking_type ='".$_POST['booking_type']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['booking_branch']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.booking_branch ='".$_POST['booking_branch']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['delivery_branch']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.delivery_branch ='".$_POST['delivery_branch']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['paymode']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.paymode ='".$_POST['paymode']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['p_amnt_from']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.potential_amount >= '".$_POST['p_amnt_from']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['p_amnt_to']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.potential_amount <= '".$_POST['p_amnt_to']."' ) ";
             $and =1;
         }
 
