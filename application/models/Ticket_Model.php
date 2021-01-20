@@ -446,7 +446,7 @@ class Ticket_Model extends CI_Model
 		//echo $this->db->last_query(); exit();
 	}
 
-	public function getTicketListByCompnyID($companyid, $userid,$offset=-1,$limit=-1)
+	public function getTicketListByCompnyID($action,$companyid, $userid,$offset=-1,$limit=-1)
 	{
 		$all_reporting_ids    =   $this->common_model->get_categories($userid);
 		$where = '';
@@ -460,8 +460,7 @@ class Ticket_Model extends CI_Model
 			->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT")
 			->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT")
 			->join("tbl_product_country prd", "prd.id = tck.product", "LEFT")
-			->order_by("tck.id DESC")
-			->group_by("tck.id");
+			->order_by("tck.id DESC");
 
 
 		if(!empty($_POST['filters']))
@@ -520,7 +519,9 @@ class Ticket_Model extends CI_Model
 	    {  
 	        $this->db->limit($limit,$offset);
 	    }
-
+	    if($action=='count')
+			return $this->db->count_all_results();
+		else
 			return $this->db->get()->result();
 	}
 

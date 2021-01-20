@@ -2041,15 +2041,22 @@ class Enquiry_model extends CI_Model {
         
     }
 
-     public function all_enqueries() {
+     public function all_enqueries($status=0) {
 $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 $cpny_id=$this->session->companey_id;
         $where = "";
 		$where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
     	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where.=" AND enquiry.comp_id=$cpny_id";
+
         $process = $this->session->userdata('process');
       
+      if($status){
+        if(is_array($status))
+          $status = implode(',', $status);
+        $this->db->where('status IN ('.$status.')');
+      }
+
         return $this->db->select('*')
                         ->from('enquiry')
                         ->where($where)

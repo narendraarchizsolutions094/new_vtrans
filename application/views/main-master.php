@@ -366,6 +366,11 @@
 					<img src="https://img.icons8.com/ios/24/000000/add-ticket.png"/> Add Ticket
 				</a>
 			</div>
+			<div class="col-lg-3 col-sm-4 col-xs-6">
+				<a href="<?=base_url('ticket/auto_add_config')?>">
+					<img src="https://img.icons8.com/ios/50/000000/mail-configuration.png"/> <!-- Ticket By  -->Email Configuration 
+				</a>
+			</div>
 		</div>
 	</div>
 

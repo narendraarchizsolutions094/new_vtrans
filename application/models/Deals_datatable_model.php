@@ -122,7 +122,60 @@ class Deals_datatable_model extends CI_Model{
             $and =1;
         }
 
+        if(!empty($_POST['booking_type']))
+        {
+              if($and)
+                $where.=" and ";
 
+            $where.=" (info.booking_type ='".$_POST['booking_type']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['booking_branch']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.booking_branch ='".$_POST['booking_branch']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['delivery_branch']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.delivery_branch ='".$_POST['delivery_branch']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['paymode']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.paymode ='".$_POST['paymode']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['p_amnt_from']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.potential_amount >= '".$_POST['p_amnt_from']."' ) ";
+            $and =1;
+        }
+
+        if(!empty($_POST['p_amnt_to']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (info.potential_amount <= '".$_POST['p_amnt_to']."' ) ";
+            $and =1;
+        }
+        //.echo $where;exit();
         if(!empty($_POST['top_filter']))
         {   
             if($and && $_POST['top_filter']!='all')

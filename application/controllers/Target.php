@@ -8,7 +8,8 @@ class Target extends CI_controller
 	}
 
 	public function index()
-	{	$this->load->model('common_model');
+	{	
+		$this->load->model('common_model');
 		//$this->session->process = array(197);
 		$this->load->model('location_model');
 		$data['title'] = display('all_goals');
@@ -37,6 +38,61 @@ class Target extends CI_controller
 		$data['content'] = $this->load->view('target/goal_list',$data,true);
 		$this->load->view('layout/main_wrapper',$data);
 	}
+
+	public function chk()
+	{
+				$_GLOBALS['ary'] = array();
+				
+				$a = $this->make_tree($this->session->user_id);
+			
+				// foreach ($a as $key => $value)
+				// {
+				// 	if(is_array($value))
+				// 		fetch_ary($value);
+				// 	else
+				// 	{
+				// 		$ar[] = $value;
+				// 	}
+				// }
+			$z = $this->reshape_ary($a);
+			print_r($z);
+	}
+
+	function reshape_ary($ary)
+	{	$x =array();
+		foreach ($ary as $key => $value)
+		{
+			if(is_array($value))
+			{
+				$x[]  = $this->reshape_ary($value);
+			}
+			else if($value==$key)
+			{
+				return $key;
+			}
+		}
+		return $x;
+	}
+
+	function make_tree($uid)
+	{
+
+		$main = $this->db->select('pk_i_admin_id')->where('report_to',$uid)
+					->where('companey_id',$this->session->companey_id)
+					->get('tbl_admin')->result();
+		
+		if(!empty($main))
+		{	$ab =array();
+			foreach ($main as $key => $value) 
+			{	$x = $this->make_tree($value->pk_i_admin_id);
+				$ab[$value->pk_i_admin_id] = $x;
+			}
+			return $ab;
+		}
+		else
+			return $uid;
+	}
+
 	public function save_goal()
 	{
 		$this->load->model('Target_Model');
@@ -52,7 +108,7 @@ class Target extends CI_controller
 						$process_id = $process[0];
 					else
 					{
-						$this->session->set_flashdata('message','Selected Only one Process.');
+						$this->session->set_flashdata('message','Select Only one Process.');
 					redirect($_SERVER['HTTP_REFERER']);
 					}
 				}
@@ -66,10 +122,13 @@ class Target extends CI_controller
 				$this->session->set_flashdata('message','No process is Selected.');
 				redirect($_SERVER['HTTP_REFERER']);
 			}
+
+
 			$target_list = implode(',', $this->input->post('target_list[]'));
 
 			$prod = $this->input->post('products')??array();
-			$data = array('goal_period'=>$this->input->post('goal_period'),
+			$data = array(	'goal_name'=>$this->input->post('goal_name'),
+							'goal_period'=>$this->input->post('goal_period'),
 							'time_range' =>$this->input->post('time_range'),
 							'date_from' =>$this->input->post('period_from'),
 							'date_to' =>$this->input->post('period_to'),
@@ -83,6 +142,15 @@ class Target extends CI_controller
 							'created_by'=>$this->session->user_id,
 						);
 			
+
+			// $chk = $this->db->from('tbl_goals')->where('( (date_from <="'.$data['date_from'].'" and date_to >="'.$data['date_to'].'" ) or ( (date_from BETWEEN "'.$data['date_from'].'" and "'.$data['date_to'].'") OR (date_to between "'.$data['date_from'].'" and  "'.$data['date_to'].'"))) and comp_id='.$data['comp_id'].' and  process_id='.$data['process_id'].' ')->count_all_results();
+
+			// if($chk>0)
+			// {
+			// 	$this->session->set_flashdata('exception','Unable to create goal ! Goal date clashes with already created goal.');
+			// 	redirect($_SERVER['HTTP_REFERER']);
+			// }
+
 			if($data['goal_type']=='team')
 			{	
 				$data['custom_target'] = json_encode($this->input->post('user_target_value'));
@@ -112,11 +180,19 @@ class Target extends CI_controller
 
 		$role  = $this->input->post('role_for')??0;
 		$user = $this->input->post('user_for')==''?0:$this->input->post('user_for');
+		//echo $user;exit();
+		if(empty($user))
+			$user = $this->session->user_id;
+
 
 		$metric_type = $this->input->post('metric_type')??0;
 		$fetch_type = $this->input->post('fetch_type')?2:1;
 
+		$keyword = $this->input->post('keyword');
+
 		$graph = $this->input->post('graph')??0;
+
+
 
 		$where =array();
 		if($start_date_from)
@@ -148,6 +224,12 @@ class Target extends CI_controller
  		{
  			$where[] = " goals.metric_type = '".$metric_type."'";
  		}
+
+ 		if(!empty($keyword))
+ 		{
+ 			$where[] = " goals.goal_name LIKE '%".$keyword."%'";
+ 		}
+
  		//print_r($where); 
 		$all_goals = $this->Target_Model->getGoals(implode(' AND ',$where),$fetch_type,$user);
 		//print_r($all_goals); exit();
@@ -163,6 +245,7 @@ class Target extends CI_controller
 				<thead>
 					<tr>
 						<th rowspan="2">#</th>
+						<th rowspan="2">Goal Name</th>
 						<th rowspan="2">GOAL PERIOD</th>
 						<th rowspan="2">METRIC</th>
 						<th rowspan="2">For</th>
@@ -177,7 +260,7 @@ class Target extends CI_controller
 				<tbody>';
 
 				if(!empty($all_goals))
-				{
+				{	$num=1;
 					foreach ($all_goals as $goal)
 					{
 						$target = $goal->target_value;
@@ -205,8 +288,12 @@ class Target extends CI_controller
 								</span>';
 						}
 
+						$url = base_url('target/goal_details/'.$goal->goal_id);
 						if($goal->goal_type=='user')
+						{
 							$target *=count(explode(',', $goal->goal_for));
+							$url = base_url('target/goal_details_user/'.$goal->goal_id);
+						}
 						$ci = &get_instance();
 						$ci->load->model('Target_Model');
 						//echo $fetch_type.' '.$user.'|201';exit();
@@ -242,9 +329,11 @@ class Target extends CI_controller
 						}
 
 						$code.='<tr>
-							<td>'.$goal->goal_id.'</td>
-							<td>'.ucwords($goal->goal_period).' <br>
-							<a href="'.base_url('target/goal_details/'.$goal->goal_id).'"><b><big>'.date('d/m/Y',strtotime($goal->date_from)).' - '.date('d/m/Y',strtotime($goal->date_to)).'</big></b></a><br>
+							<td>'.$num++.'</td>
+							<td>'.$goal->goal_name.'</td>
+
+							<td><big>'.ucwords($goal->goal_period).'</big> <br>
+							<a href="'.$url.'"><b>'.date('d-M-Y',strtotime($goal->date_from)).' - '.date('d-M-Y',strtotime($goal->date_to)).'</b></a><br>
 							'.implode(' ',$prd).'
 							</td>
 							<td>'.($goal->metric_type=='deal'?'Deal value':'Won deals').'</td>
@@ -329,14 +418,12 @@ class Target extends CI_controller
 
 	}
 
-	public function goal_details($goal_id)
+	public function goal_details($goal_id,$user_id=0)
 	{
 		$this->load->model('Target_Model');
 
 		$data['title'] = 'Goal Details';
 
-		
-	
 		$goal  = $data['goal'] = $this->Target_Model->getGoals(array('goals.goal_id'=>$goal_id))[0];
 		
 		$prd = array();
@@ -349,8 +436,51 @@ class Target extends CI_controller
 				$prd[] = $sub->country_name;
 			}
 		}
+		$option_list = $this->common_model->get_categories($this->session->user_id);
+		$op = $this->db->select('role.use_id,GROUP_CONCAT(ad.pk_i_admin_id) as ids,GROUP_CONCAT(ad.s_display_name) as names,role.user_role')
+				->from('tbl_admin ad')
+				->join('tbl_user_role role','ad.user_type=role.use_id','left')
+				->where('ad.pk_i_admin_id IN ('.implode(',', $option_list).')')
+				->group_by('role.use_id')
+				->get()->result();
+
+		$data['option_list'] = $op;
 		$data['products'] = $prd;
+		$data['user_id'] = $user_id;
 		$data['content'] = $this->load->view('target/goal_details',$data,true);
+		$this->load->view('layout/main_wrapper',$data);
+	}
+
+	public function goal_details_user($goal_id,$user_id=0)
+	{
+		$this->load->model('Target_Model');
+
+		$data['title'] = 'Goal Details';
+
+		$goal  = $data['goal'] = $this->Target_Model->getGoals(array('goals.goal_id'=>$goal_id))[0];
+		
+		$prd = array();
+		
+		if(!empty($goal->products))
+		{
+			foreach (explode(',',$goal->products) as $p)
+			{
+				$sub = $this->db->where('id',$p)->get('tbl_product_country')->row();
+				$prd[] = $sub->country_name;
+			}
+		}
+		$option_list = $this->common_model->get_categories($this->session->user_id);
+		$op = $this->db->select('role.use_id,GROUP_CONCAT(ad.pk_i_admin_id) as ids,GROUP_CONCAT(ad.s_display_name) as names,role.user_role')
+				->from('tbl_admin ad')
+				->join('tbl_user_role role','ad.user_type=role.use_id','left')
+				->where('ad.pk_i_admin_id IN ('.implode(',', $option_list).')')
+				->group_by('role.use_id')
+				->get()->result();
+
+		$data['option_list'] = $op;
+		$data['products'] = $prd;
+		$data['user_id'] = $user_id;
+		$data['content'] = $this->load->view('target/backup_goal_details',$data,true);
 		$this->load->view('layout/main_wrapper',$data);
 	}
 
