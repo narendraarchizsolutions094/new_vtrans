@@ -286,10 +286,10 @@ if($this->session->companey_id == 65){ ?>
       $("select[name=lead_description]").load("<?=base_url('message/find_substage/1')?>");    
     }
     $("#lead_stage_change").val('1');    
-    if("<?=$ticket->ticket_status?>" == 0){
+    // if("<?=$ticket->ticket_status?>" == 1 Or){
       $("select[name='ticket_status']").val('3');
       $("select[name='quick_ticket_status']").val('3');
-    }
+    // }
   }  
   if(<?=$ticket->ticket_status?>==3){
     $("#ticket_disposition_save").attr('disabled',true);

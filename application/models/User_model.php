@@ -79,14 +79,19 @@ class User_model extends CI_Model {
             $exclude = $sep_arr;
         }
         //process wise user select
-        $where .= " AND tbl_admin.process IN (".implode(',', $process).')';               
+        foreach($process as $pid){
+				$where .= " AND (FIND_IN_SET($pid,process) >0)";
+        }       
         if(!empty($exclude) && empty($user_right)){
             foreach($exclude as $rid){
                 $where .= "  AND tbl_admin.user_permissions!='".$rid."'";                                            
             }
         }
         $this->db->where($where);
+
         return $this->db->get()->result();
+        // print_r($this->db->last_query());
+        // die();
     }
 
 
