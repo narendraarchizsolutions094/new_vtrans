@@ -235,7 +235,7 @@ echo'<div class="trackingDetails"></div>';
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Email <i class="text-danger">*</i></label>
-                        <input type = "text" class="form-control" name = "email" onblur="autoFill('email',this.value)" required>
+                        <input type = "text" class="form-control" name = "email" onblur="autoFill('email',this.value)">
                       </div>
                     </div>
                    
