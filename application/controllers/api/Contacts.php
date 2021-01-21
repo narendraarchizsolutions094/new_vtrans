@@ -8,7 +8,7 @@ class Contacts extends REST_Controller {
   {
       parent::__construct();
       $this->load->library('form_validation');
-	  $this->load->model(array('common_model','client_model'));
+	  $this->load->model(array('Common_model','Client_Model'));
   }
 
   	public function contacts_list_page_post()
@@ -20,9 +20,9 @@ class Contacts extends REST_Controller {
 
        $res= array();
     
-        $total = $this->client_model->getContactList(array(),'count',$company_id,$user_id);
+        $total = $this->Client_Model->getContactList(array(),'count',$company_id,$user_id);
 
-        $data['result'] = $this->client_model->getContactList(array(),'data',$company_id,$user_id,$limit,$offset);
+        $data['result'] = $this->Client_Model->getContactList(array(),'data',$company_id,$user_id,$limit,$offset);
                   
           if(!empty($data['result']->result()))
           {
@@ -202,7 +202,7 @@ class Contacts extends REST_Controller {
         if($this->form_validation->run()==true)
         {
 
-        	$all_reporting_ids  = $this->common_model->get_categories($user_id);
+        	$all_reporting_ids  = $this->Common_model->get_categories($user_id);
 
 	    	$this->db->select('tbl_visit.enquiry_id,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
 	        $this->db->from('tbl_visit');
