@@ -340,11 +340,9 @@ class Lead extends REST_Controller {
           
               $this->db->set('update_date',date('d-m-Y H:i:s'));
           
-              $this->db->set('ld_status',0);
+              $this->db->where('Enquery_id',$key);
           
-              $this->db->where('lead_code',$key);
-          
-              $this->db->update('allleads');
+              $this->db->update('enquiry');
               $this->Leads_Model->add_comment_for_events_api('Dropped Leads',$key,$user_id);
           
             } 

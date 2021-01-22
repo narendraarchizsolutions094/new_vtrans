@@ -243,8 +243,8 @@ echo'
                     
                    <div class="col-md-6">
                     <div class="form-group">
-                      <label>Email<span class="text-danger">*</span></label>
-                      <input type="email" class="form-control" name="email" value="<?php if(!empty($ticket->tck_email)){ echo $ticket->tck_email;} ?>" required>
+                      <label>Email</label>
+                      <input type="email" class="form-control" name="email" value="<?php if(!empty($ticket->tck_email)){ echo $ticket->tck_email;} ?>">
                     </div>
                   </div>
                    

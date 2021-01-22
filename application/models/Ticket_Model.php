@@ -164,7 +164,7 @@ class Ticket_Model extends CI_Model
 				$postData = array(
 					'Enquery_id' 	=> $encode,
 					'comp_id' 		=> $this->session->companey_id,
-					'email' 		=> $this->input->post("email", true),
+					'email' 		=> $this->input->post("email", true)??'',
 					'phone' 		=> $this->input->post("phone", true),
 					'name' 			=> $this->input->post("name", true),
 					'company'		=> $this->input->post("client_new", true),
