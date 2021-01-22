@@ -241,10 +241,14 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="probability" id="probabilitycheckbox" name="filter_checkbox">Probability</label>
                     </li> 
+                    <?php if(!empty($aging_rule)){ ?>
                     <li>
                       <label>
                       <input type="checkbox" value="aging_rule" id="agingRulecheckbox" name="filter_checkbox">Aging Rule</label>
                     </li> 
+                    <?php
+                    }
+                    ?>
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
