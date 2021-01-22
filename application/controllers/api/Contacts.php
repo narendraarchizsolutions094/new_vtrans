@@ -8,7 +8,7 @@ class Contacts extends REST_Controller {
   {
       parent::__construct();
       $this->load->library('form_validation');
-	  $this->load->model(array('enquiry_model','common_model','client_model'));
+	  $this->load->model(array('Common_model','Client_Model'));
   }
 
   	public function contacts_list_page_post()
@@ -20,9 +20,9 @@ class Contacts extends REST_Controller {
 
        $res= array();
     
-        $total = $this->client_model->getContactList(array(),'count',$company_id,$user_id);
+        $total = $this->Client_Model->getContactList(array(),'count',$company_id,$user_id);
 
-        $data['result'] = $this->client_model->getContactList(array(),'data',$company_id,$user_id,$limit,$offset);
+        $data['result'] = $this->Client_Model->getContactList(array(),'data',$company_id,$user_id,$limit,$offset);
                   
           if(!empty($data['result']->result()))
           {
@@ -127,10 +127,10 @@ class Contacts extends REST_Controller {
     	$enquiry_id = $this->input->post('enquiry_id');
     	$user_id = $this->input->post('user_id');
 
-      $name = $this->input->post('name');
-      $mobile = $this->input->post('mobileno');
-      $email = $this->input->post('email');
-      $otherdetails = $this->input->post('otherdetails');
+      $name = $this->input->post('name')??'';
+      $mobile = $this->input->post('mobileno')??'';
+      $email = $this->input->post('email')??'';
+      $otherdetails = $this->input->post('otherdetails')??'';
 
     	$this->form_validation->set_rules('company_id','company_id','required|trim');
     	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
@@ -138,13 +138,13 @@ class Contacts extends REST_Controller {
 
     	if($this->form_validation->run()==true)
     	{
-    		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
+    		$this->load->model(array('Leads_Model'));
 
     		$data = array(
                 'c_name' => $name,
                 'emailid' => $email,
                 'contact_number' => $mobile,
-                'designation' => $this->input->post('designation'),
+                'designation' => $this->input->post('designation')??'',
                 'other_detail' => $otherdetails,
                 'decision_maker' => $this->input->post('decision_maker')??0,
             );
@@ -202,7 +202,7 @@ class Contacts extends REST_Controller {
         if($this->form_validation->run()==true)
         {
 
-        	$all_reporting_ids  = $this->common_model->get_categories($user_id);
+        	$all_reporting_ids  = $this->Common_model->get_categories($user_id);
 
 	    	$this->db->select('tbl_visit.enquiry_id,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
 	        $this->db->from('tbl_visit');

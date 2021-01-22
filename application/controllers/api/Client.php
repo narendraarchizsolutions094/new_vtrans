@@ -164,8 +164,7 @@ class Client extends REST_Controller {
           
           $this->db->where('customer_code',$client_code);
           $this->db->update('clients');
-        
-          $this->Leads_Model->add_comment_for_events_api('Informanation Updated',$client_code,$user_id);
+          $this->Leads_Model->add_comment_for_events_api('Information Updated',$client_code,$user_id);
           
           $this->set_response([
               'status' => false,

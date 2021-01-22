@@ -1085,6 +1085,17 @@ public function all_description($diesc) {
         return $this->db->insert_id();
     }
 
+
+    public function add_comment_for_events_api($conversation,$lead_id,$user_id=0) {
+
+        $adt = date("Y-m-d H:i:s");        
+        $this->db->set('lead_id', $lead_id);        
+        $this->db->set('created_date', $adt);
+        $this->db->set('comment_msg', $conversation);
+        $this->db->set('created_by', $user_id);
+        $this->db->insert('tbl_comment');
+        return $this->db->insert_id();
+    }
     // to insert drop status and reason
     public function add_comment_for_events1($conversation, $lead_id,$reason,$drop_status) {  
         $assign_employee = $this->input->post('assign_employee');
