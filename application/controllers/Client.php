@@ -8,7 +8,7 @@ class Client extends CI_Controller {
 		$this->load->library('upload');
 		$this->lang->load("activitylogmsg","english");;        
 		$this->load->model(
-                array('Ticket_Model','Leads_Model','common_model','enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models','Institute_model','Datasource_model','Taskstatus_model','dash_model','Center_model','SubSource_model','Kyc_model','Education_model','SocialProfile_model','Closefemily_model','form_model','report_model','Configuration_Model','Doctor_model')
+                array('Ticket_Model','Leads_Model','common_model','enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models','Institute_model','Datasource_model','Taskstatus_model','dash_model','Center_model','SubSource_model','Kyc_model','Education_model','SocialProfile_model','Closefemily_model','form_model','report_model','Configuration_Model','Doctor_model','rule_model')
                 );
         if (empty($this->session->user_id)) {
             redirect('login');
@@ -49,8 +49,8 @@ class Client extends CI_Controller {
             $data['data_type'] = 3;
         }
         $data['all_stage_lists'] = $this->Leads_Model->get_leadstage_list_byprocess1($this->session->process,array(1,2,3));
-		$data['filterData'] = $this->Ticket_Model->get_filterData(1);
-        $data['lead_score'] = $this->Leads_Model->get_leadscore_list();
+        $data['filterData'] = $this->Ticket_Model->get_filterData(1); 
+        $data['aging_rule'] = $this->rule_model->get_rules(array(11));		       
         $data['content'] = $this->load->view('enquiry_n', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }

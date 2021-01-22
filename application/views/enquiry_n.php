@@ -241,6 +241,10 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="probability" id="probabilitycheckbox" name="filter_checkbox">Probability</label>
                     </li> 
+                    <li>
+                      <label>
+                      <input type="checkbox" value="aging_rule" id="agingRulecheckbox" name="filter_checkbox">Aging Rule</label>
+                    </li> 
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
@@ -614,6 +618,23 @@ display: block;
                               ?>
                         </select>
                       </div>
+
+                      <?php 
+                      if(!empty($aging_rule)){ ?>
+                      <div class="form-group col-md-3" id="agingRulefilter">
+                        <label for="">Aging Rule</label> 
+                        <select name="aging_rule" class="form-control">
+                          <option value="">Select</option>
+                          <?php
+                            foreach ($aging_rule as $k=>$v) {  ?>
+                              <option value="<?=$v['rule_sql']?>" <?php if(!empty($filterData['aging_rule']) && $v['id']==$filterData['aging_rule']) {echo 'selected';}?>><?php echo $v['title']; ?></option>
+                              <?php }                             
+                              ?>
+                        </select>
+                      </div>
+                      <?php
+                      }
+                      ?>
 
                       
                       <div class="form-group col-md-3">
@@ -2058,6 +2079,13 @@ if (!enq_filters.includes('stage')) {
 
   $("input[value='stage']").prop('checked', true);
 }
+if (!enq_filters.includes('aging_rule')) {
+  $('#agingRulefilter').hide();
+}else{
+  $('#agingRulefilter').show();
+
+  $("input[value='aging_rule']").prop('checked', true);
+}
 
 $('input[name="filter_checkbox"]').click(function(){  
   if($('#datecheckbox').is(":checked")||$('#empcheckbox').is(":checked")||$('#sourcecheckbox').is(":checked")||
@@ -2065,7 +2093,8 @@ $('input[name="filter_checkbox"]').click(function(){
   $('#phonecheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||$('#addcheckbox').is(":checked")||
   $('#stageheckbox').is(":checked")||$('#prodcheckbox').is(":checked")||$('#statecheckbox').is(":checked")||
   $('#citycheckbox').is(":checked")||$('#datasrccheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||
-  $('#proccheckbox').is(":checked")){ 
+  $('#proccheckbox').is(":checked") ||
+  $('#agingRulecheckbox').is(":checked")){ 
     $('#save_filterbutton').show();
     $('#filter_pannel').show();          
   }else{
@@ -2200,7 +2229,16 @@ $('#buttongroup').hide();
       }
       else{
        $('#cityfilter').hide();
-      }       
+      } 
+
+      if($('#agingRulecheckbox').is(":checked")){
+        $('#agingRulefilter').show();
+      }
+      else{
+       $('#agingRulefilter').hide();
+      } 
+
+            
     });
 })
 
