@@ -2070,7 +2070,7 @@ class Ticket extends CI_Controller
 									$working_hrs	=	$this->get_working_hours($created_date,$currentDate,$assign_to);
 									echo $d.' '.$tck['id'].' '.$working_hrs.' '.$esc_hr.'<br>';
 									if($working_hrs >= $esc_hr){
-										$this->Ticket_Model->insertData($assign_to,$tck['id'],$lid,$rule_title,$comp_id,2175);										
+										$this->Ticket_Model->insertData($assign_to,$tck['id'],$lid,$rule_title,$comp_id,286);										
 										echo $this->db->last_query();
 										echo '<br>'.$rule_title.'<br>';
 									}
