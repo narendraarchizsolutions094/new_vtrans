@@ -1383,9 +1383,9 @@ class Ticket extends CI_Controller
 	}
 
 	public function auto_add_config()
-	{
+	{	
 		$data['title'] = "Ticket by Mail ";
-		$this->load->model(array('User_model','dash_model'));
+		$this->load->model(array('User_model','dash_model','Apiintegration_Model'));
 		$res = $data['row'] = $this->db->where('comp_id',$this->session->companey_id)->get('ticket_email_config')->row();
 
 		$data['user_list'] = $this->User_model->user_list();
@@ -1398,9 +1398,9 @@ class Ticket extends CI_Controller
 							'password' => $this->input->post('password'),
 							'comp_id'=> $this->session->companey_id,
 							'belongs_to'=>$this->input->post('belongs_to'),
-							'process_id'=>$this->input->post('process_id')
+							'process_id'=>$this->input->post('process_id'),
+							'template'=>nl2br($this->input->post('template'))
 							);
-			//print_r($data);exit();
 			if(!empty($res))
 			{
 				$this->db->where('comp_id',$this->session->companey_id)->update('ticket_email_config',$data);
@@ -2302,12 +2302,30 @@ class Ticket extends CI_Controller
 				/* for every email... */
 				foreach ($emails as $ind => $email_number) {
 
-					if ($ind > 0) break;
+					if ($ind > 2) break;
 					
 					/* get information specific to this email */
 					$overview = imap_fetch_overview($inbox, $email_number, 0);
 					$message  = imap_fetchbody($inbox, $email_number, 1);
 					$headers = imap_header($inbox, $email_number, 1);
+
+
+					// $structure = imap_fetchstructure($inbox, $email_number);
+
+			  //       if(isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[1])) {
+			  //           $part = $structure->parts[1];
+			  //           $message = imap_fetchbody($inbox,$email_number,2);
+
+			  //           if($part->encoding == 3) {
+			  //               $message = imap_base64($message);
+			  //           } else if($part->encoding == 1) {
+			  //               $message = imap_8bit($message);
+			  //           } else {
+			  //               $message = imap_qprint($message);
+			  //           }
+			  //       }
+			        $message= quoted_printable_decode($message);
+
 					$fromMail = $overview[0]->from ;
 					$message_id = $overview[0]->message_id;
 					$subject = $overview[0]->subject;
@@ -2323,14 +2341,16 @@ class Ticket extends CI_Controller
 							msgid:'.htmlentities($message_id).'
 							<br><hr>
 					';
-					$ref = $overview[0]->references;
-					if(!empty($ref))
-						$ref = explode(' ',$ref)[0];
-
+					$flag =1;
+					if(!empty($overview[0]->references))
+					{	
+						$ref = explode(' ',$overview[0]->references)[0];
 						$this->db->where('email_message_id',$ref);
 						$match = $this->db->where('email',$mailid)->get('tbl_ticket');
-					
-					if(!$match->num_rows())
+						$flag = !$match->num_rows();
+					}
+
+					if($flag)
 					{
 						if(empty($name)){$name='';}
 						$data=['name'=>$name,'email'=>$mailid,'email_message_id'=>$message_id,'message'=>$subject,'send_date'=>date("Y-m-d H:i:s"),'added_by'=>$user,'process_id'=>$process,'company'=>$this->session->companey_id];
@@ -2358,12 +2378,23 @@ class Ticket extends CI_Controller
 						
 						if(!empty($smtp_config))
 						{
+
 							$mail_subject= "#".$tckno." Ticket Created with Subject '".$subject."'";
-							$mail_msg = "Hello ".$name.",\r\n
-							We have generated a ticket with ticket no ".$tckno;
+
+							$mail_msg = $row->template;
+							$search  = array('@ticketno'=>$tckno,
+											'@sender'=>$name,
+											'@subject'=>$subject,
+										);
+							
+							foreach ($search as $key => $value) {
+							$mail_msg =	str_replace($key, $value, $mail_msg);
+							 } 
+
+
 							$this->email->to($mailid);
 							$this->email->set_header('In-Reply-To:', $message_id);
-							$this->email->set_header('References:', $overview[0]->references);
+							$this->email->set_header('References:', $message_id);
 							$this->email->subject($mail_subject);
 							$this->email->message($mail_msg);
 							if($this->email->send())
@@ -2380,18 +2411,36 @@ class Ticket extends CI_Controller
 						if(!empty($smtp_config))
 						{
 							
+
+							// echo  $message;
+							// exit();
+
 							$mail_msg = "Thanks For Your Response. We have recorded your response";
 							$this->email->to($tck->email);
 							$this->email->set_header('In-Reply-To:', $tck->email_message_id);
 							$this->email->set_header('References:', $overview[0]->references);
-							
+							$this->email->subject($overview[0]->subject);
 							$this->email->message($mail_msg);
 							if($this->email->send())
 					      	{
 					        	echo'
-
 					        	Mail-ID:'.htmlentities($tck->email_message_id).'<br>
 					        	Reverted :'.$mailid;
+					        $message = htmlentities($message);
+					       $insarr = array(
+							"tck_id" => $tck->id,
+							"comp_id" => $this->session->companey_id,
+							"parent" => 0,
+							"subj"   => 'Reponse Received by mail.',
+							"msg"    => $message,
+							"attacment" => "",
+							"status"  => 0,
+							"ticket_status" =>0,
+							"stage"  => 0,
+							"sub_stage"  => 0,
+							"added_by" => $user,
+						);
+						$ret = $this->db->insert("tbl_ticket_conv", $insarr);
 					      	} 
 						}
 						echo'<hr>';
