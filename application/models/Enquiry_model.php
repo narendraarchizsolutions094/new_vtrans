@@ -2747,8 +2747,8 @@ $cpny_id=$this->session->companey_id;
         foreach ($enquiry_separation as $key => $value) 
         {
                   $ctitle = $enquiry_separation[$key]['title']; 
-                  $Count=$this->dashboard_model->countLead_api($key,$companyid);
-                  $sum=$this->dashboard_model->dataLead_api($key,$companyid);
+                  $Count=$this->dashboard_model->countLead($key,$companyid,$userid,$process);
+                  $sum=$this->dashboard_model->dataLead($key,$companyid,$userid,$process);
                   $stime= $sum->row()->time;
 
                   if($stime!=0)
