@@ -8,10 +8,10 @@ if (!function_exists('display')) {
 
 
 
-    function display($text = null)
+    function display($text = null,$comp_id=0)
     {		
         $ci =& get_instance();
-		$cmpno = $ci->session->companey_id;		
+		$cmpno = !empty($comp_id)?$comp_id:$ci->session->companey_id;		
         $ci->load->database();
         $table  = 'language';
         $phrase = 'phrase';

@@ -179,7 +179,7 @@ class Client_Model extends CI_Model
         //echo $this->db->last_query(); exit();
     }
 
-    public function getCompanyList($match = '',$comp_id=0,$user_id=0,$process=0)
+    public function getCompanyList($match = '',$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1)
     {
         $process = $this->session->process??$process;
         $comp_id = $this->session->companey_id??$comp_id;
@@ -204,7 +204,12 @@ class Client_Model extends CI_Model
         if($match)
             $this->db->where('REPLACE(`enquiry`.company, " ", "") = ',str_replace(' ','',$match));
         $this->db->group_by('REPLACE(`enquiry`.company, " ", "")');
-        //$this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
+
+        if($action=='count')
+         return  $this->db->count_all_results();
+        if($limit!=-1 and $offset!=-1)
+            $this->db->limit($limit,$offset);
+        
         $res =  $this->db->get();
         return $res;
         //echo $this->db->last_query(); exit();

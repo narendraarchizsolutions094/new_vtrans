@@ -8,10 +8,11 @@ class Dashboard extends REST_Controller {
         parent::__construct();
     }
     public function dashboard_post()
-    {
+    {   
         $user_id = $this->input->post('user_id');
         $company_id = $this->input->post('company_id');
         $process_id =  $this->input->post('process_id');//can be multiple
+
         $process = 0;
         if(!empty($process_id))
         {
@@ -231,8 +232,47 @@ class Dashboard extends REST_Controller {
         if($this->form_validation->run()==true)
         {
             $this->load->model('Client_Model');
+    
             $res = $this->Client_Model->getCompanyList($key,$company_id,$user_id,$process)->result();
 
+            $this->set_response([
+                'status' => TRUE,            
+                'data' => $res
+            ], REST_Controller::HTTP_OK); 
+        }
+        else
+        {
+            $this->set_response([
+                'status' => FALSE,            
+                'message' => strip_tags(validation_errors()),
+            ], REST_Controller::HTTP_OK); 
+        }
+
+    }   
+
+    public function unique_company_list_page_post()
+    {
+        $user_id = $this->input->post('user_id');
+        $company_id = $this->input->post('company_id');
+        $process =  $this->input->post('process');//can be multiple
+        $key = $this->input->post('key')??'';
+        $limit = $this->input->post('limit')??10;
+        $offset = $this->input->post('offset')??0;
+        $this->form_validation->set_rules('user_id','user_id', 'trim|required');
+        $this->form_validation->set_rules('company_id','company_id', 'trim|required');
+        $this->form_validation->set_rules('process','process', 'trim|required');
+        if($this->form_validation->run()==true)
+        {
+            $this->load->model('Client_Model');
+    
+            $total = $this->Client_Model->getCompanyList($key,$company_id,$user_id,$process,'count');
+            $data = $this->Client_Model->getCompanyList($key,$company_id,$user_id,$process,'data',$limit,$offset)->result();
+
+            $res['offset'] = $offset;
+            $res['limit'] = $limit;
+            $res['total'] = $total;
+            $res['list'] = $data;
+            
             $this->set_response([
                 'status' => TRUE,            
                 'data' => $res

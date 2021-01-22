@@ -396,8 +396,9 @@ class Client extends CI_Controller {
         $this->load->model(array('Client_Model','Enquiry_Model'));
         $data['title'] = display('contacts');
         $data['contact_list'] = $this->Client_Model->getContactList();//contacts.*,enquiry.---
-       // print_r($data['contact_list']->result_array()); exit();
-        $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+        //print_r($data['contact_list']->result_array()); exit();
+        $r =$data['company_list'] = $this->Client_Model->getCompanyList()->result();
+        //print_r($r);exit();
         $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
         // print_r($data['enquiry_list']);
         // die();
@@ -405,15 +406,19 @@ class Client extends CI_Controller {
         $this->load->view('layout/main_wrapper', $data);
     }
 
-    public function company_list()
+    public function company_list($limit=30,$offset=0)
     {
         if(user_role('1060')){}
 
         $this->load->model(array('Client_Model','Enquiry_Model'));
         $data['title'] = display('company_list');
-        $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+       // $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+        $data['company_count'] = $this->Client_Model->getCompanyList('',$this->session->companey_id,$this->session->user_id,$this->session->process,'count');
 
-        //$data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
+        $c =$data['company_list'] = $this->Client_Model->getCompanyList('',$this->session->companey_id,$this->session->user_id,$this->session->process,'data',$limit,$offset)->result();
+        $data['limit'] =$limit;
+        $data['offset'] = $offset;
+      //  $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
         $data['content'] = $this->load->view('enquiry/company_list', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }

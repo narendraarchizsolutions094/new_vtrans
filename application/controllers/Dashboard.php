@@ -790,11 +790,14 @@ public function login_in_process(){
             }else{   $data['filterData']=json_encode(array()); }
                 
         //lead
-        $data['leadCount']=$this->dashboard_model->countLead(2);
-        $data['leadSum']=$this->dashboard_model->dataLead(2);
+        $enq_count = $data['leadCount']=$this->dashboard_model->countLead(2);
+        $enq_Sum = $data['leadSum']=$this->dashboard_model->dataLead(2);
+      //  echo 'Count:'.$enq_count.'<br>value:';print_r($enq_Sum->result());
+      // exit();
         //client
         $data['clientCount2']=$this->dashboard_model->countLead(3);
-        $data['clientsum']=$this->dashboard_model->dataLead(3);
+        $leadSum = $data['clientsum']=$this->dashboard_model->dataLead(3);
+
         $data['state_list'] = $this->location_model->estate_list();
         $data['city_list'] = $this->location_model->city_list();
 
