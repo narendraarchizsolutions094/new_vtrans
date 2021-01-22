@@ -290,6 +290,11 @@ if($this->session->companey_id == 65){ ?>
       $("select[name='ticket_status']").val('3');
       $("select[name='quick_ticket_status']").val('3');
     // }
+  }else if("<?=$ticket->complaint_type?>"==1){
+    if("<?=empty($ticket->ticket_stage)?>"){
+      $("select[name=lead_description]").load("<?=base_url('message/find_substage/2')?>");    
+    }
+    $("#lead_stage_change").val('2');    
   }  
   if(<?=$ticket->ticket_status?>==3){
     $("#ticket_disposition_save").attr('disabled',true);

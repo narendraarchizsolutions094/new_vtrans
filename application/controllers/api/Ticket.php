@@ -59,12 +59,14 @@ class Ticket extends REST_Controller {
   {      
     $company_id   = $this->input->post('company_id');
     $user_id      = $this->input->post('user_id');
+    $process_id = $this->input->post('process_id');
     $this->form_validation->set_rules('company_id','Company ID','trim|required',array('required'=>'You have note provided %s'));
     $this->form_validation->set_rules('user_id','User ID','trim|required',array('required'=>'You have note provided %s'));
+    $this->form_validation->set_rules('process_id','Process ID','trim|required',array('required'=>'You have note provided %s'));
     if($this->form_validation->run() == true)
     {
       $this->load->model('Ticket_Model');
-      $getList  = $this->Ticket_Model->getTicketListByCompnyID($company_id,$user_id);
+      $getList  = $this->Ticket_Model->getTicketListByCompnyID($company_id,$user_id,$process_id);
       if(!empty($getList))
       {
         $this->set_response([
@@ -1079,21 +1081,23 @@ class Ticket extends REST_Controller {
     $user_id      = $this->input->post('user_id');
     $offset = $this->input->post('offset')??0;
     $limit = $this->input->post('limit')??10;
+    $process_id = $this->input->post('process_id');
 
     $this->form_validation->set_rules('company_id','Company ID','trim|required',array('required'=>'You have note provided %s'));
     $this->form_validation->set_rules('user_id','User ID','trim|required',array('required'=>'You have note provided %s'));
+    $this->form_validation->set_rules('process_id','Process ID','trim|required',array('required'=>'You have note provided %s'));
     if($this->form_validation->run() == true)
     {
       $this->load->model('Ticket_Model');
   
-      $total  = $this->Ticket_Model->getTicketListByCompnyID('count',$company_id,$user_id);
-
+      $total  = $this->Ticket_Model->getTicketListByCompnyID('count',$company_id,$user_id,$process_id);
+     // echo $this->db->last_query();
       $res= array();
       $res['offset'] = $offset;
       $res['limit'] = $limit;
       $res['total'] = $total;
 
-      $res['list']  = $this->Ticket_Model->getTicketListByCompnyID('data',$company_id,$user_id,$offset,$limit);
+      $res['list']  = $this->Ticket_Model->getTicketListByCompnyID('data',$company_id,$user_id,$process_id,$offset,$limit);
 
       if(!empty($res))
       {

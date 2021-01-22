@@ -1383,9 +1383,9 @@ class Ticket extends CI_Controller
 	}
 
 	public function auto_add_config()
-	{
+	{	
 		$data['title'] = "Ticket by Mail ";
-		$this->load->model(array('User_model','dash_model'));
+		$this->load->model(array('User_model','dash_model','Apiintegration_Model'));
 		$res = $data['row'] = $this->db->where('comp_id',$this->session->companey_id)->get('ticket_email_config')->row();
 
 		$data['user_list'] = $this->User_model->user_list();
@@ -1398,9 +1398,9 @@ class Ticket extends CI_Controller
 							'password' => $this->input->post('password'),
 							'comp_id'=> $this->session->companey_id,
 							'belongs_to'=>$this->input->post('belongs_to'),
-							'process_id'=>$this->input->post('process_id')
+							'process_id'=>$this->input->post('process_id'),
+							'template'=>nl2br($this->input->post('template'))
 							);
-			//print_r($data);exit();
 			if(!empty($res))
 			{
 				$this->db->where('comp_id',$this->session->companey_id)->update('ticket_email_config',$data);
@@ -1434,7 +1434,7 @@ class Ticket extends CI_Controller
 		$this->load->model('Enquiry_model');
 		$this->form_validation->set_rules('name','Name','required');
 		$this->form_validation->set_rules('phone','Mobile No','required');
-		$this->form_validation->set_rules('email','Email','required');
+		// $this->form_validation->set_rules('email','Email','required');
 		if($this->session->companey_id == 65 && ($this->input->post('complaint_type') == 1)){
 			$this->form_validation->set_rules('tracking_no', display('tracking_no'), 'required|callback_tracking_no_check', array('tracking_no_check' => 'Ticket with this '.display('tracking_no').' is already open.'));
 		}
@@ -2070,7 +2070,7 @@ class Ticket extends CI_Controller
 									$working_hrs	=	$this->get_working_hours($created_date,$currentDate,$assign_to);
 									echo $d.' '.$tck['id'].' '.$working_hrs.' '.$esc_hr.'<br>';
 									if($working_hrs >= $esc_hr){
-										$this->Ticket_Model->insertData($assign_to,$tck['id'],$lid,$rule_title,$comp_id,2175);										
+										$this->Ticket_Model->insertData($assign_to,$tck['id'],$lid,$rule_title,$comp_id,286);										
 										echo $this->db->last_query();
 										echo '<br>'.$rule_title.'<br>';
 									}
@@ -2227,11 +2227,44 @@ class Ticket extends CI_Controller
 		}
 		// tat code end
 		public function getDatafromMail()
-		{
-			$res = $this->db->where('comp_id',$this->session->companey_id)->get('ticket_email_config');
-			if($res->num_rows())
+		{	
+			$imap_config = $this->db->where('comp_id',$this->session->companey_id)->get('ticket_email_config');
+
+			    $this->db->where('comp_id', $this->session->companey_id);
+			    $this->db->where('status', 1);
+			$smtp_config  = $this->db->get('email_integration')->row_array();
+		
+			if (!empty($smtp_config))
 			{
-				$row = $res->row();
+			      $config['smtp_auth']    = true;
+			      $config['protocol']     = $smtp_config['protocol'];
+			      $config['smtp_host']    = $smtp_config['smtp_host'];
+			      $config['smtp_port']    = $smtp_config['smtp_port'];
+			      $config['smtp_timeout'] = '7';
+			      $config['smtp_user']    = $smtp_config['smtp_user'];
+			      $config['smtp_pass']    = $smtp_config['smtp_pass'];
+			      $config['charset']      = 'utf-8';
+			      $config['mailtype']     = 'html'; // or html
+			      $config['newline']      = "\r\n";
+			      $send_from = $smtp_config['smtp_user'];
+			      $this->email->initialize($config);
+			      $this->email->from($send_from);
+			 //      $this->email->to('ssgautamji9@gmail.com');
+			 //      $this->email->message('revert test');
+			 //      $this->email->set_header('In-Reply-To:', 'cabwexvjzjqd7ivez+1vngvpn23li8ww1c_faueu4cmxqhuhhrq@mail.gmail.com');
+				// $this->email->set_header('References:','<CABWEXVjzjqD7iveZ+1vngvPN23Li8Ww1c_FauEu4cmXQhuHHrQ@mail.gmail.com> <60097a66e9780@archiztechnologies.com>');
+			 //    if($this->email->send())
+		  //     	{
+		  //       	echo'Reverted :';
+		  //     	} 
+		  //     	else
+		  //     		echo'not';
+		  //     	exit();
+			}
+
+			if($imap_config->num_rows())
+			{
+				$row = $imap_config->row();
 				$hostname =  $row->hostname;
 				$username = $row->username;
 				$password = $row->password;
@@ -2239,20 +2272,27 @@ class Ticket extends CI_Controller
 				$process  = $row->process_id;
 			}
 			else{
-				echo'Configuration not done.';
+				echo'IMAP Configuration not done.';
 				exit();
 			}
 
+		// 	$hostname =  '{imappro.zoho.com:993/imap/ssl}INBOX';
+		// // $username = 'shahnawazbx@gmail.com';
+		// // $password = 'BuX@76543210';
+		// $username = 'suraj@archiztechnologies.com';
+		// $password = 'Archiz321';
 			//echo $hostname.'<br>'.$username.'<br>'.$password;
 			/* try to connect */
 			$inbox = imap_open($hostname, $username, $password) or die('Cannot connect to Mail: ' . imap_last_error());
+			echo 'imap open<br>';
 			// echo "<pre>";
 			// print_r(imap_errors());
 			// echo "</pre>";
 			// echo imap_last_error();
 			// echo "Hello 2";
 			/* grab emails */
-			$emails = imap_search($inbox, 'ALL');
+			$emails = imap_search($inbox, 'UNANSWERED UNSEEN');//
+			echo 'imap searching<br>';
 			/* if emails are returned, cycle through each... */
 			if ($emails) {
 				/* begin output var */
@@ -2261,27 +2301,59 @@ class Ticket extends CI_Controller
 				rsort($emails);
 				/* for every email... */
 				foreach ($emails as $ind => $email_number) {
-					if ($ind > 10) break;
+
+					if ($ind > 2) break;
+					
 					/* get information specific to this email */
 					$overview = imap_fetch_overview($inbox, $email_number, 0);
 					$message  = imap_fetchbody($inbox, $email_number, 1);
+					$headers = imap_header($inbox, $email_number, 1);
+
+
+					// $structure = imap_fetchstructure($inbox, $email_number);
+
+			  //       if(isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[1])) {
+			  //           $part = $structure->parts[1];
+			  //           $message = imap_fetchbody($inbox,$email_number,2);
+
+			  //           if($part->encoding == 3) {
+			  //               $message = imap_base64($message);
+			  //           } else if($part->encoding == 1) {
+			  //               $message = imap_8bit($message);
+			  //           } else {
+			  //               $message = imap_qprint($message);
+			  //           }
+			  //       }
+			        $message= quoted_printable_decode($message);
+
 					$fromMail = $overview[0]->from ;
 					$message_id = $overview[0]->message_id;
 					$subject = $overview[0]->subject;
 					$y = explode('<',$fromMail);
 					$name = $y[0]??'';
 					$mailid = str_replace('>', '', $y[1]??'');
-					// echo 'Subject- '.$subject.'<br>
-					// 		Mail- '.$mailid.'<br>
-					// 		name- '.$name.'<br>
-					// 		<br>
-					// '; continue;
-					$count=$this->db->where('email',$mailid)->count_all_results('tbl_ticket');
-					if($count==0){
-						// $parts = explode("@", $fromMail);
-						// $name = $parts[0];
+
+					echo 'Subject- '.$subject.'<br>
+							Mail- '.$mailid.'<br>
+							name- '.$name.'<br>
+							Seen: '.$overview[0]->seen.'<br>
+							Message
+							msgid:'.htmlentities($message_id).'
+							<br><hr>
+					';
+					$flag =1;
+					if(!empty($overview[0]->references))
+					{	
+						$ref = explode(' ',$overview[0]->references)[0];
+						$this->db->where('email_message_id',$ref);
+						$match = $this->db->where('email',$mailid)->get('tbl_ticket');
+						$flag = !$match->num_rows();
+					}
+
+					if($flag)
+					{
 						if(empty($name)){$name='';}
-						$data=['name'=>$name,'email'=>$mailid,'email_message_id'=>$message_id,'message'=>$subject,'send_date'=>date("Y-m-d H:i:s"),'added_by'=>$user,'process_id'=>$process];
+						$data=['name'=>$name,'email'=>$mailid,'email_message_id'=>$message_id,'message'=>$subject,'send_date'=>date("Y-m-d H:i:s"),'added_by'=>$user,'process_id'=>$process,'company'=>$this->session->companey_id];
 						$this->db->insert("tbl_ticket", $data);
 						$insid = $this->db->insert_id();
 						$tckno = "TCK" . $insid . strtotime(date("y-m-d h:i:s"));
@@ -2300,13 +2372,91 @@ class Ticket extends CI_Controller
 							"ticket_status" =>0,
 							"stage"  => 0,
 							"sub_stage"  => 0,
-							"added_by" => 0,
+							"added_by" => $user,
 						);
 						$ret = $this->db->insert("tbl_ticket_conv", $insarr);
+						
+						if(!empty($smtp_config))
+						{
+
+							$mail_subject= "#".$tckno." Ticket Created with Subject '".$subject."'";
+
+							$mail_msg = $row->template;
+							$search  = array('@ticketno'=>$tckno,
+											'@sender'=>$name,
+											'@subject'=>$subject,
+										);
+							
+							foreach ($search as $key => $value) {
+							$mail_msg =	str_replace($key, $value, $mail_msg);
+							 } 
+
+
+							$this->email->to($mailid);
+							$this->email->set_header('In-Reply-To:', $message_id);
+							$this->email->set_header('References:', $message_id);
+							$this->email->subject($mail_subject);
+							$this->email->message($mail_msg);
+							if($this->email->send())
+					      	{
+					        	echo'Reverted :'.$mailid;
+					      	} 
+						}
+						echo'<hr>';
+					}
+					else
+					{
+						$tck = $match->row();
+
+						if(!empty($smtp_config))
+						{
+							
+
+							// echo  $message;
+							// exit();
+
+							$mail_msg = "Thanks For Your Response. We have recorded your response";
+							$this->email->to($tck->email);
+							$this->email->set_header('In-Reply-To:', $tck->email_message_id);
+							$this->email->set_header('References:', $overview[0]->references);
+							$this->email->subject($overview[0]->subject);
+							$this->email->message($mail_msg);
+							if($this->email->send())
+					      	{
+					        	echo'
+					        	Mail-ID:'.htmlentities($tck->email_message_id).'<br>
+					        	Reverted :'.$mailid;
+					        $message = htmlentities($message);
+					       $insarr = array(
+							"tck_id" => $tck->id,
+							"comp_id" => $this->session->companey_id,
+							"parent" => 0,
+							"subj"   => 'Reponse Received by mail.',
+							"msg"    => $message,
+							"attacment" => "",
+							"status"  => 0,
+							"ticket_status" =>0,
+							"stage"  => 0,
+							"sub_stage"  => 0,
+							"added_by" => $user,
+						);
+						$ret = $this->db->insert("tbl_ticket_conv", $insarr);
+					      	} 
+						}
+						echo'<hr>';
+
+
+						print_r($overview[0]);
+						echo'<hr>';
+						print_r($tck);
 					}
 		
 				}
-				echo $output;
+				//echo $output;
+			}
+			else
+			{
+				echo'No New Mails';
 			}
 			imap_close($inbox);
 			}

@@ -164,7 +164,7 @@ class Ticket_Model extends CI_Model
 				$postData = array(
 					'Enquery_id' 	=> $encode,
 					'comp_id' 		=> $this->session->companey_id,
-					'email' 		=> $this->input->post("email", true),
+					'email' 		=> $this->input->post("email", true)??'',
 					'phone' 		=> $this->input->post("phone", true),
 					'name' 			=> $this->input->post("name", true),
 					'company'		=> $this->input->post("client_new", true),
@@ -431,11 +431,10 @@ class Ticket_Model extends CI_Model
 		$where .= "( tck.added_by IN (" . implode(',', $all_reporting_ids) . ')';
 		$where .= " OR tck.assign_to IN (" . implode(',', $all_reporting_ids) . '))';
 
-		return $this->db->select("tck.*,enq.gender,prd.country_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , COUNT(cnv.id) as tconv, cnv.msg, tbl_admin.s_display_name,tbl_admin.last_name")
+		return $this->db->select("tck.*,enq.gender,prd.country_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , (SELECT COUNT(*) from tbl_ticket_conv as t2 where t2.tck_id=tck.id) as tconv, tbl_admin.s_display_name,tbl_admin.last_name")
 			->where($where)
 			->where("tck.company", $this->session->companey_id)
 			->from("tbl_ticket tck")
-			->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT")
 			->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT")
 			->join("tbl_admin", "tbl_admin.pk_i_admin_id = tck.assign_to", "LEFT")
 			->join("tbl_product_country prd", "prd.id = tck.product", "LEFT")
@@ -446,22 +445,30 @@ class Ticket_Model extends CI_Model
 		//echo $this->db->last_query(); exit();
 	}
 
-	public function getTicketListByCompnyID($action,$companyid, $userid,$offset=-1,$limit=-1)
+	public function getTicketListByCompnyID($action='data',$companyid,$userid,$process,$offset=-1,$limit=-1)
 	{
 		$all_reporting_ids    =   $this->common_model->get_categories($userid);
 		$where = '';
 		$where .= "( tck.added_by IN (" . implode(',', $all_reporting_ids) . ')';
 		$where .= " OR tck.assign_to IN (" . implode(',', $all_reporting_ids) . '))';
-		 $this->db->select("tck.*,enq.gender,prd.country_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , COUNT(cnv.id) as tconv, cnv.msg")
+		 $this->db->select("tck.*,enq.gender,prd.country_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , (SELECT COUNT(*) from tbl_ticket_conv as t2 where t2.tck_id=tck.id) as tconv")
 			->where($where)
 			->where("tck.company", $companyid)
-
 			->from("tbl_ticket tck")
-			->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT")
+			// ->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT")
 			->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT")
 			->join("tbl_product_country prd", "prd.id = tck.product", "LEFT")
 			->order_by("tck.id DESC");
 
+			if(!empty($process))
+			{
+				$plist = '';
+				if(is_array($process))
+					$plist= implode(',', $process);
+				else
+					$plist = $process;
+				$this->db->where(" tck.process_id IN (".$plist.")");
+			}
 
 		if(!empty($_POST['filters']))
         {
@@ -536,7 +543,7 @@ class Ticket_Model extends CI_Model
 	public function filterticket($where)
 	{
 
-		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , COUNT(cnv.id) as tconv, cnv.msg,stage.lead_stage_name,sub_stage.description,tbl_ticket_status.status_name as ticket_status_name");
+		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , (SELECT COUNT(*) from tbl_ticket_conv as t2 where t2.tck_id=tck.id) as tconv,stage.lead_stage_name,sub_stage.description,tbl_ticket_status.status_name as ticket_status_name");
 		$this->db->where("tck.company", $this->session->companey_id);
 
 		if (!empty($where)) {
@@ -545,7 +552,6 @@ class Ticket_Model extends CI_Model
 		}
 
 		$this->db->from("tbl_ticket tck");
-		$this->db->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT");
 		$this->db->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT");
 		$this->db->join("tbl_product prd", "prd.sb_id = tck.product", "LEFT");
 		$this->db->join("lead_stage stage", "tck.ticket_stage = stage.stg_id", "LEFT");
@@ -562,11 +568,10 @@ class Ticket_Model extends CI_Model
 	public function all_related_tickets($where)
 	{
 
-		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , COUNT(cnv.id) as tconv, cnv.msg,tbl_ticket_status.status_name as ticket_status_name");
+		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , (SELECT COUNT(*) from tbl_ticket_conv as t2 where t2.tck_id=tck.id) as tconv,tbl_ticket_status.status_name as ticket_status_name");
 		$this->db->where("tck.company", $this->session->companey_id);
 
 		$this->db->from("tbl_ticket tck");
-		$this->db->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT");
 		$this->db->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT");
 		$this->db->join("tbl_product prd", "prd.sb_id = tck.product", "LEFT");
 		$this->db->join("tbl_ticket_status", "tbl_ticket_status.id = tck.ticket_status", "LEFT");
