@@ -46,7 +46,7 @@ class User_model extends CI_Model {
 
     
 
-    public function read($user_right='',$hier_wise=true) {        
+    public function read($user_right='',$hier_wise=true,$proc_wise=true) {        
         $user_separation  = get_sys_parameter('user_separation','COMPANY_SETTING');
         $sep_arr=array();
         if (!empty($user_separation)) {
@@ -78,10 +78,14 @@ class User_model extends CI_Model {
         }else{
             $exclude = $sep_arr;
         }
+        
         //process wise user select
-        foreach($process as $pid){
-				$where .= " AND (FIND_IN_SET($pid,process) >0)";
-        }       
+        if($proc_wise){
+            foreach($process as $pid){
+                $where .= " AND (FIND_IN_SET($pid,process) >0)";
+            }       
+        }
+        
         if(!empty($exclude) && empty($user_right)){
             foreach($exclude as $rid){
                 $where .= "  AND tbl_admin.user_permissions!='".$rid."'";                                            
