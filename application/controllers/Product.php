@@ -65,7 +65,7 @@ class Product extends CI_Controller
 		$data['process'] = array(); //$this->db->select("*")->where("comp_id", $this->session->companey_id)->get("tbl_product")->result();
 		$this->load->model('User_model');
 		$this->load->model('warehouse_model');
-		$data['seller_list'] = $this->User_model->read(200);
+		$data['seller_list'] = $this->User_model->read(200,true,false);
 		$data['brand_list'] = $this->warehouse_model->brand_list();
 		$data['pid'] = $prodno;
 
