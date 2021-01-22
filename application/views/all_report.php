@@ -54,6 +54,7 @@
                 <hr>
                 <form method="post" class="lead-form" id="filter_and_save_form"
                     action="<?php echo base_url('Report/view_details') ?>">
+<input name="type" id="type" value="1" hidden>
                     <div class="form-row col-md-12">
                         <div class="form-group col-md-3">
                             <label for="inputEmail4"><?php echo display("from_date"); ?></label>
@@ -599,7 +600,6 @@ $(document).ready(function() {
     $(".chosen-select").select2();
 });
 
-
 $(document).ready(function() {
     var d = new Date($.now());
     var report_name = 'Report_' + d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear() + " " + d
@@ -643,6 +643,7 @@ $(document).ready(function() {
 
 
     $("#filter_and_save").on("click", function(e) {
+        // alert( $("#filter_and_save_form").serialize());
         e.preventDefault();
         var title = window.prompt("Enter Report Name");
         if (title) {
@@ -652,7 +653,8 @@ $(document).ready(function() {
                 type: 'POST',
                 data: {
                     'filters': $("#filter_and_save_form").serialize(),
-                    'report_name': title
+                    'report_name': title,
+                    'type': 1
                 },
                 success: function(result) {
                     result = JSON.parse(result);

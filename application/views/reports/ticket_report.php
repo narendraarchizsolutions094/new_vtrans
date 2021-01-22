@@ -3,7 +3,7 @@
 					<div class="panel-heading no-print" style ="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
 						<div class="row">
 							<div class="btn-group"> 
-                  <a class="btn btn-primary" href="<?php echo base_url("report/index") ?>"> <i class="fa fa-list"></i>
+                  <a class="btn btn-primary" href="<?php echo base_url("report/ticket_reports") ?>"> <i class="fa fa-list"></i>
                         <?php echo display('reports_list') ?> </a>
 
                     <?php if(user_access(220)) { if(!empty($this->session->telephony_token)){  ?>
@@ -40,9 +40,9 @@
 	<div class="row" id="filter_pannel">
         <div class="col-lg-12">
             <div class="panel panel-default" style="padding-top: 13px;">
+<input name="type" id="type" value="2" hidden> 
                
                       <div class="form-row">
-                       
                         <div class="form-group col-md-3" id="fromdatefilter">
                           <label for="from-date"><?php echo display("from_date"); ?></label>
                           <input class="form-control form-date" id="from-date" name="from_created" style="padding-top:0px;" value="<?=$this->input->post('from_created')?>">
@@ -74,7 +74,6 @@
 
                           </select>
                         </div>
-
 
                         <!-- ======= Problem filter======== -->
 
@@ -249,7 +248,8 @@
 
                     </div>
                   <div class="col-md-12" style="border-top: 1px solid #f4f4f4; padding: 8px;">
-                    <button class="btn btn-success pull-right" type="button" id="go_filter">Generate Report</button>
+                    <button class="btn btn-success pull-right" type="button" id="go_filter">Filter</button>
+                    <button class="btn btn-primary pull-right" type="button" id="filter_and_save">Filter & Save</button>
                 </div>
             </div>
         </div>
@@ -272,7 +272,204 @@
           $dshowall = false;
         }       
  ?>
+<?php
+                if(!empty($post_report_columns)){ ?>
+                <div style="float:right;">
+                    <a class='btn btn-xs  btn-primary' href='javascript:void(0)' id='show_analytics' title='Show report analytics'><i class='fa fa-bar-chart'></i></a>
+                </div>
+                <?php
+                }
+                ?>
+                <div class='show_graphs hide_graph'>
+                    <div class='row'>
+                        
+                        <div class='col-md-4 card-graph'>
+                            <div id='source_chart' >
+                            </div>
+                        </div>
+                        <div class='col-md-4 card-graph'>
+                            <div id='process_chart' >
+                            </div>                
+                        </div>
+                        <div class='col-md-4 card-graph'>
+                            <div id='stage_chart' >
+                            </div>                        
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-md-4 card-graph'>
+                            <div id='status_chart' >
+                            </div>
+                        </div>
+                        <div class='col-md-4 card-graph'>
+                            <div id='user_chart' >
+                            </div>
+                        </div>
+                        <div class='col-md-4 card-graph'>
+                            <div id='product_chart' >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group col-md-12 table-responsive" id="showResult">
+                    <table id="example" class=" table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <?php
+                                  if (!empty($post_report_columns)) {
+                                    foreach ($post_report_columns as $value) { ?>
+                                <th><?=ucfirst($value)?></th>
+                                <?php
+                                    }
+                                  } 
+                                ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
+<!---------------------------->
+<script type="text/javascript">
+    $("#show_analytics").on('click',function(){
+        $(this).hide();
+        $(".show_graphs").removeClass('hide_graph');
+        show_report_graph();
+    });
+    function show_report_graph(){
+        if(!$(".show_graphs").hasClass('hide_graph')){    
+            generate_pie_graph('source_chart','Source Wise');
+            generate_pie_graph('process_chart','Process Wise');
+            generate_pie_graph('stage_chart','Sales Stage Wise');
+            generate_pie_graph('user_chart','Employee Wise Assigned Data');    
+            generate_pie_graph('product_chart','Product/Service Wise');
+            funnel_chart('status_chart','Sales Pipeline Wise');
+        }    
+    }
+    function generate_pie_graph(elm,title){
+        var url = "<?=base_url().'report/report_analitics/'?>"+elm;
+        $.ajax({
+            url: url,
+            type: 'POST',                    
+            success: function(result) {      
+                result = JSON.parse(result);
+
+                Highcharts.chart(elm, {            
+                    chart: {
+                        type: 'pie',
+                            options3d: {
+                                enabled: true,
+                                alpha: 45                        
+                            },
+                        margin: [0, 0, 0, 0],
+                        spacingTop: 0,
+                        spacingBottom: 0,
+                        spacingLeft: 0,
+                        spacingRight: 0
+                    },
+                    title: {
+                            text: ''
+                        },
+                    exporting: {
+                        buttons: {
+                            contextButton: {
+                                menuItems: ["viewFullscreen", "printChart", "downloadPNG"]
+                            }
+                        }
+                    },
+                    subtitle: {
+                        text: title
+                    },
+                    plotOptions: {            
+                        pie: {
+                            //size:'40%',
+                            // dataLabels: {
+                            //     enabled: false
+                            // },
+                            innerSize: 50,
+                            depth: 45
+                        }
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Count',                
+                        data: result
+                    }]
+                });
+            }
+        });
+    }
+
+function funnel_chart(elm,title){
+    var url = "<?=base_url().'report/report_analitics_pipeline/'?>"+elm;
+        $.ajax({
+            url: url,
+            type: 'POST',                    
+            success: function(result) {      
+                result = JSON.parse(result);
+                Highcharts.chart(elm, {
+                chart: {
+                    type: 'funnel3d',
+                    options3d: {
+                        enabled: true,
+                        alpha: 10,
+                        depth: 50,
+                        viewDistance: 50
+                    },
+                    margin: [0, 0, 0, 0],
+                    spacingTop: 0,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: title
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            menuItems: ["viewFullscreen", "printChart", "downloadPNG"]
+                        }
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b> ({point.y:,.0f})',
+                        allowOverlap: false,
+                        y: 10
+                    },
+                    neckWidth: '30%',
+                    neckHeight: '25%',
+                    width: '80%',
+                    height: '80%'
+                    }
+                },
+                series: [{
+                    name: 'Count',
+                    data: result
+                }]
+                });
+            }
+        });
+}
+</script>
 							<!-- Filter Panel End -->
 							<div class="row">
 								<div class="col-md-1"></div>
@@ -586,6 +783,51 @@ $(document).ready(function() {
         
     });
 });
+
+$(document).ready(function() {
+
+$("#filter_and_save").on("click", function(e) {
+        e.preventDefault();
+        // var data= $("#ticket_filter").serialize();
+        // alert(data);
+        e.preventDefault();
+        var form_data = $("#ticket_filter").serialize();       
+        //alert(form_data);
+        $.ajax({
+        url: '<?=base_url()?>ticket/ticket_set_filters_session',
+        type: 'post',
+        data: form_data,
+        success: function(responseData){
+          $("#ticket_filter").submit();
+        }
+        });
+        var title = window.prompt("Enter Report Name");
+        if (title) {
+            var url = "<?=base_url('report/create_report')?>";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    'filters': $("#ticket_filter").serialize(),
+                    'report_name': title,
+                    'type': 2
+
+                },
+                success: function(result) {
+                    result = JSON.parse(result);
+                    if (result.status) {
+                        $("#ticket_filter").submit();
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        } else {
+            alert("Report not saved");
+        }
+    });   
+    });   
+
 </script>
 <script type="text/javascript">
   <?php  
