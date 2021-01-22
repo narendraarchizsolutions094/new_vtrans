@@ -36,7 +36,8 @@ class Report_datatable_model extends CI_Model {
         $enq_product = $this->session->userdata('enq_product1');
         $drop_status = $this->session->userdata('drop_status1');
         $productlst = $this->session->userdata('productlst');
-        $all = $this->session->userdata('all1');        
+        $all = $this->session->userdata('all1');
+        $companey_id= $this->session->userdata('companey_id');  
         if($all){
             $select = 'enquiry.enquiry_id,enquiry.Enquery_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.phone,enquiry.update_date,enquiry.email,enquiry.gender,enquiry.enquiry as enq_remark,tbl_drop.drop_reason as drop_status,enquiry.drop_reason,enquiry.status,lead_source.lead_name,tbl_subsource.subsource_name,lead_description.description,enquiry.lead_discription_reamrk,lead_score.score_name as lead_score,enquiry.status as inq_status,enquiry.created_date as inq_created_date, CONCAT(tbl_admin.s_display_name,tbl_admin.last_name) as created_by_name,CONCAT(admin2.s_display_name,admin2.last_name) as assign_to_name,tbl_product.product_name,lead_stage2.lead_stage_name as followup_name,tbl_product_country.country_name as enq_product_name,state.state as state_name,city.city as city_name';
             }else{
@@ -129,7 +130,12 @@ class Report_datatable_model extends CI_Model {
                     $where .= " AND enquiry.drop_status>0 AND enquiry.status=1";
                 }
             }
-            $comp_id = $this->session->companey_id;            
+            if($this->session->companey_id==''){
+                $comp_id=$companey_id;
+            }else{
+                $comp_id=$this->session->companey_id;
+
+            }   
             
             $this->db->join('tbl_product_country','tbl_product_country.id=enquiry.enquiry_subsource','left');   
             $this->db->join('lead_source','lead_source.lsid=enquiry.enquiry_source','left');            
@@ -185,11 +191,14 @@ class Report_datatable_model extends CI_Model {
 
     function report_analitics($for){
         $employe = $this->session->userdata('employe1');
+        $user_id = $this->session->userdata('user_id');
+
         if ($this->session->hier_wise && $employe) {
            $uid = $employe[0];
            $employe    =    $this->common_model->get_categories($uid);                  
         }else{
-    	   $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+           if($this->session->user_id==''){  $user_id=$user_id;  }else{  $user_id=$this->session->user_id;  }  
+    	   $all_reporting_ids    =    $this->common_model->get_categories($user_id);      
         }
         $from = $this->session->userdata('from1');
         $to= $this->session->userdata('to1');
@@ -213,6 +222,7 @@ class Report_datatable_model extends CI_Model {
         $enq_product = $this->session->userdata('enq_product1');
         $drop_status = $this->session->userdata('drop_status1');
         $productlst = $this->session->userdata('productlst');
+        $companey_id = $this->session->userdata('companey_id');
         $group_by = '';
         $from_table    =   'enquiry';
         if($for == 'source_chart'){
@@ -328,12 +338,18 @@ class Report_datatable_model extends CI_Model {
                     $where .= " AND enquiry.drop_status>0 AND enquiry.status=1";
                 }
             }
-            $comp_id = $this->session->companey_id;            
+             if($this->session->companey_id==''){
+                $comp_id=$companey_id;
+            }else{
+                $comp_id=$this->session->companey_id;
+
+            }           
             
             $this->db->join('tbl_product_country','tbl_product_country.id=enquiry.enquiry_subsource','left');   
             $this->db->join('lead_source','lead_source.lsid=enquiry.enquiry_source','left');            
             $this->db->join('tbl_product','tbl_product.sb_id=enquiry.product_id','left');   
-            $this->db->join("(select * from tbl_subsource where comp_id=$comp_id) as tbl_subsource",'tbl_subsource.subsource_id=enquiry.sub_source','left');        
+            $this->db->join("(select * from tbl_subsource where comp_id=$comp_id) 
+            as tbl_subsource",'tbl_subsource.subsource_id=enquiry.sub_source','left');        
             
             $this->db->join('tbl_datasource','tbl_datasource.datasource_id=enquiry.datasource_id','left');
             $this->db->join('state','state.id=enquiry.state_id','left');
@@ -359,4 +375,5 @@ class Report_datatable_model extends CI_Model {
             }
             return $res;
     }
+    
 } 

@@ -14,11 +14,20 @@ class Report extends CI_Controller {
         ));
         $this->load->library('pagination');
     }
+
         public function index(){
           if (user_role('120') == true) {}
             $data['title'] = display('reports_list');
-            $data['reports'] = $this->report_model->get_all_reports();
+            $data['reports'] = $this->report_model->get_all_reports(1);
             $data['content'] = $this->load->view('reports/index', $data, true);        
+            $this->load->view('layout/main_wrapper', $data);
+        }
+
+        public function ticket_reports(){
+          if (user_role('120') == true) {}
+            $data['title'] = 'Ticket Reports List';
+            $data['reports'] = $this->report_model->get_all_reports(2);
+            $data['content'] = $this->load->view('reports/ticket_index', $data, true);        
             $this->load->view('layout/main_wrapper', $data);
         }
         public function view($id){ 
@@ -26,7 +35,8 @@ class Report extends CI_Controller {
             $data['rid'] = $id;
             $this->session->set_userdata('reportid',$id);
             $this->db->where('id',$id);
-            $report_row =   $this->db->get('reports')->row_array();             
+            $report_row =   $this->db->where('type',1)->get('reports')->row_array();             
+             
             $filters = json_decode($report_row['filters'],true); 
             $from = $this->session->set_userdata('fromdt',$this->input->post("from"));
             $to =  $this->session->set_userdata('todt',$this->input->post("to"));                                         
@@ -36,6 +46,229 @@ class Report extends CI_Controller {
             $data["fieldsval"]        = $this->report_model->getdynfielsval();  
             $data["dfields"] = $this->report_model->get_dynfields("");
             $data['content'] = $this->load->view('reports/report_view', $data, true);        
+            $this->load->view('layout/main_wrapper', $data);
+        }
+        public function send_sales_view($id){ 
+          // if (user_role('120') == true) {}
+            $data['rid'] = $id;
+            $this->session->set_userdata('reportid',$id);
+            $this->db->where('id',$id);
+            $report_row =   $this->db->where('type',1)->get('reports')->row_array();             
+             
+            $filters = json_decode($report_row['filters'],true); 
+            // $from = $this->session->set_userdata('fromdt',$this->input->post("from"));
+            // $to =  $this->session->set_userdata('todt',$this->input->post("to"));                                         
+            $data['title'] = 'View Report';
+            $data['filters'] = $filters;
+            $data['report_columns'] = $filters['report_columns'];
+            $_POST=$filters;
+            $comp_id=$report_row['comp_id'];
+            $user_id=$report_row['created_by'];
+            
+            if($this->input->post('from_exp')==''){
+              $from ='';  
+
+             }else{
+            $dfrom= $this->input->post('from_exp');
+            $from = date("d/m/Y", strtotime($dfrom));
+
+             }
+             
+             if($this->input->post('to_exp')==''){
+                 $to ='';
+             }else{
+                $tto= $this->input->post('to_exp');
+                $to = date("d/m/Y", strtotime($tto)); 
+             }
+ 
+             if($this->input->post('updated_from_exp')==''){
+               $updated_from ='';  
+              }else{
+             $updated_dfrom= $this->input->post('updated_from_exp');
+             $updated_from = date("d/m/Y", strtotime($updated_dfrom));
+              }
+              
+              if($this->input->post('updated_to_exp')==''){
+                  $updated_to ='';
+              }else{
+                 $updated_tto= $this->input->post('updated_to_exp');
+                 $updated_to = date("d/m/Y", strtotime($updated_tto)); 
+              }
+             if($this->input->post('employee')==''){
+                 $employe ='';
+             }else{
+                $employe= $this->input->post('employee');
+             }
+              if($this->input->post('phone')==''){
+                 $phone ='';
+             }else{
+                $phone= $this->input->post('phone');
+             }
+               if($this->input->post('country')==''){
+                 $country ='';
+             }else{
+                $country= $this->input->post('country');
+             }
+               if($this->input->post('institute')==''){
+                 $institute ='';
+             }else{
+                $institute= $this->input->post('institute');
+             }
+              if($this->input->post('center')==''){
+                 $center ='';
+             }else{
+                $center= $this->input->post('center');
+             }
+             if($this->input->post('source')==''){
+                 $source ='';
+             }else{
+                $source= $this->input->post('source');
+             }
+             if($this->input->post('subsource')==''){
+                 $subsource ='';
+             }else{
+                $subsource= $this->input->post('subsource');
+             }
+             if($this->input->post('datasource')==''){
+                 $datasource ='';
+             }else{
+                $datasource= $this->input->post('datasource');
+             }
+             if($this->input->post('state')==''){
+                 $state ='';
+             }else{
+                $state= $this->input->post('state');
+             }
+             if($this->input->post('lead_source')==''){ // disposition
+               $lead_source = '';
+             }else{
+                $lead_source = $this->input->post('lead_source');
+             }
+             
+             if($this->input->post('lead_subsource')==''){  
+                 $lead_subsource = '';
+             }else{
+                $lead_subsource = $this->input->post('lead_subsource');
+             }
+             if($this->input->post('sub_disposition')==''){  
+                 $sub_disposition = '';
+             }else{
+                $sub_disposition = $this->input->post('sub_disposition');
+             }
+             
+             
+             if($this->input->post('enq_product')==''){
+                 $enq_product = '';
+             }else{
+                $enq_product = $this->input->post('enq_product');
+             }
+             if($this->input->post('productlst')==''){
+                 $productlst = '';
+             }else{
+                $productlst = $this->input->post('productlst');
+             }
+             if($this->input->post('drop_status')==''){
+                 $drop_status = '';
+             }else{
+                $drop_status = $this->input->post('drop_status');
+             }
+             if($this->input->post('hier_wise')==''){
+                 $hier_wise = '';
+             }else{
+                $hier_wise = $this->input->post('hier_wise');
+             }
+             if($this->input->post('Enquiry_Id')==''){
+               $Enquiry_Id = '';
+           }else{
+              $Enquiry_Id = $this->input->post('Enquiry_Id');
+           }
+             $data['post_report_columns'] = $this->input->post('report_columns');
+             // print_r($data['post_report_columns']);
+             // die();
+              $post_report_columns = $this->input->post('report_columns');
+             if($this->input->post('all')==''){ // follow up report
+                 $all = '';
+             }else{
+                $all = $this->input->post('all');
+             }        
+             $data_arr = array(
+             'from1'           =>  $from,
+             'to1'             =>  $to,
+             'updated_from1'   =>  $updated_from,
+             'updated_to1'     =>  $updated_to,
+             'employe1'        =>  $employe,
+             'phone1'          =>  $phone,
+             'country1'        =>  $country,
+             'institute1'      =>  $institute,
+             'center1'         =>  $center,
+             'source1'         =>  $source,
+             'subsource1'      =>  $subsource,
+             'datasource1'     =>  $datasource,
+             'state1'          =>  $state,
+             'lead_source1'    =>  $lead_source,
+             'lead_subsource1' =>  $lead_subsource,
+             'sub_disposition' =>  $sub_disposition,
+             'enq_product1'    =>  $enq_product,
+             'drop_status1'    =>  $drop_status,
+             'all1'            =>  $all, 
+             'post_report_columns'=>$post_report_columns,
+             'productlst'=>$productlst,
+             'hier_wise' => $hier_wise,
+             'companey_id' => $comp_id,
+             'user_id' => $user_id,
+             );
+             $this->session->set_userdata($data_arr);
+            // $this->load->view('reports/send_sales_view', $data);  
+            $viewfile=$this->load->view('reports/send_sales_view', $data);  
+            // $this->load->helpers('dompdf');
+          //  $data= pdf_create($viewfile,'Bangalore-Australia-Agreement');
+            //  print_r($data)
+                $config['smtp_auth']    = true;
+			      $config['protocol']     = 'smtp';
+			      $config['smtp_host']    = 'smtp.zoho.com';
+			      $config['smtp_port']    = 587;
+			      $config['smtp_timeout'] = '7';
+			      $config['smtp_user']    = 'suraj@archiztechnologies.com';
+			      $config['smtp_pass']    = 'Archiz321';
+			      $config['smtp_crypto']    = 'tls';
+			      $config['charset']      = 'utf-8';
+			      $config['mailtype']     = 'html'; // or html
+			      $config['newline']      = "\r\n";
+			      $this->email->initialize($config);
+          $from = $this->config->item('smtp_user');
+          $to ='suraj.k112242@gmail.com';
+          $subject ='test';
+          $message = 'test';
+          $this->email->set_newline("\r\n");
+          $this->email->clear(TRUE);
+          $this->email->from($from);
+          $this->email->to($to);
+          $this->email->subject($subject);
+          $this->email->message($message);
+  
+          if ($this->email->send()) {
+              echo 'Your Email has successfully been sent.';
+          } else {
+              show_error($this->email->print_debugger());
+          }
+        }
+      
+        public function ticket_report_view($id)
+        {
+          if (user_role('120') == true) {}
+            $data['rid'] = $id;
+            $this->session->set_userdata('ticket_reportid',$id);
+            $this->db->where('id',$id);
+            $report_row =   $this->db->where('type',2)->get('reports')->row_array();             
+            $data['filters'] = json_decode($report_row['filters'],true); 
+            // print_r($filters);
+            // die();
+            $from = $this->session->set_userdata('fromdt',$this->input->post("from"));
+            $to =  $this->session->set_userdata('todt',$this->input->post("to"));                                         
+            $data['title'] = 'View Ticket Report';
+		        $this->session->set_userdata('ticket_filters_sess', $data['filters']);
+          
+            $data['content'] = $this->load->view('reports/ticket_report_view', $data, true);        
             $this->load->view('layout/main_wrapper', $data);
         }
          public function report_view_data(){
@@ -308,7 +541,7 @@ class Report extends CI_Controller {
             $this->db->where('id',$id);         
             $this->db->delete('reports');
             echo 1;
-        }
+        } 
         public function view_details(){ 
             if($this->input->post('from_exp')==''){
              $from ='';  
@@ -641,15 +874,20 @@ class Report extends CI_Controller {
     }
     public function create_report(){
         parse_str($_POST['filters'], $filters);
+      
         $report_name    = $this->input->post('report_name');
+        $type    = $this->input->post('type');
         $this->form_validation->set_rules('report_name','Report Name','required|trim');
         if ($this->form_validation->run() == TRUE) {
             $insert_array = array(
                             'name'      =>  $report_name,
+                            'type'      =>  $type,
                             'comp_id'   =>  $this->session->companey_id,
                             'filters'   =>  json_encode($filters),
                             'created_by'=>  $this->session->user_id
                             );
+                            // print_r(json_encode($filters));
+                            // die();
             if($this->db->insert('reports',$insert_array)){
                 echo json_encode(array('status'=>true,'msg'=>'Report Saved Successfully'));
             }else{
@@ -659,7 +897,10 @@ class Report extends CI_Controller {
             echo json_encode(array('status'=>false,'msg'=>validation_errors()));            
         }
     }
+
     public function all_reports() {
+      // print_r($this->session->userdata());
+      // die();
         $data['title'] = 'Report';
         $data['countries'] = $this->report_model->all_country();
         $data['institute'] = $this->report_model->all_institute();

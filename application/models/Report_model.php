@@ -1043,10 +1043,11 @@ class Report_model extends CI_Model {
         //$this->db->where_in('pk_i_admin_id',$users);        
         return $query = $this->db->get()->result();
     }
-    public function get_all_reports(){
+    public function get_all_reports($type){
         $this->db->select("reports.*,CONCAT_WS(' ',tbl_admin.s_display_name,tbl_admin.last_name) as created_by_name");
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=reports.created_by','inner');
         $this->db->where('comp_id',$this->session->companey_id);
+        $this->db->where('type',$type);
         $this->db->where('reports.created_by',$this->session->user_id);
         return $this->db->get('reports')->result_array();
     }
