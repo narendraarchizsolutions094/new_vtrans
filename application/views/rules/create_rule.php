@@ -28,9 +28,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					   			<option value="7" <?=(!empty($rule_data['type']) && $rule_data['type']==7)?'selected':''?>>Send WhatsApp</option>
 					   			<option value="8" <?=(!empty($rule_data['type']) && $rule_data['type']==8)?'selected':''?>>Auto Ticket Priority</option>
 					   			<option value="9" <?=(!empty($rule_data['type']) && $rule_data['type']==9)?'selected':''?>>Default Ticket Disposition</option>
+								
 								<option value="10" <?=(!empty($rule_data['type']) && $rule_data['type']==10)?'selected':''?>>Ticket move to sales</option>
+								
 								   
-								<!-- <option value="11" <?=(!empty($rule_data['type']) && $rule_data['type']==11)?'selected':''?>>Sales Notifications</option> -->
+								 <option value="11" <?=(!empty($rule_data['type']) && $rule_data['type']==11)?'selected':''?>>Lead Aging Notifications</option>
 
 					   		</select>
 					   	</div>
@@ -336,7 +338,7 @@ function builder_fun(rule_type)
 				{	//alert(rule_type);
 					var filterArray = new Array();
 
-				if((['1','2','3','4','6','7']).includes(rule_type))
+				if((['1','2','3','4','6','7','11']).includes(rule_type))
 				{
 					if(rules_basic=='')
 					{
@@ -441,11 +443,88 @@ function builder_fun(rule_type)
 						values: probability,
 						operators: ['equal', 'not_equal','is_null', 'is_not_null']
 					});
+					var days = {
+							'date(NOW() - INTERVAL 1 DAY)':'1 day',
+							'date(NOW() - INTERVAL 2 DAY)':'2 days',
+							'date(NOW() - INTERVAL 3 DAY)':'3 days',
+							'date(NOW() - INTERVAL 4 DAY)':'4 days',
+							'date(NOW() - INTERVAL 5 DAY)':'5 days',
+							'date(NOW() - INTERVAL 6 DAY)':'6 days',
+							'date(NOW() - INTERVAL 7 DAY)':'7 days',
+							'date(NOW() - INTERVAL 8 DAY)':'8 days',
+							'date(NOW() - INTERVAL 9 DAY)':'9 days',
+							'date(NOW() - INTERVAL 10 DAY)':'10 days',
+							'date(NOW() - INTERVAL 11 DAY)':'11 days',
+							'date(NOW() - INTERVAL 12 DAY)':'12 days',
+							'date(NOW() - INTERVAL 13 DAY)':'13 days',
+							'date(NOW() - INTERVAL 14 DAY)':'14 days',
+							'date(NOW() - INTERVAL 15 DAY)':'15 days',
+							'date(NOW() - INTERVAL 16 DAY)':'16 days',
+							'date(NOW() - INTERVAL 17 DAY)':'17 days',
+							'date(NOW() - INTERVAL 18 DAY)':'18 days',
+							'date(NOW() - INTERVAL 19 DAY)':'19 days',
+							'date(NOW() - INTERVAL 20 DAY)':'20 days',
+							'date(NOW() - INTERVAL 21 DAY)':'21 days',
+							'date(NOW() - INTERVAL 22 DAY)':'22 days',
+							'date(NOW() - INTERVAL 23 DAY)':'23 days',
+							'date(NOW() - INTERVAL 24 DAY)':'24 days',
+							'date(NOW() - INTERVAL 25 DAY)':'25 days',
+							'date(NOW() - INTERVAL 26 DAY)':'26 days',
+							'date(NOW() - INTERVAL 27 DAY)':'27 days',
+							'date(NOW() - INTERVAL 28 DAY)':'28 days',
+							'date(NOW() - INTERVAL 29 DAY)':'29 days',
+							'date(NOW() - INTERVAL 30 DAY)':'30 days',
+							'date(NOW() - INTERVAL 31 DAY)':'31 days',
+							'date(NOW() - INTERVAL 32 DAY)':'32 days',
+							'date(NOW() - INTERVAL 33 DAY)':'33 days',
+							'date(NOW() - INTERVAL 34 DAY)':'34 days',
+							'date(NOW() - INTERVAL 35 DAY)':'35 days',
+							'date(NOW() - INTERVAL 36 DAY)':'36 days',
+							'date(NOW() - INTERVAL 37 DAY)':'37 days',
+							'date(NOW() - INTERVAL 38 DAY)':'38 days',
+							'date(NOW() - INTERVAL 39 DAY)':'39 days',
+							'date(NOW() - INTERVAL 40 DAY)':'40 days',
+							'date(NOW() - INTERVAL 41 DAY)':'41 days',
+							'date(NOW() - INTERVAL 42 DAY)':'42 days',
+							'date(NOW() - INTERVAL 43 DAY)':'43 days',							
+							'date(NOW() - INTERVAL 45 DAY)':'45 days',
+							'date(NOW() - INTERVAL 46 DAY)':'46 days',
+							'date(NOW() - INTERVAL 47 DAY)':'47 days',
+							'date(NOW() - INTERVAL 48 DAY)':'48 days',
+							'date(NOW() - INTERVAL 49 DAY)':'49 days',
+							'date(NOW() - INTERVAL 50 DAY)':'50 days',
+							'date(NOW() - INTERVAL 51 DAY)':'51 days',
+							'date(NOW() - INTERVAL 52 DAY)':'52 days',
+							'date(NOW() - INTERVAL 43 DAY)':'43 days',
+							'date(NOW() - INTERVAL 54 DAY)':'54 days',
+							'date(NOW() - INTERVAL 55 DAY)':'55 days',
+							'date(NOW() - INTERVAL 56 DAY)':'56 days',
+							'date(NOW() - INTERVAL 57 DAY)':'57 days',
+							'date(NOW() - INTERVAL 58 DAY)':'58 days',
+							'date(NOW() - INTERVAL 59 DAY)':'59 days',
+							'date(NOW() - INTERVAL 60 DAY)':'60 days'
+							};
+					filterArray.push({
+						id: 'date(enquiry.created_date)',
+						label: 'Lead Total Age',
+						type: 'integer',
+						input: 'select',
+						values: days,
+						operators: ['equal', 'not_equal','less','is_null', 'is_not_null']
+					});
+					
+					filterArray.push({
+						id: 'enquiry.update_date',
+						label: 'Lead Last Activity Age',
+						type: 'integer',
+						input: 'select',
+						values: days,
+						operators: ['equal', 'not_equal','less','is_null', 'is_not_null']
+					});
 				}
 
 					if(['3','5','6','7','8','9','10'].includes(rule_type))
 					{
-
 						if(rules_basic=='')
 						{
 							rules_basic = {				  
@@ -455,7 +534,6 @@ function builder_fun(rule_type)
 									    }]	  
 									}
 						}
-
 					filterArray.push({
 						    id: 'tbl_ticket.ticket_status',
 						    label: 'Ticket Status',
@@ -570,6 +648,13 @@ function builder_fun(rule_type)
 				  var defaultProcess	=	$("select[name='defaultProcess']").val();
 				  
 		  		var	action_value =	JSON.stringify({'stage':stage_only,'assignto':assignto,'defaultProcess':defaultProcess,'source':defaultsource});
+		  	}else if (rule_type==11){
+		  		var assignto		=	$("select[name='assignto']").val();
+				  var stage_only	=	$("select[name='stage_only']").val();
+				  var defaultsource	=	$("select[name='defaultsource']").val();
+				  var defaultProcess	=	$("select[name='defaultProcess']").val();
+				  
+		  		var	action_value =	'NULL';
 		  	}
 		  	console.info(action_value);
 		  	if (action_value && title) {
@@ -644,6 +729,9 @@ function builder_fun(rule_type)
 				?>
 			}else if (rule == 10) {				
 				$("#disposition_actionOnly").show(1000);
+				
+			}else if (rule == 11) {				
+				//alert('test');
 				
 			}
 		}

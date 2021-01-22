@@ -1142,11 +1142,12 @@ public function all_description($diesc) {
         return $this->db->insert('tbl_comment');
     }
     
-    public function add_comment_for_events_popup($stage_remark,$stage_date,$contact_person,$mobileno,$email,$designation,$stage_time,$enq_code,$notification_id=0,$dis_subject='',$task_for='',$task_type='') {
-        $ld_updt_by = $this->session->user_id;
+    public function add_comment_for_events_popup($stage_remark,$stage_date,$contact_person,$mobileno,$email,$designation,$stage_time,$enq_code,$notification_id=0,$dis_subject='',$task_for='',$task_type='',$uid='',$comp_id='') {
+        $ld_updt_by=$uid??$this->session->user_id;
+        $comp_id = $comp_id??$this->session->companey_id;
         $adt = date("Y-m-d H:i:s");
         $this->db->set('query_id', $enq_code);
-        $this->db->set('comp_id', $this->session->companey_id);
+        $this->db->set('comp_id', $comp_id);
         $this->db->set('contact_person', $contact_person);
         $this->db->set('mobile', $mobileno);
         $this->db->set('email', $email);
@@ -1172,10 +1173,8 @@ public function all_description($diesc) {
         $this->db->set('mobile', $enqarr->enq_phone);
         $this->db->set('email', $enqarr->enq_email);
 		
-	//	$this->db->set('comp_id', $this->session->companey_id);
-     //   $this->db->set('designation', $designation);
-	     $this->db->set('related_to', $enqarr->status);
-	  $this->db->set('updated_date', date("Y-m-d h:i:s"));
+	    $this->db->set('related_to', $enqarr->status);
+	    $this->db->set('updated_date', date("Y-m-d h:i:s"));
 	 
 		$this->db->set('create_by', $ld_updt_by);
         $this->db->set('task_date', $stage_date);
