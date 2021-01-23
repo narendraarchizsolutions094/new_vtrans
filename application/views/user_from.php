@@ -92,7 +92,7 @@
                                 </div>
                                  <div class="form-group col-md-4">
                                     <label for="exampleFormControlTextarea1">Primary Phone Number <i class="text-danger">*</i></label>
-                               <input type="text" id="mobile" class="form-control br_25  m-0 icon_left_input" maxlength="10"  placeholder="Primary Phone Number" value="<?php echo $department->s_phoneno; ?>" name="cell" required>
+                               <input type="text" id="mobile" class="form-control br_25  m-0 icon_left_input" maxlength="12"  placeholder="Primary Phone Number" value="<?php echo $department->s_phoneno; ?>" name="cell" required>
                                </div>
                                  <div class="form-group col-md-4">
                                     <label for="exampleFormControlTextarea1">Secondary Phone Number</label>
