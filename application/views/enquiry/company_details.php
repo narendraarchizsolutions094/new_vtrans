@@ -1,3 +1,8 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div style="    padding: 15px 0px 7px 15px;border-bottom: 1px solid #f0f0f0;"><h2><?=$company_name?></h2></div>
+  </div>
+</div>
 <div class="row" style="padding:15px;">
   <div class="col-lg-12">
    <ul class="nav nav-tabs" style="border-bottom: 1px solid #ddd;">
