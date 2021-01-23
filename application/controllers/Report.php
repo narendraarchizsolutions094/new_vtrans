@@ -954,18 +954,18 @@ class Report extends CI_Controller {
         $data['dfields'] = $this->enquiry_model->getformfield(2);        
         $data['issues'] = $this->Ticket_Model->get_issue_list();     
 
-       $list =  $this->db->select('input_id')->where(array('process_id'=>$this->session->process[0],'company_id'=>$this->session->companey_id,'status'=>'1'))->get('tbl_input')->result();
-       $list = array_column($list, 'input_id');
-       // $list2 = array();
-       // //print_r($list); exit();
-       // if(!empty($_COOKIE['ticket_dallowcols']))
-       //  $list2 = explode(',', $_COOKIE['ticket_dallowcols']);
+       // $list =  $this->db->select('input_id')->where(array('process_id'=>$this->session->process[0],'company_id'=>$this->session->companey_id,'status'=>'1'))->get('tbl_input')->result();
+       // $list = array_column($list, 'input_id');
+       // // $list2 = array();
+       // // //print_r($list); exit();
+       // // if(!empty($_COOKIE['ticket_dallowcols']))
+       // //  $list2 = explode(',', $_COOKIE['ticket_dallowcols']);
 
-       // $common = array_intersect($list,$list2);
-       //  p
-       // setcookie('ticket_dallowcols',implode(',', $common),86400*30,'/');
+       // // $common = array_intersect($list,$list2);
+       // //  p
+       // // setcookie('ticket_dallowcols',implode(',', $common),86400*30,'/');
 
-       $data['table_config_list'] = $list;
+       // $data['table_config_list'] = $list;
         $data['content'] = $this->load->view('reports/ticket_report', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }

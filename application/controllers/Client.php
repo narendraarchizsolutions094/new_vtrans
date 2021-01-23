@@ -416,6 +416,7 @@ class Client extends CI_Controller {
         $data['company_count'] = $this->Client_Model->getCompanyList('',$this->session->companey_id,$this->session->user_id,$this->session->process,'count');
 
         $c =$data['company_list'] = $this->Client_Model->getCompanyList('',$this->session->companey_id,$this->session->user_id,$this->session->process,'data',$limit,$offset)->result();
+        //print_r($c);
         $data['limit'] =$limit;
         $data['offset'] = $offset;
       //  $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();

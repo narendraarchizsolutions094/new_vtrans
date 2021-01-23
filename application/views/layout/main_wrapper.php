@@ -1808,7 +1808,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         <a href="#">
                             <i class="fa fa-cog icon-class"
                                 ></i>
-                            &nbsp;Forecasting
+                            &nbsp;<?=display('target')?>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
