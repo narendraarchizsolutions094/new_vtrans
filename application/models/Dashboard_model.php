@@ -401,8 +401,8 @@ class Dashboard_model extends CI_Model {
 
         if(is_array($arr)){
            $arr = implode(',', $arr);
+	        $where.=" AND enquiry.product_id IN (".$arr.')';
         } 
-        $where.=" AND enquiry.product_id IN (".$arr.')';
 
 		return $this->db->join('enquiry','enquiry.enquiry_id=tbl_followupAvgtime.enq_id')->where(array('tbl_followupAvgtime.type'=>$type))->where($where)->count_all_results('tbl_followupAvgtime');
 
