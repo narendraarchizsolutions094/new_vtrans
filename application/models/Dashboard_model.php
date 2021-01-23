@@ -340,33 +340,35 @@ class Dashboard_model extends CI_Model {
                         ->row();
 
 	}
-	public function countLead_api($type,$comp_id=0){
+	public function countLead_api($type,$comp_id=0,$user_id=0){
 	
 		$comp_id = $this->session->userdata('companey_id')??$comp_id;
+
 		return $this->db->where(array('comp_id' => $comp_id,'type'=>$type))->count_all_results('tbl_followupAvgtime');
-
     }
-	public function dataLead_api($type,$comp_id=0){
-		$comp_id = $this->session->userdata('companey_id')??$comp_id;
-		return $this->db->select_sum('time')->where(array('comp_id' =>$comp_id,'type'=>$type))->get('tbl_followupAvgtime');
-		
 
+	public function dataLead_api($type,$comp_id=0,$user_id=0){
+		$comp_id = $this->session->userdata('companey_id')??$comp_id;
+
+		return $this->db->select_sum('time')->where(array('comp_id' =>$comp_id,'type'=>$type))->get('tbl_followupAvgtime');
 	}
-    public function countLead($type,$comp_id=0){
-		$userid=$this->session->user_id;
+    public function countLead($type,$comp_id=0,$user_id=0,$process=0){
+
+		$userid= !empty($user_id)?$user_id:$this->session->user_id;
 
     	$all_reporting_ids    =   $this->common_model->get_categories($userid);
 		
 		$comp_id = $this->session->userdata('companey_id')??$comp_id;
         $where=" enquiry.comp_id=$comp_id";
 
-        if($_POST){
+        if(!empty($_POST))
+        {
             $filter=json_encode(array(
-                'from_date'=>$_POST['from_date'],
-                'to_date'=>$_POST['to_date'],
-                'users'=>$_POST['users'],
-                'state_id'=>$_POST['state_id'],
-                'city_id'=>$_POST['city_id'],
+                'from_date'=>$_POST['from_date']??'',
+                'to_date'=>$_POST['to_date']??'',
+                'users'=>$_POST['users']??'',
+                'state_id'=>$_POST['state_id']??'',
+                'city_id'=>$_POST['city_id']??'',
                               ));
             if(!empty($_POST['from_date']) AND !empty($_POST['to_date'])){
                 $from_date=$_POST['from_date'];
@@ -395,16 +397,18 @@ class Dashboard_model extends CI_Model {
             $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
             $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         }
-        $arr = $this->session->process;           
+        $arr = !empty($process)?$process:$this->session->process; 
+
         if(is_array($arr)){
-            $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
-        }          
+           $arr = implode(',', $arr);
+        } 
+        $where.=" AND enquiry.product_id IN (".$arr.')';
 
 		return $this->db->join('enquiry','enquiry.enquiry_id=tbl_followupAvgtime.enq_id')->where(array('tbl_followupAvgtime.type'=>$type))->where($where)->count_all_results('tbl_followupAvgtime');
 
     }
-	public function dataLead($type,$comp_id=0){
-		$userid=$this->session->user_id;
+	public function dataLead($type,$comp_id=0,$user_id=0,$process=0){
+		$userid=!empty($user_id)?$user_id:$this->session->user_id;
 		$all_reporting_ids    =   $this->common_model->get_categories($userid);
 		
 		$comp_id = $this->session->userdata('companey_id')??$comp_id;
@@ -446,10 +450,11 @@ class Dashboard_model extends CI_Model {
 		// 	$where.=" AND enquiry.created_date <=$to_date";
 			
 		// }
-        $arr = $this->session->process;           
-        if(is_array($arr)){
-            $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
-        }          
+        $arr = !empty($process)?$process:$this->session->process;           
+       if(is_array($arr)){
+           $arr = implode(',', $arr);
+        } 
+        $where.=" AND enquiry.product_id IN (".$arr.')';     
 
 		$comp_id = $this->session->userdata('companey_id')??$comp_id;
 		return $this->db->select_sum('tbl_followupAvgtime.time')->where(array('tbl_followupAvgtime.type'=>$type))->where($where)->join('enquiry','enquiry.enquiry_id=tbl_followupAvgtime.enq_id')->get('tbl_followupAvgtime');

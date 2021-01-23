@@ -2706,9 +2706,10 @@ $cpny_id=$this->session->companey_id;
 
       $client_dropWise = $client_drop->result();
 
-      $enq_count = $this->dashboard_model->countLead_api(2,$companyid);
-      $enq_Sum = $this->dashboard_model->dataLead_api(2,$companyid);
-
+      $enq_count = $this->dashboard_model->countLead(2,$companyid,$userid,$process);
+      $enq_Sum = $this->dashboard_model->dataLead(2,$companyid,$userid,$process);
+     // echo 'Count:'.$enq_count.'<br>value:';print_r($enq_Sum->result());
+      //exit();
       $enqTime=$enq_Sum->row()->time;
       if ($enqTime!=0)
       {
@@ -2717,8 +2718,8 @@ $cpny_id=$this->session->companey_id;
       else 
         $enq_value = 0;
 
-      $lead_count = $this->dashboard_model->countLead_api(3,$companyid);
-      $lead_Sum = $this->dashboard_model->dataLead_api(3,$companyid);
+      $lead_count = $this->dashboard_model->countLead(3,$companyid,$userid,$process);
+      $lead_Sum = $this->dashboard_model->dataLead(3,$companyid,$userid,$process);
 
       $leadTime=$lead_Sum->row()->time;
       if ($leadTime!=0)
@@ -2730,11 +2731,11 @@ $cpny_id=$this->session->companey_id;
 
       $followup = array(
                     array(
-                      'key'=>display('enquiry'),
-                      'time'=> $this->dashboard_model->secsToStr_api($enq_value),
+                      'key'=>display('enquiry',$companyid),
+                      'time'=>$this->dashboard_model->secsToStr_api($enq_value),
                     ),
                     array(
-                      'key'=>display('lead'),
+                      'key'=>display('lead',$companyid),
                       'time'=> $this->dashboard_model->secsToStr_api($lead_value),
                     ),
                 );
@@ -2746,8 +2747,8 @@ $cpny_id=$this->session->companey_id;
         foreach ($enquiry_separation as $key => $value) 
         {
                   $ctitle = $enquiry_separation[$key]['title']; 
-                  $Count=$this->dashboard_model->countLead_api($key,$companyid);
-                  $sum=$this->dashboard_model->dataLead_api($key,$companyid);
+                  $Count=$this->dashboard_model->countLead($key,$companyid,$userid,$process);
+                  $sum=$this->dashboard_model->dataLead($key,$companyid,$userid,$process);
                   $stime= $sum->row()->time;
 
                   if($stime!=0)
@@ -2766,8 +2767,7 @@ $cpny_id=$this->session->companey_id;
     }
         // $query14 = $this->db->query("SELECT enquiry_id FROM `lead_stage` WHERE comp_id = $cpny_id ORDER BY stg_id ASC");
         // $pbc = $query14->num_rows(); 
-
- 
+    //print_r($followup);exit();
 
         $indiamap= array('upe'=>$upe,'upl'=>$upl,'upc'=>$upc,'pbe'=>$pbe,'pbl'=>$pbl,'pbc'=>$pbc);
 

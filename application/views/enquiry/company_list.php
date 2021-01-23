@@ -14,11 +14,26 @@
 
 <div class="row p-5" style="margin-top: 20px;">
 	<div class="col-lg-12">
+    <div class="row">
+      <div class="col-sm-6" style="padding: 5px 0px;">
+          <div style="display: inline-block;">Show</div>
+          <div style="width: 80px; display: inline-block;">
+              <select class="form-control" style="height: 30px;" onchange="location.href='<?=base_url('client/company_list/')?>'+this.value+'/<?=$offset?>'">
+              <option value="10" <?=$limit=='10'?'selected':''?>>10</option>
+              <option value="30" <?=$limit=='30'?'selected':''?>>30</option>
+              <option value="50" <?=$limit=='50'?'selected':''?>>50</option>
+              <option value="100" <?=$limit=='100'?'selected':''?>>100</option>
+              <option value="500" <?=$limit=='500'?'selected':''?>>500</option>
+              <option value="1000"<?=$limit=='1000'?'selected':''?>>1000</option>
+            </select>
+          </div>
+          <div style="display: inline-block;"> entries</div>
+      </div>
+    </div>
 		<div class="panel panel-success">
 			<div class="panel-body">
-                    <table style="width: 100%" id="companyTable" class="datatable1 table table-bordered table-response">
+                    <table style="width: 100%" id="companyTable" class="table table-bordered table-response">
                          <thead>
-                                  
                              <tr>
                                      <th>&nbsp; # &nbsp;</th>
                                      <th><?=display('company_name')?></th>
@@ -87,7 +102,48 @@
                               }
                               ?>
                          </tbody>
+                    </table>
+<nav aria-label="Page navigation example" align="right">
+  <ul class="pagination justify-content-end">
+    <?php
+   $na= $nhref= $phref = $pa= '';
+
+    $phref = 'href="'.base_url('client/company_list/'.$limit.'/'.($offset-$limit)).'"';
+    if(!($offset>$limit))
+    { 
+      $pa = 'disabled';
+      $phref = '';
+    }
+    echo'<li class="page-item '.$pa.'">
+      <a class="page-link" '.$phref.'  tabindex="-1">Previous</a>
+    </li>';
+  
+    $num = 0;
+    $total = $company_count;
+    $i=1;
+      while($company_count>0)
+      {
+
+        echo'<li class="page-item '.(($i*$limit)==($limit+$offset)?'active':($total<$limit?'active':'')).'"><a class="page-link" href="'.base_url('client/company_list/'.$limit.'/'.$num).'">'.$i++.'</a></li>';
+        $num = $num + $limit;
+        $company_count = $company_count - $limit;
+      }
+
+      $nhref = 'href="'.base_url('client/company_list/'.$limit.'/'.($limit+$offset)).'"';
+    if(!($total > ($limit+$offset)))
+    {
+       $na = 'disabled';
+      $nhref = '';
+    }
+      echo'<li class="page-item '.$na.'">
+                <a class="page-link" '.$nhref.' >Next</a>
+              </li>';
+   
+    ?>
+  </ul>
+</nav>
                </div>
+
           </div>
      </div>
 </div>
