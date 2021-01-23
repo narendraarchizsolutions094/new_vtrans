@@ -1230,7 +1230,7 @@ if (!empty($enquiry_separation)) {
         $data['title'] = display('edit_profile');
         $user_id = $this->session->userdata('user_id');
         $this->form_validation->set_rules('Name', display('disolay_name'), 'required');
-        $this->form_validation->set_rules('cell', display('cell'), 'required|max_length[10]');
+        $this->form_validation->set_rules('cell', display('cell'), 'required|max_length[12]');
         $this->form_validation->set_rules('state_id', display('state_name'), 'required');
         $this->form_validation->set_rules('city_name', display('city_name'), 'required');
         //$this->form_validation->set_rules('user_role', display('user_role'), 'required');
