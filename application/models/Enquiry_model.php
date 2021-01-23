@@ -671,9 +671,16 @@ class Enquiry_model extends CI_Model {
 		$this->db->select('*');
 		$this->db->where('page_id',$for);
 		$this->db->where(array("company_id"=> $this->session->companey_id, "status" => 1));
+    $this->db->group_start();
+    foreach ($this->session->process as $key => $value) {
+      if($key==0)
+      $this->db->where('(FIND_IN_SET ('.$value.',process_id) >0)');
+      else
+       $this->db->or_where('(FIND_IN_SET ('.$value.',process_id) >0)');
+    }
+    $this->db->group_end();
 		return $this->db->get("tbl_input")->result();
-		
-		
+				
 	}
 	public function getfieldvalue($enqnos = array(),$for=0){ //for means 0=enquiry,1=product,2=ticket	
 	
@@ -4610,6 +4617,19 @@ public function insertComInfo($data)
         //echo $where;exit();
 
         if(!empty($_POST['filters']))
+        {
+            foreach ($_POST['filters'] as $key => $value)
+            {
+                if($value==''){
+                  unset($_POST['filters'][$key]);
+                  if(!count($_POST['filters']))
+                    unset($_POST['filters']);
+                }
+
+            }
+        }
+
+        if(!empty($_POST['filters']))
           {
 
               $match_list = array('date_from','date_to','phone');
@@ -4681,8 +4701,20 @@ public function insertComInfo($data)
 
 
         if(!empty($_POST['filters']))
-          {
+        {
+            foreach ($_POST['filters'] as $key => $value)
+            {
+                if($value==''){
+                  unset($_POST['filters'][$key]);
+                  if(!count($_POST['filters']))
+                    unset($_POST['filters']);
+                }
 
+            }
+        }
+
+        if(!empty($_POST['filters']))
+          {
               $match_list = array('date_from','date_to','phone');
 
               $this->db->group_start();

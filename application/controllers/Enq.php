@@ -29,6 +29,7 @@ class Enq extends CI_Controller
 		$data['datasourse'] = $this->report_model->all_datasource();
 		$data['lead_score'] = $this->enquiry_model->get_leadscore_list();
 		$data['dfields']  = $this->enquiry_model->getformfield();
+		//echo $this->db->last_query();exit();
 		$data['data_type'] = 1;
 		$this->session->unset_userdata('enquiry_filters_sess');
 		if (!empty($this->session->enq_type)) {
@@ -55,7 +56,16 @@ class Enq extends CI_Controller
 		$data['state_list'] = $this->enquiry_model->get_user_state_list();
 		$data['city_list'] = $this->enquiry_model->get_user_city_list();
 		$data['filterData'] = $this->Ticket_Model->get_filterData(1);
-		$data['aging_rule'] = $this->rule_model->get_rules(array(11));				
+		$data['aging_rule'] = $this->rule_model->get_rules(array(11));	
+
+		// $list =  $this->db->select('input_id')->where(array('process_id'=>$this->session->process[0],'company_id'=>$this->session->companey_id,'status'=>'1','page_id'=>'2'))->get('tbl_input')->result();
+		// echo $this->db->last_query();
+		// print_r($list);exit();
+       //$list = array_column($list, 'input_id');
+
+       //$data['table_config_list'] = $list;
+
+
 		$data['content'] = $this->load->view('enquiry_n', $data, true);
 		$this->load->view('layout/main_wrapper', $data);
 	}	

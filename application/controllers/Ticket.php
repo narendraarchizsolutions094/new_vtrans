@@ -98,7 +98,9 @@ class Ticket extends CI_Controller
 		$data['stage'] =  $this->Leads_Model->stage_by_type(4);
 		$data['sub_stage'] = $this->Leads_Model->find_description();
 		$data['ticket_status'] = $this->Ticket_Model->ticket_status()->result();
-		$data['dfields'] = $this->enquiry_model->getformfield(2);
+		$x =$data['dfields'] = $this->enquiry_model->getformfield(2);
+		// echo $this->db->last_query();
+		// print_r($x);exit();
 		//print_r($data["tickets"]);die;
 		$data['issues'] = $this->Ticket_Model->get_issue_list();
 		$data['filterData'] = $this->Ticket_Model->get_filterData(2);

@@ -397,7 +397,7 @@ class Dashboard_model extends CI_Model {
             $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
             $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         }
-        $arr = !empty($process)?$process:$this->session->process; 
+        $arr = !empty($process)?$process:($this->session->process??array(0)); 
 
         if(is_array($arr)){
            $arr = implode(',', $arr);
@@ -450,7 +450,7 @@ class Dashboard_model extends CI_Model {
 		// 	$where.=" AND enquiry.created_date <=$to_date";
 			
 		// }
-        $arr = !empty($process)?$process:$this->session->process;           
+        $arr = !empty($process)?$process:($this->session->process??array(0));           
        if(is_array($arr)){
            $arr = implode(',', $arr);
         } 

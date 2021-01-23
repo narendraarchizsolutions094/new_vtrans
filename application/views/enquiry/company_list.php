@@ -100,6 +100,10 @@
                                         </tr>';
                                    }
                               }
+                              else
+                                echo'<tr>
+                              <td colspan="7" align="center">No Record Found</td>
+                              </tr>';
                               ?>
                          </tbody>
                     </table>
