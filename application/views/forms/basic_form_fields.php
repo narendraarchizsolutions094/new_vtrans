@@ -1,11 +1,4 @@
 <?php
-if($this->session->companey_id == 65){
-  ?>
-  <style type="text/css">
-    
-  </style>
-  <?php
-}
   define('FIRST_NAME',1);
   define('LAST_NAME',2);
   define('GENDER',3);

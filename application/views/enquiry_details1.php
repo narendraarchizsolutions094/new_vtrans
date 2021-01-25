@@ -5898,6 +5898,10 @@ if($this->session->process[0]=='200')
 ?>
 
 $(document).ready(function(){
+   if("<?=$this->session->companey_id?>"==65){
+      $(".designation").insertAfter(".enq-last-name");
+      $(".enq-remark").insertAfter(".website");
+   }
   relocate_mobile();
 });
   function relocate_mobile()
