@@ -249,9 +249,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 						</div>
 						<div id="aginig_notification" class="action-section text-center row">
-								<div class="col-md-4">
+								<div class="col-md-5">
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-2">
 									<input type="time" name="aging_exec_time" class="form-control">
 								</div>
 						</div>	
