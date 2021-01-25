@@ -136,6 +136,7 @@ class LeadRules extends CI_Controller {
                                 'title'     => $title
                             );
                     $res    =   $this->db->insert('leadrules',$ins_data);
+                    $res    =   $this->db->insert_id();
                     $msg = 'Rule created successfully';
                     if($type == 11){
                         $cron_id = $this->create_cron_for_aging_rule($rule_action);                            
@@ -189,7 +190,8 @@ class LeadRules extends CI_Controller {
                 $this->db->where('id', $cron_id);
                 $cron_id = $this->db->update('cronjobs',$data);                
             }else{
-                $cron_id = $this->db->insert('cronjobs',$data);
+                $this->db->insert('cronjobs',$data);
+                $cron_id  = $this->db->insert_id();
             }
         }
         return $cron_id;
