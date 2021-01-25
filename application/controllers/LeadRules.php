@@ -115,6 +115,14 @@ class LeadRules extends CI_Controller {
                     $this->db->where('id',$id);
                     $this->db->where('comp_id',$this->session->companey_id);
                     $res    =   $this->db->update('leadrules',$ins_data);
+                    if($type == 11){
+                        
+                        $this->db->where('id',$id);
+                        $rule_row    =   $this->db->get('leadrules')->row_array();
+                        $cron_id    =   $rule_row['cron_id'];
+
+                        $cron_id = $this->create_cron_for_aging_rule($rule_action,$cron_id);                            
+                    }
                     $msg = 'Rule Updated Successfully';                    
                 }else{
                     $ins_data = array(
@@ -128,7 +136,13 @@ class LeadRules extends CI_Controller {
                                 'title'     => $title
                             );
                     $res    =   $this->db->insert('leadrules',$ins_data);
-                    $msg = 'Rule Added Successfully';
+                    if($type == 11){
+                        $cron_id = $this->create_cron_for_aging_rule($rule_action);                            
+                        $this->db->where('id',$res);
+                        $this->db->where('comp_id',$this->session->companey_id);
+                        $this->db->set('cron_id',$cron_id);
+                        $this->db->update('leadrules');                          
+                    }                  
                 }
                 if($res){                                        
                     $status = 1;
@@ -143,6 +157,42 @@ class LeadRules extends CI_Controller {
         }
         echo json_encode(array('status'=>$status,'msg'=>$msg));
     }    
+
+    public function create_cron_for_aging_rule($rule_action,$cron_id=0){
+        $time_arr = explode(":",$rule_action);                        
+        $hr  = (int)$time_arr[0];
+        $min = (int)$time_arr[1];
+        require_once FCPATH.'third_party/vendor/autoload.php';
+        date_default_timezone_set("Asia/kolkata");
+        if($hr && $min){
+            $minute     =   $min;
+            $hour       =   $hr;
+            $command = $min.' '.$hour.' * * *' ;            
+            $cron = Cron\CronExpression::factory($command);                                        
+            $running_time= $cron->getNextRunDate()->format('Y-m-d H:i');            
+            $url    =   base_url().'enquiry/lead_aging_rule_exec/'.$this->session->companey_id;
+            $data=  [
+                        'minute'        =>  $minute,
+                        'hour'          =>  $hour,
+                        'day'           =>  '*',
+                        'month'         =>  '*',
+                        'weekday'       =>  '*',
+                        'command'       =>  $command,
+                        'comp_id'       =>  $this->session->companey_id,
+                        'status'        =>  0,
+                        'created_by'    =>  $this->session->user_id,
+                        'running_time'  =>  $running_time,
+                        'url'           => $url
+                    ];                            
+            if($cron_id){
+                $this->db->where('id', $cron_id);
+                $cron_id = $this->db->update('cronjobs',$data);                
+            }else{
+                $cron_id = $this->db->insert('cronjobs',$data);
+            }
+        }
+        return $cron_id;
+    }
     public function create_rule($id=0){
         if (user_role('100') == true) {}
         $data['title'] = display('leadrules');
