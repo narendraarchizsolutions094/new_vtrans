@@ -200,6 +200,11 @@
       });
     }
   }
+  if("<?=$this->session->companey_id?>"==65){
+   $(".designation").insertAfter(".enq-last-name");
+   $(".enq-remark").insertAfter(".website");
+}
+
 </script>
 <?php
 if ($this->session->companey_id == 79) {
