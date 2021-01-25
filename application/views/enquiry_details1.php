@@ -5890,18 +5890,18 @@ jQuery(document).ready(function(){
    })
 });
 
-<?php
+if("<?=$this->session->companey_id?>"==65){
+   $(".designation").insertAfter(".enq-last-name");
+   $(".enq-remark").insertAfter(".website");
+}
 
+<?php
 if($this->session->process[0]=='200')
 {
   //moble number relocate in V-trans process 200
 ?>
 
-$(document).ready(function(){
-   if("<?=$this->session->companey_id?>"==65){
-      $(".designation").insertAfter(".enq-last-name");
-      $(".enq-remark").insertAfter(".website");
-   }
+$(document).ready(function(){ 
   relocate_mobile();
 });
   function relocate_mobile()
