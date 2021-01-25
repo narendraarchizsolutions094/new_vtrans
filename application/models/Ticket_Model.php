@@ -453,7 +453,7 @@ class Ticket_Model extends CI_Model
 		$where .= " OR tck.assign_to IN (" . implode(',', $all_reporting_ids) . '))';
 		//tck.*
 		// $this->db->select("tck.*,enq.gender,prd.country_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , (SELECT COUNT(*) from tbl_ticket_conv as t2 where t2.tck_id=tck.id) as tconv")
-		$this->db->select("tck.id,tck.ticketno,tck.priority,tck.complaint_type,enq.gender,prd.country_name")
+		$this->db->select("tck.id,tck.ticketno,tck.name,tck.company,tck.phone,tck.email,tck.category,tck.status,prd.country_name")
 			->where($where)
 			->where("tck.company", $companyid)
 			->from("tbl_ticket tck")
