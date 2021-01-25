@@ -3615,8 +3615,9 @@ echo  $details1;
     }
 
 
-    public function lead_aging_rule_exec($comp_id){       
+    public function lead_aging_rule_exec($comp_id,$lid){       
         $this->load->model('rule_model');
+        $this->db->where('id',$lid);
         $rules = $this->rule_model->get_rules(array(11),$comp_id);
         $enquries = array();
        if(!empty($rules)){

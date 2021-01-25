@@ -121,7 +121,7 @@ class LeadRules extends CI_Controller {
                         $rule_row    =   $this->db->get('leadrules')->row_array();
                         $cron_id    =   $rule_row['cron_id'];
 
-                        $cron_id = $this->create_cron_for_aging_rule($rule_action,$cron_id);                            
+                        $cron_id = $this->create_cron_for_aging_rule($rule_action,$id,$cron_id);                            
                     }
                     $msg = 'Rule Updated Successfully';                    
                 }else{
@@ -139,7 +139,7 @@ class LeadRules extends CI_Controller {
                     $res    =   $this->db->insert_id();
                     $msg = 'Rule created successfully';
                     if($type == 11){
-                        $cron_id = $this->create_cron_for_aging_rule($rule_action);                            
+                        $cron_id = $this->create_cron_for_aging_rule($rule_action,$res);                            
                         $this->db->where('id',$res);
                         $this->db->where('comp_id',$this->session->companey_id);
                         $this->db->set('cron_id',$cron_id);
@@ -160,7 +160,7 @@ class LeadRules extends CI_Controller {
         echo json_encode(array('status'=>$status,'msg'=>$msg));
     }    
 
-    public function create_cron_for_aging_rule($rule_action,$cron_id=0){
+    public function create_cron_for_aging_rule($rule_action,$lid,$cron_id=0){
         $time_arr = explode(":",$rule_action);                        
         $hr  = (int)$time_arr[0];
         $min = (int)$time_arr[1];
@@ -172,7 +172,7 @@ class LeadRules extends CI_Controller {
             $command = $min.' '.$hour.' * * *' ;            
             $cron = Cron\CronExpression::factory($command);                                        
             $running_time= $cron->getNextRunDate()->format('Y-m-d H:i');            
-            $url    =   base_url().'enquiry/lead_aging_rule_exec/'.$this->session->companey_id;
+            $url    =   base_url().'enquiry/lead_aging_rule_exec/'.$this->session->companey_id.'/'.$lid;
             $data=  [
                         'minute'        =>  $minute,
                         'hour'          =>  $hour,
