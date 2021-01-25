@@ -92,6 +92,10 @@
     if (process_id) {
       get_basic_field();
     }
+    if("<?=$this->session->companey_id?>"==65){
+      $(".designation").insertAfter(".enq-last-name");
+      $(".enq-remark").insertAfter(".website");
+    }
   });
 
   function get_basic_field() {
@@ -200,10 +204,6 @@
       });
     }
   }
-  if("<?=$this->session->companey_id?>"==65){
-   $(".designation").insertAfter(".enq-last-name");
-   $(".enq-remark").insertAfter(".website");
-}
 
 </script>
 <?php
