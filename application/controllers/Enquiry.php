@@ -3389,11 +3389,21 @@ echo  $details1;
                             'travelled_type'=>$this->input->post('travelled_type'),
                             'rating'=>$this->input->post('rating'),
                             'next_date'=>$this->input->post('next_visit_date'),
+                            'next_time'=>$this->input->post('next_visit_time'),
                             'next_location'=>$this->input->post('next_location'),
                             'comp_id'=>$this->session->companey_id,
                             'user_id'=>$this->session->user_id,
                         );
             $res = $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$data['enquiry_id']))->row();
+            $visit_date    =   $this->input->post('next_visit_date');
+            $visit_date = date("d-m-Y", strtotime($visit_date));
+            $mobileno = $res->phone;
+            $email = $res->email;
+            $stage_time = $this->input->post('next_visit_time');
+            $enq_code  = $this->input->post('enq_code');
+            $notification_id = '';
+
+            $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $stage_time, $enq_code, $notification_id, 'Visit',1,3);
 
             $this->Client_Model->add_visit($data);
             $this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id);
@@ -3464,6 +3474,9 @@ echo  $details1;
                 $sub[] = $res->rating!=''?$res->rating:'NA';
             if($colsall || in_array(7,$cols))
                 $sub[] = $res->next_date!='0000-00-00'?$res->next_date:'NA';
+            
+            $sub[] = $res->next_date_time?$res->next_date:'NA';
+
             if($colsall || in_array(8,$cols))
             $sub[] = $res->next_location?$res->next_location:'NA';
 

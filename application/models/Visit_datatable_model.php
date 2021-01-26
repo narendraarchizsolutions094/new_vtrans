@@ -7,7 +7,7 @@ class Visit_datatable_model extends CI_Model{
   
         $this->table = 'tbl_visit';
         // Set orderable column fields
-        $this->column_order = array('id','visit_date','visit_time','travelled','travelled_type','rating','next_date','next_location');
+        $this->column_order = array('id','visit_date','visit_time','travelled','travelled_type','rating','next_date','next_time','next_location');
 
         // Set searchable column fields
 
