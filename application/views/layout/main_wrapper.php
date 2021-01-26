@@ -2662,10 +2662,10 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     var uid = arrayItem.uid;
                     var phone_s = arrayItem.users;
                     phone_s = phone_s.replace(/[^\d]/g, '');
-                    if (phone.length > 12) {
+                    if (phone.length >= 11) {
                         var phone_n = phone.substr(2, 12);
                     } else {
-                        var phone_n = phone; 
+                        var phone_n = phone;
                     }
                     console.log(phone_s+'a');
                     var user_pho = "<?php echo '91'.$this->session->phone;?>";
