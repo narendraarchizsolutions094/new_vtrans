@@ -1143,8 +1143,8 @@ public function all_description($diesc) {
     }
     
     public function add_comment_for_events_popup($stage_remark,$stage_date,$contact_person,$mobileno,$email,$designation,$stage_time,$enq_code,$notification_id=0,$dis_subject='',$task_for='',$task_type='',$uid='',$comp_id='') {
-        $ld_updt_by=$uid??$this->session->user_id;
-        $comp_id = $comp_id??$this->session->companey_id;
+        $ld_updt_by=!empty($uid)?$uid:$this->session->user_id;
+        $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
         $adt = date("Y-m-d H:i:s");
         $this->db->set('query_id', $enq_code);
         $this->db->set('comp_id', $comp_id);
