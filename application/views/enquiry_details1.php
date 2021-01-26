@@ -2306,7 +2306,7 @@ if(user_access('1020'))
           </div>
           <div class="form-group col-md-6 next-visit-date col-md-6">      
             <label>Next Visit Time</label>
-             <input  name="next_visit_time" class="form-control form-date">
+             <input  name="next_visit_time" class="form-control " type="time">
           </div>
       
           <div class="form-group col-md-6 next-visit-location col-md-6">      
