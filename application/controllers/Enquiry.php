@@ -3475,7 +3475,7 @@ echo  $details1;
             if($colsall || in_array(7,$cols))
                 $sub[] = $res->next_date!='0000-00-00'?$res->next_date:'NA';
             
-            $sub[] = $res->next_date_time?$res->next_date:'NA';
+            $sub[] = $res->next_time?$res->next_time:'NA';
 
             if($colsall || in_array(8,$cols))
             $sub[] = $res->next_location?$res->next_location:'NA';
