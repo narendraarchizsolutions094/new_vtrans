@@ -2665,7 +2665,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     if (phone.length > 12) {
                         var phone_n = phone.substr(2, 12);
                     } else {
-                        var phone_n = phone;
+                        var phone_n = phone; 
                     }
                     console.log(phone_s+'a');
                     var user_pho = "<?php echo '91'.$this->session->phone;?>";
