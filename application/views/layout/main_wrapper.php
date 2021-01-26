@@ -2662,7 +2662,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     var uid = arrayItem.uid;
                     var phone_s = arrayItem.users;
                     phone_s = phone_s.replace(/[^\d]/g, '');
-                    if (phone.length >= 11) {
+                    if (phone.length > 12) {
                         var phone_n = phone.substr(2, 12);
                     } else {
                         var phone_n = phone;
