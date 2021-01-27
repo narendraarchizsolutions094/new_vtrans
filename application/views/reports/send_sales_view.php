@@ -1,51 +1,39 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Testing Area</title>
-        <!--<link rel="shortcut icon" href="https://localhost/crm/thecrm360/">-->
+        <!--<link rel="shortcut icon" href="<?= base_url() ?>">-->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <link href="https://localhost/crm/thecrm360/assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://localhost/crm/thecrm360/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-
-            <link rel="icon" href="https://localhost/crm/thecrm360/"
-        sizes="32x32" />
-    
+    <link href="<?= base_url() ?>assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="<?= base_url() ?>" sizes="32x32" />
     <!-- Font Awesome 4.7.0 -->
-    <link href="https://localhost/crm/thecrm360/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <!-- semantic css -->
-    <link href="https://localhost/crm/thecrm360/assets/css/semantic.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/semantic.min.css" rel="stylesheet" type="text/css" />
     <!-- sliderAccess css -->
-    <link href="https://localhost/crm/thecrm360/assets/css/jquery-ui-timepicker-addon.min.css" rel="stylesheet"
+    <link href="<?= base_url() ?>assets/css/jquery-ui-timepicker-addon.min.css" rel="stylesheet"
         type="text/css" />
     <!-- slider  -->
-    <link href="https://localhost/crm/thecrm360/assets/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/select2.min.css" rel="stylesheet" type="text/css" />
     <!-- DataTables CSS -->
-    <link href="https://localhost/crm/thecrm360/assets/datatables/css/dataTables.min.css?v=1.0" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/datatables/css/dataTables.min.css?v=1.0" rel="stylesheet" type="text/css" />
     <!-- pe-icon-7-stroke -->
-    <link href="https://localhost/crm/thecrm360/assets/css/pe-icon-7-stroke.css?v=1.0" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/pe-icon-7-stroke.css?v=1.0" rel="stylesheet" type="text/css" />
     <!-- themify icon css -->
-    <link href="https://localhost/crm/thecrm360/assets/css/themify-icons.css?v=1.0" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/themify-icons.css?v=1.0" rel="stylesheet" type="text/css" />
     <!-- Pace css -->
-    <link href="https://localhost/crm/thecrm360/assets/css/flash.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/flash.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
-    <link href="https://localhost/crm/thecrm360/assets/css/custom.css?v=1.0" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/custom.css?v=1.0" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
         <!-- jQuery  -->
-
-    <script src="https://localhost/crm/thecrm360/assets/js/jquery.min.js?v=1.0" type="text/javascript"></script>
-
+    <script src="<?= base_url() ?>assets/js/jquery.min.js?v=1.0" type="text/javascript"></script>
 <script type="text/javascript">
   window.getCookie = function(name) {
   var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -91,67 +79,6 @@
 
 </style>
 
-<!-- Resources -->
-<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
-
-<!-- Chart code -->
-<script>
-am4core.ready(function() {
-
-// Themes begin
-am4core.useTheme(am4themes_animated);
-// Themes end
-
-// Create chart instance
-var chart = am4core.create("chartdiv", am4charts.PieChart);
-
-// Add data
-chart.data = [ {
-  "country": "Lithuania",
-  "litres": 501.9
-}, {
-  "country": "Czechia",
-  "litres": 301.9
-}, {
-  "country": "Ireland",
-  "litres": 201.1
-}, {
-  "country": "Germany",
-  "litres": 165.8
-}, {
-  "country": "Australia",
-  "litres": 139.9
-}, {
-  "country": "Austria",
-  "litres": 128.3
-}, {
-  "country": "UK",
-  "litres": 99
-}
-];
-
-// Add and configure Series
-var pieSeries = chart.series.push(new am4charts.PieSeries());
-pieSeries.dataFields.value = "litres";
-pieSeries.dataFields.category = "country";
-pieSeries.slices.template.stroke = am4core.color("#fff");
-pieSeries.slices.template.strokeOpacity = 1;
-
-// This creates initial animation
-pieSeries.hiddenState.properties.opacity = 1;
-pieSeries.hiddenState.properties.endAngle = -90;
-pieSeries.hiddenState.properties.startAngle = -90;
-
-chart.hiddenState.properties.radius = am4core.percent(0);
-
-
-}); // end am4core.ready()
-</script>
-
-<!-- HTML -->
-<div id="chartdiv"></div>
 <!------ Filter Div ---------->
 <div class="row">
     <div class="col-lg-12">
@@ -396,41 +323,8 @@ $(document).ready(function() {
         ]
     });
 
-
-
-
-    $("#filter_and_save").on("click", function(e) {
-        alert( $("#filter_and_save_form").serialize());
-        e.preventDefault();
-        var title = window.prompt("Enter Report Name");
-        if (title) {
-            var url = "<?=base_url().'report/create_report'?>";
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    'filters': $("#filter_and_save_form").serialize(),
-                    'report_name': title,
-                    'type': 1
-                },
-                success: function(result) {
-                    result = JSON.parse(result);
-                    if (result.status) {
-                        $("#filter_and_save_form").submit();
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-        } else {
-            alert("Report not saved");
-        }
-    });   
-
 });
-jQuery(function($){ //on document.ready
-        $('.form-dates').datepicker({ dateFormat: 'yy-mm-dd' });
-      })
+
 </script>
 <script>
     $('#something').click(function() {
@@ -445,31 +339,31 @@ jQuery(function($){ //on document.ready
 
     <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-database.js"></script>
 
-    <script src="https://localhost/crm/thecrm360/assets/js/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/jquery-ui.min.js" type="text/javascript"></script>
     <!---- new js file added by pp ------------->
-    <script src="https://localhost/crm/thecrm360/assets/js/dashboard_js.js" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/dashboard_js.js" type="text/javascript"></script>
     <!----------------------------------------------------------------------------------------------->
     <!-- bootstrap js -->
-    <script src="https://localhost/crm/thecrm360/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/bootstrap.min.js" type="text/javascript"></script>
 
     <!-- bootstrap timepicker -->
-    <script src="https://localhost/crm/thecrm360/assets/js/jquery-ui-sliderAccess.js?v=1.0" type="text/javascript"></script>
-    <script src="https://localhost/crm/thecrm360/assets/js/select2.min.js?v=1.0" type="text/javascript"></script>
-    <script src="https://localhost/crm/thecrm360/assets/js/sparkline.min.js?v=1.0" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/jquery-ui-sliderAccess.js?v=1.0" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/select2.min.js?v=1.0" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/sparkline.min.js?v=1.0" type="text/javascript"></script>
 
     <!-- ChartJs JavaScript -->
-    <script src="https://localhost/crm/thecrm360/assets/js/Chart.min.js?v=1.0" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/Chart.min.js?v=1.0" type="text/javascript"></script>
     <!-- semantic js -->
-    <script src="https://localhost/crm/thecrm360/assets/js/semantic.min.js?v=1.0" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/semantic.min.js?v=1.0" type="text/javascript"></script>
     <!-- DataTables JavaScript -->
-    <script src="https://localhost/crm/thecrm360/assets/datatables/js/dataTables.min.js?v=1.0"></script>
+    <script src="<?= base_url() ?>assets/datatables/js/dataTables.min.js?v=1.0"></script>
     <!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>     -->
-    <script src="https://localhost/crm/thecrm360/assets/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
-    <script src="https://localhost/crm/thecrm360/assets/js/tableHeadFixer.js?v=1.0" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="<?= base_url() ?>assets/js/tableHeadFixer.js?v=1.0" type="text/javascript"></script>
     <!-- Admin Script -->
-    <script src="https://localhost/crm/thecrm360/assets/js/frame.js?v=1.0?v=1.0" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/frame.js?v=1.0?v=1.0" type="text/javascript"></script>
     <!-- Custom Theme JavaScript -->
-    <script src="https://localhost/crm/thecrm360/assets/js/custom.js?v=1.0.1" type="text/javascript"></script>
+    <script src="<?= base_url() ?>assets/js/custom.js?v=1.0.1" type="text/javascript"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 </body>
 

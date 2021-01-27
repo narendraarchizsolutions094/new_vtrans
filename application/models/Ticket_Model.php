@@ -745,6 +745,24 @@ class Ticket_Model extends CI_Model
 		$data = $this->db->count_all_results('tbl_ticket');
 		return $data;
 	}
+	public function report_countPriority($type,$fromdate,$todate,$process='',$user_id='',$comp_id='')
+	{
+		$all_reporting_ids  = $this->common_model->get_categories($user_id);
+		$where = " ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
+		$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))';
+		 $process=$this->session->userdata('process_id_id');
+		$this->db->where($where);
+		if(empty($process) AND $process==''){
+			$data = $this->db->where(array('company' => $comp_id, 'priority' => $type));
+		}else{
+			$data = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'priority' => $type));
+		     }
+			$data=$this->db->where('last_update =', $fromdate);
+		$data = $this->db->count_all_results('tbl_ticket');
+
+		return $data;
+	}
+	
 	public function complaint_type($type,$fromdate,$todate,$process='',$user_id='',$comp_id='')
 	{
 		$process	=	$this->session->process[0]??$process;	
