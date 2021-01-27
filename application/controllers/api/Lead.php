@@ -534,10 +534,15 @@ class Lead extends REST_Controller {
        // $this->form_validation->set_rules('comment','Comment','required');
         $this->form_validation->set_rules('enquiry_code[]','Enquery Code' ,'required');
         $this->form_validation->set_rules('user_id','User Id' ,'required');
+        $this->form_validation->set_rules('status','Status');
 
+          //
         if($this->form_validation->run() == true){
             $move_enquiry=$this->input->post('enquiry_code[]');
-           
+            $status=$this->input->post('status');
+           if($status==''){
+             $status=3;
+           }
             if(!is_array($move_enquiry))
             {
                 $this->set_response([
@@ -557,7 +562,7 @@ class Lead extends REST_Controller {
               
               foreach($move_enquiry as $key){
                 $enq = $this->enquiry_model->enquiry_by_code($key);
-                $this->db->set('status',3);
+                $this->db->set('status',$status);
                 $this->db->where('Enquery_id',$key);
                 $this->db->update('enquiry');
                  /*
@@ -583,7 +588,7 @@ class Lead extends REST_Controller {
               }
                $this->set_response([
               'status' => true,
-              'message' => array(array('error'=>'Lead moved successfully to Client'))  
+              'message' => array(array('error'=>'Lead moved successfully'))  
                ], REST_Controller::HTTP_OK);
           }
           else{
