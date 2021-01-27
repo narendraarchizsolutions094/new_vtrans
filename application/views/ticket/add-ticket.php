@@ -37,17 +37,21 @@
 				<div id="process_basic_fields">
 
 				</div>
-				<?php
-				if(user_access('319'))
-				{?>
+				
 				<div class = "col-md-12 text-center">
+					<?php
+					if(user_access('319'))
+					{?>
 					<div class="form-group">
                       <label for="mail_alert"> <input id="mail_alert" type="checkbox" name="mail_alert"> Notify with mail</label>
                     </div>
+
+
+                    <?php
+					}?>
 					<button class="btn btn-success" type="submit" id='save_ticket'>Save</button>
 				</div>
-				<?php
-				}?>
+				
 			</div>
 				<?php echo form_close(); ?>
 				<div class = "row">
