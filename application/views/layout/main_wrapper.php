@@ -2672,10 +2672,10 @@ if($root=='https://student.spaceinternationals.com'){  ?>
             if (typeof myVar !== 'undefined') {
                 var phone = Object.values(res.val());
                 phone.forEach(function(arrayItem) {
-                    var phone = arrayItem.user_phone;
+                    var phone = arrayItem.user_phone; //customer no
                     var uid = arrayItem.uid;
                     var phone_s = arrayItem.users;
-                    phone_s = phone_s.replace(/[^\d]/g, '');
+                    phone_s = phone_s.replace(/[^\d]/g, ''); //agent no
                     if (phone.length >= 11) {
                         var phone_n = phone.substr(2, 12);
                     } else {

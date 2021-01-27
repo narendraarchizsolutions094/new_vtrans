@@ -247,6 +247,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<?php } ?>		
 			        			</select>
 							</div>
+						</div>
+						<div id="aginig_notification" class="action-section text-center row">
+								<div class="col-md-5">
+								</div>
+								<div class="col-md-2">
+									 <input type="time" name="aging_exec_time" class="form-control" value="<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>">
+								</div>
 						</div>	
 						<br>
 							        		
@@ -649,14 +656,9 @@ function builder_fun(rule_type)
 				  
 		  		var	action_value =	JSON.stringify({'stage':stage_only,'assignto':assignto,'defaultProcess':defaultProcess,'source':defaultsource});
 		  	}else if (rule_type==11){
-		  		var assignto		=	$("select[name='assignto']").val();
-				  var stage_only	=	$("select[name='stage_only']").val();
-				  var defaultsource	=	$("select[name='defaultsource']").val();
-				  var defaultProcess	=	$("select[name='defaultProcess']").val();
-				  
-		  		var	action_value =	'NULL';
+		  		var	action_value =	$("input[name='aging_exec_time']").val();
 		  	}
-		  	console.info(action_value);
+		  	
 		  	if (action_value && title) {
 		  		$.ajax({
 				      type: 'POST',
@@ -731,7 +733,7 @@ function builder_fun(rule_type)
 				$("#disposition_actionOnly").show(1000);
 				
 			}else if (rule == 11) {				
-				//alert('test');
+				$("#aginig_notification").show(1000);
 				
 			}
 		}
@@ -741,9 +743,9 @@ function builder_fun(rule_type)
 	});
 	$(document).ajaxComplete(function() {
 		if ("<?=!empty($rule_data['type'])?>") {
-	  		$("#email_template").val(<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>);
-	  		$("#sms_template").val(<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>);
-	  		$("#whatsapp_template").val(<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>);
+	  		$("#email_template").val("<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>");
+	  		$("#sms_template").val("<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>");
+	  		$("#whatsapp_template").val("<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>");
 		}
 	});
 	$(".multiple-select").select2();
