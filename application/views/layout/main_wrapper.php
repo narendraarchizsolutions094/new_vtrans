@@ -453,6 +453,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
         border-left: 3px solid #37a000;
     }
 
+    .main-sidebar::-webkit-scrollbar {
+                width: 5px!important;
+                }
+
+
     .navbar-nav>li>a>i {
         border: 1px solid #fff !important;
         padding: 12px 3px;
@@ -2002,7 +2007,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         </a>
                     </li>
 
-                    <?php           
+                    <?php      
+
                     if(user_access('530'))
                       {
                       ?>
@@ -2057,7 +2063,15 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             </li>
                             <?php
                         }
+                        if(user_access('318'))
+                        {
+                          ?>
+                        <li class="">
+                            <a href="<?php echo base_url("ticket/auto_add_config") ?>">Auto ticket By Mail</a>
+                        </li>
 
+                        <?php
+                        }     
                         if(user_access('523')){ ?>
                             <li
                                 class="<?php echo (($segment1 == "ticket" && $segment2 == "natureOfComplaintList") ? "active" : null) ?>">

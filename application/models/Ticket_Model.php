@@ -1788,4 +1788,10 @@ class Ticket_Model extends CI_Model
 
 	}
 
+	public function get_auto_mail_config()
+	{
+		$this->db->where('comp_id',$this->session->companey_id);
+		$this->db->where('process_id',($this->session->process[0]??0));
+		return $this->db->get('ticket_email_config')->row();
+	}
 }
