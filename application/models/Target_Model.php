@@ -161,7 +161,7 @@ class Target_Model extends CI_model
 	public function getTarget($goal_id,$fetch_type,$user)
 	{
 		$goal  =(array) @$this->getGoals(array('goal_id'=>$goal_id),$fetch_type,$user)[0];
-		return (object)array_slice($goal,8,4);
+		return (object)array_slice($goal,8,5);
 	}
 
 	public function getUserWiseForecast($goal_id,$user_id)
