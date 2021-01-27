@@ -288,5 +288,8 @@ if(!empty($_GET['phone']))
 	';
 }	
 
-?>            
+?>       
+$("#save_ticket").on('click',function(e){
+	$('#save_ticket').delay(4000).show(0);   
+});
 </script>
