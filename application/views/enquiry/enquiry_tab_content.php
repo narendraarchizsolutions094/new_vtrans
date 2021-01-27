@@ -868,7 +868,7 @@ $type="text";
 if($this->session->companey_id==65 && $tid == 57){
    ?>
    <script type="text/javascript">
-      $("select[name='enqueryfield[4478]']").html('<option value="">test</option>')
+      $("select[name='enqueryfield[4478]']").load("<?=base_url().'enquiry/load/competitor_list'?>")
    </script>
    <?php
 }

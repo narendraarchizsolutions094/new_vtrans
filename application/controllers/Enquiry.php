@@ -3652,4 +3652,17 @@ echo  $details1;
         }
        }       
     }
+    public function competitor_list(){
+        $this->db->where('comp_id',65);
+        $result = $this->db->get('competitors')->result_array();
+        if(!empty($result)){ ?>
+            <option value="">--- Select --- </option>
+            <?php
+            foreach ($result as $key => $value) {
+                ?>
+                <option value="<?=$value['name']?>"><?=$value['name']?></option>
+                <?php
+            }
+        }
+    }
 }
