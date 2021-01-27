@@ -287,4 +287,50 @@ class Dashboard extends REST_Controller {
         }
 
     }   
+    public function other_stages_post()
+    {
+        $comp_id = $this->input->post('comp_id');
+        $this->db->where('comp_id',$comp_id);
+        $this->db->or_where('comp_id',0);
+        $lang    =  $this->db->get('language')->result_array();
+        $base_url='https://thecrm360.com/new_crm/assets/images/icons/';
+         $user_id = $this->input->post('user_id');
+        $company_id = $this->input->post('company_id');
+        $this->form_validation->set_rules('user_id','user_id', 'trim|required');
+        $this->form_validation->set_rules('company_id','company_id', 'trim|required');
+        if($this->form_validation->run()==true)
+        {
+            $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING',$company_id);
+            //featch 
+            $dydata[]=['key'=>1,'title'=>'enquiry','icon'=>$base_url.'enquiry.jpeg' ];                        
+            $dydata[]=['key'=>2,'title'=>'lead','icon'=>$base_url.'lead.jpeg' ];                        
+            $dydata[]=['key'=>3,'title'=>'client','icon'=>$base_url.'client.jpeg' ];                        
+
+            if (!empty($enquiry_separation)) {
+                $enquiry_separation = json_decode($enquiry_separation, true);
+                    foreach ($enquiry_separation as $key => $value) {
+                       if($key==4){ $img='orders.jpeg'; }else{
+                        $img='fo.jpeg';
+                       }
+                    $data[]=['key'=>$key,'title'=>$value['title'],'icon'=>$base_url.$img ];                        
+                    }
+                }              
+
+            $res['basic_menu'] =$dydata;
+            $res['dynamic_menu'] =$data;
+            
+            $this->set_response([
+                'status' => TRUE,            
+                'data' => $res
+            ], REST_Controller::HTTP_OK); 
+        }
+        else
+        {
+            $this->set_response([
+                'status' => FALSE,            
+                'message' => strip_tags(validation_errors()),
+            ], REST_Controller::HTTP_OK); 
+        }
+
+    }  
 }

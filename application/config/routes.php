@@ -288,6 +288,8 @@ $route['lead'] = 'led';
 // $route['feedback/create'] = 'Dashboard/create';
 // $route['feedback/insert'] = 'Dashboard/insert';
 $route['facebook-pages'] = 'dashboard/facbookData';
+$route['report-view/:any/:any'] = 'report/send_sales_view/$i/$i';
+
 
 $route['404_override']            = '';
 

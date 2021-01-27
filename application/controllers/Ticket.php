@@ -300,6 +300,153 @@ class Ticket extends CI_Controller
 			echo json_encode(array('status' => '0', 'html' => '0'));
 		}
 	}
+	public function report_ticket_load_data()
+	{
+		// $_POST = array('search'=>array('value'=>''),'length'=>10,'start'=>0);
+		$this->load->model('report_Ticket_datatable_model');
+		$this->load->model('enquiry_model');
+		$res = $this->report_Ticket_datatable_model->getRows($_POST);
+
+		//print_r($res); exit();
+		$data  = array();
+		$dfields = $this->enquiry_model->getformfield(2);
+		$acolarr = array();
+		$dacolarr = array();
+		if (isset($_COOKIE["ticket_allowcols"])) {
+			$showall = false;
+			$acolarr  = explode(",", trim($_COOKIE["ticket_allowcols"], ","));
+		} else {
+			$showall = true;
+		}
+		if (isset($_COOKIE["ticket_dallowcols"])) {
+			$dshowall = false;
+			$dacolarr  = explode(",", trim($_COOKIE["ticket_dallowcols"], ","));
+		} else {
+			$dshowall = false;
+		}
+		$fieldval =  $this->enquiry_model->getfieldvalue(0,2); //2 for ticket
+		foreach ($res as $point) {
+			$sub = array();
+			$sub[] = '';
+			$sub[] = $point->id;
+			if ($showall or in_array(1, $acolarr)) {
+				$sub[] =$point->ticketno ;
+			}
+        if($this->session->comp_id==65)
+        {
+			if ($showall or in_array(15, $acolarr)) {
+				$sub[] = $point->tracking_no == '' ? 'NA' : $point->tracking_no;
+			}
+		}
+			if ($showall or in_array(7, $acolarr)) {
+				$sub[] = $point->created_by_name ?? "NA";
+			}
+			if ($showall or in_array(9, $acolarr)) {
+				$sub[] = $point->coml_date ?? 'NA';
+			}
+			if ($showall or in_array(18, $acolarr)) {
+				$sub[] = $point->last_update ?? 'NA';
+			}
+			if ($showall or in_array(2, $acolarr)) {
+				$sub[] = $point->org_name??($point->clientname ?? "NA");
+			}
+			if ($showall or in_array(3, $acolarr)) {
+				$sub[] = $point->email ?? "NA";
+			}
+			if ($showall or in_array(4, $acolarr)) {
+				if (user_access(220) && !empty($point->phone)) {
+					$sub[] = $point->phone;
+				} else {
+					$sub[] = $point->phone ?? "NA";
+				}
+			}
+			//$sub[] = $point->phone??"NA";
+			if ($showall or in_array(5, $acolarr)) {
+				$sub[] = $point->country_name ?? "NA";
+			}
+			if ($showall or in_array(6, $acolarr)) {
+				$assign_to = $point->assign_to_name ?? "NA";
+				$assign_to .=	!empty($point->last_esc)?' (<small style="color:red;">'.$point->last_esc.'</small>)':"";
+				$sub[] = $assign_to;
+			}
+			if ($showall or in_array(17, $acolarr)) {
+				$sub[] = $point->assigned_by_name ?? "NA";
+			}
+			
+			if ($showall or in_array(8, $acolarr)) {
+				$sub[] = '<span class="label label-' . ($point->priority == 1 ? 'success">Low' : ($point->priority == 2 ? 'warning">Medium' : ($point->priority == 3 ? 'danger">High' :'primary">NA'))) . '</span>';
+			}
+			
+			
+			if ($showall or in_array(19, $acolarr)) {
+				$sub[] = $point->subject_title ?? 'NA';
+			}
+			if ($showall or in_array(10, $acolarr)) {
+				$sub[] = $point->referred_name ?? 'NA';
+			}
+			if ($showall or in_array(11, $acolarr)) {
+				$sub[] = $point->source_name ?? 'NA';
+			}
+			if ($showall or in_array(12, $acolarr)) {
+				$sub[] = $point->lead_stage_name ?? 'NA';
+			}
+			if ($showall or in_array(13, $acolarr)) {
+				$sub[] = $point->description ?? 'NA';
+			}
+			if ($showall or in_array(14, $acolarr)) {
+				$sub[] = $point->message == '' ? 'NA' : $point->message;
+			}
+			
+			if ($showall or in_array(16, $acolarr)) {
+				$sub[] = $point->status_name == '' ? 'Open' : $point->status_name;
+			}
+			//dynamic fields
+			$enqid = $point->id;
+			if (!empty($dacolarr) and !empty($dfields)) {
+				foreach ($dfields as $ind => $flds) {
+					if (in_array($flds->input_id, $dacolarr)) {
+						if($flds->input_type==8)
+						{	
+							if(!empty($fieldval[$enqid][$flds->input_id]->fvalue))
+							{
+								$x =explode('/', $fieldval[$enqid][$flds->input_id]->fvalue);
+								$filename = !empty(end($x))?end($x):'NA';
+								$sub[] = '<a href="'.$fieldval[$enqid][$flds->input_id]->fvalue.'" target="_blank">'.$filename.'</a>';
+							}else
+							{
+								$sub[] = "NA";
+							}
+							
+							
+						}else
+						{
+						$sub[] = (!empty($fieldval[$enqid][$flds->input_id])) ? $fieldval[$enqid][$flds->input_id]->fvalue : "NA";
+						}
+					}
+				}
+			}
+			$followup = empty($this->session->ticket_filters_sess['followup'])?0:1;
+			
+			if($followup)
+			{	//echo 'yes followup'; exit();
+				$sub[] = $point->tck_subject??'NA';
+				$sub[] = $point->tck_stage??'NA';
+				$sub[] = $point->tck_sub_stage??'NA';
+				$sub[] = $point->tck_msg??'NA';
+			}
+
+			$data[] = $sub;
+		}
+		//print_r($res);
+		$countAll = $this->report_Ticket_datatable_model->countAll();
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $countAll,
+			"recordsFiltered" => $countAll,
+			"data" => $data,
+		);
+		echo json_encode($output);
+	}
 	public function ticket_load_data()
 	{
 		// $_POST = array('search'=>array('value'=>''),'length'=>10,'start'=>0);
@@ -1990,8 +2137,46 @@ class Ticket extends CI_Controller
 		}
 		echo json_encode($data);
 	}
+	public function data_priority_wiseJson()
+	{
+
+		$fromdate=$this->uri->segment(3);
+		$todate=$this->uri->segment(4);
+		$comp_id= $this->session->userdata('comp_id');
+		$user_id= $this->session->userdata('user_id_id');
+		$sdata=$this->session->userdata('ticket_filters_sess');
+		$process=$this->session->process_id_id;
+			//   print_r($sdata['priority']);
+			  if(empty($sdata['priority'])){
+				$low = $this->Ticket_Model->report_countPriority(1,$fromdate,$todate,$process,$user_id,$comp_id);
+		$medium = $this->Ticket_Model->report_countPriority(2,$fromdate,$todate,$process,$user_id,$comp_id);
+		$high = $this->Ticket_Model->report_countPriority(3,$fromdate,$todate,$process,$user_id,$comp_id);
+		$data[] = ['name' => 'High', 'value' => $high];
+		$data[] = ['name' => 'Medium', 'value' => $medium];
+		$data[] = ['name' => 'Low', 'value' => $low];
+		echo json_encode($data);
+			  }else{
+				  if($sdata['priority']==1){
+					$low = $this->Ticket_Model->report_countPriority(1,$fromdate,$todate,$process,$user_id,$comp_id);
+		$data[] = ['name' => 'Low', 'value' => $low];
+		echo json_encode($data);
+				  }
+				  if($sdata['priority']==2){
+					$medium = $this->Ticket_Model->report_countPriority(2,$fromdate,$todate,$process,$user_id,$comp_id);
+		$data[] = ['name' => 'Medium', 'value' => $medium];
+		echo json_encode($data);
+				  }
+				  if($sdata['priority']==3){
+					$high = $this->Ticket_Model->report_countPriority(3,$fromdate,$todate,$process,$user_id,$comp_id);
+		$data[] = ['name' => 'High', 'value' => $high];
+		echo json_encode($data);
+				  }
+			  }
+		
+	}
 	public function priority_wiseJson()
 	{
+		
 		$fromdate=$this->uri->segment(3);
 	    $todate=$this->uri->segment(4);
 		$low = $this->Ticket_Model->countPriority(1,$fromdate,$todate);

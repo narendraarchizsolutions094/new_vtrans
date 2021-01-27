@@ -74,7 +74,7 @@
 
                           </select>
                         </div>
-
+                        <input name="process_id"  value="<?php echo implode(',',$this->session->userdata('process')) ?>" hidden>
                         <!-- ======= Problem filter======== -->
 
                         <div class="form-group col-md-3" id="problemfilter">
