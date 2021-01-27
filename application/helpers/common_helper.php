@@ -302,3 +302,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $str.= '</div>';
         return $str;
     }
+    function ticket_subject($tckno,$subject)
+    {
+        return "#".$tckno." Ticket Created with Subject '".$subject."'";
+
+    }

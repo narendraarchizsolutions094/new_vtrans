@@ -4,10 +4,53 @@
     </div>
 </div>
 
-<div class="row" style="padding: 35px;">
+<?php
+if(empty($this->session->process) || count($this->session->process)!=1)
+{
+	echo'<div class="alert alert-danger">Please Select Only 1 process.</div>';
 
-	
-	<div class="col-md-6" align="" style="border-right: 1px solid #f0f0f0;">
+}
+else
+{
+?>
+
+<div class="row" id="tick_config" style="padding: 35px;">
+
+	<!-- <div class="col-lg-12">
+		<table class="table table-bordered table-responsive">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Hostname</th>
+					<th>Username</th>
+					<th>Password</th>
+					<th>Ticket Created By</th>
+					<th>Ticket Process</th>
+					<th>Template</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				foreach ($res as $row)
+				{
+					echo'<tr>
+					<td>'.$row->hostname.'</td>
+					<td>'.$row->username.'</td>
+					<td>'.$row->password.'</td>
+					<td>'.$row->belongs_to.'</td>
+					<td>'.$row->process.'</td>
+					<td>'.$row->template.'<td>
+				</tr>';
+				}
+				?>
+			</tbody>
+		</table>
+	</div> -->
+
+
+
+<div class="col-md-10 col-md-offset-1" align="" style="/*border-right: 1px solid #f0f0f0;*/">
 	<form action="" method="post">
 		<div class="form-group" align="right">
 			<button type="button" class="btn btn-sm btn-primary edit-btn" onclick="make_edit()"><i class="fa fa-edit"></i> Edit</button>
@@ -25,9 +68,9 @@
 			<input type="" name="password" class="form-control fixed" value="<?=$row->password??''?>" required>
 		</div>
 		<div class="row">
-			<div class="col-md-6" style="padding:0px">
+			<div class="col-md-12" style="padding:0px">
 				<div class="form-group">
-					<label>Tickets Belongs to <font color="red">*</font></label>
+					<label>Tickets Created By <font color="red">*</font></label>
 					<select name="belongs_to" class="form-control fixed" required>
 						<?php
 						if(!empty($user_list))
@@ -41,7 +84,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="col-md-6" style="padding:0px;">
+			<!-- <div class="col-md-6" style="padding:0px;">
 				<div class="form-group">
 					<label>Tickets Process <font color="red">*</font></label>
 					<select name="process_id" class="form-control fixed" required>
@@ -56,35 +99,33 @@
 						?>
 					</select>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div class="form-group">
 			<label>Email Template on Ticket Generation<font color="red">*</font></label><br>
-			<span style="font-size: 10px;">Use <font color="red">@ticketno , @subject, @sender, <!-- @user --></font> for reference of Generated Ticket Number and Send Subject.</span>
-			<textarea id="tmp" class="form-control fixed" onkeyup="live_tmp()" name="template" style="height: 200px;"><?php
+			<div style="font-size: 10px; padding: 5px">Use <font color="red">@ticketno , @subject, @sender,</font> for reference of Generated Ticket Number and Send Subject.</div>
 
-			$breaks = array("<br />","<br>","<br/>");  
-    echo str_ireplace($breaks, "\r\n", $row->template); 
-			?></textarea>			
+			<select name="temp_id" class="form-control fixed select2" required>
+						<?php
+						if(!empty($tmp_list))
+						{
+							foreach ($tmp_list as $key => $tmp_row)
+							{
+								echo'<option value="'.$tmp_row->temp_id.'" '.($row->template==$tmp_row->temp_id?'selected':'').'>'.$tmp_row->template_name.'</option>';
+							}
+						}
+						?>
+			</select>
 		</div>
 		<div class="form-group save-btn" style="display: none;">
 			<button class="btn btn-block btn-success"> <i class="fa fa-save"></i> Save</button>
 		</div>
 	</form>
 	</div>
-	
-	<div class="col-md-6">
-		<label>Email View</label><hr>
-		<div class="form-group">
-			<label>Subject</label>
-				<input type="" class="form-control" name="" style="width: 100%; border-radius: 2px;" value="#TICKETNO Ticket Created with Subject 'SUBJECT' ">
-		</div>
-		<div class="form-group">
-			<label>Body</label>
-			<div id="view_box" class="form-control" style="min-height: 200px;"></div>
-		</div>
-	</div>
+
+
 </div>
+
 <style type="text/css">
 	.content
 	{
@@ -105,22 +146,26 @@
 }
 </style>
 <script type="text/javascript">
-try{
-	live_tmp();
-	function live_tmp()
-	{	
-		var user = $("select[name=belongs_to] option:selected").text();
-		var content = $("#tmp").val();
-		content = content.replace(/\n\r?/g, '<br />');
-		content = content.replace('@ticketno','<span class="replaced">TICKETNO</span>');
-		content = content.replace('@subject','<span class="replaced">SUBJECT</span>');
-		content = content.replace('@sender','<span class="replaced">SENDER</span>');
-		//content = content.replace('@user','<span class="replaced">'+user+'</span>');
+$(document).ready(function(){
+$(".select2").select2();
+});
+	
+// try{
+// 	live_tmp();
+// 	function live_tmp()
+// 	{	
+// 		var user = $("select[name=belongs_to] option:selected").text();
+// 		var content = $("#tmp").val();
+// 		content = content.replace(/\n\r?/g, '<br />');
+// 		content = content.replace('@ticketno','<span class="replaced">TICKETNO</span>');
+// 		content = content.replace('@subject','<span class="replaced">SUBJECT</span>');
+// 		content = content.replace('@sender','<span class="replaced">SENDER</span>');
+// 		//content = content.replace('@user','<span class="replaced">'+user+'</span>');
 		
-		//alert(content);
-		$("#view_box").html(content);
-	}
-}catch(e){alert(e)};
+// 		//alert(content);
+// 		$("#view_box").html(content);
+// 	}
+// }catch(e){alert(e)};
 
 	<?php
 	if(empty($row)){
@@ -128,7 +173,7 @@ try{
 	}
 	else
 		echo'	
-				$("input,select,textarea").attr("disabled","disabled");
+				$("#tick_config").find("input,select,textarea").attr("disabled","disabled");
 	';
 	?>
 
@@ -137,6 +182,16 @@ try{
 		$(".edit-btn").hide();
 		$(".save-btn").show();
 		$(".fixed").removeClass('fixed');
-		$("input,select,textarea").removeAttr('disabled');
+		$("#tick_config").find("input,select,textarea").removeAttr('disabled');
 	}
 </script>
+<!-- 			<textarea id="tmp" class="form-control fixed" onkeyup="live_tmp()" name="template" style="height: 200px;"><?php
+			if(!empty($row->template))
+			{
+			$breaks = array("<br />","<br>","<br/>");  
+    echo str_ireplace($breaks, "\r\n", $row->template); 
+			}
+			?></textarea> -->
+<?php
+}
+?>

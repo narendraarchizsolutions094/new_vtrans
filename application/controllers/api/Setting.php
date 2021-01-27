@@ -19,4 +19,6 @@ class Setting extends REST_Controller {
             'message' => $lang  
            ], REST_Controller::HTTP_OK);  
     }
+
+   
 } 
