@@ -1495,7 +1495,7 @@ class Ticket extends CI_Controller
 		$this->form_validation->set_rules('name','Name','required');
 		$this->form_validation->set_rules('phone','Mobile No','required');
 		// $this->form_validation->set_rules('email','Email','required');
-		if($this->session->companey_id == 65 && ($this->input->post('complaint_type') == 1)){
+		if($this->session->companey_id == 65 && $this->input->post('tracking_no')){
 			$this->form_validation->set_rules('tracking_no', display('tracking_no'), 'required|callback_tracking_no_check', array('tracking_no_check' => 'Ticket with this '.display('tracking_no').' is already open.'));
 		}
 		if ($this->form_validation->run()==TRUE) {
