@@ -294,7 +294,8 @@ $("#save_ticket").on('click',function(e){
 	var fewSeconds = 5;
 	btn.prop('disabled', true);
     setTimeout(function(){
-        btn.prop('disabled', false);
+		btn.prop('disabled', false);
     }, fewSeconds*1000);
+	$("#ticket-add-form").submit();
 });
 </script>
