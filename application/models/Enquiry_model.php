@@ -670,15 +670,17 @@ class Enquiry_model extends CI_Model {
 	
 		$this->db->select('*');
 		$this->db->where('page_id',$for);
-		$this->db->where(array("company_id"=> $this->session->companey_id, "status" => 1));
-    $this->db->group_start();
-    foreach ($this->session->process as $key => $value) {
-      if($key==0)
-      $this->db->where('(FIND_IN_SET ('.$value.',process_id) >0)');
-      else
-       $this->db->or_where('(FIND_IN_SET ('.$value.',process_id) >0)');
-    }
-    $this->db->group_end();
+        $this->db->where(array("company_id"=> $this->session->companey_id, "status" => 1));
+        if(!empty($this->session->process)){
+            $this->db->group_start();
+            foreach ($this->session->process as $key => $value) {
+                if($key==0)
+                    $this->db->where('(FIND_IN_SET ('.$value.',process_id) >0)');
+                else
+                    $this->db->or_where('(FIND_IN_SET ('.$value.',process_id) >0)');
+            }
+        }
+        $this->db->group_end();
 		return $this->db->get("tbl_input")->result();
 				
 	}
