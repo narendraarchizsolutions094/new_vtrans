@@ -126,6 +126,19 @@ class Client_Model extends CI_Model
 
         if(!empty($_POST['filters']))
         {
+            foreach ($_POST['filters'] as $key => $value)
+            {
+                if($value==''){
+                  unset($_POST['filters'][$key]);
+                  if(!count($_POST['filters']))
+                    unset($_POST['filters']);
+                }
+
+            }
+        }
+
+        if(!empty($_POST['filters']))
+        {
 
               $match_list = array();
 

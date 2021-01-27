@@ -646,14 +646,14 @@ function funnel_chart(elm,title){
         {           
             foreach($dfields as $ind => $fld)
             {
-              if(in_array($fld->input_id,$table_config_list))
-              {
+              // if(in_array($fld->input_id,$table_config_list))
+              // {
             ?>
             <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="dchoose-col"  value = "<?php echo $fld->input_id; ?>"  <?php echo (in_array($fld->input_id, $dacolarr)) ? "checked" : ""; ?>>   <?php echo ucwords($fld->input_label); ?></label>  &nbsp;
           </div>
             <?php   
-              }
+             // }
             }
             ?>
              </div>

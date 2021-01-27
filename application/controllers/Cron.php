@@ -18,7 +18,7 @@ class Cron extends CI_Controller {
         if ($this->session->userdata('isLogIn') == false) 
         redirect('login'); 
         $data['title'] = 'Cron Jobs';
-        $data['crons']=$this->db->where(array('created_by'=>$this->session->user_id))->get('cronjobs')->result();
+        $data['crons']=$this->db->get('cronjobs')->result();
 
         $data['content'] = $this->load->view('cron/cron-list',$data,true);
         $this->load->view('layout/main_wrapper',$data);

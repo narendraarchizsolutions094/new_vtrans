@@ -1035,136 +1035,115 @@ class Report extends CI_Controller
       );
       // print_r(json_encode($filters));
       // die();
-      if ($this->db->insert('reports', $insert_array)) {
-        echo json_encode(array('status' => true, 'msg' => 'Report Saved Successfully'));
-      } else {
-        echo json_encode(array('status' => false, 'msg' => 'Something went wrong!'));
+        $data['title'] = 'Report';
+        $data['countries'] = $this->report_model->all_country();
+        $data['institute'] = $this->report_model->all_institute();
+        $data['center'] = $this->report_model->all_center();
+        $data['sourse'] = $this->report_model->all_source();
+        $data['subsourse'] = $this->report_model->all_subsource();
+        $data['datasourse'] = $this->report_model->all_datasource();
+        $data['all_stage_lists'] = $this->Leads_Model->find_stage();
+        $data['products'] = $this->dash_model->product_list();        
+        $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));        
+        $data['content'] = $this->load->view('all_report', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+  }
+    
+    //Dashboard statitics reports for enquiry..
+    public function enquiry_statitics_report() {
+        echo json_encode($this->report_model->enquiry_statitics_data());
+    }
+    //Dashboard statitics reports for Leads..
+    public function lead_statitics_report() {
+        echo json_encode($this->report_model->lead_statitics_data());
+    }
+    public function lead_opportunity() {
+        echo json_encode($this->report_model->lead_opportunities_status());
+    }
+    public function client_opportunities() {
+        echo json_encode($this->report_model->client_opportunity_status());
+    }
+    public function all_source() {
+        echo json_encode($this->report_model->enquiry_source_data());
+    }
+    public function funnel_reports() {
+        echo json_encode($this->report_model->funnel_report());
+    }
+    public function ticket_report()
+    {
+      if(user_role(122)){}
+        $this->load->model(array('Ticket_Model','Datasource_model','dash_model','enquiry_model','report_model','Leads_Model','User_model'));
+    
+        if (isset($_SESSION['ticket_filters_sess']) && empty($_POST))
+          unset($_SESSION['ticket_filters_sess']);
+        $data['sourse'] = $this->report_model->all_source();
+        $data['title'] = "Ticket Report";
+        $data['created_bylist'] = $this->User_model->read();
+        $data['products'] = $this->dash_model->get_user_product_list();
+        $data['prodcntry_list'] = $this->enquiry_model->get_user_productcntry_list();
+        $data['problem'] = $this->Ticket_Model->get_sub_list();        
+        $data['stage'] =  $this->Leads_Model->stage_by_type(4);
+        $data['sub_stage'] = $this->Leads_Model->find_description();
+        $data['ticket_status'] = $this->Ticket_Model->ticket_status()->result();        
+        $data['dfields'] = $this->enquiry_model->getformfield(2);        
+        $data['issues'] = $this->Ticket_Model->get_issue_list();     
+
+       // $list =  $this->db->select('input_id')->where(array('process_id'=>$this->session->process[0],'company_id'=>$this->session->companey_id,'status'=>'1'))->get('tbl_input')->result();
+       // $list = array_column($list, 'input_id');
+       // // $list2 = array();
+       // // //print_r($list); exit();
+       // // if(!empty($_COOKIE['ticket_dallowcols']))
+       // //  $list2 = explode(',', $_COOKIE['ticket_dallowcols']);
+
+       // // $common = array_intersect($list,$list2);
+       // //  p
+       // // setcookie('ticket_dallowcols',implode(',', $common),86400*30,'/');
+
+       // $data['table_config_list'] = $list;
+        $data['content'] = $this->load->view('reports/ticket_report', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+
+    public function report_analitics($for){
+      $this->load->model('report_datatable_model');
+      $result  = $this->report_datatable_model->report_analitics($for);      
+      echo json_encode($result);      
+    }
+    
+    public function report_analitics_pipeline($for){
+      $this->load->model('report_datatable_model');
+      $result  = $this->report_datatable_model->report_analitics($for);      
+      $res = array();
+
+      if(!empty($result)){
+        foreach($result as $value){          
+          $title = $this->get_sale_pipeline_name_byId($value[0]);          
+          array_push($res,array($title,$value[1]));          
+        }
+        $result = $res;
       }
-    } else {
-      echo json_encode(array('status' => false, 'msg' => validation_errors()));
+      echo json_encode($result);      
     }
-  }
 
-  public function all_reports()
-  {
-    // print_r($this->session->userdata());
-    // die();
-    $data['title'] = 'Report';
-    $data['countries'] = $this->report_model->all_country();
-    $data['institute'] = $this->report_model->all_institute();
-    $data['center'] = $this->report_model->all_center();
-    $data['sourse'] = $this->report_model->all_source();
-    $data['subsourse'] = $this->report_model->all_subsource();
-    $data['datasourse'] = $this->report_model->all_datasource();
-    $data['all_stage_lists'] = $this->Leads_Model->find_stage();
-    $data['products'] = $this->dash_model->product_list();
-    $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));
-    $data['content'] = $this->load->view('all_report', $data, true);
-    $this->load->view('layout/main_wrapper', $data);
-  }
-
-  //Dashboard statitics reports for enquiry..
-  public function enquiry_statitics_report()
-  {
-    echo json_encode($this->report_model->enquiry_statitics_data());
-  }
-  //Dashboard statitics reports for Leads..
-  public function lead_statitics_report()
-  {
-    echo json_encode($this->report_model->lead_statitics_data());
-  }
-  public function lead_opportunity()
-  {
-    echo json_encode($this->report_model->lead_opportunities_status());
-  }
-  public function client_opportunities()
-  {
-    echo json_encode($this->report_model->client_opportunity_status());
-  }
-  public function all_source()
-  {
-    echo json_encode($this->report_model->enquiry_source_data());
-  }
-  public function funnel_reports()
-  {
-    echo json_encode($this->report_model->funnel_report());
-  }
-  public function ticket_report()
-  {
-    if (user_role(122)) {
-    }
-    $this->load->model(array('Ticket_Model', 'Datasource_model', 'dash_model', 'enquiry_model', 'report_model', 'Leads_Model', 'User_model'));
-
-    if (isset($_SESSION['ticket_filters_sess']) && empty($_POST))
-      unset($_SESSION['ticket_filters_sess']);
-    $data['sourse'] = $this->report_model->all_source();
-    $data['title'] = "Ticket Report";
-    $data['created_bylist'] = $this->User_model->read();
-    $data['products'] = $this->dash_model->get_user_product_list();
-    $data['prodcntry_list'] = $this->enquiry_model->get_user_productcntry_list();
-    $data['problem'] = $this->Ticket_Model->get_sub_list();
-    $data['stage'] =  $this->Leads_Model->stage_by_type(4);
-    $data['sub_stage'] = $this->Leads_Model->find_description();
-    $data['ticket_status'] = $this->Ticket_Model->ticket_status()->result();
-    $data['dfields'] = $this->enquiry_model->getformfield(2);
-    $data['issues'] = $this->Ticket_Model->get_issue_list();
-
-    $list =  $this->db->select('input_id')->where(array('process_id' => $this->session->process[0], 'company_id' => $this->session->companey_id, 'status' => '1'))->get('tbl_input')->result();
-    $list = array_column($list, 'input_id');
-    // $list2 = array();
-    // //print_r($list); exit();
-    // if(!empty($_COOKIE['ticket_dallowcols']))
-    //  $list2 = explode(',', $_COOKIE['ticket_dallowcols']);
-
-    // $common = array_intersect($list,$list2);
-    //  p
-    // setcookie('ticket_dallowcols',implode(',', $common),86400*30,'/');
-
-    $data['table_config_list'] = $list;
-    $data['content'] = $this->load->view('reports/ticket_report', $data, true);
-    $this->load->view('layout/main_wrapper', $data);
-  }
-
-  public function report_analitics($for)
-  {
-    $this->load->model('report_datatable_model');
-    $result  = $this->report_datatable_model->report_analitics($for);
-    echo json_encode($result);
-  }
-
-  public function report_analitics_pipeline($for)
-  {
-    $this->load->model('report_datatable_model');
-    $result  = $this->report_datatable_model->report_analitics($for);
-    $res = array();
-
-    if (!empty($result)) {
-      foreach ($result as $value) {
-        $title = $this->get_sale_pipeline_name_byId($value[0]);
-        array_push($res, array($title, $value[1]));
+    function get_sale_pipeline_name_byId($id){      
+      if($id == 1){
+        $name = display('enquiry');
+      }else if($id == 2){
+        $name = display('lead');
+      }else if($id == 3){
+        $name = display('client');
+      }else{
+        $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
+        if (!empty($enquiry_separation)) {
+          $enquiry_separation = json_decode($enquiry_separation, true);
+          $name = $enquiry_separation[$id]['title'];     
+        }else{
+          $name = 'NA';
+        }
       }
-      $result = $res;
-    }
-    echo json_encode($result);
-  }
-
-  function get_sale_pipeline_name_byId($id)
-  {
-    if ($id == 1) {
-      $name = display('enquiry');
-    } else if ($id == 2) {
-      $name = display('lead');
-    } else if ($id == 3) {
-      $name = display('client');
-    } else {
-      $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
-      if (!empty($enquiry_separation)) {
-        $enquiry_separation = json_decode($enquiry_separation, true);
-        $name = $enquiry_separation[$id]['title'];
-      } else {
-        $name = 'NA';
-      }
-    }
     return $name;
-  }
+
+    }
+  
 }

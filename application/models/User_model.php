@@ -565,5 +565,15 @@ public function updateLoginToken($user_id,$token,$type)
     }
 }
 
+public function hasPermission($user_id,$right_id)
+{
+   $persmissions = $this->db->select("tbl_user_role.user_permissions")
+            ->where('pk_i_admin_id',$user_id)
+            ->join('tbl_user_role','tbl_user_role.use_id=tbl_admin.user_permissions')
+            ->where('FIND_IN_SET('.$right_id.', tbl_user_role.user_permissions)')
+            ->count_all_results('tbl_admin');
+    return $persmissions;
+}
+
 }
 

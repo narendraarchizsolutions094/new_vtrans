@@ -31,13 +31,20 @@ class Client extends REST_Controller {
     public function active_clients_post(){   
        $user_id= $this->input->post('user_id');
        $process_id= $this->input->post('process_id');
+
+       //===========for others = 
+      if(empty($_POST['other_id']))
+        $data_type_id = 3;
+      else
+        $data_type_id = $_POST['other_id'];
+
        $process = implode(",", $process_id);
             $res= array();
             if(!empty($user_id)){
                     $user_role1 = $this->User_model->read_by_id($user_id); 
                     if(!empty($user_role1)){
               $user_role=$user_role1->user_roles;
-             $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,3,$user_role,$process);
+             $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,$data_type_id,$user_role,$process);
     
                if(!empty($data['active_enquiry']->result())){
                   $res= array();
@@ -146,7 +153,8 @@ class Client extends REST_Controller {
          $client_code = $this->form_validation->set_rules('client_code');
          $user_id = $this->form_validation->set_rules('user_id');
          
-         if($this->form_validation->run() == true){
+         if($this->form_validation->run() == true)
+         {
       
           $name = $this->input->post('name');
           $email = $this->input->post('email');
@@ -323,7 +331,14 @@ public function get_client_list_post(){
       $dfields = $this->sync_model->getformfield();       
         
       $dacolarr = array();
-$data_type = 3;
+
+      if(empty($_POST['other_id']))
+        $data_type_id = 3;
+      else
+        $data_type_id = $_POST['other_id'];
+
+$data_type = $data_type_id;
+
 $compid = $this->input->post('comp_id');
  $fieldval =  $this->sync_model->getfieldvalue($compid);  
 if(!empty($compid)){
@@ -355,6 +370,12 @@ public function active_clients_page_post(){
         $offset = $this->input->post('offset')??0;
         $limit = $this->input->post('limit')??10;
 
+
+        if(empty($_POST['other_id']))
+        $data_type_id = 3;
+      else
+        $data_type_id = $_POST['other_id'];
+
        $process = implode(",", $process_id);
             $res= array();
             if(!empty($user_id)){
@@ -363,9 +384,9 @@ public function active_clients_page_post(){
               $user_role=$user_role1->user_roles;
 
 
-            $total = $this->enquiry_model->active_enqueries_api($user_id,3,$user_role,$process)->num_rows();
+            $total = $this->enquiry_model->active_enqueries_api($user_id,$data_type_id,$user_role,$process)->num_rows();
            
-             $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,3,$user_role,$process,$offset,$limit);
+             $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,$data_type_id,$user_role,$process,$offset,$limit);
     
                if(!empty($data['active_enquiry']->result())){
 

@@ -19,7 +19,7 @@
                       foreach($company_list as $companylist){
                       if($companylist['field_id']==FIRST_NAME){?>
                     
-                     <div class="form-group col-sm-4 col-md-4">
+                     <div class="form-group col-sm-4 col-md-4 enq-first-name">
                         <label> <?php echo display("first_name"); ?> <i class="text-danger"></i> </label>
                         <div class = "input-group" >
                            <span class="input-group-addon" style="padding:0px!important;border:0px!important;width:30%;">
@@ -38,7 +38,7 @@
                     <?php
                     if($companylist['field_id']==LAST_NAME){
                     ?>
-                     <div class="form-group col-sm-4 col-md-4"> 
+                     <div class="form-group col-sm-4 col-md-4 enq-last-name"> 
                         <label><?php echo display("last_name"); ?> <i class="text-danger"></i></label>
                         <input class="form-control" value="<?php  echo set_value('lastname');?>" name="lastname" type="text" placeholder="Last Name">  
                      </div>
@@ -48,7 +48,7 @@
                    <?php
                     if($companylist['field_id']==GENDER){
                     ?>
-                     <div class="form-group col-sm-4 col-md-4"> 
+                     <div class="form-group col-sm-4 col-md-4 enq-gender"> 
                         <label><?php echo display("gender"); ?><i class="text-danger"></i></label>
                          <select name="gender" class="form-control">
                            <option value="">---Select---</option>
@@ -65,7 +65,7 @@
                     if($companylist['field_id']==MOBILE){
                     ?>
                     
-                     <div class="form-group col-sm-4 col-md-4"> 
+                     <div class="form-group col-sm-4 col-md-4 enq-mobile"> 
                         <label><?php echo display('mobile') ?> <i class="text-danger">*</i></label>
                         <input class="form-control" value="<?php if(!empty($_GET['phone'])){echo $_GET['phone']; }else{ echo set_value('mobileno')?set_value('mobileno'):($this->input->get('phone')?$this->input->get('phone'):'');}?>" name="mobileno" type="text" maxlength='10' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Enter Mobile Number" required="">
                         <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
@@ -82,7 +82,7 @@
                      <?php
                     if($companylist['field_id']==EMAIL){
                     ?>
-                     <div class="form-group col-sm-4 col-md-4"> 
+                     <div class="form-group col-sm-4 col-md-4 enq-email"> 
                         <label><?php echo display('email') ?> <i class="text-danger"></i> </label>
                         <input class="form-control" value="<?php  echo set_value('email');?> " name="email" type="email"  placeholder="Enter Email">  
                      </div>                     
@@ -104,7 +104,7 @@
                     if($companylist['field_id']==LEAD_SOURCE){
                     ?>      
                               
-                     <div class="form-group col-sm-4 col-md-4">
+                     <div class="form-group col-sm-4 col-md-4 enq-source">
                         <label><?php echo display('lead_source') ?> <i class="text-danger"></i></label>
                         <select class="form-control" name="lead_source" id="lead_source" onchange="find_sub()">
                            <option value="" style="display:none;">---Select---</option>
@@ -120,7 +120,7 @@
                     if($companylist['field_id']==SUB_SOURCE){
                     ?>      
                               
-                     <div class="form-group col-sm-4 col-md-4">
+                     <div class="form-group col-sm-4 col-md-4 enq-subsource">
                         <label><?php echo display('sub_source') ?> <i class="text-danger"></i></label>
                         <select class="form-control" name="subsource" id="subsource">
                          
@@ -132,7 +132,7 @@
                     <?php
                     if($companylist['field_id']==PRODUCT_FIELD){
                     ?>                
-                     <div class="form-group col-sm-4 col-md-4">
+                     <div class="form-group col-sm-4 col-md-4 enq-product">
                         <label><?php echo display("product"); ?></label>
                         <select class="form-control" name="sub_source" id="sub_source">
                            <option value="" style="display:none;">---Select---</option>
@@ -145,7 +145,7 @@
                    }                   
                     if($companylist['field_id']==ADDRESS_FIELD){
                     ?>                                     
-                     <div class="form-group col-sm-4 col-md-4">
+                     <div class="form-group col-sm-4 col-md-4 enq-address">
                         <label><?php echo display('address') ?> <i class="text-danger"></i></label>
                         <textarea class="form-control" name="address" placeholder="Enter Address"><?php  echo set_value('address');?></textarea> 
                      </div>
@@ -154,7 +154,7 @@
                    }                    
                     if($companylist['field_id']==STATE_FIELD){
                     ?>                
-                     <div class="form-group col-sm-4 col-md-4">
+                     <div class="form-group col-sm-4 col-md-4 enq-state">
                         <label> <?php echo display("state"); ?> <i class="text-danger"></i></label>
                         <select name="state_id" class="" id="fstate">
                            <option value="" style="display:none;">---Select---</option>
@@ -170,7 +170,7 @@
                     if($companylist['field_id']==CITY_FIELD){
                     ?>             
                                              
-                      <div class="form-group col-sm-4 col-md-4">
+                      <div class="form-group col-sm-4 col-md-4 enq-city">
                         <label><?php echo display("city"); ?> <i class="text-danger"></i></label>
                         <select name="city_id" class="" id="fcity">
                            <option value="" style="display:none;">---Select---</option>
@@ -183,7 +183,7 @@
                    }
                   if($companylist['field_id']==PIN_CODE){
                     ?>
-                     <div class="form-group col-sm-4 col-md-4">
+                     <div class="form-group col-sm-4 col-md-4 enq-pincode">
                         <label><?php echo display('pin_code') ?> <i class="text-danger"></i></label>
                         <input class="form-control" value="<?php  echo set_value('pin_code');?> " name="pin_code" type="text"  placeholder="Pin Code"> 
                      </div>
@@ -193,7 +193,7 @@
                    
                    if($companylist['field_id']==REMARK_FIELD){
                     ?>                                     
-                     <div class="form-group col-sm-4 col-md-4"> 
+                     <div class="form-group col-sm-4 col-md-4 enq-remark"> 
                         <label><?=display('remark')?></label>
                         <textarea class="form-control" name="enquiry"></textarea>
                      </div>

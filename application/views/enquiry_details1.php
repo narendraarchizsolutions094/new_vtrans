@@ -2253,6 +2253,7 @@ if(user_access('1020'))
           <th>Travelled Type</th>
           <th>Rating</th>
           <th>Next Visit Date</th>
+          <th>Next Visit Time</th>
           <th>Next Visit Location</th>
           <th>Action</th>
         </tr>
@@ -2302,6 +2303,10 @@ if(user_access('1020'))
           <div class="form-group col-md-6 next-visit-date col-md-6">      
             <label>Next Visit Date</label>
              <input  name="next_visit_date" class="form-control form-date">
+          </div>
+          <div class="form-group col-md-6 next-visit-date col-md-6">      
+            <label>Next Visit Time</label>
+             <input  name="next_visit_time" class="form-control " type="time">
           </div>
       
           <div class="form-group col-md-6 next-visit-location col-md-6">      
@@ -5890,14 +5895,18 @@ jQuery(document).ready(function(){
    })
 });
 
-<?php
+if("<?=$this->session->companey_id?>"==65){
+   $(".designation").insertAfter(".enq-last-name");
+   $(".enq-remark").insertAfter(".website");
+}
 
+<?php
 if($this->session->process[0]=='200')
 {
   //moble number relocate in V-trans process 200
 ?>
 
-$(document).ready(function(){
+$(document).ready(function(){ 
   relocate_mobile();
 });
   function relocate_mobile()

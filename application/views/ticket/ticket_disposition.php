@@ -159,7 +159,16 @@
                             }
                           }?>
                        </select>
-                    </div>  
+                    </div> 
+                    <?php
+                    if(user_access('319'))
+                    {?>
+                    <div class="form-group">
+                      <label for="mail_alert"> <input id="mail_alert" type="checkbox" name="mail_alert"> Notify with mail</label>
+                    </div>
+                    <?php
+                    }
+                    ?>
                    <div class="sgnbtnmn form-group text-center">
                       <div class="sgnbtn">
                          <input id="ticket_disposition_save" type="button" value="Submit" class="btn btn-primary"  name="Submit">

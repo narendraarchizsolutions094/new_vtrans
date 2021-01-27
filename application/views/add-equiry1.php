@@ -91,7 +91,7 @@
     var process_id = "<?= $process_id ?>";
     if (process_id) {
       get_basic_field();
-    }
+    }    
   });
 
   function get_basic_field() {
@@ -200,6 +200,7 @@
       });
     }
   }
+
 </script>
 <?php
 if ($this->session->companey_id == 79) {
@@ -324,3 +325,11 @@ function relocate_mobile()
 <?php
 }
 ?>
+<script>
+  $(document).ajaxComplete(function(){ 
+    if("<?=$this->session->companey_id?>"==65){
+      $(".designation").insertAfter(".enq-last-name");
+      $(".enq-remark").insertAfter(".website");
+    }
+  });
+</script>

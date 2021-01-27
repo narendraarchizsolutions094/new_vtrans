@@ -74,7 +74,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                     </li> 
                     <li>
                       <label>
-                      <input type="checkbox" value="booking_type" id="branchcheckbox" name="filter_checkbox" <?php if(in_array('booking_type',$variable)){echo'checked';} ?>> Booking Type</label>
+                      <input type="checkbox" value="booking_type_filter" id="branchcheckbox" name="filter_checkbox" <?php if(in_array('booking_type_filter',$variable)){echo'checked';} ?>> Booking Type</label>
                     </li>
                   <!--   <li>
                       <label>
@@ -82,20 +82,20 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                     </li>    -->
                      <li>
                       <label>
-                      <input type="checkbox" value="booking_branch" id="bookingbox" name="filter_checkbox" <?php if(in_array('booking_branch',$variable)){echo'checked';} ?>> Booking Branch</label>
+                      <input type="checkbox" value="booking_branch_filter" id="bookingbox" name="filter_checkbox" <?php if(in_array('booking_branch_filter',$variable)){echo'checked';} ?>> Booking Branch</label>
                     </li>  
                     <li>
                       <label>
-                      <input type="checkbox" value="delivery_branch" id="deliverybox" name="filter_checkbox" <?php if(in_array('delivery_branch',$variable)){echo'checked';} ?>> Delivery Branch</label>
+                      <input type="checkbox" value="delivery_branch_filter" id="deliverybox" name="filter_checkbox" <?php if(in_array('delivery_branch_filter',$variable)){echo'checked';} ?>> Delivery Branch</label>
                     </li>  
                     <li>
                       <label>
-                      <input type="checkbox" value="paymode" id="paymodebox" name="filter_checkbox" <?php if(in_array('paymode',$variable)){echo'checked';} ?>> Paymode</label>
+                      <input type="checkbox" value="paymode_filter" id="paymodebox" name="filter_checkbox" <?php if(in_array('paymode_filter',$variable)){echo'checked';} ?>> Paymode</label>
                     </li>    
 
                     <li>
                       <label>
-                      <input type="checkbox" value="potential_amount" id="pamountbox" name="filter_checkbox" <?php if(in_array('potential_amount',$variable)){echo'checked';} ?>> Potential Amount</label>
+                      <input type="checkbox" value="potential_amount_filter" id="pamountbox" name="filter_checkbox" <?php if(in_array('potential_amount_filter',$variable)){echo'checked';} ?>> Potential Amount</label>
                     </li>         
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
@@ -157,7 +157,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         </div>
     </div> -->
 
-    <div class="col-lg-3" id="booking_type" style="<?php if(!in_array('booking_type',$variable)){echo'display:none';} ?>">
+    <div class="col-lg-3" id="booking_type_filter" style="<?php if(!in_array('booking_type_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Booking Type</label>
            <select class="d_filter form-control" name="d_booking_type">
@@ -168,7 +168,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         </div>
     </div>
 
-    <div class="col-lg-3" id="booking_branch" style="<?php if(!in_array('booking_branch',$variable)){echo'display:none';} ?>">
+    <div class="col-lg-3" id="booking_branch_filter" style="<?php if(!in_array('booking_branch_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Booking Branch</label>
           <select class="d_filter form-control" name="d_booking_branch">
@@ -181,7 +181,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         </div>
     </div>
 
-    <div class="col-lg-3" id="delivery_branch" style="<?php if(!in_array('delivery_branch',$variable)){echo'display:none';} ?>">
+    <div class="col-lg-3" id="delivery_branch_filter" style="<?php if(!in_array('delivery_branch_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Delivery Branch</label>
           <select class="d_filter form-control" name="d_delivery_branch">
@@ -194,7 +194,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         </div>
     </div>
 
-  <div class="col-lg-3" id="paymode" style="<?php if(!in_array('paymode',$variable)){echo'display:none';} ?>">
+  <div class="col-lg-3" id="paymode_filter" style="<?php if(!in_array('paymode_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Paymode</label>
           <select class="d_filter form-control" name="d_paymode">
@@ -205,7 +205,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         </div>
     </div>
 
-  <div class="col-lg-3" id="potential_amount" style="<?php if(!in_array('potential_amount',$variable)){echo'display:none';} ?>">
+  <div class="col-lg-3" id="potential_amount_filter" style="<?php if(!in_array('potential_amount_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Potential Amount</label>
 
@@ -461,8 +461,6 @@ $(document).ready(function(){
 
 });
 
-$("select").select2();
-
 
 function update_top_filter()
 {
@@ -519,9 +517,30 @@ $(window).load(function(){
     });
 
 
-    $('#delivery_branch').on('change', function() {
+    $('#delivery_branch,#booking_branch').on('change', function() {
             var delivery_branch = $("select[name='delivery_branch']").val();
             var booking_branch = $("select[name='booking_branch']").val();
+
+            $("#delivery_branch").find('option[disabled=disabled]').removeAttr('disabled');
+            $("#booking_branch").find('option[disabled=disabled]').removeAttr('disabled');
+
+            $("#delivery_branch").find('option[value="'+booking_branch+'"]').attr('disabled','disabled');
+           var z = $("#delivery_branch").find('option[value="'+booking_branch+'"]');
+
+            if($(z).prop( "selected" ))
+            {
+              
+               $(z).removeAttr('selected');
+
+                // $("#delivery_branch").find('option[value=""]').attr('selected','selected');
+                // $("#delivery_branch").
+                $('#delivery_branch').val(''); // Select the option with a value of '1'
+                $('#delivery_branch').trigger('change');
+            }
+
+            // $("#booking_branch").find('option[value="'+delivery_branch+'"]').attr('disabled','disabled');
+            // $("#delivery_branch").find('option[value="'+booking_branch+'"]').attr('disabled','disabled');
+
             $.ajax({
             type: 'POST',
             url: '<?php echo base_url();?>enquiry/get_rate',
@@ -707,7 +726,7 @@ $('#infotype').on('change', function() {
             </div>
             <div class="form-group col-sm-6"> 
                <label id="textdisplay">Booking Branch</label>
-               <select class="form-control" name="booking_branch" id="booking_branch">
+               <select class="form-control" name="booking_branch" id="booking_branch" required>
                   <option value="">-Select-</option>
                 <?php 
                 foreach($branch as $dbranch){ ?>
@@ -717,7 +736,7 @@ $('#infotype').on('change', function() {
             </div>
             <div class="form-group col-sm-6"> 
                <label id="textdisplay2">Delivery Branch</label>
-               <select class="form-control" name="delivery_branch" id="delivery_branch" >
+               <select class="form-control" name="delivery_branch" id="delivery_branch" required>
                   <option value="">-Select-</option>
                   <?php  
                   foreach($branch as $dbranch){ ?>
@@ -1038,7 +1057,7 @@ $(function() {
      $("#range_view").html("<i class='fa fa-inr'></i> "+from+" - <i class='fa fa-inr'></i> "+to); 
 
 });
-
+$("select").select2();
 </script>
 <style type="text/css">
   #slider-range

@@ -44,7 +44,7 @@ $type="text";
    $process_id = $details->product_id;    
       if(is_active_field(FIRST_NAME,$process_id)){
       ?>
-   <div class="form-group col-sm-6 col-md-6">
+   <div class="form-group col-sm-6 col-md-6 enq-first-name">
       <label><?=display('first_name')?> <i class="text-danger">*</i> </label>
       <div class = "input-group">
          <span class = "input-group-addon" style="padding:0px !important;border:0px !important;width:44%;">
@@ -61,13 +61,13 @@ $type="text";
    <?php
       if(is_active_field(LAST_NAME,$process_id)){
       ?>
-   <div class="form-group col-sm-6 col-md-6"> 
+   <div class="form-group col-sm-6 col-md-6 enq-last-name"> 
       <label><?=display('last_name')?> <!-- <i class="text-danger">*</i> --></label>
       <input class="form-control" value="<?php echo $details->lastname ?>" name="lastname" type="text" placeholder="Last Name" >  
    </div>
    <?php }?>
    <?php  if(is_active_field(MOBILE,$process_id)){  ?>
-   <div class="form-group col-sm-6 col-md-6"> 
+   <div class="form-group col-sm-6 col-md-6 enq-mobile"> 
       <label><?php echo display('mobile') ?></label>
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
       <input class="form-control mask-number" name="mobileno" type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
@@ -100,7 +100,7 @@ $type="text";
    <?php
       if(is_active_field(EMAIL,$process_id)){
       ?>
-   <div class="form-group col-sm-6 col-md-6"> 
+   <div class="form-group col-sm-6 col-md-6 enq-email"> 
       <label><?php echo display('email') ?></label>
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
 
@@ -115,7 +115,7 @@ $type="text";
    <?php
       if(is_active_field(EMAIL,$process_id)){
       ?>
-   <div class="form-group col-sm-6 col-md-6">
+   <div class="form-group col-sm-6 col-md-6 enq-process">
       <label>Process <i class="text-danger"></i></label>
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
 
@@ -137,7 +137,7 @@ $type="text";
       }
      if(is_active_field(GENDER,$process_id)){
      ?>
-      <div class="form-group col-sm-6 col-md-6"> 
+      <div class="form-group col-sm-6 col-md-6 enq-gender"> 
          <label><?php echo display("gender"); ?><i class="text-danger"></i></label>
           <select name="gender" class="form-control">
             <option value="">---Select---</option>
@@ -152,7 +152,7 @@ $type="text";
                   
         if(is_active_field(PRODUCT_FIELD,$process_id)){
         ?>
-   <div class="form-group col-sm-6 col-md-6">
+   <div class="form-group col-sm-6 col-md-6 enq-product">
       <label>Product</label>
       <select class="form-control" name="sub_source" id="sub_source">
          <option value="" style="display:none;">Select Product</option>
@@ -165,7 +165,7 @@ $type="text";
    <?php
       if(is_active_field(LEAD_SOURCE,$process_id)){
       ?> 
-   <div class="form-group   col-sm-4 col-md-6">
+   <div class="form-group   col-sm-4 col-md-6 enq-source">
       <label><?php echo display('lead_source') ?></label>
       <select class="form-control" name="lead_source" id="lead_source" onchange="find_sub1()">
          <option value=""><?php echo display('lead_source') ?></option>
@@ -178,7 +178,7 @@ $type="text";
      <?php }
       if(is_active_field(SUB_SOURCE,$process_id)){
       ?> 
-   <div class="form-group   col-sm-4 col-md-6">
+   <div class="form-group   col-sm-4 col-md-6 enq-subsource">
       <label><?php echo display('sub_source') ?></label>
       <select class="form-control" name="subsource" id="subsource">
       </select>
@@ -186,14 +186,14 @@ $type="text";
    <?php }   
     if(is_active_field(ADDRESS_FIELD,$process_id)){
     ?>  
-   <div class="form-group col-sm-6 col-md-6">
+   <div class="form-group col-sm-6 col-md-6 enq-address">
       <label><?php echo display('address') ?> <i class="text-danger">*</i></label>
       <textarea class="form-control" name="address"><?php echo $details->address; ?></textarea>
    </div>
    <?php }   
       if(is_active_field(STATE_FIELD,$process_id)){
       ?>  
-   <div class="form-group col-sm-6 col-md-6">
+   <div class="form-group col-sm-6 col-md-6 enq-state">
       <label>State <i class="text-danger"></i></label>                        
       <select name="state_id" class="form-control" id="fstate">
          <option value="" >Select</option>
@@ -208,7 +208,7 @@ $type="text";
    <?php
       if(is_active_field(CITY_FIELD,$process_id)){
       ?>                   
-   <div class="form-group col-sm-6 col-md-6">
+   <div class="form-group col-sm-6 col-md-6 enq-city">
       <label>City <i class="text-danger"></i></label>
       <select name="city_id" class="form-control" id="fcity">
          <option value="" >Select</option>
@@ -222,7 +222,7 @@ $type="text";
    </div>
    <?php }
    if(is_active_field(PIN_CODE,$process_id)){    ?> 
-     <div class="form-group col-sm-6 col-md-6">
+     <div class="form-group col-sm-6 col-md-6 enq-pincode">
         <label><?php echo display('pin_code') ?> <i class="text-danger"></i></label>
         <input class="form-control" value="<?php  echo $details->pin_code;?> " name="pin_code" type="text"  placeholder="Pin Code"> 
      </div>   
@@ -230,21 +230,21 @@ $type="text";
    }   
       if(is_active_field(COMPANY,$process_id)){
       ?>
-   <div class="form-group col-sm-6 col-md-6">
+   <div class="form-group col-sm-6 col-md-6 enq-company">
       <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
       <input class="form-control" name="company" type="company" value="<?php echo $details->company; ?>">
    </div>
    <?php }
       if(is_active_field(REMARK_FIELD,$process_id)){
       ?>  
-   <div class="form-group col-sm-6 col-md-6"> 
+   <div class="form-group col-sm-6 col-md-6 enq-remark"> 
       <label><?=display('remark')?></label>
       <textarea class="form-control" name="enquiry"><?php echo $details->enquiry; ?></textarea>
    </div>
    <?php } 
    if(is_active_field(PREFERRED_COUNTRY_FIELD,$process_id)){
    ?>
-   <div class="form-group col-sm-6 col-md-6">
+   <div class="form-group col-sm-6 col-md-6 enq-preferred-country">
       <label>Preferred Country <i class="text-danger">*</i></label>
       <?php
          $current_country  = $details->enq_country;             
@@ -259,7 +259,7 @@ $type="text";
    <?php  
   } 
   if($this->session->userdata('companey_id')==29){ ?>
-    <div class="form-group col-sm-6 col-md-6">
+    <div class="form-group col-sm-6 col-md-6 enq-bank-applied-with">
     <label>Bank applied with <i class="text-danger"></i></label>
       <input type="text" id="bankname" name="bankname" class="form-control" value="<?=$details->bank?>">
     </div>
@@ -864,3 +864,12 @@ $type="text";
     }
   }  
 </script>
+<?php
+if($this->session->companey_id==65 && $tid == 57){
+   ?>
+   <script type="text/javascript">
+      $("select[name='enqueryfield[4478]']").html('<option value="">test</option>')
+   </script>
+   <?php
+}
+?>

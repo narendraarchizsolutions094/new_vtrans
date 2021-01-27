@@ -1,10 +1,10 @@
-<?php
+<?php 
 use Restserver\Libraries\REST_Controller;
 defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 class Enquiry extends REST_Controller {
-    function __construct() 
+    function __construct()  
     { 
         parent::__construct();
            $this->load->database();
@@ -129,7 +129,13 @@ class Enquiry extends REST_Controller {
               $postData['created_by'] =$user_id;
               $postData['product_id'] =$process_id;
             	$postData['Enquery_id'] = $encode;
-            	$postData['status'] = 1;
+
+              if(empty($_POST['other_id']))
+                $data_type_id = 1;
+              else
+                $data_type_id = $_POST['other_id'];
+
+            	$postData['status'] = $data_type_id;
             	$this->enquiry_model->create($postData,$this->input->post('company_id'));
     			    $insert_id = $this->db->insert_id();
     			    $this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');

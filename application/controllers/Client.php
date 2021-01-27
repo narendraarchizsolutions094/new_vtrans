@@ -416,6 +416,7 @@ class Client extends CI_Controller {
         $data['company_count'] = $this->Client_Model->getCompanyList('',$this->session->companey_id,$this->session->user_id,$this->session->process,'count');
 
         $c =$data['company_list'] = $this->Client_Model->getCompanyList('',$this->session->companey_id,$this->session->user_id,$this->session->process,'data',$limit,$offset)->result();
+        //print_r($c);
         $data['limit'] =$limit;
         $data['offset'] = $offset;
       //  $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
@@ -427,7 +428,7 @@ class Client extends CI_Controller {
     {
         $this->load->model(array('Client_Model','enquiry_model'));
         $company = base64_decode($company_name);
-        $data['title'] = $company;
+        $data['title'] = 'Company Details';
 
     $c =$data['comp'] = $this->Client_Model->getCompanyList($company)->row();
 
@@ -453,7 +454,7 @@ class Client extends CI_Controller {
     $tickets =   $this->Client_Model->getCompanyData(explode(',',$c->enq_ids),'tickets')->result();
     $tickets = array_column((array)$tickets, 'id');
     $data['specific_tickets'] = count($tickets)? implode(',', $tickets):'-1';
-  
+    $data['company_name'] = $company;
 
     $data['content'] = $this->load->view('enquiry/company_details', $data, true);
     $this->load->view('layout/main_wrapper', $data);
