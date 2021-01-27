@@ -864,3 +864,12 @@ $type="text";
     }
   }  
 </script>
+<?php
+if($this->session->companey_id==65 && $tid == 57){
+   ?>
+   <script type="text/javascript">
+      $("select[name='enqueryfield[4478]']").html('<option value="">test</option>')
+   </script>
+   <?php
+}
+?>
