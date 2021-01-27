@@ -300,11 +300,11 @@ class Dashboard extends REST_Controller {
         $this->form_validation->set_rules('company_id','company_id', 'trim|required');
         if($this->form_validation->run()==true)
         {
-    $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING',$company_id);
-    //featch 
-    $dydata[]=['key'=>1,'title'=>'enquiry','icon'=>$base_url.'enquiry.jpeg' ];                        
-    $dydata[]=['key'=>2,'title'=>'lead','icon'=>$base_url.'lead.jpeg' ];                        
-    $dydata[]=['key'=>3,'title'=>'client','icon'=>$base_url.'client.jpeg' ];                        
+            $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING',$company_id);
+            //featch 
+            $dydata[]=['key'=>1,'title'=>'enquiry','icon'=>$base_url.'enquiry.jpeg' ];                        
+            $dydata[]=['key'=>2,'title'=>'lead','icon'=>$base_url.'lead.jpeg' ];                        
+            $dydata[]=['key'=>3,'title'=>'client','icon'=>$base_url.'client.jpeg' ];                        
 
             if (!empty($enquiry_separation)) {
                 $enquiry_separation = json_decode($enquiry_separation, true);

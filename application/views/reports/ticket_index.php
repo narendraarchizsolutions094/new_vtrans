@@ -38,6 +38,8 @@
                            </td>
                            <td>
                               <a href="<?=base_url().'report/ticket_report_view/'.$value['id'].'/'.base64_encode($value['name'])?>" class='btn btn-success'>View</a>
+                <?php  if(user_access(125)){ ?>
+                            
                               <button  data-toggle="modal" data-target="#create_task<?=$value['id']  ?>"   class='btn btn-primary' >Set Schedule</button>
                               <div id="create_task<?=$value['id']  ?>" class="modal fade" role="dialog" >
   <div class="modal-dialog modal-lg">    
@@ -81,7 +83,7 @@
     </div>
     </div>
   </div>
-</div>
+<?php } ?>
                               <a  href="javascript:void(0)" class='btn btn-danger btn-sm' onclick="delete_row(<?=$value['id']?>)">Delete</a>
                            
                            </td>
