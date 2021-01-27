@@ -31,7 +31,7 @@
 
 				<div class="col-md-8 panel-default panel-body" style ="border:1px solid #f7f7f7">
 				
-				<?php echo form_open_multipart(base_url("ticket/add")); ?>
+				<?php echo form_open_multipart(base_url("ticket/add"),array('id'=>'ticket-add-form')); ?>
 			<div class="row">
 
 				<div id="process_basic_fields">
@@ -290,6 +290,11 @@ if(!empty($_GET['phone']))
 
 ?>       
 $("#save_ticket").on('click',function(e){
-	$('#save_ticket').delay(4000).show(0);   
+	var btn = $("#save_ticket");
+	var fewSeconds = 5;
+	btn.prop('disabled', true);
+    setTimeout(function(){
+        btn.prop('disabled', false);
+    }, fewSeconds*1000);
 });
 </script>
