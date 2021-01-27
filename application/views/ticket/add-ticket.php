@@ -289,13 +289,13 @@ if(!empty($_GET['phone']))
 }	
 
 ?>       
-$("#save_ticket").on('click',function(e){
-	var btn = $("#save_ticket");
-	var fewSeconds = 5;
-	btn.prop('disabled', true);
-    setTimeout(function(){
-		btn.prop('disabled', false);
-    }, fewSeconds*1000);
-	$("#ticket-add-form").submit();
-});
+// $("#save_ticket").on('click',function(e){
+// 	var btn = $("#save_ticket");
+// 	var fewSeconds = 5;
+// 	btn.prop('disabled', true);
+//     setTimeout(function(){
+// 		btn.prop('disabled', false);
+//     }, fewSeconds*1000);
+// 	$("#ticket-add-form").submit();
+// });
 </script>
