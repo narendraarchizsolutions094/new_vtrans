@@ -334,7 +334,11 @@ if(user_access(310)){
 </script>
 <script>
 $("#task_create").on('click',function(){
-  $("#task_content").load("<?=base_url().'task/create_task_form'?>");
+  $("#task_content").load("<?=base_url().'task/create_task_form'?>",function(){
+     try{
+   $("select").select2();
+ }catch(e){alert(e);}
+  });
 });
 $("#for_filter").on('change',function(){
   if($(this).val()==2){
@@ -343,6 +347,10 @@ $("#for_filter").on('change',function(){
     window.location = "<?=base_url().'task/index'?>"
   }
 })
+
+// $(document).ready(function(){
+//     $("select").select2();
+//   });
 </script>
 
 
