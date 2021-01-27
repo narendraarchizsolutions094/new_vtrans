@@ -240,4 +240,223 @@ public function run()
     }
 
 }
+
+    public function generate_ticket_by_mail()
+    {   
+            $list = $this->db->select('config.*')
+                            ->from('ticket_email_config config')
+                            ->join('user','user.user_id=config.comp_id','inner')
+                            ->where('FIND_IN_SET(318,user.company_rights) > 0')
+                            ->where('config.status','1')
+                            ->like('config.next_hit',date('Y-m-d H:i'))
+                        ->get('ticket_email_config')->result();
+
+          foreach ($list as $key => $imap_config)
+          {
+            $company_id = $imap_config->comp_id;
+            $process_id = $imap_config->process_id;
+
+            //smtp config
+            $this->db->where('comp_id', $company_id);
+                $this->db->where('status', 1);
+            $smtp_config  = $this->db->get('email_integration')->row_array();
+
+            if(empty($smtp_config))
+                continue;
+            if (!empty($smtp_config))
+            {
+                  $config['smtp_auth']    = true;
+                  $config['protocol']     = $smtp_config['protocol'];
+                  $config['smtp_host']    = $smtp_config['smtp_host'];
+                  $config['smtp_port']    = $smtp_config['smtp_port'];
+                  $config['smtp_timeout'] = '7';
+                  $config['smtp_user']    = $smtp_config['smtp_user'];
+                  $config['smtp_pass']    = $smtp_config['smtp_pass'];
+                  $config['charset']      = 'utf-8';
+                  $config['mailtype']     = 'html'; // or html
+                  $config['newline']      = "\r\n";
+                  $send_from = $smtp_config['smtp_user'];
+                  $this->email->initialize($config);
+                  $this->email->from($send_from);
+            }
+            // imap config
+            $hostname =  $imap_config->hostname;
+            $username = $imap_config->username;
+            $password = $imap_config->password;
+            $user = $imap_config->belongs_to;
+            $process  = $imap_config->process_id;
+
+            //template fetch 
+            $template = 'No Template';
+            $tmp = $this->db->where('temp_id',$imap_config->template)
+                                ->where('comp_id',$company_id)
+                                ->where('FIND_IN_SET(3,temp_for)>0')
+                                ->get('api_templates')->row();
+            if(!empty($tmp))
+                $template= $tmp->template_content;
+
+
+            $inbox = imap_open($hostname, $username, $password) or die('Cannot connect to Mail: ' . imap_last_error());
+
+            /* grab emails */
+            $emails = imap_search($inbox, 'UNANSWERED UNSEEN');//
+
+            if ($emails) {
+                /* begin output var */
+                $output = '';
+                /* put the newest emails on top */
+                rsort($emails);
+                /* for every email... */
+                foreach ($emails as $ind => $email_number) {
+
+                    if ($ind > 50) break;
+                    
+                    /* get information specific to this email */
+                    $overview = imap_fetch_overview($inbox, $email_number, 0);
+                    $message  = imap_fetchbody($inbox, $email_number, 1);
+                    $headers = imap_header($inbox, $email_number, 1);
+
+                    $message= quoted_printable_decode($message);
+
+                    $fromMail = $overview[0]->from ;
+                    $message_id = $overview[0]->message_id;
+                    $subject = $overview[0]->subject;
+                    $y = explode('<',$fromMail);
+                    $name = $y[0]??'';
+                    $mailid = str_replace('>', '', $y[1]??'');
+
+                    // echo 'Subject- '.$subject.'<br>
+                    //         Mail- '.$mailid.'<br>
+                    //         name- '.$name.'<br>
+                    //         Seen: '.$overview[0]->seen.'<br>
+                    //         Message
+                    //         msgid:'.htmlentities($message_id).'
+                    //         <br><hr>
+                    // ';
+                    $flag =1;
+                    if(!empty($overview[0]->references))
+                    {   
+                        $ref = explode(' ',$overview[0]->references)[0];
+                        $this->db->where('email_message_id',$ref);
+                        $match = $this->db->where('email',$mailid)->get('tbl_ticket');
+                        $flag = !$match->num_rows();
+                    }
+
+                    if($flag)
+                    {
+                        if(empty($name)){$name='';}
+                        $data=['name'=>$name,'email'=>$mailid,'email_message_id'=>$message_id,'message'=>$subject,'send_date'=>date("Y-m-d H:i:s"),'added_by'=>$user,'process_id'=>$process,'company'=>$company_id];
+                        $this->db->insert("tbl_ticket", $data);
+                        $insid = $this->db->insert_id();
+                        $tckno = "TCK" . $insid . strtotime(date("y-m-d h:i:s"));
+                        $updarr = array("ticketno" => $tckno);
+                        $this->db->where("id", $insid);
+                        $this->db->update("tbl_ticket", $updarr);
+                        //insert conv
+                        $insarr = array(
+                            "tck_id" => $insid,
+                            "comp_id" => $company_id,
+                            "parent" => 0,
+                            "subj"   => 'Ticket Created by Mail',
+                            "msg"    => $subject,
+                            "attacment" => "",
+                            "status"  => 0,
+                            "ticket_status" =>0,
+                            "stage"  => 0,
+                            "sub_stage"  => 0,
+                            "added_by" => $user,
+                        );
+                        $ret = $this->db->insert("tbl_ticket_conv", $insarr);
+                        
+                        if(!empty($smtp_config))
+                        {
+
+                            $mail_subject= ticket_subject($tckno,$subject);
+
+                            $mail_msg = $template;
+                            $search  = array('@ticketno'=>$tckno,
+                                            '@sender'=>$name,
+                                            '@subject'=>$subject,
+                                        );
+                            
+                            foreach ($search as $key => $value) {
+                            $mail_msg = str_replace($key, $value, $mail_msg);
+                             } 
+
+
+                            $this->email->to($mailid);
+                            // $this->email->set_header('In-Reply-To:', $message_id);
+                            // $this->email->set_header('References:', $message_id);
+                            $this->email->subject($mail_subject);
+                            $this->email->message($mail_msg);
+                            if($this->email->send())
+                            {
+                                echo'Reverted :'.$mailid;
+                            } 
+                            else
+                            {
+                               echo $this->email->print_debugger();
+                            }
+                        }
+                       // echo'<hr>';
+                    }
+                    else
+                    {
+                        $tck = $match->row();
+
+                        if(!empty($smtp_config))
+                        {
+                            
+                            $mail_msg = "Thanks For Your Response. We have recorded your response";
+                            $this->email->to($tck->email);
+                            // $this->email->set_header('In-Reply-To:', $tck->email_message_id);
+                            // $this->email->set_header('References:', $overview[0]->references);
+                            $this->email->subject(ticket_subject($tck->ticketno,$message));
+                            $this->email->message($mail_msg);
+                            if($this->email->send())
+                            {
+                                echo'
+                                Mail-ID:'.htmlentities($tck->email_message_id).'<br>
+                                Reverted :'.$mailid;
+                            $message = htmlentities($message);
+                           $insarr = array(
+                            "tck_id" => $tck->id,
+                            "comp_id" => $company_id,
+                            "parent" => 0,
+                            "subj"   => 'Reponse Received by mail.',
+                            "msg"    => $message,
+                            "attacment" => "",
+                            "status"  => 0,
+                            "ticket_status" =>0,
+                            "stage"  => 0,
+                            "sub_stage"  => 0,
+                            "added_by" => $user,
+                        );
+                        $ret = $this->db->insert("tbl_ticket_conv", $insarr);
+                            } 
+                        }
+                        // echo'<hr>';
+
+
+                        // print_r($overview[0]);
+                        // echo'<hr>';
+                        // print_r($tck);
+                    }
+        
+                }
+                //echo $output;
+                print_r($imap_config);
+            }
+
+            //when done for one
+            $next_hit = date('Y-m-d H:i:s',(time()+(60*$imap_config->fetch_time)));
+            $this->db->where('id',$imap_config->id)
+                        ->set('next_hit',$next_hit)
+                        ->update('ticket_email_config');
+
+        }
+
+    }
+
 }
+

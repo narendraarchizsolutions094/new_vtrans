@@ -5,8 +5,14 @@
 </div>
 
 <?php
-if(empty($this->session->process) || count($this->session->process)!=1)
+
+if(empty($this->session->process) || count($this->session->process)!=1 || !$email_integration)
 {
+	if(empty($email_integration))
+		echo'<div class="alert alert-danger">Please Configure EMAIL Api first for sending Email(s).<br><br>
+	<small><code>API Configuration > Email > Add New Integration</code></small>
+	</div>';
+	else
 	echo'<div class="alert alert-danger">Please Select Only 1 process.</div>';
 
 }
@@ -116,6 +122,24 @@ else
 						}
 						?>
 			</select>
+		</div>
+
+		<div class="form-group">
+			<label>Email Fetch In Every <font color="red">*</font></label>
+			
+				<select name="fetch_time" class="form-control" style="border-radius: 0px!important;">
+					<?php
+					for($i=20;$i<=59;$i++)
+						echo'<option value="'.$i.'" '.($i==$row->fetch_time?'selected':'').'>'.$i.' Minutes</option>';
+					for($i=1;$i<=4;$i++)
+					{	echo'<option value="'.(60*$i).'"  '.((60*$i)==$row->fetch_time?'selected':'').'>'.$i.' Hour</option>';
+						for($j=1;$j<=59;$j++)
+						echo'<option value="'.((60*$i)+$j).'"  '.(((60*$i)+$j)==$row->fetch_time?'selected':'').'>'.$i.' Hour '.$j.' Minutes</option>';
+					}
+						
+					?>
+				</select>
+
 		</div>
 		<div class="form-group save-btn" style="display: none;">
 			<button class="btn btn-block btn-success"> <i class="fa fa-save"></i> Save</button>
