@@ -352,8 +352,8 @@ class Dashboard_model extends CI_Model {
 
 		return $this->db->select_sum('time')->where(array('comp_id' =>$comp_id,'type'=>$type))->get('tbl_followupAvgtime');
 	}
-    public function countLead($type,$comp_id=0,$user_id=0,$process=0){
-
+    public function countLead($type,$comp_id=0,$user_id=0,$process=0)
+    {
 		$userid= !empty($user_id)?$user_id:$this->session->user_id;
 
     	$all_reporting_ids    =   $this->common_model->get_categories($userid);
@@ -401,8 +401,8 @@ class Dashboard_model extends CI_Model {
 
         if(is_array($arr)){
            $arr = implode(',', $arr);
-	        $where.=" AND enquiry.product_id IN (".$arr.')';
         } 
+		$where.=" AND enquiry.product_id IN (".$arr.')';
 
 		return $this->db->join('enquiry','enquiry.enquiry_id=tbl_followupAvgtime.enq_id')->where(array('tbl_followupAvgtime.type'=>$type))->where($where)->count_all_results('tbl_followupAvgtime');
 
