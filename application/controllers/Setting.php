@@ -397,7 +397,38 @@ public function editbranch()
 	
 	$branch_id=$this->input->post('branch_id');
 	
-	$get=$this->db->where('branch_id',$branch_id)->get('branch');
+	$get=$this->db->where('branch_id',$branch_id)->get('competitors');
+	if($get->num_rows()==1){
+		foreach ($get->result() as $key => $value) {
+			$status=$value->status;
+	
+			echo'<div class="col-md-12">
+			<label>Competitor Name </label>
+			<input type="text" value="'.$value->name.'" name="branch" class="form-control" id="branch">  
+		</div> 
+		<input name="branch_id" value="'.$id.'"  type="hidden" >
+		<div class="col-md-12">
+			<label>Status </label>
+			<div class="form-check">
+            <label class="radio-inline">
+			<input type="radio" name="status" value="0" ';if($status==0){echo'checked';}
+			echo '>Active</label>
+            <label class="radio-inline">
+            <input type="radio" name="status" value="1" ';if($status==1){echo'checked';}
+			echo '>Inactive</label>
+            </div>
+		</div> ';
+		}
+	}
+	
+}
+
+public function editcompetitor()
+{
+	
+	$branch_id=$this->input->post('branch_id');
+	
+	$get=$this->db->where('id',$branch_id)->get('branch');
 	if($get->num_rows()==1){
 		foreach ($get->result() as $key => $value) {
 			$status=$value->branch_status;
