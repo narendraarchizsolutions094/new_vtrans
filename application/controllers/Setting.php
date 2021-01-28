@@ -437,7 +437,7 @@ public function editcompetitor()
 			<label>Competitor Name </label>
 			<input type="text" value="'.$value->name.'" name="branch" class="form-control" id="branch">  
 		</div> 
-		<input name="branch_id" value="'.$id.'"  type="hidden" >
+		<input name="branch_id" value="'.$branch_id.'"  type="hidden" >
 		<div class="col-md-12">
 			<label>Status </label>
 			<div class="form-check">
