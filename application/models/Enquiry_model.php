@@ -12,6 +12,26 @@ class Enquiry_model extends CI_Model {
 	
 		$insid = $this->db->insert_id();
 	
+
+    //=====Create default Contact for Enquiry
+
+    $name = $data['name'];
+    $mobile = $data['phone'];
+    $email = $data['email'];
+    $otherdetails ='';
+    $data2 = array(
+        'comp_id'=>$data['comp_id'],
+        'client_id' =>$insid,
+        'c_name' => $name,
+        'emailid' => $email,
+        'contact_number' => $mobile,
+        'designation' => 'Primary',
+        'other_detail' =>$otherdetails,
+        'decision_maker' => 1,
+    );
+    $this->db->insert('tbl_client_contacts', $data2);
+    //===================================
+
 		if(isset($_POST['inputfieldno'])) {
 		$inputno   = $this->input->post("inputfieldno", true);
 		$enqinfo   = $this->input->post("enqueryfield", true);
