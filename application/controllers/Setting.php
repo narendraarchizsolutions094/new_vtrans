@@ -301,6 +301,14 @@ public function branchList()
 	$data['content'] = $this->load->view('branch/list',$data,true);
 	$this->load->view('layout/main_wrapper',$data);
 }
+public function competitorList()
+{
+	if (user_role('d37') == true) {}
+	$data['page_title'] = 'Competitor List';
+	$data['competitor_list']=$this->db->where('comp_id',$this->session->companey_id)->get('competitors')->result();
+	$data['content'] = $this->load->view('competitor/list',$data,true);
+	$this->load->view('layout/main_wrapper',$data);
+}
 public function branch_rateList()
 {
 	if (user_role('e30') == true) {
