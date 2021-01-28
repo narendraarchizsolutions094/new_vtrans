@@ -1601,6 +1601,7 @@ class Ticket extends CI_Controller
 		//print_r($res);exit();
 		if($this->input->post())
 		{
+			$next_hit = date('Y-m-d H:i:s',(time() + (60*$this->input->post('fetch_time'))));
 			$data = array('hostname'=>$this->input->post('hostname'),
 							'username' => $this->input->post('username'),
 							'password' => $this->input->post('password'),
@@ -1608,7 +1609,9 @@ class Ticket extends CI_Controller
 							'belongs_to'=>$this->input->post('belongs_to'),
 							'process_id'=>$this->session->process[0],
 							'template'=>$this->input->post('temp_id'),
-							'fetch_time'=>$this->input->post('fetch_time')
+							'fetch_time'=>$this->input->post('fetch_time'),
+							'status'=>$this->input->post('status'),
+							'next_hit'=>$next_hit,
 							);
 			if(!empty($res))
 			{

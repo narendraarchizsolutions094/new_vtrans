@@ -56,7 +56,7 @@ else
 
 
 
-<div class="col-md-10 col-md-offset-1" align="" style="/*border-right: 1px solid #f0f0f0;*/">
+<div class="col-md-10 col-md-offset-1" align="" style=" padding-bottom: 30px;/*border-right: 1px solid #f0f0f0;*/">
 	<form action="" method="post">
 		<div class="form-group" align="right">
 			<button type="button" class="btn btn-sm btn-primary edit-btn" onclick="make_edit()"><i class="fa fa-edit"></i> Edit</button>
@@ -71,7 +71,7 @@ else
 		</div>
 		<div class="form-group">
 			<label>Password <font color="red">*</font></label>
-			<input type="" name="password" class="form-control fixed" value="<?=$row->password??''?>" required>
+			<input type="password" name="password" class="form-control fixed" value="<?=$row->password??''?>" required>
 		</div>
 		<div class="row">
 			<div class="col-md-12" style="padding:0px">
@@ -140,6 +140,12 @@ else
 					?>
 				</select>
 
+		</div>
+
+		<div class="form-group">
+			<label>Status</label><br>
+			<input type="radio" name="status" value="1" <?=$row->status?'checked':''?>> Active &nbsp; &nbsp; 
+			<input type="radio" name="status" value="0" <?=$row->status?'':'checked'?>> In-active 
 		</div>
 		<div class="form-group save-btn" style="display: none;">
 			<button class="btn btn-block btn-success"> <i class="fa fa-save"></i> Save</button>
