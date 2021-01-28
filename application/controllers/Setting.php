@@ -484,6 +484,23 @@ public function branch_delete()
 	}
 	
 }
+
+public function competitor_delete()
+{
+	if (user_role('d38') == true) {
+	}
+	$branch_id=$this->uri->segment(3);
+	$get=$this->db->where(array('id'=>$branch_id,'comp_id'=>$this->session->companey_id))->get('competitors');
+	if($get->num_rows()==1){
+		$this->db->where('id',$branch_id)->delete('competitors');
+		$this->session->set_flashdata('message','Competitor Deleted');
+	    redirect('setting/competitorList');
+	}else{
+		$this->session->set_flashdata('exception','Competitor not found');
+	    redirect('setting/competitorList');
+	}
+	
+}
 public function branchrate_delete()
 {
 	if (user_role('e32') == true) {
