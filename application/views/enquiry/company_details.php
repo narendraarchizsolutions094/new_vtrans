@@ -1,11 +1,44 @@
 <div class="row">
   <div class="col-lg-12">
-    <div style="    padding: 15px 0px 7px 15px;border-bottom: 1px solid #f0f0f0;"><h2><?=$company_name?></h2></div>
+    <div style="    padding: 15px 0px 7px 15px; text-transform: capitalize;" align="center"><?=$company_name?></div>
   </div>
 </div>
+
+<style type="text/css">
+  #left-btn{
+    font-size: 20px;
+    position: absolute;
+    line-height: 40px;
+    color: #283593!important;
+    left:10px;
+  }
+   #right-btn{
+    font-size: 20px;
+    position: absolute;
+    line-height: 40px;
+    color: #283593!important;
+    right:12px;
+  }
+  .flex-column{
+    border-bottom: 1px solid #ddd;
+    margin: 0px 28px;
+    height: 42px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .nav-tabs>li {
+    display: inline-block!important;
+    white-space: nowrap!important;
+    float: none;
+  }
+
+</style>
+
+
 <div class="row" style="padding:15px;">
-  <div class="col-lg-12">
-   <ul class="nav nav-tabs" style="border-bottom: 1px solid #ddd;">
+  <div class="col-lg-12" style="padding: 0px;">
+    <i class="fa fa-arrow-circle-left text-primary" onclick="tabScroll('left')" id="left-btn" style="font-size: 20px;"></i>
+   <ul class="nav flex-column nav-tabs">
     <!--   <li class="nav-item active">
          <a class="nav-link" data-toggle="tab" href="#basic">Basic</a>
       </li> -->
@@ -51,7 +84,30 @@
       <li class="nav-item">
          <a class="nav-link" data-toggle="tab" href="#tickets"><?=display('ticket')?></a>
       </li>
+      <i class="fa fa-arrow-circle-right text-primary" onclick="tabScroll('right')" id="right-btn" style="font-size: 20px;"></i>
    </ul>
+
+<script type="text/javascript">
+ function tabScroll(side)
+ {
+    if(side=='left')
+    {
+       var leftPos = $('.nav-tabs').scrollLeft();
+    
+       $(".nav-tabs").animate({
+             scrollLeft: leftPos - 200
+       }, 100);
+    }
+    else if (side=='right')
+    {   
+       var leftPos = $('.nav-tabs').scrollLeft();
+       
+       $(".nav-tabs").animate({
+             scrollLeft: leftPos + 200
+       }, 100);
+    }
+ }
+</script>
 
   <!-- Tab panes -->
   <div class="tab-content">
@@ -269,6 +325,8 @@
               }
             } ?>
           </tr>
+          </thead>
+
           </table>
       </div>
 
