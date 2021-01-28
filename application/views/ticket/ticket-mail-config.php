@@ -58,8 +58,15 @@ else
 
 <div class="col-md-10 col-md-offset-1" align="" style=" padding-bottom: 30px;/*border-right: 1px solid #f0f0f0;*/">
 	<form action="" method="post">
-		<div class="form-group" align="right">
-			<button type="button" class="btn btn-sm btn-primary edit-btn" onclick="make_edit()"><i class="fa fa-edit"></i> Edit</button>
+		<div class="form-group edit-btn">
+			<div class="row">
+			<div class="col-sm-6 col-lg-6 col-xs-6" align="left" style="padding-left: 0px; ">
+				<label>Next Hit : <label class="label label-primary"><?=!empty($row->next_hit)?(date('d-M-Y h:i A',strtotime($row->next_hit))):'';?></label></label>
+			</div>
+			<div class="col-sm-6 col-lg-6 col-xs-6" align="right">
+				<button type="button" class="btn btn-sm btn-primary" onclick="make_edit()"><i class="fa fa-edit"></i> Edit</button>
+			</div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label>Hostname <font color="red">*</font></label>
