@@ -50,7 +50,7 @@ alt="" style="height: 100px; width: auto;" /></p>
 <td valign="top" style="text-align: left; padding: 20px 50px;
 background-color: #ffffff;"><!-- Intro content -->
 <p style="font-family: 'Open Sans', sans-serif; color: #333333; font-size:
-17px; font-weight: 500; margin: 0 auto;"> Hello Admin </p>
+17px; font-weight: 500; margin: 0 auto;"> Hello <?= $userName ?>, </p>
 </td>
 </tr>
 <tr>
@@ -58,7 +58,7 @@ background-color: #ffffff;"><!-- Intro content -->
 background-color: #ffffff;"><!-- Intro content -->
 <p style="font-family: 'Open Sans', sans-serif; color: #333333; font-size:
 17px; font-weight: 500; margin: 0 auto;">
-See today's analytics.
+Today's analytics.
 <br>
 <div class="row row text-center short_dashboard" id="active_class">   
 
@@ -148,11 +148,11 @@ box-shadow: 4px 3px 13px 4px rgba(0,0,0,0.48); margin:5px;background-color:  lin
 </tr>
 <tr>
 
-<td valign="top" style="text-align: left; padding: 20px 50px;
-background-color: #ffffff;"><!-- Intro content -->
+<!-- <td valign="top" style="text-align: left; padding: 20px 50px;
+background-color: #ffffff;"> 
 <p style="font-family: 'Open Sans', sans-serif; color: #333333; font-size:
 17px; font-weight: 500; margin: 0 auto;">Sincerely,<br /> </p>
-</td>
+</td> -->
 </tr>
 <!-- end@row Footer --> <!-- @row Footer -->
 <tr bgcolor="#2c2b2b">

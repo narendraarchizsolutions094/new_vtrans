@@ -52,6 +52,7 @@ class Report extends CI_Controller
 
     $id = $this->input->post('id');
     $users = $this->input->post('users');
+    $path = $this->input->post('path');
     $getschedule = $this->db->where(array('id' => $id))->get('reports');
     if ($getschedule->num_rows() == 1) {
       $data = $getschedule->row();
@@ -60,7 +61,7 @@ class Report extends CI_Controller
       $this->db->where('id', $id)->update('reports', $data);
     }
     $this->session->set_flashdata('message', 'Schedule Updated ');
-    redirect('report/ticket_reports');
+    redirect($path);
   }
 
   public function view($id)
@@ -302,7 +303,7 @@ class Report extends CI_Controller
       $type = $value->type;
       //count data's
       $filters = json_decode($value->filters, true);
-      print_r($filters);
+      // print_r($filters);
       $data['title'] = 'View Report';
       $data['filters'] = $filters;
       $comp_id = $value->comp_id;
@@ -313,7 +314,7 @@ class Report extends CI_Controller
       $rdate = date('Y-m-d', strtotime('-1 day'));
 
       if ($type == 1) {
-        $subject = 'Sales Report : ' . $schdate;
+        $subject = 'Sales Report : ' . date("F jS, Y", strtotime($schdate));
         $data['created'] =  $this->db->where(array('comp_id' => $comp_id, 'Date(created_date)' => $rdate))->count_all_results('enquiry');
         $data['assigned'] =   $this->db->where(array('enquiry.comp_id' => $comp_id, 'Date(tbl_comment.created_date)' => $rdate, 'tbl_comment.comment_msg' => 'Enquiry Assigned'))
           ->join('tbl_comment', 'tbl_comment.lead_id=enquiry.Enquery_id')->count_all_results('enquiry');
@@ -322,7 +323,7 @@ class Report extends CI_Controller
         $data['all_closed'] =   $this->db->where(array('comp_id' => $comp_id, 'status' => 3, 'Date(update_date)' => $rdate))->count_all_results('enquiry');
         $data['pending'] =   $this->db->where(array('comp_id' => $comp_id, 'created_date = update_date', 'Date(update_date)' => $rdate))->count_all_results('enquiry');
       } else {
-        $subject = 'Ticket Report : ' . $schdate;
+        $subject = 'Ticket Report : ' . date("F jS, Y", strtotime($schdate));
         $data['created'] =  $this->db->where(array('company' => $comp_id, 'Date(coml_date)' => $rdate))->count_all_results('tbl_ticket');
         $data['assigned'] =   $this->db->where(array('tbl_ticket.company' => $comp_id, 'Date(tbl_ticket_conv.send_date)' => $rdate, 'tbl_ticket_conv.subj' => 'Ticked Assigned'))
           ->join('tbl_ticket_conv', 'tbl_ticket_conv.tck_id=tbl_ticket.id')->count_all_results('tbl_ticket');
@@ -336,7 +337,6 @@ class Report extends CI_Controller
       $datest = $this->encryption->encrypt($schdate);
       $schdate  = str_replace(array('+', '/', '='), array('-', '_', '~'),  $datest);
       $data['links'] = base_url('report-view/' . $schid . '/' . $schdate . '/');;
-      $view_load = $this->load->view('mail-temps/report-mail', $data, true);
       $this->db->where('comp_id', $comp_id);
       $this->db->where('status', 1);
       $email_row  =  $this->db->get('email_integration')->row_array();
@@ -345,38 +345,37 @@ class Report extends CI_Controller
         exit();
       } else {
 
-        $config['smtp_auth']    = true;
-        $config['protocol']     = $email_row['protocol'];
-        $config['smtp_host']    = $email_row['smtp_host'];
-        $config['smtp_port']    = $email_row['smtp_port'];
-        $config['smtp_timeout'] = '7';
-        $config['smtp_user']    = $email_row['smtp_user'];
-        $config['smtp_pass']    = $email_row['smtp_pass'];
-        $config['charset']      = 'utf-8';
-        $config['mailtype']     = 'html'; // or html
-        $config['newline']      = "\r\n";
-
-        //    $config['smtp_auth']    = true;
-        // $config['protocol']     = 'smtp';
-        // $config['smtp_host']    = 'ssl://smtp.zoho.com';
-        // $config['smtp_port']    = 465;
+        // $config['smtp_auth']    = true;
+        // $config['protocol']     = $email_row['protocol'];
+        // $config['smtp_host']    = $email_row['smtp_host'];
+        // $config['smtp_port']    = $email_row['smtp_port'];
         // $config['smtp_timeout'] = '7';
-        // $config['smtp_user']    = 'suraj@archiztechnologies.com';
-        // $config['smtp_pass']    = 'Archiz321';
+        // $config['smtp_user']    = $email_row['smtp_user'];
+        // $config['smtp_pass']    = $email_row['smtp_pass'];
         // $config['charset']      = 'utf-8';
         // $config['mailtype']     = 'html'; // or html
         // $config['newline']      = "\r\n";
+
+           $config['smtp_auth']    = true;
+        $config['protocol']     = 'smtp';
+        $config['smtp_host']    = 'ssl://smtp.zoho.com';
+        $config['smtp_port']    = 465;
+        $config['smtp_timeout'] = '7';
+        $config['smtp_user']    = 'suraj@archiztechnologies.com';
+        $config['smtp_pass']    = 'Archiz321';
+        $config['charset']      = 'utf-8';
+        $config['mailtype']     = 'html'; // or html
+        $config['newline']      = "\r\n";
         $this->email->initialize($config);
         $from = $config['smtp_user'];
         //$config['validation']   = TRUE; // bool whether to validate email or not  
-        $this->email->from($from);
-        $this->email->set_newline("\r\n");
-        $this->email->clear(TRUE);
-        $this->email->subject($subject);
-        $this->email->message($view_load);
+       
         foreach ($users_id as $value_id) {
-          $userdata = $this->db->select('s_user_email,pk_i_admin_id')->where(array('pk_i_admin_id' => $value_id, 'b_status' => 1))->get('tbl_admin')->row();
+          $userdata = $this->db->select('s_user_email,pk_i_admin_id,s_display_name')->where(array('pk_i_admin_id' => $value_id, 'b_status' => 1))->get('tbl_admin')->row();
           $to = $userdata->s_user_email;
+          $data['userName']=$userdata->s_display_name;
+          $view_load = $this->load->view('mail-temps/report-mail', $data, true);
+
           $this->email->set_newline("\r\n");
           $this->email->clear(TRUE);
           $this->email->from($from);

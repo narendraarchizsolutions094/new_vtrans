@@ -51,14 +51,15 @@
                                                 $enquiry_separation = json_decode($enquiry_separation, true);
                                                 if ($leadSataus != 3) {
                                                     foreach ($enquiry_separation as $key => $value) {
-                                                        // print_r($enquiry_separation);
                                                         if ($leadSataus== $key) {
                                                             $ctitle = $enquiry_separation[$key]['title'];
-
-                                                            $firstChar = mb_substr($ctitle, "UTF-8");
-
+                                                            if($ctitle!=''){
+                                                            $firstChar = $ctitle;
                                                             $url = 'client/view/'.$rslt->enquiry_id.'?stage='.$key;
 												            $type = '<a class="btn-sm btn-success"  href = "'.base_url($url).'">'.$firstChar.'</a>';
+                                                            }else{
+												            $type = '<a class="btn-sm btn-success">N/A</a>';
+                                                            }
                                                         }
                                                     }
                                                 }
