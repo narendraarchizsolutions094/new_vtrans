@@ -431,7 +431,7 @@ class Ticket_Model extends CI_Model
 		$where .= "( tck.added_by IN (" . implode(',', $all_reporting_ids) . ')';
 		$where .= " OR tck.assign_to IN (" . implode(',', $all_reporting_ids) . '))';
 
-		return $this->db->select("tck.*,enq.gender,prd.country_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , (SELECT COUNT(*) from tbl_ticket_conv as t2 where t2.tck_id=tck.id) as tconv, tbl_admin.s_display_name,tbl_admin.last_name")
+		return $this->db->select("tck.*,enq.gender,prd.country_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname ,tbl_admin.s_display_name,tbl_admin.last_name")
 			->where($where)
 			->where("tck.company", $this->session->companey_id)
 			->from("tbl_ticket tck")
@@ -558,7 +558,7 @@ class Ticket_Model extends CI_Model
 	public function filterticket($where)
 	{
 
-		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , (SELECT COUNT(*) from tbl_ticket_conv as t2 where t2.tck_id=tck.id) as tconv,stage.lead_stage_name,sub_stage.description,tbl_ticket_status.status_name as ticket_status_name");
+		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , stage.lead_stage_name,sub_stage.description,tbl_ticket_status.status_name as ticket_status_name");
 		$this->db->where("tck.company", $this->session->companey_id);
 
 		if (!empty($where)) {
@@ -583,7 +583,7 @@ class Ticket_Model extends CI_Model
 	public function all_related_tickets($where)
 	{
 
-		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , (SELECT COUNT(*) from tbl_ticket_conv as t2 where t2.tck_id=tck.id) as tconv,tbl_ticket_status.status_name as ticket_status_name");
+		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , tbl_ticket_status.status_name as ticket_status_name");
 		$this->db->where("tck.company", $this->session->companey_id);
 
 		$this->db->from("tbl_ticket tck");
