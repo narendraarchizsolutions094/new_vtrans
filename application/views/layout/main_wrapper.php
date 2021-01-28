@@ -1274,6 +1274,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     Branch List
                                 </a>
                             </li>
+                            <li class="<?php echo (in_array($segment2,array('competitorList')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/competitorList">
+                                Competitor List
+                                </a>
+                            </li>
                         <?php }  if (user_access('e31')) {  ?>
 
                             <li

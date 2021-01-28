@@ -3654,6 +3654,7 @@ echo  $details1;
     }
     public function competitor_list(){
         $this->db->where('comp_id',65);
+        $this->db->where('status',0);
         $result = $this->db->get('competitors')->result_array();
         if(!empty($result)){ ?>
             <option value="">--- Select --- </option>
