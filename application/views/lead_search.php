@@ -54,7 +54,7 @@
                                                         if ($leadSataus== $key) {
                                                             $ctitle = $enquiry_separation[$key]['title'];
                                                             if($ctitle!=''){
-                                                            $firstChar = mb_substr($ctitle, "UTF-8");
+                                                            $firstChar = $ctitle;
                                                             $url = 'client/view/'.$rslt->enquiry_id.'?stage='.$key;
 												            $type = '<a class="btn-sm btn-success"  href = "'.base_url($url).'">'.$firstChar.'</a>';
                                                             }else{

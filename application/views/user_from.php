@@ -283,7 +283,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label class="control-label" for="process">Process <i class="text-danger">*</i></label> 									
-                                    <select class="form-control" name="process[]" multiple required>
+                                    <select class="form-control" name="process[]" multiple required id="process">
                                         <?php
                                         if (!empty($products)) {
                                             foreach ($products as $key => $value) { ?>
@@ -635,7 +635,6 @@ $("#submit_btn").on('click',function(e){
   var email  = $("input[name='email']").val();
   var mobile  = $("input[name='cell']").val();
   var pass  = $("input[name='password']").val();
-  var process  = $("input[name='process[]']").val();
   var user_type  = $("select[name='user_type']").val();
   var msg = '';
   
@@ -664,9 +663,7 @@ $("#submit_btn").on('click',function(e){
   if (!user_type) {
     msg += '<b>User Right is required</b>.<br>';    
   }
-  if (!process) {
-    msg += '<b>Process  is required</b>.<br>';    
-  }
+ 
   if (msg) {
     e.preventDefault();
     Swal.fire({
