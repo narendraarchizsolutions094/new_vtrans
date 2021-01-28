@@ -283,7 +283,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label class="control-label" for="process">Process <i class="text-danger">*</i></label> 									
-                                    <select class="form-control" name="process[]" multiple required id="process">
+                                    <select class="form-control" name="process[]" multiple required >
                                         <?php
                                         if (!empty($products)) {
                                             foreach ($products as $key => $value) { ?>

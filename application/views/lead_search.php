@@ -25,7 +25,6 @@
                                         <th>Email</th> 
                                         <th>Address</th> 
                                         <th>Created By</th>
-                                       
                                         <th>Assign To</th>
                                       </tr>
                                     </thead>
