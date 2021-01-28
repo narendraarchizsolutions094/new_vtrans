@@ -431,7 +431,7 @@ public function editcompetitor()
 	$get=$this->db->where('id',$branch_id)->get('competitors');
 	if($get->num_rows()==1){
 		foreach ($get->result() as $key => $value) {
-			$status=$value->branch_status;
+			$status=$value->status;
 	
 			echo'<div class="col-md-12">
 			<label>Competitor Name </label>
