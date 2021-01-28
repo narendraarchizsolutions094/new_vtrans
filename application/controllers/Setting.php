@@ -292,6 +292,43 @@ $insert=$this->db->insert('branch',$data);
 }
 }
 }
+
+public function addcompetitor()
+{	
+	$branch=$this->input->post('branch');
+	$status=$this->input->post('status');
+	$branch_id=$this->input->post('branch_id');
+
+	if (!empty($branch_id)) {
+		if (user_role('d35') == true) {
+		}
+	$count=$this->db->where(array('name'=>$branch,'comp_id'=>$this->session->companey_id))->where_not_in('id',$branch_id)->count_all_results('competitors');
+    if($count==0){
+		$data=['name'=>$branch,'status'=>$status,'updated_at'=>date('Y-m-d H:i:s')];
+		$insert=$this->db->where('id',$branch_id)->update('competitors',$data);
+			$this->session->set_flashdata('message','Competitor Updated');
+			redirect('setting/competitorList');
+		}else{
+			$this->session->set_flashdata('exception','Competitor Already Added');
+			redirect('setting/competitorList');
+		}
+	}else{
+		if (user_role('d36') == true) {
+		}
+	$count=$this->db->where(array('name'=>$branch,'comp_id'=>$this->session->companey_id))->count_all_results('competitors');
+	if($count==0){
+		
+	$data=['name'=>$branch,'status'=>$status,'created_by'=>$this->session->user_id,'comp_id'=>$this->session->companey_id];
+	$insert=$this->db->insert('competitors',$data);
+		$this->session->set_flashdata('message','Competitor Added');
+		redirect('setting/competitorList');
+	}else{
+		$this->session->set_flashdata('exception','Competitor Already Added');
+		redirect('setting/competitorList');
+	}
+	}
+}
+
 public function branchList()
 {
 	if (user_role('d37') == true) {
@@ -299,6 +336,14 @@ public function branchList()
 	$data['page_title'] = 'Branch List';
 	$data['branch_list']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
 	$data['content'] = $this->load->view('branch/list',$data,true);
+	$this->load->view('layout/main_wrapper',$data);
+}
+public function competitorList()
+{
+	if (user_role('d37') == true) {}
+	$data['page_title'] = 'Competitor List';
+	$data['competitor_list']=$this->db->where('comp_id',$this->session->companey_id)->get('competitors')->result();
+	$data['content'] = $this->load->view('competitor/list',$data,true);
 	$this->load->view('layout/main_wrapper',$data);
 }
 public function branch_rateList()
@@ -377,6 +422,37 @@ public function editbranch()
 	}
 	
 }
+
+public function editcompetitor()
+{
+	
+	$branch_id=$this->input->post('branch_id');
+	
+	$get=$this->db->where('id',$branch_id)->get('competitors');
+	if($get->num_rows()==1){
+		foreach ($get->result() as $key => $value) {
+			$status=$value->status;
+	
+			echo'<div class="col-md-12">
+			<label>Competitor Name </label>
+			<input type="text" value="'.$value->name.'" name="branch" class="form-control" id="branch">  
+		</div> 
+		<input name="branch_id" value="'.$branch_id.'"  type="hidden" >
+		<div class="col-md-12">
+			<label>Status </label>
+			<div class="form-check">
+            <label class="radio-inline">
+			<input type="radio" name="status" value="0" ';if($status==0){echo'checked';}
+			echo '>Active</label>
+            <label class="radio-inline">
+            <input type="radio" name="status" value="1" ';if($status==1){echo'checked';}
+			echo '>Inactive</label>
+            </div>
+		</div> ';
+		}
+	}
+	
+}
 public function editbranchrate()
 {
 	if (user_role('e30') == true) {
@@ -405,6 +481,23 @@ public function branch_delete()
 	}else{
 		$this->session->set_flashdata('exception','Branch  not found');
 	    redirect('setting/branchList');
+	}
+	
+}
+
+public function competitor_delete()
+{
+	if (user_role('d38') == true) {
+	}
+	$branch_id=$this->uri->segment(3);
+	$get=$this->db->where(array('id'=>$branch_id,'comp_id'=>$this->session->companey_id))->get('competitors');
+	if($get->num_rows()==1){
+		$this->db->where('id',$branch_id)->delete('competitors');
+		$this->session->set_flashdata('message','Competitor Deleted');
+	    redirect('setting/competitorList');
+	}else{
+		$this->session->set_flashdata('exception','Competitor not found');
+	    redirect('setting/competitorList');
 	}
 	
 }

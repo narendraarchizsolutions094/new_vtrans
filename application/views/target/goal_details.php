@@ -70,9 +70,10 @@
 				<select class="form-control" onchange="makeTable(this.value)">';
 				$id_list = explode(',', $opt->ids);
 				$name_list = explode(',', $opt->names);
+				echo'<option value="">Select</option>';
 				foreach ($id_list as $key => $op)
 				{
-					echo'<option value="">Select</option>';
+					
 					echo'<option value="'.$op.'" '.($op==$user_id?'selected':'').'>'.$name_list[$key].'</option>';
 				}
 
@@ -110,8 +111,7 @@
 							// {
 							// 	$target= $goal->target_value;
 							// }
-							if(empty($user_id))
-								$user_id = $this->session->user_id;
+							
 							$user_list = $this->common_model->get_categories($user_id);
 						
 							foreach ($user_list as $user_id)
@@ -121,11 +121,11 @@
 								//print_r($user_forecast);exit();
 								//$use_target = $this->Target_Model->ge
 								$user_target = $this->Target_Model->getTarget($goal->goal_id,2,$user_id);
-
+								//print_r($user_target);
+								//continue;
 								
 								if(!($user_forecast || $user_achieved))
 									continue;
-
 
 								if($goal->goal_type=='team')
 								{

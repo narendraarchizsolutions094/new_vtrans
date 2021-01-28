@@ -172,6 +172,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-5">Travelled Type</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-7">Next Visit Date</th>
+                  <th id="th-10">Next Visit Time</th>
 				          <th id="th-8">Next Visit Location</th>
                   <th id="th-9">Action</th>
 				        </tr>
@@ -402,6 +403,9 @@ $(document).delegate('.visit-delete', 'click', function() {
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="7">Next Visit Date</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="10">Next Visit Time</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="8">  Next Visit Location</label>

@@ -5,8 +5,14 @@
 </div>
 
 <?php
-if(empty($this->session->process) || count($this->session->process)!=1)
+
+if(empty($this->session->process) || count($this->session->process)!=1 || !$email_integration)
 {
+	if(empty($email_integration))
+		echo'<div class="alert alert-danger">Please Configure EMAIL Api first for sending Email(s).<br><br>
+	<small><code>API Configuration > Email > Add New Integration</code></small>
+	</div>';
+	else
 	echo'<div class="alert alert-danger">Please Select Only 1 process.</div>';
 
 }
@@ -50,10 +56,17 @@ else
 
 
 
-<div class="col-md-10 col-md-offset-1" align="" style="/*border-right: 1px solid #f0f0f0;*/">
+<div class="col-md-10 col-md-offset-1" align="" style=" padding-bottom: 30px;/*border-right: 1px solid #f0f0f0;*/">
 	<form action="" method="post">
-		<div class="form-group" align="right">
-			<button type="button" class="btn btn-sm btn-primary edit-btn" onclick="make_edit()"><i class="fa fa-edit"></i> Edit</button>
+		<div class="form-group edit-btn">
+			<div class="row">
+			<div class="col-sm-6 col-lg-6 col-xs-6" align="left" style="padding-left: 0px; ">
+				<label>Next Hit : <label class="label label-primary"><?=!empty($row->next_hit)?(date('d-M-Y h:i A',strtotime($row->next_hit))):'';?></label></label>
+			</div>
+			<div class="col-sm-6 col-lg-6 col-xs-6" align="right">
+				<button type="button" class="btn btn-sm btn-primary" onclick="make_edit()"><i class="fa fa-edit"></i> Edit</button>
+			</div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label>Hostname <font color="red">*</font></label>
@@ -65,7 +78,7 @@ else
 		</div>
 		<div class="form-group">
 			<label>Password <font color="red">*</font></label>
-			<input type="" name="password" class="form-control fixed" value="<?=$row->password??''?>" required>
+			<input type="password" name="password" class="form-control fixed" value="<?=$row->password??''?>" required>
 		</div>
 		<div class="row">
 			<div class="col-md-12" style="padding:0px">
@@ -116,6 +129,30 @@ else
 						}
 						?>
 			</select>
+		</div>
+
+		<div class="form-group">
+			<label>Email Fetch In Every <font color="red">*</font></label>
+			
+				<select name="fetch_time" class="form-control" style="border-radius: 0px!important;">
+					<?php
+					for($i=20;$i<=59;$i++)
+						echo'<option value="'.$i.'" '.($i==$row->fetch_time?'selected':'').'>'.$i.' Minutes</option>';
+					for($i=1;$i<=4;$i++)
+					{	echo'<option value="'.(60*$i).'"  '.((60*$i)==$row->fetch_time?'selected':'').'>'.$i.' Hour</option>';
+						for($j=1;$j<=59;$j++)
+						echo'<option value="'.((60*$i)+$j).'"  '.(((60*$i)+$j)==$row->fetch_time?'selected':'').'>'.$i.' Hour '.$j.' Minutes</option>';
+					}
+						
+					?>
+				</select>
+
+		</div>
+
+		<div class="form-group">
+			<label>Status</label><br>
+			<input type="radio" name="status" value="1" <?=$row->status?'checked':''?>> Active &nbsp; &nbsp; 
+			<input type="radio" name="status" value="0" <?=$row->status?'':'checked'?>> In-active 
 		</div>
 		<div class="form-group save-btn" style="display: none;">
 			<button class="btn btn-block btn-success"> <i class="fa fa-save"></i> Save</button>

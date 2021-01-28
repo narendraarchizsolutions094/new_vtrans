@@ -670,15 +670,17 @@ class Enquiry_model extends CI_Model {
 	
 		$this->db->select('*');
 		$this->db->where('page_id',$for);
-		$this->db->where(array("company_id"=> $this->session->companey_id, "status" => 1));
-    $this->db->group_start();
-    foreach ($this->session->process as $key => $value) {
-      if($key==0)
-      $this->db->where('(FIND_IN_SET ('.$value.',process_id) >0)');
-      else
-       $this->db->or_where('(FIND_IN_SET ('.$value.',process_id) >0)');
-    }
-    $this->db->group_end();
+        $this->db->where(array("company_id"=> $this->session->companey_id, "status" => 1));
+        if(!empty($this->session->process)){
+            $this->db->group_start();
+            foreach ($this->session->process as $key => $value) {
+                if($key==0)
+                    $this->db->where('(FIND_IN_SET ('.$value.',process_id) >0)');
+                else
+                    $this->db->or_where('(FIND_IN_SET ('.$value.',process_id) >0)');
+            }
+        }
+        $this->db->group_end();
 		return $this->db->get("tbl_input")->result();
 				
 	}
@@ -2318,12 +2320,14 @@ $cpny_id=$this->session->companey_id;
         $enquiry = $lead = $client = $enq_ct = $lead_ct = $client_ct = $enq_ut = $lead_ut = $client_ut = $enq_drp = $lead_drp = $client_drp = $enq_active = $lead_active = $client_active = $enq_assign = $lead_assign = $client_assign = $hot = $warm = $cold = $ejan = $ljan = $cjan = $efeb = $lfeb = $cfeb = $emar = $lmar = $cmar = $eapr = $lapr = $capr = $emay = $lmay = $cmay = $ejun = $ljun = $cjun = $ejuly = $ljuly = $cjuly = $eaug = $laug = $caug = $esep = $lsep = $csep = $eoct = $loct = $coct = $enov = $lnov = $cnov = $edec = $ldec = $cdec = 0;
 
 
+
         // print_r($_SESSION);die;
         $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
         //$where = "enquiry.is_delete=1";
 		$where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
     	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      $where .=" AND product_id IN ($process)";
         $where.=" AND enquiry.comp_id=$cpny_id";
 
         $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
@@ -2385,8 +2389,13 @@ $cpny_id=$this->session->companey_id;
             }
         }
 
-        $query4 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status > 0 GROUP BY enquiry.status");
+        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason,enquiry.status FROM enquiry  right JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
+
+
+        //$this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status > 0 GROUP BY enquiry.status");
         $result4 = $query4->result();
+        //echo $this->db->last_query();
+        //print_r($result4);exit();
         foreach($result4 as $r)
         {
             if($r->status == 1)
@@ -2714,6 +2723,7 @@ $cpny_id=$this->session->companey_id;
       $client_dropWise = $client_drop->result();
 
       $enq_count = $this->dashboard_model->countLead(2,$companyid,$userid,$process);
+      //echo $this->db->last_query();exit();
       $enq_Sum = $this->dashboard_model->dataLead(2,$companyid,$userid,$process);
      // echo 'Count:'.$enq_count.'<br>value:';print_r($enq_Sum->result());
       //exit();
@@ -3283,7 +3293,7 @@ $cpny_id=$this->session->companey_id;
     	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
     	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where="enquiry.comp_id=$cpny_id";
-        if($_POST){
+        if(!empty($_POST)){
             // $filter=json_encode(array(
             //     'from_date'=>$_POST['from_date'],
             //     'to_date'=>$_POST['to_date'],

@@ -446,7 +446,7 @@ class Target extends CI_controller
 
 		$data['option_list'] = $op;
 		$data['products'] = $prd;
-		$data['user_id'] = $user_id;
+		$data['user_id'] = empty($user_id)?$this->session->user_id:$user_id;
 		$data['content'] = $this->load->view('target/goal_details',$data,true);
 		$this->load->view('layout/main_wrapper',$data);
 	}

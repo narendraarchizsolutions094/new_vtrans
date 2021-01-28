@@ -41,7 +41,7 @@
                         <option value="<?=$value->Enquery_id?>">
                             <?php
                             if($value->name){
-                                echo $value->name_prefix.' '.$value->name.' '.$value->lastname;
+                                echo $value->name_prefix.' '.$value->name.' '.$value->lastname.(empty($value->email)?'':'( '.$value->email.') ');
                             }else{
                                 if(empty($value->email)){
                                     echo $value->phone;
