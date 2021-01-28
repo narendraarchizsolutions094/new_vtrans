@@ -397,16 +397,16 @@ public function editbranch()
 	
 	$branch_id=$this->input->post('branch_id');
 	
-	$get=$this->db->where('branch_id',$branch_id)->get('competitors');
+	$get=$this->db->where('branch_id',$branch_id)->get('branch');
 	if($get->num_rows()==1){
 		foreach ($get->result() as $key => $value) {
-			$status=$value->status;
+			$status=$value->branch_status;
 	
 			echo'<div class="col-md-12">
-			<label>Competitor Name </label>
-			<input type="text" value="'.$value->name.'" name="branch" class="form-control" id="branch">  
+			<label>Branch Name </label>
+			<input type="text" value="'.$value->branch_name.'" name="branch" class="form-control" id="branch">  
 		</div> 
-		<input name="branch_id" value="'.$id.'"  type="hidden" >
+		<input name="branch_id" value="'.$branch_id.'"  type="hidden" >
 		<div class="col-md-12">
 			<label>Status </label>
 			<div class="form-check">
@@ -428,16 +428,16 @@ public function editcompetitor()
 	
 	$branch_id=$this->input->post('branch_id');
 	
-	$get=$this->db->where('id',$branch_id)->get('branch');
+	$get=$this->db->where('id',$branch_id)->get('competitors');
 	if($get->num_rows()==1){
 		foreach ($get->result() as $key => $value) {
 			$status=$value->branch_status;
 	
 			echo'<div class="col-md-12">
-			<label>Branch Name </label>
-			<input type="text" value="'.$value->branch_name.'" name="branch" class="form-control" id="branch">  
+			<label>Competitor Name </label>
+			<input type="text" value="'.$value->name.'" name="branch" class="form-control" id="branch">  
 		</div> 
-		<input name="branch_id" value="'.$branch_id.'"  type="hidden" >
+		<input name="branch_id" value="'.$id.'"  type="hidden" >
 		<div class="col-md-12">
 			<label>Status </label>
 			<div class="form-check">
