@@ -36,11 +36,6 @@
                 </div>
 
             </div> 
-
-
-
-
-
             <div class="panel-body panel-form">
 
                 <div class="row">
@@ -704,6 +699,7 @@
         // print_r($user_meta['visiting_card']);
                            ?>
 <div class="col-sm-4" align="center"> 
+    <label style="float: left;">Visiting Card</label>
 <img alt="Picture" src="<?php echo (!empty($user_meta)?base_url($user_meta):base_url("assets/images/no-img.png")) ?>" id="picture1" width="50" height="50">
  <input class="form-control" name="vcfile" type="file" id="file" onchange="document.getElementById('picture1').src = window.URL.createObjectURL(this.files[0])">
    <input type="hidden" name="vc_file" value="<?php if(!empty($user_meta)){echo $user_meta['visiting_card']; }?>" class="form-control" >
