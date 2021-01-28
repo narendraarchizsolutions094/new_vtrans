@@ -348,11 +348,17 @@ class Message extends CI_Controller {
 				      }
 			  echo "Message sent successfully";
 			}else{
+				if ($msg_from=='ticket') {
+					$from_id=$ticketId;
+				}else{
+					$from_id=$Enquiry_id;
+					
+				}
 				if(!empty($template_row['media'])){	      	        	
 					$media_url	=	$template_row['media'];
 					$media_url=     base_url().$media_url;
 											}
-				$scheduleData=['message'=>$message,'media'=>$media_url];
+				$scheduleData=['message'=>$message,'media'=>$media_url,'from_id'=>$from_id];
 				$scheduledata=json_encode($scheduleData);
 				$this->Message_models->saveSchedule($msgType,$message_from,$scheduledata,$phone,$user_id,$schedule_time);
 				echo "Message Scheduled successfully";
@@ -504,11 +510,12 @@ class Message extends CI_Controller {
 								echo "Something went wrong";			                	
 							}
 						}else{
+							$from_id=$Enquiry_id;
 							$media_url='';
 							if($rows->files!=null || !empty($rows->files==null))
 							{ $media_url= $rows->files; }
 
-				$scheduleData=['message'=>$message,'media'=>$media_url,'subject'=>$email_subject,'cc'=>$cc];
+				$scheduleData=['message'=>$message,'media'=>$media_url,'subject'=>$email_subject,'cc'=>$cc,'from_id'=>$from_id];
 				$scheduledata=json_encode($scheduleData);
 				$this->Message_models->saveSchedule($msgType,$message_from,$scheduledata,$to,$user_id,$schedule_time);
 				echo "Email Scheduled successfully";
@@ -552,8 +559,14 @@ class Message extends CI_Controller {
 						echo "Something went wrong!";			                	
 				}  
 			}else{
+				if ($msg_from=='ticket') {
+					$from_id=$ticketId;
+				}else{
+					$from_id=$Enquiry_id;
+					
+				}
 				$media_url='';
-	$scheduleData=['message'=>$message,'media'=>$media_url,'subject'=>$email_subject,'cc'=>$cc];
+	$scheduleData=['message'=>$message,'media'=>$media_url,'subject'=>$email_subject,'cc'=>$cc,'from_id'=>$from_id];
 	$scheduledata=json_encode($scheduleData);
 	$this->Message_models->saveSchedule($msgType,$message_from,$scheduledata,$to,$user_id,$schedule_time);
 	// echo $this->db->last_query();
@@ -583,14 +596,18 @@ class Message extends CI_Controller {
 			  }else{
 				$save_message=['message'=>$message,'media'=>''];
 				$saveMsgTimelineId=$this->Message_models->AddMsgtimlineEnquiry($Enquiry_id,$save_message,$user_id,' ','Send SMS');
-				
-			  }
+			        }
 			}else{
 				  // if visiting card send
 						$message  =str_replace('@visiting_card',base_url($user_meta['visiting_card']), $message);
 				  // if visiting card send end
 				$media_url='';
-				$scheduleData=['message'=>$message];
+				if ($msg_from=='ticket') {
+					$from_id=$ticketId;
+				}else{
+					$from_id=$Enquiry_id;
+			      	}
+				$scheduleData=['message'=>$message,'from_id'=>$from_id];
 				$scheduledata=json_encode($scheduleData,false);
 				$this->Message_models->saveSchedule($msgType,$message_from,$scheduledata,$phone,$user_id,$schedule_time);
 	           // echo $this->db->last_query();

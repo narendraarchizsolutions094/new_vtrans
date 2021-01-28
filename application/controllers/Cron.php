@@ -131,23 +131,47 @@ public function msgsend_app()
     $schedule=$this->db->where('status',0)->get('scheduledata')->result();
     foreach ($schedule as $key => $value) {
         if(date("Y-m-d H:i", strtotime($value->schedule_time))==$currentTime){
-
            $type= $value->message_type;
+           $msg_from=$value->message_from;
            $to=$value->send_to;
            $comp_id=$value->comp_id;
            $message=$value->message_data;
            $id=$value->id;
+           $user_id=$value->created_by;
            if(!empty($message) AND !empty($to)){
            $jsonmsg=json_decode($message);
            if($type==1){
+            $message=$jsonmsg->message;
+            $from_id=$jsonmsg->from_id;
             $response= $this->Message_models->sendwhatsapp($to,$message,$comp_id);
-         echo "Whatsapp sent successfully";
+        //   "Whatsapp sent successfully";
+        if ($msg_from==2) {
+            //timeline add
+            $saveMsgTimelineId=$this->Message_models->AddMsgtimline($type,$from_id,$user_id,0,$message,'Send Whatsapp');
+            //save logs
+            $this->Message_models->saveMsgLogs($type,$from_id,$user_id,0,$message,$to,'',$saveMsgTimelineId,' ');
+      }else{
+        $save_message=['message'=>$message,'media'=>''];
+        $saveMsgTimelineId=$this->Message_models->AddMsgtimlineEnquiry($from_id,$save_message,$user_id,' ','Send Whatsapp');
+            }
          $data=['status'=>1,'response'=>$response];
          $this->db->where('id',$id)->update('scheduledata',$data);
                 }elseif($type==2){
+            $message=$jsonmsg->message;
+            $from_id=$jsonmsg->from_id;
+
                     //sms send
-				  $response=  $this->Message_models->smssend($to,$message,$comp_id);
-                  echo "Message sent successfully";
+                  $response=  $this->Message_models->smssend($to,$message,$comp_id);
+                  if ($msg_from==2) {
+					//timeline add
+					$saveMsgTimelineId=$this->Message_models->AddMsgtimline($type,$from_id,$user_id,0,$message,'Send SMS');
+					//save logs
+					$this->Message_models->saveMsgLogs($type,$from_id,$user_id,0,$message,$to,'',$saveMsgTimelineId,' ');
+			  }else{
+				$save_message=['message'=>$message,'media'=>''];
+				$saveMsgTimelineId=$this->Message_models->AddMsgtimlineEnquiry($from_id,$save_message,$user_id,' ','Send SMS');
+			        }
+                //   echo "Message sent successfully";
                   $data=['status'=>1,'response'=>$response];
          $this->db->where('id',$id)->update('scheduledata',$data);
                 }elseif($type==3){
@@ -157,6 +181,8 @@ public function msgsend_app()
             $cc=$jsonmsg->cc;
             $media=$jsonmsg->media;
             $email_subject=$jsonmsg->subject;
+            $from_id=$jsonmsg->from_id;
+
     // $message = $this->input->post('message_name');
     //$email_subject = $this->input->post('email_subject');
     $this->db->where('comp_id',$this->session->companey_id);
@@ -194,6 +220,15 @@ public function msgsend_app()
     }
     if($this->email->send()){
         $response= "Mail sent successfully";
+        if ($msg_from==2) {
+            //timeline add
+            $saveMsgTimelineId=$this->Message_models->AddMsgtimline($type,$from_id,$user_id,0,$message,'Send Mail');
+            //save logs
+            $this->Message_models->saveMsgLogs($type,$from_id,$user_id,0,$message,$to,'',$saveMsgTimelineId,' ');
+      }else{
+        $save_message=['message'=>$message,'media'=>''];
+        $saveMsgTimelineId=$this->Message_models->AddMsgtimlineEnquiry($from_id,$save_message,$user_id,' ','Send Mail');
+            }
     }else{
         echo $this->email->print_debugger();
         $response= "Something went wrong";	
@@ -216,10 +251,11 @@ public function run()
     $currentTime=date('Y-m-d H:i');
     $cron=$this->db->where('status',0)->get('cronjobs')->result();
     foreach ($cron as $key => $value) {
+        echo'test';
         $id=$value->id;
         $command=$value->command;
         if(date("Y-m-d H:i", strtotime($value->running_time))==$currentTime){
-            $run=$value->url;
+            echo $run=$value->url;
             // create a new cURL resource
             $ch = curl_init();
             // set URL and other appropriate options
@@ -228,6 +264,7 @@ public function run()
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             // grab URL and pass it to the browser
             $result = curl_exec($ch);
+            print_r($result);
             // close cURL resource, and free up system resources
             require_once FCPATH.'third_party/vendor/autoload.php';
             $cron = Cron\CronExpression::factory($command);
