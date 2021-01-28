@@ -2125,6 +2125,28 @@ $('#delivery_branch').on('change', function() {
                   });
             }
             });
+$('#booking_branch').on('change', function() {
+
+    var delivery_branch = $("select[name='delivery_branch[]']").val()??[];
+    var booking_branch = $("select[name='booking_branch']").val();
+
+
+    $("#delivery_branch").find('option').removeAttr('disabled');
+    $("#delivery_branch").find('option[value="'+booking_branch+'"]').attr('disabled','disabled');
+    if(delivery_branch.includes(booking_branch))
+    { var ARY =new Array();
+       $(delivery_branch).each(function(k,v){
+          if(v!=booking_branch)
+            ARY.push(v);
+       });
+       //alert(ARY.toString());
+       $("#delivery_branch").val(ARY);
+       $('#delivery_branch').trigger('change');
+    }
+
+
+   });
+$('#booking_branch').trigger('change');
 $('#potential_tonnage').on('change', function() {
                 var discount = $("#discount").val();
 
