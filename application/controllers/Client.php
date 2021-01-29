@@ -406,20 +406,24 @@ class Client extends CI_Controller {
         $this->load->view('layout/main_wrapper', $data);
     }
 
-    public function company_list($limit=30,$offset=0)
+    public function company_list($limit=30,$offset=0,$search=0,$sort='up')
     {
         if(user_role('1060')){}
+
+            $search = empty($search)?'':$search;
 
         $this->load->model(array('Client_Model','Enquiry_Model'));
         $data['title'] = display('company_list');
        // $data['company_list'] = $this->Client_Model->getCompanyList()->result();
-        $data['company_count'] = $this->Client_Model->getCompanyList('',$this->session->companey_id,$this->session->user_id,$this->session->process,'count');
+        $data['company_count'] = $this->Client_Model->getCompanyList($search,$this->session->companey_id,$this->session->user_id,$this->session->process,'count');
 
-        $c =$data['company_list'] = $this->Client_Model->getCompanyList('',$this->session->companey_id,$this->session->user_id,$this->session->process,'data',$limit,$offset)->result();
+        $c =$data['company_list'] = $this->Client_Model->getCompanyList($search,$this->session->companey_id,$this->session->user_id,$this->session->process,'data',$limit,$offset,$sort)->result();
         //print_r($c);
         $data['limit'] =$limit;
         $data['offset'] = $offset;
-      //  $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
+        $data['search'] = $search;
+        $data['sort']  =$sort;;
+       //  $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
         $data['content'] = $this->load->view('enquiry/company_list', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -1978,4 +1982,48 @@ public function view_editable_aggrement()
         );
         echo json_encode($output);
     }
+
+
+    public function company_load_data()
+    {   //not in used
+        
+        //print_r($_POST); exit(); 
+        // $this->load->model('company_datatable_model');
+        // $result = $this->company_datatable_model->getRows($_POST);
+        // //echo $this->db->last_query(); exit();
+        // //print_r($result); exit();
+        // $colsall  = true;
+        // $cols = array();
+        // // if(!empty($_POST['allow_cols']))
+        // // {
+        // //     $cols  = explode(',',$_POST['allow_cols']);
+        // //     $colsall = false;
+        // // }
+        // //print_r($cols); exit();
+        // $data = array();
+        // $i=1;
+        // foreach ($result as $res)
+        // {
+        //     $sub = array();
+
+        //     $sub[] = $i++;
+           
+        //     if($colsall || in_array(2,$cols))
+        //         $sub[] = trim($res->company)??'NA';
+
+        //     if($colsall || in_array(2,$cols))
+        //         $sub[] = trim($res->contacts_num)??'NA';
+
+        //     $data[] =$sub;
+        // }
+
+        // $output = array(
+        //     "draw" => $_POST['draw'],
+        //     "recordsTotal" =>$this->company_datatable_model->countAll(),
+        //     "recordsFiltered" => $this->company_datatable_model->countFiltered($_POST),
+        //     "data" => $data,
+        // );
+        // echo json_encode($output);
+    }
+
 }
