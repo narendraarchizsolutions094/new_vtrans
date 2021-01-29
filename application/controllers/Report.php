@@ -345,27 +345,27 @@ class Report extends CI_Controller
         exit();
       } else {
 
-        // $config['smtp_auth']    = true;
-        // $config['protocol']     = $email_row['protocol'];
-        // $config['smtp_host']    = $email_row['smtp_host'];
-        // $config['smtp_port']    = $email_row['smtp_port'];
-        // $config['smtp_timeout'] = '7';
-        // $config['smtp_user']    = $email_row['smtp_user'];
-        // $config['smtp_pass']    = $email_row['smtp_pass'];
-        // $config['charset']      = 'utf-8';
-        // $config['mailtype']     = 'html'; // or html
-        // $config['newline']      = "\r\n";
-
-           $config['smtp_auth']    = true;
-        $config['protocol']     = 'smtp';
-        $config['smtp_host']    = 'ssl://smtp.zoho.com';
-        $config['smtp_port']    = 465;
+        $config['smtp_auth']    = true;
+        $config['protocol']     = $email_row['protocol'];
+        $config['smtp_host']    = $email_row['smtp_host'];
+        $config['smtp_port']    = $email_row['smtp_port'];
         $config['smtp_timeout'] = '7';
-        $config['smtp_user']    = 'suraj@archiztechnologies.com';
-        $config['smtp_pass']    = 'Archiz321';
+        $config['smtp_user']    = $email_row['smtp_user'];
+        $config['smtp_pass']    = $email_row['smtp_pass'];
         $config['charset']      = 'utf-8';
         $config['mailtype']     = 'html'; // or html
         $config['newline']      = "\r\n";
+
+        //    $config['smtp_auth']    = true;
+        // $config['protocol']     = 'smtp';
+        // $config['smtp_host']    = 'ssl://smtp.zoho.com';
+        // $config['smtp_port']    = 465;
+        // $config['smtp_timeout'] = '7';
+        // $config['smtp_user']    = 'suraj@archiztechnologies.com';
+        // $config['smtp_pass']    = 'Archiz321';
+        // $config['charset']      = 'utf-8';
+        // $config['mailtype']     = 'html'; // or html
+        // $config['newline']      = "\r\n";
         $this->email->initialize($config);
         $from = $config['smtp_user'];
         //$config['validation']   = TRUE; // bool whether to validate email or not  
@@ -1109,7 +1109,36 @@ class Report extends CI_Controller
       $result  = $this->report_datatable_model->report_analitics($for);      
       echo json_encode($result);      
     }
-    
+    public function ticket_report_analitics($for){
+      // die();
+      $this->load->model('ticket_report_datatable_model');
+      $result  = $this->ticket_report_datatable_model->report_analitics($for);      
+      echo json_encode($result);  
+    }
+    public function prticket_report_analitics(){
+      // die();
+      $this->load->model('ticket_report_datatable_model');
+      $priority1=$this->input->post('priority');
+      if(!empty($priority1)){
+      if($priority1==1){
+      $result  = $this->ticket_report_datatable_model->priorityreport_analitics('priority_chart',1);
+      echo json_encode(array(array('name'=>'Low','y'=>$result)));
+      }
+      if($priority1==2){
+      $result  = $this->ticket_report_datatable_model->priorityreport_analitics('priority_chart',2);
+      echo json_encode(array(array('name'=>'Medium','y'=>$result)));
+      }
+      if($priority1==3){
+        $result  = $this->ticket_report_datatable_model->priorityreport_analitics('priority_chart',3);
+        echo json_encode(array(array('name'=>'High','y'=>$result)));
+      }
+      }else{
+      $result1  = $this->ticket_report_datatable_model->priorityreport_analitics('priority_chart',1);
+      $result2  = $this->ticket_report_datatable_model->priorityreport_analitics('priority_chart',2);
+      $result3  = $this->ticket_report_datatable_model->priorityreport_analitics('priority_chart',3);
+      echo json_encode(array(array('name'=>'Low','y'=>$result1),array('name'=>'Medium','y'=>$result2),array('name'=>'High','y'=>$result3)));  
+     }
+    }
     public function report_analitics_pipeline($for){
       $this->load->model('report_datatable_model');
       $result  = $this->report_datatable_model->report_analitics($for);      

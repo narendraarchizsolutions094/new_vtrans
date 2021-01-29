@@ -344,7 +344,6 @@ class Report_datatable_model extends CI_Model {
                 $comp_id=$this->session->companey_id;
 
             }           
-            
             $this->db->join('tbl_product_country','tbl_product_country.id=enquiry.enquiry_subsource','left');   
             $this->db->join('lead_source','lead_source.lsid=enquiry.enquiry_source','left');            
             $this->db->join('tbl_product','tbl_product.sb_id=enquiry.product_id','left');   
