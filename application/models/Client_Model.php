@@ -192,7 +192,7 @@ class Client_Model extends CI_Model
         //echo $this->db->last_query(); exit();
     }
 
-    public function getCompanyList($match = '',$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1)
+    public function getCompanyList($match = '',$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
     {
         $process = $this->session->process??$process;
         $comp_id = $this->session->companey_id??$comp_id;
@@ -215,8 +215,16 @@ class Client_Model extends CI_Model
         $this->db->where('enquiry.company IS NOT NULL and CHAR_LENGTH(REPLACE(`enquiry`.company, " ", ""))>0');
 
         if($match)
-            $this->db->where('REPLACE(`enquiry`.company, " ", "") = ',str_replace(' ','',$match));
+            $this->db->like('REPLACE(`enquiry`.company, " ", "") ',str_replace(' ','',$match));
         $this->db->group_by('REPLACE(`enquiry`.company, " ", "")');
+
+        if($sort!=-1)
+        {
+            if($sort=='up')
+                $this->db->order_by('enquiry.company','DESC');
+            else 
+                $this->db->order_by('enquiry.company','ASC');
+        }
 
         if($action=='count')
          return  $this->db->count_all_results();
@@ -224,6 +232,7 @@ class Client_Model extends CI_Model
             $this->db->limit($limit,$offset);
         
         $res =  $this->db->get();
+
         return $res;
         //echo $this->db->last_query(); exit();
     }
