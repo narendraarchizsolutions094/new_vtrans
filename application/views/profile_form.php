@@ -187,7 +187,7 @@
 
                                     <label for="exampleFormControlTextarea1">Primary Phone Number</label>
 
-                               <input type="text" id="mobile" pattern="[0-9]{12}" class="form-control br_25  m-0 icon_left_input" maxlength="12"  placeholder="Primary Phone Number" value="<?php echo $department->s_phoneno; ?>" name="cell">
+                               <input type="text" id="mobile" class="form-control br_25  m-0 icon_left_input" maxlength="12"  placeholder="Primary Phone Number" value="<?php echo $department->s_phoneno; ?>" name="cell">
 
                                </div>
 
