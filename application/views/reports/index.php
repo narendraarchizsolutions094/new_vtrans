@@ -54,6 +54,8 @@
            <div class="col-md-6">
             <label>Select Employee</label> 
             <input name="id" value="<?= $value['id'] ?>"  hidden>
+            <input name="path" value="<?= base_url(uri_string()); ?>"  hidden>
+            
             <select class="form-control process"  name="users[]"   multiple required>
            <?php  foreach ($created_bylist as $user) { 
               $users=explode(',',$value['mail_users']);

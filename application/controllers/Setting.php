@@ -519,7 +519,7 @@ public function branchrate_delete()
 }
 public function document_templates()
 {		
-	if (user_role('3143') == true) {
+	if (user_role('e34') == true) {
 	}
 	$data['page_title'] = 'Template List';
 	$data['list']=$this->db->where('comp_id',$this->session->companey_id)->get('tbl_docTemplate')->result();

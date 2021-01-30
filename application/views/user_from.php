@@ -282,8 +282,8 @@
                                 </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
-                                    <label class="control-label" for="process">Process</label> 									
-                                    <select class="form-control" name="process[]" multiple>
+                                    <label class="control-label" for="process">Process <i class="text-danger">*</i></label> 									
+                                    <select class="form-control" name="process[]" multiple required >
                                         <?php
                                         if (!empty($products)) {
                                             foreach ($products as $key => $value) { ?>
@@ -663,6 +663,7 @@ $("#submit_btn").on('click',function(e){
   if (!user_type) {
     msg += '<b>User Right is required</b>.<br>';    
   }
+ 
   if (msg) {
     e.preventDefault();
     Swal.fire({

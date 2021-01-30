@@ -29,14 +29,20 @@
           </div>
           <div style="display: inline-block;"> entries</div>
       </div>
+      <div class="col-sm-6" style="padding: 5px 0px;" align="right">
+         <div style="display: inline-block;">Search</div>
+          <div style="display: inline-block;">
+          <input type="text" id="search_box" name="search" class="form-control" placeholder="Search keyword" style="width: 230px; height: 30px; " value="<?=$search?>" onkeyup="chksubmit(event,this)">
+          </div>
+      </div>
     </div>
 		<div class="panel panel-success">
 			<div class="panel-body">
-                    <table style="width: 100%" id="companyTable" class="table table-bordered table-response">
+                    <table style="width: 100%" id="companyTable" class=" table table-bordered table-response">
                          <thead>
                              <tr>
                                      <th>&nbsp; # &nbsp;</th>
-                                     <th><?=display('company_name')?></th>
+                                     <th onclick="dosort()"><?=display('company_name')?> <i class="fa fa-caret-<?=$sort?> pull-right" ></i></th>
                                      <th>Contacts</th>
                                      <th>Deals</th>
                                      <th>Visits</th>
@@ -152,8 +158,75 @@
      </div>
 </div>
 <script type="text/javascript">
-  function open_link(t)
+  // function open_link(t)
+  // {
+  //   window.open($(t).data('url'),'_blank');
+  // }
+
+
+//$(document).ready(function(){
+
+  //$('#companyTable').DataTable({ 
+
+          // "processing": true,
+          // "scrollX": true,
+          // "serverSide": true,          
+          // "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
+          // "ajax": {
+          //     "url": "<?=base_url().'client/company_load_data'?>",
+          //     "type": "POST",
+          //     "data":function(d){
+
+                     // d.date_from = $("input[name=d_from_date]").val();
+                     // d.date_to = $("input[name=d_to_date]").val();
+                     // d.enq_for = $("select[name=d_enquiry_id]").val();
+                     // d.booking_type = $("select[name=d_booking_type]").val();
+                     // d.booking_branch  =  $("select[name=d_booking_branch]").val();
+                     // d.delivery_branch  =  $("select[name=d_delivery_branch]").val();
+                     // d.paymode  =  $("select[name=d_paymode]").val();
+                     // d.p_amnt_from  =  $("input[name=d_p_amnt_from]").val();
+                     // d.p_amnt_to =  $("input[name=d_p_amnt_to]").val();
+                     
+                     // // d.from_date = obj[0]['value'];
+                     // // d.from_time = '';//obj[1]["value"];
+                     // // d.enquiry_id =obj[2]["value"];
+                     // // d.rating = obj[3]["value"];
+                     // // d.to_date = obj[1]['value'];
+                     // // d.to_time = '';//obj[5]['value'];
+                     // d.view_all=true;
+                     // d.specific_list = specific_list;
+                     // TempData = d;
+
+                     //  if(c && c!='')
+                     //  d.allow_cols = c;
+
+                     //console.log(JSON.stringify(d));
+                  //  return d;
+             // }
+         // },
+          // "drawCallback":function(settings ){
+          //   update_top_filter();
+          // },
+          // columnDefs: [
+          //              { orderable: false, targets: -1 }
+          //           ]
+ // });
+
+//});
+function chksubmit(e,t)
+{
+  if(e.keyCode==13)
   {
-    window.open($(t).data('url'),'_blank');
+    var z = t.value==''?0:t.value;
+    location.href="<?=base_url('client/company_list/'.$limit.'/'.$offset.'/')?>"+z;
   }
+}
+function dosort()
+{
+  var x = <?=$sort=='up'?'"down"':'"up"'?>;
+  var search = $("#search_box").val();
+  var z = search==''?0:search;
+ // alert(z);
+  location.href="<?=base_url('client/company_list/'.$limit.'/'.$offset.'/')?>"+z+'/'+x;
+}
 </script>

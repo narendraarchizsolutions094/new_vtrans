@@ -62,7 +62,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
     <title><?php echo $settings->title ?></title>
     <?php } ?>
     <!--<link rel="shortcut icon" href="<?= base_url($this->session->userdata('favicon')) ?>">-->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
     <link href="<?php echo base_url('assets/css/jquery-ui.min.css') ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
@@ -1337,7 +1337,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                   </li>  -->
                     <?php
                     if(user_access('1010') || user_access('1011') || user_access('1012')){ ?>
-                    <li class="<?=($segment2=='contacts')?'active':''?>">
+                    <li class="<?=( $segment1=='client' AND $segment2=='contacts')?'active':''?>">
                         <a href="<?=base_url('client/contacts')?>">
                             <i class="fa fa-address-book icon-class" ></i>
                             <?=display('contacts')?>
@@ -1687,7 +1687,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         else if($menu_count==20)
                         {
                     ?>
-                    <li class="<?php echo (($segment1 == "client"   || $segment2 == ""|| $segment1 == "index" ) && empty($_GET['stage'] )  && $segment2!='deals' && $segment2!='visits'? "active" : null) ?>"
+                    <li class="<?php echo (($segment1 == "client"   || $segment2 == ""|| $segment1 == "index"  ) && empty($_GET['stage'] )  && $segment2!='contacts' && $segment2!='deals' && $segment2!='visits'? "active" : null) ?>"
                         style="<?php if(in_array(80,$module) || in_array(81,$module) || in_array(82,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("client/index") ?>">
                             <i class="fa fa-user-circle-o icon-class"

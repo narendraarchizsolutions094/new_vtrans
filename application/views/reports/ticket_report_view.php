@@ -18,15 +18,7 @@
 
                       <button class="btn btn-success" data-toggle="modal" data-target="#table-col-conf">Report Header</button>
 
-					         <!--  <div class="btn-group" role="group" aria-label="Button group">
-					              <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Actions">
-					                <i class="fa fa-sliders"></i>
-					              </a>  
-					            <div class="dropdown-menu dropdown_css" style="max-height: 400px;overflow: auto; left: unset; right: 0!important;">
-
-                            <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo display('table_config'); ?></a> 
-					            </div>                                         
-					          </div>   -->
+					         
 					        </div>       
 					      </div>
 						</div>
@@ -55,6 +47,7 @@
 
 							<!-- Filter Panel End -->
 							<div class="row">
+              
 								<div class="col-md-1"></div>
 								<div class="col-md-12">
 									<table id="ticket_table" class=" table table-striped table-bordered" style="width:100%;">

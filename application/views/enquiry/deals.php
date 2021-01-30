@@ -517,41 +517,61 @@ $(window).load(function(){
     });
 
 
-    $('#delivery_branch,#booking_branch').on('change', function() {
-            var delivery_branch = $("select[name='delivery_branch']").val();
+    $('#delivery_branch').on('change', function() {
+
+            var delivery_branch = $("select[name='delivery_branch[]']").val()??[];
             var booking_branch = $("select[name='booking_branch']").val();
+            
+            delivery_branch =  delivery_branch.join(',');
 
-            $("#delivery_branch").find('option[disabled=disabled]').removeAttr('disabled');
-            $("#booking_branch").find('option[disabled=disabled]').removeAttr('disabled');
-
-            $("#delivery_branch").find('option[value="'+booking_branch+'"]').attr('disabled','disabled');
-           var z = $("#delivery_branch").find('option[value="'+booking_branch+'"]');
-
-            if($(z).prop( "selected" ))
+            if(delivery_branch.includes(',') || delivery_branch=='')
             {
-              
-               $(z).removeAttr('selected');
-
-                // $("#delivery_branch").find('option[value=""]').attr('selected','selected');
-                // $("#delivery_branch").
-                $('#delivery_branch').val(''); // Select the option with a value of '1'
-                $('#delivery_branch').trigger('change');
+                $("#rate").closest('.form-group').hide();
+                $("#potential_amount").closest(".form-group").hide();
+                $("#expected_amount").closest(".form-group").hide();
             }
+            else
+            { 
+                $("#rate").closest('.form-group').show();
+                $("#potential_amount").closest(".form-group").show();
+                $("#expected_amount").closest(".form-group").show();
 
-            // $("#booking_branch").find('option[value="'+delivery_branch+'"]').attr('disabled','disabled');
-            // $("#delivery_branch").find('option[value="'+booking_branch+'"]').attr('disabled','disabled');
+                 $.ajax({
+                  type: 'POST',
+                  url: '<?php echo base_url();?>enquiry/get_rate',
+                  data: {delivery_branch:delivery_branch,booking_branch:booking_branch},
+                  success:function(data){
+                      var obj = JSON.parse(data);
 
-            $.ajax({
-            type: 'POST',
-            url: '<?php echo base_url();?>enquiry/get_rate',
-            data: {delivery_branch:delivery_branch,booking_branch:booking_branch},
-            success:function(data){
-                var obj = JSON.parse(data);
-                $("#rate").val(obj.rate);
+                      $("#rate").val(obj.rate);
+                  }
+                  });
             }
             });
-            });
 
+
+   $('#booking_branch').on('change', function() {
+
+    var delivery_branch = $("select[name='delivery_branch[]']").val()??[];
+    var booking_branch = $("select[name='booking_branch']").val();
+
+
+    $("#delivery_branch").find('option').removeAttr('disabled');
+    $("#delivery_branch").find('option[value="'+booking_branch+'"]').attr('disabled','disabled');
+    if(delivery_branch.includes(booking_branch))
+    { var ARY =new Array();
+       $(delivery_branch).each(function(k,v){
+          if(v!=booking_branch)
+            ARY.push(v);
+       });
+       //alert(ARY.toString());
+       $("#delivery_branch").val(ARY);
+       $('#delivery_branch').trigger('change');
+    }
+
+
+   });
+$('#booking_branch').trigger('change');
 $('#potential_tonnage').on('change', function() {
                 var rate = document.getElementById('rate').value;           
                 var potential_tonnage = document.getElementById('potential_tonnage').value;    
@@ -628,7 +648,7 @@ $('#infotype').on('change', function() {
 
               <div class="form-group col-md-6">
                   <label>Related To (Primary Contact) <a href="<?= base_url('enquiry/create?status=1') ?>" target="_blank"  style=" float:right;margin-left: 30px;"> <i class="fa fa-plus-square"> </i></a> </label>
-                  <select class="form-control" name="enquiry_id">
+                  <select class="form-control" name="enquiry_id" required>
                     <option value="">Select</option>
                     <?php
                   if(!empty($all_enquiry))
@@ -736,7 +756,7 @@ $('#infotype').on('change', function() {
             </div>
             <div class="form-group col-sm-6"> 
                <label id="textdisplay2">Delivery Branch</label>
-               <select class="form-control" name="delivery_branch" id="delivery_branch" required>
+               <select class="form-control" name="delivery_branch[]" id="delivery_branch" multiple required>
                   <option value="">-Select-</option>
                   <?php  
                   foreach($branch as $dbranch){ ?>
@@ -757,7 +777,7 @@ $('#infotype').on('change', function() {
                              
                 <div class="form-group col-sm-6"> 
                    <label>Potential Tonnage</label>
-                   <input class="form-control" name="potential_tonnage" id="potential_tonnage" type="text"  >  
+                   <input class="form-control" name="potential_tonnage" id="potential_tonnage" type="text"  required>  
                 </div>
                 <div class="form-group col-sm-6"> 
                    <label>Potential Amount</label>
@@ -765,7 +785,7 @@ $('#infotype').on('change', function() {
                 </div>
                 <div class="form-group col-sm-6"> 
                    <label>Expected Tonnage</label>
-                   <input class="form-control" name="expected_tonnage" id="expected_tonnage" type="text"  >  
+                   <input class="form-control" name="expected_tonnage" id="expected_tonnage" type="text"  required>  
                 </div>
                 <div class="form-group col-sm-6"> 
                    <label>Expected Amount</label>
@@ -958,10 +978,11 @@ function quotation_pdf(typeId,enqid) {
         var y = LIST[v];
         var ids = y.enq_ids.split(',');
         var names = y.enq_names.split(',');
+        var types = y.enq_status.split(',');
         $(ids).each(function(k,id){
+          if(types[k]!='1')
             l+="<option value='"+id+"'>"+names[k]+"</option>";
         });
-        //alert(l);
         $("select[name=enquiry_id]").html(l);
       }
       else
