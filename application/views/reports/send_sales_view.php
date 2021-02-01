@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Testing Area</title>
+        <title>Sales data</title>
         <!--<link rel="shortcut icon" href="<?= base_url() ?>">-->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link href="<?= base_url() ?>assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />

@@ -280,7 +280,9 @@ class Report extends CI_Controller
       $user_id = $report_row['created_by'];
       $this->session->set_userdata('comp_id', $comp_id);
       $this->session->set_userdata('user_id_id', $user_id);
-      $this->session->set_userdata('process_id_id', $filters['process_id']);
+      if(!empty($filters['process_id'])){
+      $this->session->set_userdata('process_id_id',$filters['process_id']);
+      }
       $data['filters'] = json_decode($report_row['filters'], true);
       $cdate = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
       $data['fromdate'] = $cdate;
