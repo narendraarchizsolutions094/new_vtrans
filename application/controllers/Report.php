@@ -31,7 +31,6 @@ class Report extends CI_Controller
     $data['content'] = $this->load->view('reports/index', $data, true);
     $this->load->view('layout/main_wrapper', $data);
   }
-
   public function ticket_reports()
   {
     if (user_role('120') == true) {
@@ -1017,23 +1016,32 @@ class Report extends CI_Controller
     );
     echo json_encode($output);
   }
-  public function create_report()
-  {
-    parse_str($_POST['filters'], $filters);
+ 
+    public function create_report(){
+      parse_str($_POST['filters'], $filters);
+      $report_name    = $this->input->post('report_name');
+      $type    = $this->input->post('type');
+      $this->form_validation->set_rules('report_name','Report Name','required|trim');
+      if ($this->form_validation->run() == TRUE) {
+          $insert_array = array(
+                          'name'      =>  $report_name,
+                          'comp_id'   =>  $this->session->companey_id,
+                          'filters'   =>  json_encode($filters),
+                          'type'=>        $type,
+                          'created_by'=>  $this->session->user_id
+                          );
+          if($this->db->insert('reports',$insert_array)){
+              echo json_encode(array('status'=>true,'msg'=>'Report Saved Successfully'));
+          }else{
+              echo json_encode(array('status'=>false,'msg'=>'Something went wrong!'));
+          }           
+      } else {
+          echo json_encode(array('status'=>false,'msg'=>validation_errors()));            
+      }
+      
+  }
 
-    $report_name    = $this->input->post('report_name');
-    $type    = $this->input->post('type');
-    $this->form_validation->set_rules('report_name', 'Report Name', 'required|trim');
-    if ($this->form_validation->run() == TRUE) {
-      $insert_array = array(
-        'name'      =>  $report_name,
-        'type'      =>  $type,
-        'comp_id'   =>  $this->session->companey_id,
-        'filters'   =>  json_encode($filters),
-        'created_by' =>  $this->session->user_id
-      );
-      // print_r(json_encode($filters));
-      // die();
+  public function all_reports() {
         $data['title'] = 'Report';
         $data['countries'] = $this->report_model->all_country();
         $data['institute'] = $this->report_model->all_institute();
@@ -1047,7 +1055,6 @@ class Report extends CI_Controller
         $data['content'] = $this->load->view('all_report', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
-  }
     
     //Dashboard statitics reports for enquiry..
     public function enquiry_statitics_report() {
