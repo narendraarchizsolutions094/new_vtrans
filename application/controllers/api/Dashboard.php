@@ -294,7 +294,7 @@ class Dashboard extends REST_Controller {
         $company_id = $this->input->post('company_id');
         $this->form_validation->set_rules('user_id','user_id', 'trim|required');
         $this->form_validation->set_rules('company_id','company_id', 'trim|required');
-        $data='';
+        $data=[];
         if($this->form_validation->run()==true)
         {
             $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING',$company_id);
