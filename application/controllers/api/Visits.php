@@ -209,8 +209,8 @@ class Visits extends REST_Controller {
               $latitude   = (float)$this->input->post('latitude');
               $longitude  = (float)$this->input->post('longitude');
                  //only waypoints
-              $new_waypoint = json_encode(array($latitude,$longitude,date('Y-m-d H:i:s')));
-              $data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'visit_status'=>1,'visit_start'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>$new_waypoint];
+              $new_waypoint = array($latitude,$longitude);
+              $data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'visit_status'=>1,'visit_start'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>json_encode(array($new_waypoint))];
               $this->db->insert('visit_details',$data);
               $insertid=$this->db->insert_id();
               $res=['message'=>'Travel Started','vd_id'=>$insertid];
@@ -223,9 +223,9 @@ class Visits extends REST_Controller {
                $latitude   = (float)$this->input->post('latitude');
                $longitude  = (float)$this->input->post('longitude');
                  //only waypoints
-                 $new_waypoint = array($latitude,$longitude,date('Y-m-d H:i:s'));
+                 $new_waypoint = array($latitude,$longitude);
                  if(!empty($visit_details)){
-                   $waypoints  = json_decode($visit_details->way_points,true);        
+                   $waypoints  = json_decode($visit_details->way_points);   
                    array_push($waypoints, $new_waypoint);
                    $data=['visit_status'=>2,'visit_end'=>date('Y-m-d H:i:s'),'way_points'=>json_encode($waypoints)];
                   $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
@@ -256,11 +256,11 @@ class Visits extends REST_Controller {
                $latitude   = (float)$this->input->post('latitude');
                $longitude  = (float)$this->input->post('longitude');
                  //only waypoints
-                 $new_waypoint = array($latitude,$longitude,date('Y-m-d H:i:s'));
+                 $new_waypoint = array($latitude,$longitude);
                  if(!empty($visit_details)){
-                   $waypoints  = json_decode($visit_details->way_points,true);        
-                   array_push($waypoints, $new_waypoint);
-                   $data=['way_points'=>json_encode($new_waypoint)];
+                   $waypoints  = json_decode($visit_details->way_points);        
+                   $finalwaypoints= array_push($waypoints, $new_waypoint);
+                   $data=['way_points'=>json_encode($finalwaypoints)];
                    $this->db->where('id',$vd_id);
                    $this->db->update('visit_details',$data);
                    $this->set_response([

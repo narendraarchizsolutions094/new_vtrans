@@ -1661,16 +1661,23 @@ public function view_editable_aggrement()
             
         }
         $id=$this->uri->segment('3');
-    	$data['details'] = $this->db->where('visit_id',$id)->get('visit_details')->row();
-        
-        $this->load->model('Client_Model');
-        $this->load->model('Enquiry_Model');
-        $data['title'] = display('visit_list');
-       // print_r($data['contact_list']->result_array()); exit();
-        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
-        $data['company_list'] = $this->Client_Model->getCompanyList()->result();
-        $data['content'] = $this->load->view('enquiry/visit_details', $data, true);
-        $this->load->view('layout/main_wrapper', $data);
+    	$visitdata= $this->db->where('visit_id',$id)->get('visit_details');
+        if($visitdata->num_rows()!=0){
+            $data['details'] =$visitdata->row();
+            $this->load->model('Client_Model');
+            $this->load->model('Enquiry_Model');
+            $data['title'] = display('visit_list');
+           // print_r($data['contact_list']->result_array()); exit();
+            $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
+            $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+            $data['content'] = $this->load->view('enquiry/visit_details', $data, true);
+            $this->load->view('layout/main_wrapper', $data);
+        }else{
+			$this->session->set_flashdata('message', 'Travel History not found');
+
+            redirect('client/visits');
+        }
+       
     }
   
     public function deals($specific=0)

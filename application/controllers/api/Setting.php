@@ -11,7 +11,7 @@ class Setting extends REST_Controller {
     public function get_all_labels_post(){
         $comp_id = $this->input->post('comp_id');
         $this->db->where('comp_id',$comp_id);
-        $this->db->or_where('comp_id',0);
+        // $this->db->or_where('comp_id',0);
         $lang    =  $this->db->get('language')->result_array();
   
         $this->set_response([
