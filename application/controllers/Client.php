@@ -1655,6 +1655,24 @@ public function view_editable_aggrement()
         $this->load->view('layout/main_wrapper', $data);
     }
 
+    public function visit_details()
+    {
+         if(user_role('1020') || user_role('1021') || user_role('1022')){
+            
+        }
+        $id=$this->uri->segment('3');
+    	$data['details'] = $this->db->where('visit_id',$id)->get('visit_details')->row();
+        
+        $this->load->model('Client_Model');
+        $this->load->model('Enquiry_Model');
+        $data['title'] = display('visit_list');
+       // print_r($data['contact_list']->result_array()); exit();
+        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
+        $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+        $data['content'] = $this->load->view('enquiry/visit_details', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+  
     public function deals($specific=0)
     { 
          if(user_access('1000') || user_access('1001') || user_access('1002')){

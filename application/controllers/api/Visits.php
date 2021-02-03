@@ -126,7 +126,6 @@ class Visits extends REST_Controller {
   		  }
 
     }
-
     public function save_visit_post()
     {
     	$visit_id = $this->input->post('visit_id');
