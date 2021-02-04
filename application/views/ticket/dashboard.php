@@ -213,8 +213,8 @@
 <br>
 <center>
     <h3>Stage Wise Ticket</h3>
-</center><!-- HTML -->
-
+</center>
+<!-- HTML -->
 <div id="chartdiv5"></div>
 </div>
 </div>
@@ -601,11 +601,12 @@ $(document).ready(function() {
                 labelTemplate.verticalCenter = "middle";
                 labelTemplate.dy = 10; // moves it a bit down;
                 labelTemplate.inside =
-                    false; 
+                false; 
                 // this is done to avoid settings which are not suitable when label is rotated                
                 var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
                 valueAxis.renderer.grid.template.disabled = true; // Create series
                 var series = chart.series.push(new am4charts.ConeSeries());
+                series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
                 series.dataFields.valueY = "value";
                 series.dataFields.categoryX = "name";
                 var columnTemplate = series.columns.template;
