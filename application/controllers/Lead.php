@@ -1832,6 +1832,7 @@ class Lead extends CI_Controller
     /********************************************create CSV file*********************************/
     public function createcsv($pd,$for=0)
     {
+        $comp_id = $this->session->userdata('companey_id');
         header('Content-type: text/csv');
         header('Content-Disposition: attachment; filename="Upload_sample.csv"');
         // do not cache the file
@@ -1842,11 +1843,8 @@ class Lead extends CI_Controller
         $input = array();
         $this->db->select('*');
         $this->db->from('tbl_input');
-        $this->db->where('page_id', $for);
-        $this->db->group_start();
-        $this->db->or_where('process_id', $pd);
-        $this->db->or_where('company_id', $this->session->userdata('companey_id'));
-        $this->db->group_end();
+        $this->db->where('page_id', $for);        
+        $this->db->where("(process_id=$pd OR company_id=$comp_id)");                
         $this->db->order_by('input_id', 'asc');
         $q = $this->db->get()->result();
         if (!empty($q)) {
