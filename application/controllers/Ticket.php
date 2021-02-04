@@ -2251,7 +2251,7 @@ class Ticket extends CI_Controller
 
 			$name = substr($value->description,0,12); 		
 			$stage = substr($value->lead_stage_name,0,12); 
-			$data[] = ['stage'=>$stage,'name' =>$name, 'value' => $count];
+			$data[] = ['region'=>$stage,'state' =>$name, 'sales' => $count];
 		}
 		echo json_encode($data);
 	}
