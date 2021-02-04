@@ -49,3 +49,9 @@
         </div>
     </div>
 </div>
+<script>
+ function allcsv(){
+    var pd=document.getElementById("pid").value;	 
+    window.location.href='<?php echo base_url();?>lead/createcsv/'+pd;
+   }
+</script>
