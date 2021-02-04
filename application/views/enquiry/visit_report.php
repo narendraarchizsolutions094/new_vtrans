@@ -11,7 +11,6 @@ $("select").select2();
         <div class="panel-body">
             <form action="" method="post">
             <div class="row ">
-                <div class="col-md-1"></div>
                 <div class="col-md-3 ">
                     <label>From Date<i class="text-danger">*</i></label>                    
                     <?php
@@ -38,8 +37,18 @@ $("select").select2();
                         <?php }?>
                   </select>
                 </div>
+                <div class="col-md-3">
+                <label>Filter</label>
+                <select class="form-control" name="filter">
+                <option value="0">--Select--</option>
+                <option value="20">Difference 20%</option>
+                </select>
+                </div>
+                <div class="col-md-12">
                 <br>
-                <input type="submit" name="submit" value="Filter" class="btn btn-primary">
+
+                <input type="submit" name="submit" value="Filter" class="btn btn-primary" style="    float: right;">
+                </div>
             </div>
             </form>
         </div>
@@ -132,12 +141,12 @@ $("select").select2();
                               }
                              $dif= abs_diff($actualamt,$totalpay);
                                   $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
-                                    
                     $totalactualamt += $actualamt;
                     $totalpayamt += $totalpay;
                             ?>
                             <?php
-                            
+                            if($this->input->post('filter')==20){   if(abs($percentChange)>20){
+                                     }
                             ?>
                             <tr>
                                 <td><?php echo $sl; ?></td>
@@ -163,7 +172,9 @@ $("select").select2();
                             </tr>                                
                             <?php $sl++; ?>
                         <?php 
-                     
+                            if($this->input->post('filter')==20){
+                                    }
+                         } 
                     } ?> 
                     <?php } ?> 
                 </tbody>

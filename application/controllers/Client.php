@@ -1695,15 +1695,12 @@ public function view_editable_aggrement()
            $where .= " AND Date(visit_details.visit_start) >= '$from' AND Date(visit_details.visit_start) <= '$to'";
            if($employee=='0'){ 
            $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
-           }else{
-           $where .= " AND ( visit_details.created_by=$employee)";
-           }
+           }else{ $where .= " AND ( visit_details.created_by=$employee)";  }
            $data['reports'] = $this->db->where($where)
                                        ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
                                        ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
                                        ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
                                        ->get('visit_details')->result();	
-                                       $this->db->last_query();
           $content .= $this->load->view('enquiry/visit_report',$data,true);
           $data['content'] = $content;
 
