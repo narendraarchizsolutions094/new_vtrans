@@ -1843,8 +1843,10 @@ class Lead extends CI_Controller
         $this->db->select('*');
         $this->db->from('tbl_input');
         $this->db->where('page_id', $for);
+        $this->db->group_start();
         $this->db->or_where('process_id', $pd);
         $this->db->or_where('company_id', $this->session->userdata('companey_id'));
+        $this->db->group_start();
         $this->db->order_by('input_id', 'asc');
         $q = $this->db->get()->result();
         if (!empty($q)) {
