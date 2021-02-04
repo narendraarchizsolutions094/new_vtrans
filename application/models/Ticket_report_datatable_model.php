@@ -82,14 +82,17 @@ class Ticket_Report_datatable_model extends CI_Model {
                 $where .= " AND Date(tbl_ticket.coml_date) LIKE '%$to%'";
             }            
            if($createdby!=''){	            		
-    			$where .= " AND ( tbl_ticket.added_by =".$createdby."";
-                $where .= " OR tbl_ticket.assign_to  =".$assign."";  
+    			$where .= " AND ( tbl_ticket.added_by =".$createdby.")";
+                // $where .= " OR tbl_ticket.assign_to  =".$assign."";  
                 		  
             }else{
     			
                 $where .= " AND ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
     			$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))'; 
-    		}    
+            }  
+            if($assign!=''){	            		
+                $where .= " AND tbl_ticket.assign_to  =".$assign."";  
+            }  
             if($source!=''){
                $where .= " AND tbl_ticket.sourse =".$source."";  
             }
@@ -108,7 +111,9 @@ class Ticket_Report_datatable_model extends CI_Model {
                $where .= " AND tbl_ticket.process_id IN (".$process_id. ")";  
 
             }
-
+            if($problem!=''){
+                $where .= " AND tbl_ticket.issue =".$problem."";
+                     }
             // if($prodcntry!=''){
             //     $where .= " AND tbl_ticket.product IN (".implode(',', $prodcntry).')';  
             //  }
@@ -182,7 +187,7 @@ class Ticket_Report_datatable_model extends CI_Model {
         $stage = $this->input->post('stage');
         $sub_stage = $this->input->post('sub_stage');
         $ticket_status = $this->input->post('ticket_status');
-
+        $assigned_by=$this->input->post('assign_by');
         $companey_id = $this->session->userdata('companey_id');
         $group_by = '';
         $from_table    =   'tbl_ticket';
@@ -210,15 +215,17 @@ class Ticket_Report_datatable_model extends CI_Model {
                 $to = date('Y-m-d', strtotime($to));
                 $where .= " AND Date(tbl_ticket.coml_date) LIKE '%$to%'";
             }            
-           if($createdby!=''){	            		
-    			$where .= " AND ( tbl_ticket.added_by =".$createdby."";
-                $where .= " OR tbl_ticket.assign_to  =".$assign."";  
+            if($createdby!=''){	            		
+    			$where .= " AND ( tbl_ticket.added_by =".$createdby.")";
                 		  
             }else{
     			
                 $where .= " AND ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
     			$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))'; 
-    		}    
+            }  
+            if($assign!=''){	            		
+                $where .= " AND tbl_ticket.assign_to  =".$assign."";  
+            }    
             if($source!=''){
                $where .= " AND tbl_ticket.sourse =".$source."";  
             }
@@ -237,6 +244,14 @@ class Ticket_Report_datatable_model extends CI_Model {
             if($process_id!=''){
                $where .= " AND tbl_ticket.process_id IN (".$process_id. ")";  
                 }
+                if($assigned_by!=''){
+                $where .= " AND tbl_ticket.assigned_by =".$assigned_by."";
+                     }
+                     if($problem!=''){
+                        $where .= " AND tbl_ticket.issue =".$problem."";
+                             }
+                             
+                
             if($updated_from || $updated_to){
                 if ($updated_from && $updated_to) {
                     $updated_to = str_replace('/', '-', $updated_to);
@@ -266,6 +281,7 @@ class Ticket_Report_datatable_model extends CI_Model {
             $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_ticket.added_by','left');
             $this->db->join('tbl_admin as admin2','admin2.pk_i_admin_id=tbl_ticket.assign_to','left');      
             $this->db->join('lead_stage','lead_stage.stg_id=tbl_ticket.ticket_stage','left');        
+            $this->db->join('tbl_ticket_subject','tbl_ticket_subject.id=tbl_ticket.issue','left');        
             // $this->db->where('tbl_ticket',$comp_id);    
             $this->db->where($where);    
             

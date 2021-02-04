@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Ticketa</title>
+        <title>Ticket Data</title>
     <link href="<?= base_url() ?>assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link rel="icon" href="<?= base_url() ?>" sizes="32x32" />
@@ -32,6 +32,14 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
         <!-- jQuery  -->
     <script src="<?= base_url() ?>assets/js/jquery.min.js?v=1.0" type="text/javascript"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/cylinder.js"></script>
+<script src="https://code.highcharts.com/modules/funnel3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script type="text/javascript">
   window.getCookie = function(name) {
   var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -39,13 +47,76 @@
   else return false;
 }
 </script>
+<style>
+.card-graph{
+    min-height:250px;
+    max-height:400px;
+    border:1px solid;    
+    margin:2px;
+    box-shadow: 0px 0px 7px -1px;
+    border-radius: 6px;
+    border-color: transparent;
+    overflow: hidden;
+}
+@media (min-width: 992px){
+    .card-graph {
+        width:32%;
+    }
+}
+.hide_graph{
+   display:none !important;    
+ }
+</style>
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+
+</style>
+
 <div class="row">
+
 			<div class="col-md-12"> 
 					<div class="row">
+          <div class='' style=" margin-top:50px; padding: 10px;">
+                    <div class='row'>
+                        
+                        <div class='col-md-4 card-graph'>
+                            <div id='source_chart' >
+                            </div>
+                        </div>
+                        <div class='col-md-4 card-graph'>
+                            <div id='process_chart' >
+                            </div>                
+                        </div>
+                        <div class='col-md-4 card-graph'>
+                            <div id='stage_chart' >
+                            </div>                        
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-md-4 card-graph'>
+                            <div id='user_chart' >
+                            </div>
+                        </div>
+                        <div class='col-md-4 card-graph'>
+                            <div id='product_chart' >
+                            </div>
+                        </div>
+                        <div class='col-md-4 card-graph'>
+                            <div id='container' >
+                            </div>
+                        </div>
+                    </div>
+                </div>
 						<div class="">
 							<div class="panel-body">
- <?php 
-        $acolarr = array();
+ <?php
+
+
+$acolarr = array();
         $dacolarr = array();
         if(isset($_COOKIE["ticket_allowcols"])) {
           $showall = false;
@@ -134,6 +205,121 @@
 			</div>
 		</div>
 <!--------------------TABLE COLOUMN CONFIG----------------------------------------------->
+<script type="text/javascript">
+            generate_pie_graph('source_chart','Source Wise');
+            generate_pie_graph('process_chart','Process Wise');
+            generate_pie_graph('stage_chart','Stage Wise');
+            generate_pie_graph('user_chart','Employee Wise Assigned Data');    
+            generate_pie_graph('product_chart','Product/Service Wise');
+          var send_data=  <?php 
+             $filters['from_created']=$fromdate;
+             $filters['to_created']=$fromdate;
+             echo json_encode($filters);
+            ?>
+    function generate_pie_graph(elm,title){
+      // $form_data= serialize;
+        var url = "<?=base_url().'report/ticket_report_analitics/'?>"+elm;
+        $.ajax({
+            url: url,
+            type: 'POST',    
+             data: send_data,
+            success: function(result) {      
+                result = JSON.parse(result);
+
+                Highcharts.chart(elm, {            
+                    chart: {
+                        type: 'pie',
+                            options3d: {
+                                enabled: true,
+                                alpha: 45                        
+                            },
+                        margin: [0, 0, 0, 0],
+                        spacingTop: 0,
+                        spacingBottom: 0,
+                        spacingLeft: 0,
+                        spacingRight: 0
+                    },
+                    title: {
+                            text: ''
+                        },
+                    exporting: {
+                        buttons: {
+                            contextButton: {
+                                menuItems: ["viewFullscreen", "printChart", "downloadPNG"]
+                            }
+                        }
+                    },
+                    subtitle: {
+                        text: title
+                    },
+                    plotOptions: {            
+                        pie: {
+                            //size:'40%',
+                            // dataLabels: {
+                            //     enabled: false
+                            // },
+                            innerSize: 50,
+                            depth: 45
+                        }
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Count',                
+                        data: result
+                    }]
+                });
+            }
+        });
+    }
+    // function prgenerate_pie_graph(elm,title){
+      // $form_data= serialize;
+        var url = "<?=base_url().'report/prticket_report_analitics/'?>";
+        $.ajax({
+            url: url,
+            type: 'POST',    
+             data: send_data,
+            success: function(result) {      
+                result = JSON.parse(result);
+
+                Highcharts.chart('container', {
+                  chart: {
+                        type: 'pie',
+                            options3d: {
+                                enabled: true,
+                                alpha: 45                        
+                            },
+                        margin: [0, 0, 0, 0],
+                        spacingTop: 0,
+                        spacingBottom: 0,
+                        spacingLeft: 0,
+                        spacingRight: 0
+                    },
+    title: {
+        text: 'Priority Wise'
+    },
+    plotOptions: {
+      pie: {
+                            //size:'40%',
+                            // dataLabels: {
+                            //     enabled: false
+                            // },
+                            innerSize: 50,
+                            depth: 45
+                        }
+    },
+    series: [{
+        name:'Priority Wise',
+        colorByPoint: true,
+        data:result
+    }]
+});
+            }
+        });
+    // }
+ 
+</script>
 <script>
   function select_all(){
     var select_all = document.getElementById("selectall"); //select all checkbox

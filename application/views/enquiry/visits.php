@@ -211,8 +211,6 @@ $(document).ready(function(){
               "type": "POST",
               "data":function(d){
                       var obj = $(".v_filter:input").serializeArray();
-
-                     
                      d.from_date = obj[0]['value'];
                      d.from_time = '';//obj[1]["value"];
                      d.enquiry_id =obj[2]["value"];
@@ -349,7 +347,7 @@ $(document).delegate('.visit-delete', 'click', function() {
            <label>Next Visit Location</label>
              <input type="text" name="next_location" class="form-control">
           </div>
-
+                  
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
                <input type="submit" name="submit_only" class="btn btn-primary" value="Save">

@@ -65,12 +65,13 @@ class Visits extends REST_Controller {
     	$id = $this->input->post('visit_id');
 
     	$value = $this->db->where('id',$id)->get('tbl_visit')->row();
-
+    	$tvalue = $this->db->where('visit_id',$id)->get('visit_details')->row();
+      $data=['visit'=>$value,'travelData'=>$tvalue];
     	if(!empty($value))
     	{
     		 $this->set_response([
                 'status' => TRUE,
-                'data' =>$value
+                'data' =>$data
                  ], REST_Controller::HTTP_OK);
     	}
     	else
@@ -125,7 +126,6 @@ class Visits extends REST_Controller {
   		  }
 
     }
-
     public function save_visit_post()
     {
     	$visit_id = $this->input->post('visit_id');
@@ -194,6 +194,89 @@ class Visits extends REST_Controller {
   		  }
 
     }
+    public function visit_start_post()
+    {
+      $user_id= $this->input->post('user_id');
+      $company_id = $this->input->post('company_id');
+      $visit_id = $this->input->post('visit_id');
+      $vd_id = $this->input->post('vd_id');
+      $status = $this->input->post('status');
+      $res= array();
+        $total = $this->db->where(array('id'=>$visit_id))->get('tbl_visit');
+         //insert status
+           if($total->num_rows()==1){
+              if($status==1){
+              $latitude   = (float)$this->input->post('latitude');
+              $longitude  = (float)$this->input->post('longitude');
+                 //only waypoints
+              $new_waypoint = array($latitude,$longitude);
+              $data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'visit_status'=>1,'visit_start'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>json_encode(array($new_waypoint))];
+              $this->db->insert('visit_details',$data);
+              $insertid=$this->db->insert_id();
+              $res=['message'=>'Travel Started','vd_id'=>$insertid];
+               $this->set_response([
+                  'status' => true,
+                  'data' =>$res,
+               ], REST_Controller::HTTP_OK);
+              }elseif($status==2){
+               $visit_details = $this->db->where(array('id'=>$vd_id))->get('visit_details')->row();
+               $latitude   = (float)$this->input->post('latitude');
+               $longitude  = (float)$this->input->post('longitude');
+                 //only waypoints
+                 $new_waypoint = array($latitude,$longitude);
+                 if(!empty($visit_details)){
+                   $waypoints  = json_decode($visit_details->way_points);   
+                   array_push($waypoints, $new_waypoint);
+                   $data=['visit_status'=>2,'visit_end'=>date('Y-m-d H:i:s'),'way_points'=>json_encode($waypoints)];
+                  $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
+                  $res=['message'=>'Travel Stoped'];
+                  $this->set_response([
+                     'status' => true,
+                     'data' =>$res,
+                  ], REST_Controller::HTTP_OK);
+                 }
+              }elseif($status==3){
+               $data=['visit_status'=>3,'start_time'=>date('Y-m-d H:i:s')];
+               $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
+               $res=['message'=>'Meeting Started'];
+               $this->set_response([
+                  'status' => true,
+                  'data' =>$res,
+               ], REST_Controller::HTTP_OK);
+              }elseif($status==4){
+               $data=['visit_status'=>4,'end_time'=>date('Y-m-d H:i:s')];
+               $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
+               $res=['message'=>'Meeting Ended'];
+               $this->set_response([
+                  'status' => true,
+                  'data' =>$res,
+               ], REST_Controller::HTTP_OK);
+              }elseif($status==5){
+               $visit_details = $this->db->where(array('id'=>$vd_id))->get('visit_details')->row();
+               $latitude   = (float)$this->input->post('latitude');
+               $longitude  = (float)$this->input->post('longitude');
+                 //only waypoints
+                 $new_waypoint = array($latitude,$longitude);
+                 if(!empty($visit_details)){
+                   $waypoints  = json_decode($visit_details->way_points);        
+                   $finalwaypoints= array_push($waypoints, $new_waypoint);
+                   $data=['way_points'=>json_encode($finalwaypoints)];
+                   $this->db->where('id',$vd_id);
+                   $this->db->update('visit_details',$data);
+                   $this->set_response([
+                     'status' => true,
+                     'data' =>'',
+                  ], REST_Controller::HTTP_OK);
+                 } 
+               }
+           }else{
+            $this->set_response([
+               'status' => false,
+               'msg' =>'not found'
+               ], REST_Controller::HTTP_OK);
+           }
+    }
+  
 
     public function for_data_list_post()
     {
