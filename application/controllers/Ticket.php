@@ -2929,6 +2929,7 @@ class Ticket extends CI_Controller
 				'remove_spaces' => TRUE,
 				'file_name' => $filename
 			);
+			print_r($config);
 			$this->load->library('upload', $config);
 			$this->upload->initialize($config);			
 			if ($this->upload->do_upload('img_file')) {
