@@ -2920,7 +2920,98 @@ class Ticket extends CI_Controller
 		}
 
 		public function upload(){
-			echo "<pre>";
-			print_r($_FILES);
+			$this->load->model('form_model');		
+			ini_set('max_execution_time', '-1');
+			$filename = "ticket_" . date('d-m-Y_H_i_s');
+			$config = array(
+				'upload_path' => $_SERVER["DOCUMENT_ROOT"] . "/assets/ticket",
+				'allowed_types' => "text/plain|text/csv|csv",
+				'remove_spaces' => TRUE,
+				'file_name' => $filename
+			);
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);			
+			if ($this->upload->do_upload('img_file')) {
+				$upload = $this->upload->data();
+				$filePath = $config['upload_path'] . '/' . $upload['file_name'];
+				$file = $filePath;
+				$handle = fopen($file, "r");
+				$c = 0;
+				$count = 0;
+				$record = 0;
+				$failed_record = 0;
+				$i = 0;
+				$dat_array = array();
+				while (($filesop = fgetcsv($handle, 2000, ",")) !== false) {
+					$dat_array = array();
+					$count++;
+					if ($count == 1) {
+					} else {						
+						$tracking_no	=	filesop[0];
+						if($tracking_no){
+							$ticket_data = array(											
+												'tracking_no'=>  $tracking_no,
+												'process_id' =>  199,
+												'company'	 =>	 65,
+												'added_by'	 =>  $this->session->user_id
+											);							
+							$this->db->insert('tbl_ticket',$ticket_data);
+							$ticket_id	=	$this->db->insert_id();
+							$tckno = "TCK".$ticket_id.strtotime(date("y-m-d h:i:s"));
+							
+							$this->db->where('id',$ticket_id);
+							$this->db->set('ticketno',$tckno);
+							$this->db->update('tbl_ticket');
+
+							$insarr = array(
+								"tck_id" 	=> $ticket_id,
+								"parent" 	=> 0,
+								'comp_id'	=> $this->session->companey_id,
+								"subj"   	=> "Ticked Created",
+								"msg"    	=> '',
+								"attacment" => "",
+								"status"  	=> 0,
+								"send_date" =>date("Y-m-d H:i:s"),
+								"client"   	=>'',
+								"added_by" 	=> $this->session->user_id
+							);
+							$this->db->insert("tbl_ticket_conv", $insarr);
+
+							$colms = $this->form_model->get_field_by_process(199,2);
+							if(!empty($colms)){
+								$column = 1;
+								foreach($colms as $key=>$value){
+									$fldval	=	$filesop[$column];
+									$extra = array(
+										'enq_no' => $tckno,
+										'parent' => $ticket_id,
+										'input'  => $value->input_id,
+										'fvalue' => $fldval,
+										'cmp_no' => $this->session->companey_id,
+										'usrno'  => $this->session->user_id
+									);
+									$column++;
+									$this->db->insert('ticket_dynamic_data',$extra);
+								}
+							}
+						}
+					}
+					$i++;
+				}
+				if ($record > 0) {
+					$res = 'Record(' . $record . ') inserted';
+				} else {
+					$res = 'No Unique record Found !';
+				}
+				if ($failed_record) {
+					$res .= ' (' . $failed_record . ') duplicate record ';
+				}
+				unlink($filePath);
+				$this->session->set_flashdata('message', "File Uploaded successfully." . $res);
+				redirect(base_url() . 'ticket/upload_tickets');
+			} else {
+				$this->session->set_flashdata('exception', $this->upload->display_errors());
+				redirect(base_url() . 'ticket/upload_tickets');
+			}
 		}
 }
