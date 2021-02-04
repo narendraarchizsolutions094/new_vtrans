@@ -262,253 +262,7 @@ $(document).ready(function() {
                 var chart = am4core.create("chartdiv_substage", am4charts.XYChart);
 
                 // Add data
-                chart.data = [
-                {
-                    "region": "Central",
-                    "state": "North Dakota",
-                    "sales": 920
-                },
-                {
-                    "region": "Central",
-                    "state": "South Dakota",
-                    "sales": 1317
-                },
-                {
-                    "region": "Central",
-                    "state": "Kansas",
-                    "sales": 2916
-                },
-                {
-                    "region": "Central",
-                    "state": "Iowa",
-                    "sales": 4577
-                },
-                {
-                    "region": "Central",
-                    "state": "Nebraska",
-                    "sales": 7464
-                },
-                {
-                    "region": "Central",
-                    "state": "Oklahoma",
-                    "sales": 19686
-                },
-                {
-                    "region": "Central",
-                    "state": "Missouri",
-                    "sales": 22207
-                },
-                {
-                    "region": "Central",
-                    "state": "Minnesota",
-                    "sales": 29865
-                },
-                {
-                    "region": "Central",
-                    "state": "Wisconsin",
-                    "sales": 32125
-                },
-                {
-                    "region": "Central",
-                    "state": "Indiana",
-                    "sales": 53549
-                },
-                {
-                    "region": "Central",
-                    "state": "Michigan",
-                    "sales": 76281
-                },
-                {
-                    "region": "Central",
-                    "state": "Illinois",
-                    "sales": 80162
-                },
-                {
-                    "region": "Central",
-                    "state": "Texas",
-                    "sales": 170187
-                },
-                {
-                    "region": "East",
-                    "state": "West Virginia",
-                    "sales": 1209
-                },
-                {
-                    "region": "East",
-                    "state": "Maine",
-                    "sales": 1270
-                },
-                {
-                    "region": "East",
-                    "state": "District of Columbia",
-                    "sales": 2866
-                },
-                {
-                    "region": "East",
-                    "state": "New Hampshire",
-                    "sales": 7294
-                },
-                {
-                    "region": "East",
-                    "state": "Vermont",
-                    "sales": 8929
-                },
-                {
-                    "region": "East",
-                    "state": "Connecticut",
-                    "sales": 13386
-                },
-                {
-                    "region": "East",
-                    "state": "Rhode Island",
-                    "sales": 22629
-                },
-                {
-                    "region": "East",
-                    "state": "Maryland",
-                    "sales": 23707
-                },
-                {
-                    "region": "East",
-                    "state": "Delaware",
-                    "sales": 27453
-                },
-                {
-                    "region": "East",
-                    "state": "Massachusetts",
-                    "sales": 28639
-                },
-                {
-                    "region": "East",
-                    "state": "New Jersey",
-                    "sales": 35763
-                },
-                {
-                    "region": "East",
-                    "state": "Ohio",
-                    "sales": 78253
-                },
-                {
-                    "region": "East",
-                    "state": "Pennsylvania",
-                    "sales": 116522
-                },
-                {
-                    "region": "East",
-                    "state": "New York",
-                    "sales": 310914
-                },
-                {
-                    "region": "South",
-                    "state": "South Carolina",
-                    "sales": 8483
-                },
-                {
-                    "region": "South",
-                    "state": "Louisiana",
-                    "sales": 9219
-                },
-                {
-                    "region": "South",
-                    "state": "Mississippi",
-                    "sales": 10772
-                },
-                {
-                    "region": "South",
-                    "state": "Arkansas",
-                    "sales": 11678
-                },
-                {
-                    "region": "South",
-                    "state": "Alabama",
-                    "sales": 19511
-                },
-                {
-                    "region": "South",
-                    "state": "Tennessee",
-                    "sales": 30662
-                },
-                {
-                    "region": "South",
-                    "state": "Kentucky",
-                    "sales": 36598
-                },
-                {
-                    "region": "South",
-                    "state": "Georgia",
-                    "sales": 49103
-                },
-                {
-                    "region": "South",
-                    "state": "North Carolina",
-                    "sales": 55604
-                },
-                {
-                    "region": "South",
-                    "state": "Virginia",
-                    "sales": 70641
-                },
-                {
-                    "region": "South",
-                    "state": "Florida",
-                    "sales": 89479
-                },
-                {
-                    "region": "West",
-                    "state": "Wyoming",
-                    "sales": 1603
-                },
-                {
-                    "region": "West",
-                    "state": "Idaho",
-                    "sales": 4380
-                },
-                {
-                    "region": "West",
-                    "state": "New Mexico",
-                    "sales": 4779
-                },
-                {
-                    "region": "West",
-                    "state": "Montana",
-                    "sales": 5589
-                },
-                {
-                    "region": "West",
-                    "state": "Utah",
-                    "sales": 11223
-                },
-                {
-                    "region": "West",
-                    "state": "Nevada",
-                    "sales": 16729
-                },
-                {
-                    "region": "West",
-                    "state": "Oregon",
-                    "sales": 17431
-                },
-                {
-                    "region": "West",
-                    "state": "Colorado",
-                    "sales": 32110
-                },
-                {
-                    "region": "West",
-                    "state": "Arizona",
-                    "sales": 35283
-                },
-                {
-                    "region": "West",
-                    "state": "Washington",
-                    "sales": 138656
-                },
-                {
-                    "region": "West",
-                    "state": "California",
-                    "sales": 457731
-                }
-                ];
+                chart.data = response;
 
                 // Create axes
                 var yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
@@ -521,26 +275,13 @@ $(document).ready(function() {
 
                 // Create series
                 var series = chart.series.push(new am4charts.ColumnSeries());
-                series.dataFields.valueX = "sales";
-                series.dataFields.categoryY = "state";
+                series.dataFields.valueX = "value";
+                series.dataFields.categoryY = "name";
                 series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
                 series.columns.template.strokeWidth = 0;
                 series.columns.template.adapter.add("fill", function(fill, target) {
-                if (target.dataItem) {
-                    switch(target.dataItem.dataContext.region) {
-                    case "Central":
-                        return chart.colors.getIndex(0);
-                        break;
-                    case "East":
-                        return chart.colors.getIndex(1);
-                        break;
-                    case "South":
-                        return chart.colors.getIndex(2);
-                        break;
-                    case "West":
-                        return chart.colors.getIndex(3);
-                        break;
-                    }
+                if (target.dataItem) {                    
+                    return chart.colors.getIndex(0);
                 }
                 return fill;
                 });
@@ -585,10 +326,10 @@ $(document).ready(function() {
                 legendData.push({name:label, fill:color});
                 }
 
-                addRange("Central", "Texas", "North Dakota", chart.colors.getIndex(0));
-                addRange("East", "New York", "West Virginia", chart.colors.getIndex(1));
-                addRange("South", "Florida", "South Carolina", chart.colors.getIndex(2));
-                addRange("West", "California", "Wyoming", chart.colors.getIndex(3));
+                // addRange("Central", "Texas", "North Dakota", chart.colors.getIndex(0));
+                // addRange("East", "New York", "West Virginia", chart.colors.getIndex(1));
+                // addRange("South", "Florida", "South Carolina", chart.colors.getIndex(2));
+                // addRange("West", "California", "Wyoming", chart.colors.getIndex(3));
 
                 chart.cursor = new am4charts.XYCursor();
 
@@ -608,12 +349,12 @@ $(document).ready(function() {
                 if(event.target.isActive){
                     axisBreak.animate({property:"breakSize", to:0}, 1000, am4core.ease.cubicOut);
                     yAxis.dataItems.each(function(dataItem){
-                    if(dataItem.dataContext.region == name){
+                    if(dataItem.dataContext.stage == name){
                         dataItem.hide(1000, 500);
                     }
                     })
                     series.dataItems.each(function(dataItem){
-                    if(dataItem.dataContext.region == name){
+                    if(dataItem.dataContext.stage == name){
                         dataItem.hide(1000, 0, 0, ["valueX"]);
                     }
                     })    
@@ -621,13 +362,13 @@ $(document).ready(function() {
                 else{
                     axisBreak.animate({property:"breakSize", to:1}, 1000, am4core.ease.cubicOut);
                     yAxis.dataItems.each(function(dataItem){
-                    if(dataItem.dataContext.region == name){
+                    if(dataItem.dataContext.stage == name){
                         dataItem.show(1000);
                     }
                     })  
 
                     series.dataItems.each(function(dataItem){
-                    if(dataItem.dataContext.region == name){
+                    if(dataItem.dataContext.stage == name){
                         dataItem.show(1000, 0, ["valueX"]);
                     }
                     })        
