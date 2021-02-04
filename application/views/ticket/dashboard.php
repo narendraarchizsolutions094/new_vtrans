@@ -266,7 +266,7 @@ $(document).ready(function() {
 
                 // Create axes
                 var yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-                yAxis.dataFields.category = "stage";
+                yAxis.dataFields.category = "state";
                 yAxis.renderer.grid.template.location = 0;
                 yAxis.renderer.labels.template.fontSize = 10;
                 yAxis.renderer.minGridDistance = 10;
@@ -275,16 +275,13 @@ $(document).ready(function() {
 
                 // Create series
                 var series = chart.series.push(new am4charts.ColumnSeries());
-                series.dataFields.valueX = "name";
-                series.dataFields.categoryY = "value";
+                series.dataFields.valueX = "sales";
+                series.dataFields.categoryY = "state";
                 series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
                 series.columns.template.strokeWidth = 0;
                 series.columns.template.adapter.add("fill", function(fill, target) {
-                if (target.dataItem) {
-                    switch(target.dataItem.dataContext.stage) {
-                    case 1:
-                        return chart.colors.getIndex(0);
-                    }                 
+                if (target.dataItem) {                   
+                    return chart.colors.getIndex(3);                   
                 }
                 return fill;
                 });

@@ -2249,9 +2249,9 @@ class Ticket extends CI_Controller
 		foreach ($subsource as $key => $value) {
 			$count = $this->Ticket_Model->countSubsource($value->id,$fromdate,$todate);
 
-			$name = substr($value->description,0,15); 		
-			$stage = substr($value->lead_stage_name,0,15); 
-			$data[] = ['stage'=>$stage,'name' =>$name, 'value' => $count];
+			$name = substr($value->description,0,12); 		
+			$stage = substr($value->lead_stage_name,0,12); 
+			$data[] = ['region'=>$stage,'state' =>$name, 'sales' => $count];
 		}
 		echo json_encode($data);
 	}
