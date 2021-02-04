@@ -3009,10 +3009,10 @@ class Ticket extends CI_Controller
 				}
 				unlink($filePath);
 				$this->session->set_flashdata('message', "File Uploaded successfully." . $res);
-				redirect(base_url() . 'ticket/upload_tickets');
+				//redirect(base_url() . 'ticket/upload_tickets');
 			} else {
 				$this->session->set_flashdata('exception', $this->upload->display_errors());
-				redirect(base_url() . 'ticket/upload_tickets');
+				//redirect(base_url() . 'ticket/upload_tickets');
 			}
 		}
 }
