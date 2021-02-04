@@ -589,7 +589,7 @@ $(document).ready(function() {
                 // Themes end
 
                 // Create chart instance
-                var chart = am4core.create("chartdiv", am4charts.XYChart);
+                var chart = am4core.create("chartdiv5", am4charts.XYChart);
                 chart.scrollbarX = new am4core.Scrollbar();
 
                 // Add data
