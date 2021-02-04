@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="panel panel-default pt-2">
+        <div class="panel-heading no-print"
+            style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="<?=base_url('ticket/index')?>" class="btn btn-success"> <i class="fa fa-list"></i> Ticket
+                        List
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 panel-default panel-body" style="border:1px solid #f7f7f7">
+                <?php echo form_open_multipart(base_url("ticket/upload"),array('id'=>'ticket-upload-form')); ?>
+                    <div class="row">                        
+                        <div class="form-group col-sm-12">
+                            <label>Upload Enquiry</label>
+                            <input type="file" name="img_file" class="form-control" accept=".csv">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label> For Download sample Please Select Process <i class="text-danger"></i></label>
+                        <select name="product_id" id="pid" onchange="allcsv()" class="form-control">
+                            <option value="">Select</option>
+                            <?php 
+                            if(!empty($process)){
+                                foreach($process as $proc){?>
+                                <option value="<?=$proc->sb_id ?>"><?=$proc->product_name ?></option>
+                                <?php 
+                                } 
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-success" type="submit" id="assign"><?php echo display('save'); ?></button>
+                        <img src='<?= base_url('assets/images/loader.gif'); ?>' width='60px' height='60px' id="loader"
+                            style="display: none;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"                data-dismiss="modal"><?php echo display('close'); ?></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

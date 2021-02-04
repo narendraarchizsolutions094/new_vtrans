@@ -2911,4 +2911,15 @@ class Ticket extends CI_Controller
 			if(!empty($this->session->userdata()))
 				print_r($this->session->userdata());
 		}
+		public function upload_tickets(){
+			$data['title'] = "Upload ticket";
+			$data['process'] = $this->dash_model->get_user_product_list();
+			$data['content'] = $this->load->view('ticket/upload_ticket',$data,true);
+			$this->load->view('layout/main_wrapper', $data);
+		}
+
+		public function upload(){
+			echo "<pre>";
+			print_r($_FILES);
+		}
 }
