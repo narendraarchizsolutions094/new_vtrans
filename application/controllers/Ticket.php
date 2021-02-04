@@ -2243,10 +2243,19 @@ class Ticket extends CI_Controller
 	    $todate=$this->uri->segment(4);
 		//substage wise 
 		$data=[];
+		$this->load->helper('text');
+
 		$subsource = $this->Ticket_Model->subsource();
 		foreach ($subsource as $key => $value) {
 			$count = $this->Ticket_Model->countSubsource($value->id,$fromdate,$todate);
-			$data[] = ['name' => $value->description, 'value' => $count];
+
+			$name = character_limiter($value->description,12); 
+			$name = html_entity_decode($name);
+
+			$stage = character_limiter($value->lead_stage_name,12); 
+			$stage = html_entity_decode($stage);
+
+			$data[] = ['stage'=>$stage,'name' =>$name, 'value' => $count];
 		}
 		echo json_encode($data);
 	}
@@ -2979,8 +2988,14 @@ class Ticket extends CI_Controller
 								"added_by" 	=> $this->session->user_id
 							);
 							$this->db->insert("tbl_ticket_conv", $insarr);
-
-							$colms = $this->form_model->get_field_by_process(199,2);
+			
+							$this->db->select('*');
+							$this->db->from('tbl_input');
+							$this->db->where('page_id', 2);        
+							$this->db->where('status', 1);        
+							$this->db->where("(process_id=199 AND company_id=65)");                
+							$this->db->order_by('form_id', 'asc');
+							$colms = $this->db->get()->result_array();  		
 							if(!empty($colms)){
 								$column = 4;
 								foreach($colms as $key=>$value){
