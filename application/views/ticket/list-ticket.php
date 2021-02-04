@@ -253,7 +253,7 @@ input[name=lead_stages]{
                           <?php
                           if(!empty($this->session->process) && in_array('199',$this->session->process)){
                           ?>
-                            <a class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo 'Import FTL FeedBack'; ?></a>
+                            <a href="<?=base_url();?>ticket/upload_tickets" class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo 'Import FTL FeedBack'; ?></a>
                           <?php
                           }
                         ?>
