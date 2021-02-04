@@ -1846,7 +1846,7 @@ class Lead extends CI_Controller
         $this->db->group_start();
         $this->db->or_where('process_id', $pd);
         $this->db->or_where('company_id', $this->session->userdata('companey_id'));
-        $this->db->group_start();
+        $this->db->group_end();
         $this->db->order_by('input_id', 'asc');
         $q = $this->db->get()->result();
         if (!empty($q)) {
