@@ -2929,7 +2929,6 @@ class Ticket extends CI_Controller
 				'remove_spaces' => TRUE,
 				'file_name' => $filename
 			);
-			print_r($config);
 			$this->load->library('upload', $config);
 			$this->upload->initialize($config);			
 			if ($this->upload->do_upload('img_file')) {
@@ -3009,10 +3008,10 @@ class Ticket extends CI_Controller
 				}
 				unlink($filePath);
 				$this->session->set_flashdata('message', "File Uploaded successfully." . $res);
-				//redirect(base_url() . 'ticket/upload_tickets');
+				redirect(base_url() . 'ticket/upload_tickets');
 			} else {
 				$this->session->set_flashdata('exception', $this->upload->display_errors());
-				//redirect(base_url() . 'ticket/upload_tickets');
+				redirect(base_url() . 'ticket/upload_tickets');
 			}
 		}
 }
