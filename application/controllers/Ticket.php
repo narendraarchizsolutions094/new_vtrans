@@ -2946,7 +2946,7 @@ class Ticket extends CI_Controller
 					$dat_array = array();
 					$count++;
 					if ($count == 1) {
-					} else if($count >= 2) {						
+					} else if($count > 2) {						
 						$tracking_no	=	$filesop[0];
 						if($tracking_no){
 							$ticket_data = array(											
@@ -2962,7 +2962,7 @@ class Ticket extends CI_Controller
 							$this->db->where('id',$ticket_id);
 							$this->db->set('ticketno',$tckno);
 							$this->db->update('tbl_ticket');
-
+							$record++;
 							$insarr = array(
 								"tck_id" 	=> $ticket_id,
 								"parent" 	=> 0,
