@@ -266,7 +266,7 @@ $(document).ready(function() {
 
                 // Create axes
                 var yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-                yAxis.dataFields.category = "state";
+                yAxis.dataFields.category = "stage";
                 yAxis.renderer.grid.template.location = 0;
                 yAxis.renderer.labels.template.fontSize = 10;
                 yAxis.renderer.minGridDistance = 10;
