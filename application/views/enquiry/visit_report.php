@@ -85,6 +85,29 @@ $("select").select2();
                         <?php 
                          $totalactualamt=0;
                          $totalpayamt =0;
+                         function twopoints_on_earth($latitudeFrom, $longitudeFrom,$latitudeTo,$longitudeTo) 
+                         { 
+                         $long1 = deg2rad($longitudeFrom); 
+                         $long2 = deg2rad($longitudeTo); 
+                         $lat1 = deg2rad($latitudeFrom); 
+                         $lat2 = deg2rad($latitudeTo); 
+                         //Haversine Formula 
+                         $dlong = $long2 - $long1; 
+                         $dlati = $lat2 - $lat1; 
+                         $val = pow(sin($dlati/2),2)+cos($lat1)*cos($lat2)*pow(sin($dlong/2),2); 
+                         $res = 2 * asin(sqrt($val)); 
+                         $radius = 3958.756; 
+                         return ($res*$radius); 
+                         } 
+                         function points_on_earth($p1,$p2,$l1,$l2)
+                         {  
+                             $inmiles=twopoints_on_earth( $p1, $p2, $l1,  $l2); 
+                              return  $inmiles * 1.60934;
+                          }
+                          function abs_diff($v1, $v2) {
+                            $diff = $v1 - $v2;
+                            return $diff < 0 ? (-1) * $diff : $diff;
+                        }
                         foreach ($reports as $report) {
                           
                             
@@ -98,20 +121,7 @@ $("select").select2();
                                $lastKey = key(array_slice($newpoints, -1, 1, true));
                               $firstpoint=$newpoints[0];
                               $secondpoint=$newpoints[$lastKey];
-                              function twopoints_on_earth($latitudeFrom, $longitudeFrom,$latitudeTo,$longitudeTo) 
-                              { 
-                              $long1 = deg2rad($longitudeFrom); 
-                              $long2 = deg2rad($longitudeTo); 
-                              $lat1 = deg2rad($latitudeFrom); 
-                              $lat2 = deg2rad($latitudeTo); 
-                              //Haversine Formula 
-                              $dlong = $long2 - $long1; 
-                              $dlati = $lat2 - $lat1; 
-                              $val = pow(sin($dlati/2),2)+cos($lat1)*cos($lat2)*pow(sin($dlong/2),2); 
-                              $res = 2 * asin(sqrt($val)); 
-                              $radius = 3958.756; 
-                              return ($res*$radius); 
-                              } 
+                             
                               // latitude and longitude of Two Points 
                               $latitudeFrom = $firstpoint[0]; 
                               $longitudeFrom =  $firstpoint[1];
@@ -123,10 +133,7 @@ $("select").select2();
                               $km=$inmiles* 1.60934;
                               $x=$waypoints;
                               $sum=0;
-                                   function points_on_earth($p1,$p2,$l1,$l2)
-                                  {  $inmiles=twopoints_on_earth( $p1, $p2, $l1,  $l2); 
-                                       return  $inmiles * 1.60934;
-                                   }
+                                 
                                for ($i=0; $i <count($x)-2; $i++) { 
                                    $sum +=  points_on_earth($x[$i][0],$x[$i][1],$x[$i+1][0],$x[$i+1][1]);
                                 }
@@ -135,14 +142,17 @@ $("select").select2();
                                 $totalpay=$kmamount*$km;
                                 $actualamt=$sum*$kmamount;
                                 
-                              function abs_diff($v1, $v2) {
-                                  $diff = $v1 - $v2;
-                                  return $diff < 0 ? (-1) * $diff : $diff;
-                              }
+                                $percentChange=0;
+                             if($actualamt > 0 && $totalpay > 0){
                              $dif= abs_diff($actualamt,$totalpay);
                                   $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
+                                    }else{
+                                            $actualamt=0;
+                                            $totalpay=0;
+                                    }
                     $totalactualamt += $actualamt;
                     $totalpayamt += $totalpay;
+                    
                             ?>
                             <?php
                             if($this->input->post('filter')==20){   if(abs($percentChange)>20){
