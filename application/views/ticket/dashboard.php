@@ -608,7 +608,10 @@ $(document).ready(function() {
                 var series = chart.series.push(new am4charts.ConeSeries());
                 series.dataFields.valueY = "value";
                 series.dataFields.categoryX = "name";
-                series.tooltipText = "[{name}: bold]{value}[/]";
+                series.tooltipText = "[{name}: bold]{valueY}[/]";
+//                columnSeries.columns.template.tooltipText = "{name}: {categoryX}: {valueY}";
+                series.columns.template.tooltipText = "{name}: {categoryX}: {valueY}";
+
                 var columnTemplate = series.columns.template;
                 columnTemplate.adapter.add("fill", function(fill, target) {
                     return chart.colors.getIndex(target.dataItem.index);
