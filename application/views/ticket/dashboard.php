@@ -585,7 +585,7 @@ $(document).ready(function() {
             am4core.ready(function() { // Themes begin
                 am4core.useTheme(am4themes_animated);
                 // Themes end                // Create chart instance
-                var chart = am4core.create("chartdiv5", am4charts.XYChart3D);
+                var chart = am4core.create("chartdiv5", am4charts.XYChart);
                 chart.paddingBottom = 30;
                 chart.angle = 35; // Add data
                 chart.data = response; // Create axes
