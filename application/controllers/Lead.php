@@ -1858,7 +1858,6 @@ class Lead extends CI_Controller
             foreach ($q as $value) {
                 $daynamic[] = $value->input_label;
             }
-            print_r($daynamic);
             $allcoulmn = array_merge($static, $daynamic);
             // send the column headers
             fputcsv($file, $allcoulmn);
