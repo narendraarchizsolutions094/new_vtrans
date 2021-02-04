@@ -37,27 +37,31 @@ $("select").select2();
                         <?php }?>
                   </select>
                 </div>
-                <div class="col-md-3">
-                <label>Filter</label>
-                <select class="form-control" name="filter">
-                <option value="0">--Select--</option>
-                <option value="20">Difference 20%</option>
-                </select>
-                </div>
-                <div class="col-md-12">
+                
                 <br>
 
-                <input type="submit" name="submit" value="Filter" class="btn btn-primary" style="    float: right;">
-                </div>
+                <input type="submit" name="submit" value="Filter" class="btn btn-primary" >
             </div>
             </form>
         </div>
     </div>
 </div>
+<hr>
 <div class="row">
+
     <!--  table area -->
         <div class="panel-body">
-            <h2></h2>
+        <div class="col-md-12">
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+                <label>Minimum Differnce</label>
+            <input type="text" class="form-control" id="min" name="min">
+        </div>
+        <div class="col-md-3">
+        <label>Maximum Differnce</label>
+            <input type="text" class="form-control" id="max" name="max">
+        </div>
+            </div>
             <table class="datatable table table-striped table-bordered" cellspacing="0" width="100%" id="datatable">
                 <thead>
                     <tr>
@@ -154,11 +158,8 @@ $("select").select2();
                     $totalpayamt += $totalpay;
                     
                             ?>
-                            <?php
-                            if($this->input->post('filter')==20){   if(abs($percentChange)>20){
-                                     }
-                            ?>
-                            <tr>
+                        
+                            <tr >
                                 <td><?php echo $sl; ?></td>
                                 <td><?php echo $report->s_display_name;echo '&nbsp;';echo $report->last_name; ?></td>
                                 <td><?php echo $report->visit_start;?></td>                                     
@@ -177,16 +178,12 @@ $("select").select2();
                                     if(abs($percentChange)>20){
                                     echo  'border:1px solid red;background-color: #eae0e0;';
                                     }
-                                       ?>"><?php if(!empty($percentChange)){echo round($percentChange,0).' % ';}else{ echo '0'.' %';}  ?>(<?= round($dif,0) ?>)</td>
+                                       ?>"><?php if(!empty($percentChange)){echo abs(round($percentChange,0));}else{ echo'0'; }  ?></td>
                                 <td><a class="btn btn-primary btn-sm" target="_blank" href="<?=base_url().'visits/visit_details/'.$report->visit_id ?>">View</a></td>
                             </tr>                                
                             <?php $sl++; ?>
-                        <?php 
-                            if($this->input->post('filter')==20){
-                                    }
-                         } 
-                    } ?> 
-                    <?php } ?> 
+                        
+                    <?php }  }?> 
                 </tbody>
             </table>  <!-- /.table-responsive -->
             <div class="col-md-12">
@@ -198,7 +195,30 @@ $("select").select2();
 
 <script>
 $(document).ready(function(){
+/* Custom filtering function which will search data in column four between two values */
+$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var min = parseInt( $('#min').val(), 10 );
+        var max = parseInt( $('#max').val(), 10 );
+        var age = parseFloat( data[10] ) || 0; // use data for the age column
+ 
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && age <= max ) ||
+             ( min <= age   && isNaN( max ) ) ||
+             ( min <= age   && age <= max ) )
+        {
+            return true;
+        }
+        return false;
+    }
+);
+$(document).ready(function() {
+    var table = $('#datatable').DataTable();
+     
+    // Event listener to the two range filtering inputs to redraw on input
+    $('#min, #max').keyup( function() {
+        table.draw();
+    } );
+} );
 
-$('#datatable').DataTable({ 
-})
 });</script>
