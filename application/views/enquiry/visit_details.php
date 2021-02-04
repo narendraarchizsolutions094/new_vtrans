@@ -55,7 +55,7 @@ $("select").select2();
 
     <?php
             $waypoints=json_decode($details->way_points);
-
+            if(!empty($waypoints)){
             $totalpoints=count($waypoints);
             $newpoints=array();
             // print_r($totalpoints);
@@ -111,8 +111,14 @@ $("select").select2();
             }
             
            $dif= abs_diff($actualamt,$totalpay);
+           $percentChange=0;
+           if($actualamt > 0 && $totalpay > 0){
+           $dif= abs_diff($actualamt,$totalpay);
                 $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
-            //    echo abs($percentChange);
+                  }else{
+                          $actualamt=0;
+                          $totalpay=0;
+                  }
                
            
 
@@ -237,8 +243,9 @@ $("select").select2();
       var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
       return d;
     }
+    
     </script>
-
+<?php } ?>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s&callback=initMap"
   type="text/javascript"></script>
 <div id="Save_Visit" class="modal fade" role="dialog">
