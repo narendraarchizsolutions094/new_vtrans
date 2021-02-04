@@ -280,21 +280,8 @@ $(document).ready(function() {
                 series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
                 series.columns.template.strokeWidth = 0;
                 series.columns.template.adapter.add("fill", function(fill, target) {
-                if (target.dataItem) {
-                    switch(target.dataItem.dataContext.region) {
-                    case "Central":
-                        return chart.colors.getIndex(0);
-                        break;
-                    case "East":
-                        return chart.colors.getIndex(1);
-                        break;
-                    case "South":
-                        return chart.colors.getIndex(2);
-                        break;
-                    case "West":
-                        return chart.colors.getIndex(3);
-                        break;
-                    }
+                if (target.dataItem) {                   
+                    return chart.colors.getIndex(3);                   
                 }
                 return fill;
                 });
@@ -339,10 +326,10 @@ $(document).ready(function() {
                 legendData.push({name:label, fill:color});
                 }
 
-                addRange("Central", "Texas", "North Dakota", chart.colors.getIndex(0));
-                addRange("East", "New York", "West Virginia", chart.colors.getIndex(1));
-                addRange("South", "Florida", "South Carolina", chart.colors.getIndex(2));
-                addRange("West", "California", "Wyoming", chart.colors.getIndex(3));
+                // addRange("Central", "Texas", "North Dakota", chart.colors.getIndex(0));
+                // addRange("East", "New York", "West Virginia", chart.colors.getIndex(1));
+                // addRange("South", "Florida", "South Carolina", chart.colors.getIndex(2));
+                // addRange("West", "California", "Wyoming", chart.colors.getIndex(3));
 
                 chart.cursor = new am4charts.XYCursor();
 
