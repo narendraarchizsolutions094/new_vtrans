@@ -2924,7 +2924,7 @@ class Ticket extends CI_Controller
 			ini_set('max_execution_time', '-1');
 			$filename = "ticket_" . date('d-m-Y_H_i_s');
 			$config = array(
-				'upload_path' => $_SERVER["DOCUMENT_ROOT"] . "/assets/ticket",
+				'upload_path' => $_SERVER["DOCUMENT_ROOT"] . "/new_crm/assets/ticket",
 				'allowed_types' => "text/plain|text/csv|csv",
 				'remove_spaces' => TRUE,
 				'file_name' => $filename
