@@ -606,9 +606,9 @@ $(document).ready(function() {
                 var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
                 valueAxis.renderer.grid.template.disabled = true; // Create series
                 var series = chart.series.push(new am4charts.ConeSeries());
-                series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
                 series.dataFields.valueY = "value";
                 series.dataFields.categoryX = "name";
+                series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
                 var columnTemplate = series.columns.template;
                 columnTemplate.adapter.add("fill", function(fill, target) {
                     return chart.colors.getIndex(target.dataItem.index);
