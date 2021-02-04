@@ -34,11 +34,12 @@
                             ?>
                         </select>
                     </div>
-                    <br>
-                    <br>
+
                     <div class="row">
                         <div class="col-md-12">
-                            <button class="btn btn-success" type="submit" id="assign"><?php echo display('save'); ?></button>
+                            <br>
+                            <br>
+                            <button class="btn btn-success" type="submit" id="assign">Upload</button>
                             <img src='<?= base_url('assets/images/loader.gif'); ?>' width='60px' height='60px' id="loader"
                                 style="display: none;">
                         </div>           
