@@ -132,7 +132,9 @@ $("select").select2();
                               }
                              $dif= abs_diff($actualamt,$totalpay);
                                   $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
-                                  
+                                    
+                    $totalactualamt += $actualamt;
+                    $totalpayamt += $totalpay;
                             ?>
                             <?php
                             
@@ -161,16 +163,14 @@ $("select").select2();
                             </tr>                                
                             <?php $sl++; ?>
                         <?php 
-                       
-                    $totalactualamt += $actualamt;
-                    $totalpayamt += $totalpay;
+                     
                     } ?> 
                     <?php } ?> 
                 </tbody>
             </table>  <!-- /.table-responsive -->
             <div class="col-md-12">
-            <div class="col-md-4"><span><b>Total Estimated Cost:</b> <?= $totalactualamt ?> </span></div>
-            <div class="col-md-4"><span><b>Total Taravelled Cost:</b> <?= $totalpayamt ?> </span></div>
+            <div class="col-md-4"><span><b>Total Estimated Cost:</b> <?= round($totalactualamt) ?> ₹ </span></div>
+            <div class="col-md-4"><span><b>Total Taravelled Cost:</b> <?= round($totalpayamt) ?> ₹</span></div>
             </div>
     </div>
 </div>
