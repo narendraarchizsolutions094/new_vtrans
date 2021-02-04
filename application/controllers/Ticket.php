@@ -2243,10 +2243,12 @@ class Ticket extends CI_Controller
 	    $todate=$this->uri->segment(4);
 		//substage wise 
 		$data=[];
+		$this->load->helper('text');
+
 		$subsource = $this->Ticket_Model->subsource();
 		foreach ($subsource as $key => $value) {
 			$count = $this->Ticket_Model->countSubsource($value->id,$fromdate,$todate);
-			$data[] = ['stage'=>$value->lead_stage_name,'name' => $value->description, 'value' => $count];
+			$data[] = ['stage'=>character_limiter($value->lead_stage_name,20),'name' => $value->description, 'value' => $count];
 		}
 		echo json_encode($data);
 	}
