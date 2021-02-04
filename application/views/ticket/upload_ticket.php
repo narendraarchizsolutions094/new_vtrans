@@ -11,16 +11,16 @@
             </div>
         </div>
         <div class="panel-body">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 panel-default panel-body" style="border:1px solid #f7f7f7">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 panel-default panel-body" style="border:1px solid #f7f7f7">
                 <?php echo form_open_multipart(base_url("ticket/upload"),array('id'=>'ticket-upload-form')); ?>
                     <div class="row">                        
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-12">
                             <label>Upload CSV File</label>
                             <input type="file" name="img_file" class="form-control" accept=".csv">
                         </div>
                     </div>                   
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label> For Download sample Please Select Process <i class="text-danger"></i></label>
                         <select name="product_id" id="pid" onchange="allcsv()" class="form-control">
                             <option value="">Select</option>
@@ -36,11 +36,13 @@
                     </div>
                     <br>
                     <br>
-                    <div class="col-md-6">
-                        <button class="btn btn-success" type="submit" id="assign"><?php echo display('save'); ?></button>
-                        <img src='<?= base_url('assets/images/loader.gif'); ?>' width='60px' height='60px' id="loader"
-                            style="display: none;">
-                    </div>                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-success" type="submit" id="assign"><?php echo display('save'); ?></button>
+                            <img src='<?= base_url('assets/images/loader.gif'); ?>' width='60px' height='60px' id="loader"
+                                style="display: none;">
+                        </div>           
+                    </div>         
                 </div>
             </form>
         </div>
