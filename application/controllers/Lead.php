@@ -1830,10 +1830,11 @@ class Lead extends CI_Controller
         $this->load->view('layout/main_wrapper', $data);
     }
     /********************************************create CSV file*********************************/
-    public function createcsv($pd)
+    public function createcsv($pd,$for=0)
     {
+        $comp_id = $this->session->userdata('companey_id');
         header('Content-type: text/csv');
-        header('Content-Disposition: attachment; filename="sample.csv"');
+        header('Content-Disposition: attachment; filename="Upload_sample.csv"');
         // do not cache the file
         header('Pragma: no-cache');
         header('Expires: 0');
@@ -1842,20 +1843,24 @@ class Lead extends CI_Controller
         $input = array();
         $this->db->select('*');
         $this->db->from('tbl_input');
-        $this->db->or_where('process_id', $pd);
-        $this->db->or_where('company_id', $this->session->userdata('companey_id'));
+        $this->db->where('page_id', $for);        
+        $this->db->where("(process_id=$pd AND company_id=$comp_id)");                
         $this->db->order_by('input_id', 'asc');
-        $q = $this->db->get()->result();
+        $q = $this->db->get()->result();        
+        if($for == 0){
+            $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
+        }else{
+            $static = array(display('tracking_no'));
+        }
+        
         if (!empty($q)) {
             foreach ($q as $value) {
                 $daynamic[] = $value->input_label;
             }
-            $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
             $allcoulmn = array_merge($static, $daynamic);
             // send the column headers
             fputcsv($file, $allcoulmn);
         } else {
-            $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
             fputcsv($file, $static);
         }
         exit();
