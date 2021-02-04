@@ -1830,10 +1830,10 @@ class Lead extends CI_Controller
         $this->load->view('layout/main_wrapper', $data);
     }
     /********************************************create CSV file*********************************/
-    public function createcsv($pd)
+    public function createcsv($pd,$for=0)
     {
         header('Content-type: text/csv');
-        header('Content-Disposition: attachment; filename="sample.csv"');
+        header('Content-Disposition: attachment; filename="Upload_sample.csv"');
         // do not cache the file
         header('Pragma: no-cache');
         header('Expires: 0');
@@ -1842,6 +1842,7 @@ class Lead extends CI_Controller
         $input = array();
         $this->db->select('*');
         $this->db->from('tbl_input');
+        $this->db->where('page_id', $for);
         $this->db->or_where('process_id', $pd);
         $this->db->or_where('company_id', $this->session->userdata('companey_id'));
         $this->db->order_by('input_id', 'asc');
