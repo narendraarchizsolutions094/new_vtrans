@@ -1844,7 +1844,7 @@ class Lead extends CI_Controller
         $this->db->select('*');
         $this->db->from('tbl_input');
         $this->db->where('page_id', $for);        
-        $this->db->where("(process_id=$pd OR company_id=$comp_id)");                
+        $this->db->where("(process_id=$pd AND company_id=$comp_id)");                
         $this->db->order_by('input_id', 'asc');
         $q = $this->db->get()->result();
         echo $this->db->last_query();
