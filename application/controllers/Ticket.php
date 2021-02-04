@@ -2985,7 +2985,7 @@ class Ticket extends CI_Controller
 									$extra = array(
 										'enq_no' => $tckno,
 										'parent' => $ticket_id,
-										'input'  => $value->input_id,
+										'input'  => $value['input_id'],
 										'fvalue' => $fldval,
 										'cmp_no' => $this->session->companey_id,
 										'usrno'  => $this->session->user_id
