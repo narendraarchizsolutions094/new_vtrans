@@ -1850,13 +1850,14 @@ class Lead extends CI_Controller
         if($for == 0){
             $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
         }else{
-            $static = array(display('tracking_no'));
+            $static = array(display('tracking_no'),'Name','Mobile No','Email');
         }
         
         if (!empty($q)) {
             foreach ($q as $value) {
                 $daynamic[] = $value->input_label;
             }
+            print_r($daynamic);
             $allcoulmn = array_merge($static, $daynamic);
             // send the column headers
             fputcsv($file, $allcoulmn);
@@ -1865,7 +1866,7 @@ class Lead extends CI_Controller
         }
         exit();
     }
-    /************************************************end CSV create********************************/
+    /**************************end CSV create*********************/
     public function add_datasource()
     {
        
