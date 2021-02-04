@@ -2986,7 +2986,7 @@ class Ticket extends CI_Controller
 							$this->db->where('status', 1);        
 							$this->db->where("(process_id=199 AND company_id=65)");                
 							$this->db->order_by('form_id', 'asc');
-							$colms = $this->db->get()->result();  		
+							$colms = $this->db->get()->result_array();  		
 							if(!empty($colms)){
 								$column = 4;
 								foreach($colms as $key=>$value){
