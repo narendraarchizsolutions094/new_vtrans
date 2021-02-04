@@ -1847,16 +1847,20 @@ class Lead extends CI_Controller
         $this->db->where("(process_id=$pd AND company_id=$comp_id)");                
         $this->db->order_by('input_id', 'asc');
         $q = $this->db->get()->result();        
+        if($for == 0){
+            $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
+        }else{
+            $static = array(display('tracking_no'));
+        }
+        
         if (!empty($q)) {
             foreach ($q as $value) {
                 $daynamic[] = $value->input_label;
             }
-            $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
             $allcoulmn = array_merge($static, $daynamic);
             // send the column headers
             fputcsv($file, $allcoulmn);
         } else {
-            $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
             fputcsv($file, $static);
         }
         exit();

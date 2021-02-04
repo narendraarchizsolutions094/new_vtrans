@@ -21,18 +21,19 @@
                         </div>
                     </div>                   
                     <div class="col-md-12">
-                        <label> For Download sample Please Select Process <i class="text-danger"></i></label>
+                        <a class="" href="javascript:void(0)>" onclick="allcsv()">Download Sample</a>
+                        <!-- <label> For Download sample Please Select Process <i class="text-danger"></i></label>
                         <select name="product_id" id="pid" onchange="allcsv()" class="form-control">
                             <option value="">Select</option>
                             <?php 
-                            if(!empty($process)){
-                                foreach($process as $proc){?>
-                                <option value="<?=$proc->sb_id ?>"><?=$proc->product_name ?></option>
-                                <?php 
-                                } 
-                            }
+                            // if(!empty($process)){
+                            //     foreach($process as $proc){?>
+                            //     <option value="<?=$proc->sb_id ?>"><?=$proc->product_name ?></option>
+                                 <?php 
+                            //     } 
+                            // }
                             ?>
-                        </select>
+                        </select> -->
                     </div>
 
                     <div class="row">
@@ -51,7 +52,7 @@
 </div>
 <script>
  function allcsv(){
-    var pd=document.getElementById("pid").value;	 
+    var pd=199;	 
     window.location.href='<?php echo base_url();?>lead/createcsv/'+pd+'/'+2;
    }
 </script>
