@@ -259,13 +259,13 @@ class Visits extends REST_Controller {
                  $new_waypoint = array($latitude,$longitude);
                  if(!empty($visit_details)){
                    $waypoints  = json_decode($visit_details->way_points);        
-                   $finalwaypoints= array_push($waypoints, $new_waypoint);
-                   $data=['way_points'=>json_encode($finalwaypoints)];
+                    array_push($waypoints, $new_waypoint);
+                   $data=['way_points'=>json_encode($waypoints)];
                    $this->db->where('id',$vd_id);
                    $this->db->update('visit_details',$data);
                    $this->set_response([
                      'status' => true,
-                     'data' =>'',
+                     'data' =>'waypoints updated',
                   ], REST_Controller::HTTP_OK);
                  } 
                }
