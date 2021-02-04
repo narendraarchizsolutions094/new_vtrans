@@ -280,8 +280,11 @@ $(document).ready(function() {
                 series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
                 series.columns.template.strokeWidth = 0;
                 series.columns.template.adapter.add("fill", function(fill, target) {
-                if (target.dataItem) {                    
-                    return chart.colors.getIndex(0);
+                if (target.dataItem) {
+                    switch(target.dataItem.dataContext.stage) {
+                    case 1:
+                        return chart.colors.getIndex(0);
+                    }                 
                 }
                 return fill;
                 });
@@ -349,12 +352,12 @@ $(document).ready(function() {
                 if(event.target.isActive){
                     axisBreak.animate({property:"breakSize", to:0}, 1000, am4core.ease.cubicOut);
                     yAxis.dataItems.each(function(dataItem){
-                    if(dataItem.dataContext.stage == name){
+                    if(dataItem.dataContext.region == name){
                         dataItem.hide(1000, 500);
                     }
                     })
                     series.dataItems.each(function(dataItem){
-                    if(dataItem.dataContext.stage == name){
+                    if(dataItem.dataContext.region == name){
                         dataItem.hide(1000, 0, 0, ["valueX"]);
                     }
                     })    
@@ -362,13 +365,13 @@ $(document).ready(function() {
                 else{
                     axisBreak.animate({property:"breakSize", to:1}, 1000, am4core.ease.cubicOut);
                     yAxis.dataItems.each(function(dataItem){
-                    if(dataItem.dataContext.stage == name){
+                    if(dataItem.dataContext.region == name){
                         dataItem.show(1000);
                     }
                     })  
 
                     series.dataItems.each(function(dataItem){
-                    if(dataItem.dataContext.stage == name){
+                    if(dataItem.dataContext.region == name){
                         dataItem.show(1000, 0, ["valueX"]);
                     }
                     })        
