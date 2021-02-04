@@ -1844,13 +1844,14 @@ class Lead extends CI_Controller
         $this->db->select('*');
         $this->db->from('tbl_input');
         $this->db->where('page_id', $for);        
+        $this->db->where('status', 1);        
         $this->db->where("(process_id=$pd AND company_id=$comp_id)");                
-        $this->db->order_by('input_id', 'asc');
+        $this->db->order_by('form_id', 'asc');
         $q = $this->db->get()->result();        
         if($for == 0){
             $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
         }else{
-            $static = array(display('tracking_no'));
+            $static = array(display('tracking_no'),'Name','Mobile No','Email');
         }
         
         if (!empty($q)) {
@@ -1865,7 +1866,7 @@ class Lead extends CI_Controller
         }
         exit();
     }
-    /************************************************end CSV create********************************/
+    /**************************end CSV create*********************/
     public function add_datasource()
     {
        

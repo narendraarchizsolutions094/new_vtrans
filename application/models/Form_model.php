@@ -48,6 +48,7 @@ class Form_model extends CI_Model {
         $this->db->select("*");
         $this->db->from('tbl_input');
         $this->db->where($where);
+        $this->db->order_by('tbl_input.form_id','asc');
         $this->db->order_by('tbl_input.fld_order','asc');
         return $this->db->get()->result_array();
     }
