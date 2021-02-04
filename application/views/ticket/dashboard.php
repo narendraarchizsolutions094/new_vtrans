@@ -199,11 +199,11 @@
 </div>
  
 <br>
-<!-- <center>
+ <center>
     <h3>Substage Wise Ticket</h3>
 </center> -->
-<!-- HTML -->
-<!-- <div id="chartdiv_substage"></div> -->
+
+<div id="chartdiv_substage"></div>
 <br>
 <br>
 <div class="row pd-20" style="width:100%;">
