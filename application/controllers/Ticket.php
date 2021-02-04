@@ -2979,8 +2979,14 @@ class Ticket extends CI_Controller
 								"added_by" 	=> $this->session->user_id
 							);
 							$this->db->insert("tbl_ticket_conv", $insarr);
-
-							$colms = $this->form_model->get_field_by_process(199,2);
+			
+							$this->db->select('*');
+							$this->db->from('tbl_input');
+							$this->db->where('page_id', 2);        
+							$this->db->where('status', 1);        
+							$this->db->where("(process_id=199 AND company_id=65)");                
+							$this->db->order_by('form_id', 'asc');
+							$colms = $this->db->get()->result();  		
 							if(!empty($colms)){
 								$column = 4;
 								foreach($colms as $key=>$value){
