@@ -610,7 +610,7 @@ $(document).ready(function() {
                 series.dataFields.categoryX = "name";
                 series.tooltipText = "[{name}: bold]{valueY}[/]";
 //                columnSeries.columns.template.tooltipText = "{name}: {categoryX}: {valueY}";
-                series.columns.template.tooltipText = "{name}: {categoryX}: {valueY}";
+                series.columns.template.tooltipText = "{nameX}: {valueY}";
 
                 var columnTemplate = series.columns.template;
                 columnTemplate.adapter.add("fill", function(fill, target) {
