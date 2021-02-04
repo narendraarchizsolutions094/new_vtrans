@@ -11,8 +11,17 @@
           <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" data-toggle="modal" data-target="#Save_Visit" title="Add Visit"></a> 
           <?php
           }
-          ?>   
+          ?>  
+           
         </div>
+        <?php
+          if(user_access('1020'))
+          {
+          ?>
+  <div class="col-md-4 col-sm-4 col-xs-4 float-left"> 
+  <a href="<?= base_url('visit/vist-report') ?>"><button class="btn btn-primary">View Report</button></a>
+  </div>
+  <?php } ?>
 </div>
 
 <br>
@@ -46,9 +55,17 @@ $("select").select2();
 
     <?php
             $waypoints=json_decode($details->way_points);
-             $lastKey = key(array_slice($waypoints, -1, 1, true));
-            $firstpoint=$waypoints[0];
-            $secondpoint=$waypoints[$lastKey];
+
+            $totalpoints=count($waypoints);
+            $newpoints=array();
+            // print_r($totalpoints);
+            $cuts=$totalpoints/23;
+            for ($i=0; $i < $totalpoints; $i+=$cuts) { 
+              array_push($newpoints,$waypoints[$i]);
+            }
+             $lastKey = key(array_slice($newpoints, -1, 1, true));
+            $firstpoint=$newpoints[0];
+            $secondpoint=$newpoints[$lastKey];
             function twopoints_on_earth($latitudeFrom, $longitudeFrom,$latitudeTo,$longitudeTo) 
             { 
             $long1 = deg2rad($longitudeFrom); 
@@ -84,9 +101,9 @@ $("select").select2();
              }
               $sum;
               $kmamount=10;
-              $totalpay=$kmamount*10;
+              $totalpay=$kmamount*$km;
 
-              $actualamt=32*$kmamount;
+              $actualamt=$sum*$kmamount;
             //   find difference bectween
             function abs_diff($v1, $v2) {
                 $diff = $v1 - $v2;
@@ -104,7 +121,7 @@ $("select").select2();
  <div class="form-group col-md-3">
                 <label>Travelled Distance</label>
                 <input value="<?php if(!empty($sum)){echo round($sum,2).' Km';}else{ echo'N/A';}  ?>" disabled class="form-control">
-            <!-- <div id="msg"></div>   -->
+            <div id="msg"></div>  
             </div>
             <div class="form-group col-md-3">
                 <label>Estimated Cost</label>
@@ -129,6 +146,8 @@ $("select").select2();
         //var end = new google.maps.LatLng(38.334818, -181.884886);
         var end = new google.maps.LatLng(37.441883, -122.143019); -->
 <script>
+      
+       
     var distance;
       function initMap() {
         var directionsService = new google.maps.DirectionsService;
@@ -149,11 +168,11 @@ $("select").select2();
   var mk1 = new google.maps.Marker({position: dakota, map: map});
   var mk2 = new google.maps.Marker({position: frick, map: map});
    distance = haversine_distance(mk1,mk2);
-  document.getElementById('msg').innerHTML = "Distance between markers: " + distance.toFixed(2)*1.60934 + " KM.";
+  document.getElementById('msg').innerHTML = "Distance between markers: " + distance.toFixed(3)*1.60934 + " KM.";
 
 
       }
-      var res = JSON.parse("<?=json_encode($waypoints)?>");
+      var res = JSON.parse("<?=json_encode($newpoints)?>");
 
       this.origin = {
       	lat: Number(res[0][0]),
@@ -166,7 +185,7 @@ $("select").select2();
 	  };
       function calculateAndDisplayRoute(directionsService, directionsRenderer) {
         var waypts = [];        
-        var checkboxArray = JSON.parse("<?=json_encode($waypoints)?>");
+        var checkboxArray = JSON.parse("<?=json_encode($newpoints)?>");
         for (var i = 0; i < checkboxArray.length; i++) {        	        	
         	const waypointObject = new google.maps.LatLng(checkboxArray[i][0],checkboxArray[i][1]);
         	

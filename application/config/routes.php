@@ -290,6 +290,7 @@ $route['lead'] = 'led';
 $route['facebook-pages'] = 'dashboard/facbookData';
 $route['report-view/:any/:any'] = 'report/send_sales_view/$i/$i';
 $route['visits/visit_details/:any'] = 'client/visit_details/$i';
+$route['visit/vist-report'] = 'client/report/';
 
 
 $route['404_override']            = '';

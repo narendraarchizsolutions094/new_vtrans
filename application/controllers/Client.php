@@ -1679,7 +1679,55 @@ public function view_editable_aggrement()
         }
        
     }
-  
+    public function report(){
+        $this->load->model('report_model');
+        $data['title'] = 'Visit Report';
+       $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
+       $content = ''; 		
+        if ($_POST) {			
+           $from		=	date("Y-m-d", strtotime($this->input->post('date_from')));
+           $to		=	date("Y-m-d", strtotime($this->input->post('date_to')));
+            $employee	=	$this->input->post('employee');			
+           $comp_id=$this->session->companey_id; 			
+           $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
+          $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+           $where = "(visit_details.comp_id=$comp_id)";    
+           $where .= " AND Date(visit_details.visit_start) >= '$from' AND Date(visit_details.visit_start) <= '$to'";
+           if($employee=='0'){ 
+           $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
+           }else{
+           $where .= " AND ( visit_details.created_by=$employee)";
+           }
+           $data['reports'] = $this->db->where($where)
+                                       ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
+                                       ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
+                                       ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
+                                       ->get('visit_details')->result();	
+                                       $this->db->last_query();
+          $content .= $this->load->view('enquiry/visit_report',$data,true);
+          $data['content'] = $content;
+
+        }else{
+            $date = date("Y-m-d"); 		
+            $comp_id=$this->session->companey_id; 			
+            $employee = array();
+            $data['att_date'] = $date;
+            $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
+    	   $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+            $where = "(visit_details.comp_id=$comp_id)";      
+           $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
+            $data['reports'] = $this->db->where($where)
+                                        ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
+                                        ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
+                                        ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
+                                        ->get('visit_details')->result();	
+           $content .= $this->load->view('enquiry/visit_report',$data,true);
+           $data['content'] = $content;
+        }
+       $this->load->view('layout/main_wrapper',$data);
+    }
+
+
     public function deals($specific=0)
     { 
          if(user_access('1000') || user_access('1001') || user_access('1002')){
