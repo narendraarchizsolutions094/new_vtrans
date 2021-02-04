@@ -2951,6 +2951,9 @@ class Ticket extends CI_Controller
 						if($tracking_no){
 							$ticket_data = array(											
 												'tracking_no'=>  $tracking_no,
+												'name' 		 =>  $filesop[1],
+												'phone' 	 =>  $filesop[2],
+												'email' 	 =>  $filesop[3],
 												'process_id' =>  199,
 												'company'	 =>	 65,
 												'added_by'	 =>  $this->session->user_id
@@ -2979,7 +2982,7 @@ class Ticket extends CI_Controller
 
 							$colms = $this->form_model->get_field_by_process(199,2);
 							if(!empty($colms)){
-								$column = 1;
+								$column = 4;
 								foreach($colms as $key=>$value){
 									$fldval	=	$filesop[$column];
 									$extra = array(
