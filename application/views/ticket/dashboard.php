@@ -275,8 +275,8 @@ $(document).ready(function() {
 
                 // Create series
                 var series = chart.series.push(new am4charts.ColumnSeries());
-                series.dataFields.valueX = "value";
-                series.dataFields.categoryY = "name";
+                series.dataFields.valueX = "name";
+                series.dataFields.categoryY = "value";
                 series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
                 series.columns.template.strokeWidth = 0;
                 series.columns.template.adapter.add("fill", function(fill, target) {
