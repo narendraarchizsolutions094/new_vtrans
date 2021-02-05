@@ -201,7 +201,7 @@
 <br>
  <center>
     <h3>Substage Wise Ticket</h3>
-</center> -->
+</center> 
 
 <div id="chartdiv_substage"></div>
 <br>

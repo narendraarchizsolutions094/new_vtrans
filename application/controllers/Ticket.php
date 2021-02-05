@@ -2253,7 +2253,30 @@ class Ticket extends CI_Controller
 			$stage = substr($value->lead_stage_name,0,12); 
 			$data[] = ['region'=>$stage,'state' =>$name, 'sales' => $count];
 		}
-		echo json_encode($data);
+		$process	=	$this->session->process[0];
+		
+		$this->db->where('comp_id',$this->session->companey_id);
+		$this->db->where("FIND_IN_SET($process,lead_stage.process_id)>",0);
+		$this->db->where("FIND_IN_SET(4,lead_stage.stage_for)>",0);
+		$lead_stage = $this->db->get('lead_stage')->result_array();
+		
+		$group = array();
+		if(!empty($lead_stage)){
+			foreach($lead_stage as $key => $value){
+				
+				$this->db->where('lead_stage_id',$value['stg_id']);
+				$arr = $this->db->get('lead_description')->result_array();
+				$stage = substr($value['lead_stage_name'],0,12);
+				$start = substr($arr[0]['description'],0,12);
+				$end = substr(end($arr)['description'],0,12);
+				$group[] = array($stage,$start,$end);
+			}			
+		}
+		
+		$res['result'] = $data;
+		$res['group'] = $group;
+
+		echo json_encode($res);
 	}
 	public function product_ticketJson()
 	{
