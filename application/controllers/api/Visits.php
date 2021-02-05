@@ -229,8 +229,8 @@ class Visits extends REST_Controller {
                      'data' =>$res,
                    ], REST_Controller::HTTP_OK);
                      }else{
-                        $vd_id=$checkvisit->row()->id;
-                        $res=['message'=>'Visit already Started','vd_id'=>$vd_id];
+                        $vd=$checkvisit->row();
+                        $res=['message'=>'Visit already Started','vd_id'=>$vd->id,'visit_id'=>$vd->visit_id];
                         $this->set_response([
                            'status' => false,
                            'data' =>$res,
