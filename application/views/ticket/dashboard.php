@@ -269,7 +269,7 @@ $(document).ready(function() {
 
                 // Add data
                 chart.data = response.result;
-
+                console.log(response.result);
                 // Create axes
                 var yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
                 yAxis.dataFields.category = "state";
@@ -331,6 +331,7 @@ $(document).ready(function() {
                     legendData.push({name:label, fill:color});
                 }
                 group = response.group;
+                console.log(group);
                 $.each(group, function(i, item) {
                     addRange(group[i][0], group[i][1], group[i][2], chart.colors.getIndex(i));
                     console.log(group[i]);
