@@ -149,7 +149,7 @@
 }
 
 #chartdiv_substage {
-    width: 92%;
+    width: 100%;
     height: 500px;
     margin-left:auto;
 }
@@ -204,7 +204,12 @@
     <h3>Substage Wise Ticket</h3>
 </center> 
 
-<div id="chartdiv_substage"></div>
+<div class="row pd-20" style="width:100%;">
+    <div class="col-md-12 pd-20" style="padding: 10px;">
+        <div id="chartdiv_substage"></div>
+    </div>
+</div>
+
 <br>
 <br>
 <div class="row pd-20" style="width:100%;">
