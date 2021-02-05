@@ -531,6 +531,8 @@ $(document).ready(function() {
                 pieSeries.hiddenState.properties.opacity = 1;
                 pieSeries.hiddenState.properties.endAngle = -90;
                 pieSeries.hiddenState.properties.startAngle = -90;
+                pieSeries.labels.template.text = "{name}: {value}";
+                pieSeries.slices.template.tooltipText = "{name}: {value}";
             }); // end am4core.ready()
         }
     });
