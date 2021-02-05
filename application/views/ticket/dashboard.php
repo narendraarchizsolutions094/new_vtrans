@@ -304,7 +304,7 @@ $(document).ready(function() {
                     range.label.disabled = false;
                     range.label.fill = color;
                     range.label.location = 0;
-                    range.label.dx = -130;
+                    range.label.dx = -200;
                     range.label.dy = 12;
                     range.label.fontWeight = "bold";
                     range.label.fontSize = 10;
