@@ -307,7 +307,7 @@ $(document).ready(function() {
                     range.label.dx = -130;
                     range.label.dy = 12;
                     range.label.fontWeight = "bold";
-                    range.label.fontSize = 12;
+                    range.label.fontSize = 10;
                     range.label.horizontalCenter = "left"
                     range.label.inside = true;
                     
