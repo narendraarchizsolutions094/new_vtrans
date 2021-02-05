@@ -333,7 +333,7 @@ $(document).ready(function() {
                 group = response.group;
                 console.log(group);
                 $.each(group, function(i, item) {
-                    addRange(group[i][0], group[i][1], group[i][2], chart.colors.getIndex(i));
+                    addRange(group[i][0], group[i][2], group[i][1], chart.colors.getIndex(i));
                     console.log(group[i]);
                     console.log(group[i][0]);
                 });
