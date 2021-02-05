@@ -262,7 +262,7 @@ $(document).ready(function() {
                 var chart = am4core.create("chartdiv_substage", am4charts.XYChart);
 
                 // Add data
-                chart.data = response;
+                chart.data = response.result;
 
                 // Create axes
                 var yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
@@ -325,8 +325,12 @@ $(document).ready(function() {
 
                 legendData.push({name:label, fill:color});
                 }
-
-                // addRange("Central", "Texas", "North Dakota", chart.colors.getIndex(0));
+                group = response.group;
+                $.each(group, function(i, item) {
+                    addRange(group[i][0], group[i][1], group[i][2], chart.colors.getIndex(0));
+                    console.log(group[i]);
+                    console.log(group[i][0]);
+                });
                 // addRange("East", "New York", "West Virginia", chart.colors.getIndex(1));
                 // addRange("South", "Florida", "South Carolina", chart.colors.getIndex(2));
                 // addRange("West", "California", "Wyoming", chart.colors.getIndex(3));
