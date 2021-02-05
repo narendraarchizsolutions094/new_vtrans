@@ -112,7 +112,7 @@
 
 #chartdiv7 {
     width: 100%;
-    height: 1200px;
+    height: 600px;
 }
 
 .highcharts-data-table table {
@@ -266,7 +266,7 @@
 
 <div class="row pd-20" style="width:100%;">
     <div class="col-md-12">
-        <div class="card card-graph"><br>
+        <div class="card card-graph_full2"><br>
             <center>
                 <h3>Failure Point Wise Ticket</h3>
             </center>
@@ -668,7 +668,7 @@ $(document).ready(function() {
                 series.sequencedInterpolation = true;
                 series.dataFields.valueY = "value";
                 series.dataFields.categoryX = "name";
-                series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+                series.tooltipText = "[{name}: bold]{value}[/]";
                 series.columns.template.strokeWidth = 0;
 
                 series.tooltip.pointerOrientation = "vertical";
