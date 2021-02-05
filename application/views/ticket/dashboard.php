@@ -112,7 +112,7 @@
 
 #chartdiv7 {
     width: 100%;
-    height: 600px;
+    height: 1200px;
 }
 
 .highcharts-data-table table {
