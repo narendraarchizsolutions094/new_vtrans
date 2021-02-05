@@ -2248,7 +2248,7 @@ class Ticket extends CI_Controller
 		$subsource = $this->Ticket_Model->subsource();
 		foreach ($subsource as $key => $value) {
 			$count = $this->Ticket_Model->countSubsource($value->id,$fromdate,$todate);
-			$name = substr($value->description,0,20);
+			$name = substr($value->description,0,30);
 			$stage = substr($value->lead_stage_name,0,20);
 			$data[] = ['region'=>$stage,'state' =>$name, 'sales' => $count];
 		}
@@ -2265,8 +2265,8 @@ class Ticket extends CI_Controller
 				$this->db->where('lead_stage_id',$value['stg_id']);
 				$arr = $this->db->get('lead_description')->result_array();
 				$stage = substr($value['lead_stage_name'],0,20);
-				$start = substr($arr[0]['description'],0,20);
-				$end = substr(end($arr)['description'],0,20);
+				$start = substr($arr[0]['description'],0,30);
+				$end = substr(end($arr)['description'],0,30);
 				$group[] = array($stage,$start,$end);
 			}			
 		}
