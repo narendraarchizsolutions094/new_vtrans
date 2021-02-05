@@ -286,10 +286,10 @@ $(document).ready(function() {
                 series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
                 series.columns.template.strokeWidth = 0;
                 series.columns.template.adapter.add("fill", function(fill, target) {
-                if (target.dataItem) {                   
-                    return chart.colors.getIndex(3);                   
-                }
-                return fill;
+                    if (target.dataItem) {                   
+                        return chart.colors.getIndex(1);                   
+                    }
+                    return fill;
                 });
 
                 var axisBreaks = {};
@@ -297,39 +297,38 @@ $(document).ready(function() {
 
                 // Add ranges
                 function addRange(label, start, end, color) {
-                var range = yAxis.axisRanges.create();
-                range.category = start;
-                range.endCategory = end;
-                range.label.text = label;
-                range.label.disabled = false;
-                range.label.fill = color;
-                range.label.location = 0;
-                range.label.dx = -130;
-                range.label.dy = 12;
-                range.label.fontWeight = "bold";
-                range.label.fontSize = 12;
-                range.label.horizontalCenter = "left"
-                range.label.inside = true;
-                
-                range.grid.stroke = am4core.color("#396478");
-                range.grid.strokeOpacity = 1;
-                range.tick.length = 200;
-                range.tick.disabled = false;
-                range.tick.strokeOpacity = 0.6;
-                range.tick.stroke = am4core.color("#396478");
-                range.tick.location = 0;
-                
-                range.locations.category = 1;
-                var axisBreak = yAxis.axisBreaks.create();
-                axisBreak.startCategory = start;
-                axisBreak.endCategory = end;
-                axisBreak.breakSize = 1;
-                axisBreak.fillShape.disabled = true;
-                axisBreak.startLine.disabled = true;
-                axisBreak.endLine.disabled = true;
-                axisBreaks[label] = axisBreak;  
-
-                legendData.push({name:label, fill:color});
+                    var range = yAxis.axisRanges.create();
+                    range.category = start;
+                    range.endCategory = end;
+                    range.label.text = label;
+                    range.label.disabled = false;
+                    range.label.fill = color;
+                    range.label.location = 0;
+                    range.label.dx = -130;
+                    range.label.dy = 12;
+                    range.label.fontWeight = "bold";
+                    range.label.fontSize = 12;
+                    range.label.horizontalCenter = "left"
+                    range.label.inside = true;
+                    
+                    range.grid.stroke = am4core.color("#396478");
+                    range.grid.strokeOpacity = 1;
+                    range.tick.length = 200;
+                    range.tick.disabled = false;
+                    range.tick.strokeOpacity = 0.6;
+                    range.tick.stroke = am4core.color("#396478");
+                    range.tick.location = 0;
+                    
+                    range.locations.category = 1;
+                    var axisBreak = yAxis.axisBreaks.create();
+                    axisBreak.startCategory = start;
+                    axisBreak.endCategory = end;
+                    axisBreak.breakSize = 1;
+                    axisBreak.fillShape.disabled = true;
+                    axisBreak.startLine.disabled = true;
+                    axisBreak.endLine.disabled = true;
+                    axisBreaks[label] = axisBreak;  
+                    legendData.push({name:label, fill:color});
                 }
                 group = response.group;
                 $.each(group, function(i, item) {
@@ -340,19 +339,14 @@ $(document).ready(function() {
                 // addRange("East", "New York", "West Virginia", chart.colors.getIndex(1));
                 // addRange("South", "Florida", "South Carolina", chart.colors.getIndex(2));
                 // addRange("West", "California", "Wyoming", chart.colors.getIndex(3));
-
                 chart.cursor = new am4charts.XYCursor();
-
-
                 var legend = new am4charts.Legend();
                 legend.position = "right";
                 legend.scrollable = true;
                 legend.valign = "top";
                 legend.reverseOrder = true;
-
                 chart.legend = legend;
                 legend.data = legendData;
-
                 legend.itemContainers.template.events.on("toggled", function(event){
                 var name = event.target.dataItem.dataContext.name;
                 var axisBreak = axisBreaks[name];
@@ -376,7 +370,6 @@ $(document).ready(function() {
                         dataItem.show(1000);
                     }
                     })  
-
                     series.dataItems.each(function(dataItem){
                     if(dataItem.dataContext.region == name){
                         dataItem.show(1000, 0, ["valueX"]);
@@ -384,7 +377,6 @@ $(document).ready(function() {
                     })        
                 }
                 })
-
                 }); // end am4core.ready()
         }
     });
