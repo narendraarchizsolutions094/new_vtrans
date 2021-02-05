@@ -210,6 +210,8 @@ class Visits extends REST_Controller {
               $longitude  = (float)$this->input->post('longitude');
                  //only waypoints
               $new_waypoint = array($latitude,$longitude);
+              if($latitude!=0 AND $longitude!=0){
+
               //check any travelled is started or not
              $checkexistvisit=$this->db->where(array('comp_id'=>$company_id,'visit_id'=>$visit_id))
                        ->count_all_results('visit_details');
@@ -241,10 +243,19 @@ class Visits extends REST_Controller {
                      'data' =>$res,
                   ], REST_Controller::HTTP_OK);
             }
+         }else{
+            $this->set_response([
+               'status' => false,
+               'data' =>'Not Supported waypoints',
+            ], REST_Controller::HTTP_OK);
+         }
               }elseif($status==2){
+
                $visit_details = $this->db->where(array('id'=>$vd_id))->get('visit_details')->row();
                $latitude   = (float)$this->input->post('latitude');
                $longitude  = (float)$this->input->post('longitude');
+               if($latitude!=0 AND $longitude!=0){
+
                  //only waypoints
                  $new_waypoint = array($latitude,$longitude);
                  if(!empty($visit_details)){
@@ -258,6 +269,12 @@ class Visits extends REST_Controller {
                      'data' =>$res,
                   ], REST_Controller::HTTP_OK);
                  }
+               }else{
+                  $this->set_response([
+                     'status' => false,
+                     'data' =>'Not Supported waypoints',
+                  ], REST_Controller::HTTP_OK);
+               }
               }elseif($status==3){
                $data=['visit_status'=>3,'start_time'=>date('Y-m-d H:i:s')];
                $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
@@ -278,6 +295,7 @@ class Visits extends REST_Controller {
                $visit_details = $this->db->where(array('id'=>$vd_id))->get('visit_details')->row();
                $latitude   = (float)$this->input->post('latitude');
                $longitude  = (float)$this->input->post('longitude');
+               if($latitude!=0 AND $longitude!=0){
                  //only waypoints
                  $new_waypoint = array($latitude,$longitude);
                  if(!empty($visit_details)){
@@ -291,7 +309,13 @@ class Visits extends REST_Controller {
                      'data' =>'waypoints updated',
                   ], REST_Controller::HTTP_OK);
                  } 
+               }else{
+                  $this->set_response([
+                     'status' => false,
+                     'data' =>'Not Supported waypoints',
+                  ], REST_Controller::HTTP_OK);
                }
+            }
            }else{
             $this->set_response([
                'status' => false,
