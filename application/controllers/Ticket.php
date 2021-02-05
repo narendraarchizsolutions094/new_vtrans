@@ -2228,12 +2228,15 @@ class Ticket extends CI_Controller
 		$process	=	$this->session->process[0];	
 		$user_id  	=  $this->session->user_id;
 		$comp_id = $this->session->companey_id;	
+		
 		$all_reporting_ids  = $this->common_model->get_categories($user_id);
+
+		$this->db->select('tbl_ticket_subject.subject_title as name,count(*) as value');
+		$this->db->from('tbl_ticket');
 		$where = " ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
 		$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))';  
 		$this->db->where($where);
 		
-		$this->db->select('tbl_ticket_subject.subject_title as name,count(*) as value');
 		$this->db->join('tbl_ticket','tbl_ticket.category=tbl_ticket_subject.id');
 		$this->db->where('process_id IN ('.$process.')');
 		$this->db->where('company',$comp_id);
@@ -2242,7 +2245,7 @@ class Ticket extends CI_Controller
 			$this->db->where('last_update <=', $todate);
 		}
 		$this->db->group_by('tbl_ticket.category');
-		$result = $this->db->get('tbl_ticket')->result_array();
+		$result = $this->db->get()->result_array();
 		echo json_encode($result);		
 	}
 	public function stage_typeJson()
