@@ -3076,4 +3076,10 @@ class Ticket extends CI_Controller
 				redirect(base_url() . 'ticket/upload_tickets');
 			}
 		}
+
+		public function daily_summary(){
+			$data['title'] = "Today's Ticket Summary";
+			$data['content'] = $this->load->view('ticket/daily-summary', $data, true);
+			$this->load->view('layout/main_wrapper', $data);			
+		}
 }
