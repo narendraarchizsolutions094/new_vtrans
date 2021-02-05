@@ -102,6 +102,11 @@
     width: 100%;
     height: 250px;
 }
+
+#chartdiv7 {
+    width: 100%;
+    height: 250px;
+}
 .highcharts-data-table table {
     font-family: Verdana, sans-serif;
     border-collapse: collapse;
@@ -245,6 +250,19 @@
         <h3>Product/Service Wise Ticket </h3>
     </center>
     <div id="product_Ticket"></div>
+</div>
+<br>
+<br><!-- HTML -->
+
+<div class="row pd-20" style="width:100%;">
+    <div class="col-md-6 pd-20">
+        <div class="card card-graph"><br>
+            <center>
+                <h3>Failure Point Wise Ticket</h3>
+            </center>
+            <div id="chartdiv7"></div>
+        </div>    
+    </div>
 </div>
     </div>
     </div>
@@ -575,6 +593,48 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+<!-- failure point chart -->
+
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "<?=base_url('ticket/product_ticketJson/'.$fromdate.'/'.$todate.'')?>",
+        type: "post",
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            am4core.ready(function() { // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end                // Create chart instance
+                var chart = am4core.create("chartdiv7", am4charts
+                .PieChart); // Add data
+                chart.data = response // Set inner radius
+                chart.innerRadius = am4core.percent(50); // Add and configure Series
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "value";
+                pieSeries.dataFields.category = "name";
+                pieSeries.slices.template.stroke = am4core.color("#fff");
+                pieSeries.slices.template.strokeWidth = 2;
+                pieSeries.slices.template.strokeOpacity =
+                1; // This creates initial animation
+                pieSeries.hiddenState.properties.opacity = 1;
+                pieSeries.hiddenState.properties.endAngle = -90;
+                pieSeries.hiddenState.properties.startAngle = -90;
+                pieSeries.colors.list = [
+                    new am4core.color('#b8182b'),
+                    new am4core.color('#FBC02D'),
+                    new am4core.color('#388E3C'),
+                ]
+            });
+        }
+    });
+});
+</script>
+
+
 <!-- HTML -->
 <!-- Chart code -->
 <script>
