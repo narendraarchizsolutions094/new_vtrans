@@ -151,6 +151,7 @@
 #chartdiv_substage {
     width: 80%;
     height: 500px;
+    margin-left:auto;
 }
 </style>
 <!-- Resources -->
