@@ -392,4 +392,62 @@ class Visits extends REST_Controller {
                ], REST_Controller::HTTP_OK);
     	}
     }
+
+
+    public function add_remarks_post()
+    {
+    	$comp_id = $this->input->post('company_id');
+    	$enquiry_id = $this->input->post('enquiry_id');
+    	$user_id = $this->input->post('user_id');
+    	$this->form_validation->set_rules('company_id','company_id','required|trim');
+    	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
+    	$this->form_validation->set_rules('user_id','user_id','required|trim');
+
+    	if($this->form_validation->run()==true)
+    	{
+    		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
+
+    		$data = array(
+                            'visit_date'=>$this->input->post('visit_date'),
+                            'visit_time'=>$this->input->post('visit_time'),
+                            'remarks'=>$this->input->post('remarks'),
+                            'rating'=>$this->input->post('rating'),
+                            'comp_id'=>$comp_id,
+                            'user_id'=>$user_id,   
+                            'enquiry_id'=>$enquiry_id
+                        );
+    		$done = 0;
+            $res = $this->db->where(array('enquiry_id'=>$enquiry_id))->get('enquiry')->row();
+            if(!empty($res))
+            {	
+	            	$this->Client_Model->add_visit($data);
+	            	$this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
+	            $done = 1;
+            }	
+
+            if($done)
+            {
+            	
+            	$this->set_response([
+                  'status' => true,
+                  'message' =>'Saved Successfully.',
+               ], REST_Controller::HTTP_OK);
+			}
+            else
+            {
+				$this->set_response([
+                  'status' => FALSE,
+                  'message' =>'Unable to Save.',
+               ], REST_Controller::HTTP_OK);
+            }
+    	}
+  		else 
+        {		     
+  		     $this->set_response([
+                  'status' => false,
+                  'message' =>strip_tags(validation_errors())
+               ], REST_Controller::HTTP_OK);
+  		  }
+
+    }
 }
