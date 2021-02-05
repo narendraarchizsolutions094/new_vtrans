@@ -269,7 +269,7 @@ $(document).ready(function() {
                 yAxis.dataFields.category = "state";
                 yAxis.renderer.grid.template.location = 0;
                 yAxis.renderer.labels.template.fontSize = 10;
-                yAxis.renderer.minGridDistance = 10;
+                yAxis.renderer.minGridDistance = 6;
 
                 var xAxis = chart.xAxes.push(new am4charts.ValueAxis());
 
@@ -327,7 +327,7 @@ $(document).ready(function() {
                 }
                 group = response.group;
                 $.each(group, function(i, item) {
-                    addRange(group[i][0], group[i][1], group[i][2], chart.colors.getIndex(0));
+                    addRange(group[i][0], group[i][1], group[i][2], chart.colors.getIndex(i));
                     console.log(group[i]);
                     console.log(group[i][0]);
                 });
