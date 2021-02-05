@@ -265,7 +265,7 @@
 <br><!-- HTML -->
 
 <div class="row pd-20" style="width:100%;">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="card card-graph"><br>
             <center>
                 <h3>Failure Point Wise Ticket</h3>
@@ -636,29 +636,62 @@ $(document).ready(function() {
         processData: false,
         contentType: false,
         success: function(response) {
-            am4core.ready(function() { // Themes begin
+            am4core.ready(function() {
+
+                // Themes begin
                 am4core.useTheme(am4themes_animated);
-                // Themes end                // Create chart instance
-                var chart = am4core.create("chartdiv7", am4charts
-                    .PieChart); // Add data
-                chart.data = response // Set inner radius
-                chart.innerRadius = am4core.percent(50); // Add and configure Series
-                var pieSeries = chart.series.push(new am4charts.PieSeries());
-                pieSeries.dataFields.value = "value";
-                pieSeries.dataFields.category = "name";
-                pieSeries.slices.template.stroke = am4core.color("#fff");
-                pieSeries.slices.template.strokeWidth = 2;
-                pieSeries.slices.template.strokeOpacity =
-                    1; // This creates initial animation
-                pieSeries.hiddenState.properties.opacity = 1;
-                pieSeries.hiddenState.properties.endAngle = -90;
-                pieSeries.hiddenState.properties.startAngle = -90;
-                pieSeries.colors.list = [
-                    new am4core.color('#b8182b'),
-                    new am4core.color('#FBC02D'),
-                    new am4core.color('#388E3C'),
-                ]
-            });
+                // Themes end
+
+                // Create chart instance
+                var chart = am4core.create("chartdiv7", am4charts.XYChart);
+                chart.scrollbarX = new am4core.Scrollbar();
+
+                // Add data
+                chart.data = response;
+
+                // Create axes
+                var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                categoryAxis.dataFields.category = "name";
+                categoryAxis.renderer.grid.template.location = 0;
+                categoryAxis.renderer.minGridDistance = 30;
+                categoryAxis.renderer.labels.template.horizontalCenter = "right";
+                categoryAxis.renderer.labels.template.verticalCenter = "middle";
+                categoryAxis.renderer.labels.template.rotation = 270;
+                categoryAxis.tooltip.disabled = true;
+                categoryAxis.renderer.minHeight = 110;
+
+                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis.renderer.minWidth = 50;
+
+                // Create series
+                var series = chart.series.push(new am4charts.ColumnSeries());
+                series.sequencedInterpolation = true;
+                series.dataFields.valueY = "value";
+                series.dataFields.categoryX = "name";
+                series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+                series.columns.template.strokeWidth = 0;
+
+                series.tooltip.pointerOrientation = "vertical";
+
+                series.columns.template.column.cornerRadiusTopLeft = 10;
+                series.columns.template.column.cornerRadiusTopRight = 10;
+                series.columns.template.column.fillOpacity = 0.8;
+
+                // on hover, make corner radiuses bigger
+                var hoverState = series.columns.template.column.states.create(
+                    "hover");
+                hoverState.properties.cornerRadiusTopLeft = 0;
+                hoverState.properties.cornerRadiusTopRight = 0;
+                hoverState.properties.fillOpacity = 1;
+
+                series.columns.template.adapter.add("fill", function(fill, target) {
+                    return chart.colors.getIndex(target.dataItem.index);
+                });
+
+                // Cursor
+                chart.cursor = new am4charts.XYCursor();
+
+                }); // end am4core.ready()
         }
     });
 });
