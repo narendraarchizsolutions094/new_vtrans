@@ -149,8 +149,8 @@
 }
 
 #chartdiv_substage {
-    width: 100%;
-    height: 500px;
+    width: 90%;
+    height: 550px;
     margin-left:auto;
 }
 </style>
