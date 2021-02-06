@@ -1,7 +1,7 @@
 <?php
 $comp_id = 65;
 $this->db->where('comp_id',$comp_id);
-//$this->db->limit(10);
+$this->db->limit(10);
 $failurePoints = $this->db->get('tbl_ticket_subject')->result_array();
 $res = array();
 
@@ -23,7 +23,7 @@ if(!empty($failurePoints)){
     <div class="col-sm-12">
         <div  class="panel panel-default thumbnail">
  
-            <!-- <div class="panel-heading no-print">
+            <!-- <div class="panel-heading no-print">   
                 <div class="btn-group"> 
                     <a class="btn btn-primary" href="<?php // echo base_url("customer") ?>"> <i class="fa fa-list"></i>  <?php // echo display('doctor_list') ?> </a>  
                 </div>
@@ -32,7 +32,7 @@ if(!empty($failurePoints)){
 			
                 <div class="row">
                             
-                    <table class="table table-bordered">
+                    <table id="summ_table" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>
@@ -47,6 +47,7 @@ if(!empty($failurePoints)){
                                     }
                                 }
                                 ?>
+                                <th style='background:yellow;'>Grand Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,23 +60,71 @@ if(!empty($failurePoints)){
                                             $t = 1;
                                         }
                                     }
+                                    $row_total = 0;
                                     if($t){
                                         echo "<tr>";
                                         echo "<td>".$key."</td>";
                                         if(!empty($value)){
+
                                             foreach($value as $k =>$v){
                                                 echo "<td>".$v['c']."</td>";
+                                                $row_total += $v['c'];
                                             }
                                         }
+                                        echo "<td style='background:yellow'>".$row_total."</td>";
                                         echo "</tr>";
                                     }
                                 }
                             }
-                            ?>
+                            ?>                            
                         </tbody>
+                        <tfoot style="background: yellow;">
+                        <tr>
+                            <td>
+                                Grand Total
+                            </td>  
+                            <?php
+                                if(!empty($description)){
+                                    foreach($description as $key=>$value){
+                                        echo "<td></td>";
+                                    }
+                                }
+                            ?>
+                            <td></td>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
+
+
+                <div class="row">                            
+                    <table class="table table-bordered">
+
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">    
+    $(document).ready(function() {
+        $('#summ_table thead th').each(function(i) {
+            if(i){
+                calculateColumn(i);
+            }
+        });
+    });
+
+    function calculateColumn(index) {
+        var total = 0;
+        $('#summ_table tr').each(function() {
+            var value = parseInt($('td', this).eq(index).text());
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+        $('#summ_table tfoot td').eq(index).html('<b>' + total+'</b>');
+    }    
+</script>
