@@ -87,9 +87,8 @@ if(!empty($failurePoints)){
                                 }
                             }
                             ?>                            
-                        </tbody>
-                        <tfoot style="background: yellow;">
-                        <tr class="small-tr">
+                        </tbody>                        
+                        <tr class="tfoot small-tr" style="background: yellow;">
                             <td>
                                 Grand Total
                             </td>  
@@ -102,7 +101,6 @@ if(!empty($failurePoints)){
                             ?>
                             <td></td>
                         </tr>
-                        </tfoot>
                     </table>
                 </div>
 
@@ -135,6 +133,6 @@ if(!empty($failurePoints)){
                 total += value;
             }
         });
-        $('#summ_table tfoot td').eq(index).html('<b>' + total+'</b>');
+        $('#summ_table .tfoot td').eq(index).html('<b>' + total+'</b>');
     }    
 </script>
