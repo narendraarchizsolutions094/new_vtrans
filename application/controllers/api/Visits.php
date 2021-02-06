@@ -392,6 +392,26 @@ class Visits extends REST_Controller {
                ], REST_Controller::HTTP_OK);
     	}
     }
+    public function expense_master_post()
+    {
+    	$comp_id = $this->input->post('company_id');
+    	$this->form_validation->set_rules('company_id','company_id','required|trim');
+    	if($this->form_validation->run()==true)
+    	{
+         $expenselist=$this->db->select('id,title')->where(array('comp_id'=>$comp_id))->get('tbl_expenseMaster')->result();
+    		$this->set_response([
+                  'status' => true,
+                  'data' =>$expenselist,
+               ], REST_Controller::HTTP_OK);
+    	}
+    	else
+    	{
+    		$this->set_response([
+                  'status' => false,
+                  'message' =>strip_tags(validation_errors())
+               ], REST_Controller::HTTP_OK);
+    	}
+    }
 
 
     public function add_remarks_post()
