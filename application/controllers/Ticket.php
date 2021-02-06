@@ -3078,7 +3078,7 @@ class Ticket extends CI_Controller
 		}
 
 		public function daily_summary(){
-			$data['title'] = "Today's Ticket Summary (".$_GET['date'].")";
+			$data['title'] = "Ticket Summary (".$_GET['date'].")";
 
 
 
