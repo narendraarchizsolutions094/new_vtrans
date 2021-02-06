@@ -1,10 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ticket Data</title>
+    <link href="<?= base_url() ?>assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="<?= base_url() ?>" sizes="32x32" />
+    <!-- Font Awesome 4.7.0 -->
+    <link href="<?= base_url() ?>assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <!-- semantic css -->
+    <link href="<?= base_url() ?>assets/css/semantic.min.css" rel="stylesheet" type="text/css" />
+    <!-- sliderAccess css -->
+    <link href="<?= base_url() ?>assets/css/jquery-ui-timepicker-addon.min.css" rel="stylesheet"
+        type="text/css" />
+    <!-- slider  -->
+    <link href="<?= base_url() ?>assets/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <!-- DataTables CSS -->
+    <link href="<?= base_url() ?>assets/datatables/css/dataTables.min.css?v=1.0" rel="stylesheet" type="text/css" />
+    <!-- pe-icon-7-stroke -->
+    <link href="<?= base_url() ?>assets/css/pe-icon-7-stroke.css?v=1.0" rel="stylesheet" type="text/css" />
+    <!-- themify icon css -->
+    <link href="<?= base_url() ?>assets/css/themify-icons.css?v=1.0" rel="stylesheet" type="text/css" />
+    <!-- Pace css -->
+    <link href="<?= base_url() ?>assets/css/flash.css" rel="stylesheet" type="text/css" />
+    <!-- Theme style -->
+    <link href="<?= base_url() ?>assets/css/custom.css?v=1.0" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+        <!-- jQuery  -->
+    <script src="<?= base_url() ?>assets/js/jquery.min.js?v=1.0" type="text/javascript"></script>
+
+</head>
+<body>
+
 <style>
 th{
-    font-size:8px;
+    font-size:10px;
     padding:2px;
 }
 .small-tr td{
-    font-size:8px;
+    font-size:10px;
     padding:2px;
 }
 </style>
@@ -32,12 +70,12 @@ if(!empty($failurePoints)){
     <!--  form area -->
     <div class="col-sm-12">
         <div  class="panel panel-default thumbnail">
- 
-            <!-- <div class="panel-heading no-print">   
+            <h1>Ticket Summary (<?=$_GET['date']?>)</h1>
+             <div class="panel-heading no-print">   
                 <div class="btn-group"> 
-                    <a class="btn btn-primary" href="<?php // echo base_url("customer") ?>"> <i class="fa fa-list"></i>  <?php // echo display('doctor_list') ?> </a>  
+                     <a class="btn btn-primary" href="javascript:void(0)" onclick="window.history.back();"> <i class="fa fa-arrow-left"></i>  Back </a>  
                 </div>
-            </div> -->
+            </div>
             <div class="panel-body panel-form">
 			
                 <div class="row">
@@ -248,3 +286,5 @@ if(!empty($failurePoints)){
         $('#summ_table2 .tfoot td').eq(index).html('<b>' + total+'</b>');
     }    
 </script>
+</body>
+</html>
