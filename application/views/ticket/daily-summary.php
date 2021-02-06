@@ -1,7 +1,7 @@
 <?php
 $comp_id = 65;
 $this->db->where('comp_id',$comp_id);
-$this->db->limit(10);
+//$this->db->limit(10);
 $failurePoints = $this->db->get('tbl_ticket_subject')->result_array();
 $res = array();
 
