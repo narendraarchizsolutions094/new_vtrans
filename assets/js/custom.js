@@ -28,7 +28,7 @@ $(document).ready(function () {
     $('.datatable1').DataTable({ 
         //responsive: true, 
         scrollX: true,
-        scrollY: 800,
+        // scrollY: 800,
         dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp", 
         "lengthMenu": [[30, 60, 90, -1], [30, 60, 90, "All"]], 
         buttons: [  
