@@ -419,15 +419,24 @@ class Visits extends REST_Controller {
     	$comp_id = $this->input->post('company_id');
     	$enquiry_id = $this->input->post('enquiry_id');
     	$user_id = $this->input->post('user_id');
+    	$visit_id = $this->input->post('visit_id');
     	$this->form_validation->set_rules('company_id','company_id','required|trim');
-    	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
+    	$this->form_validation->set_rules('enquiry_id','enquiry_id','trim');
     	$this->form_validation->set_rules('user_id','user_id','required|trim');
 
     	if($this->form_validation->run()==true)
     	{
     		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
+    		$update_visit_data = array( 'remarks'=>$this->input->post('remarks'),
+                            'rating'=>$this->input->post('rating'),  );
+         $res = $this->db->where(array('comp_id'=>$comp_id,'user_id'=>$user_id,'id'=>$visit_id))->update('tbl_visit',$update_visit_data);
+    		   $done = 0;
+            $res = $this->db->where(array('enquiry_id'=>$enquiry_id))->get('enquiry')->row();
+            $done = 1;
 
-    		$data = array(
+            if(!empty($res))
+            {	
+                 	$data = array(
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>$this->input->post('visit_time'),
                             'remarks'=>$this->input->post('remarks'),
@@ -436,15 +445,41 @@ class Visits extends REST_Controller {
                             'user_id'=>$user_id,   
                             'enquiry_id'=>$enquiry_id
                         );
-    		$done = 0;
-            $res = $this->db->where(array('enquiry_id'=>$enquiry_id))->get('enquiry')->row();
-            if(!empty($res))
-            {	
-	            	$this->Client_Model->add_visit($data);
+
+	            	if(!empty($enquiry_id)){
+                  $this->Client_Model->add_visit($data);
 	            	$this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
+                  }
 	            $done = 1;
             }	
+               //add expense start
+                if(!empty($_POST['expense'])){
+               foreach ($_POST['expense'] as $key =>$value ) {
+                  $expense = $_POST['expense'][$key];
+                  $amount = $_POST['amount'][$key];
+                  if($_FILES['imagefile']['name'][$key]){
+                  $file_name =$_FILES['imagefile']['name'][$key];
+                  $file_size =$_FILES['imagefile']['size'][$key];
+                  $file_tmp  =$_FILES['imagefile']['tmp_name'][$key];
+                  $file_type =$_FILES['imagefile']['type'][$key];  
+                  $upload_path    =   "assets/images/user/";
+                  $finalfilename='expense_'.time().$file_name;
+                  move_uploaded_file($file_tmp,$upload_path.$finalfilename);
+                  }
+                  // visit type =2
+                  $exp_data=['type'=>2,
+                         'amount'=>$amount,
+                         'visit_id'=>$visit_id,
+                         'created_by'=>$user_id,
+                         'expense'=>$expense,
+                         'file'=>$finalfilename,
+                         'comp_id'=>$comp_id,
+                         ];
+              $this->db->insert('tbl_expense',$exp_data);
+                  }
+               }
 
+               //add expence end 
             if($done)
             {
             	
