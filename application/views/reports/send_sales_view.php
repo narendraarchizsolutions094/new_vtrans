@@ -85,10 +85,7 @@
         <div class="panel panel-default">
           
             <div class="panel-body">
-                <div class="widget-title">
-                    <div class="btn-group"> 
-                         <a class="btn btn-primary" href="<?=base_url().'ticket/daily_summary?date='.date('Y-m-d',strtotime('-1 days'))?>"> <i class="fa fa-arrow-left"></i>  Ticket Summary </a>  
-                    </div>
+                <div class="widget-title">                    
                 </div>
                 <hr>
              
