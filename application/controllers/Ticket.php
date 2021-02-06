@@ -3079,9 +3079,8 @@ class Ticket extends CI_Controller
 
 		public function daily_summary(){
 			$data['title'] = "Ticket Summary (".$_GET['date'].")";
-
-
-
+			$this->load->model('dash_model');
+			$data['process_list'] = $this->dash_model->get_user_product_list_bycompany(65);
 			$data['content'] = $this->load->view('ticket/daily-summary', $data, true);
 			$this->load->view('layout/main_wrapper', $data);			
 		}

@@ -106,8 +106,99 @@ if(!empty($failurePoints)){
 
 
                 <div class="row">                            
-                    <table class="table table-bordered">
+                    <table id="summ_table2" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">Group</th>                            
+                            <?php
+                            if($process_list){
+                                foreach($process_list as $key=>$value){
+                                    echo "<th style='text-align:center;' colspan='2'>".$value->product_name."</th>";
+                                }
+                            }
+                            ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class='head-tr' style='background:yellow;'>
+                                <td>Type Of Call</td>
+                                <?php
+                                if($process_list){
+                                    foreach($process_list as $key=>$value){
+                                        echo "<td>Count</td>";
+                                        echo "<td>%Age</td>";
+                                    }
+                                }
+                                ?>
+                            </tr>
+                            <?php
+                            
+                            $this->db->select('count(process_id) as c,process_id');
+                            $this->db->group_by('process_id');
+                            $process_count = $this->db->get('tbl_ticket')->result_array();
 
+                            if(!empty($description)){
+                                foreach($description as $key=>$value){
+                                    ?>
+                                    <tr>
+                                        <td><?=$value['description']?></td>
+                                        <?php
+                                            if($process_list){
+                                                foreach($process_list as $k=>$v){
+                                                    $this->db->select('count(ticket_substage) as c');
+                                                    $this->db->from('tbl_ticket');
+                                                    $this->db->where('company',$comp_id);
+                                                    $this->db->where('process_id',$v->sb_id);
+                                                    $this->db->where('ticket_substage',$value['id']);
+                                                    $this->db->group_by('ticket_substage');
+                                                    $r    =   $this->db->get()->row_array();
+                                                    $t = 0;
+                                                    $c = $r['c'];
+                                                    if($r['c']){
+                                                        foreach($process_count as $a=>$b){
+                                                            if($v->sb_id == $b['process_id']){
+                                                                $t = $b['c'];
+                                                            }
+                                                        }
+                                                        echo "<td>".$c."</td>";
+                                                    }else{
+                                                        $c = 0;
+                                                        echo "<td>0</td>";
+                                                    }
+                                                    ?>
+                                                    <td>
+                                                    <?php
+                                                    if($t){
+                                                        $p = ($c/$t)*100;
+                                                        echo round($p,2);
+                                                    }else{
+                                                        echo 0;
+                                                    }
+                                                    ?>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                        ?>       
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </tbody>
+                        <tr class="tfoot small-tr" style='background:yellow;'>
+                            <td>
+                                Grand Total
+                            </td> 
+                            <?php
+                            if($process_list){
+                                foreach($process_list as $key=>$value){
+                                    echo "<td></td>";
+                                    echo "<td></td>";
+                                }
+                            }
+                            ?>
+                        </tr>                       
                     </table>
                 </div>
 
@@ -134,5 +225,26 @@ if(!empty($failurePoints)){
             }
         });
         $('#summ_table .tfoot td').eq(index).html('<b>' + total+'</b>');
+    }    
+
+
+
+    $(document).ready(function() {
+        $('.head-tr td').each(function(i) {
+            if(i){
+                calculateColumn1(i);
+            }
+        });
+    });
+
+    function calculateColumn1(index) {
+        var total = 0;
+        $('#summ_table2 tr').each(function() {
+            var value = parseInt($('td', this).eq(index).text());
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+        $('#summ_table2 .tfoot td').eq(index).html('<b>' + total+'</b>');
     }    
 </script>
