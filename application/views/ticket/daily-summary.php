@@ -49,7 +49,7 @@ th{
 <?php
 $comp_id = 65;
 $this->db->where('comp_id',$comp_id);
-//$this->db->limit(10);
+$this->db->limit(10);
 $failurePoints = $this->db->get('tbl_ticket_subject')->result_array();
 $res = array();
 
@@ -172,6 +172,7 @@ if(!empty($failurePoints)){
                             <?php
                             
                             $this->db->select('count(process_id) as c,process_id');
+                            $this->db->where('date(coml_date)',$_GET["date"]);       
                             $this->db->group_by('process_id');
                             $process_count = $this->db->get('tbl_ticket')->result_array();
 
@@ -186,6 +187,7 @@ if(!empty($failurePoints)){
                                                     $this->db->select('count(ticket_substage) as c');
                                                     $this->db->from('tbl_ticket');
                                                     $this->db->where('company',$comp_id);
+                                                    $this->db->where('date(coml_date)',$_GET["date"]);       
                                                     $this->db->where('process_id',$v->sb_id);
                                                     $this->db->where('ticket_substage',$value['id']);
                                                     $this->db->group_by('ticket_substage');
@@ -231,8 +233,8 @@ if(!empty($failurePoints)){
                             <?php
                             if($process_list){
                                 foreach($process_list as $key=>$value){
-                                    echo "<td></td>";
-                                    echo "<td></td>";
+                                    echo "<td colspan='2'></td>";
+                                    // echo "<td></td>";
                                 }
                             }
                             ?>
