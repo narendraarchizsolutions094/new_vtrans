@@ -18,9 +18,12 @@
           if(user_access('1020'))
           {
           ?>
-  <div class="col-md-4 col-sm-4 col-xs-4 float-left"> 
-  <a href="<?= base_url('visit/vist-report') ?>"><button class="btn btn-primary">View Report</button></a>
+  <div class="col-md-4 col-sm-4 col-xs-4"> 
   </div>
+  <div class="col-md-4 col-sm-4 col-xs-4 "> 
+  <a style="float:right;" href="<?= base_url('visit/vist-report') ?>"><button class="btn btn-primary">View Report</button></a>
+  </div>
+ 
   <?php } ?>
 </div>
 
@@ -51,6 +54,7 @@ $("select").select2();
     </div>
 
 </div>
+
 <div class="row">
 
     <?php
@@ -123,6 +127,7 @@ $("select").select2();
            
 
     ?>
+
     <div class="col-md-12">
  <div class="form-group col-md-3">
                 <label>Travelled Distance</label>
@@ -147,10 +152,67 @@ $("select").select2();
             </div>
             </div>
 </div>
+<div class="row">
+<br>
+<br>
+<div class="col-md-12">
+<hr>
+<center>Other Expense</center>
+  <button class="btn btn-success  " style="float:right;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
+</div>
+<div class="col-md-12">
+<br>
+<table class="table table-responseive table-stripped">
+<thead >
+<tr>
+<th><input type="checkbox" class="checked_all1" value="check all"> S. No</th>
+<th>Expense Type</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<?php 
+                $user_id=$this->session->user_id;
+                $comp_id=$this->session->companey_id;
+$i=1;
+$totalexp=0;
+$expense=$this->db->select('tbl_expense.id as ids')->where(array('tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
+foreach ($expense as $key => $value) { 
+ $tamount= $value->amount
+  ?>
+<tr>
+<td><input  type="checkbox" name="approve[]" class="checkbox1" value="<?= $value->ids ?>"> <?= $i++; ?></td>
+<td><?= $value->title ?></td>
+<td><?= $value->amount ?> ₹</td>
+<td><?php  if($value->status==0){echo'<span >Pending</span>';}elseif($value->status==0){
+echo'<span style="color:green">Pending</span>';
+}else{
+  echo'<span >Reject</span>'.' ( '.$value->remarks.' )';
+} ?></td>
+<td> <?php if($value->file!=''){ ?><a href="<?= base_url('assets/images/user/'.$value->file) ?>" style="btn btn-xs btn-success" target="_BLANK"><i class="fa fa-file"></i></a> <?php } ?>
+    <a  class="btn btn-xs  btn-danger" href="<?= base_url('visit-expense/delete/'.$value->ids) ?>"><i class="fa fa-trash"></i></a>
+    
+    </td>
+</tr>
+<?php
+$totalexp += $tamount;
+} ?>
+</tbody>
+
+</table>
+<div class="col-md-12">
+<b>Total amount: <?= $totalexp; ?> ₹</b></div>
+</div>
+</div>
+<br>
+<br>
+
+<hr>
+
 <div id="map" style="width: 100%; height: 800px;"></div>
-<!-- var start = new google.maps.LatLng(37.334818, -121.884886);
-        //var end = new google.maps.LatLng(38.334818, -181.884886);
-        var end = new google.maps.LatLng(37.441883, -122.143019); -->
+
 <script>
       
        
@@ -174,7 +236,7 @@ $("select").select2();
   var mk1 = new google.maps.Marker({position: dakota, map: map});
   var mk2 = new google.maps.Marker({position: frick, map: map});
    distance = haversine_distance(mk1,mk2);
-  document.getElementById('msg').innerHTML = "Distance between markers: " + distance.toFixed(3)*1.60934 + " KM.";
+  document.getElementById('msg').innerHTML = "Distance between markers: " + distance.toFixed(0)*1.60934 + " KM.";
 
 
       }
@@ -302,44 +364,18 @@ $("select").select2();
          <label>Visit Time</label>
           <input type="time" name="visit_time" class="form-control">
         </div>
-    
+<!--     
         <div class="form-group col-md-6 distance-travelled col-md-6">     
         <label>Distance Travelled</label>
            <input type="text" name="travelled" class="form-control">
-        </div>
+        </div> -->
     
         <div class="form-group col-md-6 distance-travelled-type col-md-6">      
         <label>DISTANCE TRAVELLED TYPE</label>
            <input type="text" name="travelled_type" class="form-control">
         </div>
     
-        <div class="form-group col-md-6 customer-rating col-md-6">      
-        <label>Customer Rating</label>
-          <select class="form-control" name="rating">
-              <option value="">Select</option>
-              <option value="1 star">1 star</option>
-              <option value="2 star"> 2 star</option>
-              <option value="3 star"> 3 star</option>
-              <option value="4 star"> 4 star</option>
-              <option value="5 star"> 5 star</option>
-            </select>
-        </div>
-        
-         
-      <div class="col-md-12">
-      <label style="color:#283593;">Next Visit Information<i class="text-danger"></i></label>
-       <hr>
-      </div>
-        
-          <div class="form-group col-md-6 next-visit-date col-md-6">      
-            <label>Next Visit Date</label>
-             <input type="date" name="next_visit_date" class="form-control">
-          </div>
-      
-          <div class="form-group col-md-6 next-visit-location col-md-6">      
-           <label>Next Visit Location</label>
-             <input type="text" name="next_location" class="form-control">
-          </div>
+       
                   
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
@@ -356,3 +392,133 @@ $("select").select2();
       </div>
    </div>
 </div>   
+
+<div id="add_expense" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title">Add Expense</h4>
+         </div>
+         <div class="modal-body">
+            <form  action="<?php echo base_url(); ?>client/add_expense" method="POST" enctype='multipart/form-data'>  
+            <div class="row">
+            <table class="table table-responsive">
+                  <thead>
+                  <th>Title</th>
+                  <th>Amount</th>
+                  <th>File(if any)</th>
+                  <th><input type="button" value="+ " id="add" class="btn btn-primary"></th>
+                  </thead>
+                  <tbody class="detail">
+                  <tr>
+                  <td width="30%">
+           <select name="expense[]" class="form-control">
+           <?php 
+           $expenselist=$this->db->where(array('comp_id'=>$this->session->companey_id))->get('tbl_expenseMaster')->result();
+           foreach ($expenselist as $key => $value) { ?>
+            <option value="<?= $value->id ?>"> <?= $value->title ?></option>
+          <?php } ?>
+           </select> 
+          <input name="visit_id" class="form-control" value="<?= $details->visit_id ?>" hidden>
+          </td>
+                  <td width="30%">
+                  <input name="amount[]" class="form-control amount" onkeyup="total()" id="amount" value="0"  >
+                  </td>
+                  <td width="30%">
+                  <input name="imagefile[]"  class="form-control" onchange="Filevalidation(this)"  type="file"  >
+                  </td>
+                  <td width="10%"><a href="javascript:void(0)" class="remove btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                  </tr>
+                  </tbody>
+            <tfoot>
+            <tr>
+            
+            <th style="text-align:right">Total: </th>
+            <th id="total" class="total"></th><th></th>
+            <th></th></tr></tfoot>
+            </table>
+          
+            </div>
+               <br>
+               <button class="btn btn-sm btn-success" type="submit">
+              Add Expense</button>                    
+               <br>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
+<script>
+$(function() {
+    $('#add').click(function() {
+      addnewrow();
+    });
+    $('body').delegate('.remove', 'click', function() {
+      $(this).parent().parent().remove();
+    });
+    $('body').delegate('.qtys,.price', 'keyup', function() {
+      var tr = $(this).parent().parent();
+    });
+  });
+//   $( "#amount" ).keypress(function() {
+//     var t = 0;
+//     $('#amount').each(function(i, e) {
+//       var amount = $(this).val() - 0;
+//       t += amount;
+//     });
+//     $('#total').html(t);
+//     alert(t);
+// });
+
+  function total() {
+    var t = 0;
+    $('.amount').each(function(i, e) {
+      var amount = $(this).val() - 0;
+      t += amount;
+    });
+    $('.total').html(t);
+  }
+  function Filevalidation(t)  {
+    var filesize =t.files[0].size;
+    filesize=filesize/1024;
+   var filesizeinkb= filesize.toFixed(0);
+    // alert(filesizeinkb);
+
+    if(filesizeinkb > 1024){
+   alert('File Size not exceed ');
+    }
+	}
+  function addnewrow() {
+    var n = ($('.detail tr').length - 0) + 1;
+    var s = n + 3
+    var r = n + 1
+    var tr = '<tr>' + '<td width="30%"><select name="expense[]" class="form-control"><?php foreach ($expenselist as $key => $value) { ?><option value="<?= $value->id ?>"><?= $value->title ?></option><?php } ?></select></td>'+'<td width="30%"><input id="amount'+n+'" class="form-control amount" name="amount[]"  onkeyup="total()"></td>'+'<td width="30%"><input name="imagefile[]" class="form-control " onchange="Filevalidation(this)"  id="file'+n+'" type="file"  ></td>'+'<td width="10%"><a href="javascript:void(0)" class="remove btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>' + '</tr>';
+    $('.detail').append(tr);
+    // $.getScript("https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js");
+    document.getElementById('amount' + n).addEventListener('keydown', function(e) {
+      var key = e.keyCode ? e.keyCode : e.which;
+      if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+          (key == 65 && (e.ctrlKey || e.metaKey)) ||
+          (key >= 35 && key <= 40) ||
+          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+          (key >= 96 && key <= 105)
+        )) e.preventDefault();
+    });
+     
+
+  }
+  document.getElementById('amount').addEventListener('keydown', function(e) {
+      var key = e.keyCode ? e.keyCode : e.which;
+      if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+          (key == 65 && (e.ctrlKey || e.metaKey)) ||
+          (key >= 35 && key <= 40) ||
+          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+          (key >= 96 && key <= 105)
+        )) e.preventDefault();
+    });
+  </script>

@@ -526,6 +526,58 @@ public function document_templates()
 	$data['content'] = $this->load->view('setting/document-templates',$data,true);
 	$this->load->view('layout/main_wrapper',$data);
 }
+public function expensemaster()
+{		
+	// if (user_role('e34') == true) {
+	// }
+
+	$data['page_title'] = 'Expense Master List';
+	$data['list']=$this->db->where(array('comp_id'=>$this->session->companey_id))->get('tbl_expenseMaster')->result();
+	$data['content'] = $this->load->view('setting/expense',$data,true);
+	$this->load->view('layout/main_wrapper',$data);
+}
+public function add_expense()
+{
+	if($_POST){
+		$title=$this->input->post('title');
+		$status=$this->input->post('status');
+		$expense_id=$this->input->post('expense_id');
+		if(!empty($expense_id)){
+			$comp_id=$this->session->companey_id;
+			$data=['title'=>$title,'status'=>$status];
+			$this->db->where(array('comp_id'=>$comp_id,'id'=>$expense_id))->update('tbl_expenseMaster',$data);
+			$this->session->set_flashdata('message','Expense Updated');
+			redirect('setting/expense-master');
+		}else{
+		$comp_id=$this->session->companey_id;
+		$data=['title'=>$title,'status'=>$status,'comp_id'=>$comp_id,'created_by'=>$this->session->user_id];
+		$this->db->insert('tbl_expenseMaster',$data);
+		$this->session->set_flashdata('message','Expense Added');
+	    redirect('setting/expense-master');
+		}
+	}
+}
+public function delete_expense()
+{
+
+	$id=$this->uri->segment('3');
+	if(!empty($id)){
+		$comp_id=$this->session->companey_id;
+		$this->db->where(array('comp_id'=>$comp_id,'id'=>$id))->delete('tbl_expenseMaster');
+		$this->session->set_flashdata('message','Expense Deleted');
+	    redirect('setting/expense-master');
+	}
+}
+public function visit_expense_delete()
+{
+	$id=$this->uri->segment('3');
+	if(!empty($id)){
+		$comp_id=$this->session->companey_id;
+		$this->db->where(array('comp_id'=>$comp_id,'id'=>$id))->delete('tbl_expense');
+		$this->session->set_flashdata('message','Expense Deleted');
+		redirect($this->agent->referrer());
+	}
+}
 public function createdocument_templates()
 {		
 	if (user_role('e33') == true) {

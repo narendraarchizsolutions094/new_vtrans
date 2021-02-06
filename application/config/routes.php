@@ -292,6 +292,7 @@ $route['report-view/:any/:any'] = 'report/send_sales_view/$i/$i';
 $route['visits/visit_details/:any'] = 'client/visit_details/$i';
 $route['visit/vist-report'] = 'client/report/';
 $route['setting/expense-master'] = 'setting/expenseMaster/';
+$route['visit-expense/delete'] = 'setting/visit_expense_delete/';
 
 
 $route['404_override']            = '';

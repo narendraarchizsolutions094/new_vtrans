@@ -1723,7 +1723,41 @@ public function view_editable_aggrement()
         }
        $this->load->view('layout/main_wrapper',$data);
     }
+   public function add_expense()
+   {
+                $visit_id= $this->input->post('visit_id');
+                $vd_id= $this->input->post('id');
+                $finalfilename='';
+                $uid=$this->session->user_id;
+                $comp_id=$this->session->companey_id;
+				foreach ($_POST['expense'] as $key =>$value ) {
+                        $expense = $_POST['expense'][$key];
+                        $amount = $_POST['amount'][$key];
+                        if($_FILES['imagefile']['name'][$key]){
+                        $file_name =$_FILES['imagefile']['name'][$key];
+                        $file_size =$_FILES['imagefile']['size'][$key];
+                        $file_tmp  =$_FILES['imagefile']['tmp_name'][$key];
+                        $file_type =$_FILES['imagefile']['type'][$key];  
+                        $upload_path    =   "assets/images/user/";
+                        $finalfilename='expense_'.time().$file_name;
+                        move_uploaded_file($file_tmp,$upload_path.$finalfilename);
+                        }
+                        // visit type =2
+                        $data=['type'=>2,
+                               'amount'=>$amount,
+                               'visit_id'=>$visit_id,
+                               'created_by'=>$uid,
+                               'expense'=>$expense,
+                               'file'=>$finalfilename,
+                               'comp_id'=>$comp_id,
+                               ];
+                    $this->db->insert('tbl_expense',$data);
 
+                }
+            	$this->session->set_flashdata('message', 'Travel Expense Added');
+                redirect('/visits/visit_details/'.$visit_id.'');     
+
+   }
 
     public function deals($specific=0)
     { 
