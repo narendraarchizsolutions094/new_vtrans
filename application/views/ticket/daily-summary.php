@@ -1,3 +1,13 @@
+<style>
+th{
+    font-size:8px;
+    padding:2px;
+}
+.small-tr td{
+    font-size:8px;
+    padding:2px;
+}
+</style>
 <?php
 $comp_id = 65;
 $this->db->where('comp_id',$comp_id);
@@ -32,7 +42,7 @@ if(!empty($failurePoints)){
 			
                 <div class="row">
                             
-                    <table id="summ_table" class="table table-bordered">
+                    <table id="summ_table" class="datatable1 table table-bordered">
                         <thead>
                             <tr>
                                 <th>
@@ -62,16 +72,16 @@ if(!empty($failurePoints)){
                                     }
                                     $row_total = 0;
                                     if($t){
-                                        echo "<tr>";
-                                        echo "<td>".$key."</td>";
+                                        echo "<tr class='small-tr'>";
+                                        echo "<td style='font-size:8px;'>".$key."</td>";
                                         if(!empty($value)){
 
                                             foreach($value as $k =>$v){
-                                                echo "<td>".$v['c']."</td>";
+                                                echo "<td style='font-size:8px;'>".$v['c']."</td>";
                                                 $row_total += $v['c'];
                                             }
                                         }
-                                        echo "<td style='background:yellow'>".$row_total."</td>";
+                                        echo "<td style='background:yellow;font-size:8px;'>".$row_total."</td>";
                                         echo "</tr>";
                                     }
                                 }
@@ -79,7 +89,7 @@ if(!empty($failurePoints)){
                             ?>                            
                         </tbody>
                         <tfoot style="background: yellow;">
-                        <tr>
+                        <tr class="small-tr">
                             <td>
                                 Grand Total
                             </td>  
