@@ -573,7 +573,10 @@ public function visit_expense_delete()
 	$id=$this->uri->segment('3');
 	if(!empty($id)){
 		$comp_id=$this->session->companey_id;
-		$this->db->where(array('comp_id'=>$comp_id,'id'=>$id))->delete('tbl_expense');
+		// $expense=$this->db->where(array('comp_id'=>$comp_id,'id'=>$id))->get('tbl_expense')->row();
+		// $file=$expense->file;
+		$user_id=$this->session->user_id;
+		$this->db->where(array('comp_id'=>$comp_id,'id'=>$id,'created_by'=>$user_id))->delete('tbl_expense');
 		$this->session->set_flashdata('message','Expense Deleted');
 		redirect($this->agent->referrer());
 	}

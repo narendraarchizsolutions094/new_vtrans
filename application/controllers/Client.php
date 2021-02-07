@@ -1758,6 +1758,35 @@ public function view_editable_aggrement()
                 redirect('/visits/visit_details/'.$visit_id.'');     
 
    }
+public function update_expense_status()
+{
+    if($_POST)
+    {
+        $comp_id=$this->session->companey_id;
+        $user_id=$this->session->user_id;
+    foreach ($_POST['exp_ids'] as $key => $value) {
+        // echo $value;
+        $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
+        print_r($value);
+        $this->db->where(array('comp_id'=>$comp_id,'id'=>$value))->update('tbl_expense',$data);
+    }
+            }
+}
+public function all_update_expense_status()
+{
+    if($_POST)
+    {
+        $comp_id=$this->session->companey_id;
+        $user_id=$this->session->user_id;
+        $visit_id=$this->session->visit_id;
+    foreach ($_POST['exp_ids'] as $key => $value) {
+        // echo $value;
+        $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
+        // print_r($data);
+        $this->db->where(array('comp_id'=>$comp_id,'id'=>$visit_id))->update('tbl_expense',$data);
+    }
+            }
+}
 
     public function deals($specific=0)
     { 
