@@ -1805,9 +1805,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                       <tbody>
                      </tbody>
                   </table>
-
-
-               </div>
+             </div>
  <script>             
 function update_info_status(id,status)
 {
@@ -2069,7 +2067,8 @@ if(user_access('1004'))
 
 <div class="tab-pane" id="vtransaggrement">
  <hr>
-<!--  
+
+<div style="max-width: 100%;">
 <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
   <thead>
     <tr>
@@ -2103,21 +2102,24 @@ if(user_access('1004'))
 
     <?php $i++;} ?>
   </tbody>
-</table>  -->
- 
- 
-<!--  <script>
+</table> 
+</div>
+  <script>
      $(document).ready(function () {
-  $('#dtBasicExample').DataTable();
+  $('#dtBasicExample').DataTable({"scrollX": true});
   $('.dataTables_length').addClass('bs-select');
 });
- </script> -->
-
+ </script> 
+<?php
+$unique_file_name = 'Qutotation_'.date('Y_m_d_H_i_s').'_'.rand(1111,9999).'.pdf';
+?>
+<div class="row" style="padding: 16px 0px;">
 <form target="_blank" action="<?=base_url('client/create_agreement_pdf')?>" method="post">
+  <input type="hidden" name="file_name" value="<?=$unique_file_name?>">
 <div class="col-md-8">
   <div class="form-group">
   <label>Genereate Agreement</label>
-  <select class="form-control"  name="deal_id"> 
+  <select class="form-control"  name="deal_id" required> 
     <option value="">Select Deal</option>
    <?php
    $ci = &get_instance();
@@ -2155,6 +2157,7 @@ if(user_access('1004'))
   </div>       
 </div>
 </form>
+</div>
  
 <!--  <script type="text/javascript">
    function loadAggrement()
@@ -2189,6 +2192,7 @@ if(user_access('1004'))
 </style>
  -->
  <form class="" action="<?php echo base_url()?>client/create_aggrement/<?php echo $this->uri->segment(3); ?>" id="" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="file_name" value="<?=$unique_file_name?>">
             <div class="col-md-12 col-sm-12">        
                   <div class="row">                      
                     <div class="form-group col-sm-10">
