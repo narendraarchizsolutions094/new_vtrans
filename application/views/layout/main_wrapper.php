@@ -1304,9 +1304,15 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                 </a>
                             </li>
                         <?php } //} ?>
+                    
+                    <?php } ?>
+                    <?php    if(user_access('1020') || user_access('1021') || user_access('1022'))
+                { ?>
+                        <li class="<?=($segment2=="expense-master")?"active":''?>">
+                                <a href="<?php echo base_url('setting/expense-master'); ?>">Expense Master</a>
+                            </li>
                         </ul>
                     </li>
-
                     <?php } ?>
                     <!--    <li class="treeview <?php echo (($segment1 == "inventory") ? "active" : null) ?>"  style="<?php if(in_array(280,$module) || in_array(281,$module) || in_array(282,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                      <a href="#">
