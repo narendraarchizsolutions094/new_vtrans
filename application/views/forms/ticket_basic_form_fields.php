@@ -78,7 +78,7 @@ echo'<div class="trackingDetails"></div>';
                         }
                     });
 
-                    
+                    if("<?=$this->session->process[0]?>"!=199){
                     function loadTracking(that)
                       { //alert(key);
                         if(that.value=='')
@@ -113,6 +113,7 @@ echo'<div class="trackingDetails"></div>';
                           tracking_no_check(that.value);
                         }
                       }
+                    }
 
                       function match_previous(tracking_no)
                       { 
