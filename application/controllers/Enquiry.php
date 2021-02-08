@@ -3630,4 +3630,18 @@ echo  $details1;
          else 
              redirect(base_url('client/view/'.$enq_id));
     }
+
+    public function suggest_company()
+    {
+        $key = $this->input->post('search');
+        $this->load->model('Client_Model');
+        $company_id = $this->session->companey_id;
+        $user_id = $this->session->user_id;
+        $process = $this->session->process;
+        $res = $this->Client_Model->getCompanyList($key,$company_id,$user_id,$process,'data',10,0)->result_array();
+        
+        $abc = array_column($res,'company');
+
+        echo json_encode($abc);
+    }
 }
