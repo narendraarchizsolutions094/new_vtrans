@@ -158,14 +158,15 @@ $("select").select2();
 <div class="col-md-12">
 <hr>
 <center>Other Expense</center>
-  <button class="btn btn-success  " style="float:right;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
+&nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Expense Approval</button> 
+  <button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
 </div>
 <div class="col-md-12">
 <br>
 <table class="table table-responseive table-stripped">
 <thead >
 <tr>
-<th><input type="checkbox" class="checked_all1" value="check all"> S. No</th>
+<th><input type="checkbox" name="approve_all" class="checked_all1" value="check all"> S. No</th>
 <th>Expense Type</th>
 <th>Amount</th>
 <th>Status</th>
@@ -178,7 +179,7 @@ $("select").select2();
                 $comp_id=$this->session->companey_id;
 $i=1;
 $totalexp=0;
-$expense=$this->db->select('tbl_expense.id as ids')->where(array('tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
+$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
 foreach ($expense as $key => $value) { 
  $tamount= $value->amount
   ?>
@@ -186,24 +187,26 @@ foreach ($expense as $key => $value) {
 <td><input  type="checkbox" name="approve[]" class="checkbox1" value="<?= $value->ids ?>"> <?= $i++; ?></td>
 <td><?= $value->title ?></td>
 <td><?= $value->amount ?> ₹</td>
-<td><?php  if($value->status==0){echo'<span >Pending</span>';}elseif($value->status==0){
-echo'<span style="color:green">Pending</span>';
-}else{
-  echo'<span >Reject</span>'.' ( '.$value->remarks.' )';
+<td><?php  if($value->approve_status==0){echo'<span >Pending</span>';}elseif($value->approve_status==2){
+echo'<span style="color:green">Accepted'.' ( '.$value->remarks.' ) </span>';
+}elseif($value->approve_status==1){
+  echo'<span style="color:red">Rejected'.' ( '.$value->remarks.' ) </span>';
 } ?></td>
 <td> <?php if($value->file!=''){ ?><a href="<?= base_url('assets/images/user/'.$value->file) ?>" style="btn btn-xs btn-success" target="_BLANK"><i class="fa fa-file"></i></a> <?php } ?>
-    <a  class="btn btn-xs  btn-danger" href="<?= base_url('visit-expense/delete/'.$value->ids) ?>"><i class="fa fa-trash"></i></a>
-    
+  <?php if($value->approve_status==0){ ?>  <a  class="btn btn-xs  btn-danger" href="<?= base_url('visit-expense/delete/'.$value->ids) ?>"><i class="fa fa-trash"></i></a>
+    <?php } ?>
     </td>
 </tr>
 <?php
+if($value->approve_status==2){
 $totalexp += $tamount;
+}
 } ?>
 </tbody>
 
 </table>
 <div class="col-md-12">
-<b>Total amount: <?= $totalexp; ?> ₹</b></div>
+<b>Total Payable Expense: <?= $totalexp; ?> ₹</b></div>
 </div>
 </div>
 <br>
@@ -393,6 +396,46 @@ $totalexp += $tamount;
    </div>
 </div>   
 
+<div id="approve_expense" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title">Update Expense Approval</h4>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12">
+            <div class="form-group">
+              <label>Status</label>
+             <select id="approve_status" name="approve_status" class="form-control">
+               <option value="2">Approve</option>
+               <option value="1">Reject</option>
+             </select>
+            </div>
+            </div>
+          <input id="visit_id" class="form-control"  value="<?= $details->visit_id ?>" hidden>
+
+            <div class="col-md-12">
+            <div class="form-group">
+            <label>Remarks</label>
+
+            <textarea class="form-control" name="remarks" id="remarks" cols="4"></textarea>
+            </div>
+            </div>
+            </div>
+               <br>
+               <button class="btn btn-sm btn-success" type="submit" onclick="expense_status();">
+              Update Expense</button>                    
+               <br>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
 <div id="add_expense" class="modal fade in" role="dialog">
    <div class="modal-dialog">
       <!-- Modal content-->
@@ -521,4 +564,40 @@ $(function() {
           (key >= 96 && key <= 105)
         )) e.preventDefault();
     });
+
+    function expense_status(){
+      var x = new Array(); 
+      
+      $($(".checkbox1:checked")).each(function(k,v){
+        x.push($(v).val());
+      });
+      // alert(x.toString());
+       approve_status = document.getElementById("approve_status").value;
+       remarks = document.getElementById("remarks").value;
+      $.ajax({
+              type: 'POST',
+              url: '<?= base_url('client/update_expense_status') ?>',
+              data: {exp_ids:x,status:approve_status,remarks:remarks},
+              success:function(data){
+               alert(data);
+               location.reload();
+              } 
+              });
+
+    }
+    function checkallexpense_status(){
+      approve_status = document.getElementById("approve_status").value;
+       remarks = document.getElementById("remarks").value;
+       visit_id = document.getElementById("visit_id").value;
+      $.ajax({
+              type: 'POST',
+              url: '<?= base_url('client/all_update_expense_status') ?>',
+              data: {status:approve_status,remarks:remarks,visit_id:visit_id},
+              success:function(data){
+               alert(data);
+               location.reload();
+              } 
+              });
+    }
+
   </script>

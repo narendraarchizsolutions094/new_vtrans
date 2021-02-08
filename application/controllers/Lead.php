@@ -228,8 +228,7 @@ class Lead extends CI_Controller
         {
             $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
             $data['CommercialInfo'] = $this->enquiry_model->getComInfo($enquiry_id);
-            //print_r($data['CommercialInfo']); exit();
-            //fetch last entry
+          
             $comm_data=$this->db->where(array('enquiry_id'=>$enquiry_id))->order_by('id',"desc")
             ->limit(1)->get('commercial_info');
             $data['commInfoCount']=$comm_data->num_rows();

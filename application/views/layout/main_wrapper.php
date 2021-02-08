@@ -1274,6 +1274,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     Branch List
                                 </a>
                             </li>
+                            <li class="<?php echo (in_array($segment2,array('branchList')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/add_vehicle_type">
+                                    Vehicle List
+                                </a>
+                            </li>
                             <li class="<?php echo (in_array($segment2,array('competitorList')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/competitorList">
                                 Competitor List
@@ -1285,6 +1290,21 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                 class="<?php echo (in_array($segment2,array('branch_ratelist','editbranchrate')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/branch_ratelist">
                                     Branch Rate List
+                                </a>
+                            </li>
+                            <li class="<?php echo (in_array($segment2,array('discount_matrix')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/discount_matrix">
+                                    Grade Master 
+                                </a>
+                            </li>
+                            <li class="<?php echo (in_array($segment2,array('oda_matrix')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/oda_matrix">
+                                   ODA Matrix 
+                                </a>
+                            </li>
+                            <li class="<?php echo (in_array($segment2,array('bank_details')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/bank_details">
+                                   Bank Details 
                                 </a>
                             </li>
                             <?php }  if (user_access('e34')) {  ?>

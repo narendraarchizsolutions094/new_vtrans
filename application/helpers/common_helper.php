@@ -259,7 +259,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             {
                 $Ary = $ci->db->select('pk_i_admin_id')->from('tbl_admin')->where('s_user_email',"$value")->where('companey_id',$ci->session->companey_id)->get()->row();
             }
-            
         }
         else
         {   
@@ -267,7 +266,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             {
                 $Ary = $ci->db->select('pk_i_admin_id')->from('tbl_admin')->where('s_phoneno',"$value")->where('companey_id',$ci->session->companey_id)->get()->row();
             }
-            
         }
         return (!empty($Ary)) ? "yes" : 'no';
     }

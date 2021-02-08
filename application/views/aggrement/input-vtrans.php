@@ -335,10 +335,31 @@
                     the FIRST PART.</span></div>
             <div style="position:absolute;left:275.60px;top:220.29px" class="cls_002"><span class="cls_002">AND</span>
             </div>
-            <div style="position:absolute;left:41.38px;top:233.49px" class="cls_003"><span class="cls_003">M/s</span>
+            <div style="position:absolute;left:41.38px;top:233.49px; width:520px;" class="cls_003"><span class="cls_003">M/s &nbsp;&nbsp; <?=empty($_POST['ms'])?'<input name="at" style="
+    top: 0;
+    margin-left: 0px;
+    width: 475px;
+    font-family: arial;
+    font-size: 12px;" type="text" >':'<div class="dynamic_input"  style="
+    margin-top: 3px;
+    margin-left: 2px;
+    width: 475px;
+    display:inline-block;
+    font-family: arial;
+    font-size: 11px;">'.$_POST['ms'].'</div> <input name="ms" type="hidden" value="'.$_POST['ms'].'">'?></span>
             </div>
-            <div style="position:absolute;left:41.38px;top:246.69px" class="cls_003"><span class="cls_003">Registered
-                    Address:</span></div>
+            <div style="position:absolute;left:41.38px;top:246.69px" class="cls_003"><span class="cls_003">Registered Address: &nbsp;&nbsp; <?=empty($_POST['reg_add'])?'<input name="at" style="
+    top: 0;
+    margin-left: 0px;
+    width: 403px;
+    font-family: arial;
+    font-size: 12px;" type="text" >':'<div class="dynamic_input"  style="
+    margin-top: 3px;
+    margin-left: 2px;
+    width: 403px;
+    display:inline-block;
+    font-family: arial;
+    font-size: 11px;">'.$_POST['reg_add'].'</div> <input name="reg_add" type="hidden" value="'.$_POST['reg_add'].'">'?></span></div>
             <div style="position:absolute;left:41.38px;top:286.29px" class="cls_003"><span class="cls_003">(hereinafter
                     referred to as “Customer”, which shall, unless repugnant to the context or meaning thereof shall
                     include</span></div>
@@ -504,8 +525,7 @@
 
                 </span></div>
 
-            <div style="position:absolute;left:45.69px;top:724.60px" class="cls_002"><span class="cls_002">For V Trans
-                    (India) Limited</span></div>
+            <div style="position:absolute;left:45.69px;top:724.60px" class="cls_002"><span class="cls_002">For V Trans (India) Limited</span></div>
             <div style="position:absolute;left:296.73px;top:724.60px" class="cls_002"><span
                     class="cls_002">Customer</span></div>
             <div style="position:absolute;left:45.69px;top:768.59px" class="cls_002"><span class="cls_002">Name:
@@ -636,7 +656,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][0])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][0])?'<input name="ip[0]" style="
 	top: 0;
     margin-left:0;
    	width: 240px;
@@ -646,7 +666,7 @@
     margin-left:0;
    	width: 240px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][0].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][0].'">'?>
+    font-size: 11px;">'.$_POST['ip'][0].'</div> <input name="ip[0]" type="hidden"  value="'.$_POST['ip'][0].'">'?>
                 </span></div>
             <div style="position:absolute;left:44.47px;top:245.67px" class="cls_005"><span class="cls_005">2)
                     <!-- <input style="    
@@ -656,7 +676,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][1])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][1])?'<input name="ip[1]" style="
 	top: 0;
     margin-left:0;
    	width: 240px;
@@ -666,7 +686,7 @@
     margin-left:0;
    	width: 240px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][1].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][1].'">'?>
+    font-size: 11px;">'.$_POST['ip'][1].'</div> <input name="ip[1]" type="hidden"  value="'.$_POST['ip'][1].'">'?>
                 </span></div>
             <div style="position:absolute;left:44.47px;top:260.17px" class="cls_005"><span class="cls_005">3)
                     <!-- <input style="    
@@ -676,7 +696,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][2])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][2])?'<input name="ip[2]" style="
 	top: 0;
     margin-left:0;
    	width: 240px;
@@ -686,7 +706,7 @@
     margin-left:0;
    	width: 240px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][2].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][2].'">'?>
+    font-size: 11px;">'.$_POST['ip'][2].'</div> <input name="ip[2]" type="hidden"  value="'.$_POST['ip'][2].'">'?>
                 </span></div>
             <div style="position:absolute;left:42.65px;top:288.00px" class="cls_002"><span class="cls_002">4. INSURANCE
                     AND CLAIM DETAIL - TERMS & CONDITION:</span></div>
@@ -699,7 +719,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][3])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][3])?'<input name="ip[3]" style="
 	top: 0;
     margin-left:0;
    	width:39px;
@@ -709,7 +729,7 @@
     margin-left:0;
    	width:39px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][3].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][3].'">'?>
+    font-size: 11px;">'.$_POST['ip'][3].'</div> <input name="ip[3]" type="hidden"  value="'.$_POST['ip'][3].'">'?>
                     )
                     Carrier Risk
                 </span></div>
@@ -723,7 +743,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][4])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][4])?'<input name="ip[4]" style="
 	top: 0;
     margin-left:0;
    	width:39px;
@@ -733,14 +753,14 @@
     margin-left:0;
    	width:39px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][4].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][4].'">'?>
+    font-size: 11px;">'.$_POST['ip'][4].'</div> <input name="ip[4]" type="hidden"  value="'.$_POST['ip'][4].'">'?>
                     )
                 </span></div>
             <div style="position:absolute;left:53.65px;top:318.71px" class="cls_004"><span class="cls_004">b) Goods
                     Insured (Yes/No) Name of Insurance company:
                     
 
-                    <?=empty($_POST['ip'][5])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][5])?'<input name="ip[5]" style="
 	top: 0;
     margin-left:3;
    	width:236px;
@@ -750,12 +770,12 @@
     margin-left:3;
    	width:236px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][5].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][5].'">'?>
+    font-size: 11px;">'.$_POST['ip'][5].'</div> <input name="ip[5]" type="hidden"  value="'.$_POST['ip'][5].'">'?>
                 </span></div>
             <div style="position:absolute;left:68.34px;top:331.91px" class="cls_004"><span class="cls_004">
                    
 
-                    <?=empty($_POST['ip'][6])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][6])?'<input name="ip[6]" style="
 	top: 0;
     margin-left:0;
    	width:100px;
@@ -765,11 +785,11 @@
     margin-left:0;
    	width:100px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][6].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][6].'">'?>
+    font-size: 11px;">'.$_POST['ip'][6].'</div> <input name="ip[6]" type="hidden"  value="'.$_POST['ip'][6].'">'?>
 
                     Marine policy No. (
                     
-                    <?=empty($_POST['ip'][7])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][7])?'<input name="ip[7]" style="
 	top: 0;
     margin-left:0;
    	width:100px;
@@ -779,12 +799,12 @@
     margin-left:0;
    	width:100px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][7].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][7].'">'?>
+    font-size: 11px;">'.$_POST['ip'][7].'</div> <input name="ip[7]" type="hidden"  value="'.$_POST['ip'][7].'">'?>
 
                     ) Validity (From
                    
 
-                    <?=empty($_POST['ip'][8])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][8])?'<input name="ip[8]" style="
 	top: 0;
     margin-left:0;
    	width:50px;
@@ -794,13 +814,13 @@
     margin-left:0;
    	width:50px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][8].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][8].'">'?>
+    font-size: 11px;">'.$_POST['ip'][8].'</div> <input name="ip[8]" type="hidden"  value="'.$_POST['ip'][8].'">'?>
 
                     To
                     
 
 
-                    <?=empty($_POST['ip'][9])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][9])?'<input name="ip[9]" style="
 	top: 0;
     margin-left:0;
    	width:50px;
@@ -810,7 +830,7 @@
     margin-left:0;
    	width:50px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][9].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][9].'">'?>
+    font-size: 11px;">'.$_POST['ip'][9].'</div> <input name="ip[9]" type="hidden"  value="'.$_POST['ip'][9].'">'?>
 
                     )
                 </span></div>
