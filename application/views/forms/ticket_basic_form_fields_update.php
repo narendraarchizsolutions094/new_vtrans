@@ -71,6 +71,7 @@ echo'
                     ?>
                    
                    <script type="text/javascript">
+                    if("<?=$ticket->process_id?>"!=199){
                                         
                     function loadTracking(that)
                       { //alert(key);
@@ -106,6 +107,7 @@ echo'
                           });
                         }
                       }
+                    }
 
                       function match_previous(tracking_no)
                       { 
