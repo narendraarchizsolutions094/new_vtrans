@@ -61,7 +61,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 	<div class="col-lg-3"  >
         <div class="form-group">
           <label>From</label>
-          <input class="v_filter form-control form-date" name="v_from_date" >
+          <input class="v_filter form-control form-date" name="from_date" >
        
         </div>
     </div>
@@ -69,7 +69,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
       <div class="col-lg-3" id="tofilter">
         <div class="form-group">
           <label>To</label>
-           <input  class="v_filter form-control form-date" name="v_to_date" >
+           <input  class="v_filter form-control form-date" name="to_date" >
         </div>
       </div>
 </div>
@@ -104,8 +104,10 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
             </select>
         </div>
     </div>
+    
 </div>
 <script>
+
   $(document).ready(function(){
 	 $("#save_advance_filters").on('click',function(e){
 	  e.preventDefault();
@@ -154,26 +156,25 @@ $('input[name="filter_checkbox"]').click(function(){
 		}
 		
 });
-		
 
 </script>
 <br>
 	<div class="row" >
+
 	<div class="col-lg-12" >
 
-				<table id="visit_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
+				<table id="datatable" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
 				      <thead>
 				        <tr>
 				          <th>#</th>
 				          <th id="th-1">Visit Date</th>
 				          <th id="th-2">Visit Time</th>
 				          <th id="th-3">Name</th>
-				          <th id="th-4">Distance Travelled</th>
-				          <th id="th-5">Travelled Type</th>
+				          <th id="th-10">Company Name</th>
+				          <th id="th-4">Actual Distance</th>
+				          <th id="th-5">Ideal Distance</th>
 				          <th id="th-6">Rating</th>
-				          <th id="th-7">Next Visit Date</th>
-                  <th id="th-10">Next Visit Time</th>
-				          <th id="th-8">Next Visit Location</th>
+				          <th id="th-11" >Diffrence</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
@@ -182,6 +183,8 @@ $('input[name="filter_checkbox"]').click(function(){
     			</table>
 	</div>
 </div>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<!-- https://code.jquery.com/jquery-3.5.1.js -->
 
 <script type="text/javascript">
 
@@ -195,12 +198,27 @@ $(".v_filter").change(function(){
   // Data["to_date"] = obj[1]["value"];
   // Data["from_time"] = obj[2]["value"];
   // Data["to_time"] = obj[3]["value"];
- $("#visit_table").DataTable().ajax.reload(); 
+ $("#datatable").DataTable().ajax.reload(); 
 });
-
+$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var min = parseInt( $('#min').val(), 10 );
+        var max = parseInt( $('#max').val(), 10 );
+        var age = parseFloat( data[8] ) || 0; // use data for the age column
+ alert('q');
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && age <= max ) ||
+             ( min <= age   && isNaN( max ) ) ||
+             ( min <= age   && age <= max ) )
+        {
+            return true;
+        }
+        return false;
+    }
+);
 $(document).ready(function(){
 
-  $('#visit_table').DataTable({ 
+var table  =$('#datatable').DataTable({ 
 
           "processing": true,
           "scrollX": true,
@@ -222,13 +240,20 @@ $(document).ready(function(){
                     if(c && c!='')
                       d.allow_cols = c;
 
-                     console.log(JSON.stringify(d));
+                    //  console.log(JSON.stringify(d));
                     return d;
               }
           },
+          
   });
 
+  $('#min, #max').keyup( function() {
+        // table.draw();
+        table.draw();
+    } );
 });
+
+
 
 $("select").select2();
 
@@ -253,7 +278,67 @@ $(document).delegate('.visit-delete', 'click', function() {
         }
      });  
 </script>  
+<div id="add_expense" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title">Add Expense</h4>
+         </div>
+         <div class="modal-body">
+            <form  action="<?php echo base_url(); ?>client/add_expense" method="POST" enctype='multipart/form-data'>  
+            <div class="row">
+          <input id="visit_id" class="form-control visit_id" name="visit_id"  value="0" hidden>
 
+            <table class="table table-responsive">
+                  <thead>
+                  <th>Title</th>
+                  <th>Amount</th>
+                  <th>File(if any)</th>
+                  <th><input type="button" value="+ " id="add" class="btn btn-primary"></th>
+                  </thead>
+                  <tbody class="detail">
+                  <tr>
+                  <td width="30%">
+           <select name="expense[]" class="form-control">
+           <?php 
+           $expenselist=$this->db->where(array('comp_id'=>$this->session->companey_id,'status'=>1))->get('tbl_expenseMaster')->result();
+           foreach ($expenselist as $key => $value) { ?>
+            <option value="<?= $value->id ?>"> <?= $value->title ?></option>
+          <?php } ?>
+           </select> 
+          </td>
+                  <td width="30%">
+                  <input name="amount[]" class="form-control amount" onkeyup="total()" id="amount" value="0"  >
+                  </td>
+                  <td width="30%">
+                  <input name="imagefile[]"  class="form-control" onchange="Filevalidation(this)"  type="file"  >
+                  </td>
+                  <td width="10%"><a href="javascript:void(0)" class="remove btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                  </tr>
+                  </tbody>
+            <tfoot>
+            <tr>
+            
+            <th style="text-align:right">Total: </th>
+            <th id="total" class="total"></th><th></th>
+            <th></th></tr></tfoot>
+            </table>
+          
+            </div>
+               <br>
+               <button class="btn btn-sm btn-success" type="submit">
+              Add Expense</button>                    
+               <br>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
 
 <div id="Save_Visit" class="modal fade" role="dialog">
    <div class="modal-dialog">
@@ -267,6 +352,17 @@ $(document).delegate('.visit-delete', 'click', function() {
             <div class="row" >
 
 <form action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
+          <div class="row">
+                        <div class="form-group col-md-12">
+                        <label>Select Visit Type</label>
+                        <div class="form-check">
+                              <label class="radio-inline">
+                              <input name="type"  name="type" value="1" type="radio" checked onclick="handleClick(this);">Current Visit</label>
+                              <label class="radio-inline">
+                              <input type="radio" name="type" value="2" onclick="handleClick(this);">Future Visit</label>
+                          </div>
+                        </div>
+                        </div>
 
                 <div class="form-group col-md-6">
                     <label>Company</label>
@@ -302,25 +398,19 @@ $(document).delegate('.visit-delete', 'click', function() {
 
                 <div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
-          <input type="date" name="visit_date" class="form-control">
+          <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>">
         </div>
-    
         <div class="form-group col-md-6 visit-time col-md-6">     
          <label>Visit Time</label>
-          <input type="time" name="visit_time" class="form-control">
+          <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>">
         </div>
-    
-        <div class="form-group col-md-6 distance-travelled col-md-6">     
-        <label>Distance Travelled</label>
-           <input type="text" name="travelled" class="form-control">
-        </div>
-    
-        <div class="form-group col-md-6 distance-travelled-type col-md-6">      
+     
+        <!-- <div class="form-group col-md-6 distance-travelled-type col-md-6">      
         <label>DISTANCE TRAVELLED TYPE</label>
            <input type="text" name="travelled_type" class="form-control">
-        </div>
+        </div> -->
     
-        <div class="form-group col-md-6 customer-rating col-md-6">      
+        <!-- <div class="form-group col-md-6 customer-rating col-md-6">      
         <label>Customer Rating</label>
           <select class="form-control" name="rating">
               <option value="">Select</option>
@@ -330,9 +420,9 @@ $(document).delegate('.visit-delete', 'click', function() {
               <option value="4 star"> 4 star</option>
               <option value="5 star"> 5 star</option>
             </select>
-        </div>
+        </div> -->
         
-         
+<!--          
       <div class="col-md-12">
       <label style="color:#283593;">Next Visit Information<i class="text-danger"></i></label>
        <hr>
@@ -347,7 +437,8 @@ $(document).delegate('.visit-delete', 'click', function() {
            <label>Next Visit Location</label>
              <input type="text" name="next_location" class="form-control">
           </div>
-                  
+                   -->
+
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
                <input type="submit" name="submit_only" class="btn btn-primary" value="Save">
@@ -363,6 +454,7 @@ $(document).delegate('.visit-delete', 'click', function() {
       </div>
    </div>
 </div>   
+
 
 <div id="table-col-conf" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg" style="width: 96%;">
@@ -388,25 +480,23 @@ $(document).delegate('.visit-delete', 'click', function() {
               <label class=""><input type="checkbox" class="choose-col" value="2">  Visit Time</label>
             </div>
             <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="3">Name</label>
+              <label class=""><input type="checkbox" class="choose-col" value="3"> Name</label>
             </div>
             <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="4">  Distance Travelled</label>
+              <label class=""><input type="checkbox" class="choose-col" value="10"> Company Name</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="4"> Actual Distance</label>
             </div>
              <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="5">  Distance Travelled Type</label>
+              <label class=""><input type="checkbox" class="choose-col" value="5">  Ideal Distance</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="6">  Rating</label>
             </div>
+          
             <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="7">Next Visit Date</label>
-            </div>
-            <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="10">Next Visit Time</label>
-            </div>
-            <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="8">  Next Visit Location</label>
+              <label class=""><input type="checkbox" class="choose-col" value="11"> Diffrence</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="9">  Action</label>
@@ -420,6 +510,79 @@ $(document).delegate('.visit-delete', 'click', function() {
 </div>
 
 <script type="text/javascript">
+function checkvisit(visitid){
+document.getElementById("visit_id").value =visitid;
+}
+
+$(function() {
+    $('#add').click(function() {
+      addnewrow();
+    });
+    $('body').delegate('.remove', 'click', function() {
+      $(this).parent().parent().remove();
+    });
+    $('body').delegate('.qtys,.price', 'keyup', function() {
+      var tr = $(this).parent().parent();
+    });
+  });
+//   $( "#amount" ).keypress(function() {
+//     var t = 0;
+//     $('#amount').each(function(i, e) {
+//       var amount = $(this).val() - 0;
+//       t += amount;
+//     });
+//     $('#total').html(t);
+//     alert(t);
+// });
+
+  function total() {
+    var t = 0;
+    $('.amount').each(function(i, e) {
+      var amount = $(this).val() - 0;
+      t += amount;
+    });
+    $('.total').html(t);
+  }
+  function Filevalidation(t)  {
+    var filesize =t.files[0].size;
+    filesize=filesize/1024;
+   var filesizeinkb= filesize.toFixed(0);
+    // alert(filesizeinkb);
+
+    if(filesizeinkb > 1024){
+   alert('File Size not exceed ');
+    }
+	}
+  function addnewrow() {
+    var n = ($('.detail tr').length - 0) + 1;
+    var s = n + 3
+    var r = n + 1
+    var tr = '<tr>' + '<td width="30%"><select name="expense[]" class="form-control"><?php foreach ($expenselist as $key => $value) { ?><option value="<?= $value->id ?>"><?= $value->title ?></option><?php } ?></select></td>'+'<td width="30%"><input id="amount'+n+'" class="form-control amount" name="amount[]"  onkeyup="total()"></td>'+'<td width="30%"><input name="imagefile[]" class="form-control " onchange="Filevalidation(this)"  id="file'+n+'" type="file"  ></td>'+'<td width="10%"><a href="javascript:void(0)" class="remove btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>' + '</tr>';
+    $('.detail').append(tr);
+    // $.getScript("https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js");
+    document.getElementById('amount' + n).addEventListener('keydown', function(e) {
+      var key = e.keyCode ? e.keyCode : e.which;
+      if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+          (key == 65 && (e.ctrlKey || e.metaKey)) ||
+          (key >= 35 && key <= 40) ||
+          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+          (key >= 96 && key <= 105)
+        )) e.preventDefault();
+    });
+     
+
+  }
+  document.getElementById('amount').addEventListener('keydown', function(e) {
+      var key = e.keyCode ? e.keyCode : e.which;
+      if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+          (key == 65 && (e.ctrlKey || e.metaKey)) ||
+          (key >= 35 && key <= 40) ||
+          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+          (key >= 96 && key <= 105)
+        )) e.preventDefault();
+    });
+
+
   var LIST = <?php echo !empty($company_list)? json_encode($company_list): '{}'?>;
   var OLD_LIST  = <?=!empty($all_enquiry) ? json_encode($all_enquiry):'{}'?>;
   function filter_related_to(v)
@@ -502,4 +665,15 @@ $('.choose-col').change(function(){
     else
       $('#selectall').prop('checked',false);
 });
+
+function handleClick(myRadio) {
+  var valuer= myRadio.value;
+  if(valuer==1){
+  document.getElementById("vdate").disabled = true;  
+  document.getElementById("vtime").disabled = true;  
+  }else{
+    document.getElementById("vdate").disabled = false;  
+  document.getElementById("vtime").disabled = false;  
+  } 
+}
 </script>

@@ -62,20 +62,24 @@ $("select").select2();
             <input type="text" class="form-control" id="max" name="max">
         </div>
             </div>
-            <table class="datatable table table-striped table-bordered" cellspacing="0" width="100%" id="datatable">
+        <div class="row">
+        <div class="col-md-12" style="max-width: 100%; overflow-x:auto;">
+
+            <table class=" table table-striped table-bordered" cellspacing="0"  id="datatable">
                 <thead>
                     <tr>
                         <th><?php echo display('serial') ?></th>
-                        <th><?php echo ucfirst(display('disolay_name')) ?></th>
+                        <th>Company</th>
                         <th>Travel Start Time</th>
                         <th>Meeting Start Time</th>
                         <th>Meeting End Time</th>
                         <th>Travel End Time</th>
-                        <th>Distance Travelled</th>
-                        <th>Calculated Distance</th>
-                        <th>Estimated Cost</th>
+                        <th>Travelled Distance </th>
+                        <th>Actual Distance</th>
+                        <th>Actual Cost</th>
                         <th>Travelled Cost</th>
                         <th>Difference </th>
+                        <th>Other Expense </th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -84,6 +88,7 @@ $("select").select2();
                     // print_r($reports);
                     $totalactualamt =0;
                     $totalpayamt =0;
+                    $Totalexp =0;
                     if (!empty($reports)) { ?>
                         <?php $sl = 1; ?>
                         <?php 
@@ -156,12 +161,13 @@ $("select").select2();
                                     }
                     $totalactualamt += $actualamt;
                     $totalpayamt += $totalpay;
-                    
+                    $Totalexp += $report->visit_expSum
                             ?>
                         
                             <tr >
                                 <td><?php echo $sl; ?></td>
-                                <td><?php echo $report->s_display_name;echo '&nbsp;';echo $report->last_name; ?></td>
+                                <td><?php echo $report->company ?></td>
+                                <!-- <td><?php echo $report->s_display_name; echo '&nbsp;';echo $report->last_name; ?></td> -->
                                 <td><?php echo $report->visit_start;?></td>                                     
                                 <td><?php echo $report->start_time;?></td>                                     
                                 <td><?php echo $report->end_time;?></td>
@@ -179,6 +185,9 @@ $("select").select2();
                                     echo  'border:1px solid red;background-color: #eae0e0;';
                                     }
                                        ?>"><?php if(!empty($percentChange)){echo abs(round($percentChange,0));}else{ echo'0'; }  ?></td>
+                                
+                                <td><?php echo $report->visit_expSum;?></td>
+
                                 <td><a class="btn btn-primary btn-sm" target="_blank" href="<?=base_url().'visits/visit_details/'.$report->visit_id ?>">View</a></td>
                             </tr>                                
                             <?php $sl++; ?>
@@ -186,12 +195,28 @@ $("select").select2();
                     <?php }  }?> 
                 </tbody>
             </table>  <!-- /.table-responsive -->
+        </div>
+        </div>
+        <br>
             <div class="col-md-12">
-            <div class="col-md-4"><span><b>Total Estimated Cost:</b> <?= round($totalactualamt) ?> ₹ </span></div>
-            <div class="col-md-4"><span><b>Total Taravelled Cost:</b> <?= round($totalpayamt) ?> ₹</span></div>
+            <div class="col-md-4" ></div>
+            <div class="col-md-4" ></div>
+            <div class="col-md-4" >
+            
+            <table class="table table-responsive table-bordered" >
+            <tbody>
+            <tr>
+            <td width="50%"><b>Total Actual Cost:</b></td><td><?= round($totalactualamt) ?> ₹</td>
+            </tr>
+            <tr><td width="50%"><b>Total Travelled Cost:</b> </td><td><?= round($totalpayamt) ?> ₹</td>
+            </tr>
+            <tr><td width="50%"><b>Total other Expense:</b></td><td><?= round($Totalexp) ?> ₹</td>
+            </tr></tbody>
+            </table>
             </div>
+            </div>
+            
     </div>
-</div>
 
 <script>
 $(document).ready(function(){

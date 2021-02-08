@@ -123,8 +123,9 @@
             <div class="col-md-12">
             <div class="form-group">
                   <label>Status </label>
-                  <input name="status"  type="radio" value="0" checked>&nbsp;&nbsp;No 
-                  <input  name="status"  type="radio" value="1" >&nbsp;&nbsp;Yes
+                  <input  name="status"  type="radio" value="1" checked>&nbsp;&nbsp;Yes
+                  <input name="status"  type="radio" value="0" >&nbsp;&nbsp;No 
+
                </div>
             </div>
             </div>

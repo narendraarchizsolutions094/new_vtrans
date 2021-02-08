@@ -3385,16 +3385,23 @@ echo  $details1;
         $this->load->model(array('Client_Model','Enquiry_model'));
         if($post = $this->input->post())
         {
+            $visit_type=$this->input->post('type');
+            $visit_time=$this->input->post('visit_time');
+            $visit_date=$this->input->post('visit_date');
+            if($visit_type==1){
+               $visit_time=date('H:i');
+               $visit_date=date('Y-m-d');
+            }
             //print_r($_POST); exit();
             $data = array('enquiry_id'=>$this->input->post('enquiry_id'),
-                            'visit_date'=>$this->input->post('visit_date'),
-                            'visit_time'=>$this->input->post('visit_time'),
-                            'travelled'=>$this->input->post('travelled'),
-                            'travelled_type'=>$this->input->post('travelled_type'),
-                            'rating'=>$this->input->post('rating'),
-                            'next_date'=>$this->input->post('next_visit_date'),
-                            'next_time'=>$this->input->post('next_visit_time'),
-                            'next_location'=>$this->input->post('next_location'),
+                            'visit_date'=>$visit_date,
+                            'visit_time'=>$visit_time,
+                            // 'travelled'=>$this->input->post('travelled'),
+                            // 'travelled_type'=>$this->input->post('travelled_type'),
+                            // 'rating'=>$this->input->post('rating'),
+                            // 'next_date'=>$this->input->post('next_visit_date'),
+                            // 'next_time'=>$this->input->post('next_visit_time'),
+                            // 'next_location'=>$this->input->post('next_location'),
                             'comp_id'=>$this->session->companey_id,
                             'user_id'=>$this->session->user_id,
                         );
@@ -3431,6 +3438,29 @@ echo  $details1;
         $this->db->where('comp_id',$this->session->companey_id);
         echo $this->db->delete('tbl_visit');
     }
+    public function twopoints_on_earth($latitudeFrom, $longitudeFrom,$latitudeTo,$longitudeTo) 
+    { 
+    $long1 = deg2rad($longitudeFrom); 
+    $long2 = deg2rad($longitudeTo); 
+    $lat1 = deg2rad($latitudeFrom); 
+    $lat2 = deg2rad($latitudeTo); 
+    //Haversine Formula 
+    $dlong = $long2 - $long1; 
+    $dlati = $lat2 - $lat1; 
+    $val = pow(sin($dlati/2),2)+cos($lat1)*cos($lat2)*pow(sin($dlong/2),2); 
+    $res = 2 * asin(sqrt($val)); 
+    $radius = 3958.756; 
+    return ($res*$radius); 
+    } 
+    public  function points_on_earth($p1,$p2,$l1,$l2)
+    {  
+        $inmiles=$this->twopoints_on_earth( $p1, $p2, $l1,  $l2); 
+         return  $inmiles * 1.60934;
+     }
+    public function abs_diff($v1, $v2) {
+        $diff = $v1 - $v2;
+        return $diff < 0 ? (-1) * $diff : $diff;
+    }
     public function visit_load_data()
     {
         //print_r($_POST); exit(); 
@@ -3447,11 +3477,56 @@ echo  $details1;
         }
         //print_r($cols); exit();
         $data = array();
+        $ix=1;
         foreach ($result as $res)
         {
+            $sum=0;
+            $km=0;
+            $percentChange=0;
+            if(!empty($res->way_points)){
+            $waypoints=json_decode($res->way_points);
+            $totalpoints=count($waypoints);
+            $newpoints=array();
+            $cuts=$totalpoints/23;
+            for ($i=0; $i < $totalpoints; $i+=$cuts) { 
+              array_push($newpoints,$waypoints[$i]);
+            }
+             $lastKey = key(array_slice($newpoints, -1, 1, true));
+            $firstpoint=$newpoints[0];
+            $secondpoint=$newpoints[$lastKey];
+           
+            // latitude and longitude of Two Points 
+            $latitudeFrom = $firstpoint[0]; 
+            $longitudeFrom =  $firstpoint[1];
+            $latitudeTo = $secondpoint[0]; 
+            $longitudeTo = $secondpoint[1]; 
+            // Distance between Mumbai and New York 
+            $inmiles=$this->twopoints_on_earth( $latitudeFrom, $longitudeFrom,  
+            $latitudeTo,  $longitudeTo); 
+            $km=$inmiles* 1.60934;
+            $x=$waypoints;
+               
+             for ($i=0; $i <count($x)-2; $i++) { 
+                 $sum +=  $this->points_on_earth($x[$i][0],$x[$i][1],$x[$i+1][0],$x[$i+1][1]);
+              }
+              $sum;
+              $kmamount=10;
+              $totalpay=$kmamount*$km;
+              $actualamt=$sum*$kmamount;
+           if($actualamt > 0 && $totalpay > 0){
+           $dif= $this->abs_diff($actualamt,$totalpay);
+                $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
+                  }else{
+                          $actualamt=0;
+                          $totalpay=0;
+                  }
+                                    // if(abs($percentChange) < 20){
+                                    //     $percentChange="<span style'color:red'>".$percentChange."</span>";
+                                    //                                     }
+            }
             $sub = array();
             $time = $res->visit_time=='00:00:00'?null:date("g:i a", strtotime($res->visit_time));
-            $sub[] = $res->id;
+            $sub[] = $ix++;
 
             if($colsall || in_array(1,$cols))
                 $sub[] = $res->visit_date!='0000-00-00'?$res->visit_date:'NA';
@@ -3467,25 +3542,22 @@ echo  $details1;
                     $url = base_url('lead/lead_details/').$res->enquiry_id;
                 else if($res->enq_type=='3')
                     $url = base_url('client/view/').$res->enquiry_id;
-                if($colsall || in_array(3,$cols))
+                    if($colsall || in_array(3,$cols))
                     $sub[] = '<a href="'.$url.'">'.$res->name.'</a>'??'NA';
             }
+            if($colsall || in_array(10,$cols))
+            $sub[] = $res->company??'NA';
             if($colsall || in_array(4,$cols))
-                $sub[] = $res->travelled!=''?$res->travelled:'NA';
-            if($colsall || in_array(5,$cols))
-                $sub[] = $res->travelled_type!=''?$res->travelled_type:'NA';
+            $sub[] = round($sum);
+        if($colsall || in_array(5,$cols))
+            $sub[] = round($km);
             if($colsall || in_array(6,$cols))
                 $sub[] = $res->rating!=''?$res->rating:'NA';
-            if($colsall || in_array(7,$cols))
-                $sub[] = $res->next_date!='0000-00-00'?$res->next_date:'NA';
-            if($colsall || in_array(10,$cols))
-                $sub[] = $res->next_time?$res->next_time:'NA';
-
-            if($colsall || in_array(8,$cols))
-            $sub[] = $res->next_location?$res->next_location:'NA';
-
+                if($colsall || in_array(11,$cols))
+                $sub[] = round(abs($percentChange));
+                
             if($colsall || in_array(9,$cols))
-                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->id.'/')."' >View</a> <a class='btn btn-xs btn-danger fa fa-trash visit-delete' href='javascript:void(0)' data-id='$res->id' data-ecode='$res->Enquery_id' ></a>":'';
+                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->visit_id.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->visit_id.")' id='checkvisit' ><i class='fa fa-inr'></i></a>":'';
             $data[] =$sub;
         }
     
