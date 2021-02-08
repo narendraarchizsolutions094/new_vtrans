@@ -3485,7 +3485,7 @@ echo  $details1;
             $sub[] = $res->next_location?$res->next_location:'NA';
 
             if($colsall || in_array(9,$cols))
-                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-danger fa fa-trash visit-delete' href='javascript:void(0)' data-id='$res->id' data-ecode='$res->Enquery_id' ></a>":'';
+                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->id.'/')."' >View</a> <a class='btn btn-xs btn-danger fa fa-trash visit-delete' href='javascript:void(0)' data-id='$res->id' data-ecode='$res->Enquery_id' ></a>":'';
             $data[] =$sub;
         }
     

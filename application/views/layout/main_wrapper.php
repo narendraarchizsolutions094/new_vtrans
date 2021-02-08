@@ -62,7 +62,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
     <title><?php echo $settings->title ?></title>
     <?php } ?>
     <!--<link rel="shortcut icon" href="<?= base_url($this->session->userdata('favicon')) ?>">-->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
     <link href="<?php echo base_url('assets/css/jquery-ui.min.css') ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 

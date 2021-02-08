@@ -14,22 +14,23 @@ class Enquiry_model extends CI_Model {
 	
 
     //=====Create default Contact for Enquiry
-
-    $name = $data['name'];
-    $mobile = $data['phone'];
-    $email = $data['email'];
-    $otherdetails ='';
-    $data2 = array(
-        'comp_id'=>$data['comp_id'],
-        'client_id' =>$insid,
-        'c_name' => $name,
-        'emailid' => $email,
-        'contact_number' => $mobile,
-        'designation' => 'Primary',
-        'other_detail' =>$otherdetails,
-        'decision_maker' => 1,
-    );
-    $this->db->insert('tbl_client_contacts', $data2);
+   if(!empty($_POST['name'])){
+           $name = $data['name'];
+        $mobile = $data['phone'];
+        $email = $data['email'];
+        $otherdetails ='';
+        $data2 = array(
+            'comp_id'=>$data['comp_id'],
+            'client_id' =>$insid,
+            'c_name' => $name,
+            'emailid' => $email,
+            'contact_number' => $mobile,
+            'designation' => 'Primary',
+            'other_detail' =>$otherdetails,
+            'decision_maker' => 1,
+        );
+        $this->db->insert('tbl_client_contacts', $data2);
+        }
     //===================================
 
 		if(isset($_POST['inputfieldno'])) {
@@ -4725,6 +4726,7 @@ public function insertComInfo($data)
         $this->db->select('tbl_visit.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id');
         $this->db->from('tbl_visit');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
+        // $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$company_id);
         $this->db->where($where);
 

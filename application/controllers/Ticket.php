@@ -2221,6 +2221,33 @@ class Ticket extends CI_Controller
 		}
 		echo json_encode($data);
 	}
+	public function failurepoint_ticketJson(){
+		$fromdate=$this->uri->segment(3);
+		$todate=$this->uri->segment(4);
+
+		$process	=	$this->session->process[0];	
+		$user_id  	=  $this->session->user_id;
+		$comp_id = $this->session->companey_id;	
+		
+		$all_reporting_ids  = $this->common_model->get_categories($user_id);
+
+		$this->db->select('tbl_ticket_subject.subject_title as name,count(tbl_ticket.category) as value');
+		$this->db->from('tbl_ticket');
+		$where = " ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
+		$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))';  
+		$this->db->where($where);
+		
+		$this->db->join('tbl_ticket_subject','tbl_ticket.category=tbl_ticket_subject.id');
+		$this->db->where('tbl_ticket.process_id IN ('.$process.')');
+		$this->db->where('tbl_ticket.company',$comp_id);
+		if($fromdate!='all'){
+			$this->db->where('tbl_ticket.last_update >=', $fromdate);
+			$this->db->where('tbl_ticket.last_update <=', $todate);
+		}
+		$this->db->group_by('tbl_ticket.category');
+		$result = $this->db->get()->result_array();
+		echo json_encode($result);		
+	}
 	public function stage_typeJson()
 	{
 		$fromdate=$this->uri->segment(3);
@@ -2243,12 +2270,38 @@ class Ticket extends CI_Controller
 	    $todate=$this->uri->segment(4);
 		//substage wise 
 		$data=[];
+		$this->load->helper('text');
+
 		$subsource = $this->Ticket_Model->subsource();
 		foreach ($subsource as $key => $value) {
 			$count = $this->Ticket_Model->countSubsource($value->id,$fromdate,$todate);
-			$data[] = ['name' => $value->description, 'value' => $count];
+			$name = substr($value->description,0,50);
+			$stage = substr($value->lead_stage_name,0,20);
+			$data[] = ['region'=>$stage,'state' =>$name, 'sales' => $count];
 		}
-		echo json_encode($data);
+		$process	=	$this->session->process[0];
+		
+		$this->db->where('comp_id',$this->session->companey_id);
+		$this->db->where("FIND_IN_SET($process,lead_stage.process_id)>",0);
+		$this->db->where("FIND_IN_SET(4,lead_stage.stage_for)>",0);
+		$lead_stage = $this->db->get('lead_stage')->result_array();
+		
+		$group = array();
+		if(!empty($lead_stage)){
+			foreach($lead_stage as $key => $value){				
+				$this->db->where('lead_stage_id',$value['stg_id']);
+				$arr = $this->db->get('lead_description')->result_array();
+				$stage = substr($value['lead_stage_name'],0,20);
+				$start = substr($arr[0]['description'],0,50);
+				$end = substr(end($arr)['description'],0,50);
+				$group[] = array($stage,$start,$end);
+			}			
+		}
+
+		$res['result'] = $data;
+		$res['group'] = $group;
+
+		echo json_encode($res);
 	}
 	public function product_ticketJson()
 	{
@@ -2910,5 +2963,125 @@ class Ticket extends CI_Controller
 		{
 			if(!empty($this->session->userdata()))
 				print_r($this->session->userdata());
+		}
+		public function upload_tickets(){
+			$data['title'] = "Upload ticket";
+			$this->load->model('dash_model');
+			$data['process'] = $this->dash_model->get_user_product_list();
+			$data['content'] = $this->load->view('ticket/upload_ticket',$data,true);
+			$this->load->view('layout/main_wrapper', $data);
+		}
+
+		public function upload(){
+			$this->load->model('form_model');		
+			ini_set('max_execution_time', '-1');
+			$filename = "ticket_" . date('d-m-Y_H_i_s');
+			$config = array(
+				'upload_path' => $_SERVER["DOCUMENT_ROOT"] . "/new_crm/assets/ticket",
+				'allowed_types' => "text/plain|text/csv|csv",
+				'remove_spaces' => TRUE,
+				'file_name' => $filename
+			);
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);			
+			if ($this->upload->do_upload('img_file')) {
+				$upload = $this->upload->data();
+				$filePath = $config['upload_path'] . '/' . $upload['file_name'];
+				$file = $filePath;
+				$handle = fopen($file, "r");
+				$c = 0;
+				$count = 0;
+				$record = 0;
+				$failed_record = 0;
+				$i = 0;
+				$dat_array = array();
+				while (($filesop = fgetcsv($handle, 2000, ",")) !== false) {
+					$dat_array = array();
+					$count++;
+					if ($count == 1) {
+					} else if($count > 2) {						
+						$tracking_no	=	$filesop[0];
+						if($tracking_no){
+							$ticket_data = array(											
+												'tracking_no'=>  $tracking_no,
+												'name' 		 =>  $filesop[1],
+												'phone' 	 =>  $filesop[2],
+												'email' 	 =>  $filesop[3],
+												'process_id' =>  199,
+												'company'	 =>	 65,
+												'added_by'	 =>  $this->session->user_id
+											);							
+							$this->db->insert('tbl_ticket',$ticket_data);
+							$ticket_id	=	$this->db->insert_id();
+							$tckno = "TCK".$ticket_id.strtotime(date("y-m-d h:i:s"));
+							
+							$this->db->where('id',$ticket_id);
+							$this->db->set('ticketno',$tckno);
+							$this->db->update('tbl_ticket');
+							$record++;
+							$insarr = array(
+								"tck_id" 	=> $ticket_id,
+								"parent" 	=> 0,
+								'comp_id'	=> $this->session->companey_id,
+								"subj"   	=> "Ticked Created",
+								"msg"    	=> '',
+								"attacment" => "",
+								"status"  	=> 0,
+								"send_date" =>date("Y-m-d H:i:s"),
+								"client"   	=>'',
+								"added_by" 	=> $this->session->user_id
+							);
+							$this->db->insert("tbl_ticket_conv", $insarr);
+			
+							$this->db->select('*');
+							$this->db->from('tbl_input');
+							$this->db->where('page_id', 2);        
+							$this->db->where('status', 1);        
+							$this->db->where("(process_id=199 AND company_id=65)");                
+							$this->db->order_by('form_id', 'asc');
+							$colms = $this->db->get()->result_array();  		
+							if(!empty($colms)){
+								$column = 4;
+								foreach($colms as $key=>$value){
+									$fldval	=	$filesop[$column];
+									$extra = array(
+										'enq_no' => $tckno,
+										'parent' => $ticket_id,
+										'input'  => $value['input_id'],
+										'fvalue' => $fldval,
+										'cmp_no' => $this->session->companey_id,
+										'usrno'  => $this->session->user_id
+									);
+									$column++;
+									$this->db->insert('ticket_dynamic_data',$extra);
+								}
+							}
+						}
+					}
+					$i++;
+				}
+				if ($record > 0) {
+					$res = 'Record(' . $record . ') inserted';
+				} else {
+					$res = 'No Unique record Found !';
+				}
+				if ($failed_record) {
+					$res .= ' (' . $failed_record . ') duplicate record ';
+				}
+				unlink($filePath);
+				$this->session->set_flashdata('message', "File Uploaded successfully." . $res);
+				redirect(base_url() . 'ticket/upload_tickets');
+			} else {
+				$this->session->set_flashdata('exception', $this->upload->display_errors());
+				redirect(base_url() . 'ticket/upload_tickets');
+			}
+		}
+
+		public function daily_summary(){
+			$data['title'] = "Ticket Summary (".$_GET['date'].")";
+			$this->load->model('dash_model');
+			$data['process_list'] = $this->dash_model->get_user_product_list_bycompany(65);
+			$this->load->view('ticket/daily-summary', $data);
+			//$this->load->view('layout/login_wrapper', $data);			
 		}
 }

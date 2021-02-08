@@ -23,7 +23,7 @@ class Message extends CI_Controller {
     	    $res=$this->db->get('api_templates');
 			$q=$res->result();
     	    if(!empty($q)){
-    	        // echo '<option value="0" selected style="display:none">Select Templates</option>';
+    	        echo '<option value="0" selected style="display:none">Select Templates</option>';
     	    foreach($q as $value){
 				 $stage = explode(',', $value->stage);
 				 $process = explode(',', $value->process); 

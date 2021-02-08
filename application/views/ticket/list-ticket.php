@@ -250,6 +250,13 @@ input[name=lead_stages]{
                       }
                       ?>
                             <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo display('table_config'); ?></a>
+                          <?php
+                          if(!empty($this->session->process) && in_array('199',$this->session->process)){
+                          ?>
+                            <a href="<?=base_url();?>ticket/upload_tickets" class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo 'Import FTL FeedBack'; ?></a>
+                          <?php
+                          }
+                        ?>
 					            </div>                                         
 					          </div>  
 					        </div>       

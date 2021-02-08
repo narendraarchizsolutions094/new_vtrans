@@ -1655,6 +1655,139 @@ public function view_editable_aggrement()
         $this->load->view('layout/main_wrapper', $data);
     }
 
+    public function visit_details()
+    {
+         if(user_role('1020') || user_role('1021') || user_role('1022')){
+            
+        }
+        $id=$this->uri->segment('3');
+    	$visitdata= $this->db->where('visit_id',$id)->get('visit_details');
+        if($visitdata->num_rows()!=0){
+            $data['details'] =$visitdata->row();
+            $this->load->model('Client_Model');
+            $this->load->model('Enquiry_Model');
+            $data['title'] = display('visit_list');
+           // print_r($data['contact_list']->result_array()); exit();
+            $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
+            $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+            $data['content'] = $this->load->view('enquiry/visit_details', $data, true);
+            $this->load->view('layout/main_wrapper', $data);
+        }else{
+			$this->session->set_flashdata('message', 'Travel History not found');
+
+            redirect('client/visits');
+        }
+       
+    }
+    public function report(){
+        $this->load->model('report_model');
+        $data['title'] = 'Visit Report';
+       $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
+       $content = ''; 		
+        if ($_POST) {			
+           $from		=	date("Y-m-d", strtotime($this->input->post('date_from')));
+           $to		=	date("Y-m-d", strtotime($this->input->post('date_to')));
+            $employee	=	$this->input->post('employee');			
+           $comp_id=$this->session->companey_id; 			
+           $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
+          $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+           $where = "(visit_details.comp_id=$comp_id)";    
+           $where .= " AND Date(visit_details.visit_start) >= '$from' AND Date(visit_details.visit_start) <= '$to'";
+           if($employee=='0'){ 
+           $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
+           }else{ $where .= " AND ( visit_details.created_by=$employee)";  }
+           $data['reports'] = $this->db->where($where)
+                                       ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
+                                       ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
+                                       ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
+                                       ->get('visit_details')->result();	
+          $content .= $this->load->view('enquiry/visit_report',$data,true);
+          $data['content'] = $content;
+
+        }else{
+            $date = date("Y-m-d"); 		
+            $comp_id=$this->session->companey_id; 			
+            $employee = array();
+            $data['att_date'] = $date;
+            $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
+    	   $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+            $where = "(visit_details.comp_id=$comp_id)";      
+           $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
+            $data['reports'] = $this->db->where($where)
+                                        ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
+                                        ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
+                                        ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
+                                        ->get('visit_details')->result();	
+           $content .= $this->load->view('enquiry/visit_report',$data,true);
+           $data['content'] = $content;
+        }
+       $this->load->view('layout/main_wrapper',$data);
+    }
+   public function add_expense()
+   {
+                $visit_id= $this->input->post('visit_id');
+                $vd_id= $this->input->post('id');
+                $finalfilename='';
+                $uid=$this->session->user_id;
+                $comp_id=$this->session->companey_id;
+				foreach ($_POST['expense'] as $key =>$value ) {
+                        $expense = $_POST['expense'][$key];
+                        $amount = $_POST['amount'][$key];
+                        if($_FILES['imagefile']['name'][$key]){
+                        $file_name =$_FILES['imagefile']['name'][$key];
+                        $file_size =$_FILES['imagefile']['size'][$key];
+                        $file_tmp  =$_FILES['imagefile']['tmp_name'][$key];
+                        $file_type =$_FILES['imagefile']['type'][$key];  
+                        $upload_path    =   "assets/images/user/";
+                        $finalfilename='expense_'.time().$file_name;
+                        move_uploaded_file($file_tmp,$upload_path.$finalfilename);
+                        }
+                        // visit type =2
+                        $data=['type'=>2,
+                               'amount'=>$amount,
+                               'visit_id'=>$visit_id,
+                               'created_by'=>$uid,
+                               'expense'=>$expense,
+                               'file'=>$finalfilename,
+                               'comp_id'=>$comp_id,
+                               ];
+                    $this->db->insert('tbl_expense',$data);
+
+                }
+            	$this->session->set_flashdata('message', 'Travel Expense Added');
+                redirect('/visits/visit_details/'.$visit_id.'');     
+
+   }
+public function update_expense_status()
+{
+    if($_POST)
+    {
+        $comp_id=$this->session->companey_id;
+        $user_id=$this->session->user_id;
+    foreach ($_POST['exp_ids'] as $key => $value) {
+        // echo $value;
+        $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
+        print_r($value);
+        $this->db->where(array('comp_id'=>$comp_id,'id'=>$value))->update('tbl_expense',$data);
+    }
+            }
+}
+public function all_update_expense_status()
+{
+    if($_POST)
+    {
+        $comp_id=$this->session->companey_id;
+        $user_id=$this->session->user_id;
+        $visit_id=$this->session->visit_id;
+    foreach ($_POST['exp_ids'] as $key => $value) {
+        // echo $value;
+        $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
+        // print_r($data);
+        $this->db->where(array('comp_id'=>$comp_id,'id'=>$visit_id))->update('tbl_expense',$data);
+    }
+            }
+}
+
     public function deals($specific=0)
     { 
          if(user_access('1000') || user_access('1001') || user_access('1002')){

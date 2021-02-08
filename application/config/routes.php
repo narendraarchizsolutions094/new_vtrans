@@ -289,6 +289,10 @@ $route['lead'] = 'led';
 // $route['feedback/insert'] = 'Dashboard/insert';
 $route['facebook-pages'] = 'dashboard/facbookData';
 $route['report-view/:any/:any'] = 'report/send_sales_view/$i/$i';
+$route['visits/visit_details/:any'] = 'client/visit_details/$i';
+$route['visit/vist-report'] = 'client/report/';
+$route['setting/expense-master'] = 'setting/expenseMaster/';
+$route['visit-expense/delete/:any'] = 'setting/visit_expense_delete/$i';
 
 
 $route['404_override']            = '';
