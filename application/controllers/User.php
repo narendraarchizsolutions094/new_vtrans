@@ -474,6 +474,7 @@ class User extends CI_Controller
             'telephony_agent_id' => $this->input->post('telephony_agent_id', true),
             'process' => !empty($this->input->post('process', true)) ? implode(',', $this->input->post('process', true)) : '',
             'products' => !empty($this->input->post('product', true)) ? implode(',', $this->input->post('product', true)) : '',
+            'discount_id'=> $this->input->post('discount_id')??0,
         ];
         // print_r($data['department']);
         // die();
@@ -532,6 +533,11 @@ class User extends CI_Controller
             $data['products_list'] = $this->dash_model->all_product_list();
           
             $data['enq_id'] = 'LT/IN/EI/' . str_pad($this->User_model->get_empid(), 2, '0', STR_PAD_LEFT);
+
+             $this->load->model('Branch_model');
+             $data['discount_list']= $this->Branch_model->discount_list();
+             //print_r($data['discount_list']);exit();
+
             $data['content'] = $this->load->view('user_from', $data, true);
             $this->load->view('layout/main_wrapper', $data);
         }
@@ -712,9 +718,12 @@ class User extends CI_Controller
         $this->load->model('dash_model');
         $data['products_list'] = $this->dash_model->all_product_list();
         $data['products'] = $this->dash_model->all_process_list();
-        $data['user_meta'] = $this->user_model->get_user_meta($id,array('api_name','api_url'));
+         $this->load->model('Branch_model');
         
+        $data['user_meta'] = $this->user_model->get_user_meta($id,array('api_name','api_url'));
+        $data['discount_list']= $this->Branch_model->discount_list();
         if($this->session->companey_id == 65){
+            
             $data['reporting_locations'] = $this->User_model->get_report_locations();
         }
 

@@ -297,7 +297,7 @@
                             </div>
                         
                             <?php
-                            if($this->session->companey_id == 65){    
+                            if($this->session->companey_id == 65 or 1){    
                             ?>
                              <div class="form-row">
                                 <div class="form-group col-md-4">
@@ -312,6 +312,19 @@
                                             }
                                         }
                                         ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">Discount Allowed</label>                  
+                                    <select class="form-control" name="discount_id">
+                                      <?php
+                                      if(!empty($discount_list))
+                                      {
+                                        foreach ($discount_list as $key => $value) {
+                                         echo'<option value="'.$value->id.'" '.($value->id==$department->discount_id?'selected':'').'>'.$value->name.'</option>';
+                                        }
+                                      }
+                                      ?>
                                     </select>
                                 </div>
                             </div> 

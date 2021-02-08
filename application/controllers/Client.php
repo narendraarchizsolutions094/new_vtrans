@@ -1709,21 +1709,19 @@ public function view_editable_aggrement()
 
         $table = 'commercial_info';
         // Set orderable column fields
-        $column_order = array('info.id','enq.name','info.branch_type','info.booking_type','info.business_type','book.branch_name','deliver.branch_name','info.rate','info.discount','info.insurance','info.paymode','info.potential_tonnage','info.potential_amount','info.expected_tonnage','info.expected_amount','info.vechicle_type','info.carrying_capacity','info.invoice_value','info.creation_date','info.updation_date','info.status');
+        $column_order = array('info.id','enq.name','info.branch_type','info.booking_type','info.business_type','info.creation_date','info.updation_date','info.status');
 
         // Set searchable column fields
 
-        $column_search = array('enq.name','book.branch_name','deliver.branch_name');
+        $column_search = array('enq.name');
 
     
         
         $order = array('id' => 'desc');
 
-        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type, book.branch_name as booking_branch_name, deliver.branch_name as delivery_branch_name');
+        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type');
         $this->db->from($table.' info');
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
-        $this->db->join('branch book','book.branch_id=info.booking_branch','left');
-        $this->db->join('branch deliver','deliver.branch_id=info.delivery_branch','left');
         $this->db->where("info.comp_id",$this->session->companey_id);
 
         $where='';
@@ -1794,14 +1792,14 @@ public function view_editable_aggrement()
             $and =1;
         }
 
-        if(!empty($_POST['paymode']))
-        {
-              if($and)
-                $where.=" and ";
+        // if(!empty($_POST['paymode']))
+        // {
+        //       if($and)
+        //         $where.=" and ";
 
-            $where.=" (info.paymode ='".$_POST['paymode']."' ) ";
-            $and =1;
-        }
+        //     $where.=" (info.paymode ='".$_POST['paymode']."' ) ";
+        //     $and =1;
+        // }
 
         if(!empty($_POST['p_amnt_from']))
         {
@@ -2026,4 +2024,620 @@ public function view_editable_aggrement()
         // echo json_encode($output);
     }
 
+
+    public function commercial_info($enquiry_id)
+    {
+        $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
+
+        $data['title'] = 'Add Deal';
+        $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
+        $data['branch'] = $this->Branch_model->branch_list()->result();
+        
+        $dis= $this->db->select('d.discount')
+                                        ->from('discount_matrix d')
+                                        ->join('tbl_admin a','a.discount_id=d.id','left')
+                                        ->where('a.pk_i_admin_id='.$this->session->user_id)
+                                        ->get()->row();
+        $data['max_discount'] = !empty($dis)?$dis->discount:100;
+        $data['content'] = $this->load->view('enquiry/add_deals', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+
+    public function gen_table()
+    {
+        if(!empty($_POST))
+        {
+            $this->load->model('Branch_model');
+
+            $booking_type = $this->input->post('booking_type');
+            $business_type = $this->input->post('business_type');
+            $bbranch = $this->input->post('bbranch');
+            $dbranch = $this->input->post('dbranch');
+            $btype = $this->input->post('btype');
+            $dtype = $this->input->post('dtype');
+            $enquiry_id = $this->input->post('enq_for');
+            $deal_id= $this->input->post('deal_id')??0;
+            $deal_data = $this->Branch_model->get_deal($deal_id);
+            if($btype=='zone')
+            {
+                $x = implode(',',$bbranch);
+                //echo $x;exit();
+                $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) ")->result();
+                $bbranch = array_column($fetch_list,'branch_id');
+                //print_r($bbranch);exit();
+            }
+
+            if($dtype=='zone')
+            {
+                $x = implode(',',$dbranch);
+                //echo $x;exit();
+                $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) ")->result();
+                $dbranch = array_column($fetch_list,'branch_id');
+                //print_r($bbranch);exit();
+            }
+
+            if(empty($bbranch))
+                $bbranch = array();
+            if(empty($dbranch))
+                $dbranch = array();  
+
+            $query = $this->Branch_model->from_to_table($bbranch,$dbranch)->result();
+            if(!empty($query))
+            {
+                $oc = array('',//0
+                            '100',//1
+                            '100',//2
+                            '1200',//3
+                            '1 CFT =10',//4
+                            '0.20 Paise',//5
+                            '0.2',//6
+                            'NA',//7
+                            'NA',//8
+                            'NA',//9
+                            'NA',//10
+                            '',//11
+                            'Consignor',//12
+                            '0.15 Paise',//13
+                            'Consignor',//14
+                            'Consignor',//15
+                            'NA',//16
+                            '15',//17
+                            '25',//18
+                            '',//19
+                            '750',//20
+                            '',//21
+                            '',//22
+                    );
+                    $oc[19] = array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
+                    $oc[20] = array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
+                    $oc['rate_type'] = 'KG';
+                    if(!empty($deal_data))
+                    {
+                        $oc =(array)json_decode($deal_data->other_charges);
+                        if(empty($oc[22]))
+                            $oc[22]='';
+                    }
+                    
+                    
+
+                echo'
+                <form id="data_table">
+                <input name="booking_type" type="hidden" value="'.$booking_type.'">
+                <input name="business_type" type="hidden" value="'.$business_type.'">
+                <input name="btype" type="hidden" value="'.$btype.'">
+                <input name="dtype" type="hidden" value="'.$dtype.'">
+                <input name="bbranch" type="hidden" value="'.implode($bbranch).'">
+                <input name="dbranch" type="hidden" value="'.implode($dbranch).'">
+                <input name="enquiry_id" type="hidden" value="'.$enquiry_id.'">
+                <input name="info_id" type="hidden" value="'.$deal_id.'">
+                <div id="data-box"  style="max-height: 800px; min-height:45px; overflow:auto; padding:0px 20px;">
+                <div class="toggle-btn" data-view="show"><i class="fa fa-chevron-up"></i></div>
+                <label>Booking Table:</label>
+                <div class="t_box">
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                        <th>#</th>
+                        <th>Booking From</th>
+                        <th>Delivery To</th>';
+                    if($booking_type=='sundry')
+                    {echo'<th style="width:100px;"> Rate/<select name="oc[rate_type]" class="exclude_select2" style=" background:#d9edf7; border:0px;">
+                                    <option '.($oc['rate_type']=='KG'?'selected':'').'>KG</option>
+                                    <option '.($oc['rate_type']=='Box'?'selected':'').'>Box</option>
+                                </select></th>
+                        <th style="width:95px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>
+                        <th style="width:98px">Paymode <label class="badge pull-right" onclick="rep_paymode()">R</label></th>
+                        <th style="width:100px">Insurance <label class="badge pull-right" onclick="rep_insurance()">R</label></th>
+                        <th>Expected Tonnage <label class="badge pull-right" onclick="rep_eton()">R</label></th>
+                        <th>Expected Amount</th>
+                        <th>Potential Tonnage <label class="badge pull-right" onclick="rep_pton()">R</label></th>
+                        <th>Potential Amount</th>';
+                    }
+                    else
+                    {
+                        echo'<th>Vehicle Type <label class="badge pull-right" onclick="rep_vtype()">R</label></th>
+                            <th>Carrying Capacity<label class="badge pull-right" onclick="rep_capacity()">R</label></th>
+                            <th>Invoice Value <label class="badge pull-right" onclick="rep_invoice()">R</label></th>';
+                        $vehicles = $this->Branch_model->get_vehicles()->result();
+                    }
+                    echo'</thead>
+                    <tbody>
+                ';
+                
+                $i=1;
+                foreach ($query as $key => $row)
+                {
+                    $rate=$row->rate;
+                    $discount=0;
+                    $paymode='';
+                    $insurance='';
+                    $eton=0;
+                    $eamnt=0;
+                    $pton=0;
+                    $pamnt=0;
+                    $vid=0;
+                    $chk = $this->db->where('deal_id',$deal_id)
+                                        ->where('booking_branch',$row->booking_branch)
+                                        ->where('delivery_branch',$row->delivery_branch)
+                                        ->get('deal_data')->row();
+                    if(!empty($chk))
+                    {
+                        $rate= $chk->rate;
+                        $discount=$chk->discount;
+                        $paymode=$chk->paymode;
+                        $insurance=$chk->insurance;
+                        $eton=$chk->expected_tonnage;
+                        $eamnt=$chk->expected_amount;
+                        $pton=$chk->potential_tonnage;
+                        $pamnt=$chk->potential_amount;
+                        $vid=$chk->vehicle_type;
+                        $capacity = $chk->carrying_capacity;
+                        $invoice = $chk->invoice_value;   
+                    }
+
+                    echo'<tr>
+                            <td>'.$i++.'</td>
+                            <td><input type="hidden" name="bid['.$row->id.']" value="'.$row->booking_branch.'">'.$row->bbranch.'<br>
+                                <small>('.ucwords($row->btype).')</small>
+                            </td>
+                            <td><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->dbranch.'<br>
+                                <small>('.ucwords($row->dtype).')</small>
+                            </td>';
+                    if($booking_type=='sundry')
+                    {
+                        echo'<td><input type="number" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
+                            <td><input type="number" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'"></td>
+                            <td><select name="paymode['.$row->id.']" data-id="'.$row->id.'"  class="paymode_ip">
+                                <option value="paid" '.($paymode=='paid'?'selected':'').'>Paid</option>
+                                <option value="topay" '.($paymode=='topay'?'selected':'').'>To-Pay</option>
+                                <option value="tbb" '.($paymode=='tbb'?'selected':'').'>TBB</option>
+                                </select>
+                            </td>
+                            <td><select name="insurance['.$row->id.']" data-id="'.$row->id.'"  class="insurance_ip">
+                                <option value="carrier" '.($insurance=='carrier'?'selected':'').'>Carrier</option>
+                                <option value="owner" '.($insurance=='owner'?'selected':'').'>Owner risk</option>
+                                </select>
+                            </td>
+                            <td><input type="number" name="eton['.$row->id.']" data-id="'.$row->id.'" value="'.$eton.'" class="eton_ip"></td>
+                            <td><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" readonly></td>
+                            <td><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>
+                            <td><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'" readonly></td>';
+                    }
+                    else
+                    {
+
+                        echo'<td>
+                        <select name="vtype['.$row->id.']" class="vtype_ip">';
+                        foreach($vehicles as $ve => $vehicle)
+                            echo'<option value="'.$vehicle->vehicle_type_id.'" '.($vid==$vehicle->vehicle_type_id?'selected':'').'>'.$vehicle->type_name.'</option>';
+                        echo'
+                        </select></td>
+                        <td><input name="capacity['.$row->id.']" type="number" class="capacity_ip" value="'.$capacity.'"></td>
+                        <td><input name="invoice['.$row->id.']" type="number" class="invoice_ip" value="'.$invoice.'"></td>
+                        
+                        ';
+
+                    }
+                    
+                    echo'</tr>';
+                }
+                echo'</tbody>
+                </table>
+                </div>
+                </div>
+                <div id="oc-box" style="padding:0px 10px;">
+                 <div class="toggle-btn"  data-view="show"><i class="fa fa-chevron-up"></i></div>
+                 <label>Other Charges:</label>
+                 <div class="t_box">
+                    <table class="table table-bordered table-dark">
+                    <thead>
+                        <tr>
+                            <th align="center">Name of Charges</th>
+                            <th align="center">Amount (Rs.)</th>
+                            <th align="center">Units</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GC Charges</td>
+                            <td><input name="oc[1]" value="'.$oc[1].'"></td>
+                            <td>In Rs. Per GC</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    echo'<tr>
+                            <td>Minimum Chargeable Wt</td>
+                            <td><input name="oc[2]" value="'.$oc[2].'"></td>
+                            <td>KGs, Whichever is Higher</td>
+                        </tr>
+                        <tr>
+                            <td>Minimum Freight Value</td>
+                            <td><input name="oc[3]" value="'.$oc[3].'"></td>
+                            <td>In Rs.</td>
+                        </tr>
+                        <tr>
+                            <td>CFT factor</td>
+                            <td><input name="oc[4]" value="'.$oc[4].'"></td>
+                            <td>KG.</td>
+                        </tr>
+                        <tr>
+                            <td>Hamali Charges</td>
+                            <td><input name="oc[5]" value="'.$oc[5].'"></td>
+                            <td>Per Kg.</td>
+                        </tr>';
+                    }
+                    echo'<tr>
+                            <td>FOV Charges (owner risk)</td>
+                            <td><input name="oc[6]" value="'.$oc[6].'"></td>
+                            <td>% of Invoice Value</td>
+                        </tr>
+                        <tr>
+                            <td>FOV Charges (Carrier risk)</td>
+                            <td><input name="oc[7]" value="'.$oc[7].'"></td>
+                            <td>% of Invoice Value</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    echo'<tr>
+                            <td>AOC Charges</td>
+                            <td><input name="oc[8]" value="'.$oc[8].'"></td>
+                            <td>% of Total Freight</td>
+                        </tr>
+                        <tr>
+                            <td>COD/DOD Charges</td>
+                            <td><input name="oc[9]" value="'.$oc[9].'"></td>
+                            <td>Per GC</td>
+                        </tr>
+                        <tr>
+                            <td>DACC Charges</td>
+                            <td><input name="oc[10]" value="'.$oc[10].'"></td>
+                            <td>Per GC</td>
+                        </tr>';
+                    }
+                    echo'<tr>
+                            <td>Other (Please Specify)</td>
+                            <td><input name="oc[11]" value="'.$oc[11].'"></td>
+                            <td>At Actual</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    echo'<tr>
+                            <td colspan="3" style="font-weight:bold">CR Charges to be Paid By Consignor <input type="radio" name="oc[12]" value="Consignor" '.($oc[12]=='Consignor'?'checked':'').'>   Consignee  <input type="radio" name="oc[12]" value="Consignee" '.($oc[12]=='Consignee'?'checked':'').'> </td>
+                        </tr>
+                        <tr>
+                            <td>Demurrage charges</td>
+                            <td><input name="oc[13]" value="'.$oc[13].'"></td>
+                            <td>Per KG on Per day basis</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="font-weight:bold">Demurrage Charges to be Paid By Consignor <input type="radio" name="oc[14]" value="Consignor" '.($oc[14]=='Consignor'?'checked':'').'>   Consignee  <input type="radio" name="oc[14]" value="Consignee" '.($oc[14]=='Consignee'?'checked':'').'> </td>
+                        </tr>';
+                    }
+                    echo'<tr>
+                            <td>Loading/Unloading Charges/Union Charges</td>
+                            <td><select name="oc[15]">
+                                <option '.($oc[15]=='Consignee'?'selected':'').'>Consignee</option>
+                                <option '.($oc[15]=='Consignor'?'selected':'').'>Consignor</option>
+                                </select></td>
+                            <td>Per Kg / Box</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    echo'<tr>
+                            <td>GI Charges</td>
+                            <td><input name="oc[16]" value="'.$oc[16].'"></td>
+                            <td>In Rs. per GC</td>
+                        </tr>
+                        <tr>
+                            <td>Dynamic Fuel Surcharge in %</td>
+                            <td><input name="oc[17]" value="'.$oc[17].'"></td>
+                            <td>% of basic freight</td>
+                        </tr>';
+                    }
+                    echo'<tr>
+                            <td>E-way bill charge</td>
+                            <td><input name="oc[18]" value="'.$oc[18].'"></td>
+                            <td>In Rs. Per GC</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                        $_door = (array)$oc[19];
+                        $_first = (array)$oc[19][0];
+                        
+                    echo'<tr>
+                            <td>Door Collection Charges</td>
+                            <td id="door_box">
+                                <button type="button" onclick="add_door()" class="btn btn-xs btn-primary pull-right" style="max-width:8%;display:inline-block">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <div id="door_sample">
+                                    <input name="oc[19][from][]" style="width:20%" placeholder="From" value="'.$_first['from'].'">
+                                        &#8211;
+                                    <input name="oc[19][to][]" style="width:20%" placeholder="To" value="'.$_first['to'].'">
+                                    <input name="oc[19][charge][]" value="'.$_first['charge'].'" style="width:20%" placeholder="Charge">
+                                    <div class="door_unit_sel" style="width:28%; display:inline-block">
+                                        <select name="oc[19][unit][]">
+                                            <option value="per_kg" '.($_first['unit']=='per_kg'?'selected':'').'>per KG</option>
+                                            <option value="per_gc" '.($_first['unit']=='per_gc'?'selected':'').'>per GC</option>
+                                            <option value="per_trip" '.($_first['unit']=='per_trip'?'selected':'').'>per Trips</option>
+                                        </select>
+                                    </div>
+                                </div>';
+
+                            foreach ($_door as $key =>$door_row)
+                            {
+                                $door_row = (array)$_door[$key];
+                                if($key==0)continue;
+                                echo'<div>
+                                    <input name="oc[19][from][]" style="width:20%" placeholder="From" value="'.$door_row['from'].'">
+                                        &#8211;
+                                    <input name="oc[19][to][]" style="width:20%" placeholder="To" value="'.$door_row['to'].'">
+                                    <input name="oc[19][charge][]" value="'.$door_row['charge'].'" style="width:20%" placeholder="Charge">
+                                    <div style="width:28%; display:inline-block">
+                                        <select name="oc[19][unit][]">
+                                            <option value="per_kg" '.($door_row['unit']=='per_kg'?'selected':'').'>per KG</option>
+                                            <option value="per_gc" '.($door_row['unit']=='per_gc'?'selected':'').'>per GC</option>
+                                            <option value="per_trip" '.($door_row['unit']=='per_trip'?'selected':'').'>per Trips</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" onclick="remove_door(this)" class="btn btn-xs btn-danger pull-right" style="max-width:8%;display:inline-block">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                </div>';
+                            }
+                    $_door = (array)$oc[20];
+                    $_first = (array)$oc[20][0];
+                    echo'</td>
+                            <td>Upto 3 MT and above free</td>
+                        </tr>
+                        <tr>
+                            <td>Last Mile  Delivery charges</td>
+                            <td id="mile_box">
+
+                            <button type="button" onclick="add_mile_del()" class="btn btn-xs btn-primary pull-right" style="max-width:8%;display:inline-block">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <div id="mile_sample">
+                                    <input name="oc[20][from][]" style="width:20%" placeholder="From" value="'.$_first['from'].'">
+                                        &#8211;
+                                    <input name="oc[20][to][]" style="width:20%" placeholder="To" value="'.$_first['to'].'">
+                                    <input name="oc[20][charge][]" value="'.$_first['charge'].'" style="width:20%" placeholder="Charge">
+                                    <div class="mile_unit_sel" style="width:28%; display:inline-block">
+                                        <select name="oc[20][unit][]">
+                                            <option value="per_kg" '.($_first['unit']=='per_kg'?'selected':'').'>per KG</option>
+                                            <option value="per_gc" '.($_first['unit']=='per_gc'?'selected':'').'>per GC</option>
+                                            <option value="per_trip" '.($_first['unit']=='per_trip'?'selected':'').'>per Trips</option>
+                                        </select>
+                                    </div>
+                                </div>';
+
+                            foreach ($_door as $key =>$door_row)
+                            {
+                                $door_row = (array)$_door[$key];
+                                if($key==0)continue;
+                                echo'<div>
+                                    <input name="oc[19][from][]" style="width:20%" placeholder="From" value="'.$door_row['from'].'">
+                                        &#8211;
+                                    <input name="oc[19][to][]" style="width:20%" placeholder="To" value="'.$door_row['to'].'">
+                                    <input name="oc[19][charge][]" value="'.$door_row['charge'].'" style="width:20%" placeholder="Charge">
+                                    <div style="width:28%; display:inline-block">
+                                        <select name="oc[19][unit][]">
+                                            <option value="per_kg" '.($door_row['unit']=='per_kg'?'selected':'').'>per KG</option>
+                                            <option value="per_gc" '.($door_row['unit']=='per_gc'?'selected':'').'>per GC</option>
+                                            <option value="per_trip" '.($door_row['unit']=='per_trip'?'selected':'').'>per Trips</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" onclick="remove_door(this)" class="btn btn-xs btn-danger pull-right" style="max-width:8%;display:inline-block">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                </div>';
+                            }
+
+
+                echo'</td>
+                            <td>Upto 3 MT and above free</td>
+                        </tr>
+                        <tr>
+                            <td>Re Delivery charges</td>
+                            <td colspan="2">Rs. 1200 per GC or actual expense whichever is higher</td>
+                        </tr>
+                        <tr>
+                            <td>ODA Charges</td>
+                            <td colspan="2">
+                                <div style="width:49%; display:inline-block;">
+                                    <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge">
+                                </div>
+                                <div style="width:49%; display:inline-block;">
+                                    <input id="oda_distance" type="number" style="width:49%" placeholder="Distance ( In KM )" onkeyup="oda_cal()">
+                                     <input id="oda_weight" type="number" style="width:49%" placeholder="Weight ( In KG )" onkeyup="oda_cal()">
+                                </div>
+                            </td>
+                        </tr>';
+                    }
+                echo'</tbody>
+                    </table>';
+                if($booking_type=='sundry')
+                {
+                echo'<p>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" style="width:60px!important;">. per Ltr.
+                    </p>';
+                }
+            echo'</div>
+                </div>
+                <div style="padding:15px;">
+                <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Save</button>
+                </div>
+                </form>
+                ';
+            }
+            else
+            {
+                echo'<center><h2 style="color:#696969">No Data Found</h2></center>';
+            }
+        }
+        else
+        {
+            echo'blank';
+        }
+    }
+    public function save_deal_data()
+    {
+        $this->load->model('Branch_model');
+
+        if($this->input->post('booking_type')=='sundry')
+        {
+            $data = array();
+            $door = $_POST['oc'][19];
+
+            foreach ($door['from'] as $key => $val)
+            {
+                $data[$key]['from'] = $door['from'][$key];
+                $data[$key]['to'] = $door['to'][$key];
+                $data[$key]['charge'] = $door['charge'][$key];
+                $data[$key]['unit'] = $door['unit'][$key]; 
+            }
+            $_POST['oc'][19] = $data;
+            
+            $data = array();
+            $door = $_POST['oc'][20];
+
+            foreach ($door['from'] as $key => $val)
+            {
+                $data[$key]['from'] = $door['from'][$key];
+                $data[$key]['to'] = $door['to'][$key];
+                $data[$key]['charge'] = $door['charge'][$key];
+                $data[$key]['unit'] = $door['unit'][$key]; 
+            }
+        $_POST['oc'][20] = $data;
+        }
+
+        $oc = json_encode($this->input->post('oc'));
+        $deal_id = $this->input->post('info_id');
+        $deal = array(
+                    'enquiry_id'=>$this->input->post('enquiry_id'),
+                    'booking_type'=>$this->input->post('booking_type'),
+                    'business_type'=>$this->input->post('business_type'),
+                    'btype'=>$this->input->post('btype'),
+                    'dtype'=>$this->input->post('dtype'),
+                    'createdby'=>$this->session->user_id,
+                    'comp_id'=>$this->session->companey_id,
+                    'other_charges'=>$oc,
+                    'status'=>'0',
+
+                    );
+
+        if(!empty($deal_id))
+        {
+            unset($deal['status']);
+            $this->db->update('commercial_info',$deal);
+            $this->db->where('deal_id',$deal_id)->delete('deal_data');
+        }
+        else
+        {
+            $deal_id = $this->Branch_model->add_deal($deal);
+        }
+        
+        if($deal['booking_type']=='sundry')
+            $hook = $this->input->post('rate');
+        else
+            $hook = $this->input->post('vtype');  
+
+        foreach($hook as $link_id => $rate)
+        {
+            $data  = array(
+                        'deal_id'=>$deal_id,
+                        'booking_branch'=>$this->input->post('bid['.$link_id.']'),
+                        'delivery_branch'=>$this->input->post('did['.$link_id.']'),
+                        'rate'=>$this->input->post('rate['.$link_id.']')??'',
+                        'discount'=>$this->input->post('discount['.$link_id.']')??'',
+                        'insurance'=>$this->input->post('insurance['.$link_id.']')??'',
+                        'paymode'=>$this->input->post('paymode['.$link_id.']')??'',
+                        'potential_tonnage'=>$this->input->post('pton['.$link_id.']')??'',
+                        'potential_amount'=>$this->input->post('pamnt['.$link_id.']')??'',
+                        'expected_tonnage'=>$this->input->post('eton['.$link_id.']')??'',
+                        'expected_amount'=>$this->input->post('eamnt['.$link_id.']')??'',
+                        'vehicle_type'=>$this->input->post('vtype['.$link_id.']')??'',
+                        'carrying_capacity'=>$this->input->post('capacity['.$link_id.']')??'',
+                        'invoice_value'=>$this->input->post('invoice['.$link_id.']')??'',
+                        'comp_id'=>$this->session->companey_id,
+            );
+            //print_r($data);
+            $this->Branch_model->add_deal_data($data);
+        }
+
+        echo'1';
+    }
+
+    public function edit_commercial_info($deal_id)
+    {
+         $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
+
+        $data['title'] = 'Edit Deal';
+        $data['deal'] =$deal= $this->Branch_model->get_deal($deal_id);
+        $data['deal_data'] = $this->Branch_model->get_deal_data($deal_id);
+        $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($deal->enquiry_id);
+        $data['branch'] = $this->Branch_model->branch_list()->result();
+        $dis= $this->db->select('d.discount')
+                                        ->from('discount_matrix d')
+                                        ->join('tbl_admin a','a.discount_id=d.id','left')
+                                        ->where('a.pk_i_admin_id='.$this->session->user_id)
+                                        ->get()->row();
+        $data['max_discount'] = !empty($dis)?$dis->discount:100;
+        $data['content'] = $this->load->view('enquiry/edit_deal', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+
+    public function create_agreement_pdf()
+    {   
+        $this->load->model(array('Branch_model','Leads_Model'));
+        $user = $this->db->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row();
+        $deal_id = $this->input->post('deal_id');
+        $zone = $this->input->post('zone_id');
+      
+        $_POST['edit'] = 1;
+        $_POST['checkss'] = array();
+        $deal   =    $this->Branch_model->get_deal($deal_id);
+        
+        $deal_data = $this->Branch_model->get_deal_data($deal_id);
+        $bank = $this->Branch_model->bank_by_zone($zone);
+
+        $enq = $this->db->select('e.*,r.region_name')
+                        ->from('enquiry e')
+                        ->join('tbl_region r','r.region_id=e.region_id','left')
+                        ->where('e.enquiry_id',$deal->enquiry_id)
+                        ->get()->row();
+
+        $_POST['customer_name'] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+        $_POST['region_name'] = $enq->region_name;
+        $_POST['ms'] = $enq->company;
+        $_POST['reg_add'] = $enq->address;
+        $_POST['account_number1'] = $bank->account_no;
+        $_POST['ifsc1'] = $bank->ifsc;
+        $_POST['branch1'] = $bank->bank_branch;
+        $_POST['name1'] = $user->s_display_name.' '.$user->last_name;
+        $_POST['designation1'] = $user->designation;
+        $_POST['name2'] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+        //$_POST['designation2'] = ;
+
+        echo $this->load->view('aggrement/input-vtrans',array(),TRUE);
+        
+    }
 }

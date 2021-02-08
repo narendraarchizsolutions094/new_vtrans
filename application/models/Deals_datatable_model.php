@@ -7,11 +7,11 @@ class Deals_datatable_model extends CI_Model{
   
         $this->table = 'commercial_info';
         // Set orderable column fields
-        $this->column_order = array('info.id','enq.name','info.branch_type','info.booking_type','info.business_type','book.branch_name','deliver.branch_name','info.rate','info.discount','info.insurance','info.paymode','info.potential_tonnage','info.potential_amount','info.expected_tonnage','info.expected_amount','info.vechicle_type','info.carrying_capacity','info.invoice_value','info.creation_date','info.status','');
+        $this->column_order = array('info.id','enq.name','info.booking_type','info.business_type','info.creation_date','info.status','');
 
         // Set searchable column fields
 
-        $this->column_search = array('enq.name','book.branch_name','deliver.branch_name','info.potential_amount','info.potential_tonnage','info.expected_amount','info.expected_tonnage','info.creation_date');
+        $this->column_search = array('enq.name','info.creation_date');
 
         // $this->column_search = array('tck.ticketno','tck.id','tck.category','tck.name','tck.email','tck.product','tck.message','tck.issue','tck.solution','tck.sourse','tck.ticket_stage','tck.review','tck.status','tck.priority','tck.complaint_type','tck.coml_date','tck.last_update','tck.send_date','tck.client','tck.assign_to','tck.company','tck.added_by','enq.phone','enq.gender','prd.country_name');
         
@@ -76,11 +76,9 @@ class Deals_datatable_model extends CI_Model{
 
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
-        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type, book.branch_name as booking_branch_name, deliver.branch_name as delivery_branch_name');
+        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type');
         $this->db->from($this->table.' info');
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
-        $this->db->join('branch book','book.branch_id=info.booking_branch','left');
-        $this->db->join('branch deliver','deliver.branch_id=info.delivery_branch','left');
         $this->db->where("info.comp_id",$this->session->companey_id);
 
         $where="";
@@ -149,14 +147,14 @@ class Deals_datatable_model extends CI_Model{
             $and =1;
         }
 
-        if(!empty($_POST['paymode']))
-        {
-              if($and)
-                $where.=" and ";
+        // if(!empty($_POST['paymode']))
+        // {
+        //       if($and)
+        //         $where.=" and ";
 
-            $where.=" (info.paymode ='".$_POST['paymode']."' ) ";
-            $and =1;
-        }
+        //     $where.=" (info.paymode ='".$_POST['paymode']."' ) ";
+        //     $and =1;
+        // }
 
         if(!empty($_POST['p_amnt_from']))
         {

@@ -2801,60 +2801,805 @@ public function set_layout_to_session() {
                     }
                     $this->load->view('graph',$data);
                     }
-                    function printPdf_gen(){
-                        // $this->load->library('pdf');
-                            $id=$this->input->post('typeId');
-                            if($id==0){$dc_id=1;}else{ $dc_id=2; }
-                        $enquiry_id=$this->input->post('enqid');
-                        $docTemplate=$this->db->where(array('comp_id'=>65,'id'=>$dc_id))->get('tbl_docTemplate')->result();
-                           foreach ($docTemplate as $key => $value) {
-                          $content=  $value->content;
-                          $this->db->where('comp_id',65);
-                          $enquiry = $this->db->where('enquiry_id',$enquiry_id)->get('enquiry')->result();
-                          foreach ($enquiry as $key => $evalue) {
+
+      function printPdf_gen(){
+                      $this->load->model('Branch_model');
+                      $info_id=$this->input->post('info_id');
+
+                    $deal= $this->Branch_model->get_deal($info_id);
+
+                    $d_data =  $this->Branch_model->get_deal_data($info_id);
+                    $oc = (array)json_decode($deal->other_charges);
+                    if(empty($deal))
+                    {
+                        echo'No data';exit();
+                    }
+                    $enquiry_id = $deal->enquiry_id;
+                    $booking_type = $deal->booking_type;
+                    //$docTemplate=$this->db->where(array('comp_id'=>65,'title'=>$deal->booking_type))->get('tbl_doctemplate')->result();
+                    //echo'asdfsf';
+
+                    $this->db->where('comp_id',$this->session->companey_id);
+                    $enquiry = $this->db->where('enquiry_id',$enquiry_id)->get('enquiry');
+                    $evalue = $enquiry->row();
+                   
+                    //print_r($evalue);exit();
+                    $usrarr = $this->db->select("pk_i_admin_id,s_display_name,last_name,s_phoneno,s_user_email,designation")->where("pk_i_admin_id", $this->session->user_id)
+                                           ->from("tbl_admin")->get() ->row();
+
+                  if($booking_type=='ftl')
+                     $content=  $this->load->view('quotation_temp/ftl',array(),true);
+                  else if($booking_type=='sundry')
+                  {
+                      $note = array(
+                              'enq_name'=>$evalue->name??'',
+                              'mobile'=>$evalue->phone??'',
+                              'email'=>$evalue->email??'',
+                              'address'=>$evalue->address??'',
+                              'user'=>$usrarr->s_display_name,
+                              'user_deg'=>$usrarr->designation,
+                              'user_mobile'=>$usrarr->s_phoneno,
+                              'user_email'=>$usrarr->s_user_email,
+                              'avg_fule_price'=>$oc[21],
+                      );
+                      $content=  $this->load->view('quotation_temp/part-load',$note,true);
+                  }
+
                             $content = str_replace("@{fullname}",$evalue->name, $content);
                             $content = str_replace("@{mobile}",$evalue->phone, $content);
                             $content = str_replace("@{email}",$evalue->email, $content);
                             $content = str_replace("@{address}",$evalue->address, $content);
                             $content = str_replace("@{creationdate}",$evalue->created_date, $content);
-                        
-                        }
-                            //user
-                        //  $content = str_replace("@{designation}",$evalue->, $content);
-                          	$usrarr = $this->db->select("pk_i_admin_id,s_display_name,last_name,s_phoneno,s_user_email,designation")->where("pk_i_admin_id", $this->session->user_id)
-                                           ->from("tbl_admin")->get() ->row();
+                
+
                          $content = str_replace("@{username}",$usrarr->s_display_name.' '.$usrarr->last_name, $content);
                          $content = str_replace("@{usermobile}",$usrarr->s_phoneno, $content);
                          $content = str_replace("@{useremail}",$usrarr->s_user_email, $content);
                          $content = str_replace("@{userdesignation}",$usrarr->designation, $content);
-                         echo'<input name="idType" hidden="" class="idType" id="idType" value="'.$id.'">';
-                         echo $content;
-                                                      }
+                         echo'<input name="info_id" type="hidden" value="'.$info_id.'">';
+
+                
+                  if($booking_type=='ftl')
+                  {
+                      $freight_table = '';
+                      $freight_table .="<table border='1px' style='width:400px'>
+                      <thead>
+                        <tr>
+                          <th>From</th>
+                          <th>To</th>
+                          <th>Vehicle Type</th>
+                          <th>Freight</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      ";
+                      foreach ($d_data as $key => $drow)
+                      {
+                          $freight_table.="
+                          <tr>
+                            <td>".$drow->bbranch."</td>
+                            <td>".$drow->dbranch."</td>
+                            <td>".$drow->vtype_name."</td>
+                            <td>".$drow->invoice_value."</td>
+                          </tr>
+                          ";
+                      }
+                      $freight_table.="</tbody></table>";
+                      $area_table = '';
+                      $oda_table='';
+                    }
+                    else
+                    {
+                      $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id GROUP BY bz.zone_id,dz.zone_id");
+                        if(!empty($query))
+                        {
+                        $result = $query->result();
+
+                        $book = array_unique(array_column($result, 'bzone'));
+                        $del =  array_unique(array_column($result, 'dzone'));
+                       $freight_table = '<table border="1">';
+
+                        foreach ($book as $key => $value1)
+                        {
+                                if($key==0)
+                                {
+                                  $freight_table.='
+                                  <thead><tr>
+                                  <th>To <i class="fa fa-arrow-right"></i><br>
+                                  From <i class="fa fa-arrow-down"></i></th>';
+                                  foreach ($del as $key2 => $value2)
+                                  {
+                                   $freight_table.='<th>'.$value2.'</th>';
+                                  }
+                                  $freight_table.='</tr></thead>
+                                  <tbody>';
+                                }
+                          $freight_table.='<tr>';
+                          
+                          $freight_table.='<th>'.$value1.'</th>';
+                          
+                          foreach ($del as $key2 => $value2)
+                          {
+                              foreach ($result as $key3 => $value3)
+                              {
+                                if($value1==$value3->bzone && $value2==$value3->dzone)
+                                  $freight_table.='<td>'.$value3->rate.'/'.$oc['rate_type'].'</td>';    
+                              }
+                          }
+
+                          $freight_table.='</tr>';                   
+                        }
+                        $freight_table.= '</tbody></table>'; 
+
+                        $area_table='';
+                      $mean = array_unique(array_merge(array_unique(array_column($result, 'bzid')),array_unique(array_column($result, 'dzid'))));
+                        
+                        if(!empty($mean))
+                        {
+                        $area_table.="<table border='1px'>
+                        <thead>
+                          <tr>
+                            <th>Region</th>
+                            <th>Area to Area</th>
+                          </tr>
+                        </thead>
+                        <tbody>";
+                        $zlist = $this->db->select('z.zone_id,z.name zname,GROUP_CONCAT(b.branch_name) as blist')
+                                      ->from('branch b')
+                                      ->join('zones z','b.zone=z.zone_id','left')
+                                      ->where_in('b.zone',$mean)
+                                      ->group_by('b.zone')
+                                      ->get()->result();
+                        foreach ($zlist as $key5 => $mean)
+                        { 
+                          $area_table.='<tr><th>'.$mean->zname.'</th><td>'.$mean->blist.'</td></tr>';
+                        }
+                       $area_table.="</tbody>
+                      </table>";
+                        }
+
+                        }else
+                        {
+                          $freight_table ='';
+                          $area_table='';
+                        }
+
+                      
+                        $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge from oda_matrix GROUP bY dis,we")->result();
+                        if(!empty($oda_query))
+                        {
+                   
+                          $oda_row = array_unique(array_column($oda_query, 'dis'));
+                          $oda_col =  array_unique(array_column($oda_query, 'we'));
+                           $oda_table = '<table border="1">';
+
+                            foreach ($oda_row as $key => $value1)
+                            {
+                                    if($key==0)
+                                    {
+                                      $oda_table.='
+                                      <thead><tr>
+                                      <th class="text-center">Distance Range</th>';
+                                      foreach ($oda_col as $key2 => $value2)
+                                      {
+                                        $col = explode('-',$value2);
+                                       $oda_table.='<th class="text-center">'.$col[0].' To '.$col[1].'<br> KGS</th>';
+                                      }
+                                      $oda_table.='</tr></thead>
+                                      <tbody>';
+                                    }
+                              $oda_table.='<tr>';
+                              $row = explode('-',$value1);
+                              $oda_table.='<th>'.$row[0].' To '.$row[1].' KMS</th>';
+                              
+                              foreach ($oda_col as $key2 => $value2)
+                              {
+                                  foreach ($oda_query as $key3 => $value3)
+                                  {
+                                    if($value1==$value3->dis && $value2==$value3->we)
+                                      $oda_table.='<td>'.$value3->charge.'</td>';    
+                                  }
+                              }
+
+                              $oda_table.='</tr>';                   
+                            }
+                            $oda_table.= '</tbody></table>';
+
+                        }
+                        else
+                        {
+                          $oda_table  = '';
+                        }
+
+                    }
+                      
+                      $booking_type = $deal->booking_type;
+                      $oc_table ='<table border="1px" style="max-width:90%">
+                    <thead>
+                        <tr>
+                            <th align="center">Name of Charges</th>
+                            <th align="center">Amount (Rs.)</th>
+                            <th align="center">Units</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GC Charges</td>
+                            <td>'.$oc[1].'</td>
+                            <td>In Rs. Per GC</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    $oc_table.='<tr>
+                            <td>Minimum Chargeable Wt</td>
+                            <td>'.$oc[2].'</td>
+                            <td>KGs, Whichever is Higher</td>
+                        </tr>
+                        <tr>
+                            <td>Minimum Freight Value</td>
+                            <td>'.$oc[3].'</td>
+                            <td>In Rs.</td>
+                        </tr>
+                        <tr>
+                            <td>CFT factor</td>
+                            <td>'.$oc[4].'</td>
+                            <td>KG.</td>
+                        </tr>
+                        <tr>
+                            <td>Hamali Charges</td>
+                            <td>'.$oc[5].'</td>
+                            <td>Per Kg.</td>
+                        </tr>';
+                    }
+                    $oc_table.='<tr>
+                            <td>FOV Charges (owner risk)</td>
+                            <td>'.$oc[6].'</td>
+                            <td>% of Invoice Value</td>
+                        </tr>
+                        <tr>
+                            <td>FOV Charges (Carrier risk)</td>
+                            <td>'.$oc[7].'</td>
+                            <td>% of Invoice Value</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    $oc_table.='<tr>
+                            <td>AOC Charges</td>
+                            <td>'.$oc[8].'</td>
+                            <td>% of Total Freight</td>
+                        </tr>
+                        <tr>
+                            <td>COD/DOD Charges</td>
+                            <td>'.$oc[9].'</td>
+                            <td>Per GC</td>
+                        </tr>
+                        <tr>
+                            <td>DACC Charges</td>
+                            <td>'.$oc[10].'</td>
+                            <td>Per GC</td>
+                        </tr>';
+                    }
+                    $oc_table.='<tr>
+                            <td>Other (Please Specify)</td>
+                            <td>'.$oc[11].'</td>
+                            <td>At Actual</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    $oc_table.='<tr>
+                            <td colspan="3" style="font-weight:bold">CR Charges to be Paid By Consignor ('.($oc[12]=="Consignor"?'<i class="fa fa-check"></i>':' ').')  Consignee ('.($oc[12]=="Consignee"?'<i class="fa fa-check"></i>':' ').') </td>
+                        </tr>
+                        <tr>
+                            <td>Demurrage charges</td>
+                            <td>'.$oc[13].'</td>
+                            <td>Per KG on Per day basis</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="font-weight:bold">Demurrage Charges to be Paid By Consignor ('.($oc[14]=="Consignor"?'<i class="fa fa-check"></i>':' ').')   Consignee  ('.($oc[14]=="Consignee"?'<i class="fa fa-check"></i>':' ').') </td>
+                        </tr>';
+                    }
+                    $oc_table.='<tr>
+                            <td>Loading/Unloading Charges/Union Charges</td>
+                            <td>'.ucwords($oc[15]).'</td>
+                            <td>Per Kg / Box</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    $oc_table.='<tr>
+                            <td>GI Charges</td>
+                            <td>'.$oc[16].'</td>
+                            <td>In Rs. per GC</td>
+                        </tr>
+                        <tr>
+                            <td>Dynamic Fuel Surcharge in %</td>
+                            <td>'.$oc[17].'</td>
+                            <td>% of basic freight</td>
+                        </tr>';
+                    }
+                    $oc_table.='<tr>
+                            <td>E-way bill charge</td>
+                            <td>'.$oc[18].'</td>
+                            <td>In Rs. Per GC</td>
+                        </tr>';
+                    if($booking_type=='sundry')
+                    {
+                    $oc_table.='<tr>
+                            <td>Door Collection Charges</td>
+                            <td>
+                            <table border="1" style="max-width:252px!important">
+                            <thead>
+                              <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Charge</th>
+                                <th style="width:100px;">Unit</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>';
+                              foreach ($oc[19] as $d => $door)
+                              {
+                                $oc_table.='<tr>
+                                              <td>'.$door->from.'</td>
+                                              <td>'.$door->to.'</td>
+                                              <td>'.$door->charge.' Rs.</td>
+                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
+                                            </tr>';
+                              }
+                        $oc_table.='</tbody></table></td>
+                            <td>Upto 3 MT and above free</td>
+                        </tr>
+                        <tr>
+                            <td>Last Mile  Delivery charges</td>
+                            <td>
+                            <table border="1" style="max-width:252px!important">
+                            <thead>
+                              <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Charge</th>
+                                <th style="width:100px;">Unit</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>';
+                              foreach ($oc[20] as $d => $door)
+                              {
+                                $oc_table.='<tr>
+                                              <td>'.$door->from.'</td>
+                                              <td>'.$door->to.'</td>
+                                              <td>'.$door->charge.' Rs.</td>
+                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
+                                            </tr>';
+                              }
+                        $oc_table.='</tbody></table></td>
+                            <td>Upto 3 MT and above free</td>
+                        </tr>
+                        <tr>
+                            <td>Re Delivery charges</td>
+                            <td colspan="2">Rs. 1200 per GC or actual expense whichever is higher</td>
+                        </tr>
+                        <tr>
+                            <td>ODA Charges</td>
+                            <td colspan="2">'.$oc[22].'</td>
+                        </tr>';
+                    }
+                $oc_table.='</tbody>
+                    </table>';
+                      //echo $freight_table;
+                      $content = str_replace('@freight_table', $freight_table,$content);
+                      $content = str_replace('@oc_table', $oc_table,$content);
+                      $content = str_replace('@area_table',$area_table, $content);
+                      $content = str_replace('@oda_table',$oda_table, $content);
+                      echo $content;
+                                                    //  }
                     }
                   
-    public function pdf_gen(){
-        $this->load->library('pdf');
-        $id=$this->input->post('idType');
+    public function pdf_gen()
+    {
+        
+        $this->load->model('Branch_model');
+          $info_id=$this->input->post('info_id');
+
+        $deal= $this->Branch_model->get_deal($info_id);
+
+        $d_data =  $this->Branch_model->get_deal_data($info_id);
+        $oc = (array)json_decode($deal->other_charges);
+        if(empty($deal))
+        {
+            echo'No data';exit();
+        }
+        $enquiry_id = $deal->enquiry_id;
+        $booking_type = $deal->booking_type;
+        //$docTemplate=$this->db->where(array('comp_id'=>65,'title'=>$deal->booking_type))->get('tbl_doctemplate')->result();
+        //echo'asdfsf';
+
+        $this->db->where('comp_id',$this->session->companey_id);
+        $enquiry = $this->db->where('enquiry_id',$enquiry_id)->get('enquiry');
+        $evalue = $enquiry->row();
+       
+        //print_r($evalue);exit();
+        $usrarr = $this->db->select("pk_i_admin_id,s_display_name,last_name,s_phoneno,s_user_email,designation")->where("pk_i_admin_id", $this->session->user_id)
+                               ->from("tbl_admin")->get() ->row();
+
+      if($booking_type=='ftl')
+         $content=  $this->load->view('quotation_temp/ftl',array(),true);
+      else if($booking_type=='sundry')
+      {
+          $note = array(
+                  'enq_name'=>$evalue->name??'',
+                  'mobile'=>$evalue->phone??'',
+                  'email'=>$evalue->email??'',
+                  'address'=>$evalue->address??'',
+                  'user'=>$usrarr->s_display_name,
+                  'user_deg'=>$usrarr->designation,
+                  'user_mobile'=>$usrarr->s_phoneno,
+                  'user_email'=>$usrarr->s_user_email,
+                  'avg_fule_price'=>$oc[21],
+          );
+          $content=  $this->load->view('quotation_temp/part-load',$note,true);
+      }
+
+        $content = str_replace("@{fullname}",$evalue->name, $content);
+        $content = str_replace("@{mobile}",$evalue->phone, $content);
+        $content = str_replace("@{email}",$evalue->email, $content);
+        $content = str_replace("@{address}",$evalue->address, $content);
+        $content = str_replace("@{creationdate}",$evalue->created_date, $content);
+
+
+     $content = str_replace("@{username}",$usrarr->s_display_name.' '.$usrarr->last_name, $content);
+     $content = str_replace("@{usermobile}",$usrarr->s_phoneno, $content);
+     $content = str_replace("@{useremail}",$usrarr->s_user_email, $content);
+     $content = str_replace("@{userdesignation}",$usrarr->designation, $content);
+ 
+
+    if($booking_type=='ftl')
+    {
+        $freight_table = '';
+        $area_table='';
+        $oda_table='';
+        $freight_table .="<table border='1px' style='width:400px'>
+        <thead>
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Vehicle Type</th>
+            <th>Freight</th>
+          </tr>
+        </thead>
+        <tbody>
+        ";
+        foreach ($d_data as $key => $drow)
+        {
+            $freight_table.="
+            <tr>
+              <td>".$drow->bbranch."</td>
+              <td>".$drow->dbranch."</td>
+              <td>".$drow->vtype_name."</td>
+              <td>".$drow->invoice_value."</td>
+            </tr>
+            ";
+        }
+        $freight_table.="</tbody></table>";
+      }
+      else
+      {
+        $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id GROUP BY bz.zone_id,dz.zone_id");
+          if(!empty($query))
+          {
+          $result = $query->result();
+
+          $book = array_unique(array_column($result, 'bzone'));
+          $del =  array_unique(array_column($result, 'dzone'));
+         $freight_table = '<table border="1">';
+
+          foreach ($book as $key => $value1)
+          {
+                  if($key==0)
+                  {
+                    $freight_table.='
+                    <thead><tr>
+                    <th>To <i class="fa fa-arrow-right"></i><br>
+                                  From <i class="fa fa-arrow-down"></i></th>';
+                    foreach ($del as $key2 => $value2)
+                    {
+                     $freight_table.='<th>'.$value2.'</th>';
+                    }
+                    $freight_table.='</tr></thead>
+                    <tbody>';
+                  }
+            $freight_table.='<tr>';
+            
+            $freight_table.='<th>'.$value1.'</th>';
+            
+            foreach ($del as $key2 => $value2)
+            {
+                foreach ($result as $key3 => $value3)
+                {
+                  if($value1==$value3->bzone && $value2==$value3->dzone)
+                    $freight_table.='<td>'.$value3->rate.'/'.$oc['rate_type'].'</td>';    
+                }
+            }
+
+            $freight_table.='</tr>';                   
+          }
+          $freight_table.= '</tbody></table>'; 
+
+
+          $area_table='';
+          $mean = array_unique(array_merge(array_unique(array_column($result, 'bzid')),array_unique(array_column($result, 'dzid'))));
+            
+            if(!empty($mean))
+            {
+            $area_table.="<table border='1px'>
+            <thead>
+              <tr>
+                <th>Region</th>
+                <th>Area to Area</th>
+              </tr>
+            </thead>
+            <tbody>";
+            $zlist = $this->db->select('z.zone_id,z.name zname,GROUP_CONCAT(b.branch_name) as blist')
+                          ->from('branch b')
+                          ->join('zones z','b.zone=z.zone_id','left')
+                          ->where_in('b.zone',$mean)
+                          ->group_by('b.zone')
+                          ->get()->result();
+            foreach ($zlist as $key5 => $mean)
+            { 
+              $area_table.='<tr><th>'.$mean->zname.'</th><td>'.$mean->blist.'</td></tr>';
+            }
+           $area_table.="</tbody>
+          </table>";
+            }
+
+          }else
+          {
+            $freight_table ='';
+            $area_table='';
+          }
+
+          $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge from oda_matrix GROUP bY dis,we")->result();
+            if(!empty($oda_query))
+            {
+       
+              $oda_row = array_unique(array_column($oda_query, 'dis'));
+              $oda_col =  array_unique(array_column($oda_query, 'we'));
+               $oda_table = '<table border="1">';
+
+                foreach ($oda_row as $key => $value1)
+                {
+                        if($key==0)
+                        {
+                          $oda_table.='
+                          <thead><tr>
+                          <th class="text-center">Distance Range</th>';
+                          foreach ($oda_col as $key2 => $value2)
+                          {
+                            $col = explode('-',$value2);
+                           $oda_table.='<th class="text-center">'.$col[0].' To '.$col[1].'<br> KGS</th>';
+                          }
+                          $oda_table.='</tr></thead>
+                          <tbody>';
+                        }
+                  $oda_table.='<tr>';
+                  $row = explode('-',$value1);
+                  $oda_table.='<th>'.$row[0].' To '.$row[1].' KMS</th>';
+                  
+                  foreach ($oda_col as $key2 => $value2)
+                  {
+                      foreach ($oda_query as $key3 => $value3)
+                      {
+                        if($value1==$value3->dis && $value2==$value3->we)
+                          $oda_table.='<td>'.$value3->charge.'</td>';    
+                      }
+                  }
+
+                  $oda_table.='</tr>';                   
+                }
+                $oda_table.= '</tbody></table>';
+
+            }
+            else
+            {
+              $oda_table  = '';
+            }
+      }
+        
+        $booking_type = $deal->booking_type;
+        $oc_table ='<table border="1px" style="width:500px">
+      <thead>
+          <tr>
+              <th align="center">Name of Charges</th>
+              <th align="center">Amount (Rs.)</th>
+              <th align="center">Units</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>GC Charges</td>
+              <td>'.$oc[1].'</td>
+              <td>In Rs. Per GC</td>
+          </tr>';
+      if($booking_type=='sundry')
+      {
+      $oc_table.='<tr>
+              <td>Minimum Chargeable Wt</td>
+              <td>'.$oc[2].'</td>
+              <td>KGs, Whichever is Higher</td>
+          </tr>
+          <tr>
+              <td>Minimum Freight Value</td>
+              <td>'.$oc[3].'</td>
+              <td>In Rs.</td>
+          </tr>
+          <tr>
+              <td>CFT factor</td>
+              <td>'.$oc[4].'</td>
+              <td>KG.</td>
+          </tr>
+          <tr>
+              <td>Hamali Charges</td>
+              <td>'.$oc[5].'</td>
+              <td>Per Kg.</td>
+          </tr>';
+      }
+      $oc_table.='<tr>
+              <td>FOV Charges (owner risk)</td>
+              <td>'.$oc[6].'</td>
+              <td>% of Invoice Value</td>
+          </tr>
+          <tr>
+              <td>FOV Charges (Carrier risk)</td>
+              <td>'.$oc[7].'</td>
+              <td>% of Invoice Value</td>
+          </tr>';
+      if($booking_type=='sundry')
+      {
+      $oc_table.='<tr>
+              <td>AOC Charges</td>
+              <td>'.$oc[8].'</td>
+              <td>% of Total Freight</td>
+          </tr>
+          <tr>
+              <td>COD/DOD Charges</td>
+              <td>'.$oc[9].'</td>
+              <td>Per GC</td>
+          </tr>
+          <tr>
+              <td>DACC Charges</td>
+              <td>'.$oc[10].'</td>
+              <td>Per GC</td>
+          </tr>';
+      }
+      $oc_table.='<tr>
+              <td>Other (Please Specify)</td>
+              <td>'.$oc[11].'</td>
+              <td>At Actual</td>
+          </tr>';
+      if($booking_type=='sundry')
+      {
+      $oc_table.='<tr>
+              <td colspan="3" style="font-weight:bold">CR Charges to be Paid By Consignor ('.($oc[12]=="Consignor"?'<i class="fa fa-check"></i>':' ').')  Consignee ('.($oc[12]=="Consignee"?'<i class="fa fa-check"></i>':' ').') </td>
+          </tr>
+          <tr>
+              <td>Demurrage charges</td>
+              <td>'.$oc[13].'</td>
+              <td>Per KG on Per day basis</td>
+          </tr>
+          <tr>
+              <td colspan="3" style="font-weight:bold">Demurrage Charges to be Paid By Consignor ('.($oc[14]=="Consignor"?'<i class="fa fa-check"></i>':' ').')   Consignee  ('.($oc[14]=="Consignee"?'<i class="fa fa-check"></i>':' ').') </td>
+          </tr>';
+      }
+      $oc_table.='<tr>
+              <td>Loading/Unloading Charges/Union Charges</td>
+              <td>'.ucwords($oc[15]).'</td>
+              <td>Per Kg / Box</td>
+          </tr>';
+      if($booking_type=='sundry')
+      {
+      $oc_table.='<tr>
+              <td>GI Charges</td>
+              <td>'.$oc[16].'</td>
+              <td>In Rs. per GC</td>
+          </tr>
+          <tr>
+              <td>Dynamic Fuel Surcharge in %</td>
+              <td>'.$oc[17].'</td>
+              <td>% of basic freight</td>
+          </tr>';
+      }
+      $oc_table.='<tr>
+              <td>E-way bill charge</td>
+              <td>'.$oc[18].'</td>
+              <td>In Rs. Per GC</td>
+          </tr>';
+      if($booking_type=='sundry')
+      {
+      $oc_table.='<tr>
+                            <td>Door Collection Charges</td>
+                            <td>
+                            <table border="1" style="max-width:252px!important">
+                            <thead>
+                              <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Charge</th>
+                                <th style="width:100px;">Unit</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>';
+                              foreach ($oc[19] as $d => $door)
+                              {
+                                $oc_table.='<tr>
+                                              <td>'.$door->from.'</td>
+                                              <td>'.$door->to.'</td>
+                                              <td>'.$door->charge.' Rs.</td>
+                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
+                                            </tr>';
+                              }
+                        $oc_table.='</tbody></table></td>
+                            <td>Upto 3 MT and above free</td>
+                        </tr>
+                        <tr>
+                            <td>Last Mile  Delivery charges</td>
+                            <td>
+                            <table border="1" style="max-width:252px!important">
+                            <thead>
+                              <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Charge</th>
+                                <th style="width:100px;">Unit</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>';
+                              foreach ($oc[20] as $d => $door)
+                              {
+                                $oc_table.='<tr>
+                                              <td>'.$door->from.'</td>
+                                              <td>'.$door->to.'</td>
+                                              <td>'.$door->charge.' Rs.</td>
+                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
+                                            </tr>';
+                              }
+                        $oc_table.='</tbody></table></td>
+                            <td>Upto 3 MT and above free</td>
+                        </tr>
+          <tr>
+              <td>Re Delivery charges</td>
+              <td colspan="2">Rs. 1200 per GC or actual expense whichever is higher</td>
+          </tr>
+          <tr>
+              <td>ODA Charges</td>
+              <td colspan="2">'.$oc[22].'</td>
+          </tr>';
+      }
+  $oc_table.='</tbody>
+      </table>';
+        //echo $freight_table;
+        $content = str_replace('@freight_table', $freight_table,$content);
+        $content = str_replace('@oc_table', $oc_table,$content);
+        $content = str_replace('@area_table', $area_table,$content);
+        $content = str_replace('@oda_table',$oda_table, $content);
         $submitemail=$this->input->post('email');
+        $this->load->library('pdf');
         // $download=$this->input->post('download');
-        if(isset($submitemail)){
-        if($id==0){$dc_id=1;}else{ $dc_id=2; }
-        $enquiry_id=$this->input->post('enquiry_id');
-        $data['enquiry_id']=$enquiry_id;
-        $data['docTemplate']=$this->db->where(array('comp_id'=>65,'id'=>$dc_id))->get('tbl_docTemplate');
-        $data['usrarr']= $this->db->select("pk_i_admin_id,s_display_name,last_name,s_phoneno,s_user_email,designation")->where("pk_i_admin_id", $this->session->user_id)
-        ->from("tbl_admin")->get() ->row();
-        $this->db->where('comp_id', $this->session->companey_id);
-        $data['enquiry'] = $this->db->where('enquiry_id',$enquiry_id)->get('enquiry')->result();
-        $time = time();
-        $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/new_crm/uploads/quotations/quotations-".time().".pdf";
-        $pdf=   $this->pdf->load_view('gen_pdf',$data,$pdfFilePath1);
+        if(isset($submitemail))
+        {
+        $folder =  explode('/',$_SERVER['REQUEST_URI'])[1];
+
+
+        $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/".$folder."/uploads/quotations/quotations-".time().".pdf";
+        $pdf=   $this->pdf->create($content,0,$pdfFilePath1);
         $message = 'Dear Sir/Madam,<br> Please find the quotation attachment below.';
         $email_subject = 'V-Trans Quotation';
-        $move_enquiry = $this->input->post('enquiry_id');
+        $move_enquiry = $enquiry_id;
         $this->db->where('comp_id',$this->session->companey_id);
         $this->db->where('status',1);
-        $email_row	=	$this->db->get('email_integration')->row_array();                        
+        $email_row = $this->db->get('email_integration')->row_array();                        
         if(empty($email_row)){
                 echo "Email is not configured";
                 die();
@@ -2875,28 +3620,26 @@ public function set_layout_to_session() {
         $this->email->initialize($config);
         $this->email->from($email_row['smtp_user']);
         $to=$enq->email;
+
         $this->email->to($to);
         $this->email->subject($email_subject); 
         $this->email->message($message); 
         $this->email->set_mailtype('html');
         $this->email->attach($pdfFilePath1);
         if($this->email->send()){
-            echo "Mail sent successfully";
+            $this->session->set_flashdata('message','Mail Send Successfully');
         }else{
-            echo $this->email->print_debugger();
-            echo "Something went wrong";			                	
+            //echo $this->email->print_debugger();
+             $this->session->set_flashdata('exception','Something went wrong'); 
+                                
         }
-    }else{        
-        if($id==0){$dc_id=1;}else{ $dc_id=2; }
-        $enquiry_id=$this->input->post('enquiry_id');
-        $data['enquiry_id']=$enquiry_id;
-        $data['docTemplate']=$this->db->where(array('comp_id'=>65,'id'=>$dc_id))->get('tbl_docTemplate');
-        $data['usrarr']= $this->db->select("pk_i_admin_id,s_display_name,last_name,s_phoneno,s_user_email,designation")->where("pk_i_admin_id", $this->session->user_id)
-        ->from("tbl_admin")->get() ->row();
-        $this->db->where('comp_id', $this->session->companey_id);
-        $data['enquiry'] = $this->db->where('enquiry_id',$enquiry_id)->get('enquiry')->result();
-        $html=   $this->pdf->load_view('gen_pdf',$data,0);
-        //$this->pdf->createPDF($html, 'mypdf', true);
+        redirect('enquiry/view/'.$enquiry_id.'/');  
+    }
+    else
+    {       
+        //echo $content;exit();
+        $this->pdf->create($content,0);
+      
         if($this->input->post('redirect_url')){
             redirect($this->input->post('redirect_url')); //updateclient                
         }else{

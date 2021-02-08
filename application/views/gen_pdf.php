@@ -17,6 +17,11 @@
    $content = str_replace("@{useremail}",$usrarr->s_user_email, $content);
    $content = str_replace("@{userdesignation}",$usrarr->designation, $content);
    
+   if(!empty($freight_table))
+    $content = str_replace('@freight_table', $freight_table,$content);
+  if(!empty($oc_table))
+   $content = str_replace('@oc_table', $oc_table,$content);
+
                             echo $content;
 
                                 }

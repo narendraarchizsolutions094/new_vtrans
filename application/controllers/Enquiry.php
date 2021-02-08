@@ -3253,7 +3253,7 @@ echo  $details1;
     }
  }
 
- public function update_info_status($enqno=0)
+ public function update_info_status()
  {
     $commerical_id = $this->input->post('id');
     $status = $this->input->post('status');
@@ -3262,10 +3262,13 @@ echo  $details1;
      $this->db->set('status',$status);
      $res = $this->db->update('commercial_info');
 
+    $en =  $this->db->where('id',$commerical_id)->get('commercial_info')->row();
+    $endata = $this->db->select('Enquery_id')->where('enquiry_id',$en->enquiry_id)->get('enquiry')->row();
+
      if($res)
      {
         $this->load->model('Leads_Model');
-        $this->Leads_Model->add_comment_for_events('Commercial Info Status Updated',$enqno);
+        $this->Leads_Model->add_comment_for_events('Commercial Info Status Updated',$endata->Enquery_id);
      }
      echo '1';
  }
@@ -3309,6 +3312,7 @@ echo  $details1;
           //check exist of not
           if($count->num_rows()==1){
          $insert= $this->db->where(array('id'=>$id,'comp_id'=>$comp_id))->delete('commercial_info');
+                $this->db->where(array('deal_id'=>$id))->delete('deal_data');
           if($insert){
             $this->session->set_flashdata('message', 'Commercial information Deleted successfully');
             redirect($url);
@@ -3514,37 +3518,6 @@ echo  $details1;
         {
             $sub = array();
 
-                if($value->branch_type==1){
-                $branch_type='Branch';
-               }elseif($value->branch_type==2){
-                $branch_type='Zone';
-               }elseif($value->branch_type==3){
-                $branch_type='Area wise';
-               }
-               if($value->business_type==0){
-                $business_type='Inward';
-               }elseif($value->business_type==1){
-                $business_type='Outword';
-               }
-               if($value->insurance==0){
-                $insurance='Carrier';
-               }elseif($value->insurance==1){
-                $insurance='Owner Risk';
-               }
-               if($value->booking_type==0){
-                $booking_type='Sundy';
-               }elseif($value->booking_type==1){
-                $booking_type='FTL';
-               }
-               
-               if($value->paymode==1){
-                $paymode='Paid';
-               }elseif($value->paymode==2){
-                $paymode='To-Pay';
-               }elseif($value->paymode==3){
-                $paymode='Tbb';
-               }
-
             $sub[] = $value->id;
 
              if(!empty($_POST['view_all']))
@@ -3561,60 +3534,40 @@ echo  $details1;
                 if($colsall || in_array(1,$cols))
                     $sub[] = '<a href="'.$url.'">'.$value->name.'</a>'??'NA';
             }
-            if($colsall || in_array(2,$cols))
-            $sub[] = $branch_type??'NA';
+           
             if($colsall || in_array(3,$cols))
-            $sub[] = $booking_type??'NA';
+            $sub[] =strtoupper(($value->booking_type))??'NA';
             if($colsall || in_array(4,$cols))
-            $sub[] = $business_type??'NA';
-            if($colsall || in_array(5,$cols))
-            $sub[] = $value->booking_branch_name??'NA';
-            if($colsall || in_array(6,$cols))
-            $sub[] = $value->delivery_branch_name??'NA';
-            if($colsall || in_array(7,$cols))
-            $sub[] = $value->rate??'NA';
-            if($colsall || in_array(8,$cols))
-            $sub[] = $value->discount??'NA';
-            if($colsall || in_array(9,$cols))
-            $sub[] = $insurance??'NA';
-            if($colsall || in_array(10,$cols))   
-            $sub[] = $paymode??'NA';
-            if($colsall || in_array(11,$cols))
-            $sub[] = $value->potential_tonnage??'NA';
-            if($colsall || in_array(12,$cols))
-            $sub[] = $value->potential_amount??'NA';
-            if($colsall || in_array(13,$cols))
-            $sub[] = $value->expected_tonnage??'NA';
-            if($colsall || in_array(14,$cols))
-            $sub[] = $value->expected_amount??'NA';
-            if($colsall || in_array(15,$cols))
-            $sub[] = $value->vehicle_type??'NA';
-            if($colsall || in_array(16,$cols))
-            $sub[] = $value->carrying_capacity??'NA';
-            if($colsall || in_array(17,$cols))
-            $sub[] = $value->invoice_value??'NA';
-            if($colsall || in_array(18,$cols))
+            $sub[] = ucwords($value->business_type).'ward'??'NA';
+
             $sub[] = !empty($value->creation_date)?date('d-M-Y H:i:s A',strtotime($value->creation_date)):'NA';
 
             $stts = $value->status;
+
             if($colsall || in_array(19,$cols))
-            $sub[] = '<label class="label label-'.($stts?($stts==1?'success"> Done':'danger">Deferred'):'warning">Pending').'</label>';
+            $sub[] = '<select onchange="update_info_status('.$value->id.',this.value)">
+                        <option value="0" '.($value->status==0?'selected':'').'>Pending</option>
+                        <option value="1" '.($value->status==1?'selected':'').'>Done</option>
+                        <option value="2" '.($value->status==2?'selected':'').'>Deferred</option>
+                        </select>';
             $part2 = "";
             if(user_access('1002'))
             {
                 $part2.= "
-                <a  class='btn btn-xs  btn-primary' data-toggle='modal'  data-target='#editComInfo' onclick='editComInfo(".$value->id.");' ><i class='fa fa-edit'></i></a>";
+                <a  class='btn btn-xs  btn-primary' href='".base_url('client/edit_commercial_info/').$value->id."' ><i class='fa fa-edit'></i></a>";
             }
             
             if(user_access('1001'))
             {
-            $part2.="<a class='btn btn-xs btn-danger fa fa-trash' onclick='return confirm(\"Are you sure ?\")' href='".base_url('enquiry/deleteInfo/' . $value->id . '/'.$value->enquiry_id.'/')."'></a>";
+            $part2.="<a class='btn btn-xs btn-danger' onclick='return confirm(\"Are you sure ?\")' href='".base_url('enquiry/deleteInfo/' . $value->id . '/'.$value->enquiry_id.'/')."'><i class='fa fa-trash'></i></a>";
             }
 
-            $part2.="<a class='btn btn-primary btn-xs' onclick='quotation_pdf(".$value->booking_type.",".$value->enquiry_id.")' style='cursor: pointer;' data-toggle='modal'  data-target='#downloadQuatation'><i class='fa fa-download'></i></a>
+            $part2.="<a class='btn btn-primary btn-xs' onclick='quotation_pdf(".$value->id.")' style='cursor: pointer;' data-toggle='modal'  data-target='#downloadQuatation'><i class='fa fa-download'></i></a>
+
+           
             ";
             if($colsall || in_array(20,$cols))
-            $sub[] =$part2;
+            $sub[] ='<div class="btn-group">'.$part2.'</div>';
             $data[] =$sub;
         }
     
@@ -3665,5 +3618,16 @@ echo  $details1;
                 <?php
             }
         }
+    }
+
+    public function enq_page($enq_id)
+    {
+      $res=  $this->db->select('status')->where('enquiry_id',$enq_id)->get('enquiry')->row_array();
+        if($res['status']=='1')
+            redirect(base_url('enquiry/view/'.$enq_id));
+        else if($res['status']=='2')
+             redirect(base_url('lead/lead_details/'.$enq_id));
+         else 
+             redirect(base_url('client/view/'.$enq_id));
     }
 }
