@@ -517,6 +517,7 @@ public function branchrate_delete()
 	}
 	
 }
+
 public function document_templates()
 {		
 	if (user_role('e34') == true) {
@@ -526,6 +527,7 @@ public function document_templates()
 	$data['content'] = $this->load->view('setting/document-templates',$data,true);
 	$this->load->view('layout/main_wrapper',$data);
 }
+
 public function expensemaster()
 {		
 	// if (user_role('e34') == true) {
