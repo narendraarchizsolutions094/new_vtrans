@@ -21,7 +21,7 @@
       <div class="row">
         <?php
         if (!$invalid_process) { ?>
-          <form method="post" action="<?= base_url() ?>enquiry/create" id="enquiry_form" autocomplete="off">
+          <form method="post" action="<?= base_url() ?>enquiry/create" id="enquiry_form" autocomplete="off"> 
             <?php $process_id = $this->session->process[0]; ?>
             <input type="hidden" name="product_id" value="<?= $process_id ?>">
             <input type="hidden" name="status" value="<?php  if(!empty($this->input->get('status'))){   $status=$this->input->get('status');  }else{  $status=1; }
@@ -110,7 +110,27 @@
       success: function(data) {
         $("#process_basic_fields").html(data);
         $("#fcity").select2();
-        $("#fstate").select2();``
+        $("#fstate").select2();
+
+        $(function() {
+   
+          $("input[name=company]").autocomplete({
+            source: function( request, response ) {
+                 $.ajax({
+                  url: "<?=base_url('enquiry/suggest_company')?>",
+                  type: 'post',
+                  dataType: "json",
+                  data: {
+                   search: request.term
+                  },
+                  success: function( data ) {
+                   response(data);
+                  }
+                 });
+              },
+          });
+        });
+
         get_custom_field();
       }
     });

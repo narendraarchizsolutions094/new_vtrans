@@ -74,14 +74,25 @@ public function load_view($view, $data = array(),$pdfFilePath1)
 
    
 }
-public function create($html,$title='quotation.pdf'){
+public function create($html,$action=0,$pdfFilePath1=''){
     $dompdf = new Dompdf(array('enable_remote' => true));
     $dompdf->loadHtml($html);
-    //$dompdf->setPaper('A4', 'portrait');
-    $dompdf->setPaper(array(0,0,600,5200));
+    $dompdf->setPaper('A4', 'portrait');
+    //$dompdf->setPaper(array(0,0,600,5200));
     $dompdf->render();    
-    $dompdf->stream($title, array('Attachment'=>1));
-    exit();
+
+    $pdf = $dompdf->output();
+    
+    if(!empty($pdfFilePath1)){
+        $file_location = $pdfFilePath1;
+        file_put_contents($file_location,$pdf); 
+    }
+    else
+    {
+        $title = 'Quotation.pdf';
+        $dompdf->stream($title, array('Attachment'=>$action));
+    }
+    
 }
 
 }

@@ -47,11 +47,15 @@ a:hover, a:focus {
                 <label>Booking Branch </label>
                 <select name="bbranch" class="form-control">
                  <?php
-                $branch= $this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
-                 foreach ($branch as $key => $value) { ?>
-                    <option value="<?= $value->branch_id ?>"><?= $value->branch_name ?></option>
+                 if(!empty($branch))
+                 {
+                  foreach ($branch as $key => $value) { 
+                    ?>
+                    <option value="<?= $value->branch_id ?>"><?= $value->branch_name.' ('.($value->type=='zone'?ucwords($value->zone_name):'').' '.$value->type.')' ?></option>
                    <?php
-                 } ?>
+                  }
+                 }
+                ?>
                  </select>
             </div> 
             <input name="rateid" class="form-control" hidden>
@@ -60,7 +64,7 @@ a:hover, a:focus {
                 <label>Delivery Branch </label>
              <select name="dbranch" class="form-control">
              <?php foreach ($branch as $key => $value) { ?>
-                    <option value="<?= $value->branch_id ?>"><?= $value->branch_name ?></option>
+                    <option value="<?= $value->branch_id ?>"><?= $value->branch_name.' ('.($value->type=='zone'?ucwords($value->zone_name):'').' '.$value->type.')' ?></option>
                    <?php
                  } ?>
              </select>
@@ -110,8 +114,8 @@ a:hover, a:focus {
                 <?php $sl=1; foreach ($branch_list as $branch) {?>
                         <tr >
                             <td><?php echo $sl; ?></td>
-							<td width=""><?= $branch->branch_name?></td>
-							<td width=""><?= $branch->bn?></td>
+							<td width=""><?= $branch->from.' ('.($branch->btype=='zone'?$branch->zone_name:'').' '.ucwords($branch->btype).')'?></td>
+							<td width=""><?= $branch->to.' ('.($branch->dtype=='zone'?$branch->zone_name:'').' '.ucwords($branch->dtype).')'?></td>
                             <td width=""><?= $branch->rate?></td>
                             
                             <td><?php echo (($branch->rate_status==0)?display('active'):display('inactive')); ?></td>

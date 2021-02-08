@@ -80,4 +80,11 @@
   'fontawesome' => array(
     'normal' => $fontDir . '/fontawesome-normal_7ea195556637d817f455524c7885b526',
   ),
+  'font awesome 5 brands' => array(
+    'normal' => $fontDir . '/font-awesome-5-brands-normal_46b77e52f90f4a4bb6b06f59df9495c3',
+  ),
+  'font awesome 5 free' => array(
+    'normal' => $fontDir . '/font-awesome-5-free-normal_1caf3cfb62385c212e463e185e07e09e',
+    '900' => $fontDir . '/font-awesome-5-free-900_26af9e51d7f6a3784d3495b1580a4b86',
+  ),
 ) ?>
