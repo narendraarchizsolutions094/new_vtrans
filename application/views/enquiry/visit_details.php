@@ -459,7 +459,7 @@ $totalexp += $tamount;
                   <td width="30%">
            <select name="expense[]" class="form-control">
            <?php 
-           $expenselist=$this->db->where(array('comp_id'=>$this->session->companey_id))->get('tbl_expenseMaster')->result();
+           $expenselist=$this->db->where(array('comp_id'=>$this->session->companey_id,'status'=>1))->get('tbl_expenseMaster')->result();
            foreach ($expenselist as $key => $value) { ?>
             <option value="<?= $value->id ?>"> <?= $value->title ?></option>
           <?php } ?>
