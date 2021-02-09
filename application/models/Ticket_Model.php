@@ -171,7 +171,8 @@ class Ticket_Model extends CI_Model
 					'checked' 		=> 0,
 					'product_id' 	=>  $_SESSION['process'][0],
 					'created_date' 	=>  date("Y-m-d H:i:s"),
-					'status' 		=> $this->input->post("ticket_status", true),
+					'status' 		=> 1,
+					'ticket_status' => $this->input->post("ticket_status", true),
 					'created_by' 	=> $this->session->user_id,
 					'phone'			=> $this->input->post('phone'),
 				);
