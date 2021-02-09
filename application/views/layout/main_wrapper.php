@@ -1225,8 +1225,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         if (user_access('g37')) {  ?>
 
                         ?>
-                            <li
-                                class="<?php echo (in_array($segment2,array('vidlist','add_video','edit_video')) ?"active":'') ?>">
+                            <li  class="<?php echo (in_array($segment2,array('vidlist','add_video','edit_video')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>lead/add_video">
                                     <?php echo display('add_vid');?>
                                 </a>
@@ -1236,8 +1235,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     }
                         ?> 
                         <?php  if (user_access('c39')) {  ?>
-                            <li
-                                class="<?php echo (in_array($segment2,array('taskstatuslist','add_taskstatus','edit_taskstatus')) ?"active":'') ?>">
+                            <li class="<?php echo (in_array($segment2,array('taskstatuslist','add_taskstatus','edit_taskstatus')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>lead/taskstatuslist">
                                     <?php echo display('taskstatus_management');?>
                                 </a>
@@ -1331,10 +1329,10 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         <li class="<?=($segment2=="expense-master")?"active":''?>">
                                 <a href="<?php echo base_url('setting/expense-master'); ?>">Expense Master</a>
                             </li>
-                        </ul>
-                    </li>
+                        <!-- </ul>
+                    </li> -->
                     <?php } ?>
-                    <!--    <li class="treeview <?php echo (($segment1 == "inventory") ? "active" : null) ?>"  style="<?php if(in_array(280,$module) || in_array(281,$module) || in_array(282,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
+                        <li class="treeview <?php echo (($segment1 == "inventory") ? "active" : null) ?>"  style="<?php if(in_array(280,$module) || in_array(281,$module) || in_array(282,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                      <a href="#">
                       <i class="fa fa-cog icon-class" ></i> <?php echo display('Inventory'); ?>
                       <span class="pull-right-container">
@@ -1360,7 +1358,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         </li>
                      </ul>
 
-                  </li>  -->
+                  </li>  
                     <?php
                     if(user_access('1010') || user_access('1011') || user_access('1012')){ ?>
                     <li class="<?=( $segment1=='client' AND $segment2=='contacts')?'active':''?>">
