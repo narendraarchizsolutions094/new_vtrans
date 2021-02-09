@@ -1733,8 +1733,9 @@ public function view_editable_aggrement()
             $where = "(visit_details.comp_id=$comp_id)";      
            $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
             $data['reports'] = $this->db->select('tbl_visit.*,enquiry.*,tbl_admin.*,visit_details.*')
-                                        ->select('(select sum(amount) from tbl_expense where tbl_expense.approve_status=2 AND tbl_expense.visit_id = tbl_visit.id) as visit_expSum')
                                         ->where($where)
+                                        ->select('(select sum(amount) from tbl_expense where tbl_expense.approve_status=2 AND tbl_expense.visit_id = tbl_visit.id) as visit_expSum')
+
                                         ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
                                         ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
                                         ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
@@ -1803,6 +1804,21 @@ public function update_expense_status()
     }
             }
 }
+public function visit_expense_status()
+{
+    if($_POST)
+    {
+        $comp_id=$this->session->companey_id;
+        $user_id=$this->session->user_id;
+        print_r($_POST['exp_ids']);
+    foreach ($_POST['exp_ids'] as $key => $value) {
+        // echo $value;
+        $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
+        $this->db->where(array('comp_id'=>$comp_id,'visit_id'=>$value))->update('tbl_expense',$data);
+    }
+            }
+}
+
 public function all_update_expense_status()
 {
     if($_POST)

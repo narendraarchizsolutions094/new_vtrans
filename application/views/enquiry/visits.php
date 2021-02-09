@@ -49,6 +49,8 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                 <i class="fa fa-sliders"></i>
               </a>  
             <div class="dropdown-menu dropdown_css" style="max-height: 400px;overflow: auto; left: -136px;">
+           
+               <a class="btn" data-toggle="modal"  data-target="#approve_expense" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;" onclick="">Approve</a>                        
                <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;">Table Config</a>                        
             </div>                                         
           </div>
@@ -160,13 +162,13 @@ $('input[name="filter_checkbox"]').click(function(){
 </script>
 <br>
 	<div class="row" >
-
+ 
 	<div class="col-lg-12" >
 
 				<table id="datatable" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
 				      <thead>
 				        <tr>
-				          <th>#</th>
+				          <th> #</th>
 				          <th id="th-1">Visit Date</th>
 				          <th id="th-2">Visit Time</th>
 				          <th id="th-3">Name</th>
@@ -175,6 +177,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-5">Ideal Distance</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-11" >Diffrence</th>
+				          <th id="th-12" >Expense</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
@@ -183,11 +186,69 @@ $('input[name="filter_checkbox"]').click(function(){
     			</table>
 	</div>
 </div>
+<div id="approve_expense" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title">Update Expense Approval</h4>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12">
+            <div class="form-group">
+              <label>Status</label>
+             <select id="approve_status" name="approve_status" class="form-control">
+               <option value="2">Approve</option>
+               <option value="1">Reject</option>
+             </select>
+            </div>
+            </div>
+            <input id="visit_id" class="form-control visit_id" name="visit_id"  value="0" hidden>
+
+            <div class="col-md-12">
+            <div class="form-group">
+            <label>Remarks</label>
+
+            <textarea class="form-control" name="remarks" id="remarks" cols="4"></textarea>
+            </div>
+            </div>
+            </div>
+               <br>
+               <button class="btn btn-sm btn-success" type="submit" onclick="expense_status();">
+              Update Expense</button>                    
+               <br>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <!-- https://code.jquery.com/jquery-3.5.1.js -->
 
 <script type="text/javascript">
+    function expense_status(){
+      var x = new Array(); 
+      
+      $($(".checkbox1:checked")).each(function(k,v){
+        x.push($(v).val());
+      });
+       approve_status = document.getElementById("approve_status").value;
+       remarks = document.getElementById("remarks").value;
+      $.ajax({
+              type: 'POST',
+              url: '<?= base_url('client/visit_expense_status') ?>',
+              data: {exp_ids:x,status:approve_status,remarks:remarks},
+              success:function(data){
+              //  alert(data);
+               location.reload();
+              } 
+              });
 
+    }
 var c = getCookie('visit_allowcols');
 
 var Data = {"from_data":"","to_date":"","from_time":"","to_time":""};
@@ -200,22 +261,7 @@ $(".v_filter").change(function(){
   // Data["to_time"] = obj[3]["value"];
  $("#datatable").DataTable().ajax.reload(); 
 });
-$.fn.dataTable.ext.search.push(
-    function( settings, data, dataIndex ) {
-        var min = parseInt( $('#min').val(), 10 );
-        var max = parseInt( $('#max').val(), 10 );
-        var age = parseFloat( data[8] ) || 0; // use data for the age column
- alert('q');
-        if ( ( isNaN( min ) && isNaN( max ) ) ||
-             ( isNaN( min ) && age <= max ) ||
-             ( min <= age   && isNaN( max ) ) ||
-             ( min <= age   && age <= max ) )
-        {
-            return true;
-        }
-        return false;
-    }
-);
+
 $(document).ready(function(){
 
 var table  =$('#datatable').DataTable({ 
@@ -249,6 +295,7 @@ var table  =$('#datatable').DataTable({
 
   $('#min, #max').keyup( function() {
         // table.draw();
+
         table.draw();
     } );
 });
@@ -257,26 +304,26 @@ var table  =$('#datatable').DataTable({
 
 $("select").select2();
 
-$(document).delegate('.visit-delete', 'click', function() {    
-        var vid =  $(this).data('id'); 
-        var ecode =  $(this).data('ecode');    
-        //alert(ecode);  
-        if(confirm('Are you sure?')){      
-           $.ajax({
-           url:"<?=base_url('enquiry/delete_visit')?>",
-           type:"post",
-           data:{
-              vid:vid,
-              enq_code:ecode,
-            },
-           success:function(res)
-           { 
-              $("#visit_table").DataTable().ajax.reload(); 
-              Swal.fire('Visit Deleted!', '', 'success');
-           }
-           });
-        }
-     });  
+// $(document).delegate('.visit-delete', 'click', function() {    
+//         var vid =  $(this).data('id'); 
+//         var ecode =  $(this).data('ecode');    
+//         //alert(ecode);  
+//         if(confirm('Are you sure?')){      
+//            $.ajax({
+//            url:"<?=base_url('enquiry/delete_visit')?>",
+//            type:"post",
+//            data:{
+//               vid:vid,
+//               enq_code:ecode,
+//             },
+//            success:function(res)
+//            { 
+//               $("#visit_table").DataTable().ajax.reload(); 
+//               Swal.fire('Visit Deleted!', '', 'success');
+//            }
+//            });
+//         }
+//      });  
 </script>  
 <div id="add_expense" class="modal fade in" role="dialog">
    <div class="modal-dialog">
@@ -499,6 +546,10 @@ $(document).delegate('.visit-delete', 'click', function() {
               <label class=""><input type="checkbox" class="choose-col" value="11"> Diffrence</label>
             </div>
             <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="12"> Expense</label>
+            </div>
+
+            <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="9">  Action</label>
             </div>
       </div>
@@ -513,6 +564,7 @@ $(document).delegate('.visit-delete', 'click', function() {
 function checkvisit(visitid){
 document.getElementById("visit_id").value =visitid;
 }
+
 
 $(function() {
     $('#add').click(function() {
