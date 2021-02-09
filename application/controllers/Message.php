@@ -634,14 +634,13 @@ public function chat_start(){
 		'smtp_port' => 587,
 		'smtp_user' => 'kanhaiya@archizsolutions.com',
 		'smtp_pass' => 'Archiz321',
-		'charset' 	=> "utf-8",
-		'mailtype' => "html",
+		'charset' 	=> "utf-8",		
 		'newline' 	=> "\r\n"
 
 	);
 	$this->load->library('email', $config);
 
-		$this->email->from('kanhaiya@archizsolutions.com', 'Kanhaiya');
+		$this->email->from('kanhaiya@archizsolutions.com','Kanhaiya');
 		$this->email->to('prokanhaiya@gmail.com');
 		$this->email->subject('Email Test');
 		$this->email->message('Testing the email class.');
