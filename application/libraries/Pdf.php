@@ -74,11 +74,16 @@ public function load_view($view, $data = array(),$pdfFilePath1)
 
    
 }
-public function create($html,$action=0,$pdfFilePath1=''){
+public function create($html,$action=0,$pdfFilePath1='',$size=0){
     $dompdf = new Dompdf(array('enable_remote' => true));
     $dompdf->loadHtml($html);
-    $dompdf->setPaper('A4', 'portrait');
-    //$dompdf->setPaper(array(0,0,600,5200));
+    if(is_array($size))
+    {
+        $dompdf->setPaper($size);
+    }
+    else
+        $dompdf->setPaper('A4', 'portrait');
+    
     $dompdf->render();    
 
     $pdf = $dompdf->output();

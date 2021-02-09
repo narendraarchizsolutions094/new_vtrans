@@ -1415,7 +1415,7 @@ if(empty($eid)){
             
         
             if(!empty($biarr)){
-                $this->db->insert_batch('tbl_agreement', $biarr); 
+                $this->db->insert_batch('tbl_aggriment', $biarr); 
             }
                 
             $this->session->set_flashdata('message', 'Save successfully');
@@ -1436,52 +1436,56 @@ if(empty($eid)){
     }
 	
 	public function upload_aggrement_team() {
-    $enquiry_id = $this->input->post('ide');
-    $this->db->from('enquiry');
-                    $this->db->where('enquiry_id',$enquiry_id);
-                    $q= $this->db->get()->row();
-    $enq_id =$q->Enquery_id;
-    $phone =$q->phone;
+//     $ag_id = $this->input->post('ide');
+//     $ddata =  $this->db->where('id',$ag_id)->get('tbl_aggriment')->row();
+
+//     $this->db->from('enquiry');
+//                     $this->db->where('enquiry_id',$ddata->enquiry_id);
+//                     $q= $this->db->get()->row();
+//     $enq_id =$q->Enquery_id;
+//     $phone =$q->phone;
     
-                    $this->db->where('s_phoneno',$phone);
-    $this->db->from('tbl_admin');
-                    $q1= $this->db->get()->row();
-   $noti_id =$q1->pk_i_admin_id;
-if(!empty($noti_id)){
-	$noti_id = $noti_id;
-   }else{
-	$noti_id = $this->session->user_id;
-   }	
-if(!empty($_FILES['file']['name'])){
-				$this->load->library("aws");
-				$_FILES['userfile']['name']= $_FILES['file']['name'];
-				$_FILES['userfile']['type']= $_FILES['file']['type'];
-				$_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
-				$_FILES['userfile']['error']= $_FILES['file']['error'];
-				$_FILES['userfile']['size']= $_FILES['file']['size'];    
+//     $this->db->where('s_phoneno',$phone);
+//     $this->db->from('tbl_admin');
+//                     $q1= $this->db->get()->row();
+   
+// if(!empty($q1)){
+//     $noti_id =$q1->pk_i_admin_id;
+//    }else{
+// 	$noti_id = $this->session->user_id;
+//    }	
+// if(!empty($_FILES['file']['name'])){
+// 				$this->load->library("aws");
+// 				$_FILES['userfile']['name']= $_FILES['file']['name'];
+// 				$_FILES['userfile']['type']= $_FILES['file']['type'];
+// 				$_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
+// 				$_FILES['userfile']['error']= $_FILES['file']['error'];
+// 				$_FILES['userfile']['size']= $_FILES['file']['size'];    
 				
-				$image=$_FILES['userfile']['name'];
-				$path=  "uploads/agrmnt/".$image;
-        		$ret = move_uploaded_file($_FILES['userfile']['tmp_name'] ,$path);
-			if($ret){										$this->aws->upload("",$path);									}
-            $this->db->set('file',$path);
-            $this->db->where('enq_id', $enq_id);
-            $this->db->update('tbl_aggriment');	
-			}
-			$assign_data_noti[]=array('create_by'=> $noti_id,
-                        'subject'=>'Agrrement Uploded',
-                        'query_id'=>$enq_id,
-                        'task_date'=>date('d-m-Y'),
-                        'task_time'=>date('H:i:s')
-                        );
-           $this->db->insert_batch('query_response',$assign_data_noti);
-           $this->load->library('user_agent');
+// 				$image=$_FILES['userfile']['name'];
+// 				$path=  "uploads/agrmnt/".$image;
+//         		$ret = move_uploaded_file($_FILES['userfile']['tmp_name'] ,$path);
+// 			if($ret){
+//                 $this->aws->upload("",$path);	
+//                 								}
+//                 $this->db->set('file',$path);
+//                 $this->db->where('enq_id', $enq_id);
+//                 $this->db->update('tbl_aggriment');	
+// 			}
+// 			$assign_data_noti[]=array('create_by'=> $noti_id,
+//                         'subject'=>'Agrrement Uploded',
+//                         'query_id'=>$enq_id,
+//                         'task_date'=>date('d-m-Y'),
+//                         'task_time'=>date('H:i:s')
+//                         );
+//            $this->db->insert_batch('query_response',$assign_data_noti);
+//            $this->load->library('user_agent');
            
-           if($this->input->post('redirect_url')){
-            redirect($this->input->post('redirect_url')); //updateclient                
-           }else{
-             redirect($this->agent->referrer()); //updateclient
-           }
+//            if($this->input->post('redirect_url')){
+//             redirect($this->input->post('redirect_url')); //updateclient                
+//            }else{
+//              redirect($this->agent->referrer()); //updateclient
+//            }
 }
 /*******************************************************************************end add aggriment***************************************************/
 	public function upload_aggrement_student() {
@@ -2778,7 +2782,7 @@ public function all_update_expense_status()
         $zone = $this->input->post('zone_id');
 
 
-    $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_agreement')->row();
+    $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_aggriment')->row();
     $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
 
         $_POST['ref_no'] = $ref_no;

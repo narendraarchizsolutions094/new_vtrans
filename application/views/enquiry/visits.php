@@ -1,5 +1,8 @@
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script> -->
 
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
   <div class="col-md-4 col-sm-4 col-xs-4"> 
@@ -38,6 +41,10 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                     <li>
                       <label>
                       <input type="checkbox" value="rating" id="ratingcheckbox" name="filter_checkbox" <?php if(in_array('rating',$variable)){echo'checked';} ?>> Rating</label>
+                    </li>
+                    <li>
+                      <label>
+                      <input type="checkbox" value="difference" id="differencecheckbox" name="filter_checkbox" <?php if(in_array('difference',$variable)){echo'checked';} ?>> Difference</label>
                     </li>                
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
@@ -104,7 +111,14 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
             </select>
         </div>
     </div>
-    
+     <div class="col-lg-3" id="differencefilter" style="<?php if(!in_array('difference',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+            <label for="amount">Price range: <span id="range_value">0 - 100</span></label>
+            <input type="hidden" id="min">
+            <input type="hidden" id="max">
+          <div id="slider-range"></div>
+        </div>
+    </div>
 </div>
 <script>
 
@@ -154,11 +168,17 @@ $('input[name="filter_checkbox"]').click(function(){
         else{
           $('#ratingfilter').hide();
 		}
-		
+		if($('#differencecheckbox').is(":checked")){
+        $('#differencefilter').show();
+            }
+        else{
+          $('#differencefilter').hide();
+    }
 });
 
 </script>
 <br>
+
 	<div class="row" >
 
 	<div class="col-lg-12" >
@@ -183,44 +203,81 @@ $('input[name="filter_checkbox"]').click(function(){
     			</table>
 	</div>
 </div>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script>
+
 <!-- https://code.jquery.com/jquery-3.5.1.js -->
 
 <script type="text/javascript">
+
+$( "#slider-range" ).slider({
+      range: true,
+      min: 0,
+      max: 100,
+      values: [ 0, 100 ],
+      slide: function( event, ui ) {
+        $("#min").val(ui.values[ 0 ]);
+        $("#max").val(ui.values[ 1 ]);
+        $("#range_value").html(ui.values[ 0 ]+' - '+ui.values[ 1 ]);
+        refresh_table();
+      }
+    });
+
+// $(".ui-slider-handle").on('mouseleave',function(){
+//   refresh_table();
+// })
+
+function refresh_table(){
+      var min = parseInt( $('#min').val(), 10 ) || 0;
+      var max = parseInt( $('#max').val(), 10 ) || 100000;
+
+      var tr_list = $("#datatable_wrapper tbody").find('tr');
+      $(tr_list).each(function(k,v){
+          var diff = $(v).find('td:eq(8)').text();
+          if(parseInt(diff)>=min && parseInt(diff) <=max)
+          {
+            $(v).show();
+          }
+          else
+          { 
+            $(v).hide();
+          }
+      });
+}
+
 
 var c = getCookie('visit_allowcols');
 
 var Data = {"from_data":"","to_date":"","from_time":"","to_time":""};
 $(".v_filter").change(function(){
-  // var obj = $(".v_filter:input").serializeArray();
 
+  // var obj = $(".v_filter:input").serializeArray();
   // Data["from_date"]= obj[0]["value"];
   // Data["to_date"] = obj[1]["value"];
   // Data["from_time"] = obj[2]["value"];
   // Data["to_time"] = obj[3]["value"];
  $("#datatable").DataTable().ajax.reload(); 
 });
-$.fn.dataTable.ext.search.push(
-    function( settings, data, dataIndex ) {
-        var min = parseInt( $('#min').val(), 10 );
-        var max = parseInt( $('#max').val(), 10 );
-        var age = parseFloat( data[8] ) || 0; // use data for the age column
- alert('q');
-        if ( ( isNaN( min ) && isNaN( max ) ) ||
-             ( isNaN( min ) && age <= max ) ||
-             ( min <= age   && isNaN( max ) ) ||
-             ( min <= age   && age <= max ) )
-        {
-            return true;
-        }
-        return false;
-    }
-);
 $(document).ready(function(){
 
-var table  =$('#datatable').DataTable({ 
-
-          "processing": true,
+// try{
+// $.fn.dataTable.ext.search.push(
+//     function( settings, data, dataIndex ) {
+//         var min = parseInt( $('#min').val(), 10 );
+//         var max = parseInt( $('#max').val(), 10 );
+//         var age = parseFloat( data[8] ) || 0; // use data for the age column
+//       alert(min+'-'+max);
+//         if ( ( isNaN( min ) && isNaN( max ) ) ||
+//              ( isNaN( min ) && age <= max ) ||
+//              ( min <= age   && isNaN( max ) ) ||
+//              ( min <= age   && age <= max ) )
+//         {
+//             return true;
+//         }
+//         return false;
+//     }
+// );
+// }catch(e){alert(e)}finally{alert('loaded');}
+var table2  =$('#datatable').DataTable({ 
+          "processing": false,
           "scrollX": true,
           "serverSide": true,          
           "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
@@ -244,13 +301,9 @@ var table  =$('#datatable').DataTable({
                     return d;
               }
           },
-          
   });
+console.log(table2);
 
-  $('#min, #max').keyup( function() {
-        // table.draw();
-        table.draw();
-    } );
 });
 
 
@@ -677,3 +730,17 @@ function handleClick(myRadio) {
   } 
 }
 </script>
+<style type="text/css">
+  #slider-range
+  {
+    border:1px solid black;
+  }
+  #slider-range .ui-slider-handle
+  {
+    background: #4f4f4f;
+  }
+  #slider-range .ui-slider-range
+  {
+    background: #26c726;
+  }
+</style>

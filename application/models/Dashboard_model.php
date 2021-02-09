@@ -26,7 +26,7 @@ class Dashboard_model extends CI_Model {
 
 	public function check_user($data = []){
 
-		$where = "(tbl_admin.s_user_email='".$data['email']."' OR tbl_admin.s_phoneno='".$data['email']."') AND tbl_admin.s_password='".$data['password']."' AND tbl_admin.b_status = 1 AND user.status = 1";
+		$where = "(tbl_admin.s_user_email='".$data['email']."' OR tbl_admin.s_phoneno='".$data['email']."' or tbl_admin.employee_id= '".$data['email']."') AND tbl_admin.s_password='".$data['password']."' AND tbl_admin.b_status = 1 AND user.status = 1";
 		
 		return $this->db->select("*")
 			->from($this->table)
