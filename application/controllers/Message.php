@@ -630,12 +630,14 @@ public function chat_start(){
    public function test_start(){
 	$config = Array(
 		'protocol' => 'smtp',
-		'smtp_host' => 'smtp.zoho.com',
+		'smtp_host' => 'ssl://smtp.zoho.com',
 		'smtp_port' => 587,
 		'smtp_user' => 'kanhaiya@archizsolutions.com',
 		'smtp_pass' => 'Archiz321',
-		'mailtype'  => 'html', 
-		'charset'   => 'iso-8859-1'
+		'charset' 	=> "utf-8",
+		'mailtype' => "html",
+		'newline' 	=> "\r\n"
+
 	);
 	$this->load->library('email', $config);
 
