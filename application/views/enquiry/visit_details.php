@@ -4,24 +4,19 @@
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
   <div class="col-md-4 col-sm-4 col-xs-4"> 
           <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a> 
-          <?php
-          if(user_access('1020'))
-          {
-          ?>
+          <?php  if(user_access('1020'))  { ?>
           <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" data-toggle="modal" data-target="#Save_Visit" title="Add Visit"></a> 
-          <?php
-          }
-          ?>  
+          <?php  }  ?>  
            
         </div>
-        <?php
-          if(user_access('1020'))
-          {
-          ?>
+        <?php if(user_access('1020'))  {  ?>
   <div class="col-md-4 col-sm-4 col-xs-4"> 
   </div>
   <div class="col-md-4 col-sm-4 col-xs-4 "> 
-  <a style="float:right;" href="<?= base_url('visit/vist-report') ?>"><button class="btn btn-primary">View Report</button></a>
+  <!-- <a style="float:right;" href="<?= base_url('visit/vist-report') ?>"><button class="btn btn-primary">View Report</button></a> -->
+  
+  <button  style="float:right; margin-right:10px;"  data-toggle="modal" data-target="#update_remarks"  class="btn btn-primary">Update  Remarks</button>
+ 
   </div>
  
   <?php } ?>
@@ -54,7 +49,21 @@ $("select").select2();
     </div>
 
 </div>
-
+<div class="row">
+<div class="col-md-12">
+<div class="form-group col-md-3">
+<label>Remarks</label>
+                <input value="<?= $details->remarks ?>" disabled class="form-control">
+</div>
+<div class="form-group col-md-3">
+<label>Star</label>
+                <input value="<?= $details->rating ?>" disabled class="form-control">
+</div>
+<div class="form-group col-md-3">
+<label>Travelled Type</label>
+<input value="<?= $details->travelled_type ?>" disabled class="form-control">
+</div>
+</div>
 <div class="row">
 
     <?php
@@ -135,7 +144,7 @@ $("select").select2();
             <div id="msg"></div>  
             </div>
             <div class="form-group col-md-3">
-                <label>Estimated Cost</label>
+                <label>Actual Cost</label>
                 <input value="<?php if(!empty($actualamt)){echo round($actualamt,0).' ₹';}else{ echo '0'.' ₹';}  ?>" disabled class="form-control">
             </div>
             <div class="form-group col-md-3">
@@ -179,7 +188,7 @@ $("select").select2();
                 $comp_id=$this->session->companey_id;
 $i=1;
 $totalexp=0;
-$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
+$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
 foreach ($expense as $key => $value) { 
  $tamount= $value->amount
   ?>
@@ -323,8 +332,18 @@ $totalexp += $tamount;
          </div>
          <div class="modal-body">
             <div class="row" >
-
 <form action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
+               <div class="row">
+               <div class="form-group col-md-12">
+               <label>Select Visit Type</label>
+               <div class="form-check">
+                    <label class="radio-inline">
+                    <input name="type"  name="type" value="1" type="radio" checked onclick="handleClick(this);">Current Visit</label>
+                    <label class="radio-inline">
+                    <input type="radio" name="type" value="2" onclick="handleClick(this);">Future Visit</label>
+                </div>
+               </div>
+               </div>
 
                 <div class="form-group col-md-6">
                     <label>Company</label>
@@ -345,13 +364,20 @@ $totalexp += $tamount;
                <div class="form-group col-md-6">
                   <label>Related To (Primary Contact)</label>
                   <select class="form-control" name="enquiry_id">
-                    <option value="">Select</option>
+                    <!-- <option value="">Select</option> -->
                     <?php
                   if(!empty($all_enquiry))
                   {
                     foreach ($all_enquiry as $row)
                     {
-                      echo'<option value="'.$row->enquiry_id.'">'.$row->name.'</option>';
+                      
+                        if($row->enquiry_id==$details->enquiry_id){
+                          $selected='selected';
+                        }else{
+                          $selected='';
+
+                        }
+                      echo'<option value="'.$row->enquiry_id.'" '.$selected.' >'.$row->name.'</option>';
                     }
                   }
                     ?>
@@ -360,12 +386,12 @@ $totalexp += $tamount;
 
                 <div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
-          <input type="date" name="visit_date" class="form-control">
+          <input type="date" name="visit_date" id="vdate" class="form-control" value="<?= date('Y-m-d') ?>">
         </div>
     
         <div class="form-group col-md-6 visit-time col-md-6">     
          <label>Visit Time</label>
-          <input type="time" name="visit_time" class="form-control">
+          <input type="time" name="visit_time" id="vtime" class="form-control" value="<?= date('H:i') ?>">
         </div>
 <!--     
         <div class="form-group col-md-6 distance-travelled col-md-6">     
@@ -373,20 +399,14 @@ $totalexp += $tamount;
            <input type="text" name="travelled" class="form-control">
         </div> -->
     
-        <div class="form-group col-md-6 distance-travelled-type col-md-6">      
-        <label>DISTANCE TRAVELLED TYPE</label>
-           <input type="text" name="travelled_type" class="form-control">
-        </div>
-    
-       
+      
                   
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
                <input type="submit" name="submit_only" class="btn btn-primary" value="Save">
             </div>
          </div>
-
-</form>
+          </form>
             </div>
          </div>
          <div class="modal-footer">
@@ -396,6 +416,58 @@ $totalexp += $tamount;
    </div>
 </div>   
 
+<div id="update_remarks" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title">Remarks</h4>
+         </div>
+         <form action="<?= base_url('client/updateVisit_remarks') ?>" method="POST">
+         <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12">
+            <div class="form-group">
+            <label>Rating</label>
+       	<select class="form-control v_filter" name="rating">
+              <option value="">Select</option>
+              <option value="1 star" <?php if($details->rating=="1 star"){echo'selected';} ?>> 1 star</option>
+              <option value="2 star" <?php if($details->rating=="2 star"){echo'selected';} ?>> 2 star</option>
+              <option value="3 star" <?php if($details->rating=="3 star"){echo'selected';} ?>> 3 star</option>
+              <option value="4 star" <?php if($details->rating=="4 star"){echo'selected';} ?>> 4 star</option>
+              <option value="5 star" <?php if($details->rating=="5 star"){echo'selected';} ?>> 5 star</option>
+            </select>
+            </div>
+            </div>
+          <input name="visit_id" class="form-control"  value="<?= $details->visit_id ?>" hidden>
+            <div class="col-md-12">
+            <div class="form-group">
+            <label>Remarks</label>
+
+            <input class="form-control" name="remarks" type="text" value="<?= $details->remarks ?>">
+            </div>
+            </div>
+            <div class="col-md-12">
+            <div class="form-group">
+            <label>Travelled Type</label>
+
+            <input class="form-control" name="travelledtype" type="text" value="<?= $details->remarks ?>">
+            </div>
+            </div>
+            </div>
+               <br>
+               <button class="btn btn-sm btn-success" type="submit" >
+              Update</button>                    
+               <br>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+         </form>
+      </div>
+   </div>
+</div>
 <div id="approve_expense" class="modal fade in" role="dialog">
    <div class="modal-dialog">
       <!-- Modal content-->
@@ -447,6 +519,8 @@ $totalexp += $tamount;
          <div class="modal-body">
             <form  action="<?php echo base_url(); ?>client/add_expense" method="POST" enctype='multipart/form-data'>  
             <div class="row">
+          <input name="visit_id" class="form-control" value="<?= $details->visit_id ?>" hidden>
+
             <table class="table table-responsive">
                   <thead>
                   <th>Title</th>
@@ -459,12 +533,11 @@ $totalexp += $tamount;
                   <td width="30%">
            <select name="expense[]" class="form-control">
            <?php 
-           $expenselist=$this->db->where(array('comp_id'=>$this->session->companey_id))->get('tbl_expenseMaster')->result();
+           $expenselist=$this->db->where(array('comp_id'=>$this->session->companey_id,'status'=>1))->get('tbl_expenseMaster')->result();
            foreach ($expenselist as $key => $value) { ?>
             <option value="<?= $value->id ?>"> <?= $value->title ?></option>
           <?php } ?>
            </select> 
-          <input name="visit_id" class="form-control" value="<?= $details->visit_id ?>" hidden>
           </td>
                   <td width="30%">
                   <input name="amount[]" class="form-control amount" onkeyup="total()" id="amount" value="0"  >
@@ -497,6 +570,19 @@ $totalexp += $tamount;
    </div>
 </div>
 <script>
+ document.getElementById("vdate").disabled = true;  
+  document.getElementById("vtime").disabled = true; 
+function handleClick(myRadio) {
+  var valuer= myRadio.value;
+  if(valuer==1){
+  document.getElementById("vdate").disabled = true;  
+  document.getElementById("vtime").disabled = true;  
+  }else{
+    document.getElementById("vdate").disabled = false;  
+  document.getElementById("vtime").disabled = false;  
+  } 
+}
+
 $(function() {
     $('#add').click(function() {
       addnewrow();
@@ -594,7 +680,7 @@ $(function() {
               url: '<?= base_url('client/all_update_expense_status') ?>',
               data: {status:approve_status,remarks:remarks,visit_id:visit_id},
               success:function(data){
-               alert(data);
+              //  alert(data);
                location.reload();
               } 
               });

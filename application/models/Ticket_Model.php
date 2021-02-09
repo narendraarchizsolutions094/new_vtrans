@@ -864,6 +864,17 @@ class Ticket_Model extends CI_Model
 		$subsource = $this->db->where(array('lead_stage.comp_id' => $this->session->companey_id))->get('lead_description')->result();
 		return $subsource;
 	}
+	public function send_subsource()
+	{
+		$process	=	$this->session->userdata('process_id_id')??0;	
+		$comp_id = $this->session->userdata('comp_id');
+
+		$this->db->join('lead_stage','lead_stage.stg_id=lead_description.lead_stage_id');
+		$this->db->where("FIND_IN_SET($process,lead_stage.process_id)>",0);
+		$this->db->where("FIND_IN_SET(4,lead_stage.stage_for)>",0);
+		$subsource = $this->db->where(array('lead_stage.comp_id' => $comp_id))->get('lead_description')->result();
+		return $subsource;
+	}
 
 	public function countSubsource($stg_id,$fromdate,$todate)
 	{
@@ -875,6 +886,27 @@ class Ticket_Model extends CI_Model
 		$this->db->where($where);
 
 		$count = $this->db->where(array('tbl_ticket.process_id' => $process,'tbl_ticket.company' => $this->session->companey_id, 'tbl_ticket.ticket_substage' => $stg_id));
+		
+		if($fromdate!='all'){
+			$count=$this->db->where('last_update >=', $fromdate);
+			$count=$this->db->where('last_update <=', $todate);
+							 }
+							$count= $this->db->count_all_results('tbl_ticket');
+		return $count;
+	}
+	public function send_countSubsource($stg_id,$fromdate,$todate)
+	{
+		$process	=	$this->session->userdata('process_id_id')??0;	
+		$comp_id = $this->session->userdata('comp_id');
+		$user_id = $this->session->userdata('user_id_id');
+	
+		$all_reporting_ids  = $this->common_model->get_categories($user_id);
+		
+		$where = " ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
+		$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))';  
+		$this->db->where($where);
+
+		$count = $this->db->where(array('tbl_ticket.process_id' => $process,'tbl_ticket.company' => $comp_id, 'tbl_ticket.ticket_substage' => $stg_id));
 		
 		if($fromdate!='all'){
 			$count=$this->db->where('last_update >=', $fromdate);

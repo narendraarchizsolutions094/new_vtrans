@@ -1658,10 +1658,9 @@ public function view_editable_aggrement()
     public function visit_details()
     {
          if(user_role('1020') || user_role('1021') || user_role('1022')){
-            
         }
         $id=$this->uri->segment('3');
-    	$visitdata= $this->db->where('visit_id',$id)->get('visit_details');
+    	$visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
         if($visitdata->num_rows()!=0){
             $data['details'] =$visitdata->row();
             $this->load->model('Client_Model');
@@ -1679,7 +1678,25 @@ public function view_editable_aggrement()
         }
        
     }
+    public function updateVisit_remarks()
+    {
+        
+        if($_POST){
+            $travelledtype=$this->input->post('travelledtype');
+            $remarks=$this->input->post('remarks');
+            $rating=$this->input->post('rating');
+            $visit_id=$this->input->post('visit_id');
+            $data=['remarks'=>$remarks,'rating'=>$rating,'travelled_type'=>$travelledtype];
+            $this->db->where('id',$visit_id)->update('tbl_visit',$data);
+             $this->db->last_query();
+			$this->session->set_flashdata('message', 'Remark Updated');
+            redirect($this->agent->referrer()); 
+            
+        }
+    }
     public function report(){
+        if(user_role('1020') || user_role('1021') || user_role('1022')){
+        }
         $this->load->model('report_model');
         $data['title'] = 'Visit Report';
        $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
@@ -1696,7 +1713,9 @@ public function view_editable_aggrement()
            if($employee=='0'){ 
            $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
            }else{ $where .= " AND ( visit_details.created_by=$employee)";  }
-           $data['reports'] = $this->db->where($where)
+           $data['reports'] = $this->db->select('tbl_visit.*,enquiry.*,tbl_admin.*,visit_details.*')
+                                        ->select('(select sum(amount) from tbl_expense where tbl_expense.approve_status=2 AND tbl_expense.visit_id = tbl_visit.id) as visit_expSum')
+                                        ->where($where)
                                        ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
                                        ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
                                        ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
@@ -1713,15 +1732,25 @@ public function view_editable_aggrement()
     	   $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
             $where = "(visit_details.comp_id=$comp_id)";      
            $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
-            $data['reports'] = $this->db->where($where)
+            $data['reports'] = $this->db->select('tbl_visit.*,enquiry.*,tbl_admin.*,visit_details.*')
+                                        ->select('(select sum(amount) from tbl_expense where tbl_expense.approve_status=2 AND tbl_expense.visit_id = tbl_visit.id) as visit_expSum')
+                                        ->where($where)
                                         ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
                                         ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
                                         ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
+                                        
                                         ->get('visit_details')->result();	
+                                        // echo $this->db->last_query();
+                                        // die();
            $content .= $this->load->view('enquiry/visit_report',$data,true);
            $data['content'] = $content;
         }
        $this->load->view('layout/main_wrapper',$data);
+    }
+    public function visit_expense()
+    { 
+
+
     }
    public function add_expense()
    {
@@ -1755,7 +1784,9 @@ public function view_editable_aggrement()
 
                 }
             	$this->session->set_flashdata('message', 'Travel Expense Added');
-                redirect('/visits/visit_details/'.$visit_id.'');     
+                // redirect('/visits/visit_details/'.$visit_id.'');   
+                redirect($this->agent->referrer()); //updateclient
+
 
    }
 public function update_expense_status()

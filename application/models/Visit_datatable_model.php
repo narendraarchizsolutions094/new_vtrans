@@ -7,7 +7,7 @@ class Visit_datatable_model extends CI_Model{
   
         $this->table = 'tbl_visit';
         // Set orderable column fields
-        $this->column_order = array('id','visit_date','visit_time','travelled','travelled_type','rating','next_date','next_time','next_location');
+        $this->column_order = array('tbl_visit.id','visit_date','visit_time','travelled','travelled_type','rating','next_date','next_time','next_location');
 
         // Set searchable column fields
 
@@ -43,6 +43,8 @@ class Visit_datatable_model extends CI_Model{
 
         $this->db->from($this->table);
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
+        $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
+
         $this->db->where("enquiry.comp_id",$this->session->companey_id);
         $where="";
         $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
@@ -65,6 +67,7 @@ class Visit_datatable_model extends CI_Model{
         return $query->num_rows();
     }
     
+
     /*
      * Perform the SQL queries needed for an server-side processing requested
      * @param $_POST filter data based on the posted parameters
@@ -73,18 +76,19 @@ class Visit_datatable_model extends CI_Model{
 
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
-        $this->db->select($this->table.'.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id');
+        $this->db->select($this->table.'.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.company,visit_details.*');
         $this->db->from($this->table);
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
+        $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$this->session->companey_id);
-
         $where="";
         $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
         $and =1;
+        
         if(!empty($_POST['from_date']))
         {
-            $where.=" visit_date >= '".$_POST['from_date']."'";
+            $where.=" AND tbl_visit.visit_date >= '".$_POST['from_date']."'";
             $and =1;
         }
 
@@ -93,7 +97,7 @@ class Visit_datatable_model extends CI_Model{
             if($and)
                 $where.=" and ";
 
-            $where.=" visit_date <= '".$_POST['to_date']."'";
+            $where.=" tbl_visit.visit_date <= '".$_POST['to_date']."'";
             $and =1;
         }
 
@@ -102,7 +106,7 @@ class Visit_datatable_model extends CI_Model{
             if($and)
                 $where.=" and ";
 
-            $where.=" visit_time >= '".$_POST['from_time']."'";
+            $where.=" tbl_visit.visit_time >= '".$_POST['from_time']."'";
             $and =1;
         }
 
@@ -111,7 +115,7 @@ class Visit_datatable_model extends CI_Model{
             if($and)
                 $where.=" and ";
 
-            $where.=" visit_time <= '".$_POST['to_time']."'";
+            $where.=" tbl_visit.visit_time <= '".$_POST['to_time']."'";
             $and =1;
         }
 
