@@ -3526,7 +3526,7 @@ echo  $details1;
             }
             $sub = array();
             $time = $res->visit_time=='00:00:00'?null:date("g:i a", strtotime($res->visit_time));
-            $sub[] = $ix++;
+            $sub[] ='<input  type="checkbox" name="approve[]" class="checkbox1"  value="'.$res->vids.'"> '. $ix++;
 
             if($colsall || in_array(1,$cols))
                 $sub[] = $res->visit_date!='0000-00-00'?$res->visit_date:'NA';
@@ -3555,7 +3555,8 @@ echo  $details1;
                 $sub[] = $res->rating!=''?$res->rating:'NA';
                 if($colsall || in_array(11,$cols))
                 $sub[] = round(abs($percentChange));
-                
+                if($colsall || in_array(12,$cols))
+                $sub[] = round(abs($res->visit_expSum));
             if($colsall || in_array(9,$cols))
                 $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->visit_id.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->visit_id.")' id='checkvisit' ><i class='fa fa-inr'></i></a>":'';
             $data[] =$sub;
