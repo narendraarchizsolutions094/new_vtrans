@@ -1,3 +1,4 @@
+
 <style>
 .morecontent span {
     display: none;
@@ -19,19 +20,13 @@ a:hover, a:focus {
     <div class="col-sm-12">
 
         <div  class="panel panel-default thumbnail">
-
- 
-
             <div class="panel-heading no-print">
             <?php   if (user_access('d39')) { ?>
-
                 <div class="btn-group"> 
 
                     <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#AddBranch" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add Rate</a>  
-                    
-
-                </div>
-                <div class="modal fade" id="AddBranch" tabindex="-1" role="dialog" aria-labelledby="course_upload_label" aria-hidden="true">
+                 </div>
+                <div class="modal fade" id="AddBranch" role="dialog" aria-labelledby="course_upload_label" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -155,7 +150,9 @@ a:hover, a:focus {
 
 
 <script>
+
 $(document).ready(function() {
+
     $('#example').DataTable();
 } );
 </script>

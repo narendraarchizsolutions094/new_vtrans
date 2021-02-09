@@ -115,7 +115,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     </div>
      <div class="col-lg-3" id="differencefilter" style="<?php if(!in_array('difference',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-            <label for="amount">Price range: <span id="range_value">0 - 100</span></label>
+            <label for="amount">Difference range: <span id="range_value">0 - 100</span></label>
             <input type="hidden" id="min">
             <input type="hidden" id="max">
           <div id="slider-range"></div>
