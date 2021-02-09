@@ -630,7 +630,7 @@ public function chat_start(){
    public function test_start(){
 	$config = Array(
 		'protocol' => 'smtp',
-		'smtp_host' => 'smtp3.netcore.co.in',
+		'smtp_host' => 'ssl://smtp3.netcore.co.in',
 		'smtp_port' => 465,
 		'smtp_user' => 'crm@vtransgroup.com',
 		'smtp_pass' => '@FebCrm21#',
