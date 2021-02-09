@@ -8,7 +8,7 @@ class Configurations extends CI_Controller {
 		$this->load->library('user_agent');
             //$this->load->helper('url');
 		
-		$this->load->model(array(
+		$this->load->model(array('Leads_Model',
 			'Configuration_Model','enquiry_model','Message_models','User_model','dash_model','location_model'
 		));
 		$this->load->library('email'); 
@@ -139,8 +139,9 @@ class Configurations extends CI_Controller {
                     'qr_code_id'  =>  $qr_code_id,
                     'enquiry_source' => 10,
                     'ip_address' => $this->input->ip_address(),
-                    'status'     => 1
-            );
+                    'status'     => 1,
+                    'assign_by' =>$crtdby
+                );
                 // $insert_id = $this->Configuration_Model->web_enquiry($data);
                  $this->db->insert('enquiry', $data); 
                 $insid = $this->db->insert_id();
@@ -162,6 +163,11 @@ class Configurations extends CI_Controller {
                         $this->db->insert_batch('extra_enquery', $biarr); 
                     }
                 }
+
+                $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_create"), $encode,'',$crtdby);
+                // $this->load->model('rule_model');
+                // $this->rule_model->execute_rules($encode,array(1,2,3,6,7),$compid,$crtdby);  
+
                 $this->session->set_flashdata('popup','Your Enquiry has been sent Successfully');
                  redirect($this->agent->referrer());
             }else{

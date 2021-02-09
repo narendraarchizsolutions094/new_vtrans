@@ -74,7 +74,7 @@
                             <div class="form-group row">
                                 <label for="description" class="col-xs-5 col-form-label">Mobile  <i class="text-danger">*</i></label>
                                 <div class="col-xs-7">
-                                <input type="tel" name="enqueryfield[]" class="form-control" id="student-phone-number" placeholder="">
+                                <input type="tel" name="e_mobile" class="form-control" id="student-phone-number" placeholder="">
                              </div>
                             </div>
                             <div class="form-group row" >

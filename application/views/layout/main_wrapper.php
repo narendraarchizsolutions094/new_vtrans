@@ -123,7 +123,16 @@ if($root=='https://student.spaceinternationals.com'){  ?>
         else return false;
     }
     </script>
-
+    <style>
+       .icon-class {
+        color: #fff;
+        font-size: 17px !important;
+        background: #43AEEF;
+        padding: 7px;
+        border-radius: 4px;
+        width: 30px !important;
+    }
+    </style>
 
     <?php //echo $this->session->telephony_token;
       if (!empty($this->session->ameyo['sessionId'])) { ?>
@@ -767,14 +776,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
         border-radius: 50%;
     }
 
-    .icon-class {
-        color: #fff;
-        font-size: 17px !important;
-        background: #43AEEF;
-        padding: 7px;
-        border-radius: 4px;
-        width: 30px !important;
-    }
+ 
     </style>
     <!------------------------------------------------------------------------------------------------------------alert reminder end----------------------------------------------------->
     <!-- Site wrapper -->
@@ -1324,17 +1326,14 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     Reporting Location
                                 </a>
                             </li>
-                            <?php } //} ?>
+                            <?php }  ?>
 
-                            <?php } ?>
-                            <?php    if(user_access('1020') || user_access('1021') || user_access('1022'))
-                { ?>
-                            <li class="<?=($segment2=="expense-master")?"active":''?>">
-                                <a href="<?php echo base_url('setting/expense-master'); ?>">Expense Master</a>
-                            </li>
-                    <?php } ?>
-                        </ul>
+
+                            </ul>
                     </li>
+                            <?php } ?>
+                           
+                     
                     <!--    <li class="treeview <?php echo (($segment1 == "inventory") ? "active" : null) ?>"  style="<?php if(in_array(280,$module) || in_array(281,$module) || in_array(282,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                      <a href="#">
                       <i class="fa fa-cog icon-class" ></i> <?php echo display('Inventory'); ?>

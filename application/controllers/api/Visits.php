@@ -65,8 +65,28 @@ class Visits extends REST_Controller {
     	$id = $this->input->post('visit_id');
 
     	$value = $this->db->where('id',$id)->get('tbl_visit')->row();
-    	$tvalue = $this->db->where('visit_id',$id)->get('visit_details')->row();
-      $data=['visit'=>$value,'travelData'=>$tvalue];
+    	$tvalue = $this->db->select('')->where('visit_id',$id)->get('visit_details')->row();
+       $expenselist=$this->db->select('tbl_expense.*,tbl_expense.id as expense_id,tbl_expenseMaster.id,tbl_expenseMaster.title')->where(array('tbl_expense.visit_id'=>$id,'tbl_expense.type'=>2))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
+       $list=[];
+        foreach ($expenselist as $key => $value) {
+          $file='';
+           if($value->file){
+             $file= base_url('assets/images/user/'.$value->file);
+           }
+            $list[]=[
+               "expense_id"=>$value->expense_id,
+              "title"=>$value->title,
+              "approved_by"=>$value->uid,
+              "visit_id"=>$value->visit_id,
+              "created_by"=>$value->created_by,
+              "created_at"=>$value->created_at,
+              "amount"=>$value->amount,
+              "file"=>$file,
+              "remarks"=>$value->remarks,
+              "approve_status"=>$value->approve_status,
+            ];
+        }
+      $data=['visit'=>$value,'travelData'=>$tvalue,'expenceData'=>$list];
     	if(!empty($value))
     	{
     		 $this->set_response([
@@ -202,7 +222,7 @@ class Visits extends REST_Controller {
       $vd_id = $this->input->post('vd_id');
       $status = $this->input->post('status');
       $res= array();
-        $total = $this->db->where(array('id'=>$visit_id))->get('tbl_visit');
+        $total = $this->db->where(array('id'=>$visit_id,'user_id'=>$user_id))->get('tbl_visit');
          //insert status
            if($total->num_rows()==1){
               if($status==1){
@@ -213,11 +233,10 @@ class Visits extends REST_Controller {
               if($latitude!=0 AND $longitude!=0){
 
               //check any travelled is started or not
-             $checkexistvisit=$this->db->where(array('comp_id'=>$company_id,'visit_id'=>$visit_id))
+             $checkexistvisit=$this->db->where(array('comp_id'=>$company_id,'visit_id'=>$visit_id,'created_by'=>$user_id))
                        ->count_all_results('visit_details');
                if($checkexistvisit==0){
                   $checkvisit=$this->db->where(array('comp_id'=>$company_id,'created_by'=>$user_id,'visit_status'=>1))
-                  ->or_where(array("visit_status"=>2))
                   ->get('visit_details');
                   if($checkvisit->num_rows()==0){
                   $data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'visit_status'=>1,'visit_start'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>json_encode(array($new_waypoint))];
@@ -413,7 +432,47 @@ class Visits extends REST_Controller {
     	}
     }
 
-
+    public function expense_table_post()
+    {
+    	$comp_id = $this->input->post('company_id');
+    	$visit_id = $this->input->post('visit_id');
+    	$this->form_validation->set_rules('company_id','company id','required|trim');
+    	$this->form_validation->set_rules('visit_id','visit id','required|trim');
+    	if($this->form_validation->run()==true)
+    	{
+         $expenselist=$this->db->select('tbl_expense.*,tbl_expense.id as expense_id,tbl_expenseMaster.id,tbl_expenseMaster.title')->where(array('tbl_expense.comp_id'=>$comp_id,'tbl_expense.visit_id'=>$visit_id,'tbl_expense.type'=>2))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
+        $list=[];
+         foreach ($expenselist as $key => $value) {
+           $file='';
+            if($value->file){
+              $file= base_url('assets/images/user/'.$value->file);
+            }
+             $list[]=[
+                "expense_id"=>$value->expense_id,
+               "title"=>$value->title,
+               "approved_by"=>$value->uid,
+               "visit_id"=>$value->visit_id,
+               "created_by"=>$value->created_by,
+               "created_at"=>$value->created_at,
+               "amount"=>$value->amount,
+               "file"=>$file,
+               "remarks"=>$value->remarks,
+               "approve_status"=>$value->approve_status,
+             ];
+         }
+         $this->set_response([
+                  'status' => true,
+                  'data' =>$list,
+               ], REST_Controller::HTTP_OK);
+    	}
+    	else
+    	{
+    		$this->set_response([
+                  'status' => false,
+                  'message' =>strip_tags(validation_errors())
+               ], REST_Controller::HTTP_OK);
+    	}
+    }
     public function add_remarks_post()
     {
     	$comp_id = $this->input->post('company_id');
