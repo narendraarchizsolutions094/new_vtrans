@@ -33,7 +33,16 @@
 				
 				<?php echo form_open_multipart(base_url("ticket/add"),array('id'=>'ticket-add-form')); ?>
 			<div class="row">
-
+				<select name='ticket_status' hidden>
+				<?php
+				if (!empty($ticket_status)) {					
+					foreach($ticket_status as $status){  ?>                              
+					<option value="<?=$status->id?>" <?=($status->id==$ticket->ticket_status?'selected':'')?>><?php echo $status->status_name; ?></option>
+					<?php 
+					}
+				}
+				?>
+				</select>
 				<div id="process_basic_fields">
 
 				</div>
