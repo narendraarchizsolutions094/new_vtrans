@@ -638,7 +638,7 @@ public function chat_start(){
 	$config['charset']      = 'utf-8';
 	$config['newline']      = "\r\n";
 	$config['mailtype']     = 'text'; // or html
-	$config['validation']   = TRUE; // bool whether to validate email or not 
+	//$config['validation']   = TRUE; // bool whether to validate email or not 
 	$this->email->initialize($config);
 
 	// $config = Array(
