@@ -630,7 +630,7 @@ public function chat_start(){
    public function test_start(){
 	$config = Array(
 		'protocol' => 'smtp',
-		'smtp_host' => 'ssl://smtp.zoho.com',
+		'smtp_host' => 'ssl://smtppro.zoho.com',
 		'smtp_port' => 465,
 		'smtp_user' => 'kanhaiya@archizsolutions.com',
 		'smtp_pass' => 'Archiz321',
