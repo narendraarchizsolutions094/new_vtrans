@@ -630,7 +630,7 @@ public function chat_start(){
    public function test_start(){
 	$this->load->library('email');
 	$config['protocol']     = 'smtp';
-	$config['smtp_host']    = 'ssl://smtp3.netcore.co.in';
+	$config['smtp_host']    = 'smtp3.netcore.co.in';
 	$config['smtp_port']    = '465';
 	$config['smtp_timeout'] = '7';
 	$config['smtp_user']    = 'crm@vtransgroup.com';
