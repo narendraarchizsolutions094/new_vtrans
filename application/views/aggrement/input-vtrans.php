@@ -1,10 +1,8 @@
 <html>
-
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style type="text/css">
-    <!--
     span.cls_003 {
         font-family: "Gill Sans MT", serif;
         font-size: 11.1px;
@@ -112,7 +110,6 @@
         font-style: normal;
         text-decoration: none
     }
-    -->
     </style>
 
 </head>
@@ -222,7 +219,7 @@
                 </span></div>
             <div style="position:absolute;left:209.17px;top:35.49px" class="cls_003"><span class="cls_003">)</span>
             </div>
-            <div style="position:absolute;left:41.38px;top:48.69px" class="cls_003"><span class="cls_003">Ref No:</span>
+            <div style="position:absolute;left:41.38px;top:48.69px" class="cls_003"><span class="cls_003">Ref No: <?php echo $_POST['ref_no'].'<input name="ref_no" type="hidden" value="'.$_POST['ref_no'].'">'; ?></span>
             </div>
             <div style="position:absolute;left:157.58px;top:75.09px" class="cls_002"><span class="cls_002">GOODS
                     TRANSPORTATION SERVICE CONTRACT</span></div>
@@ -931,7 +928,7 @@
             <div style="position:absolute;left:47.08px;top:768.60px" class="cls_002"><span class="cls_002">Name:
                     
 
-                    <?=empty($_POST['ip'][10])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][10])?'<input name="ip[10]" style="
 	top: 0;
     margin-left:0;
    	width:200px;
@@ -941,12 +938,12 @@
     margin-left:0;
    	width:200px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][10].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][10].'">'?>
+    font-size: 11px;">'.$_POST['ip'][10].'</div> <input name="ip[10]" type="hidden"  value="'.$_POST['ip'][10].'">'?>
                 </span></div>
             <div style="position:absolute;left:298.51px;top:768.60px" class="cls_002"><span class="cls_002">Name:
                     
 
-                    <?=empty($_POST['ip'][11])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][11])?'<input name="ip[11]" style="
 	top: 0;
     margin-left:0;
    	width:200px;
@@ -956,7 +953,7 @@
     margin-left:0;
    	width:200px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][11].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][11].'">'?>
+    font-size: 11px;">'.$_POST['ip'][11].'</div> <input name="ip[11]" type="hidden"  value="'.$_POST['ip'][11].'">'?>
                 </span></div>
             <div style="position:absolute;left:47.02px;top:782.60px" class="cls_002"><span class="cls_002">Designation:
                     <!-- <input style="    
@@ -965,7 +962,7 @@
    	width:172px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][12])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][12])?'<input name="ip[12]" style="
 	top: 0;
     margin-left:0;
    	width:172px;
@@ -975,7 +972,7 @@
     margin-left:0;
    	width:172px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][12].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][12].'">'?>
+    font-size: 11px;">'.$_POST['ip'][12].'</div> <input name="ip[12]" type="hidden"  value="'.$_POST['ip'][12].'">'?>
                 </span></div>
             <div style="position:absolute;left:299.20px;top:782.60px" class="cls_002"><span class="cls_002">Designation:
                     <!-- <input style="    
@@ -984,7 +981,7 @@
    	width:172px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][13])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][13])?'<input name="ip[13]" style="
 	top: 0;
     margin-left:0;
    	width:172px;
@@ -994,7 +991,7 @@
     margin-left:0;
    	width:172px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][13].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][13].'">'?>
+    font-size: 11px;">'.$_POST['ip'][13].'</div> <input name="ip[13]" type="hidden"  value="'.$_POST['ip'][13].'">'?>
                 </span></div>
             <div style="position:absolute;left:535.81px;top:813.26px" class="cls_004"><span class="cls_004">3</span>
             </div>
@@ -1019,8 +1016,7 @@
             <div style="position:absolute;left:504.95px;top:79.69px" class="cls_004"><span class="cls_004">Both
                     <?=empty($_POST['ip'][14])?'<input style="padding: 0px; margin-left: 10px; margin-top:0px;" type="radio" name="ip[14]" value="both">':($_POST['ip'][14]=='both'?'<span style="margin-left:10px; position:absolute"><b><i class="fa fa-check"></i></b></span>':'').'<input style="display:none;" type="radio" name="ip[14]" value="both"'.($_POST['ip'][14]=='both'?'checked':'').'>'?></span>
             </div>
-            <div style="position:absolute;left:39.53px;top:83.39px" class="cls_002"><span class="cls_002">Name of the
-                    customer:
+            <div style="position:absolute;left:39.53px;top:83.39px" class="cls_002"><span class="cls_002">Name of the customer:
                     <!-- <input style="    
 	top: 0;
     margin-left:0;
@@ -1060,7 +1056,7 @@
    	width:145px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][16])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][16])?'<input name="ip[16]" style="
 	top: 0;
     margin-left:100px;
    	width:145px;
@@ -1070,7 +1066,7 @@
     margin-left:100px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][16].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][16].'">'?>
+    font-size: 11px;">'.$_POST['ip'][16].'</div> <input name="ip[16]" type="hidden"  value="'.$_POST['ip'][16].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:206.86px" class="cls_004"><span class="cls_004">Per
                     GC</span></div>
@@ -1083,7 +1079,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][17])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][17])?'<input name="ip[17]" style="
 	top: 0;
     margin-left:48px;
    	width:145px;
@@ -1093,7 +1089,7 @@
     margin-left:48px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][17].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][17].'">'?>
+    font-size: 11px;">'.$_POST['ip'][17].'</div> <input name="ip[17]" type="hidden"  value="'.$_POST['ip'][17].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:222.86px" class="cls_004"><span class="cls_004">KG</span>
             </div>
@@ -1107,7 +1103,7 @@
    	width:145px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][18])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][18])?'<input name="ip[18]" style="
 	top: 0;
     margin-left:54px;
    	width:145px;
@@ -1117,7 +1113,7 @@
     margin-left:54px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][18].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][18].'">'?>
+    font-size: 11px;">'.$_POST['ip'][18].'</div> <input name="ip[18]" type="hidden"  value="'.$_POST['ip'][18].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:238.86px" class="cls_004"><span class="cls_004">Rs</span>
             </div>
@@ -1129,7 +1125,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][19])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][19])?'<input name="ip[19]" style="
 	top: 0;
     margin-left:104px;
    	width:145px;
@@ -1139,7 +1135,7 @@
     margin-left:104px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][19].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][19].'">'?>
+    font-size: 11px;">'.$_POST['ip'][19].'</div> <input name="ip[19]" type="hidden"  value="'.$_POST['ip'][19].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:254.86px" class="cls_004"><span class="cls_004">KG</span>
             </div>
@@ -1152,7 +1148,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][20])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][20])?'<input name="ip[20]" style="
 	top: 0;
     margin-left:85px;
    	width:145px;
@@ -1162,7 +1158,7 @@
     margin-left:85px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][20].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][20].'">'?>
+    font-size: 11px;">'.$_POST['ip'][20].'</div> <input name="ip[20]" type="hidden"  value="'.$_POST['ip'][20].'">'?>
 
                 </span></div>
             <div style="position:absolute;left:364.87px;top:269.86px" class="cls_004"><span class="cls_004">Per
@@ -1176,7 +1172,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][21])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][21])?'<input name="ip[21]" style="
 	top: 0;
     margin-left:32px;
    	width:145px;
@@ -1186,7 +1182,7 @@
     margin-left:32px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][21].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][21].'">'?>
+    font-size: 11px;">'.$_POST['ip'][21].'</div> <input name="ip[21]" type="hidden"  value="'.$_POST['ip'][21].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:285.86px" class="cls_004"><span class="cls_004">% of Invoice
                     Value</span></div>
@@ -1199,7 +1195,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][22])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][22])?'<input name="ip[22]" style="
 	top: 0;
     margin-left:31px;
    	width:145px;
@@ -1209,7 +1205,7 @@
     margin-left:31px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][22].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][22].'">'?>
+    font-size: 11px;">'.$_POST['ip'][22].'</div> <input name="ip[22]" type="hidden"  value="'.$_POST['ip'][22].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:299.86px" class="cls_004"><span class="cls_004">% of Invoice
                     Value</span></div>
@@ -1221,7 +1217,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][23])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][23])?'<input name="ip[23]" style="
 	top: 0;
     margin-left:90px;
    	width:145px;
@@ -1231,7 +1227,7 @@
     margin-left:90px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][23].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][23].'">'?>
+    font-size: 11px;">'.$_POST['ip'][23].'</div> <input name="ip[23]" type="hidden"  value="'.$_POST['ip'][23].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:316.86px" class="cls_004"><span class="cls_004">% of Total
                     Freight</span></div>
@@ -1244,7 +1240,7 @@
     font-family: arial;
     font-size: 11px;" type="text">
  -->
-                    <?=empty($_POST['ip'][24])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][24])?'<input name="ip[24]" style="
 	top: 0;
     margin-left:59px;
    	width:145px;
@@ -1254,7 +1250,7 @@
     margin-left:59px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][24].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][24].'">'?>
+    font-size: 11px;">'.$_POST['ip'][24].'</div> <input name="ip[24]" type="hidden"  value="'.$_POST['ip'][24].'">'?>
 
                 </span></div>
             <div style="position:absolute;left:364.87px;top:332.86px" class="cls_004"><span class="cls_004">Per
@@ -1268,7 +1264,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][25])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][25])?'<input name="ip[25]" style="
 	top: 0;
     margin-left:19px;
    	width:145px;
@@ -1278,7 +1274,7 @@
     margin-left:19px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;"	>'.$_POST['ip'][25].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][25].'">'?>
+    font-size: 11px;"	>'.$_POST['ip'][25].'</div> <input name="ip[25]" type="hidden"  value="'.$_POST['ip'][25].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:347.86px" class="cls_004"><span class="cls_004">% of basic
                     freight</span></div>
@@ -1290,7 +1286,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][26])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][26])?'<input name="ip[26]" style="
 	top: 0;
     margin-left:83px;
    	width:145px;
@@ -1300,7 +1296,7 @@
     margin-left:83px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][26].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][26].'">'?>
+    font-size: 11px;">'.$_POST['ip'][26].'</div> <input name="ip[26]" type="hidden"  value="'.$_POST['ip'][26].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:363.86px" class="cls_004"><span class="cls_004">Per
                     GC</span></div>
@@ -1313,7 +1309,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][27])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][27])?'<input name="ip[27]" style="
 	top: 0;
     margin-left:79px;
    	width:145px;
@@ -1323,7 +1319,7 @@
     margin-left:79px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][27].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][27].'">'?>
+    font-size: 11px;">'.$_POST['ip'][27].'</div> <input name="ip[27]" type="hidden"  value="'.$_POST['ip'][27].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:379.86px" class="cls_004"><span class="cls_004">Per
                     GC</span></div>
@@ -1336,7 +1332,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][28])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][28])?'<input name="ip[28]" style="
 	top: 0;
     margin-left:39px;
    	width:145px;
@@ -1346,7 +1342,7 @@
     margin-left:39px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][28].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][28].'">'?>
+    font-size: 11px;">'.$_POST['ip'][28].'</div> <input name="ip[28]" type="hidden"  value="'.$_POST['ip'][28].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:394.86px" class="cls_004"><span class="cls_004">Upto 3 MT
                     Per GC</span></div>
@@ -1359,7 +1355,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][29])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][29])?'<input name="ip[29]" style="
 	top: 0;
     margin-left:32px;
    	width:145px;
@@ -1369,7 +1365,7 @@
     margin-left:32px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][29].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][29].'">'?>
+    font-size: 11px;">'.$_POST['ip'][29].'</div> <input name="ip[29]" type="hidden"  value="'.$_POST['ip'][29].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:409.86px" class="cls_004"><span class="cls_004">Upto 3 MT
                     Per GC</span></div>
@@ -1381,7 +1377,7 @@
    	width:145px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][30])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][30])?'<input name="ip[30]" style="
 	top: 0;
     margin-left:54px;
    	width:145px;
@@ -1391,7 +1387,7 @@
     margin-left:54px;
    	width:145px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][30].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][30].'">'?>
+    font-size: 11px;">'.$_POST['ip'][30].'</div> <input name="ip[30]" type="hidden"  value="'.$_POST['ip'][30].'">'?>
                 </span></div>
             <div style="position:absolute;left:364.87px;top:425.86px" class="cls_004"><span class="cls_004">At
                     Actual</span></div>
@@ -1403,7 +1399,7 @@
    	width:35px;
     font-family: arial;
     font-size: 11px;" type="text">  -->
-                    <?=empty($_POST['ip'][31])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][31])?'<input name="ip[31]" style="
 	top: 0;
     margin-left:0;
    	width:35px;
@@ -1413,7 +1409,7 @@
     margin-left:0;
    	width:35px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][31].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][31].'">'?>
+    font-size: 11px;">'.($_POST['ip'][31]=='Consignor'?'<i class="fa fa-check"></i>':'').'</div> <input name="ip[31]" type="hidden"  value="'.$_POST['ip'][31].'">'?>
                 </span></div>
             <div style="position:absolute;left:375.61px;top:463.66px" class="cls_002"><span class="cls_002">) Consignee
                     (
@@ -1424,7 +1420,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][32])?'<input name="ip[]" style="
+<?=empty($_POST['ip'][31])?'<input  style="
 	top: 0;
     margin-left:0;
    	width:25px;
@@ -1434,7 +1430,7 @@
     margin-left:0;
    	width:25px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][32].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][32].'">'?>
+    font-size: 11px;">'.($_POST['ip'][31]=='Consignee'?'<i class="fa fa-check"></i>':'').'</div> '?>
                 </span></div>
             <div style="position:absolute;left:465.23px;top:463.66px" class="cls_002"><span class="cls_002">)</span>
             </div>
@@ -1446,7 +1442,7 @@
    	width:18px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][33])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][33])?'<input name="ip[33]" style="
 	top: 0;
     margin-left:0;
    	width:18px;
@@ -1456,7 +1452,7 @@
     margin-left:0;
    	width:18px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][33].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][33].'">'?>
+    font-size: 11px;">'.$_POST['ip'][33].'</div> <input name="ip[33]" type="hidden"  value="'.$_POST['ip'][33].'">'?>
                 </span></div>
             <div style="position:absolute;left:365.10px;top:487.86px" class="cls_004"><span class="cls_004">Per KG on
                     Per day basis<br>
@@ -1467,7 +1463,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][34])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][34])?'<input name="ip[34]" style="
 	top: 0;
     margin-left:0;
    	width:150px;
@@ -1477,7 +1473,7 @@
     margin-left:0;
    	width:150px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][34].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][34].'">'?>
+    font-size: 11px;">'.$_POST['ip'][34].'</div> <input name="ip[34]" type="hidden"  value="'.$_POST['ip'][34].'">'?>
                 </span></div>
             <div style="position:absolute;left:204.92px;top:498.86px" class="cls_004"><span class="cls_004">
                     <!-- <input style="    
@@ -1487,7 +1483,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][35])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][35])?'<input name="ip[35]" style="
 	top: 0;
     margin-left:0;
    	width:100px;
@@ -1497,7 +1493,7 @@
     margin-left:0;
    	width:100px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][35].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][35].'">'?>
+    font-size: 11px;">'.$_POST['ip'][35].'</div> <input name="ip[35]" type="hidden"  value="'.$_POST['ip'][35].'">'?>
                     + GST
                 </span></div>
             <div style="position:absolute;left:44.87px;top:501.06px" class="cls_004"><span class="cls_004">days of
@@ -1513,7 +1509,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][36])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][36])?'<input name="ip[36]" style="
 	top: 0;
     margin-left:0;
    	width:35px;
@@ -1523,7 +1519,7 @@
     margin-left:0;
    	width:35px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][36].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][36].'">'?>
+    font-size: 11px;">'.($_POST['ip'][36]=='Consignor'?'<i class="fa fa-check"></i>':'').'</div> <input name="ip[36]" type="hidden"  value="'.$_POST['ip'][36].'">'?>
                 </span></div>
             <div style="position:absolute;left:354.63px;top:553.66px" class="cls_002"><span class="cls_002">) Consignee
                     (
@@ -1533,7 +1529,7 @@
    	width:25px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][37])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][36])?'<input name="ip[37]" style="
 	top: 0;
     margin-left:0;
    	width:25px;
@@ -1543,7 +1539,7 @@
     margin-left:0;
    	width:25px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][37].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][37].'">'?>
+    font-size: 11px;">'.($_POST['ip'][36]=='Consignee'?'<i class="fa fa-check"></i>':'').'</div> '?>
                 </span></div>
             <div style="position:absolute;left:441.19px;top:553.66px" class="cls_002"><span class="cls_002">)</span>
             </div>
@@ -1555,7 +1551,7 @@
    	width:135px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][38])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][38])?'<input name="ip[38]" style="
 	top: 0;
     margin-left:30px;
    	width:135px;
@@ -1565,7 +1561,7 @@
     margin-left:30px;
    	width:135px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][38].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][38].'">'?>
+    font-size: 11px;">'.$_POST['ip'][38].'</div> <input name="ip[38]" type="hidden"  value="'.$_POST['ip'][38].'">'?>
                 </span></div>
             <div style="position:absolute;left:365.87px;top:574.86px" class="cls_004"><span class="cls_004">Per Kg /
                     Box</span></div>
@@ -1576,7 +1572,7 @@
    	width:135px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][39])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][39])?'<input name="ip[39]" style="
 	top: 0;
     margin-left:103px;
    	width:135px;
@@ -1586,7 +1582,7 @@
     margin-left:103px;
    	width:135px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][39].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][39].'">'?>
+    font-size: 11px;">'.$_POST['ip'][39].'</div> <input name="ip[39]" type="hidden"  value="'.$_POST['ip'][39].'">'?>
                 </span></div>
             <div style="position:absolute;left:365.87px;top:589.86px" class="cls_004"><span class="cls_004">Rs per
                     GC</span></div>
@@ -1612,7 +1608,7 @@
    	width:135px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][40])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][40])?'<input name="ip[40]" style="
 	top: 0;
     margin-left:30px;
    	width:135px;
@@ -1622,7 +1618,7 @@
     margin-left:30px;
    	width:135px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][40].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][40].'">'?>
+    font-size: 11px;">'.$_POST['ip'][40].'</div> <input name="ip[40]" type="hidden"  value="'.$_POST['ip'][40].'">'?>
                 </span></div>
             <div style="position:absolute;left:296.85px;top:768.59px" class="cls_002"><span class="cls_002">Name:
                     <!-- <input style="    
@@ -1631,7 +1627,7 @@
    	width:135px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][41])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][41])?'<input name="ip[41]" style="
 	top: 0;
     margin-left:30px;
    	width:135px;
@@ -1641,7 +1637,7 @@
     margin-left:30px;
    	width:135px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][41].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][41].'">'?>
+    font-size: 11px;">'.$_POST['ip'][41].'</div> <input name="ip[41]" type="hidden"  value="'.$_POST['ip'][41].'">'?>
                 </span></div>
             <div style="position:absolute;left:45.37px;top:782.59px" class="cls_002"><span class="cls_002">Designation:
                     <!-- <input style="    
@@ -1651,7 +1647,7 @@
     font-family: arial;
     font-size: 11px;" type="text">
  -->
-                    <?=empty($_POST['ip'][42])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][42])?'<input name="ip[42]" style="
 	top: 0;
     margin-left:2px;
    	width:135px;
@@ -1661,7 +1657,7 @@
     margin-left:2px;
    	width:135px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][42].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][42].'">'?>
+    font-size: 11px;">'.$_POST['ip'][42].'</div> <input name="ip[42]" type="hidden"  value="'.$_POST['ip'][42].'">'?>
                 </span></div>
             <div style="position:absolute;left:297.55px;top:782.59px" class="cls_002"><span class="cls_002">Designation:
                     <!-- <input style="    
@@ -1671,7 +1667,7 @@
     font-family: arial;
     font-size: 11px;" type="text"> -->
 
-                    <?=empty($_POST['ip'][43])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][43])?'<input name="ip[43]" style="
 	top: 0;
     margin-left:2px;
    	width:135px;
@@ -1681,7 +1677,7 @@
     margin-left:2px;
    	width:135px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][43].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][43].'">'?>
+    font-size: 11px;">'.$_POST['ip'][43].'</div> <input name="ip[43]" type="hidden"  value="'.$_POST['ip'][43].'">'?>
                 </span></div>
             <div style="position:absolute;left:537.70px;top:813.26px" class="cls_004"><span class="cls_004">4</span>
             </div>
@@ -1822,7 +1818,7 @@
    	width:160px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][46])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][46])?'<input name="ip[46]" style="
 	top: 0;
     margin-left:2px;
    	width:160px;
@@ -1832,7 +1828,7 @@
     margin-left:2px;
    	width:160px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][46].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][46].'">'?>
+    font-size: 11px;">'.$_POST['ip'][46].'</div> <input name="ip[46]" type="hidden"  value="'.$_POST['ip'][46].'">'?>
                 </span></div>
             <div style="position:absolute;left:57.71px;top:456.90px" class="cls_004"><span class="cls_004">Unit No. 6
                     Corporate Park, V N Purav</span></div>
@@ -1845,7 +1841,7 @@
     font-family: arial;
     font-size: 11px;" type="text"></textarea> -->
 
-                    <?=empty($_POST['ip'][47])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][47])?'<input name="ip[47]" style="
 	top: 0;
     margin-left:2px;
    	width:200px;
@@ -1855,7 +1851,7 @@
     margin-left:2px;
    	width:200px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][47].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][47].'">'?>
+    font-size: 11px;">'.$_POST['ip'][47].'</div> <input name="ip[47]" type="hidden"  value="'.$_POST['ip'][47].'">'?>
                 </span></div>
             <div style="position:absolute;left:57.71px;top:474.90px" class="cls_004"><span class="cls_004">Marg,
                     Chembur, Mumbai - 400071</span></div>
@@ -1867,7 +1863,7 @@
     font-family: arial;
     font-size: 11px;" type="text">
  -->
-                    <?=empty($_POST['ip'][48])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][48])?'<input name="ip[48]" style="
 	top: 0;
     margin-left:2px;
    	width:100px;
@@ -1877,7 +1873,7 @@
     margin-left:2px;
    	width:100px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][48].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][48].'">'?>
+    font-size: 11px;">'.$_POST['ip'][48].'</div> <input name="ip[48]" type="hidden"  value="'.$_POST['ip'][48].'">'?>
 
                     @vtransgroup.com
                 </span></div>
@@ -1888,7 +1884,7 @@
    	width:160px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][49])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][49])?'<input name="ip[49]" style="
 	top: 0;
     margin-left:2px;
    	width:160px;
@@ -1898,7 +1894,7 @@
     margin-left:2px;
    	width:160px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][49].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][49].'">'?>
+    font-size: 11px;">'.$_POST['ip'][49].'</div> <input name="ip[49]" type="hidden"  value="'.$_POST['ip'][49].'">'?>
                 </span></div>
             <div style="position:absolute;left:311.71px;top:519.90px" class="cls_004"><span class="cls_004">Email ID:
                     <!-- <input style="    
@@ -1907,7 +1903,7 @@
    	width:160px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][50])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][50])?'<input name="ip[50]" style="
 	top: 0;
     margin-left:2px;
    	width:160px;
@@ -1917,7 +1913,7 @@
     margin-left:2px;
    	width:160px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][50].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][50].'">'?>
+    font-size: 11px;">'.$_POST['ip'][50].'</div> <input name="ip[50]" type="hidden"  value="'.$_POST['ip'][50].'">'?>
                 </span></div>
             <div style="position:absolute;left:311.71px;top:548.90px" class="cls_004"><span class="cls_004">Name of
                     Person:-
@@ -1927,7 +1923,7 @@
    	width:160px;
     font-family: arial;
     font-size: 11px;" type="text"> -->
-                    <?=empty($_POST['ip'][51])?'<input name="ip[]" style="
+                    <?=empty($_POST['ip'][51])?'<input name="ip[51]" style="
 	top: 0;
     margin-left:2px;
    	width:160px;
@@ -1937,7 +1933,7 @@
     margin-left:2px;
    	width:160px;
     font-family: arial;
-    font-size: 11px;">'.$_POST['ip'][51].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][51].'">'?>
+    font-size: 11px;">'.$_POST['ip'][51].'</div> <input name="ip[51]" type="hidden"  value="'.$_POST['ip'][51].'">'?>
                 </span></div>
             <div style="position:absolute;left:39.87px;top:574.57px" class="cls_004"><span class="cls_004">If there is
                     any change in the address or email ID as above mentioned shall be duly communicated to the other
@@ -2022,17 +2018,17 @@
             <div style="position:absolute;left:185.93px;top:178.73px" class="cls_006"><span class="cls_006">Booking
                     Address<br>
                     <!-- <input type="text" style="margin-top: 20px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][53])?'<input name="ip[]" style="margin-top: 20px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-top: 20px; width: 100px;">'.$_POST['ip'][53].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][53].'">'?>
+                    <?=empty($_POST['ip'][53])?'<input name="ip[53]" style="margin-top: 20px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-top: 20px; width: 100px;">'.$_POST['ip'][53].'</div> <input name="ip[53]" type="hidden"  value="'.$_POST['ip'][53].'">'?>
                 </span></div>
             <div style="position:absolute;left:304.16px;top:178.73px" class="cls_006"><span class="cls_006">Billing
                     Address<br>
                     <!-- <input type="text" style="margin-top: 20px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][54])?'<input name="ip[]" style="margin-top: 20px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-top: 20px; width: 100px;">'.$_POST['ip'][54].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][54].'">'?>
+                    <?=empty($_POST['ip'][54])?'<input name="ip[54]" style="margin-top: 20px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-top: 20px; width: 100px;">'.$_POST['ip'][54].'</div> <input name="ip[54]" type="hidden"  value="'.$_POST['ip'][54].'">'?>
                 </span></div>
             <div style="position:absolute;left:435.73px;top:178.73px" class="cls_006"><span
                     class="cls_006">Communication<br>
                     <!-- <input type="text" style="margin-top: 20px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][55])?'<input name="ip[]" style="margin-top: 20px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-top: 20px; width: 100px;">'.$_POST['ip'][55].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][55].'">'?>
+                    <?=empty($_POST['ip'][55])?'<input name="ip[55]" style="margin-top: 20px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-top: 20px; width: 100px;">'.$_POST['ip'][55].'</div> <input name="ip[55]" type="hidden"  value="'.$_POST['ip'][55].'">'?>
                 </span></div>
             <div style="position:absolute;left:451.97px;top:191.93px" class="cls_006"><span
                     class="cls_006">address</span></div>
@@ -2040,118 +2036,118 @@
                     class="cls_006">Address:</span></div>
             <div style="position:absolute;left:43.31px;top:238.73px" class="cls_006"><span class="cls_006">City
                     <!-- <input type="text" style="margin-left: 123px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][56])?'<input name="ip[]" style="margin-left: 123px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 123px; width: 100px;">'.$_POST['ip'][56].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][56].'">'?>
+                    <?=empty($_POST['ip'][56])?'<input name="ip[56]" style="margin-left: 123px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 123px; width: 100px;">'.$_POST['ip'][56].'</div> <input name="ip[56]" type="hidden"  value="'.$_POST['ip'][56].'">'?>
 
                     <!-- <input type="text" style="margin-left: 17px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][57])?'<input name="ip[]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][57].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][57].'">'?>
+                    <?=empty($_POST['ip'][57])?'<input name="ip[57]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][57].'</div> <input name="ip[57]" type="hidden"  value="'.$_POST['ip'][57].'">'?>
                     <!-- <input type="text" style="margin-left: 28px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][58])?'<input name="ip[]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][58].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][58].'">'?>
+                    <?=empty($_POST['ip'][58])?'<input name="ip[58]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][58].'</div> <input name="ip[58]" type="hidden"  value="'.$_POST['ip'][58].'">'?>
                 </span></div>
 
 
             <div style="position:absolute;left:43.31px;top:254.74px" class="cls_006"><span class="cls_006">State and PIN
 
                     <!-- <input type="text" style="margin-left: 80px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][59])?'<input name="ip[]" style="margin-left: 80px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 80px; width: 100px;">'.$_POST['ip'][59].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][59].'">'?>
+                    <?=empty($_POST['ip'][59])?'<input name="ip[59]" style="margin-left: 80px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 80px; width: 100px;">'.$_POST['ip'][59].'</div> <input name="ip[59]" type="hidden"  value="'.$_POST['ip'][59].'">'?>
 
                     <!-- <input type="text" style="margin-left: 17px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][60])?'<input name="ip[]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][60].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][60].'">'?>
+                    <?=empty($_POST['ip'][60])?'<input name="ip[]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][60].'</div> <input name="ip[60]" type="hidden"  value="'.$_POST['ip'][60].'">'?>
 
                     <!-- <input type="text" style="margin-left: 28px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][61])?'<input name="ip[]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][61].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][61].'">'?>
+                    <?=empty($_POST['ip'][61])?'<input name="ip[61]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][61].'</div> <input name="ip[61]" type="hidden"  value="'.$_POST['ip'][61].'">'?>
 
                 </span></div>
             <div style="position:absolute;left:43.31px;top:269.74px" class="cls_006"><span class="cls_006">Contact
                     Person &
                     <!-- <input type="text" style="margin-left: 62px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][62])?'<input name="ip[]" style="margin-left: 62px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 62px; width: 100px;">'.$_POST['ip'][62].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][62].'">'?>
+                    <?=empty($_POST['ip'][62])?'<input name="ip[62]" style="margin-left: 62px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 62px; width: 100px;">'.$_POST['ip'][62].'</div> <input name="ip[62]" type="hidden"  value="'.$_POST['ip'][62].'">'?>
 
                     <!-- <input type="text" style="margin-left: 16px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][63])?'<input name="ip[]" style="margin-left: 16px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 16px; width: 100px;">'.$_POST['ip'][63].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][63].'">'?>
+                    <?=empty($_POST['ip'][63])?'<input name="ip[63]" style="margin-left: 16px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 16px; width: 100px;">'.$_POST['ip'][63].'</div> <input name="ip[63]" type="hidden"  value="'.$_POST['ip'][63].'">'?>
 
                     <!-- <input type="text" style="margin-left: 28px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][64])?'<input name="ip[]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][64].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][64].'">'?>
+                    <?=empty($_POST['ip'][64])?'<input name="ip[64]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][64].'</div> <input name="ip[64]" type="hidden"  value="'.$_POST['ip'][64].'">'?>
                 </span></div>
             <div style="position:absolute;left:43.31px;top:281.74px" class="cls_006"><span
                     class="cls_006">Designation</span></div>
             <div style="position:absolute;left:43.31px;top:298.74px" class="cls_006"><span class="cls_006">Email ID
                     <!-- <input type="text" style="margin-left: 105px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][65])?'<input name="ip[]" style="margin-left: 105px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 105px; width: 100px;">'.$_POST['ip'][65].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][65].'">'?>
+                    <?=empty($_POST['ip'][65])?'<input name="ip[65]" style="margin-left: 105px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 105px; width: 100px;">'.$_POST['ip'][65].'</div> <input name="ip[65]" type="hidden"  value="'.$_POST['ip'][65].'">'?>
                     <!-- <input type="text" style="margin-left: 17px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][66])?'<input name="ip[]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][66].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][66].'">'?>
+                    <?=empty($_POST['ip'][66])?'<input name="ip[66]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][66].'</div> <input name="ip[66]" type="hidden"  value="'.$_POST['ip'][66].'">'?>
                     <!-- <input type="text" style="margin-left: 28px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][67])?'<input name="ip[]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][67].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][67].'">'?>
+                    <?=empty($_POST['ip'][67])?'<input name="ip[67]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][67].'</div> <input name="ip[67]" type="hidden"  value="'.$_POST['ip'][67].'">'?>
                 </span></div>
             <div style="position:absolute;left:43.31px;top:313.74px" class="cls_006"><span class="cls_006">Phone No.
                     <!-- <input type="text" style="margin-left: 95px; width: 100px;"> -->
-                    <?=empty($_POST['ip_phone'])?'<input name="ip_phone" style="margin-left: 95px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 95px; width: 100px;">'.$_POST['ip'][68].'</div> <input name="ip_phone" type="hidden"  value="'.$_POST['ip_phone'].'">'?>
+                    <?=empty($_POST['ip_phone'])?'<input name="ip_phone" style="margin-left: 95px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 95px; width: 100px;">'.$_POST['ip_phone'].'</div> <input name="ip_phone" type="hidden"  value="'.$_POST['ip_phone'].'">'?>
                     <!-- <input type="text" style="margin-left: 17px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][68])?'<input name="ip[]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][68].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][68].'">'?>
+                    <?=empty($_POST['ip'][68])?'<input name="ip[68]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][68].'</div> <input name="ip[68]" type="hidden"  value="'.$_POST['ip'][68].'">'?>
                     <!-- <input type="text" style="margin-left: 28px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][69])?'<input name="ip[]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][69].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][69].'">'?>
+                    <?=empty($_POST['ip'][69])?'<input name="ip[69]" style="margin-left: 28px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 28px; width: 100px;">'.$_POST['ip'][69].'</div> <input name="ip[69]" type="hidden"  value="'.$_POST['ip'][69].'">'?>
                 </span></div>
             <div style="position:absolute;left:43.31px;top:328.75px" class="cls_006"><span class="cls_006">Mobile No.
                     <!-- <input type="text" style="margin-left: 93px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][70])?'<input name="ip[]" style="margin-left: 93px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 93px; width: 100px;">'.$_POST['ip'][70].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][70].'">'?>
+                    <?=empty($_POST['ip'][70])?'<input name="ip[70]" style="margin-left: 93px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 93px; width: 100px;">'.$_POST['ip'][70].'</div> <input name="ip[70]" type="hidden"  value="'.$_POST['ip'][70].'">'?>
                     <!-- <input type="text" style="margin-left: 17px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][71])?'<input name="ip[]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][71].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][71].'">'?>
+                    <?=empty($_POST['ip'][71])?'<input name="ip[71]" style="margin-left: 17px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 17px; width: 100px;">'.$_POST['ip'][71].'</div> <input name="ip[71]" type="hidden"  value="'.$_POST['ip'][71].'">'?>
                     <!-- <input type="text" style="margin-left: 27px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][72])?'<input name="ip[]" style="margin-left: 27px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 27px; width: 100px;">'.$_POST['ip'][72].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][72].'">'?>
+                    <?=empty($_POST['ip'][72])?'<input name="ip[72]" style="margin-left: 27px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 27px; width: 100px;">'.$_POST['ip'][72].'</div> <input name="ip[72]" type="hidden"  value="'.$_POST['ip'][72].'">'?>
                 </span></div>
             <div style="position:absolute;left:42.60px;top:353.50px" class="cls_002"><span class="cls_002">TAX DETAILS
                     OF CUSTOMER</span></div>
             <div style="position:absolute;left:43.71px;top:374.36px" class="cls_006"><span class="cls_006">*GSTIN No.
                     <!-- <input type="text" style="margin-left: 80px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][73])?'<input name="ip[]" style="margin-left: 80px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 80px; width: 100px;">'.$_POST['ip'][73].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][73].'">'?>
+                    <?=empty($_POST['ip'][73])?'<input name="ip[73]" style="margin-left: 80px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 80px; width: 100px;">'.$_POST['ip'][73].'</div> <input name="ip[73]" type="hidden"  value="'.$_POST['ip'][73].'">'?>
                 </span></div>
             <div style="position:absolute;left:288.71px;top:374.36px" class="cls_006"><span class="cls_006">PAN No.
                     <!-- <input type="text" style="margin-left: 25px; width: 150px;"> -->
-                    <?=empty($_POST['ip'][74])?'<input name="ip[]" style="margin-left: 25px; width: 150px;" type="text">':'<div class="dynamic_input"  style="margin-left: 25px; width: 150px;">'.$_POST['ip'][74].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][74].'">'?>
+                    <?=empty($_POST['ip'][74])?'<input name="ip[74]" style="margin-left: 25px; width: 150px;" type="text">':'<div class="dynamic_input"  style="margin-left: 25px; width: 150px;">'.$_POST['ip'][74].'</div> <input name="ip[74]" type="hidden"  value="'.$_POST['ip'][74].'">'?>
                 </span></div>
             <div style="position:absolute;left:43.71px;top:395.87px" class="cls_006"><span class="cls_006">CIN/LLPIN (In
                     Case of
                     <!-- <input type="text" style="margin-left: 20px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][75])?'<input name="ip[]" style="margin-left: 20px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 20px; width: 100px;">'.$_POST['ip'][75].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][75].'">'?>
+                    <?=empty($_POST['ip'][75])?'<input name="ip[75]" style="margin-left: 20px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 20px; width: 100px;">'.$_POST['ip'][75].'</div> <input name="ip[75]" type="hidden"  value="'.$_POST['ip'][75].'">'?>
                 </span></div>
             <div style="position:absolute;left:288.65px;top:395.86px" class="cls_006"><span class="cls_006">TAN No.
                     <!-- <input type="text" style="margin-left: 25px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][76])?'<input name="ip[]" style="margin-left: 25px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 25px; width: 100px;">'.$_POST['ip'][76].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][76].'">'?>
+                    <?=empty($_POST['ip'][76])?'<input name="ip[76]" style="margin-left: 25px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 25px; width: 100px;">'.$_POST['ip'][76].'</div> <input name="ip[76]" type="hidden"  value="'.$_POST['ip'][76].'">'?>
                 </span></div>
             <div style="position:absolute;left:43.71px;top:409.07px" class="cls_006"><span
                     class="cls_006">Company/LLP)</span></div>
             <div style="position:absolute;left:43.71px;top:433.87px" class="cls_006"><span class="cls_006">Legal Name of
                     Client
                     <!-- <input type="text" style="margin-left: 29px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][77])?'<input name="ip[]" style="margin-left: 29px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 100px;">'.$_POST['ip'][77].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][77].'">'?>
+                    <?=empty($_POST['ip'][77])?'<input name="ip[77]" style="margin-left: 29px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 100px;">'.$_POST['ip'][77].'</div> <input name="ip[77]" type="hidden"  value="'.$_POST['ip'][77].'">'?>
                 </span></div>
             <div style="position:absolute;left:288.71px;top:433.86px" class="cls_006"><span class="cls_006">Contact
                     Person Name
                     <!-- <input type="text" style="margin-left: 42px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][78])?'<input name="ip[]" style="margin-left: 42px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 42px; width: 100px;">'.$_POST['ip'][78].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][78].'">'?>
+                    <?=empty($_POST['ip'][78])?'<input name="ip[78]" style="margin-left: 42px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 42px; width: 100px;">'.$_POST['ip'][78].'</div> <input name="ip[78]" type="hidden"  value="'.$_POST['ip'][78].'">'?>
                 </span></div>
             <div style="position:absolute;left:288.71px;top:447.06px" class="cls_006"><span class="cls_006">for
                     GSTIN</span></div>
             <div style="position:absolute;left:44.39px;top:471.54px" class="cls_006"><span class="cls_006">Trade Name of
                     Client
                     <!-- <input type="text" style="margin-left: 29px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][79])?'<input name="ip[]" style="margin-left: 29px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 100px;">'.$_POST['ip'][79].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][79].'">'?>
+                    <?=empty($_POST['ip'][79])?'<input name="ip[79]" style="margin-left: 29px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 100px;">'.$_POST['ip'][79].'</div> <input name="ip[79]" type="hidden"  value="'.$_POST['ip'][79].'">'?>
                 </span></div>
             <div style="position:absolute;left:289.76px;top:471.52px" class="cls_006"><span class="cls_006">Contact
                     Person Email ID
                     <!-- <input type="text" style="margin-left: 29px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][80])?'<input name="ip[]" style="margin-left: 29px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 100px;">'.$_POST['ip'][80].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][80].'">'?>
+                    <?=empty($_POST['ip'][80])?'<input name="ip[80]" style="margin-left: 29px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 100px;">'.$_POST['ip'][80].'</div> <input name="ip[80]" type="hidden"  value="'.$_POST['ip'][80].'">'?>
                 </span></div>
             <div style="position:absolute;left:289.76px;top:484.72px" class="cls_006"><span class="cls_006">for
                     GSTIN</span></div>
             <div style="position:absolute;left:42.60px;top:511.90px" class="cls_006"><span class="cls_006">Exempt from
                     GST Registration for Transportation of Goods (Yes / No)
                     <!--  <input type="text" style="margin-left: 29px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][81])?'<input name="ip[]" style="margin-left: 29px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 100px;">'.$_POST['ip'][81].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][81].'">'?>
+                    <?=empty($_POST['ip'][81])?'<input name="ip[81]" style="margin-left: 29px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 100px;">'.$_POST['ip'][81].'</div> <input name="ip[81]" type="hidden"  value="'.$_POST['ip'][81].'">'?>
                 </span></div>
             <div style="position:absolute;left:42.60px;top:525.10px" class="cls_006"><span class="cls_006">Please
                     Specified the Category of Exemption:
                     <!-- <input type="text" style="margin-left: 10px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][82])?'<input name="ip[]" style="margin-left: 10px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 10px; width: 130px;">'.$_POST['ip'][82].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][82].'">'?>
+                    <?=empty($_POST['ip'][82])?'<input name="ip[82]" style="margin-left: 10px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 10px; width: 130px;">'.$_POST['ip'][82].'</div> <input name="ip[82]" type="hidden"  value="'.$_POST['ip'][82].'">'?>
                 </span></div>
             <div style="position:absolute;left:44.04px;top:544.45px" class="cls_002"><span class="cls_002">*Note:
                 </span><span class="cls_003">For Multiple State customer shall provide State-wise GSTIN and Registration
@@ -2167,27 +2163,27 @@
             <div style="position:absolute;left:46.76px;top:620.10px" class="cls_006"><span class="cls_006">Bill
                     Submission Address :-
                     <!-- <input type="text" style="margin-left: 5px; width: 120px;"> -->
-                    <?=empty($_POST['ip'][83])?'<input name="ip[]" style="margin-left: 5px; width: 120px;" type="text">':'<div class="dynamic_input"  style="margin-left: 5px; width: 120px;">'.$_POST['ip'][83].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][83].'">'?>
+                    <?=empty($_POST['ip'][83])?'<input name="ip[83]" style="margin-left: 5px; width: 120px;" type="text">':'<div class="dynamic_input"  style="margin-left: 5px; width: 120px;">'.$_POST['ip'][83].'</div> <input name="ip[83]" type="hidden"  value="'.$_POST['ip'][83].'">'?>
                 </span></div>
             <div style="position:absolute;left:301.71px;top:620.10px" class="cls_006"><span class="cls_006">Mode of
                     payment :-</span><span class="cls_002"> </span><span class="cls_003">Cheque/ NEFT /RTGS<br>
                     <!-- <input type="text" style="margin-left: 90px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][84])?'<input name="ip[]" style="margin-left: 90px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 90px; width: 100px;">'.$_POST['ip'][84].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][84].'">'?></span>
+                    <?=empty($_POST['ip'][84])?'<input name="ip[84]" style="margin-left: 90px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 90px; width: 100px;">'.$_POST['ip'][84].'</div> <input name="ip[84]" type="hidden"  value="'.$_POST['ip'][84].'">'?></span>
             </div>
             <div style="position:absolute;left:46.76px;top:650.61px" class="cls_006"><span class="cls_006">Payment
                     processing Address :-
                     <!-- <input type="text" style="margin-left: 4px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][85])?'<input name="ip[]" style="margin-left: 4px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 4px; width: 100px;">'.$_POST['ip'][85].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][85].'">'?>
+                    <?=empty($_POST['ip'][85])?'<input name="ip[85]" style="margin-left: 4px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 4px; width: 100px;">'.$_POST['ip'][85].'</div> <input name="ip[85]" type="hidden"  value="'.$_POST['ip'][85].'">'?>
                 </span></div>
             <div style="position:absolute;left:301.71px;top:650.60px" class="cls_004"><span class="cls_004">Vendor
                     registration required :-
                     <!-- <input type="text" style="margin-left: 5px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][86])?'<input name="ip[]" style="margin-left: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 5px; width: 100px;">'.$_POST['ip'][86].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][86].'">'?>
+                    <?=empty($_POST['ip'][86])?'<input name="ip[86]" style="margin-left: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 5px; width: 100px;">'.$_POST['ip'][86].'</div> <input name="ip[86]" type="hidden"  value="'.$_POST['ip'][86].'">'?>
                 </span></div>
             <div style="position:absolute;left:45.71px;top:680.10px" class="cls_004"><span class="cls_004">Contact
                     details of the person responsible for
                     <!-- <input type="text" style="margin-left: 60px; width: 230px;"> -->
-                    <?=empty($_POST['ip'][87])?'<input name="ip[]" style="margin-left: 60px; width: 230px;" type="text">':'<div class="dynamic_input"  style="margin-left: 60px; width: 230px;">'.$_POST['ip'][87].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][87].'">'?>
+                    <?=empty($_POST['ip'][87])?'<input name="ip[87]" style="margin-left: 60px; width: 230px;" type="text">':'<div class="dynamic_input"  style="margin-left: 60px; width: 230px;">'.$_POST['ip'][87].'</div> <input name="ip[87]" type="hidden"  value="'.$_POST['ip'][87].'">'?>
                 </span></div>
             <div style="position:absolute;left:45.71px;top:693.30px" class="cls_004"><span class="cls_004">processing
                     Bills & payment :-</span></div>
@@ -2197,19 +2193,19 @@
                     class="cls_002">Customer</span></div>
             <div style="position:absolute;left:47.13px;top:768.04px" class="cls_002"><span class="cls_002">Name:
                     <!-- <input type="text" style="margin-left: 29px; width: 160px;"> -->
-                    <?=empty($_POST['ip'][88])?'<input name="ip[]" style="margin-left: 29px; width: 160px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 160px;">'.$_POST['ip'][88].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][88].'">'?>
+                    <?=empty($_POST['ip'][88])?'<input name="ip[88]" style="margin-left: 29px; width: 160px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 160px;">'.$_POST['ip'][88].'</div> <input name="ip[88]" type="hidden"  value="'.$_POST['ip'][88].'">'?>
                 </span></div>
             <div style="position:absolute;left:298.56px;top:768.04px" class="cls_002"><span class="cls_002">Name:
                     <!-- <input type="text" style="margin-left: 29px; width: 160px;"> -->
-                    <?=empty($_POST['ip'][89])?'<input name="ip[]" style="margin-left: 29px; width: 160px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 160px;">'.$_POST['ip'][89].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][89].'">'?>
+                    <?=empty($_POST['ip'][89])?'<input name="ip[89]" style="margin-left: 29px; width: 160px;" type="text">':'<div class="dynamic_input"  style="margin-left: 29px; width: 160px;">'.$_POST['ip'][89].'</div> <input name="ip[89]" type="hidden"  value="'.$_POST['ip'][89].'">'?>
                 </span></div>
             <div style="position:absolute;left:47.08px;top:782.05px" class="cls_002"><span class="cls_002">Designation:
                     <!-- <input type="text" style="margin-left: 3px; width: 160px;"> -->
-                    <?=empty($_POST['ip'][90])?'<input name="ip[]" style="margin-left: 3px; width: 160px;" type="text">':'<div class="dynamic_input"  style="margin-left: 3px; width: 160px;">'.$_POST['ip'][90].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][90].'">'?>
+                    <?=empty($_POST['ip'][90])?'<input name="ip[90]" style="margin-left: 3px; width: 160px;" type="text">':'<div class="dynamic_input"  style="margin-left: 3px; width: 160px;">'.$_POST['ip'][90].'</div> <input name="ip[90]" type="hidden"  value="'.$_POST['ip'][90].'">'?>
                 </span></div>
             <div style="position:absolute;left:299.25px;top:782.05px" class="cls_002"><span class="cls_002">Designation:
                     <!-- <input type="text" style="margin-left: 3px; width: 160px;"> -->
-                    <?=empty($_POST['ip'][91])?'<input name="ip[]" style="margin-left: 3px; width: 160px;" type="text">':'<div class="dynamic_input"  style="margin-left: 3px; width: 160px;">'.$_POST['ip'][91].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][91].'">'?>
+                    <?=empty($_POST['ip'][91])?'<input name="ip[91]" style="margin-left: 3px; width: 160px;" type="text">':'<div class="dynamic_input"  style="margin-left: 3px; width: 160px;">'.$_POST['ip'][91].'</div> <input name="ip[91]" type="hidden"  value="'.$_POST['ip'][91].'">'?>
                 </span></div>
             <div style="position:absolute;left:538.21px;top:811.81px" class="cls_004"><span class="cls_004">6</span>
             </div>
@@ -2226,98 +2222,98 @@
                     Proposed By (Name & Designation):</span></div>
             <div style="position:absolute;left:43.62px;top:84.70px" class="cls_004"><span class="cls_004">Name of
                     employee<br><!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][92])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][92].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][92].'">'?>
+                    <?=empty($_POST['ip'][92])?'<input name="ip[92]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][92].'</div> <input name="ip[92]" type="hidden"  value="'.$_POST['ip'][92].'">'?>
                 </span></div>
             <div style="position:absolute;left:181.62px;top:84.70px" class="cls_004"><span
                     class="cls_004">Designation<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][93])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][93].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][93].'">'?>
+                    <?=empty($_POST['ip'][93])?'<input name="ip[93]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][93].'</div> <input name="ip[93]" type="hidden"  value="'.$_POST['ip'][93].'">'?>
                 </span></div>
             <div style="position:absolute;left:328.56px;top:84.70px" class="cls_004"><span class="cls_004">Signature<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][94])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 100px;">'.$_POST['ip'][94].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][94].'">'?>
+                    <?=empty($_POST['ip'][94])?'<input name="ip[94]" style="margin-left: 0px; margin-top: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 100px;">'.$_POST['ip'][94].'</div> <input name="ip[94]" type="hidden"  value="'.$_POST['ip'][94].'">'?>
                 </span></div>
             <div style="position:absolute;left:464.56px;top:84.70px" class="cls_004"><span class="cls_004">Date<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 80px;"> -->
-                    <?=empty($_POST['ip'][95])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 80px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 80px;">'.$_POST['ip'][95].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][95].'">'?>
+                    <?=empty($_POST['ip'][95])?'<input name="ip[95]" style="margin-left: 0px; margin-top: 5px; width: 80px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 80px;">'.$_POST['ip'][95].'</div> <input name="ip[95]" type="hidden"  value="'.$_POST['ip'][95].'">'?>
                 </span></div>
             <div style="position:absolute;left:41.22px;top:132.34px" class="cls_002"><span class="cls_002">Client
                     Verified By (CCD )</span></div>
             <div style="position:absolute;left:43.62px;top:154.70px" class="cls_004"><span class="cls_004">Name of
                     employee<br><!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][96])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][96].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][96].'">'?></span>
+                    <?=empty($_POST['ip'][96])?'<input name="ip[96]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][96].'</div> <input name="ip[96]" type="hidden"  value="'.$_POST['ip'][96].'">'?></span>
             </div>
             <div style="position:absolute;left:181.62px;top:154.70px" class="cls_004"><span
                     class="cls_004">Designation<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][97])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][97].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][97].'">'?>
+                    <?=empty($_POST['ip'][97])?'<input name="ip[97]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][97].'</div> <input name="ip[97]" type="hidden"  value="'.$_POST['ip'][97].'">'?>
                 </span></div>
             <div style="position:absolute;left:328.56px;top:154.70px" class="cls_004"><span
                     class="cls_004">Signature<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][98])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 100px;">'.$_POST['ip'][98].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][98].'">'?>
+                    <?=empty($_POST['ip'][98])?'<input name="ip[98]" style="margin-left: 0px; margin-top: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 100px;">'.$_POST['ip'][98].'</div> <input name="ip[98]" type="hidden"  value="'.$_POST['ip'][98].'">'?>
                 </span></div>
             <div style="position:absolute;left:464.56px;top:154.70px" class="cls_004"><span class="cls_004">Date<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 80px;"> -->
-                    <?=empty($_POST['ip'][99])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 80px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 80px;">'.$_POST['ip'][99].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][99].'">'?>
+                    <?=empty($_POST['ip'][99])?'<input name="ip[99]" style="margin-left: 0px; margin-top: 5px; width: 80px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 80px;">'.$_POST['ip'][99].'</div> <input name="ip[99]" type="hidden"  value="'.$_POST['ip'][99].'">'?>
                 </span></div>
             <div style="position:absolute;left:41.22px;top:198.34px" class="cls_002"><span class="cls_002">Client
                     Approved By (Area Manager/ RSM)</span></div>
             <div style="position:absolute;left:43.62px;top:218.70px" class="cls_004"><span class="cls_004">Name of
                     employee<br><!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][100])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][100].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][100].'">'?>
+                    <?=empty($_POST['ip'][100])?'<input name="ip[100]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][100].'</div> <input name="ip[100]" type="hidden"  value="'.$_POST['ip'][100].'">'?>
                 </span></div>
             <div style="position:absolute;left:181.62px;top:218.70px" class="cls_004"><span
                     class="cls_004">Designation<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][101])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][101].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][101].'">'?></span>
+                    <?=empty($_POST['ip'][101])?'<input name="ip[101]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][101].'</div> <input name="ip[101]" type="hidden"  value="'.$_POST['ip'][101].'">'?></span>
             </div>
             <div style="position:absolute;left:328.56px;top:218.70px" class="cls_004"><span
                     class="cls_004">Signature<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][102])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 100px;">'.$_POST['ip'][102].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][102].'">'?></span>
+                    <?=empty($_POST['ip'][102])?'<input name="ip[102]" style="margin-left: 0px; margin-top: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 100px;">'.$_POST['ip'][102].'</div> <input name="ip[102]" type="hidden"  value="'.$_POST['ip'][102].'">'?></span>
             </div>
             <div style="position:absolute;left:464.56px;top:218.70px" class="cls_004"><span class="cls_004">Date<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 80px;"> -->
-                    <?=empty($_POST['ip'][103])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 80px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 80px;">'.$_POST['ip'][103].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][103].'">'?></span>
+                    <?=empty($_POST['ip'][103])?'<input name="ip[103]" style="margin-left: 0px; margin-top: 5px; width: 80px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 80px;">'.$_POST['ip'][103].'</div> <input name="ip[103]" type="hidden"  value="'.$_POST['ip'][103].'">'?></span>
             </div>
             <div style="position:absolute;left:41.22px;top:277.54px" class="cls_002"><span class="cls_002">Client
                     Approved By (RM/Dy RM)</span></div>
             <div style="position:absolute;left:43.62px;top:298.70px" class="cls_004"><span class="cls_004">Name of
                     employee<br><!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][104])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][104].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][104].'">'?></span>
+                    <?=empty($_POST['ip'][104])?'<input name="ip[104]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][104].'</div> <input name="ip[104]" type="hidden"  value="'.$_POST['ip'][104].'">'?></span>
             </div>
             <div style="position:absolute;left:181.62px;top:298.70px" class="cls_004"><span
                     class="cls_004">Designation<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 130px;"> -->
-                    <?=empty($_POST['ip'][105])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][105].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][105].'">'?></span>
+                    <?=empty($_POST['ip'][105])?'<input name="ip[105]" style="margin-left: 0px; margin-top: 5px; width: 130px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 130px;">'.$_POST['ip'][105].'</div> <input name="ip[105]" type="hidden"  value="'.$_POST['ip'][105].'">'?></span>
             </div>
             <div style="position:absolute;left:328.56px;top:298.70px" class="cls_004"><span
                     class="cls_004">Signature<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][106])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 100px;">'.$_POST['ip'][106].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][106].'">'?></span>
+                    <?=empty($_POST['ip'][106])?'<input name="ip[106]" style="margin-left: 0px; margin-top: 5px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 100px;">'.$_POST['ip'][106].'</div> <input name="ip[106]" type="hidden"  value="'.$_POST['ip'][106].'">'?></span>
             </div>
             <div style="position:absolute;left:464.56px;top:298.70px" class="cls_004"><span class="cls_004">Date<br>
                     <!-- <input type="text" style="margin-left: 0px; margin-top: 5px; width: 80px;"> -->
 
-                    <?=empty($_POST['ip'][107])?'<input name="ip[]" style="margin-left: 0px; margin-top: 5px; width: 80px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 80px;">'.$_POST['ip'][107].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][107].'">'?>
+                    <?=empty($_POST['ip'][107])?'<input name="ip[107]" style="margin-left: 0px; margin-top: 5px; width: 80px;" type="text">':'<div class="dynamic_input"  style="margin-left: 0px; margin-top: 5px; width: 80px;">'.$_POST['ip'][107].'</div> <input name="ip[107]" type="hidden"  value="'.$_POST['ip'][107].'">'?>
                 </span></div>
             <div style="position:absolute;left:41.22px;top:343.54px" class="cls_002"><span class="cls_002">Previous
                     Service Provider details</span></div>
             <div style="position:absolute;left:43.62px;top:362.36px" class="cls_004"><span class="cls_004">Name
                     <!-- <input type="text" style="margin-left: 10px; margin-top: 5px; width: 190px;"> -->
 
-                    <?=empty($_POST['ip'][108])?'<input name="ip[]" style="margin-left: 10px; margin-top: 5px; width: 190px;" type="text">':'<div class="dynamic_input"  style="margin-left: 10px; margin-top: 5px; width: 190px;">'.$_POST['ip'][108].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][108].'">'?>
+                    <?=empty($_POST['ip'][108])?'<input name="ip[108]" style="margin-left: 10px; margin-top: 5px; width: 190px;" type="text">':'<div class="dynamic_input"  style="margin-left: 10px; margin-top: 5px; width: 190px;">'.$_POST['ip'][108].'</div> <input name="ip[108]" type="hidden"  value="'.$_POST['ip'][108].'">'?>
                 </span></div>
             <div style="position:absolute;left:44.67px;top:381.36px" class="cls_004"><span class="cls_004">Business per
                     month</span></div>
             <div style="position:absolute;left:222.98px;top:381.36px" class="cls_004"><span class="cls_004">Rs.
                     <!-- <input type="text" style="margin-left: 10px; margin-top: 3px; width: 100px;"> -->
-                    <?=empty($_POST['ip'][109])?'<input name="ip[]" style="margin-left: 10px; margin-top: 3px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 10px; margin-top: 3px; width: 100px;">'.$_POST['ip'][109].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][109].'">'?>
+                    <?=empty($_POST['ip'][109])?'<input name="ip[109]" style="margin-left: 10px; margin-top: 3px; width: 100px;" type="text">':'<div class="dynamic_input"  style="margin-left: 10px; margin-top: 3px; width: 100px;">'.$_POST['ip'][109].'</div> <input name="ip[109]" type="hidden"  value="'.$_POST['ip'][109].'">'?>
                 </span></div>
             <div style="position:absolute;left:396.60px;top:381.36px" class="cls_004"><span class="cls_004">Tonnage
                     <!-- <input type="text" style="margin-left: 5px; margin-top: 3px; width: 110px;"> -->
-                    <?=empty($_POST['ip'][110])?'<input name="ip[]" style="margin-left: 5px; margin-top: 3px; width: 110px;" type="text">':'<div class="dynamic_input"  style="margin-left: 5px; margin-top: 3px; width: 110px;">'.$_POST['ip'][110].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][110].'">'?>
+                    <?=empty($_POST['ip'][110])?'<input name="ip[110]" style="margin-left: 5px; margin-top: 3px; width: 110px;" type="text">':'<div class="dynamic_input"  style="margin-left: 5px; margin-top: 3px; width: 110px;">'.$_POST['ip'][110].'</div> <input name="ip[110]" type="hidden"  value="'.$_POST['ip'][110].'">'?>
                 </span></div>
             <div style="position:absolute;left:41.22px;top:422.74px" class="cls_002"><span class="cls_002">Mandatory KYC
                     (Know Your Customer) - Documents Enclosed: (Yes / No)</span></div>
@@ -2332,42 +2328,42 @@
             <div style="position:absolute;left:95.98px;top:460.76px" class="cls_004"><span class="cls_004">Copy of
                     Address proof
                     <!-- <input type="text" style="width:100px; margin-left: 120px;"> -->
-                    <?=empty($_POST['ip'][111])?'<input name="ip[]" style="width:100px; margin-left: 120px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 120px;">'.$_POST['ip'][111].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][111].'">'?>
+                    <?=empty($_POST['ip'][111])?'<input name="ip[111]" style="width:100px; margin-left: 120px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 120px;">'.$_POST['ip'][111].'</div> <input name="ip[111]" type="hidden"  value="'.$_POST['ip'][111].'">'?>
                 </span></div>
             <div style="position:absolute;left:63.02px;top:476.76px" class="cls_004"><span class="cls_004">2</span>
             </div>
             <div style="position:absolute;left:95.98px;top:476.76px" class="cls_004"><span class="cls_004">Copy of PAN
                     Card
                     <!-- <input type="text" style="width:100px; margin-left: 137px;"> -->
-                    <?=empty($_POST['ip'][112])?'<input name="ip[]" style="width:100px; margin-left: 137px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 137px;">'.$_POST['ip'][112].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][112].'">'?>
+                    <?=empty($_POST['ip'][112])?'<input name="ip[112]" style="width:100px; margin-left: 137px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 137px;">'.$_POST['ip'][112].'</div> <input name="ip[112]" type="hidden"  value="'.$_POST['ip'][112].'">'?>
                 </span></div>
             <div style="position:absolute;left:63.02px;top:491.76px" class="cls_004"><span class="cls_004">3</span>
             </div>
             <div style="position:absolute;left:95.98px;top:491.76px" class="cls_004"><span class="cls_004">Copy of GST
                     Registration certificate
                     <!-- <input type="text" style="width:100px; margin-left: 58px;"> -->
-                    <?=empty($_POST['ip'][113])?'<input name="ip[]" style="width:100px; margin-left: 58px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 58px;">'.$_POST['ip'][113].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][113].'">'?>
+                    <?=empty($_POST['ip'][113])?'<input name="ip[113]" style="width:100px; margin-left: 58px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 58px;">'.$_POST['ip'][113].'</div> <input name="ip[113]" type="hidden"  value="'.$_POST['ip'][113].'">'?>
                 </span></div>
             <div style="position:absolute;left:63.02px;top:506.76px" class="cls_004"><span class="cls_004">4</span>
             </div>
             <div style="position:absolute;left:95.98px;top:506.76px" class="cls_004"><span class="cls_004">Copy of CIN
                     No. / LLPIN
                     <!-- <input type="text" style="width:100px; margin-left: 108px;"> -->
-                    <?=empty($_POST['ip'][114])?'<input name="ip[]" style="width:100px; margin-left: 108px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 108px;">'.$_POST['ip'][114].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][114].'">'?>
+                    <?=empty($_POST['ip'][114])?'<input name="ip[114]" style="width:100px; margin-left: 108px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 108px;">'.$_POST['ip'][114].'</div> <input name="ip[114]" type="hidden"  value="'.$_POST['ip'][114].'">'?>
                 </span></div>
             <div style="position:absolute;left:63.02px;top:522.76px" class="cls_004"><span class="cls_004">5</span>
             </div>
             <div style="position:absolute;left:95.98px;top:522.76px" class="cls_004"><span class="cls_004">Partnership
                     Deed
                     <!-- <input type="text" style="width:100px; margin-left: 142px;"> -->
-                    <?=empty($_POST['ip'][115])?'<input name="ip[]" style="width:100px; margin-left: 142px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 142px;">'.$_POST['ip'][115].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][115].'">'?>
+                    <?=empty($_POST['ip'][115])?'<input name="ip[115]" style="width:100px; margin-left: 142px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 142px;">'.$_POST['ip'][115].'</div> <input name="ip[115]" type="hidden"  value="'.$_POST['ip'][115].'">'?>
                 </span></div>
             <div style="position:absolute;left:63.02px;top:538.76px" class="cls_004"><span class="cls_004">6</span>
             </div>
             <div style="position:absolute;left:95.98px;top:538.76px" class="cls_004"><span class="cls_004">MOA & AOA of
                     Company
                     <!-- <input type="text" style="width:100px; margin-left: 105px;"> -->
-                    <?=empty($_POST['ip'][116])?'<input name="ip[]" style="width:100px; margin-left: 105px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 105px;">'.$_POST['ip'][116].'</div> <input name="ip[]" type="hidden"  value="'.$_POST['ip'][116].'">'?>
+                    <?=empty($_POST['ip'][116])?'<input name="ip[116]" style="width:100px; margin-left: 105px;" type="text">':'<div class="dynamic_input"  style="width:100px; margin-left: 105px;">'.$_POST['ip'][116].'</div> <input name="ip[116]" type="hidden"  value="'.$_POST['ip'][116].'">'?>
 
                 </span></div>
             <div style="position:absolute;left:41.22px;top:581.14px" class="cls_002"><span

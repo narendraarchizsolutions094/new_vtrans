@@ -51,16 +51,16 @@ $("select").select2();
 
     <!--  table area -->
         <div class="panel-body">
-        <div class="col-md-12">
-        <div class="col-md-3"></div>
-        <div class="col-md-3">
-                <label>Minimum Differnce</label>
-            <input type="text" class="form-control" id="min" name="min">
-        </div>
-        <div class="col-md-3">
-        <label>Maximum Differnce</label>
-            <input type="text" class="form-control" id="max" name="max">
-        </div>
+            <div class="col-md-12">
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                        <label>Minimum Differnce</label>
+                    <input type="text" class="form-control" id="min" name="min">
+                </div>
+                <div class="col-md-3">
+                  <label>Maximum Differnce</label>
+                      <input type="text" class="form-control" id="max" name="max">
+                </div>
             </div>
         <div class="row">
         <div class="col-md-12" style="max-width: 100%; overflow-x:auto;">
@@ -226,7 +226,7 @@ $.fn.dataTable.ext.search.push(
         var min = parseInt( $('#min').val(), 10 );
         var max = parseInt( $('#max').val(), 10 );
         var age = parseFloat( data[10] ) || 0; // use data for the age column
- 
+  alert(min+'-'+max);
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && age <= max ) ||
              ( min <= age   && isNaN( max ) ) ||

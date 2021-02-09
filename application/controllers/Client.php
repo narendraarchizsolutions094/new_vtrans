@@ -1436,52 +1436,56 @@ if(empty($eid)){
     }
 	
 	public function upload_aggrement_team() {
-    $enquiry_id = $this->input->post('ide');
-    $this->db->from('enquiry');
-                    $this->db->where('enquiry_id',$enquiry_id);
-                    $q= $this->db->get()->row();
-    $enq_id =$q->Enquery_id;
-    $phone =$q->phone;
+//     $ag_id = $this->input->post('ide');
+//     $ddata =  $this->db->where('id',$ag_id)->get('tbl_aggriment')->row();
+
+//     $this->db->from('enquiry');
+//                     $this->db->where('enquiry_id',$ddata->enquiry_id);
+//                     $q= $this->db->get()->row();
+//     $enq_id =$q->Enquery_id;
+//     $phone =$q->phone;
     
-                    $this->db->where('s_phoneno',$phone);
-    $this->db->from('tbl_admin');
-                    $q1= $this->db->get()->row();
-   $noti_id =$q1->pk_i_admin_id;
-if(!empty($noti_id)){
-	$noti_id = $noti_id;
-   }else{
-	$noti_id = $this->session->user_id;
-   }	
-if(!empty($_FILES['file']['name'])){
-				$this->load->library("aws");
-				$_FILES['userfile']['name']= $_FILES['file']['name'];
-				$_FILES['userfile']['type']= $_FILES['file']['type'];
-				$_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
-				$_FILES['userfile']['error']= $_FILES['file']['error'];
-				$_FILES['userfile']['size']= $_FILES['file']['size'];    
+//     $this->db->where('s_phoneno',$phone);
+//     $this->db->from('tbl_admin');
+//                     $q1= $this->db->get()->row();
+   
+// if(!empty($q1)){
+//     $noti_id =$q1->pk_i_admin_id;
+//    }else{
+// 	$noti_id = $this->session->user_id;
+//    }	
+// if(!empty($_FILES['file']['name'])){
+// 				$this->load->library("aws");
+// 				$_FILES['userfile']['name']= $_FILES['file']['name'];
+// 				$_FILES['userfile']['type']= $_FILES['file']['type'];
+// 				$_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
+// 				$_FILES['userfile']['error']= $_FILES['file']['error'];
+// 				$_FILES['userfile']['size']= $_FILES['file']['size'];    
 				
-				$image=$_FILES['userfile']['name'];
-				$path=  "uploads/agrmnt/".$image;
-        		$ret = move_uploaded_file($_FILES['userfile']['tmp_name'] ,$path);
-			if($ret){										$this->aws->upload("",$path);									}
-            $this->db->set('file',$path);
-            $this->db->where('enq_id', $enq_id);
-            $this->db->update('tbl_aggriment');	
-			}
-			$assign_data_noti[]=array('create_by'=> $noti_id,
-                        'subject'=>'Agrrement Uploded',
-                        'query_id'=>$enq_id,
-                        'task_date'=>date('d-m-Y'),
-                        'task_time'=>date('H:i:s')
-                        );
-           $this->db->insert_batch('query_response',$assign_data_noti);
-           $this->load->library('user_agent');
+// 				$image=$_FILES['userfile']['name'];
+// 				$path=  "uploads/agrmnt/".$image;
+//         		$ret = move_uploaded_file($_FILES['userfile']['tmp_name'] ,$path);
+// 			if($ret){
+//                 $this->aws->upload("",$path);	
+//                 								}
+//                 $this->db->set('file',$path);
+//                 $this->db->where('enq_id', $enq_id);
+//                 $this->db->update('tbl_aggriment');	
+// 			}
+// 			$assign_data_noti[]=array('create_by'=> $noti_id,
+//                         'subject'=>'Agrrement Uploded',
+//                         'query_id'=>$enq_id,
+//                         'task_date'=>date('d-m-Y'),
+//                         'task_time'=>date('H:i:s')
+//                         );
+//            $this->db->insert_batch('query_response',$assign_data_noti);
+//            $this->load->library('user_agent');
            
-           if($this->input->post('redirect_url')){
-            redirect($this->input->post('redirect_url')); //updateclient                
-           }else{
-             redirect($this->agent->referrer()); //updateclient
-           }
+//            if($this->input->post('redirect_url')){
+//             redirect($this->input->post('redirect_url')); //updateclient                
+//            }else{
+//              redirect($this->agent->referrer()); //updateclient
+//            }
 }
 /*******************************************************************************end add aggriment***************************************************/
 	public function upload_aggrement_student() {
@@ -1610,10 +1614,11 @@ public function view_editable_aggrement()
             if(empty($_POST['ip'][14]))
                     $_POST['ip'][14] = 'none';
           
-            $viewfile = $this->load->view('aggrement/input-vtrans',$_POST,TRUE);
-          
+           $data['rewind']= $this->load->view('aggrement/input-vtrans',$_POST,TRUE);
+            $viewfile = $this->load->view('aggrement/final_page',$data,true);
+            //echo $viewfile;exit();
             $this->load->library('pdf');
-            $this->pdf->create($viewfile,'Agreement.pdf');
+            $this->pdf->create($viewfile,0,'',array(0,0,600,5200));
         }
         exit();
         $pdf_name = $this->input->post('agg_frmt');
@@ -2791,11 +2796,17 @@ public function all_update_expense_status()
         $user = $this->db->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row();
         $deal_id = $this->input->post('deal_id');
         $zone = $this->input->post('zone_id');
-      
+
+
+    $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_aggriment')->row();
+    $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
+
+        $_POST['ref_no'] = $ref_no;
         $_POST['edit'] = 1;
         $_POST['checkss'] = array();
         $deal   =    $this->Branch_model->get_deal($deal_id);
-        
+        $oc =(array) json_decode($deal->other_charges);
+
         $deal_data = $this->Branch_model->get_deal_data($deal_id);
         $bank = $this->Branch_model->bank_by_zone($zone);
 
@@ -2805,17 +2816,57 @@ public function all_update_expense_status()
                         ->where('e.enquiry_id',$deal->enquiry_id)
                         ->get()->row();
 
+
+
+        $dynamic = $this->db->select('fvalue')
+                                ->from('extra_enquery')
+                                ->where('parent',$deal->enquiry_id)
+                                ->where('input','4482')//id of dynaic field of dynamic field in v-trans 
+                                ->get()->row();
+        $enq_designation = !empty($dynamic)?$dynamic->fvalue:'';
+
         $_POST['customer_name'] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
         $_POST['region_name'] = $enq->region_name;
-        $_POST['ms'] = $enq->company;
-        $_POST['reg_add'] = $enq->address;
+$_POST['ip'][46] =  $_POST['ms'] = $enq->company;
+$_POST['ip'][47] = $_POST['reg_add'] = $enq->address;
         $_POST['account_number1'] = $bank->account_no;
         $_POST['ifsc1'] = $bank->ifsc;
         $_POST['branch1'] = $bank->bank_branch;
-        $_POST['name1'] = $user->s_display_name.' '.$user->last_name;
-        $_POST['designation1'] = $user->designation;
-        $_POST['name2'] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
-        //$_POST['designation2'] = ;
+
+ $_POST['ip'][88] = $_POST['ip'][40] =   $_POST['ip'][10] = $_POST['name1'] = $user->s_display_name.' '.$user->last_name;
+$_POST['ip'][90] =    $_POST['ip'][42] =   $_POST['ip'][12] = $_POST['designation1'] = $user->designation;
+
+
+$_POST['ip'][89] =$_POST['ip'][51] =  $_POST['ip'][41] = $_POST['ip'][11] = $_POST['name2'] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+$_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2'] = $enq_designation;
+
+        $_POST['ip'][15] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+        $_POST['ip'][14] = $deal->booking_type;
+
+        $_POST['ip'][16] = $oc['1'];
+        $_POST['ip'][17] = $oc['2'];
+        $_POST['ip'][18] = $oc['3'];
+        $_POST['ip'][19] = $oc['4'];
+        $_POST['ip'][20] = $oc['5'];
+        $_POST['ip'][21] = $oc['6'];
+        $_POST['ip'][22] = $oc['7'];
+        $_POST['ip'][23] = $oc['8'];
+        $_POST['ip'][24] = $oc['9'];
+        $_POST['ip'][25] = $oc['17'];
+        $_POST['ip'][26] = $oc['10'];
+        $_POST['ip'][27] = $oc['18'];
+        // $_POST['ip'][28] = $oc['13'];
+        // $_POST['ip'][29] = $oc['14'];
+        $_POST['ip'][30] = !empty($oc['11'])?$oc['11']:' ';
+        $_POST['ip'][31] = $oc[14];
+        $_POST['ip'][36] = $oc[12];
+        $_POST['ip'][39] = $oc[16];
+        
+        $_POST['ip'][45] = $oc[21];
+
+        $_POST['ip'][50] = $enq->email;
+
+    
 
         echo $this->load->view('aggrement/input-vtrans',array(),TRUE);
         
