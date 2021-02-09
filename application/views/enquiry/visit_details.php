@@ -665,7 +665,7 @@ $(function() {
               url: '<?= base_url('client/update_expense_status') ?>',
               data: {exp_ids:x,status:approve_status,remarks:remarks},
               success:function(data){
-               alert(data);
+              //  alert(data);
                location.reload();
               } 
               });

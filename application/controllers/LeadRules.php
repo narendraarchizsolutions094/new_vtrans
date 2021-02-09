@@ -302,8 +302,16 @@ class LeadRules extends CI_Controller {
         $data['lead_description'] = $this->Leads_Model->getSubStageJson(array(1,2,3));
         $data['ticket_description'] = $this->Leads_Model->getSubStageJson(array(4));
         $data['rule_ticket_status'] = json_encode($rule_ticket_status);
-        $data['rule_enquiry_status'] = json_encode(array(1=>'Enquiry',2=>'Lead',3=>'Client'));
-        
+        $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
+        $enquiry_separation = json_decode($enquiry_separation,true);
+        $enq_status_oth = array(1=>'Enquiry',2=>'Lead',3=>'Client');
+        if (!empty($enquiry_separation)) { 
+            foreach ($enquiry_separation as $key => $value) {             
+                $enq_status_oth[$key] = $value['title'];
+            } 
+        }
+        $data['rule_enquiry_status'] = json_encode($enq_status_oth);
+
         $data['rule_lead_score'] = json_encode($rule_lead_score);
         $data['lead_source'] = json_encode($rule_source);
         $data['country']     = json_encode($rule_country);

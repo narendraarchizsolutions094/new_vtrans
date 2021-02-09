@@ -390,17 +390,6 @@ class Message extends CI_Controller {
   				exit();
         	}else{
 
-        		/*
-        		$config['protocol']     = $email_row['protocol'];
-		        $config['smtp_host']    = $email_row['smtp_host'];
-		        $config['smtp_port']    = $email_row['smtp_port'];
-		        $config['smtp_timeout'] = '7';
-		        $config['smtp_user']    = "prokanhaiya@gmail.com";
-		        $config['smtp_pass']    = "oallgykmylkthohu";
-		        $config['charset']      = 'utf-8';
-        		$config['mailtype']     = 'text'; // or html
-		        $config['newline']      = "\r\n";        
-		        */
 
 		        $config['smtp_auth']    = true;
         		$config['protocol']     = $email_row['protocol'];
@@ -639,8 +628,27 @@ public function chat_start(){
    }
 
    public function test_start(){
-	echo $message='test';
-	echo $phone= '91dmnbsdbfsdfs sdfsdf sg dfsgdf';
-     echo "Message sent successfully";
-}
+	$config = Array(
+		'protocol' => 'smtp',
+		'smtp_host' => 'smtppro.zoho.com',
+		'smtp_port' => 587,
+		'smtp_user' => 'kanhaiya@archizsolutions.com',
+		'smtp_pass' => 'Archiz321',
+		'charset' 	=> "utf-8",		
+		'newline' 	=> "\r\n"
+
+	);
+	$this->load->library('email', $config);
+
+		$this->email->from('kanhaiya@archizsolutions.com','Kanhaiya');
+		$this->email->to('prokanhaiya@gmail.com');
+		$this->email->subject('Email Test');
+		$this->email->message('Testing the email class.');
+		if ($this->email->send()) {
+			echo "you are luck!";
+		} else {
+			echo $this->email->print_debugger();
+		}
+	}
+
 }

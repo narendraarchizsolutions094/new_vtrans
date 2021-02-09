@@ -77,7 +77,6 @@
 </style>
 
 <div class="row">
-
 			<div class="col-md-12">
       <div class="btn-group" > 
                          <a  target="_BLANK" class="btn btn-primary" href="<?=base_url().'ticket/daily_summary?date='.date('Y-m-d',strtotime('-1 days'))?>"> <i class="fa fa-arrow-right"></i>  Ticket Summary </a>  
@@ -112,7 +111,32 @@
                             <div id='container' >
                             </div>
                         </div>
+
+
+
                     </div>
+                    <div class="row pd-20" style="width:100%;">
+    <div class="col-md-12">
+        <div class="card card-graph_full2"><br>
+            <center>
+                <h3>Failure Point Wise Ticket</h3>
+            </center>
+            <div id="chartdiv7"></div>
+        </div>
+    </div>
+</div>
+<br>
+<center>
+    <h3>Substage Wise Ticket</h3>
+</center>
+
+<div class="row pd-20" style="width:100%;">
+    <div class="col-md-12 pd-20" style="padding: 10px;">
+        <div id="chartdiv_substage"></div>
+    </div>
+</div>
+
+<br>
                 </div>
 						<div class="">
 							<div class="panel-body">
@@ -213,11 +237,11 @@ $acolarr = array();
             generate_pie_graph('stage_chart','Stage Wise');
             generate_pie_graph('user_chart','Employee Wise Assigned Data');    
             generate_pie_graph('product_chart','Product/Service Wise');
-          var send_data=  <?php 
+          var send_data=  '<?php 
              $filters['from_created']=$fromdate;
              $filters['to_created']=$fromdate;
              echo json_encode($filters);
-            ?>
+            ?>';
     function generate_pie_graph(elm,title){
       // $form_data= serialize;
         var url = "<?=base_url().'report/ticket_report_analitics/'?>"+elm;
@@ -436,9 +460,226 @@ $('input:checkbox').removeAttr('checked');
   }
   ?>
 
+
+$(document).ready(function() {
+    $.ajax({
+        url: "<?=base_url('ticket/send_failurepoint_ticketJson/'.$fromdate.'/'.$fromdate.'')?>",
+        type: "post",
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            am4core.ready(function() {
+
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+                // Create chart instance
+                var chart = am4core.create("chartdiv7", am4charts.XYChart);
+                chart.scrollbarX = new am4core.Scrollbar();
+
+                // Add data
+                chart.data = response;
+
+                // Create axes
+                var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                categoryAxis.dataFields.category = "name";
+                categoryAxis.renderer.grid.template.location = 0;
+                categoryAxis.renderer.minGridDistance = 30;
+                categoryAxis.renderer.labels.template.horizontalCenter = "right";
+                categoryAxis.renderer.labels.template.verticalCenter = "middle";
+                categoryAxis.renderer.labels.template.rotation = 270;
+                categoryAxis.tooltip.disabled = true;
+                categoryAxis.renderer.minHeight = 110;
+
+                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis.renderer.minWidth = 50;
+
+                // Create series
+                var series = chart.series.push(new am4charts.ColumnSeries());
+                series.sequencedInterpolation = true;
+                series.dataFields.valueY = "value";
+                series.dataFields.categoryX = "name";
+                series.tooltipText = "[{name}: bold]{value}[/]";
+                series.columns.template.strokeWidth = 0;
+
+                series.tooltip.pointerOrientation = "vertical";
+
+                series.columns.template.column.cornerRadiusTopLeft = 10;
+                series.columns.template.column.cornerRadiusTopRight = 10;
+                series.columns.template.column.fillOpacity = 0.8;
+
+                // on hover, make corner radiuses bigger
+                var hoverState = series.columns.template.column.states.create(
+                    "hover");
+                hoverState.properties.cornerRadiusTopLeft = 0;
+                hoverState.properties.cornerRadiusTopRight = 0;
+                hoverState.properties.fillOpacity = 1;
+
+                series.columns.template.adapter.add("fill", function(fill, target) {
+                    return chart.colors.getIndex(target.dataItem.index);
+                });
+
+                // Cursor
+                chart.cursor = new am4charts.XYCursor();
+
+                }); // end am4core.ready()
+        }
+    });
+});
 </script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "<?=base_url('ticket/send_subsource_typeJson/'.$fromdate.'/'.$todate.'')?>",
+        type: "post",
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            am4core.ready(function() {
 
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
 
+                // Create chart instance
+                var chart = am4core.create("chartdiv_substage", am4charts.XYChart);
+
+                // Add data
+                chart.data = response.result;
+                console.log(response.result);
+                // Create axes
+                var yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+                yAxis.dataFields.category = "state";
+                yAxis.renderer.grid.template.location = 0;
+                yAxis.renderer.labels.template.fontSize = 10;
+                yAxis.renderer.minGridDistance = 6;
+
+                var xAxis = chart.xAxes.push(new am4charts.ValueAxis());
+
+                // Create series
+                var series = chart.series.push(new am4charts.ColumnSeries());
+                series.dataFields.valueX = "sales";
+                series.dataFields.categoryY = "state";
+                series.columns.template.tooltipText =
+                    "{categoryY}: [bold]{valueX}[/]";
+                series.columns.template.strokeWidth = 0;
+                series.columns.template.adapter.add("fill", function(fill, target) {
+                    if (target.dataItem) {
+                        return chart.colors.getIndex(1);
+                    }
+                    return fill;
+                });
+
+                var axisBreaks = {};
+                var legendData = [];
+
+                // Add ranges
+                function addRange(label, start, end, color) {
+                    var range = yAxis.axisRanges.create();
+                    range.category = start;
+                    range.endCategory = end;
+                    range.label.text = label;
+                    range.label.disabled = false;
+                    range.label.fill = color;
+                    range.label.location = 0;
+                    range.label.dx = -200;
+                    range.label.dy = 12;
+                    range.label.fontWeight = "bold";
+                    range.label.fontSize = 10;
+                    range.label.horizontalCenter = "left"
+                    range.label.inside = true;
+
+                    range.grid.stroke = am4core.color("#396478");
+                    range.grid.strokeOpacity = 1;
+                    range.tick.length = 200;
+                    range.tick.disabled = false;
+                    range.tick.strokeOpacity = 0.6;
+                    range.tick.stroke = am4core.color("#396478");
+                    range.tick.location = 0;
+
+                    range.locations.category = 1;
+                    var axisBreak = yAxis.axisBreaks.create();
+                    axisBreak.startCategory = start;
+                    axisBreak.endCategory = end;
+                    axisBreak.breakSize = 1;
+                    axisBreak.fillShape.disabled = true;
+                    axisBreak.startLine.disabled = true;
+                    axisBreak.endLine.disabled = true;
+                    axisBreaks[label] = axisBreak;
+                    legendData.push({
+                        name: label,
+                        fill: color
+                    });
+                }
+                group = response.group;
+                console.log(group);
+                $.each(group, function(i, item) {
+                    addRange(group[i][0], group[i][2], group[i][1], chart
+                        .colors.getIndex(i));
+                    console.log(group[i]);
+                    console.log(group[i][0]);
+                });
+                // addRange("East", "New York", "West Virginia", chart.colors.getIndex(1));
+                // addRange("South", "Florida", "South Carolina", chart.colors.getIndex(2));
+                // addRange("West", "California", "Wyoming", chart.colors.getIndex(3));
+                chart.cursor = new am4charts.XYCursor();
+                var legend = new am4charts.Legend();
+                legend.position = "right";
+                legend.scrollable = true;
+                legend.valign = "top";
+                legend.reverseOrder = true;
+                chart.legend = legend;
+                legend.data = legendData;
+                legend.itemContainers.template.events.on("toggled", function(
+                    event) {
+                    var name = event.target.dataItem.dataContext.name;
+                    var axisBreak = axisBreaks[name];
+                    if (event.target.isActive) {
+                        axisBreak.animate({
+                            property: "breakSize",
+                            to: 0
+                        }, 1000, am4core.ease.cubicOut);
+                        yAxis.dataItems.each(function(dataItem) {
+                            if (dataItem.dataContext.region ==
+                                name) {
+                                dataItem.hide(1000, 500);
+                            }
+                        })
+                        series.dataItems.each(function(dataItem) {
+                            if (dataItem.dataContext.region ==
+                                name) {
+                                dataItem.hide(1000, 0, 0, [
+                                    "valueX"
+                                ]);
+                            }
+                        })
+                    } else {
+                        axisBreak.animate({
+                            property: "breakSize",
+                            to: 1
+                        }, 1000, am4core.ease.cubicOut);
+                        yAxis.dataItems.each(function(dataItem) {
+                            if (dataItem.dataContext.region ==
+                                name) {
+                                dataItem.show(1000);
+                            }
+                        })
+                        series.dataItems.each(function(dataItem) {
+                            if (dataItem.dataContext.region ==
+                                name) {
+                                dataItem.show(1000, 0, ["valueX"]);
+                            }
+                        })
+                    }
+                })
+            }); // end am4core.ready()
+        }
+    });
+});
+</script>
 <!-- jquery-ui js -->
 <script src="<?php echo base_url('assets/js/jquery-ui.min.js') ?>" type="text/javascript"></script> 
 <!-- DataTables JavaScript -->
@@ -483,6 +724,9 @@ $('input:checkbox').removeAttr('checked');
     <!-- Custom Theme JavaScript -->
     <script src="<?= base_url() ?>assets/js/custom.js?v=1.0.1" type="text/javascript"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 </body>
 
 </html>

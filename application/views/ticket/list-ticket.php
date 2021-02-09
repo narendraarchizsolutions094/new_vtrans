@@ -440,7 +440,7 @@ input[name=lead_stages]{
                    <div class="form-group col-md-3" id="statusfilter">
                     <label for="">Ticket Status</label>  
                     <select name="ticket_status" class="form-control"> 
-                          <option value="">Select</option>
+                          <option value="0">Select</option>
                          <?php 
                               if (!empty($ticket_status)) {
                               foreach ($ticket_status as $sub_stage_list) {?>

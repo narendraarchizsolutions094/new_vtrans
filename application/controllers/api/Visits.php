@@ -455,9 +455,10 @@ class Visits extends REST_Controller {
                //add expense start
                 if(!empty($_POST['expense'])){
                foreach ($_POST['expense'] as $key =>$value ) {
+                  $finalfilename='';
                   $expense = $_POST['expense'][$key];
                   $amount = $_POST['amount'][$key];
-                  if($_FILES['imagefile']['name'][$key]){
+                  if(!empty($_FILES['imagefile']['name'][$key])){
                   $file_name =$_FILES['imagefile']['name'][$key];
                   $file_size =$_FILES['imagefile']['size'][$key];
                   $file_tmp  =$_FILES['imagefile']['tmp_name'][$key];

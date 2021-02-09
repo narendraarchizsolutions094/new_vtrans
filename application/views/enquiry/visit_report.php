@@ -237,6 +237,7 @@ $.fn.dataTable.ext.search.push(
         return false;
     }
 );
+
 $(document).ready(function() {
     var table = $('#datatable').DataTable();
      
