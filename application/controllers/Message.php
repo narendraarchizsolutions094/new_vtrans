@@ -390,18 +390,6 @@ class Message extends CI_Controller {
   				exit();
         	}else{
 
-        		/*
-        		$config['protocol']     = $email_row['protocol'];
-		        $config['smtp_host']    = $email_row['smtp_host'];
-		        $config['smtp_port']    = $email_row['smtp_port'];
-		        $config['smtp_timeout'] = '7';
-		        $config['smtp_user']    = "prokanhaiya@gmail.com";
-		        $config['smtp_pass']    = "oallgykmylkthohu";
-		        $config['charset']      = 'utf-8';
-        		$config['mailtype']     = 'text'; // or html
-		        $config['newline']      = "\r\n";        
-		        */
-
 		        $config['smtp_auth']    = true;
         		$config['protocol']     = $email_row['protocol'];
 		        $config['smtp_host']    = $email_row['smtp_host'];
@@ -464,8 +452,8 @@ class Message extends CI_Controller {
 							//$this->email->set_mailtype('html');
 			                if($rows->files!=null || !empty($rows->files==null))
 			                {
-								$this->email->attach($rows->files);
-								$media_url=$rows->files;
+								// $this->email->attach($rows->files);
+								// $media_url=$rows->files;
 			                }
 			                if($this->email->send()){
 									echo "Mail sent successfully";
@@ -495,9 +483,11 @@ class Message extends CI_Controller {
 			                //echo $message.'<br>'.$email_subject.'<br>'.$cc;
 							//$this->email->set_mailtype('html');
 				  // if visiting card send
+						  $media_url= '';
 							if($rows->files!=null || !empty($rows->files==null))
-							{ $this->email->attach($rows->files);
-								$media_url=$rows->files;
+							{ 
+								// $this->email->attach($rows->files);
+								// $media_url=$rows->files;
 							
 							}
 			                if($this->email->send()){
