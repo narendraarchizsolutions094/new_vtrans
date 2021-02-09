@@ -498,8 +498,6 @@ class Visits extends REST_Controller {
                  	$data = array(
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>$this->input->post('visit_time'),
-                            'remarks'=>$this->input->post('remarks'),
-                            'rating'=>$this->input->post('rating'),
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,   
                             'enquiry_id'=>$enquiry_id
