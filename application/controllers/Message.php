@@ -630,11 +630,11 @@ public function chat_start(){
    public function test_start(){
 	$this->load->library('email');
 	$config['protocol']     = 'smtp';
-	$config['smtp_host']    = 'ssl://smtp.zoho.com';
+	$config['smtp_host']    = 'ssl://smtp3.netcore.co.in';
 	$config['smtp_port']    = '465';
 	$config['smtp_timeout'] = '7';
-	$config['smtp_user']    = 'kanhaiya@archizsolutions.com';
-	$config['smtp_pass']    = 'Archiz321';
+	$config['smtp_user']    = 'crm@vtransgroup.com';
+	$config['smtp_pass']    = '@FebCrm21#';
 	$config['charset']      = 'utf-8';
 	$config['newline']      = "\r\n";
 	$config['mailtype']     = 'text'; // or html
@@ -653,7 +653,7 @@ public function chat_start(){
 	// );
 	// $this->load->library('email', $config);
 
-		$this->email->from('kanhaiya@archizsolutions.com','TEST');
+		$this->email->from('crm@vtransgroup.com','TEST');
 		$this->email->to('prokanhaiya@gmail.com');
 		$this->email->subject('Email Test');
 		$this->email->message('Testing the email class.');
