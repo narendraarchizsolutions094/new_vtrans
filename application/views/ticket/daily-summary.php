@@ -151,7 +151,9 @@ if(!empty($failurePoints)){
                             <?php
                             if($process_list){
                                 foreach($process_list as $key=>$value){
-                                    echo "<th style='text-align:center;' colspan='2'>".$value->product_name."</th>";
+                                    if($value->sb_id == 141 || $value->sb_id == 198){
+                                        echo "<th style='text-align:center;' colspan='2'>".$value->product_name."</th>";
+                                    }
                                 }
                             }
                             ?>
@@ -163,8 +165,10 @@ if(!empty($failurePoints)){
                                 <?php
                                 if($process_list){
                                     foreach($process_list as $key=>$value){
-                                        echo "<td>Count</td>";
-                                        echo "<td>%Age</td>";
+                                        if($value->sb_id == 141 || $value->sb_id == 198){                                        
+                                            echo "<td>Count</td>";
+                                            echo "<td>%Age</td>";
+                                        }
                                     }
                                 }
                                 ?>
@@ -183,40 +187,43 @@ if(!empty($failurePoints)){
                                         <td><?=$value['description']?></td>
                                         <?php
                                             if($process_list){
+                                                
                                                 foreach($process_list as $k=>$v){
-                                                    $this->db->select('count(ticket_substage) as c');
-                                                    $this->db->from('tbl_ticket');
-                                                    $this->db->where('company',$comp_id);
-                                                    $this->db->where('date(coml_date)',$_GET["date"]);       
-                                                    $this->db->where('process_id',$v->sb_id);
-                                                    $this->db->where('ticket_substage',$value['id']);
-                                                    $this->db->group_by('ticket_substage');
-                                                    $r    =   $this->db->get()->row_array();
-                                                    $t = 0;
-                                                    $c = $r['c'];
-                                                    if($r['c']){
-                                                        foreach($process_count as $a=>$b){
-                                                            if($v->sb_id == $b['process_id']){
-                                                                $t = $b['c'];
+                                                    if($v->sb_id == 141 || $v->sb_id == 198){   
+                                                        $this->db->select('count(ticket_substage) as c');
+                                                        $this->db->from('tbl_ticket');
+                                                        $this->db->where('company',$comp_id);
+                                                        $this->db->where('date(coml_date)',$_GET["date"]);       
+                                                        $this->db->where('process_id',$v->sb_id);
+                                                        $this->db->where('ticket_substage',$value['id']);
+                                                        $this->db->group_by('ticket_substage');
+                                                        $r    =   $this->db->get()->row_array();
+                                                        $t = 0;
+                                                        $c = $r['c'];
+                                                        if($r['c']){
+                                                            foreach($process_count as $a=>$b){
+                                                                if($v->sb_id == $b['process_id']){
+                                                                    $t = $b['c'];
+                                                                }
                                                             }
+                                                            echo "<td>".$c."</td>";
+                                                        }else{
+                                                            $c = 0;
+                                                            echo "<td>0</td>";
                                                         }
-                                                        echo "<td>".$c."</td>";
-                                                    }else{
-                                                        $c = 0;
-                                                        echo "<td>0</td>";
+                                                        ?>
+                                                        <td>
+                                                        <?php
+                                                        if($t){
+                                                            $p = ($c/$t)*100;
+                                                            echo round($p,2);
+                                                        }else{
+                                                            echo 0;
+                                                        }
+                                                        ?>
+                                                        </td>
+                                                        <?php
                                                     }
-                                                    ?>
-                                                    <td>
-                                                    <?php
-                                                    if($t){
-                                                        $p = ($c/$t)*100;
-                                                        echo round($p,2);
-                                                    }else{
-                                                        echo 0;
-                                                    }
-                                                    ?>
-                                                    </td>
-                                                    <?php
                                                 }
                                             }
                                         ?>       
@@ -233,8 +240,10 @@ if(!empty($failurePoints)){
                             <?php
                             if($process_list){
                                 foreach($process_list as $key=>$value){
+                                    if($value->sb_id == 141 || $value->sb_id == 198){
                                     echo "<td colspan='2'></td>";
                                     // echo "<td></td>";
+                                    }
                                 }
                             }
                             ?>
