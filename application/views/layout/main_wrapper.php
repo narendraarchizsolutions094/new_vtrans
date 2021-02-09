@@ -451,8 +451,12 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
 <body class="sidebar-mini <?php if($this->session->menu==1){echo 'sidebar-collapse';}?>"
     data-baseUrl="<?php echo base_url(); ?>">
+
     <div id='img-view-light'></div>
     <style>
+        .wrapper{
+            background: white;
+        }
     .main-header .logo {
         background-color: #fff !important;
     }
