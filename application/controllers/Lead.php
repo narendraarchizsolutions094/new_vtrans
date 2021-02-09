@@ -926,8 +926,74 @@ class Lead extends CI_Controller
             $this->session->set_flashdata('message', $msg);
             redirect($url);
         } else {
-            $this->session->set_flashdata('exception', 'Please Complete all Stages');
+            $this->session->set_flashdata('message', 'Please Complete all Stages');
+            redirect($this->agent->referrer()); //updateclient
+
+        }
+    }
+    public function any_convert_to_any()
+    {
+        $stage = $this->uri->segment('3');
+        $enquiry_id = $this->uri->segment('4');
+        $next_stage = $this->uri->segment('5');
+        $lead = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
+         //print_r($lead); exit;
+        $leadSataus =$next_stage;
+        $Enquery_id = $lead->Enquery_id;
+        //   $stage = $lead->status;
+        // $next_stage = $stage + 1;
+        if ($next_stage > 2) {
+            //$this->Leads_Model->ClientMove($data);
+            $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
+            if ($leadSataus  > 3) {
+                $enquiry_separation = json_decode($enquiry_separation, true);
+                if ($leadSataus != 3) {
+                    foreach ($enquiry_separation as $key => $value) {
+                        // print_r($enquiry_separation);
+                        if ($stage == $key) {
+                            $ctitle = $enquiry_separation[$key]['title'];
+                            $ccomment = 'Converted to ' . $ctitle;
+                        }
+                    }
+                } else  {
+                    $ccomment = 'Converted to clients';
+                }
+                // get data from comment and insert into follow up table.
+                $getComment = $this->db->where(array('comment_msg' => $ccomment, 'lead_id' => $Enquery_id))->get('tbl_comment');
+                if ($getComment->num_rows() == 1) {
+                    $fetchComment = $getComment->row();
+                    $leadCreatedate = $fetchComment->created_date;
+                    //insert follow up counter 
+                    $this->enquiry_model->insetFollowupTime($enquiry_id, $next_stage, $leadCreatedate, date('Y-m-d H:i:s'));
+                 }
+                $title = $enquiry_separation[$next_stage]['title'];
+                $url = 'client/index/?stage=' . $next_stage;
+                $comment = 'Converted to ' . $title;
+                $this->db->set('status', $next_stage);
+            } else {
+                $url = 'led/index';
+                $comment = 'Converted to '.display('Client');
+                //echo $comment ; exit();
+                //insert follow up counter (3 is for client )
+                if(empty($lead->lead_created_date))$lead->lead_created_date=$lead->created_date;
+                $this->enquiry_model->insetFollowupTime($enquiry_id, 3, $lead->lead_created_date, date('Y-m-d H:i:s'));
+                $this->db->set('status', 3);
+            }
+            $this->db->set('client_created_date',date('Y-m-d h:i:s'));
+            $this->db->set('created_date', date('Y-m-d H:i:s'));
+            $this->db->set('update_date', '');
+            $this->db->where('enquiry_id', $enquiry_id);
+            $this->db->update('enquiry');
+            $data['enquiry'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
+            $lead_code = $data['enquiry']->Enquery_id;
+            $this->Leads_Model->add_comment_for_events($comment, $lead_code);
+            $msg = $comment . ' Successfully';
+            $this->load->model('rule_model');
+            $this->rule_model->execute_rules($lead_code, array(1, 2, 3, 6, 7));
+            $this->session->set_flashdata('message', $msg);
             redirect($url);
+        }else{
+            redirect();
         }
     }
     public function add_drop()
