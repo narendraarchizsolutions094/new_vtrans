@@ -617,16 +617,17 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                      <?php } ?>
                     <?php  if($enquiry->status!=3){ ?>
 
-                     <li><a  title="Mark as <?=display('client')?>" href="<?=base_url().'lead/convert_to_lead/'.$enquiry->enquiry_id?>" onclick="return confirm('Are you sure you want to Mark this <?=display('lead')?> as <?=display('client')?> ?')" >Mark as <?=display('client')?></a></li>
+                     <li><a  title="Mark as <?=display('client')?>" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/3'?>" onclick="return confirm('Are you sure you want to Mark this <?=display('lead')?> as <?=display('client')?> ?')" >Mark as <?=display('client')?></a></li>
                     <?php }
 
                     if (!empty($enquiry_separation)) {
                      // $enquiry_separation = json_decode($enquiry_separation, true);
                          foreach ($enquiry_separation as $key => $value) {
                         if($enquiry->status!=$key){ ?>                   
-                       <li><a  title="" href="<?=base_url().'lead/convert_to_lead/'.$enquiry->enquiry_id?>" onclick="return confirm('Are you sure you want to Mark this <?=display('client')?> as <?=$enquiry_separation[$key]['title']?> ?')" >Mark as <?=$enquiry_separation[$key]['title']?></i>
+                       <li><a  title="" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/'.$key?>" onclick="return confirm('Are you sure you want to Mark this <?=display('client')?> as <?=$enquiry_separation[$key]['title']?> ?')" >Mark as <?=$enquiry_separation[$key]['title']?></i>
                         </a></li>
-                    <?php     } }
+                    <?php     } 
+                    }
                    }  ?>
                   </ul>
                   </div>  
