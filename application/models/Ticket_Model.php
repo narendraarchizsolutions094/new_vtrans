@@ -247,6 +247,7 @@ class Ticket_Model extends CI_Model
 			$arr["complaint_type"] = $this->input->post("complaint_type", true);
 			$arr["ticketno"] 	= "";
 			$arr["status"]   	= 0;
+			$arr["ticket_status"] = $this->input->post("ticket_status", true);
 			$arr['process_id'] =  $_SESSION['process'][0];
 			// echo $arr['attachment'];
 			// exit();

@@ -1791,8 +1791,8 @@ class Ticket extends CI_Controller
         $data['primary_tab'] = $primary_tab;
 		//$data["source"] = $this->Ticket_Model->getSource($this->session->companey_id);//getting ticket source list
         // $chk_access = $this->db->where('comp_id',$this->session->companey_id)->count_all_results('email_integration');
-        // $data['mail_alert_access']= $chk_access;
-
+		// $data['mail_alert_access']= $chk_access;
+		$data['ticket_status'] = $this->Ticket_Model->ticket_status()->result();
 		$data['content'] = $this->load->view('ticket/add-ticket', $data, true);
 		$this->load->view('layout/main_wrapper', $data);
 	}

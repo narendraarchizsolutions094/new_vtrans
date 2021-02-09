@@ -517,7 +517,7 @@ function builder_fun(rule_type)
 						type: 'integer',
 						input: 'select',
 						values: days,
-						operators: ['equal', 'not_equal','less','is_null', 'is_not_null']
+						operators: ['equal', 'not_equal','less','greater','is_null', 'is_not_null']
 					});
 					
 					filterArray.push({
@@ -526,7 +526,7 @@ function builder_fun(rule_type)
 						type: 'integer',
 						input: 'select',
 						values: days,
-						operators: ['equal', 'not_equal','less','is_null', 'is_not_null']
+						operators: ['equal', 'not_equal','less','greater','is_null', 'is_not_null']
 					});
 				}
 
