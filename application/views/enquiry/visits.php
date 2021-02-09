@@ -143,7 +143,7 @@ $(document).ready(function(){
       });
 });
 $('input[name="filter_checkbox"]').click(function(){  
-  if($('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")||$('#ratingcheckbox').is(":checked")){ 
+  if($('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")||$('#ratingcheckbox').is(":checked")||$('#differencecheckbox').is(":checked")){ 
     $('#filter_pannel').show();
   }else{
     $('#filter_pannel').hide();
