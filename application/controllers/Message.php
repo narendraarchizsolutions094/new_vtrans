@@ -390,6 +390,7 @@ class Message extends CI_Controller {
   				exit();
         	}else{
 
+
 		        $config['smtp_auth']    = true;
         		$config['protocol']     = $email_row['protocol'];
 		        $config['smtp_host']    = $email_row['smtp_host'];
@@ -452,8 +453,8 @@ class Message extends CI_Controller {
 							//$this->email->set_mailtype('html');
 			                if($rows->files!=null || !empty($rows->files==null))
 			                {
-								// $this->email->attach($rows->files);
-								// $media_url=$rows->files;
+								$this->email->attach($rows->files);
+								$media_url=$rows->files;
 			                }
 			                if($this->email->send()){
 									echo "Mail sent successfully";
@@ -483,11 +484,9 @@ class Message extends CI_Controller {
 			                //echo $message.'<br>'.$email_subject.'<br>'.$cc;
 							//$this->email->set_mailtype('html');
 				  // if visiting card send
-						  $media_url= '';
 							if($rows->files!=null || !empty($rows->files==null))
-							{ 
-								// $this->email->attach($rows->files);
-								// $media_url=$rows->files;
+							{ $this->email->attach($rows->files);
+								$media_url=$rows->files;
 							
 							}
 			                if($this->email->send()){
@@ -629,8 +628,26 @@ public function chat_start(){
    }
 
    public function test_start(){
-	echo $message='test';
-	echo $phone= '91dmnbsdbfsdfs sdfsdf sg dfsgdf';
-     echo "Message sent successfully";
-}
+	$config = Array(
+		'protocol' => 'smtp',
+		'smtp_host' => 'smtp3.netcore.co.in',
+		'smtp_port' => 465,
+		'smtp_user' => 'crm@vtransgroup.com',
+		'smtp_pass' => '@FebCrm21#',
+		'mailtype'  => 'html', 
+		'charset'   => 'iso-8859-1'
+	);
+	$this->load->library('email', $config);
+
+		$this->email->from('crm@vtransgroup.com', 'ur Name');
+		$this->email->to('prokanhaiya@gmail.com');
+		$this->email->subject('Email Test');
+		$this->email->message('Testing the email class.');
+		if ($this->email->send()) {
+			echo "you are luck!";
+		} else {
+			echo $this->email->print_debugger();
+		}
+	}
+
 }
