@@ -631,7 +631,7 @@ public function chat_start(){
 	$config = Array(
 		'protocol' => 'smtp',
 		'smtp_host' => 'smtp.zoho.com',
-		'smtp_port' => 465,
+		'smtp_port' => 587,
 		'smtp_user' => 'kanhaiya@archizsolutions.com',
 		'smtp_pass' => 'Archiz321',
 		'mailtype'  => 'html', 
