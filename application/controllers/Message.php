@@ -628,19 +628,32 @@ public function chat_start(){
    }
 
    public function test_start(){
-	$config = Array(
-		'protocol' => 'smtp',
-		'smtp_host' => 'smtppro.zoho.com',
-		'smtp_port' => 587,
-		'smtp_user' => 'kanhaiya@archizsolutions.com',
-		'smtp_pass' => 'Archiz321',
-		'charset' 	=> "utf-8",		
-		'newline' 	=> "\r\n"
+	$this->load->library('email');
+	$config['protocol']     = 'smtp';
+	$config['smtp_host']    = 'ssl://smtp.zoho.com';
+	$config['smtp_port']    = '465';
+	$config['smtp_timeout'] = '7';
+	$config['smtp_user']    = 'narendra@archizsolutions.com';
+	$config['smtp_pass']    = 'Archiz321';
+	$config['charset']      = 'utf-8';
+	$config['newline']      = "\r\n";
+	$config['mailtype']     = 'text'; // or html
+	$config['validation']   = TRUE; // bool whether to validate email or not 
+	$this->email->initialize($config);
 
-	);
-	$this->load->library('email', $config);
+	// $config = Array(
+	// 	'protocol' => 'smtp',
+	// 	'smtp_host' => 'smtppro.zoho.com',
+	// 	'smtp_port' => 587,
+	// 	'smtp_user' => 'kanhaiya@archizsolutions.com',
+	// 	'smtp_pass' => 'Archiz321',
+	// 	'charset' 	=> "utf-8",		
+	// 	'newline' 	=> "\r\n"
 
-		$this->email->from('kanhaiya@archizsolutions.com','Kanhaiya');
+	// );
+	// $this->load->library('email', $config);
+
+		$this->email->from('narendra@archizsolutions.com','TEST');
 		$this->email->to('prokanhaiya@gmail.com');
 		$this->email->subject('Email Test');
 		$this->email->message('Testing the email class.');
