@@ -630,8 +630,8 @@ public function chat_start(){
    public function test_start(){
 	$config = Array(
 		'protocol' => 'smtp',
-		'smtp_host' => 'ssl://smtppro.zoho.com',
-		'smtp_port' => 465,
+		'smtp_host' => 'smtppro.zoho.com',
+		'smtp_port' => 587,
 		'smtp_user' => 'kanhaiya@archizsolutions.com',
 		'smtp_pass' => 'Archiz321',
 		'charset' 	=> "utf-8",
@@ -641,7 +641,7 @@ public function chat_start(){
 	);
 	$this->load->library('email', $config);
 
-		$this->email->from('kanhaiya@archizsolutions.com', 'ur Name');
+		$this->email->from('kanhaiya@archizsolutions.com', 'Kanhaiya');
 		$this->email->to('prokanhaiya@gmail.com');
 		$this->email->subject('Email Test');
 		$this->email->message('Testing the email class.');
