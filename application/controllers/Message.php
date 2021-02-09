@@ -633,7 +633,7 @@ public function chat_start(){
 	$config['smtp_host']    = 'ssl://smtp.zoho.com';
 	$config['smtp_port']    = '465';
 	$config['smtp_timeout'] = '7';
-	$config['smtp_user']    = 'narendra@archizsolutions.com';
+	$config['smtp_user']    = 'kanhaiya@archizsolutions.com';
 	$config['smtp_pass']    = 'Archiz321';
 	$config['charset']      = 'utf-8';
 	$config['newline']      = "\r\n";
@@ -653,7 +653,7 @@ public function chat_start(){
 	// );
 	// $this->load->library('email', $config);
 
-		$this->email->from('narendra@archizsolutions.com','TEST');
+		$this->email->from('kanhaiya@archizsolutions.com','TEST');
 		$this->email->to('prokanhaiya@gmail.com');
 		$this->email->subject('Email Test');
 		$this->email->message('Testing the email class.');
