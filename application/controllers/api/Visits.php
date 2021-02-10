@@ -64,8 +64,8 @@ class Visits extends REST_Controller {
     {
     	$id = $this->input->post('visit_id');
 
-    	$value = $this->db->where('id',$id)->get('tbl_visit')->row();
-    	$tvalue = $this->db->select('')->where('visit_id',$id)->get('visit_details')->row();
+    	$value_d = $this->db->where('id',$id)->get('tbl_visit')->row();
+    	$tvalue = $this->db->where('visit_id',$id)->get('visit_details')->row();
        $expenselist=$this->db->select('tbl_expense.*,tbl_expense.id as expense_id,tbl_expenseMaster.id,tbl_expenseMaster.title')->where(array('tbl_expense.visit_id'=>$id,'tbl_expense.type'=>2))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
        $list=[];
         foreach ($expenselist as $key => $value) {
@@ -86,8 +86,8 @@ class Visits extends REST_Controller {
               "approve_status"=>$value->approve_status,
             ];
         }
-      $data=['visit'=>$value,'travelData'=>$tvalue,'expenceData'=>$list];
-    	if(!empty($value))
+      $data=['visit'=>$value_d,'travelData'=>$tvalue,'expenceData'=>$list];
+    	if(!empty($value_d))
     	{
     		 $this->set_response([
                 'status' => TRUE,
@@ -489,17 +489,16 @@ class Visits extends REST_Controller {
     		$update_visit_data = array( 'remarks'=>$this->input->post('remarks'),
                             'rating'=>$this->input->post('rating'),  );
          $res = $this->db->where(array('comp_id'=>$comp_id,'user_id'=>$user_id,'id'=>$visit_id))->update('tbl_visit',$update_visit_data);
-    		   $done = 0;
+    		 
+         $done = 0;
             $res = $this->db->where(array('enquiry_id'=>$enquiry_id))->get('enquiry')->row();
             $done = 1;
 
-            if(!empty($res))
+            if(!empty($res) AND !empty($this->input->post('visit_date')) AND !empty($this->input->post('visit_time')))
             {	
                  	$data = array(
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>$this->input->post('visit_time'),
-                            'remarks'=>$this->input->post('remarks'),
-                            'rating'=>$this->input->post('rating'),
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,   
                             'enquiry_id'=>$enquiry_id
@@ -563,6 +562,27 @@ class Visits extends REST_Controller {
                   'message' =>strip_tags(validation_errors())
                ], REST_Controller::HTTP_OK);
   		  }
-
+     
     }
+
+
+    public function calculate_distance_post()
+     {
+      $way_points=json_decode($this->input->post('way_points'));      
+      $totalpoints=count($way_points);
+      $newpoints=array();
+      // print_r($totalpoints);
+      $cuts=$totalpoints/23;
+      for ($i=0; $i < $totalpoints; $i+=$cuts) { 
+        array_push($newpoints,$way_points[$i]);
+      }
+       $lastKey = key(array_slice($newpoints, -1, 1, true));
+      $origins=$newpoints[0];
+      $destinations=$newpoints[$lastKey];
+      $origins=implode(',',$origins);
+      $destinations=implode(',',$destinations);
+die();
+      $url='https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$origins.'&destinations='.$destinations.'&key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s';
+      
+     }
 }
