@@ -583,8 +583,15 @@ class Enquiry extends CI_Controller
                 if ($this->input->is_ajax_request()) {
                     echo json_encode(array('status' => 'success'));
                 } else {
-                    $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
-                    redirect(base_url() . 'enquiry/view/' . $insert_id);
+                     if($this->input->post('red')=='visits'){
+                        $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
+                        redirect(base_url('client/visits'));
+                     }else{
+                        $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
+                        redirect(base_url() . 'enquiry/view/' . $insert_id);
+                     }
+
+                   
                 }
             }
         } else {
@@ -3467,7 +3474,7 @@ echo  $details1;
         $this->load->model('visit_datatable_model');
         $result = $this->visit_datatable_model->getRows($_POST);
         //echo $this->db->last_query(); exit();
-
+        // print_r($this->db->last_query());
         $colsall  = true;
         $cols = array();
         if(!empty($_POST['allow_cols']))
@@ -3491,7 +3498,7 @@ echo  $details1;
             for ($i=0; $i < $totalpoints; $i+=$cuts) { 
               array_push($newpoints,$waypoints[$i]);
             }
-             $lastKey = key(array_slice($newpoints, -1, 1, true));
+            $lastKey = key(array_slice($newpoints, -1, 1, true));
             $firstpoint=$newpoints[0];
             $secondpoint=$newpoints[$lastKey];
            
@@ -3529,7 +3536,7 @@ echo  $details1;
             $sub[] ='<input  type="checkbox" name="approve[]" class="checkbox1"  value="'.$res->vids.'"> '. $ix++;
 
             if($colsall || in_array(1,$cols))
-                $sub[] = $res->visit_date!='0000-00-00'?$res->visit_date:'NA';
+                $sub[] = $res->visit_date!='0000-00-00'?date("d-m-Y", strtotime($res->visit_date)):'NA';
 
             if($colsall || in_array(2,$cols))
                 $sub[] = $time??'NA';
@@ -3558,7 +3565,7 @@ echo  $details1;
                 if($colsall || in_array(12,$cols))
                 $sub[] = round(abs($res->visit_expSum));
             if($colsall || in_array(9,$cols))
-                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->visit_id.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->visit_id.")' id='checkvisit' ><i class='fa fa-inr'></i></a>":'';
+                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-inr'></i></a>":'';
             $data[] =$sub;
         }
     

@@ -22,6 +22,7 @@
         <?php
         if (!$invalid_process) { ?>
           <form method="post" action="<?= base_url() ?>enquiry/create" id="enquiry_form" autocomplete="off"> 
+          <input name="red" value="<?php if(isset($_GET['red'])){echo $_GET['red']; } ?>" hidden>
             <?php $process_id = $this->session->process[0]; ?>
             <input type="hidden" name="product_id" value="<?= $process_id ?>">
             <input type="hidden" name="status" value="<?php  if(!empty($this->input->get('status'))){   $status=$this->input->get('status');  }else{  $status=1; }

@@ -64,7 +64,6 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 		</div>
 </div>
 
-
 <div class="row" style=" margin: 15px 0px; padding: 15px; <?php if(empty($_COOKIE['visits_filter_setting'])){ echo'display:none'; }  ?>" id="filter_pannel">
 <div id="datefilter" style="<?php if(!in_array('date',$variable)){echo'display:none';} ?>">
 	<div class="col-lg-3"  >
@@ -432,7 +431,7 @@ $("select").select2();
                         </div>
 
                 <div class="form-group col-md-6">
-                    <label>Company</label>
+                    <label style="width:100%;">Company <a style="float: right;" href="<?= base_url('enquiry/create?status=1&red=visits') ?>" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a></label>
                     <select class="form-control" name="company" onchange="filter_related_to(this.value)">
                       <option value="-1">Select</option>
                       <?php
@@ -448,7 +447,7 @@ $("select").select2();
                 </div>
 
                <div class="form-group col-md-6">
-                  <label>Related To (Primary Contact)</label>
+                  <label>Contact Name</label>
                   <select class="form-control" name="enquiry_id">
                     <option value="">Select</option>
                     <?php
