@@ -69,7 +69,7 @@ class Visits extends REST_Controller {
        $value_d =     $this->db->order_by('created_at','DESC');
        $value_d =       $this->db->get('tbl_visit')->row();
 
-    	$tvalue = $this->db->where('visit_id',$id)->get('visit_details')->row();
+    	$tvalue = $this->db->where('visit_id',$id)->limit('1')->order_by('id','DESC')->get('visit_details')->row();
        $expenselist=$this->db->select('tbl_expense.*,tbl_expense.id as expense_id,tbl_expenseMaster.id,tbl_expenseMaster.title')->where(array('tbl_expense.visit_id'=>$id,'tbl_expense.type'=>2))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
        $list=[];
         foreach ($expenselist as $key => $value) {
@@ -237,9 +237,9 @@ class Visits extends REST_Controller {
               if($latitude!=0 AND $longitude!=0){
 
               //check any travelled is started or not
-             $checkexistvisit=$this->db->where(array('comp_id'=>$company_id,'visit_id'=>$visit_id,'created_by'=>$user_id))
-                       ->count_all_results('visit_details');
-               if($checkexistvisit==0){
+            //  $checkexistvisit=$this->db->where(array('comp_id'=>$company_id,'visit_id'=>$visit_id,'created_by'=>$user_id))
+            //            ->count_all_results('visit_details');
+            //    if($checkexistvisit==0){
                   $checkvisit=$this->db->where(array('comp_id'=>$company_id,'created_by'=>$user_id,'visit_status'=>1))
                   ->get('visit_details');
                   if($checkvisit->num_rows()==0){
@@ -259,13 +259,13 @@ class Visits extends REST_Controller {
                            'data' =>$res,
                         ], REST_Controller::HTTP_OK);
                      }
-               }else{
-                  $res=['message'=>'Visit Travel History Already Present','vd_id'=>''];
-                  $this->set_response([
-                     'status' => false,
-                     'data' =>$res,
-                  ], REST_Controller::HTTP_OK);
-            }
+            //    }else{
+            //       $res=['message'=>'Visit Travel History Already Present','vd_id'=>''];
+            //       $this->set_response([
+            //          'status' => false,
+            //          'data' =>$res,
+            //       ], REST_Controller::HTTP_OK);
+            // }
          }else{
             $this->set_response([
                'status' => false,
