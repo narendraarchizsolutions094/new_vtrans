@@ -76,12 +76,13 @@ class Visit_datatable_model extends CI_Model{
 
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
-        $this->db->select($this->table.'.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.company,visit_details.*, tbl_visit.id as vids');
+        $this->db->select($this->table.'.*,tbl_visit.created_at,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.company,visit_details.*, tbl_visit.id as vids');
         $this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id) as visit_expSum');
         $this->db->from($this->table);
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$this->session->companey_id);
+        $this->db->order_by("tbl_visit.created_at",'DESC');
         $where="";
         $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
