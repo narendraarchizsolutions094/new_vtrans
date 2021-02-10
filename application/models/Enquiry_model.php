@@ -2351,43 +2351,70 @@ $cpny_id=$this->session->companey_id;
       $where .=" AND product_id IN ($process)";
         $where.=" AND enquiry.comp_id=$cpny_id";
 
+        $enquiry_separation = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING',$companyid);
+
+        $entities[1] = array(  
+                            'title'=>display('enquiry',$companyid),
+                            'tab'=>array(
+                                        'all'=>0,
+                                        'created_today'=>0,
+                                        'updated_today'=>0,
+                                        'active'=>0,
+                                        'dropped'=>0,
+                                        'unassigned'=>0,
+                                        ),
+                            );
+
+        $entities[2] = array(
+                            'title'=>display('lead',$companyid),
+                            'tab'=>array(
+                                        'all'=>0,
+                                        'created_today'=>0,
+                                        'updated_today'=>0,
+                                        'active'=>0,
+                                        'dropped'=>0,
+                                        'unassigned'=>0,
+                                        ),
+                            );
+
+        $entities[3] = array(
+                            'tab'=>array(
+                                        'all'=>0,
+                                        'created_today'=>0,
+                                        'updated_today'=>0,
+                                        'active'=>0,
+                                        'dropped'=>0,
+                                        'unassigned'=>0,
+                                        ),
+                            );
+
+        if(!empty($enquiry_separation))
+        {
+          $enquiry_separation = json_decode($enquiry_separation, true);
+
+          foreach ($enquiry_separation as $key => $value) 
+          {
+              $entities[$key] = array('title'=>$value['title'],
+                                        'tab'=>array(),
+                                  );
+          }
+        }
+      
         $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
         $result = $query->result();
 
-        foreach($result as $r)
+        foreach($result as $key=> $r)
         {
-            if($r->status == 1)
-            {
-                $enquiry = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 2)
-            {
-                $lead = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 3)
-            {
-                $client = (!empty($r->counter)) ? $r->counter : 0;
-            }
+          $entities[$r->status]['tab']['all'] = !empty($r->counter)?$r->counter:0;
         }
-
+        
         $query2 = $this->db->query("SELECT count(enquiry_id)counter,enquiry.status FROM `enquiry` WHERE $where AND DATE(created_date) = CURRENT_DATE GROUP BY enquiry.status");
 
         $result2 = $query2->result();
 
         foreach($result2 as $r)
         {
-            if($r->status == 1)
-            {
-                $enq_ct = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 2)
-            {
-                $lead_ct = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 3)
-            {
-                $client_ct = (!empty($r->counter)) ? $r->counter : 0;
-            }
+            $entities[$r->status]['tab']['created_today'] = !empty($r->counter)?$r->counter:0;
         }
 
         $query3 = $this->db->query("SELECT count(enquiry_id)counter,enquiry.status FROM `enquiry` WHERE $where AND DATE(update_date) = CURRENT_DATE GROUP BY enquiry.status");
@@ -2396,41 +2423,15 @@ $cpny_id=$this->session->companey_id;
 
         foreach($result3 as $r)
         {
-            if($r->status == 1)
-            {
-                $enq_ut = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 2)
-            {
-                $lead_ut = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 3)
-            {
-                $client_ut = (!empty($r->counter)) ? $r->counter : 0;
-            }
+            $entities[$r->status]['tab']['updated_today'] = !empty($r->counter)?$r->counter:0;
         }
 
-        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason,enquiry.status FROM enquiry  right JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
-
-
-        //$this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status > 0 GROUP BY enquiry.status");
+        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason,enquiry.status FROM enquiry left JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND tp.drop_reason IS NULL GROUP BY enquiry.status");
         $result4 = $query4->result();
-        //echo $this->db->last_query();
-        //print_r($result4);exit();
+
         foreach($result4 as $r)
         {
-            if($r->status == 1)
-            {
-                $enq_drp = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 2)
-            {
-                $lead_drp = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 3)
-            {
-                $client_drp = (!empty($r->counter)) ? $r->counter : 0;
-            }
+            $entities[$r->status]['tab']['active'] = !empty($r->counter)?$r->counter:0;
         }
 
         $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status = 1 GROUP BY enquiry.status");
@@ -2438,18 +2439,7 @@ $cpny_id=$this->session->companey_id;
         $result5 = $query5->result();
         foreach($result5 as $r)
         {
-            if($r->status == 1)
-            {
-                $enq_active = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 2)
-            {
-                $lead_active = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 3)
-            {
-                $client_active = (!empty($r->counter)) ? $r->counter : 0;
-            }
+            $entities[$r->status]['tab']['dropped'] = !empty($r->counter)?$r->counter:0;
         }
 
         $query6 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND aasign_to IS NULL GROUP BY enquiry.status");
@@ -2457,19 +2447,11 @@ $cpny_id=$this->session->companey_id;
         $result6 = $query6->result();
         foreach($result6 as $r)
         {
-            if($r->status == 1)
-            {
-                $enq_assign = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 2)
-            {
-                $lead_assign = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 3)
-            {
-                $client_assign = (!empty($r->counter)) ? $r->counter : 0;
-            }
+            $entities[$r->status]['tab']['unassigned'] = !empty($r->counter)?$r->counter:0;
         }
+
+        echo json_encode($entities);
+        exit();
 
         $query7 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.lead_score FROM `enquiry` WHERE $where GROUP BY enquiry.lead_score");
 
@@ -2489,6 +2471,7 @@ $cpny_id=$this->session->companey_id;
                 $cold = (!empty($r->counter)) ? $r->counter : 0;
             }
         }
+
 
         $query8 = $this->db->query("SELECT count(enquiry_id) counter,month(DATE(created_date)) month  FROM `enquiry` WHERE $where AND status = 1 GROUP BY month(DATE(created_date))");
 

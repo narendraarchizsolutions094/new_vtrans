@@ -88,7 +88,7 @@
 <?php   if (user_access('d35')) { ?>
 
 <!-- Course Upload  -->
-<div class="modal fade" id="AddBranch" tabindex="-1" role="dialog" aria-labelledby="course_upload_label" aria-hidden="true">
+<div class="modal fade" id="AddBranch" role="dialog" aria-labelledby="course_upload_label" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">

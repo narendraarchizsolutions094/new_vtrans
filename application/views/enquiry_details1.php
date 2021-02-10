@@ -1820,6 +1820,7 @@ function update_info_status(id,status)
                   type:'success',
                   icon:'success',
                 });
+                location.reload();
             }
         });
 }
