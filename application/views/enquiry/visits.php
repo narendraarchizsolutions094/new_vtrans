@@ -45,7 +45,19 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                     <li>
                       <label>
                       <input type="checkbox" value="difference" id="differencecheckbox" name="filter_checkbox" <?php if(in_array('difference',$variable)){echo'checked';} ?>> Difference</label>
-                    </li>                
+                    </li>  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="createdby" id="createdbycheckbox" name="filter_checkbox" <?php if(in_array('createdby',$variable)){echo'checked';} ?>> Company</label>
+                    </li>   
+                    <li>
+                      <label>
+                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>> Created By</label>
+                    </li>  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="expensetype" id="expensetypecheckbox" name="filter_checkbox" <?php if(in_array('expensetype',$variable)){echo'checked';} ?>> Created By</label>
+                    </li>        
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
@@ -120,6 +132,48 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
           <div id="slider-range"></div>
         </div>
     </div>
+
+    <div class="col-lg-3" id="companyfilter" style="<?php if(!in_array('company',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+        	<label>Company</label>
+        	<select class="v_filter form-control" name="company" >
+        		<option value="">Select</option>
+        		<?php
+        		if(!empty($company_list))
+        		{
+        			foreach ($company_list as $row) 
+        			{  
+                $row  = (array)$row;
+        				echo'<option value="'.$row['company'].'">'.$row['company'].'</option>';
+        			}
+        		}
+        		?>
+        	</select>
+        </div>
+    </div>
+    <div class="form-group col-md-3" id="createdbyfilter" style="<?php if(!in_array('createdby',$variable)){echo'display:none';} ?>">
+                          <label for="">Created By</label>
+                         <select name="createdby" class="v_filter form-control"> 
+                          <option value="">Select</option>
+                         <?php 
+                          if (!empty($created_bylist)) {
+                              foreach ($created_bylist as $createdbylist) {?>
+                              <option value="<?=$createdbylist->pk_i_admin_id;?>"  ><?=$createdbylist->s_display_name.' '.$createdbylist->last_name;?> -  <?=$createdbylist->s_user_email?$createdbylist->s_user_email:$createdbylist->s_phoneno;?>                               
+                              </option>
+                              <?php }}?>    
+                         </select>                       
+                        </div>
+                        <!-- <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+        	<label>Expense </label>
+       	<select class="form-control v_filter" name="expensetype">
+              <option value="">Select</option>
+              <option value="1">Fully Approved</option>
+              <option value="2">Partially Approved</option>
+              <option value="3">Rejected</option>
+            </select>
+        </div>
+    </div> -->
 </div>
 <script>
 
@@ -142,7 +196,7 @@ $(document).ready(function(){
       });
 });
 $('input[name="filter_checkbox"]').click(function(){  
-  if($('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")||$('#ratingcheckbox').is(":checked")||$('#differencecheckbox').is(":checked")){ 
+  if($('#createdbycheckbox').is(":checked")||$('#companycheckbox').is(":checked")||$('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")||$('#ratingcheckbox').is(":checked")||$('#differencecheckbox').is(":checked")){ 
     $('#filter_pannel').show();
   }else{
     $('#filter_pannel').hide();
@@ -173,6 +227,25 @@ $('input[name="filter_checkbox"]').click(function(){
         else{
           $('#differencefilter').hide();
     }
+    if($('#companycheckbox').is(":checked")){
+        $('#companyfilter').show();
+            }
+        else{
+          $('#companyfilter').hide();
+    }
+    if($('#createdbycheckbox').is(":checked")){
+        $('#createdbyfilter').show();
+            }
+        else{
+          $('#createdbyfilter').hide();
+    }
+    if($('#expensetypecheckbox').is(":checked")){
+        $('#expensetypefilter').show();
+            }
+        else{
+          $('#expensetypefilter').hide();
+    }
+    
 });
 
 </script>
@@ -190,8 +263,8 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-2">Visit Time</th>
 				          <th id="th-3">Name</th>
 				          <th id="th-10">Company Name</th>
-				          <th id="th-4">Actual Distance</th>
-				          <th id="th-5">Ideal Distance</th>
+				          <th id="th-4">Shortest Distance</th>
+				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-11" >Diffrence</th>
 				          <th id="th-12" >Expense</th>
@@ -326,6 +399,9 @@ var table2  =$('#datatable').DataTable({
                      d.enquiry_id =obj[2]["value"];
                      d.rating = obj[3]["value"];
                      d.to_date = obj[1]['value'];
+                     d.company = obj[4]['value'];
+                     d.createdby = obj[5]['value'];
+                    //  d.expensetype = obj[6]['value'];
                      d.to_time = '';//obj[5]['value'];
                      d.view_all=true;
 
@@ -555,7 +631,7 @@ $("select").select2();
               <label class=""><input type="checkbox" class="choose-col" value="4"> Actual Distance</label>
             </div>
              <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="5">  Ideal Distance</label>
+              <label class=""><input type="checkbox" class="choose-col" value="5">  Shortest Distance</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="6">  Rating</label>
