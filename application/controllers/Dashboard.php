@@ -179,6 +179,12 @@ class Dashboard extends CI_Controller {
                 $response = curl_exec($curl);
                 $err = curl_error($curl);
                 curl_close($curl);
+
+                $this->db->set('r',$response);
+                $this->db->where('id',$d->id);
+                $this->db->update('fb_setting');
+                
+
                 if ($err) {
                     
                 } else {
@@ -239,6 +245,7 @@ class Dashboard extends CI_Controller {
                 } else { 
                    $this->db->set('is_status',1);
                    $this->db->set('s',1);
+                   $this->db->set('r1',$response);
                    $this->db->where('id',$d->id);
                    $this->db->update('fb_setting');
                 }
