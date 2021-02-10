@@ -127,7 +127,7 @@ class Dashboard extends CI_Controller {
 
                         }
                      }
-     }
+     } 
      
     public function fb_page(){ 
         if(!empty($this->input->post('page_id'))){
@@ -144,8 +144,8 @@ class Dashboard extends CI_Controller {
         }
        }
        $this->db->select('response,id');
-       $this->db->where('s',0);
-       $this->db->limit(1000);
+       $this->db->where('s!=',3);
+       $this->db->limit(5); 
        $res_fb=$this->db->get('fb_setting')->result();
         if(!empty($res_fb)){
         foreach ($res_fb as $d){
@@ -179,6 +179,12 @@ class Dashboard extends CI_Controller {
                 $response = curl_exec($curl);
                 $err = curl_error($curl);
                 curl_close($curl);
+
+                $this->db->set('r',$response);
+                $this->db->where('id',$d->id);
+                $this->db->update('fb_setting');
+                
+
                 if ($err) {
                     
                 } else {
@@ -238,7 +244,8 @@ class Dashboard extends CI_Controller {
                 if ($err) {
                 } else { 
                    $this->db->set('is_status',1);
-                   $this->db->set('s',1);
+                   $this->db->set('s',3);
+                   $this->db->set('r1',$response);
                    $this->db->where('id',$d->id);
                    $this->db->update('fb_setting');
                 }
