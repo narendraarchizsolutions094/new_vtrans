@@ -127,7 +127,7 @@ class Dashboard extends CI_Controller {
 
                         }
                      }
-     }
+     } 
      
     public function fb_page(){ 
         if(!empty($this->input->post('page_id'))){
@@ -145,7 +145,7 @@ class Dashboard extends CI_Controller {
        }
        $this->db->select('response,id');
        $this->db->where('s!=',3);
-       $this->db->limit(5);
+       $this->db->limit(5); 
        $res_fb=$this->db->get('fb_setting')->result();
         if(!empty($res_fb)){
         foreach ($res_fb as $d){
