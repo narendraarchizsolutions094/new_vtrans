@@ -63,8 +63,12 @@ class Visits extends REST_Controller {
     public function visit_details_post()
     {
     	$id = $this->input->post('visit_id');
+       $value_d = $this->db->select('enquiry.company,enquiry.address,tbl_visit.*  ,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
+       $value_d =     $this->db->where('id',$id);
+       $value_d =      $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
+       $value_d =     $this->db->order_by('created_at','DESC');
+       $value_d =       $this->db->get('tbl_visit')->row();
 
-    	$value_d = $this->db->where('id',$id)->get('tbl_visit')->row();
     	$tvalue = $this->db->where('visit_id',$id)->get('visit_details')->row();
        $expenselist=$this->db->select('tbl_expense.*,tbl_expense.id as expense_id,tbl_expenseMaster.id,tbl_expenseMaster.title')->where(array('tbl_expense.visit_id'=>$id,'tbl_expense.type'=>2))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
        $list=[];
