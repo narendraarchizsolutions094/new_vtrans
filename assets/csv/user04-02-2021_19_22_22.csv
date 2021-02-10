@@ -1,0 +1,88 @@
+Employee ID,First Name*,Last Name *,Primary Email *,Secondary Email,Primary Phone Number *,Secondary Phone Number,Password *,Date of birth,Joining Date,Anniversary,Address,Blood Group,Country Name,Region List,State Name,Territory Name,Product,City Name,User Rights*,Report to,Process,Designation
+vxpress-sales-1,Ballepu Raghavendra Rao,-,raghavendrarao@vxpress.in,,9391664849,,12345678,,,,,,,,,,,,Zonal Sales Manager,devsharma@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-2,Ruchin Shrivastava,-,bicbhopal@vxpress.in,,7974004592,,12345678,,,,,,,,,,,,Sales Executive,ashishk@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-3,Ashish Kumar,-,ashishk@vxpress.in,,7304975379,,12345678,,,,,,,,,,,,Zonal Sales Manager,devpandey@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-4,Pratap Narayan Singh.,-,pratapsingh@vxpress.in,,8767273041,,12345678,,,,,,,,,,,,AM,ashishk@vxpress.in,V-Xpress,AM
+vxpress-sales-5,Nrupal Suresh Wekhande,-,nwekhande@vxpress.in,,7028620055,,12345678,,,,,,,,,,,,AM,devpandey@vxpress.in,V-Xpress,AM
+vxpress-sales-6,Senthil Kumar R,-,senthil@vxpress.in,,9380006701,,12345678,,,,,,,,,,,,RSM,shridharnaik@vxpress.in,V-Xpress,RSM
+vxpress-sales-7,Baalakrishnan P B,-,baalakrishnanpb@vxpress.in,,9381046664,,12345678,,,,,,,,,,,,Manager,senthil@vxpress.in,V-Xpress,Manager
+vxpress-sales-8,Sathishkumar,-,chennaisales@vxpress.in,,9381046664,,12345678,,,,,,,,,,,,AM,senthil@vxpress.in,V-Xpress,AM
+vxpress-sales-9,Kesavan P,-,chennaisales1@vxpress.in,,8072509670,,12345678,,,,,,,,,,,,AM,senthil@vxpress.in,V-Xpress,AM
+vxpress-sales-10,R. Manikandan,-,manikandan@vxpress.in,,9344820646,,12345678,,,,,,,,,,,,AM,ramkrishnan@vxpress.in,V-Xpress,AM
+vxpress-sales-11,R. Ramakrishnan,-,ramkrishnan@vxpress.in,,9360735400,,12345678,,,,,,,,,,,,Deputy Zonal Sales Manager,vinaypandey@vxpress.in,V-Xpress,Deputy Zonal Sales Manager
+vxpress-sales-12,Shridhar Umesh Naik,-,shridharnaik@vxpress.in,,7208979223,,12345678,,,,,,,,,,,,National Manager,rajivbhattacharya@vxpress.in,V-Xpress,National Manager
+vxpress-sales-13,Rajesh Srichand Mirgh,-,rajeshmirgh@vxpress.in,,9325006267,,12345678,,,,,,,,,,,,National Manager,rajivbhattacharya@vxpress.in,V-Xpress,National Manager
+vxpress-sales-14,R. Parameshwaran.,-,parameshwaran@vxpress.in,,9322877169,,12345678,,,,,,,,,,,,National Manager,rajivbhattacharya@vxpress.in,V-Xpress,National Manager
+vxpress-sales-15,Somnath Mukherjee,-,somnathmukherjee@vxpress.in,,9323488114,,12345678,,,,,,,,,,,,Manager,parameshwaran@vxpress.in,V-Xpress,Manager
+vxpress-sales-16,Sagar Nanasaheb Dhoble,-,sagard@vxpress.in,,9322145019,,12345678,,,,,,,,,,,,AM,parameshwaran@vxpress.in,V-Xpress,AM
+vxpress-sales-17,Apurba Rit,-,apurbarit@vxpress.in,,7208979221,,12345678,,,,,,,,,,,,Manager,rajeshmirgh@vxpress.in,V-Xpress,Manager
+vxpress-sales-18,Sumit Kumar Singh,-,sumitsingh@vxpress.in,,7980045649,,12345678,,,,,,,,,,,,AM,Vinay.singh@vtransgroup.com,V-Xpress,AM
+vxpress-sales-19,Arka Chakraborty,-,arka@vxpress.in,,9331063709,,12345678,,,,,,,,,,,,AM,Vinay.singh@vtransgroup.com,V-Xpress,AM
+vxpress-sales-20,Kripa Shankar Ojha,-,kripashankarojha@vxpress.in,,9831801486,,12345678,,,,,,,,,,,,Sales Executive,Vinay.singh@vtransgroup.com,V-Xpress,Sales Executive
+vxpress-sales-21,Pandey Ashok Kumar,-,ashokpandey@vxpress.in,,9327329868,,12345678,,,,,,,,,,,,Deputy Zonal Sales Manager,shridharnaik@vxpress.in,V-Xpress,Deputy Zonal Sales Manager
+vxpress-sales-22,Shrivastav Manojbhai,-,manojs@vxpress.in,,9327329865,,12345678,,,,,,,,,,,,Deputy Zonal Sales Manager,ajaykumar@vxpress.in,V-Xpress,Deputy Zonal Sales Manager
+vxpress-sales-23,Suchit Darbari,-,suchitdarbari@vxpress.in,,7304975399,,12345678,,,,,,,,,,,,AM,ashokpandey@vxpress.in,V-Xpress,AM
+vxpress-sales-24,Barot Dhaval,-,dhavalbarot@vxpress.in,,9376938173,,12345678,,,,,,,,,,,,AM,manojs@vxpress.in,V-Xpress,AM
+vxpress-sales-25,Asit Senapati,-,asits@vxpress.in,,9376939606,,12345678,,,,,,,,,,,,AM,ashokpandey@vxpress.in,V-Xpress,AM
+vxpress-sales-26,Umakant Ojha,-,ukojha@vxpress.in,,9377673556,,12345678,,,,,,,,,,,,Zonal Sales Manager,ajaykumar@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-27,Shiv Sharan Yadav,-,shivsharan@vxpress.in,,7574862325,,12345678,,,,,,,,,,,,AM,ajaykumar@vxpress.in,V-Xpress,AM
+vxpress-sales-28,Mahendra Sharma,-,mahendrasharma@vxpress.in,,9328867728,,12345678,,,,,,,,,,,,Zonal Sales Manager,ajaykumar@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-29,Chandan Subas Ghosh,-,chandan@vxpress.in,,8080724017,,12345678,,,,,,,,,,,,AM,mahendrasharma@vxpress.in,V-Xpress,AM
+vxpress-sales-30,Vinay Pandey,-,vinaypandey@vxpress.in,,7229041940,,12345678,,,,,,,,,,,,RSM,shridharnaik@vxpress.in,V-Xpress,RSM
+vxpress-sales-31,Biman Sarkar,-,biman@vxpress.in,,7228952871,,12345678,,,,,,,,,,,,Zonal Sales Manager,vinaypandey@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-32,Anurag Kumar,-,anurag@vxpress.in,,8125261364,,12345678,,,,,,,,,,,,Zonal Sales Manager,vinaypandey@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-33,Abhinay Kumar Singh,-,abhinay@vxpress.in,,7760826991,,12345678,,,,,,,,,,,,AM,anurag@vxpress.in,V-Xpress,AM
+vxpress-sales-34,Raghavendra Naik,-,raghavendranaik@vxpress.in,,9341688688,,12345678,,,,,,,,,,,,AM,biman@vxpress.in,V-Xpress,AM
+vxpress-sales-35,Shashibhushan Shukla,-,retailbhiwandi@vxpress.in,,9325884280,,12345678,,,,,,,,,,,,Sales Executive,alok@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-36,Mohammad Adil Inamul Haque Siddiqui,-,salesbhiwandi@vxpress.in,,7228952872,,12345678,,,,,,,,,,,,AM,alok@vxpress.in,V-Xpress,AM
+vxpress-sales-37,Santosh Chandrabhan Jaiswar,-,salesbhiwandi1@vxpress.in,,9890987495,,12345678,,,,,,,,,,,,Sales Executive,alok@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-38,Alok Kumar..,-,alok@vxpress.in,,9323708371,,12345678,,,,,,,,,,,,RSM,shridharnaik@vxpress.in,V-Xpress,RSM
+vxpress-sales-39,Mayapati Mishra,-,mayapatimishra@vxpress.in,,9699674332,,12345678,,,,,,,,,,,,AM,alok@vxpress.in,V-Xpress,AM
+vxpress-sales-40,Siddhivinayak Shyambihari Singh,-,siddhivinayaksingh@vxpress.in,,8698890395,,12345678,,,,,,,,,,,,Manager,alok@vxpress.in,V-Xpress,Manager
+vxpress-sales-41,Sanjay Kumar Jena,-,sanjayjena@vxpress.in,,6358725778,,12345678,,,,,,,,,,,,Zonal Sales Manager,alok@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-42,Kishan Kumar,-,salesnavimumbai@vxpress.in,,7043781772,,12345678,,,,,,,,,,,,AM,alok@vxpress.in,V-Xpress,AM
+vxpress-sales-43,Namrata Razdan,-,namratarazdan@vxpress.in,,9311428585,,12345678,,,,,,,,,,,,Zonal Sales Manager,shridharnaik@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-44,Santosh Kumar,-,santoshkumar@vxpress.in,,9540046396,,12345678,,,,,,,,,,,,AM,namratarazdan@vxpress.in,V-Xpress,AM
+vxpress-sales-45,Sachin Kumar.,-,bicbhiwadi@vxpress.in,,7976082209,,12345678,,,,,,,,,,,,Sales Executive,arunverma@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-46,Prakash Jain,-,prakashjain@vxpress.in,,9314871101,,12345678,,,,,,,,,,,,Manager,arunverma@vxpress.in,V-Xpress,Manager
+vxpress-sales-47,Arun Kumar Verma..,-,arunverma@vxpress.in,,7428583931,,12345678,,,,,,,,,,,,Zonal Sales Manager,shridharnaik@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-48,Poonam Rawat,-,poonamrawat@vxpress.in,,7227046576,,12345678,,,,,,,,,,,,AM,arunverma@vxpress.in,V-Xpress,AM
+vxpress-sales-49,Nitin Kumar Tomar ,-,nitintomar@vxpress.in,,9350183246,,12345678,,,,,,,,,,,,Manager,parameshwaran@vxpress.in,V-Xpress,Manager
+vxpress-sales-50,Bharti.,-,bhartisharma@vxpress.in,,9313881478,,12345678,,,,,,,,,,,,Manager,namratarazdan@vxpress.in,V-Xpress,Manager
+vxpress-sales-51,Neeraj Kumar Pandey,-,neerajpandey@vxpress.in,,9971400139,,12345678,,,,,,,,,,,,AM,namratarazdan@vxpress.in,V-Xpress,AM
+vxpress-sales-52,Rajkumar Saini,-,rksaini@vxpress.in,,9316004579,,12345678,,,,,,,,,,,,Zonal Sales Manager,sultanmusanna@vxpress. In,V-Xpress,Zonal Sales Manager
+vxpress-sales-53,Yogesh Kumar Mishra,-,yogeshmishra@vxpress.in,,9318835125,,12345678,,,,,,,,,,,,Zonal Sales Manager,sultanmusanna@vxpress. In,V-Xpress,Zonal Sales Manager
+vxpress-sales-54,Rajeev Kumar Shukla.,-,rajeevshukla@vxpress.in,,8628878813,,12345678,,,,,,,,,,,,Manager,yogeshmishra@vxpress.in,V-Xpress,Manager
+vxpress-sales-55,Krishna Shankar Banerjee,-,krishnabanerjee@vxpress.in,,7017543522,,12345678,,,,,,,,,,,,Zonal Manager,sumantpratap@vxpress.in,V-Xpress,Zonal Manager
+vxpress-sales-56,Abhinav Dwivedi,-,abhinavdwivedi@vxpress.in,,9319679301,,12345678,,,,,,,,,,,,Manager,sumantpratap@vxpress.in,V-Xpress,Manager
+vxpress-sales-57,Arvind Joshi,-,arvindjoshi@vxpress.in,,7906317584,,12345678,,,,,,,,,,,,AM,sumantpratap@vxpress.in,V-Xpress,AM
+vxpress-sales-58,Jitender Kumar Walia,-,jitendrawalia@vxpress.in,,9372029419,,12345678,,,,,,,,,,,,Manager,narendra@vxpress.in,V-Xpress,Manager
+vxpress-sales-59,Rohit Bhimrao Patil ,-,rohitpatil@vxpress.in,,7229041948,,12345678,,,,,,,,,,,,Sales Executive,jitendrawalia@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-60,J Ziyaudeen Shekih,-,ziya@vxpress.in,,9373057750,,12345678,,,,,,,,,,,,Sales Executive,jitendrawalia@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-61,Vivek Kumar Mishra,-,vivekm@vxpress.in,,7229041944,,12345678,,,,,,,,,,,,Sales Executive,chandresh@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-62,Sushil Kumar ,-,sushilkumar@vxpress.in,,7229041950,,12345678,,,,,,,,,,,,AM,chandresh@vxpress.in,V-Xpress,AM
+vxpress-sales-63,Chandresh Kumar Verma,-,chandresh@vxpress.in,,9326260749,,12345678,,,,,,,,,,,,Zonal Sales Manager,narendra@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-64,Ishfaq Ahmed Teli,-,ishfaq@vxpress.in,,7304550831,,12345678,,,,,,,,,,,,Manager,chandresh@vxpress.in,V-Xpress,Manager
+vxpress-sales-65,Amit Kumar Singh,-,amitsingh@vxpress.in,,8657547378,,12345678,,,,,,,,,,,,Zonal Sales Manager,narendra@vxpress.in,V-Xpress,Zonal Sales Manager
+vxpress-sales-66,Shafik Nasiruddin Momin,-,shafikmomin@vxpress.in,,7043297098,,12345678,,,,,,,,,,,,AM,amitsingh@vxpress.in,V-Xpress,AM
+vxpress-sales-67,Nishit Voroliya,-,nishitvoroliya@vxpress.in,,7208846404,,12345678,,,,,,,,,,,,AM,manojs@vxpress.in,V-Xpress,AM
+vxpress-sales-68,Kundan Singh Kharka,-,kundansingh@vxpress.in ,,9376939620,,12345678,,,,,,,,,,,,AM,ukojha@vxpress.in,V-Xpress,AM
+vxpress-sales-69,Chavada Jayeshbhai Jethabhai,-,jayeshchavda@vxpress.in,,9327036440,,12345678,,,,,,,,,,,,Area Branch Manager,ukojha@vxpress.in,V-Xpress,Area Branch Manager
+vxpress-sales-70,Jonis Ashwin,-,Chennaisales2@vxpress.in,,7208846408,,12345678,,,,,,,,,,,,AM,senthil@vxpress.in,V-Xpress,AM
+vxpress-sales-71,Gagan Sharma,-,gagansharma@vxpress.in,,7227046573,,12345678,,,,,,,,,,,,AM,rksaini@vxpress.in,V-Xpress,AM
+vxpress-sales-72,Mr.Karthikeyan,-,Chennaisales3@vxpress.in,,7208846410,,12345678,,,,,,,,,,,,Asst Manager Sales,senthil@vxpress.in,V-Xpress,Asst Manager Sales
+vxpress-sales-73,Mr.Suresh,-,Retailchennai@vxpress.in,,7208846409,,12345678,,,,,,,,,,,,Asst Manager Sales,ganesh@vxpress.in,V-Xpress,Asst Manager Sales
+vxpress-sales-74,Uday Veer,-,bickanpur@vxpress.in,,9936681269,,12345678,,,,,,,,,,,,Sales Executive,krishnabanerjee@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-75,Namit Tiwari,-,bickanpur@vxpress.in,,9936681269,,12345678,,,,,,,,,,,,Sales Executive,krishnabanerjee@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-76,Darshan Dhupe,-,darshan@vxpress.in,,7208846420,,12345678,,,,,,,,,,,,Sales Executive,amitsingh@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-77,Amitabh Sharma,-,amitabh.sharma@vxpress.in,,7208962158,,12345678,,,,,,,,,,,,Manager,parameshwaran@vxpress.in,V-Xpress,Manager
+vxpress-sales-78,VIKASH SHARMA,-,vikashsharma@vxpress.in,,7208962159,,12345678,,,,,,,,,,,,Sales Executive,arunverma@vxpress.in,V-Xpress,Sales Executive
+vxpress-sales-79,PREEJITH,-,preejith@vxpress.in,,9400300738,,12345678,,,,,,,,,,,,Area Sales Manager,vinaypandey@vxpress.in,V-Xpress,Area Sales Manager
+vxpress-sales-80,Dev Sharma,-,devsharma@vxpress.in,,7229045086,,12345678,,,,,,,,,,,,Regional Manager,rajivbhattacharya@vxpress.in,V-Xpress,Regional Manager
+vxpress-sales-81,Dev Pandey ,-,devpandey@vxpress.in,,7227087775,,12345678,,,,,,,,,,,,Regional Manager,rajivbhattacharya@vxpress.in,V-Xpress,Regional Manager
+vxpress-sales-82,Vinay Singh,-,Vinay.singh@vtransgroup.com,,7304975376,,12345678,,,,,,,,,,,,National Manager Sales,rajivbhattacharya@vxpress.in,V-Xpress,National Manager Sales
+vxpress-sales-83,Ajay Kumar,-,ajaykumar@vxpress.in,,7227087774,,12345678,,,,,,,,,,,,Regional Manager,rajivbhattacharya@vxpress.in,V-Xpress,Regional Manager
+vxpress-sales-84,Sultan Musanna,-,sultanmusanna@vxpress. In,,9312425172,,12345678,,,,,,,,,,,,AGM ,rajivbhattacharya@vxpress.in,V-Xpress,AGM 
+vxpress-sales-85,Sumant Pratap Singh,-,sumantpratap@vxpress.in,,9368601569,,12345678,,,,,,,,,,,,Regional Manager,rajivbhattacharya@vxpress.in,V-Xpress,Regional Manager
+vxpress-sales-86,Narendra Rathore,-,narendra@vxpress.in,,9324229445,,12345678,,,,,,,,,,,,Regional Manager,rajivbhattacharya@vxpress.in,V-Xpress,Regional Manager
+vxpress-sales-87,Mr.Ganesh,-,ganesh@vxpress.in,,7208979224,,12345678,,,,,,,,,,,,Regional Manager,rajivbhattacharya@vxpress.in,V-Xpress,Regional Manager

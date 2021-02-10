@@ -9,7 +9,7 @@ class Crm_setting extends CI_Controller {
 		
     }
 	
-	public function index(){
+	public function index(){ 
 		 
 		$data= array();
 		$data['title'] = display('Crm Setting');
