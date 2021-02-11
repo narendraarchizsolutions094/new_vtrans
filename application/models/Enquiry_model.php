@@ -2775,30 +2775,30 @@ $cpny_id=$this->session->companey_id;
               $deffered_deals = $value->counter??0;
         }
        
-        // $deal_amount_list = $this->db->query("SELECT sum(sumvalue) as total,tb.status from (SELECT sum(deal_data.expected_amount) as sumvalue,info.* from commercial_info info left join enquiry on enquiry.enquiry_id=info.id left join deal_data on deal_data.deal_id=info.id  where $where GROUP by info.id) tb GROUP by tb.status")->result();
-        // echo $this->db->last_query();exit();
-        // $done_amnt = 0;
-        // $pending_amnt = 0;
-        // $deffered_amnt = 0;
-        // foreach ($deal_amount_list as $key => $value)
-        // {
-        //     if($value->status==1)
-        //       $done_amnt = $value->total??0;
-        //     if($value->info_status==0)
-        //       $pending_amnt = $value->total??0;
-        //     if($value->info_status==2)
-        //       $deffered_amnt = $value->total??0;
-        // }
+        $deal_amount_list = $this->db->query("SELECT sum(sumvalue) as total,tb.status as info_status from (SELECT sum(deal_data.expected_amount) as sumvalue,info.* from commercial_info info left join enquiry on enquiry.enquiry_id=info.enquiry_id left join deal_data on deal_data.deal_id=info.id  where $where GROUP by info.id) tb GROUP by tb.status")->result();
+        
+        $done_amnt = 0;
+        $pending_amnt = 0;
+        $deffered_amnt = 0;
+        foreach ($deal_amount_list as $key => $value)
+        {
+            if($value->info_status==1)
+              $done_amnt = $value->total??0;
+            if($value->info_status==0)
+              $pending_amnt = $value->total??0;
+            if($value->info_status==2)
+              $deffered_amnt = $value->total??0;
+        }
 
         $funnelchartAry = array('tabs'=>$tab_list,'hot'=>$hot,'warm'=>$warm,'cold'=>$cold,'month_wise'=>$month_list,'raw'=>$raw,'indiamap'=>$indiamap,'disposition'=>$dispo,'source'=>$src,'process_wise'=>$process_wise,'drop_wise'=>$drop_data);
         $funnelchartAry['followup'] = $followup;
         $funnelchartAry['deals'] = array('all'=>$alldeals,
                                           'done'=>$done_deals,
                                           'pending'=>$pending_deals,
-                                          // 'deffered'=>$deffered_deals,
-                                          // 'done_amnt'=>$done_amnt,
-                                          // 'pending_amnt'=>$pending_amnt,
-                                          // 'deffered_amnt'=>$deffered_amnt,
+                                          'deffered'=>$deffered_deals,
+                                          'done_amnt'=>$done_amnt,
+                                          'pending_amnt'=>$pending_amnt,
+                                          'deffered_amnt'=>$deffered_amnt,
                                         );
         return $funnelchartAry;
     }
