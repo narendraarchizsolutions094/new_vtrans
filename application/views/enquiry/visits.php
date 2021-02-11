@@ -3,12 +3,6 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <!-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script> -->
-<style>
-  table.dataTable thead .sorting:after {
-    /* opacity: 0.2; */
-    content: "";
-}
-</style>
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
   <div class="col-md-4 col-sm-4 col-xs-4"> 
           <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a> 
