@@ -1933,92 +1933,251 @@ if(user_access('1020'))
 {
 ?>
 <div class="tab-pane" id="vtran_visit">
- <hr>
+   <div class="row">
+   <div class="col-md-12">
+<?php if(user_access('1023'))  {  ?>
+
+<a class="btn btn-primary" data-toggle="modal"  data-target="#approve_expense" style="color:white;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff; float:right;" onclick="">Approve</a>                        
+<?php } ?>
+<?php
+          if(user_access('1020'))
+          {
+          ?>
+          <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" data-toggle="modal" data-target="#Save_Visit" title="Add Visit"></a> 
+          <?php
+          }
+          ?>
+   </div>
+   </div>
+
+
+<hr>
+ <div id="approve_expense" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title"> Expense Approval</h4>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12">
+            <div class="form-group">
+              <label>Status</label>
+             <select id="approve_status" name="approve_status" class="form-control">
+               <option value="2">Approve</option>
+               <option value="1">Reject</option>
+             </select>
+            </div>
+            </div>
+            <input id="visit_id" class="form-control visit_id" name="visit_id"  value="0" hidden>
+
+            <div class="col-md-12">
+            <div class="form-group">
+            <label>Remarks</label>
+
+            <textarea class="form-control" name="remarks" id="remarks" cols="4"></textarea>
+            </div>
+            </div>
+            </div>
+               <br>
+               <button class="btn btn-sm btn-success" type="submit" onclick="expense_status();">
+              Update Expense</button>                    
+               <br>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
+<div id="add_expense" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title">Add Expense</h4>
+         </div>
+         <div class="modal-body">
+            <form  action="<?php echo base_url(); ?>client/add_expense" method="POST" enctype='multipart/form-data'>  
+            <div class="row">
+          <input id="visit_id_id" class="form-control visit_id_id" name="visit_id"  >
+
+            <table class="table table-responsive">
+                  <thead>
+                  <th>Title</th>
+                  <th>Amount</th>
+                  <th>File(if any)</th>
+                  <th><input type="button" value="+ " id="add" class="btn btn-primary"></th>
+                  </thead>
+                  <tbody class="detail">
+                  <tr>
+                  <td width="30%">
+           <select name="expense[]" class="form-control">
+           <?php 
+           $expenselist=$this->db->where(array('comp_id'=>$this->session->companey_id,'status'=>1))->get('tbl_expenseMaster')->result();
+           foreach ($expenselist as $key => $value) { ?>
+            <option value="<?= $value->id ?>"> <?= $value->title ?></option>
+          <?php } ?>
+           </select> 
+          </td>
+                  <td width="30%">
+                  <input name="amount[]" class="form-control amount" onkeyup="total()" id="amount" value="0"  >
+                  </td>
+                  <td width="30%">
+                  <input name="imagefile[]"  class="form-control" onchange="Filevalidation(this)"  type="file"  >
+                  </td>
+                  <td width="10%"><a href="javascript:void(0)" class="remove btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                  </tr>
+                  </tbody>
+            <tfoot>
+            <tr>
+            
+            <th style="text-align:right">Total: </th>
+            <th id="total" class="total"></th><th></th>
+            <th></th></tr></tfoot>
+            </table>
+          
+            </div>
+               <br>
+               <button class="btn btn-sm btn-success" type="submit">
+              Add Expense</button>                    
+               <br>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div id="Save_Visit" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add Visits</h4>
+         </div>
+         <div class="modal-body">
+            <div class="row" >
 
 <form action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
-  <input type="hidden" name="enquiry_id" value="<?=$details->enquiry_id?>">
+          <div class="row">
+                        <div class="form-group col-md-12">
+                        <label>Select Visit Type</label>
+                        <div class="form-check">
+                              <label class="radio-inline">
+                              <input name="type"  name="type" value="1" type="radio" checked onchange="handleClick_ch(this);">Current Visit</label>
+                              <label class="radio-inline">
+                              <input type="radio" name="type" value="2" onchange="handleClick_ch(this);">Future Visit</label>
+                          </div>
+                        </div>
+                        </div>
+<input type="hidden" name="enquiry_id" value="<?=$details->enquiry_id?>">
   <input type="hidden" name="enq_code" value="<?=$details->Enquery_id?>">
-    <div class="col-md-12"  style="margin-bottom: 25px; padding: 0px">   
-    
-    <table id="visit_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Visit Date</th>
-          <th>Visit Time</th>
-          <th>Distance Travelled</th>
-          <th>Travelled Type</th>
-          <th>Rating</th>
-          <th>Next Visit Date</th>
-          <th>Next Visit Time</th>
-          <th>Next Visit Location</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <thead>
-      </thead>
-    </table>
-    </div>
-        <div class="form-group col-md-6 visit-date col-md-6">     
+                        
+                <div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
-          <input   name="visit_date" class="form-control form-date">
+          <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>">
         </div>
-    
         <div class="form-group col-md-6 visit-time col-md-6">     
          <label>Visit Time</label>
-          <input type="time" name="visit_time" class="form-control">
+          <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>">
         </div>
-    
-        <div class="form-group col-md-6 distance-travelled col-md-6">     
-        <label>Distance Travelled</label>
-           <input type="text" name="travelled" class="form-control">
-        </div>
-    
-        <div class="form-group col-md-6 distance-travelled-type col-md-6">      
-        <label>DISTANCE TRAVELLED TYPE</label>
-           <input type="text" name="travelled_type" class="form-control">
-        </div>
-    
-        <div class="form-group col-md-6 customer-rating col-md-6">      
-        <label>Customer Rating</label>
-          <select class="form-control" name="rating">
-              <option value="">Select</option>
-              <option value="1 star">1 star</option>
-              <option value="2 star"> 2 star</option>
-              <option value="3 star"> 3 star</option>
-              <option value="4 star"> 4 star</option>
-              <option value="5 star"> 5 star</option>
-            </select>
-        </div>
-        
-         
-      <div class="col-md-12">
-      <label style="color:#283593;">Next Visit Information<i class="text-danger"></i></label>
-       <hr>
-      </div>
-        
-          <div class="form-group col-md-6 next-visit-date col-md-6">      
-            <label>Next Visit Date</label>
-             <input  name="next_visit_date" class="form-control form-date">
-          </div>
-          <div class="form-group col-md-6 next-visit-date col-md-6">      
-            <label>Next Visit Time</label>
-             <input  name="next_visit_time" class="form-control " type="time">
-          </div>
-      
-          <div class="form-group col-md-6 next-visit-location col-md-6">      
-           <label>Next Visit Location</label>
-             <input type="text" name="next_location" class="form-control">
-          </div>
 
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
                <input type="submit" name="submit_only" class="btn btn-primary" value="Save">
             </div>
          </div>
-   </form>
 
+</form>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>   
+
+  
+    <div class="col-md-12"  style="margin-bottom: 25px; padding: 0px">   
+    
+    <table id="visit_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
+      <thead>
+      <tr>
+				          <th><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> </th>
+				          <th >Visit Date</th>
+				          <th >Visit Time</th>
+				          <th >Name</th>
+				          <th >Shortest Distance</th>
+				          <th >Actual Distancee</th>
+				          <th >Rating</th>
+				          <th >Difference</th>
+				          <th >Travel Expense</th>
+				          <th >Other Expense</th>
+				          <th>Total Expense</th>
+                      <th>Action</th>
+				        </tr>
+      </thead>
+      <thead>
+      </thead>
+    </table>
+    </div>
 <script type="text/javascript">
+function handleClick_ch(myRadio) {
+  var valuer= myRadio.value;
+//   alert('test');
+  if(valuer==1){
+  document.getElementById("vdate").disabled = true;  
+  document.getElementById("vtime").disabled = true;  
+  }else{
+    document.getElementById("vdate").disabled = false;  
+  document.getElementById("vtime").disabled = false;  
+  } 
+}
+
+function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+
+function expense_status(){
+      var x = new Array(); 
+      
+      $($(".checkbox1:checked")).each(function(k,v){
+        x.push($(v).val());
+      });
+       approve_status = document.getElementById("approve_status").value;
+       remarks = document.getElementById("remarks").value;
+      $.ajax({
+              type: 'POST',
+              url: '<?= base_url('client/visit_expense_status') ?>',
+              data: {exp_ids:x,status:approve_status,remarks:remarks},
+              success:function(data){
+              //  alert(data);
+               location.reload();
+              } 
+              });
+}
 
 $(document).ready(function(){
   $('#visit_table').DataTable({
@@ -2034,32 +2193,102 @@ $(document).ready(function(){
                   return d;
               }
           },
+          "columnDefs": [{ "orderable": false, "targets":0 }],
+           "order": [[ 1, "desc" ]],
   });
-  
-  
 });
-  $(document).delegate('.visit-delete', 'click', function() {    
-        vid =  $(this).data('id');      
-        if(confirm('Are you sure?')){      
-           $.ajax({
-           url:"<?=base_url('enquiry/delete_visit')?>",
-           type:"post",
-           data:{
-              vid:vid,
-              enq_code:"<?=$details->Enquery_id?>",
-            },
-           success:function(res)
-           { 
-              $("#visit_table").DataTable().ajax.reload(); 
-              Swal.fire('Visit Deleted!', '', 'success');
-           }
-           });
-        }
-     });  
-   
-   
-</script>  
+//   $(document).delegate('.visit-delete', 'click', function() {    
+//         vid =  $(this).data('id');      
+//         if(confirm('Are you sure?')){      
+//            $.ajax({
+//            url:"<?=base_url('enquiry/delete_visit')?>",
+//            type:"post",
+//            data:{
+//               vid:vid,
+//               enq_code:"<?=$details->Enquery_id?>",
+//             },
+//            success:function(res)
+//            { 
+//               $("#visit_table").DataTable().ajax.reload(); 
+//               Swal.fire('Visit Deleted!', '', 'success');
+//            }
+//            });
+//         }
+//      });  
+     function checkvisit(visitid){
+        $(".visit_id_id").val(visitid);                
+}
 
+
+$(function() {
+    $('#add').click(function() {
+      addnewrow();
+    });
+    $('body').delegate('.remove', 'click', function() {
+      $(this).parent().parent().remove();
+    });
+    $('body').delegate('.qtys,.price', 'keyup', function() {
+      var tr = $(this).parent().parent();
+    });
+  });
+//   $( "#amount" ).keypress(function() {
+//     var t = 0;
+//     $('#amount').each(function(i, e) {
+//       var amount = $(this).val() - 0;
+//       t += amount;
+//     });
+//     $('#total').html(t);
+//     alert(t);
+// });
+
+  function total() {
+    var t = 0;
+    $('.amount').each(function(i, e) {
+      var amount = $(this).val() - 0;
+      t += amount;
+    });
+    $('.total').html(t);
+  }
+  function Filevalidation(t)  {
+    var filesize =t.files[0].size;
+    filesize=filesize/1024;
+   var filesizeinkb= filesize.toFixed(0);
+    // alert(filesizeinkb);
+
+    if(filesizeinkb > 1024){
+   alert('File Size not exceed ');
+    }
+	}
+  function addnewrow() {
+    var n = ($('.detail tr').length - 0) + 1;
+    var s = n + 3
+    var r = n + 1
+    var tr = '<tr>' + '<td width="30%"><select name="expense[]" class="form-control"><?php foreach ($expenselist as $key => $value) { ?><option value="<?= $value->id ?>"><?= $value->title ?></option><?php } ?></select></td>'+'<td width="30%"><input id="amount'+n+'" class="form-control amount" name="amount[]"  onkeyup="total()"></td>'+'<td width="30%"><input name="imagefile[]" class="form-control " onchange="Filevalidation(this)"  id="file'+n+'" type="file"  ></td>'+'<td width="10%"><a href="javascript:void(0)" class="remove btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>' + '</tr>';
+    $('.detail').append(tr);
+    // $.getScript("https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js");
+    document.getElementById('amount' + n).addEventListener('keydown', function(e) {
+      var key = e.keyCode ? e.keyCode : e.which;
+      if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+          (key == 65 && (e.ctrlKey || e.metaKey)) ||
+          (key >= 35 && key <= 40) ||
+          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+          (key >= 96 && key <= 105)
+        )) e.preventDefault();
+    });
+     
+
+  }
+  document.getElementById('amount').addEventListener('keydown', function(e) {
+      var key = e.keyCode ? e.keyCode : e.which;
+      if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+          (key == 65 && (e.ctrlKey || e.metaKey)) ||
+          (key >= 35 && key <= 40) ||
+          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+          (key >= 96 && key <= 105)
+        )) e.preventDefault();
+    });
+
+</script>  
 </div>
 <?php
 }

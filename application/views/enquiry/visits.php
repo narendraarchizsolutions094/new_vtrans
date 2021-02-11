@@ -67,7 +67,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                 <i class="fa fa-sliders"></i>
               </a>  
             <div class="dropdown-menu dropdown_css" style="max-height: 400px;overflow: auto; left: -136px;">
-            <?php if(user_access('1024'))  {  ?>
+            <?php if(user_access('1023'))  {  ?>
 
                <a class="btn" data-toggle="modal"  data-target="#approve_expense" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;" onclick="">Approve</a>                        
                <?php } ?>
@@ -267,7 +267,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				<table id="datatable" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
 				      <thead>
 				        <tr>
-				          <th> #</th>
+                <th><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> </th>
 				          <th id="th-1">Visit Date</th>
 				          <th id="th-2">Visit Time</th>
 				          <th id="th-3">Name</th>
@@ -423,11 +423,29 @@ var table2  =$('#datatable').DataTable({
                     return d;
               }
           },
+          "columnDefs": [{ "orderable": false, "targets":0 }],
+           "order": [[ 1, "desc" ]],
   });
 });
 
 
-
+function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
 $("select").select2();
 
 </script>  
