@@ -67,6 +67,7 @@ $("select").select2();
 <div class="row">
 
     <?php
+
             $waypoints=json_decode($details->way_points);
             if(!empty($waypoints)){
             $totalpoints=count($waypoints);
@@ -167,8 +168,13 @@ $("select").select2();
 <div class="col-md-12">
 <hr>
 <center>Expenses</center>
+<?php if(user_access('1024'))  {  ?>
+
 &nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Action</button> 
-  <button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
+<?php 
+} ?>
+<button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
+
 </div>
 <div class="col-md-12">
 <br>
@@ -214,7 +220,11 @@ echo'<span style="color:green">Accepted'.' ( '.$value->remarks.' ) </span>';
   echo'<span style="color:red">Rejected'.' ( '.$value->remarks.' ) </span>';
 } ?></td>
 <td> <?php if($value->file!=''){ ?><a href="<?= base_url('assets/images/user/'.$value->file) ?>" style="btn btn-xs btn-success" target="_BLANK"><i class="fa fa-file"></i></a> <?php } ?>
-  <?php if($value->approve_status==0){ ?>  <a  class="btn btn-xs  btn-danger" href="<?= base_url('visit-expense/delete/'.$value->ids) ?>"><i class="fa fa-trash"></i></a>
+  <?php if($value->approve_status==0){ ?> 
+    <?php if($value->type!=1){ ?>
+      <a  class="btn btn-xs  btn-danger" href="<?= base_url('visit-expense/delete/'.$value->ids) ?>"><i class="fa fa-trash"></i></a>
+ <?php 
+}  ?>
     <?php } ?>
     </td>
 </tr>

@@ -259,19 +259,14 @@ class Visits extends REST_Controller {
                            'data' =>$res,
                         ], REST_Controller::HTTP_OK);
                      }
-            //    }else{
-            //       $res=['message'=>'Visit Travel History Already Present','vd_id'=>''];
-            //       $this->set_response([
-            //          'status' => false,
-            //          'data' =>$res,
-            //       ], REST_Controller::HTTP_OK);
-            // }
-         }else{
-            $this->set_response([
-               'status' => false,
-               'data' =>'Not Supported waypoints',
-            ], REST_Controller::HTTP_OK);
-         }
+                  
+              
+                  }else{
+                     $this->set_response([
+                        'status' => false,
+                        'data' =>'Not Supported waypoints',
+                           ], REST_Controller::HTTP_OK);
+                        }
               }elseif($status==2 ){
 
                $visit_details = $this->db->where(array('id'=>$vd_id))->get('visit_details')->row();
@@ -285,7 +280,7 @@ class Visits extends REST_Controller {
                  if(!empty($visit_details)){
                    $waypoints  = json_decode($visit_details->way_points);   
                    array_push($waypoints, $new_waypoint);
-                 $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
+                   $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
 
                    $data=['visit_status'=>$status,'visit_end'=>date('Y-m-d H:i:s'),'way_points'=>json_encode($waypoints)];
                   $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
@@ -304,7 +299,7 @@ class Visits extends REST_Controller {
                  ], REST_Controller::HTTP_OK);
                }
               }elseif($status==3){
-               $data=['visit_status'=>3,'start_time'=>date('Y-m-d H:i:s')];
+               $data=['meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s')];
                $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
                $res=['message'=>'Meeting Started'];
                $this->set_response([
@@ -312,7 +307,7 @@ class Visits extends REST_Controller {
                   'data' =>$res,
                ], REST_Controller::HTTP_OK);
               }elseif($status==4){
-               $data=['visit_status'=>4,'end_time'=>date('Y-m-d H:i:s')];
+               $data=['meeting_status'=>2,'end_time'=>date('Y-m-d H:i:s')];
                $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
                $res=['message'=>'Meeting Ended'];
                $this->set_response([
@@ -369,7 +364,7 @@ class Visits extends REST_Controller {
                'data' =>$res,
             ], REST_Controller::HTTP_OK);
            }   
-    }
+   }
 
   
 
@@ -611,7 +606,7 @@ class Visits extends REST_Controller {
       for ($i=0; $i < $totalpoints; $i+=$cuts) { 
         array_push($newpoints,$way_points[$i]);
       }
-      $newpoints = array_reverse($newpoints);
+      // $newpoints2 = array_reverse($newpoints);
       // print_r($way_points);
        $lastKey = key(array_slice($newpoints, -1, 1, true));
       $origins=$newpoints[0];
@@ -624,7 +619,7 @@ class Visits extends REST_Controller {
          // print_r(implode(',',$value_d));
          $fdata[]=implode(',',$value_d);
       }
-      $finalwaypoints=implode('%7Cvia:-',$fdata);
+      $finalwaypoints=implode('%7C',$fdata);
       // $km_rate = $this->user_model->get_user_meta($user_id,array('km_rate'));
       // $km_rate['km_rate'];
       // $rate=1;
@@ -635,12 +630,7 @@ class Visits extends REST_Controller {
 // die();
 
 $url='https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$origins.'&destinations='.$destinations.'&key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s';
-// $actualurl='https://maps.googleapis.com/maps/api/directions/json?origin='.$origins.'&destination='.$destinations.'&waypoints=via:-'.$finalwaypoints.'&key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s';
-//   print_r($actualurl);  
-
-//   die();
-
-
+ $actualurl='https://maps.googleapis.com/maps/api/directions/json?origin='.$origins.'&destination='.$destinations.'&waypoints='.$finalwaypoints.'&key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s';
     //actual distance
 
      
@@ -671,13 +661,21 @@ $url='https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&or
     }
 
     }
+
+    //actual distance
+
+
+
    //  print_r($sum);
    //  print_r($dsresult['elements']);
     /* close curl */
     curl_close($curl);  
+
     $sum = $sum/1000;
 $sum = round($sum, 2, PHP_ROUND_HALF_UP);
-   $data_up=['idealDistance'=>$ideald+$sum,'actualDistance'=>$actiuald+$sum];
+$fdistance=$this->distance_actual($actualurl);
+// die();
+   $data_up=['idealDistance'=>$ideald+$sum,'actualDistance'=>$actiuald+$fdistance];
     $this->db->where('id',$visit_id)->update('tbl_visit',$data_up);
     //fetch user km rate
     $km_rate = $this->user_model->get_user_meta($user_id,array('km_rate'));
@@ -687,12 +685,50 @@ $sum = round($sum, 2, PHP_ROUND_HALF_UP);
     //add and update expense here
     $get_dis=$this->db->where(array('visit_id'=>$visit_id,'type'=>1,'created_by'=>$user_id,'comp_id'=>$comp_id))->get('tbl_expense');
       if($get_dis->num_rows()==0){
-         $exp_data=['visit_id'=>$visit_id,'type'=>1,'amount'=>($ideald+$sum)*$rate,'expense'=>0,'comp_id'=>$comp_id,'created_by'=>$user_id];
+         $exp_data=['visit_id'=>$visit_id,'type'=>1,'amount'=>($fdistance)*$rate,'expense'=>0,'comp_id'=>$comp_id,'created_by'=>$user_id];
         $this->db->insert('tbl_expense',$exp_data);
       }else{
-         $exp_data=['amount'=>($ideald+$sum)*$rate,'expense'=>0,'comp_id'=>$comp_id];
-         $this->db->where(array('visit_id'=>$visit_id,'type'=>1,'created_by'=>$user_id,'comp_id'=>$comp_id))->upadte('tbl_expense',$exp_data);
+         $expfinal=$get_dis->row()->amount;
+         $exp_data=['amount'=>$expfinal+($fdistance *$rate),'expense'=>0,'comp_id'=>$comp_id];
+         $this->db->where(array('visit_id'=>$visit_id,'type'=>1,'created_by'=>$user_id,'comp_id'=>$comp_id))->update('tbl_expense',$exp_data);
       }
 
+   }
+   public function distance_actual($actualurl)
+   {
+      
+    /* eCurl */
+    $curl = curl_init($actualurl);
+
+    /* Set JSON data to POST */
+   //  curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        
+    /* Define content type */
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        
+    /* Return json */
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        
+    /* make request */
+    $result = curl_exec($curl);
+    curl_close($curl);  
+         $sum=0;
+    $dresult=json_decode($result);
+    foreach ($dresult->routes as $key => $valuet) {
+      // print_r($value->legs);
+    foreach ($valuet->legs as $key => $values) {
+      // print_r($values->steps);
+      foreach ($values->steps as $key => $valuess) {
+                  $sum +=$valuess->distance->value;
+      }
+      }
+      }
+   if($sum!=0){
+   $sum = $sum/1000;
+   $sum = round($sum, 2, PHP_ROUND_HALF_UP);
+   }else{
+      $sum=0;
+   }
+return $sum;
    }
 }
