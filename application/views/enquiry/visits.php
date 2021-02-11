@@ -267,7 +267,9 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-11" >Diffrence</th>
-				          <th id="th-12" >Expense</th>
+				          <th >Travel Expense</th>
+				          <th  >Other Expense</th>
+				          <th  >Total Expense</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
@@ -282,7 +284,7 @@ $('input[name="filter_checkbox"]').click(function(){
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
-            <h4 class="modal-title">Update Expense Approval</h4>
+            <h4 class="modal-title"> Expense Approval</h4>
          </div>
          <div class="modal-body">
             <div class="row">
