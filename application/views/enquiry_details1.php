@@ -1971,7 +1971,7 @@ if(user_access('1020'))
              </select>
             </div>
             </div>
-            <input id="visit_id" class="form-control visit_id" name="visit_id"  value="0" hidden>
+            <input id="visit_id" class="form-control visit_id" name="visit_id"  value="0" hidden type="hidden">
 
             <div class="col-md-12">
             <div class="form-group">
@@ -2003,7 +2003,7 @@ if(user_access('1020'))
          <div class="modal-body">
             <form  action="<?php echo base_url(); ?>client/add_expense" method="POST" enctype='multipart/form-data'>  
             <div class="row">
-          <input id="visit_id_id" class="form-control visit_id_id" name="visit_id"  >
+          <input id="visit_id_id" class="form-control visit_id_id" name="visit_id" type="hidden"  hidden >
 
             <table class="table table-responsive">
                   <thead>
@@ -2111,9 +2111,9 @@ if(user_access('1020'))
     <table id="visit_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
       <thead>
       <tr>
-				          <th><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> </th>
-				          <th >Visit Date</th>
-				          <th >Visit Time</th>
+				          <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> </th>
+				          <th width="15%">Visit Date</th>
+				          <th width="15%">Visit Time</th>
 				          <th >Name</th>
 				          <th >Shortest Distance</th>
 				          <th >Actual Distancee</th>

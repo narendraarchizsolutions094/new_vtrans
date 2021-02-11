@@ -3487,6 +3487,7 @@ echo  $details1;
         $ix=1;
         foreach ($result as $res)
         {
+            // $res->
             $percentChange=0;
             $km_rate = $this->user_model->get_user_meta($res->user_id,array('km_rate'));
             if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
@@ -3534,7 +3535,7 @@ echo  $details1;
                 $sub[] = round(abs($res->visit_otexpSum));
                 $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
             if($colsall || in_array(9,$cols))
-                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-inr'></i></a>":'';
+                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-plus'></i></a>":'';
             $data[] =$sub;
         }
     

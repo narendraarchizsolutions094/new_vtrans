@@ -54,9 +54,9 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                       <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>> Created By</label>
                     </li>  
                     <li>
-                      <label>
+                      <!-- <label>
                       <input type="checkbox" value="expensetype" id="expensetypecheckbox" name="filter_checkbox" <?php if(in_array('expensetype',$variable)){echo'checked';} ?>> Created By</label>
-                    </li>        
+                    </li>         -->
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
@@ -267,10 +267,10 @@ $('input[name="filter_checkbox"]').click(function(){
 				<table id="datatable" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
 				      <thead>
 				        <tr>
-                <th><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> </th>
-				          <th id="th-1">Visit Date</th>
-				          <th id="th-2">Visit Time</th>
-				          <th id="th-3">Name</th>
+                <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
+				          <th id="th-1" width="15%">Visit Date</th>
+				          <th id="th-2" width="15%">Visit Time</th>
+				          <th id="th-3" >Name</th>
 				          <th id="th-10">Company Name</th>
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distancee</th>
