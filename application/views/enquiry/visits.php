@@ -125,10 +125,18 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     </div>
      <div class="col-lg-3" id="differencefilter" style="<?php if(!in_array('difference',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-            <label for="amount">Difference range: <span id="range_value">0 - 100</span></label>
-            <input type="hidden" id="min">
-            <input type="hidden" id="max">
-          <div id="slider-range"></div>
+            <!-- <label for="amount">Difference range: <span id="range_value">0 - 100</span></label> -->
+            <label>Minimum Difference </label>
+            <input class="form-control" id="min" onchange="refresh_table()">
+           
+        </div>
+    </div>
+    <div class="col-lg-3" id="differencefilter" style="<?php if(!in_array('difference',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+        
+            <label>Maximum Difference</label>
+            <input class="form-control"  id="max" onchange="refresh_table()">
+          <!-- <div id="slider-range"></div> -->
         </div>
     </div>
 
@@ -265,7 +273,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
-				          <th id="th-11" >Diffrence</th>
+				          <th id="th-11" >Difference</th>
 				          <th >Travel Expense</th>
 				          <th  >Other Expense</th>
 				          <th  >Total Expense</th>
