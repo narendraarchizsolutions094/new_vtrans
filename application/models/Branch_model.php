@@ -68,7 +68,7 @@ class Branch_model extends CI_model
 		return $this->db->get();
 	}
 
-	public function common_list($where=array())
+	public function common_list($where=array(),$comp_id=0)
 	{
 		if(empty($comp_id))
 			$comp_id= $this->session->companey_id;

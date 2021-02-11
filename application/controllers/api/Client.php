@@ -376,19 +376,26 @@ public function active_clients_page_post(){
       else
         $data_type_id = $_POST['other_id'];
 
-       $process = implode(",", $process_id);
+        if(is_array($process_id))
+             $process = implode(",", $process_id);
+        else
+          $process = $process_id;
+
             $res= array();
-            if(!empty($user_id)){
-                    $user_role1 = $this->User_model->read_by_id($user_id); 
-                    if(!empty($user_role1)){
-              $user_role=$user_role1->user_roles;
+            if(!empty($user_id))
+            {
+                $user_role1 = $this->User_model->read_by_id($user_id); 
+                if(!empty($user_role1))
+                {
+                  $user_role=$user_role1->user_roles;
 
 
             $total = $this->enquiry_model->active_enqueries_api($user_id,$data_type_id,$user_role,$process)->num_rows();
            
              $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,$data_type_id,$user_role,$process,$offset,$limit);
     
-               if(!empty($data['active_enquiry']->result())){
+               if(!empty($data['active_enquiry']->result()))
+               {
 
                     $res['offset'] = $offset;
                     $res['limit'] = $limit;
@@ -400,20 +407,31 @@ public function active_clients_page_post(){
                       
                     array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->org_name,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
                  } 
-               }
-               
-               if(empty($res)){array_push($res,array('error'=>'enquiry not find'));}
-            }else{array_push($res,array('error'=>'user not exist'));}
-             
-          $this->set_response([
-                'status' => TRUE,
-                'client' =>$res
+
+                  $this->set_response([
+                'status' => true,
+                'client' => $res, 
                  ], REST_Controller::HTTP_OK);
-        
+               }
+               else
+               {
+                   $this->set_response([
+                    'status' => false,
+                    'message' => array('error'=>'No data found!') 
+                     ], REST_Controller::HTTP_OK);
+               }
+            }
+            else
+            {
+               $this->set_response([
+                'status' => false,
+                'message' => array('error'=>'user not exist!') 
+                 ], REST_Controller::HTTP_OK);
+            }
         }else{
   
-     $this->set_response([
-                 'status' => false,
+           $this->set_response([
+                'status' => false,
                 'message' => array('error'=>'not found!') 
                  ], REST_Controller::HTTP_OK);
         }

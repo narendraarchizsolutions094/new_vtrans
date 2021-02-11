@@ -2414,7 +2414,7 @@ $cpny_id=$this->session->companey_id;
             $tab_list[$r->status]['updated_today'] = !empty($r->counter)?$r->counter:0;
         }
 
-        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason,enquiry.status FROM enquiry left JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND tp.drop_reason IS NULL GROUP BY enquiry.status");
+        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
         $result4 = $query4->result();
 
         foreach($result4 as $r)
@@ -2422,7 +2422,7 @@ $cpny_id=$this->session->companey_id;
             $tab_list[$r->status]['active'] = !empty($r->counter)?$r->counter:0;
         }
 
-        $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status = 1 GROUP BY enquiry.status");
+        $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status >0 GROUP BY enquiry.status");
 
         $result5 = $query5->result();
         foreach($result5 as $r)
@@ -2898,7 +2898,7 @@ $cpny_id=$this->session->companey_id;
             }
         }
 
-        $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status = 1 GROUP BY enquiry.status");
+        $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status = 0 GROUP BY enquiry.status");
 
         $result5 = $query5->result();
         foreach($result5 as $r)

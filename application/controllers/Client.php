@@ -2876,4 +2876,9 @@ $_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2
         echo $this->load->view('aggrement/input-vtrans',array(),TRUE);
         
     }
+
+    function new_vtrans()
+    {
+        $this->load->view('aggrement/new-input-vtrans');
+    }
 }
