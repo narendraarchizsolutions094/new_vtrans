@@ -2111,7 +2111,7 @@ if(user_access('1020'))
     <table id="visit_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
       <thead>
       <tr>
-				          <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> </th>
+				          <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
 				          <th width="15%">Visit Date</th>
 				          <th width="15%">Visit Time</th>
 				          <th >Name</th>
