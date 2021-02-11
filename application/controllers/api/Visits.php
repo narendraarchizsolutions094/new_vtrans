@@ -259,19 +259,14 @@ class Visits extends REST_Controller {
                            'data' =>$res,
                         ], REST_Controller::HTTP_OK);
                      }
-            //    }else{
-            //       $res=['message'=>'Visit Travel History Already Present','vd_id'=>''];
-            //       $this->set_response([
-            //          'status' => false,
-            //          'data' =>$res,
-            //       ], REST_Controller::HTTP_OK);
-            // }
-         }else{
-            $this->set_response([
-               'status' => false,
-               'data' =>'Not Supported waypoints',
-            ], REST_Controller::HTTP_OK);
-         }
+                  
+              
+                  }else{
+                     $this->set_response([
+                        'status' => false,
+                        'data' =>'Not Supported waypoints',
+                           ], REST_Controller::HTTP_OK);
+                        }
               }elseif($status==2 ){
 
                $visit_details = $this->db->where(array('id'=>$vd_id))->get('visit_details')->row();
@@ -285,7 +280,7 @@ class Visits extends REST_Controller {
                  if(!empty($visit_details)){
                    $waypoints  = json_decode($visit_details->way_points);   
                    array_push($waypoints, $new_waypoint);
-                 $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
+                   $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
 
                    $data=['visit_status'=>$status,'visit_end'=>date('Y-m-d H:i:s'),'way_points'=>json_encode($waypoints)];
                   $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
@@ -304,7 +299,7 @@ class Visits extends REST_Controller {
                  ], REST_Controller::HTTP_OK);
                }
               }elseif($status==3){
-               $data=['visit_status'=>3,'start_time'=>date('Y-m-d H:i:s')];
+               $data=['meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s')];
                $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
                $res=['message'=>'Meeting Started'];
                $this->set_response([
@@ -312,7 +307,7 @@ class Visits extends REST_Controller {
                   'data' =>$res,
                ], REST_Controller::HTTP_OK);
               }elseif($status==4){
-               $data=['visit_status'=>4,'end_time'=>date('Y-m-d H:i:s')];
+               $data=['meeting_status'=>2,'end_time'=>date('Y-m-d H:i:s')];
                $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
                $res=['message'=>'Meeting Ended'];
                $this->set_response([
@@ -369,7 +364,7 @@ class Visits extends REST_Controller {
                'data' =>$res,
             ], REST_Controller::HTTP_OK);
            }   
-    }
+   }
 
   
 
