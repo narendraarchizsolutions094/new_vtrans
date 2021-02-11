@@ -164,12 +164,16 @@ echo'
                   <input type="text" name="tracking_no" class="form-control" onblur="loadTracking(this)" value="<?php if(!empty($ticket->tracking_no)){ echo $ticket->tracking_no;} ?>">
                 </div>
               </div>
-              <script type="text/javascript">
-
-                $(document).ready(function(){
-                  loadTracking($("input[name=tracking_no]").get(0));
-                });
-              </script>
+              <?php
+              if($ticket->process_id!=199){ ?>
+                <script type="text/javascript">
+                  $(document).ready(function(){
+                    loadTracking($("input[name=tracking_no]").get(0));
+                  });
+                </script>
+              <?php
+              }
+              ?>
 
               <?php if($ticket->complaint_type=='1'){
                   echo'<script type="text/javascript">
