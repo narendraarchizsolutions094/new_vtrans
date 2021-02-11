@@ -28,7 +28,7 @@ $("select").select2();
 </script>
 <!-- ///area// -->
 <div class="row">
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
     <div class="form-group col-md-3">
                 <label>Travel Start Time</label>
                    <input value="<?= $details->visit_start ?>" disabled class="form-control">
@@ -46,11 +46,11 @@ $("select").select2();
                 <input value="<?= $details->end_time ?>" disabled class="form-control">
                </div>
         
-    </div>
+    </div> -->
 
 </div>
 <div class="row">
-<div class="col-md-12">
+<!-- <div class="col-md-12">
 <div class="form-group col-md-3">
 <label>Remarks</label>
                 <input value="<?= $details->remarks ?>" disabled class="form-control">
@@ -63,7 +63,7 @@ $("select").select2();
 <label>Travelled Type</label>
 <input value="<?= $details->travelled_type ?>" disabled class="form-control">
 </div>
-</div>
+</div> -->
 <div class="row">
 
     <?php
@@ -90,7 +90,7 @@ $("select").select2();
             $dlati = $lat2 - $lat1; 
             $val = pow(sin($dlati/2),2)+cos($lat1)*cos($lat2)*pow(sin($dlong/2),2); 
             $res = 2 * asin(sqrt($val)); 
-            $radius = 3958.756; 
+            $radius = 3963.1906; 
             return ($res*$radius); 
             } 
             // latitude and longitude of Two Points 
@@ -137,7 +137,7 @@ $("select").select2();
 
     ?>
 
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
  <div class="form-group col-md-3">
                 <label>Travelled Distance</label>
                 <input value="<?php if(!empty($sum)){echo round($sum,2).' Km';}else{ echo'N/A';}  ?>" disabled class="form-control">
@@ -156,27 +156,29 @@ $("select").select2();
                 <input  style="<?php 
              if(abs($percentChange)>20){
                echo  'border:1px solid red;background-color: #eae0e0;';
-            }
+                }
             ?>" value="<?php if(!empty($percentChange)){echo round($percentChange,0).' % ';}else{ echo '0'.' %';}  ?>" disabled class="form-control">
             </div>
-            </div>
+            </div> -->
 </div>
 <div class="row">
 <br>
 <br>
 <div class="col-md-12">
 <hr>
-<center>Other Expense</center>
-&nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Expense Approval</button> 
+<center>Expenses</center>
+&nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Action</button> 
   <button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
 </div>
 <div class="col-md-12">
 <br>
 <table class="table table-responseive table-stripped">
 <thead >
+
 <tr>
-<th><input type="checkbox" name="approve_all" class="checked_all1" value="check all"> S. No</th>
+<th><input type="checkbox" id="selectall" onclick="select_all()"> S. No</th>
 <th>Expense Type</th>
+<th>Title</th>
 <th>Amount</th>
 <th>Status</th>
 <th>Action</th>
@@ -184,17 +186,27 @@ $("select").select2();
 </thead>
 <tbody>
 <?php 
-                $user_id=$this->session->user_id;
-                $comp_id=$this->session->companey_id;
-$i=1;
+    $user_id=$this->session->user_id;
+    $comp_id=$this->session->companey_id;
+$i=2;
 $totalexp=0;
-$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
+$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense','left')->get('tbl_expense')->result();
 foreach ($expense as $key => $value) { 
  $tamount= $value->amount
   ?>
 <tr>
 <td><input  type="checkbox" name="approve[]" class="checkbox1" value="<?= $value->ids ?>"> <?= $i++; ?></td>
-<td><?= $value->title ?></td>
+<td><?php if($value->type==1){
+  echo'Travel Expense';
+}else{
+  echo'Other Expense';
+
+} ?></td>
+<td><?php if($value->type==1){
+  echo'Travel Expense';
+}else{
+  echo $value->title;
+} ?></td>
 <td><?= $value->amount ?> ₹</td>
 <td><?php  if($value->approve_status==0){echo'<span >Pending</span>';}elseif($value->approve_status==2){
 echo'<span style="color:green">Accepted'.' ( '.$value->remarks.' ) </span>';
@@ -362,7 +374,7 @@ $totalexp += $tamount;
                 </div>
 
                <div class="form-group col-md-6">
-                  <label>Related To (Primary Contact)</label>
+                  <label>Contact Name</label>
                   <select class="form-control" name="enquiry_id">
                     <!-- <option value="">Select</option> -->
                     <?php
@@ -474,7 +486,7 @@ $totalexp += $tamount;
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
-            <h4 class="modal-title">Update Expense Approval</h4>
+            <h4 class="modal-title"></h4>
          </div>
          <div class="modal-body">
             <div class="row">
@@ -685,5 +697,32 @@ $(function() {
               } 
               });
     }
+    function select_all(){
+
+var select_all = document.getElementById("selectall"); //select all checkbox
+var checkboxes = document.getElementsByClassName("choose-col"); //checkbox items
+
+//select all checkboxes
+select_all.addEventListener("change", function(e){
+  for (i = 0; i < checkboxes.length; i++) { 
+    checkboxes[i].checked = select_all.checked;
+  }
+});
+
+
+for (var i = 0; i < checkboxes.length; i++) {
+  checkboxes[i].addEventListener('change', function(e){ //".checkbox" change 
+    //uncheck "select all", if one of the listed checkbox item is unchecked
+    if(this.checked == false){
+      select_all.checked = false;
+    }
+    //check "select all" if all checkbox items are checked
+    if(document.querySelectorAll('.choose-col:checked').length == checkboxes.length){
+      select_all.checked = true;
+    }
+  });
+}
+
+}
 
   </script>

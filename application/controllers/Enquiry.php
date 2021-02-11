@@ -3487,50 +3487,18 @@ echo  $details1;
         $ix=1;
         foreach ($result as $res)
         {
-            $sum=0;
-            $km=0;
             $percentChange=0;
-            if(!empty($res->way_points)){
-            $waypoints=json_decode($res->way_points);
-            $totalpoints=count($waypoints);
-            $newpoints=array();
-            $cuts=$totalpoints/23;
-            for ($i=0; $i < $totalpoints; $i+=$cuts) { 
-              array_push($newpoints,$waypoints[$i]);
-            }
-            $lastKey = key(array_slice($newpoints, -1, 1, true));
-            $firstpoint=$newpoints[0];
-            $secondpoint=$newpoints[$lastKey];
-           
-            // latitude and longitude of Two Points 
-            $latitudeFrom = $firstpoint[0]; 
-            $longitudeFrom =  $firstpoint[1];
-            $latitudeTo = $secondpoint[0]; 
-            $longitudeTo = $secondpoint[1]; 
-            // Distance between Mumbai and New York 
-            $inmiles=$this->twopoints_on_earth( $latitudeFrom, $longitudeFrom,  
-            $latitudeTo,  $longitudeTo); 
-            $km=$inmiles* 1.60934;
-            $x=$waypoints;
-               
-             for ($i=0; $i <count($x)-2; $i++) { 
-                 $sum +=  $this->points_on_earth($x[$i][0],$x[$i][1],$x[$i+1][0],$x[$i+1][1]);
+            $km_rate = $this->user_model->get_user_meta($res->user_id,array('km_rate'));
+            if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
+              $rate=10;;
               }
-              $sum;
-              $kmamount=10;
-              $totalpay=$kmamount*$km;
-              $actualamt=$sum*$kmamount;
-           if($actualamt > 0 && $totalpay > 0){
-           $dif= $this->abs_diff($actualamt,$totalpay);
-                $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
-                  }else{
-                          $actualamt=0;
-                          $totalpay=0;
-                  }
-                                    // if(abs($percentChange) < 20){
-                                    //     $percentChange="<span style'color:red'>".$percentChange."</span>";
-                                    //                                     }
-            }
+            $totalpay=($res->actualDistance)*$rate;
+            $idealamt=($res->idealDistance)*$rate;
+         if($idealamt > 0 && $totalpay > 0){
+         $dif= $this->abs_diff($idealamt,$totalpay);
+              $percentChange = (($totalpay - $idealamt) / $idealamt)*100;
+                }
+           
             $sub = array();
             $time = $res->visit_time=='00:00:00'?null:date("g:i a", strtotime($res->visit_time));
             $sub[] ='<input  type="checkbox" name="approve[]" class="checkbox1"  value="'.$res->vids.'"> '. $ix++;
@@ -3555,15 +3523,16 @@ echo  $details1;
             if($colsall || in_array(10,$cols))
             $sub[] = $res->company??'NA';
             if($colsall || in_array(4,$cols))
-            $sub[] = round($sum);
+            $sub[] =$res->idealDistance.' Km';
         if($colsall || in_array(5,$cols))
-            $sub[] = round($km);
+            $sub[] =$res->actualDistance.' Km';
             if($colsall || in_array(6,$cols))
                 $sub[] = $res->rating!=''?$res->rating:'NA';
                 if($colsall || in_array(11,$cols))
                 $sub[] = round(abs($percentChange));
-                if($colsall || in_array(12,$cols))
                 $sub[] = round(abs($res->visit_expSum));
+                $sub[] = round(abs($res->visit_otexpSum));
+                $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
             if($colsall || in_array(9,$cols))
                 $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-inr'></i></a>":'';
             $data[] =$sub;

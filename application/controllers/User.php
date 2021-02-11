@@ -165,7 +165,10 @@ class User extends CI_Controller
     }
     function upload_user()
     {
-        if (user_role('120') == true) {}
+        if (user_role('120') == true) {
+
+
+        }
         if (!is_dir('assets/csv')) {
             mkdir('assets/csv', 0777, TRUE);
         }
@@ -480,10 +483,13 @@ class User extends CI_Controller
         // die();
         #-------------------------------#
         if ($this->form_validation->run() === true) {
-            if($this->session->companey_id==65){
+            if($this->session->companey_id==65 OR $this->session->companey_id == 1){
                 $this->user_model->set_user_meta($this->input->post('dprt_id'),array(
-                    'reporting_location'=>$this->input->post('reporting_location')
+                    'reporting_location'=>$this->input->post('reporting_location'),
+                    'km_rate'=>$this->input->post('km_rate')
                 ));
+                
+               
             }
             #if empty $dprt_id then insert data
             if (empty($this->input->post('dprt_id'))) {
@@ -492,9 +498,16 @@ class User extends CI_Controller
                       //insert wharsapp api
                     $this->user_model->set_user_meta($insert_id,array(
                         'api_name'=>$this->input->post('api_name'),
-                        'api_url' => $this->input->post('api_url')
+                        'api_url' => $this->input->post('api_url'),
+
                         )
+
                     );
+                    if($this->session->companey_id==65 OR $this->session->companey_id==1 ){
+                        $this->user_model->set_user_meta($insert_id,array(
+                            'km_rate'=>$this->input->post('km_rate')
+                        ));
+                    }
                     $this->session->set_flashdata('message', display('save_successfully'));
                 } else {
                     $this->session->set_flashdata('exception', display('please_try_again'));
@@ -512,6 +525,7 @@ class User extends CI_Controller
                             'api_url' => $this->input->post('api_url')
                             )
                         );
+                      
                         $this->session->set_flashdata('message', display('update_successfully'));
                     }
                 } else {

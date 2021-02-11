@@ -3,7 +3,6 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <!-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script> -->
-
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
   <div class="col-md-4 col-sm-4 col-xs-4"> 
           <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a> 
@@ -126,10 +125,18 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     </div>
      <div class="col-lg-3" id="differencefilter" style="<?php if(!in_array('difference',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-            <label for="amount">Difference range: <span id="range_value">0 - 100</span></label>
-            <input type="hidden" id="min">
-            <input type="hidden" id="max">
-          <div id="slider-range"></div>
+            <!-- <label for="amount">Difference range: <span id="range_value">0 - 100</span></label> -->
+            <label>Minimum Difference </label>
+            <input class="form-control" id="min" onchange="refresh_table()">
+           
+        </div>
+    </div>
+    <div class="col-lg-3" id="differencefilter" style="<?php if(!in_array('difference',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+        
+            <label>Maximum Difference</label>
+            <input class="form-control"  id="max" onchange="refresh_table()">
+          <!-- <div id="slider-range"></div> -->
         </div>
     </div>
 
@@ -266,8 +273,10 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
-				          <th id="th-11" >Diffrence</th>
-				          <th id="th-12" >Expense</th>
+				          <th id="th-11" >Difference</th>
+				          <th >Travel Expense</th>
+				          <th  >Other Expense</th>
+				          <th  >Total Expense</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
@@ -282,7 +291,7 @@ $('input[name="filter_checkbox"]').click(function(){
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
-            <h4 class="modal-title">Update Expense Approval</h4>
+            <h4 class="modal-title"> Expense Approval</h4>
          </div>
          <div class="modal-body">
             <div class="row">
