@@ -168,7 +168,7 @@ $("select").select2();
 <div class="col-md-12">
 <hr>
 <center>Expenses</center>
-<?php if(user_access('1023'))  {  ?>
+<?php if(user_access('1024'))  {  ?>
 
 &nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Action</button> 
 <?php 
