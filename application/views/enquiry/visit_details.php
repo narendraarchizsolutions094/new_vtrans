@@ -167,7 +167,7 @@ $("select").select2();
 <div class="col-md-12">
 <hr>
 <center>Expenses</center>
-&nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Expense Approval</button> 
+&nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Action</button> 
   <button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
 </div>
 <div class="col-md-12">
@@ -486,7 +486,7 @@ $totalexp += $tamount;
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
-            <h4 class="modal-title">Update Expense Approval</h4>
+            <h4 class="modal-title"></h4>
          </div>
          <div class="modal-body">
             <div class="row">
