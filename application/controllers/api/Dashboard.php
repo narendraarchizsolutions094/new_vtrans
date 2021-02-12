@@ -306,7 +306,7 @@ class Dashboard extends REST_Controller {
                 $enquiry_separation = json_decode($enquiry_separation, true);
                     foreach ($enquiry_separation as $key => $value) {
                        if($key==4){ $img='orders.jpeg'; }else{
-                        $img='fo.jpeg';
+                        $img='fit.jpeg';
                        }
                     $data[]=['key'=>$key,'title'=>$value['title'],'icon'=>$base_url.$img ];                        
                     }

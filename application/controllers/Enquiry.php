@@ -1264,7 +1264,7 @@ class Enquiry extends CI_Controller
                     </div>
                   </div>
                 </li>';
-            } else if ($comments->comment_msg == 'Move to leads') {
+            } else if ($comments->comment_msg == 'Move to '.display('lead').'') {
                 $html .= '<li>
                   <div class="cbp_tmicon cbp_tmicon-phone"  style="background:#2980b9;"></div>
                   <div class="cbp_tmlabel"  style="background:#95a5a6;">
@@ -3468,6 +3468,31 @@ echo  $details1;
         $diff = $v1 - $v2;
         return $diff < 0 ? (-1) * $diff : $diff;
     }
+    public function notify_rmanager()
+    {
+       $remarks= $this->input->post('remarks');
+       $visit_id= $this->input->post('visit_id');
+       $user_id=$this->session->user_id;
+      $report_touser= $this->db->select('report_to,pk_i_admin_id')->where('pk_i_admin_id',$user_id)->get('tbl_admin')->row();
+       $report_to=$report_touser->report_to;
+                $ins_arr = array(
+                    'comp_id'        =>  $this->session->companey_id,
+                    'subject'        =>  'Need for approval',
+                    'task_type'      =>  18,
+                    'task_status'      =>  2,
+                    'query_id'       =>  $visit_id,
+                    'task_remark'    =>  $remarks,
+                      'task_date'    =>   date("d-m-Y"),
+                    'task_time'        => date("H:i:s"),
+                    'related_to' => $report_to,
+                    'create_by'      =>  $this->session->user_id
+                );
+                $this->db->insert('query_response',$ins_arr);
+                $this->session->set_flashdata('message', 'Request successfully submitted');
+                // redirect($url);
+                redirect($this->agent->referrer()); 
+    }
+    
     public function visit_load_data()
     {
         //print_r($_POST); exit(); 

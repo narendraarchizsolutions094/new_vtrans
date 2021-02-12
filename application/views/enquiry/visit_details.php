@@ -104,9 +104,12 @@ $("select").select2();
 <tr>
 <th> S. No</th>
 <th>Travel Start </th>
+<th>Travel End </th>
+<th>In Hours </th>
 <th>Meeting Start </th>
 <th>Meeting End </th>
-<th>Travel END </th>
+<th>In Hours </th>
+
 </tr>
 </thead>
 <tbody>
@@ -121,13 +124,28 @@ foreach ($visittable as $key => $value) { ?>
  if(($value->visit_start)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->visit_start)); } ?>
 </td>
 <td>
-  <?php  if(($value->visit_end)!=NULL){ echo date("F jS, Y, g:i a ", strtotime($value->visit_end)); } ?>
+  <?php  if(($value->visit_end)!=NULL ){ echo date("F jS, Y, g:i a ", strtotime($value->visit_end)); } ?>
+</td>
+<td>
+<?php if(($value->visit_end!=NULL AND $value->visit_start!=NULL)){
+ $minutes= round(abs(strtotime($value->visit_start) - strtotime($value->visit_end))/60);
+  echo $hours = floor($minutes / 60).':'.($minutes -   floor($minutes / 60) * 60); }else{
+    echo'N/A';
+
+  } ?>
 </td>
 <td>
 <?php  if(($value->start_time)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->start_time)); } ?>
 </td>
 <td>
 <?php  if(($value->end_time)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->end_time)); } ?>
+</td>
+<td>
+<?php if(($value->start_time!=NULL AND $value->end_time!=NULL)){
+ $minutes= round(abs(strtotime($value->start_time) - strtotime($value->end_time))/60);
+  echo $hours = floor($minutes / 60).':'.($minutes -   floor($minutes / 60) * 60); }else{
+    echo'N/A';
+  } ?>
 </td>
 </tr>
 <?php
@@ -168,6 +186,7 @@ $secondpoint=$newpoints[$lastKey];
 &nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Action</button> 
 <?php 
 } ?>
+<button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_approve">Send For Approval</button>
 <button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
 </div>
 <div class="col-md-12">
@@ -354,6 +373,7 @@ function checkAll(ele) {
     </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s&callback=initMap"
   type="text/javascript"></script>
+  
 <div id="Save_Visit" class="modal fade" role="dialog">
    <div class="modal-dialog">
       <!-- Modal content-->
@@ -447,7 +467,36 @@ function checkAll(ele) {
       </div>
    </div>
 </div>   
-
+<div id="add_approve" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title">Send For Approval</h4>
+         </div>
+         <form action="<?= base_url('enquiry/notify_rmanager') ?>" method="POST">
+         <div class="modal-body">
+          <input name="visit_id" class="form-control"  value="<?= $details->visit_id ?>" hidden>
+            <div class="col-md-12">
+            <div class="form-group">
+            <label>Remarks</label>
+            <input class="form-control" name="remarks" type="text" >
+            </div>
+            </div>
+          
+               <br>
+               <button class="btn btn-sm btn-success" type="submit" >
+              Send </button>                    
+               <br>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+         </form>
+      </div>
+      </div>
+      </div>
 <div id="update_remarks" class="modal fade in" role="dialog">
    <div class="modal-dialog">
       <!-- Modal content-->

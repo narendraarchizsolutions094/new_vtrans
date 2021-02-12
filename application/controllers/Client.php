@@ -1841,12 +1841,28 @@ public function all_update_expense_status()
         $comp_id=$this->session->companey_id;
         $user_id=$this->session->user_id;
         $visit_id=$this->session->visit_id;
+      $createdBy= $this->db->select('user_id,id')->where('id',$visit_id)->get('tbl_visit')->row();
+        $createdBy_id=$createdBy->user_id;
     foreach ($_POST['exp_ids'] as $key => $value) {
         // echo $value;
         $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
         // print_r($data);
         $this->db->where(array('comp_id'=>$comp_id,'id'=>$visit_id))->update('tbl_expense',$data);
     }
+    $ins_arr = array(
+        'comp_id'        =>  $this->session->companey_id,
+        'subject'        =>  'Need for approval',
+        'task_type'      =>  18,
+        'task_status'    =>  2,
+        'query_id'       =>  $visit_id,
+        'task_remark'    =>  $_POST['remarks'],
+          'task_date'    =>   date("d-m-Y"),
+        'task_time'      => date("H:i:s"),
+        'related_to'     => $createdBy_id,
+        'create_by'      =>  $this->session->user_id
+    );
+    $this->db->insert('query_response',$ins_arr);
+    $this->session->set_flashdata('message', 'Request successfully submitted');
             }
 }
 
