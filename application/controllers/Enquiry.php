@@ -3485,9 +3485,39 @@ echo  $details1;
         //print_r($cols); exit();
         $data = array();
         $ix=1;
+        $visit_expSum_s =0;
+        $visit_otexpSum_s =0;
+        $total_expSum_s =0;
         foreach ($result as $res)
         {
-            $percentChange=0;
+            $visit_totalexp= $this->db->where(array('tbl_expense.visit_id'=> $res->vids))->count_all_results('tbl_expense');
+            $visit_reject= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 1))->count_all_results('tbl_expense');
+            $visit_approve= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 2))->count_all_results('tbl_expense');
+            $visit_pending= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 0))->count_all_results('tbl_expense');
+            $expstatus='N/A';
+            if($visit_totalexp!=0){
+            if($visit_reject==$visit_totalexp){
+                $expstatus='Rejected ';
+            }elseif($visit_approve==$visit_totalexp){
+                $expstatus='Approved';
+            }elseif($visit_pending==$visit_totalexp){
+                // $expstatus='Pending';
+                $expstatus='Pending';
+            }elseif($visit_reject!=0 AND $visit_approve!=0 OR $visit_pending!=0){
+                $expstatus='Partially Approved';
+            }
+         
+            // if($res->visit_approve!=$totalexpstatus){
+            //     $expstatus='Partially Approved';
+            // }
+            // if($res->visit_reject!=$totalexpstatus){
+            //     $expstatus='Partially Rejected';
+            // }
+             }
+             $visit_expSum=round(abs($res->visit_expSum));
+             $visit_otexpSum=round(abs($res->visit_otexpSum));
+             $total_expSum=round(abs($res->visit_expSum+$res->visit_otexpSum));
+             $percentChange=0;
             $km_rate = $this->user_model->get_user_meta($res->user_id,array('km_rate'));
             if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
               $rate=10;;
@@ -3533,9 +3563,17 @@ echo  $details1;
                 $sub[] = round(abs($res->visit_expSum));
                 $sub[] = round(abs($res->visit_otexpSum));
                 $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
+                $sub[] = '<span class="expstatus">'.$expstatus.'<span>';
+                
+
             if($colsall || in_array(9,$cols))
-                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-inr'></i></a>":'';
+                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-plus'></i></a>":'';
             $data[] =$sub;
+            
+            $visit_expSum_s += $visit_expSum;
+            $visit_otexpSum_s +=$visit_otexpSum;
+            $total_expSum_s += $total_expSum;
+            
         }
     
         $output = array(
@@ -3543,6 +3581,9 @@ echo  $details1;
             "recordsTotal" =>$this->visit_datatable_model->countAll(),
             "recordsFiltered" => $this->visit_datatable_model->countFiltered($_POST),
             "data" => $data,
+            "totalotherExpense" => $visit_otexpSum_s,
+            "totaltravelExp" =>$visit_expSum_s,
+            "totalExpense" =>$total_expSum_s,
         );
         echo json_encode($output);
     }

@@ -13,154 +13,150 @@
   <div class="col-md-4 col-sm-4 col-xs-4"> 
   </div>
   <div class="col-md-4 col-sm-4 col-xs-4 "> 
-  <!-- <a style="float:right;" href="<?= base_url('visit/vist-report') ?>"><button class="btn btn-primary">View Report</button></a> -->
-  
   <button  style="float:right; margin-right:10px;"  data-toggle="modal" data-target="#update_remarks"  class="btn btn-primary">Update  Remarks</button>
- 
   </div>
- 
   <?php } ?>
 </div>
-
 <br>
 <script type="text/javascript">
 $("select").select2();
 </script>
-<!-- ///area// -->
 <div class="row">
-    <!-- <div class="col-md-12">
-    <div class="form-group col-md-3">
-                <label>Travel Start Time</label>
-                   <input value="<?= $details->visit_start ?>" disabled class="form-control">
-                </div>
-                <div class="form-group col-md-3">
-                <label>Travel End Time</label>
-                <input value="<?= $details->visit_end ?>" disabled class="form-control">
-               </div>
-               <div class="form-group col-md-3">
-                <label>Meeting Start Time</label>
-                <input value="<?= $details->start_time ?>" disabled class="form-control">
-               </div>
-               <div class="form-group col-md-3">
-                <label>Meeting End Time</label>
-                <input value="<?= $details->end_time ?>" disabled class="form-control">
-               </div>
-        
-    </div> -->
-
-</div>
 <div class="row">
-<!-- <div class="col-md-12">
-<div class="form-group col-md-3">
-<label>Remarks</label>
-                <input value="<?= $details->remarks ?>" disabled class="form-control">
-</div>
-<div class="form-group col-md-3">
-<label>Star</label>
-                <input value="<?= $details->rating ?>" disabled class="form-control">
-</div>
-<div class="form-group col-md-3">
-<label>Travelled Type</label>
-<input value="<?= $details->travelled_type ?>" disabled class="form-control">
-</div>
-</div> -->
-<div class="row">
-
     <?php
+        $visittable=$this->db->where(array('visit_id'=>$details->visit_id))->get('visit_details')->result();
 
-            $waypoints=json_decode($details->way_points);
-            if(!empty($waypoints)){
-            $totalpoints=count($waypoints);
-            $newpoints=array();
-            // print_r($totalpoints);
-            $cuts=$totalpoints/23;
-            for ($i=0; $i < $totalpoints; $i+=$cuts) { 
-              array_push($newpoints,$waypoints[$i]);
-            }
-             $lastKey = key(array_slice($newpoints, -1, 1, true));
-            $firstpoint=$newpoints[0];
-            $secondpoint=$newpoints[$lastKey];
-            function twopoints_on_earth($latitudeFrom, $longitudeFrom,$latitudeTo,$longitudeTo) 
-            { 
-            $long1 = deg2rad($longitudeFrom); 
-            $long2 = deg2rad($longitudeTo); 
-            $lat1 = deg2rad($latitudeFrom); 
-            $lat2 = deg2rad($latitudeTo); 
-            //Haversine Formula 
-            $dlong = $long2 - $long1; 
-            $dlati = $lat2 - $lat1; 
-            $val = pow(sin($dlati/2),2)+cos($lat1)*cos($lat2)*pow(sin($dlong/2),2); 
-            $res = 2 * asin(sqrt($val)); 
-            $radius = 3963.1906; 
-            return ($res*$radius); 
-            } 
-            // latitude and longitude of Two Points 
-            $latitudeFrom = $firstpoint[0]; 
-            $longitudeFrom =  $firstpoint[1];
-            $latitudeTo = $secondpoint[0]; 
-            $longitudeTo = $secondpoint[1]; 
-            // Distance between Mumbai and New York 
-            $inmiles=twopoints_on_earth( $latitudeFrom, $longitudeFrom,  
-            $latitudeTo,  $longitudeTo); 
-            $km=$inmiles* 1.60934;
-            $x=$waypoints;
-            $sum=0;
-                 function points_on_earth($p1,$p2,$l1,$l2)
-                {
-                    $inmiles=twopoints_on_earth( $p1, $p2, $l1,  $l2); 
-                     return  $inmiles * 1.60934;
-                }
-             for ($i=0; $i <count($x)-2; $i++) { 
-                 $sum +=  points_on_earth($x[$i][0],$x[$i][1],$x[$i+1][0],$x[$i+1][1]);
-             }
-              $sum;
-              $kmamount=10;
-              $totalpay=$kmamount*$km;
 
-              $actualamt=$sum*$kmamount;
-            //   find difference bectween
-            function abs_diff($v1, $v2) {
-                $diff = $v1 - $v2;
-                return $diff < 0 ? (-1) * $diff : $diff;
-            }
+
+          //   $waypoints=json_decode($details->way_points);
+          //   if(!empty($waypoints)){
+          //   $totalpoints=count($waypoints);
+          //   $newpoints=array();
+          //   // print_r($totalpoints);
+          //   $cuts=$totalpoints/23;
+          //   for ($i=0; $i < $totalpoints; $i+=$cuts) { 
+          //     array_push($newpoints,$waypoints[$i]);
+          //   }
+          //    $lastKey = key(array_slice($newpoints, -1, 1, true));
+          //   $firstpoint=$newpoints[0];
+          //   $secondpoint=$newpoints[$lastKey];
+          //   function twopoints_on_earth($latitudeFrom, $longitudeFrom,$latitudeTo,$longitudeTo) 
+          //   { 
+          //   $long1 = deg2rad($longitudeFrom); 
+          //   $long2 = deg2rad($longitudeTo); 
+          //   $lat1 = deg2rad($latitudeFrom); 
+          //   $lat2 = deg2rad($latitudeTo); 
+          //   //Haversine Formula 
+          //   $dlong = $long2 - $long1; 
+          //   $dlati = $lat2 - $lat1; 
+          //   $val = pow(sin($dlati/2),2)+cos($lat1)*cos($lat2)*pow(sin($dlong/2),2); 
+          //   $res = 2 * asin(sqrt($val)); 
+          //   $radius = 3963.1906; 
+          //   return ($res*$radius); 
+          //   } 
+          //   // latitude and longitude of Two Points 
+          //   $latitudeFrom = $firstpoint[0]; 
+          //   $longitudeFrom =  $firstpoint[1];
+          //   $latitudeTo = $secondpoint[0]; 
+          //   $longitudeTo = $secondpoint[1]; 
+          //   // Distance between Mumbai and New York 
+          //   $inmiles=twopoints_on_earth( $latitudeFrom, $longitudeFrom,  
+          //   $latitudeTo,  $longitudeTo); 
+          //   $km=$inmiles* 1.60934;
+          //   $x=$waypoints;
+          //   $sum=0;
+          //        function points_on_earth($p1,$p2,$l1,$l2)
+          //       {
+          //           $inmiles=twopoints_on_earth( $p1, $p2, $l1,  $l2); 
+          //            return  $inmiles * 1.60934;
+          //       }
+          //    for ($i=0; $i <count($x)-2; $i++) { 
+          //        $sum +=  points_on_earth($x[$i][0],$x[$i][1],$x[$i+1][0],$x[$i+1][1]);
+          //    }
+          //     $sum;
+          //     $kmamount=10;
+          //     $totalpay=$kmamount*$km;
+
+          //     $actualamt=$sum*$kmamount;
+          //   //   find difference bectween
+          //   function abs_diff($v1, $v2) {
+          //       $diff = $v1 - $v2;
+          //       return $diff < 0 ? (-1) * $diff : $diff;
+          //   }
             
-           $dif= abs_diff($actualamt,$totalpay);
-           $percentChange=0;
-           if($actualamt > 0 && $totalpay > 0){
-           $dif= abs_diff($actualamt,$totalpay);
-                $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
-                  }else{
-                          $actualamt=0;
-                          $totalpay=0;
-                  }
+          //  $dif= abs_diff($actualamt,$totalpay);
+          //  $percentChange=0;
+          //  if($actualamt > 0 && $totalpay > 0){
+          //  $dif= abs_diff($actualamt,$totalpay);
+          //       $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
+          //         }else{
+          //                 $actualamt=0;
+          //                 $totalpay=0;
+          //         }
                
            
 
     ?>
+<div class="col-md-12">
+<br>
+<table class="table table-responseive table-stripped">
+<thead >
+<tr>
+<th> S. No</th>
+<th>Travel Start </th>
+<th>Meeting Start </th>
+<th>Meeting End </th>
+<th>Travel END </th>
+</tr>
+</thead>
+<tbody>
+<?php 
+$i=1;
+$waypoints=[];
+foreach ($visittable as $key => $value) { ?>
+<tr>
+  <td><?= $i++ ?></td>
+<td>
+<?php
+ if(($value->visit_start)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->visit_start)); } ?>
+</td>
+<td>
+  <?php  if(($value->visit_end)!=NULL){ echo date("F jS, Y, g:i a ", strtotime($value->visit_end)); } ?>
+</td>
+<td>
+<?php  if(($value->start_time)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->start_time)); } ?>
+</td>
+<td>
+<?php  if(($value->end_time)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->end_time)); } ?>
+</td>
+</tr>
+<?php
+$waypoints[]=$value->way_points;
+//  array_push(, json_decode($value->way_points));  
+// print_r($way_points);
+} 
+$arr_m=[];
+foreach ($waypoints as $key => $value) {
+foreach (json_decode($value) as $key => $values) {
+   $arr_m[]=$values;
+}
+}
+// print_r($arr_m);
+// die();
+ $totalpoints=count($arr_m);
+$newpoints=array();
+// print_r($totalpoints);
+$cuts=$totalpoints/23;
+for ($i=0; $i < $totalpoints; $i+=$cuts) { 
+  array_push($newpoints,$arr_m[$i]);
+}
+ $lastKey = key(array_slice($newpoints, -1, 1, true));
+$firstpoint=$newpoints[0];
+$secondpoint=$newpoints[$lastKey];
 
-    <!-- <div class="col-md-12">
- <div class="form-group col-md-3">
-                <label>Travelled Distance</label>
-                <input value="<?php if(!empty($sum)){echo round($sum,2).' Km';}else{ echo'N/A';}  ?>" disabled class="form-control">
-            <div id="msg"></div>  
-            </div>
-            <div class="form-group col-md-3">
-                <label>Actual Cost</label>
-                <input value="<?php if(!empty($actualamt)){echo round($actualamt,0).' ₹';}else{ echo '0'.' ₹';}  ?>" disabled class="form-control">
-            </div>
-            <div class="form-group col-md-3">
-                <label>Travelled Cost</label>
-                <input value="<?php if(!empty($totalpay)){echo round($totalpay,0).' ₹';}else{ echo '0'.' ₹';}  ?>" disabled class="form-control">
-            </div>
-            <div class="form-group col-md-3">
-                <label>Difference (<?= round($dif,0) ?> ₹)</label>
-                <input  style="<?php 
-             if(abs($percentChange)>20){
-               echo  'border:1px solid red;background-color: #eae0e0;';
-                }
-            ?>" value="<?php if(!empty($percentChange)){echo round($percentChange,0).' % ';}else{ echo '0'.' %';}  ?>" disabled class="form-control">
-            </div>
-            </div> -->
+?>
+</tbody>
+</table>
 </div>
 <div class="row">
 <br>
@@ -169,20 +165,17 @@ $("select").select2();
 <hr>
 <center>Expenses</center>
 <?php if(user_access('1024'))  {  ?>
-
 &nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Action</button> 
 <?php 
 } ?>
 <button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
-
 </div>
 <div class="col-md-12">
 <br>
 <table class="table table-responseive table-stripped">
 <thead >
-
 <tr>
-<th><input type="checkbox" id="selectall" onclick="select_all()"> S. No</th>
+<th><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
 <th>Expense Type</th>
 <th>Title</th>
 <th>Amount</th>
@@ -250,6 +243,24 @@ $totalexp += $tamount;
 <script>
       
        
+function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+ 
     var distance;
       function initMap() {
         var directionsService = new google.maps.DirectionsService;
@@ -341,7 +352,6 @@ $totalexp += $tamount;
     }
     
     </script>
-<?php } ?>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s&callback=initMap"
   type="text/javascript"></script>
 <div id="Save_Visit" class="modal fade" role="dialog">

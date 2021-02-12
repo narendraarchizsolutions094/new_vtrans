@@ -7,11 +7,11 @@ class Visit_datatable_model extends CI_Model{
   
         $this->table = 'tbl_visit';
         // Set orderable column fields
-        $this->column_order = array('tbl_visit.id','visit_date','visit_time','rating','visit_otexpSum','enquiry.name','enquiry.company','visit_expSum');
+        $this->column_order = array('tbl_visit.id','visit_date','visit_time','rating','enquiry.name','enquiry.company','visit_expSum','visit_otexpSum','tbl_visit.user_id','tbl_visit.actualDistance','tbl_visit.actualDistance','tbl_visit.id','tbl_visit.id','tbl_visit.id');
 
         // Set searchable column fields
 
-        $this->column_search = array('travelled','travelled_type','next_location');
+        $this->column_search = array('travelled','travelled_type','next_location','enquiry.company','enquiry.name');
 
         // $this->column_search = array('tck.ticketno','tck.id','tck.category','tck.name','tck.email','tck.product','tck.message','tck.issue','tck.solution','tck.sourse','tck.ticket_stage','tck.review','tck.status','tck.priority','tck.complaint_type','tck.coml_date','tck.last_update','tck.send_date','tck.client','tck.assign_to','tck.company','tck.added_by','enq.phone','enq.gender','prd.country_name');
         
@@ -77,11 +77,8 @@ class Visit_datatable_model extends CI_Model{
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         // print_r($_POST);
         $this->db->select($this->table.'.*,tbl_visit.created_at,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.company, tbl_visit.id as vids,');
-        $this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND type="2") as visit_otexpSum');
-        $this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND type="1") as visit_expSum');
-        // $this->db->select('(select COUNT(id) from tbl_expense where tbl_expense.visit_id = tbl_visit.id) as visit_totalexp');
-        // $this->db->select('(select COUNT(id) from tbl_expense where  tbl_expense.approve_status = "1"  AND  tbl_expense.id = tbl_visit.id) as visit_reject');
-        // $this->db->select('(select COUNT(id) from tbl_expense where  tbl_expense.approve_status = "2"  AND  tbl_expense.id = tbl_visit.id) as visit_approve');
+        $this->db->select('(SELECT sum(amount) from tbl_expense  where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="2") as visit_otexpSum');
+        $this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1" AND tbl_expense.approve_status = "2" ) as visit_expSum');
         $this->db->from($this->table);
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         // $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
