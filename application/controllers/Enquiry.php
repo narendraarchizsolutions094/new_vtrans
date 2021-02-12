@@ -3563,7 +3563,7 @@ echo  $details1;
                 $sub[] = round(abs($res->visit_expSum));
                 $sub[] = round(abs($res->visit_otexpSum));
                 $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
-                $sub[] = $expstatus;
+                $sub[] = '<span class="expstatus">'.$expstatus.'<span>';
                 
 
             if($colsall || in_array(9,$cols))

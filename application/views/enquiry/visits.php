@@ -172,15 +172,14 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                               <?php }}?>    
                          </select>                       
                         </div>
-                        <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
+                        <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:show';} ?>">
         <div class="form-group">
         	<label>Expense </label>
-       	<select class="form-control v_filter" name="expensetype">
+       	<select class="form-control v_filter" id="expensetype" name="expensetype" onchange="refresh_table_ex();">
               <option value="">Select</option>
-              <option value="1">Fully Approved</option>
-              <option value="2">Partially Approved</option>
-              <option value="3">Rejected</option>
-              <option value="3">Partially Rejected</option>
+              <option >Fully Approved</option>
+              <option >Partially Approved</option>
+              <option >Rejected</option>
             </select>
         </div>
     </div>
@@ -277,7 +276,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-11" >Difference</th>
-				          <th>Travel Expense</th>
+				          <th >Travel Expense</th>
 				          <th>Other Expense</th>
 				          <th>Total Expense</th>
 				          <th>Expense Sttaus</th>
@@ -402,6 +401,21 @@ function refresh_table(){
       });
 }
 
+function refresh_table_ex(){
+      var exstatus=$('#expensetype').val();
+      var tr_list = $("#datatable_wrapper tbody").find('tr');
+      $(tr_list).each(function(k,v){
+          var diff = $(v).find('td:eq(8)').text();
+          if(parseInt(diff)>=min && parseInt(diff) <=max)
+          {
+            $(v).show();
+          }
+          else
+          { 
+            $(v).hide();
+          }
+      });
+}
 var c = getCookie('visit_allowcols');
 
 var Data = {"from_data":"","to_date":"","from_time":"","to_time":""};
