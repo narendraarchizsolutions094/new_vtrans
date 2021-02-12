@@ -54,9 +54,9 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                       <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>>Company</label>
                     </li>  
                     <li>
-                      <!-- <label>
-                      <input type="checkbox" value="expensetype" id="expensetypecheckbox" name="filter_checkbox" <?php if(in_array('expensetype',$variable)){echo'checked';} ?>> Created By</label>
-                    </li>         -->
+                      <label>
+                      <input type="checkbox" value="expensetype" id="expensetypecheckbox" name="filter_checkbox" <?php if(in_array('expensetype',$variable)){echo'checked';} ?>> Expense Type</label>
+                    </li>        
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
@@ -129,7 +129,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         <div class="form-group">
             <!-- <label for="amount">Difference range: <span id="range_value">0 - 100</span></label> -->
             <label>Minimum Difference </label>
-            <input class="form-control" id="min" onchange="refresh_table()">
+            <input class="form-control" id="min" onkeyup="refresh_table()">
            
         </div>
     </div>
@@ -137,7 +137,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         <div class="form-group">
         
             <label>Maximum Difference</label>
-            <input class="form-control"  id="max" onchange="refresh_table()">
+            <input class="form-control"  id="max" onkeyup="refresh_table()">
           <!-- <div id="slider-range"></div> -->
         </div>
     </div>
@@ -172,7 +172,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                               <?php }}?>    
                          </select>                       
                         </div>
-                        <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:show';} ?>">
+                        <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Expense </label>
        	<select class="form-control v_filter" id="expensetype" name="expensetype" onchange="refresh_table_ex();">
@@ -180,6 +180,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
               <option >Fully Approved</option>
               <option >Partially Approved</option>
               <option >Rejected</option>
+              <option >Pending</option>
             </select>
         </div>
     </div>
@@ -388,7 +389,7 @@ function refresh_table(){
 
       var tr_list = $("#datatable_wrapper tbody").find('tr');
       $(tr_list).each(function(k,v){
-          var diff = $(v).find('td:eq(8)').find('span').text();
+          var diff = $(v).find('td > span.diff').text();
           if(parseInt(diff)>=min && parseInt(diff) <=max)
           {
             $(v).show();
@@ -402,11 +403,14 @@ function refresh_table(){
 
 function refresh_table_ex(){
       var exstatus=$('#expensetype').val();
+      // alert(exstatus);
       var tr_list = $("#datatable_wrapper tbody").find('tr');
       $(tr_list).each(function(k,v){
-          var diff = $(v).find('td:eq(8)').text();
-          if(parseInt(diff)>=min && parseInt(diff) <=max)
+          var diff = $(v).find('td > span.expstatus').text();
+          // alert(diff);
+          if(diff==exstatus)
           {
+            alert('1');
             $(v).show();
           }
           else
@@ -451,7 +455,7 @@ var table2  =$('#datatable').DataTable({
                      d.view_all=true;
                     if(c && c!='')
                       d.allow_cols = c;
-                     console.log(JSON.stringify(d));
+                    //  console.log(JSON.stringify(d));
                     return d;
 // alert(d.totaltravelExp);
 
