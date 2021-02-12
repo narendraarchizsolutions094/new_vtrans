@@ -3529,7 +3529,7 @@ echo  $details1;
             if($colsall || in_array(6,$cols))
                 $sub[] = $res->rating!=''?$res->rating:'NA';
                 if($colsall || in_array(11,$cols))
-                $sub[] = round(abs($percentChange));
+                $sub[] = '<span class="diff">'.round(abs($percentChange)).'</span>';
                 $sub[] = round(abs($res->visit_expSum));
                 $sub[] = round(abs($res->visit_otexpSum));
                 $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));

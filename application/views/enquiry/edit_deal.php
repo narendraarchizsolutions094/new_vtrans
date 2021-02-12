@@ -22,6 +22,15 @@ if(!empty($deal_data))
 				<input type="hidden" name="for" value="<?=$details->enquiry_id?>">
 		    </div>
 		</div>
+		<div class="col-lg-2">
+			<label>Deal Type</label>
+	        <select class="form-control" name="deal_type" onchange="{
+	        	$('input[name=deal_type]').val(this.value);
+	        }">
+	            <option value="domestic" <?=$deal->deal_type=='domestic'?'selected':''?>>Domestic</option>
+	            <option value="saarc" <?=$deal->deal_type=='saarc'?'selected':''?>>Saarc</option>
+	        </select>
+		</div>
 		<div class="col-lg-3">
 			<div class="form-group"> 
 		        <label>Booking Type</label>
@@ -150,7 +159,7 @@ $(document).on('submit','#data_table',function(e){
 });
 
 function generate_table()
-{	
+{	var deal_type = $("select[name=deal_type]").val();
 	var booking_type = $("select[name=booking_type]").val();
 	var business_type = $("select[name=business_type]").val();
 	var bbranch = $("select[name='bbranch[]']").val();
@@ -180,7 +189,9 @@ function generate_table()
 	$.ajax({
 		url:'<?=base_url('client/gen_table')?>',
 		type:'POST',
-		data:{	booking_type:booking_type,
+		data:{	
+				deal_type:deal_type,
+				booking_type:booking_type,
 				business_type:business_type,
 				bbranch:bbranch,
 				dbranch:dbranch,

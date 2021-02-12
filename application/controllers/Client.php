@@ -2238,7 +2238,7 @@ public function all_update_expense_status()
         if(!empty($_POST))
         {
             $this->load->model('Branch_model');
-
+            $deal_type = $this->input->post('deal_type');
             $booking_type = $this->input->post('booking_type');
             $business_type = $this->input->post('business_type');
             $bbranch = $this->input->post('bbranch');
@@ -2312,6 +2312,7 @@ public function all_update_expense_status()
 
                 echo'
                 <form id="data_table">
+                <input name="deal_type" type="hidden" value="'.$deal_type.'">
                 <input name="booking_type" type="hidden" value="'.$booking_type.'">
                 <input name="business_type" type="hidden" value="'.$business_type.'">
                 <input name="btype" type="hidden" value="'.$btype.'">
@@ -2387,10 +2388,10 @@ public function all_update_expense_status()
                     echo'<tr>
                             <td>'.$i++.'</td>
                             <td><input type="hidden" name="bid['.$row->id.']" value="'.$row->booking_branch.'">'.$row->bbranch.'<br>
-                                <small>('.ucwords($row->btype).')</small>
+                                <small>('.ucwords($row->btype).') '.$row->bzname.'</small>
                             </td>
                             <td><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->dbranch.'<br>
-                                <small>('.ucwords($row->dtype).')</small>
+                                <small>('.ucwords($row->dtype).')<br> '.$row->dzname.'</small>
                             </td>';
                     if($booking_type=='sundry')
                     {
@@ -2723,6 +2724,7 @@ public function all_update_expense_status()
         $deal_id = $this->input->post('info_id');
         $deal = array(
                     'enquiry_id'=>$this->input->post('enquiry_id'),
+                    'deal_type'=>$this->input->post('deal_type'),
                     'booking_type'=>$this->input->post('booking_type'),
                     'business_type'=>$this->input->post('business_type'),
                     'btype'=>$this->input->post('btype'),
@@ -2737,6 +2739,7 @@ public function all_update_expense_status()
         if(!empty($deal_id))
         {
             unset($deal['status']);
+            $this->db->where('id',$deal_id);
             $this->db->update('commercial_info',$deal);
             $this->db->where('deal_id',$deal_id)->delete('deal_data');
         }
@@ -2880,5 +2883,12 @@ $_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2
     function new_vtrans()
     {
         $this->load->view('aggrement/new-input-vtrans');
+    }
+
+    function print_new()
+    {
+        $this->load->library('pdf');
+        $res =   $this->load->view('aggrement/new-input-vtrans',array(),true);
+        $this->pdf->create($res,0);
     }
 }

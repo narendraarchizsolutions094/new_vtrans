@@ -254,7 +254,6 @@ $('input[name="filter_checkbox"]').click(function(){
         else{
           $('#expensetypefilter').hide();
     }
-    
 });
 
 </script>
@@ -332,8 +331,8 @@ $('input[name="filter_checkbox"]').click(function(){
 
 <script type="text/javascript">
 function expense_status(){
+
       var x = new Array(); 
-      
       $($(".checkbox1:checked")).each(function(k,v){
         x.push($(v).val());
       });
@@ -369,7 +368,7 @@ function refresh_table(){
 
       var tr_list = $("#datatable_wrapper tbody").find('tr');
       $(tr_list).each(function(k,v){
-          var diff = $(v).find('td:eq(8)').text();
+          var diff = $(v).find('td:eq(8)').find('span').text();
           if(parseInt(diff)>=min && parseInt(diff) <=max)
           {
             $(v).show();

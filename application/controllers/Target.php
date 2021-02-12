@@ -15,6 +15,7 @@ class Target extends CI_controller
 		$data['title'] = display('all_goals');
 
 		$roles = $this->db->where('comp_id',$this->session->companey_id)->get('tbl_user_role')->result();
+
 		$r = array();
 		foreach ($roles as $role)
 		{
@@ -172,6 +173,7 @@ class Target extends CI_controller
 
 	public function load_goal_table()
 	{
+		exit();
 		$start_date_from = $this->input->post('start_date_from')??0;
 		$start_date_to = $this->input->post('start_date_to')??0;
 
