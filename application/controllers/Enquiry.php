@@ -1758,8 +1758,8 @@ Array
             }
             //insert follow up counter (2 is for lead )
             $this->enquiry_model->insetFollowupTime($move_enquiry,2,$enquiry->row()->created_date,date('Y-m-d H:i:s'));
-            
-            $this->session->set_flashdata('message', 'Enquiry Convert to Lead Successfully');
+            $message=display('enquiry').' Convert to '.display('lead').' Successfully';
+            $this->session->set_flashdata('message',$message);
             redirect('enquiry');
         } else {
             echo "<script>alert('Something Went Wrong')</script>";
