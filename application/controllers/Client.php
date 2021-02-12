@@ -1758,11 +1758,7 @@ public function view_editable_aggrement()
         }
        $this->load->view('layout/main_wrapper',$data);
     }
-    public function visit_expense()
-    { 
-
-
-    }
+    
    public function add_expense()
    {
                 $visit_id= $this->input->post('visit_id');
@@ -1770,6 +1766,12 @@ public function view_editable_aggrement()
                 $finalfilename='';
                 $uid=$this->session->user_id;
                 $comp_id=$this->session->companey_id;
+                // fetch enquiry sing visit id
+                $visit=$this->db->where('id',$visit_id)->get('tbl_visit');
+                if($visit->num_rows()!=0){
+                   $vdata= $visit->row(); 
+                   $enq_id=$vdata->enquiry_id; 
+                }
 				foreach ($_POST['expense'] as $key =>$value ) {
                         $expense = $_POST['expense'][$key];
                         $amount = $_POST['amount'][$key];
@@ -1792,8 +1794,11 @@ public function view_editable_aggrement()
                                'comp_id'=>$comp_id,
                                ];
                     $this->db->insert('tbl_expense',$data);
-
+                    
+	            	$this->Leads_Model->add_comment_for_events('Expense Added',$enq_id,0,$uid);
+                   
                 }
+
             	$this->session->set_flashdata('message', 'Travel Expense Added');
                 // redirect('/visits/visit_details/'.$visit_id.'');   
                 redirect($this->agent->referrer()); //updateclient

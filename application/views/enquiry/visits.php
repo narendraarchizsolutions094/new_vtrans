@@ -47,11 +47,11 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                     </li>  
                     <li>
                       <label>
-                      <input type="checkbox" value="createdby" id="createdbycheckbox" name="filter_checkbox" <?php if(in_array('createdby',$variable)){echo'checked';} ?>> Company</label>
+                      <input type="checkbox" value="createdby" id="createdbycheckbox" name="filter_checkbox" <?php if(in_array('createdby',$variable)){echo'checked';} ?>> Created By</label>
                     </li>   
                     <li>
                       <label>
-                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>> Created By</label>
+                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>>Company</label>
                     </li>  
                     <li>
                       <!-- <label>
@@ -172,7 +172,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                               <?php }}?>    
                          </select>                       
                         </div>
-                        <!-- <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
+                        <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Expense </label>
        	<select class="form-control v_filter" name="expensetype">
@@ -180,9 +180,10 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
               <option value="1">Fully Approved</option>
               <option value="2">Partially Approved</option>
               <option value="3">Rejected</option>
+              <option value="3">Partially Rejected</option>
             </select>
         </div>
-    </div> -->
+    </div>
 </div>
 <script>
 
@@ -276,15 +277,35 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-11" >Difference</th>
-				          <th >Travel Expense</th>
-				          <th  >Other Expense</th>
-				          <th  >Total Expense</th>
+				          <th>Travel Expense</th>
+				          <th>Other Expense</th>
+				          <th>Total Expense</th>
+				          <th>Expense Sttaus</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
 				      <tbody>
 		     		 </tbody>
     			</table>
+
+          <br>
+            <div class="col-md-12">
+            <div class="col-md-4" ></div>
+            <div class="col-md-4" ></div>
+            <div class="col-md-4" >
+            
+            <table class="table table-responsive table-bordered" >
+            <tbody>
+            <tr>
+            <td width="50%"><b>Total Travel Expense:</b></td><td><span id="totaltravelExp"></span> ₹</td>
+            </tr>
+            <tr><td width="50%"><b>Total Other Expense:</b> </td><td><span id="totalotherExpense"></span> ₹</td>
+            </tr>
+            <tr><td width="50%"><b>Total Expense:</b></td><td><span id="totalExpense"></span> ₹</td>
+            </tr></tbody>
+            </table>
+            </div>
+            </div>
 	</div>
 </div>
 <div id="approve_expense" class="modal fade in" role="dialog">
@@ -415,16 +436,24 @@ var table2  =$('#datatable').DataTable({
                     //  d.expensetype = obj[6]['value'];
                      d.to_time = '';//obj[5]['value'];
                      d.view_all=true;
-
                     if(c && c!='')
                       d.allow_cols = c;
-
-                    //  console.log(JSON.stringify(d));
+                     console.log(JSON.stringify(d));
                     return d;
-              }
+// alert(d.totaltravelExp);
+
+              },
           },
+          "drawCallback": function(settings) {
+        $("#totaltravelExp").html(settings.json.totaltravelExp);
+          $("#totalotherExpense").html(settings.json.totalotherExpense);
+          $("#totalExpense").html(settings.json.totalExpense);
+},
+          
           "columnDefs": [{ "orderable": false, "targets":0 }],
            "order": [[ 1, "desc" ]],
+           
+           
   });
 });
 
@@ -446,6 +475,8 @@ function checkAll(ele) {
          }
      }
  }
+
+ 
 $("select").select2();
 
 </script>  
@@ -852,6 +883,8 @@ function handleClick(myRadio) {
   document.getElementById("vtime").disabled = false;  
   } 
 }
+
+
 </script>
 <style type="text/css">
   #slider-range

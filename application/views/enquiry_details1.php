@@ -2114,20 +2114,38 @@ if(user_access('1020'))
 				          <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
 				          <th width="15%">Visit Date</th>
 				          <th width="15%">Visit Time</th>
-				          <th >Name</th>
-				          <th >Shortest Distance</th>
-				          <th >Actual Distancee</th>
-				          <th >Rating</th>
-				          <th >Difference</th>
-				          <th >Travel Expense</th>
-				          <th >Other Expense</th>
+				          <th>Name</th>
+				          <th>Shortest Distance</th>
+				          <th>Actual Distancee</th>
+				          <th>Rating</th>
+				          <th>Difference</th>
+				          <th>Travel Expense</th>
+				          <th>Other Expense</th>
 				          <th>Total Expense</th>
+				          <th>Expense Status</th>
                       <th>Action</th>
 				        </tr>
       </thead>
       <thead>
       </thead>
     </table>
+
+    <div class="col-md-12">
+            <div class="col-md-6" ></div>
+            <div class="col-md-6" >
+            
+            <table class="table table-responsive table-bordered" >
+            <tbody>
+            <tr>
+            <td width="50%"><b>Total Travel Expense:</b></td><td><span id="totaltravelExp"></span> ₹</td>
+            </tr>
+            <tr><td width="50%"><b>Total Other Expense:</b> </td><td><span id="totalotherExpense"></span> ₹</td>
+            </tr>
+            <tr><td width="50%"><b>Total Expense:</b></td><td><span id="totalExpense"></span> ₹</td>
+            </tr></tbody>
+            </table>
+            </div>
+            </div>
     </div>
 <script type="text/javascript">
 function handleClick_ch(myRadio) {
@@ -2193,6 +2211,12 @@ $(document).ready(function(){
                   return d;
               }
           },
+          "drawCallback": function(settings) {
+        $("#totaltravelExp").html(settings.json.totaltravelExp);
+          $("#totalotherExpense").html(settings.json.totalotherExpense);
+          $("#totalExpense").html(settings.json.totalExpense);
+},
+          
           "columnDefs": [{ "orderable": false, "targets":0 }],
            "order": [[ 1, "desc" ]],
   });
@@ -4994,8 +5018,8 @@ function edit_dynamic_query(t)
                 var obj = JSON.parse(data);
                 
                 html +='<option value="" style="display:none">---Select---</option>';
-        html +='<option value="new" style="">New</option>';
-        html +='<option value="updt" style="">Update</option>';
+      //   html +='<option value="new" style="">New</option>';
+      //   html +='<option value="updt" style="">Update</option>';
                 for(var i=0; i <(obj.length); i++){
                     
                     html +='<option value="'+(obj[i].id)+'">'+(obj[i].description)+'</option>';
@@ -5063,8 +5087,8 @@ function edit_dynamic_query(t)
                 var obj = JSON.parse(data);
                 
                 html +='<option value="" style="display:none">---Select---</option>';
-        html +='<option value="new" style="">New</option>';
-        html +='<option value="updt" style="">Update</option>';
+      //   html +='<option value="new" style="">New</option>';
+      //   html +='<option value="updt" style="">Update</option>';
                 for(var i=0; i <(obj.length); i++){
                     
                     html +='<option value="'+(obj[i].id)+'">'+(obj[i].description)+'</option>';
