@@ -47,8 +47,10 @@ th{
 }
 </style>
 <?php
+$process_id = 141;
 $comp_id = 65;
 $this->db->where('comp_id',$comp_id);
+$this->db->where('process_id',$process_id);
 //$this->db->limit(10);
 $failurePoints = $this->db->get('tbl_ticket_subject')->result_array();
 $res = array();
@@ -57,8 +59,10 @@ if(!empty($failurePoints)){
     foreach($failurePoints as $key =>$value){
         $this->db->select('count(tbl_ticket.ticket_substage) as c,lead_description.description');
         $this->db->from('lead_description');        
+        $this->db->join('lead_stage','lead_description.lead_stage_id=lead_stage.stg_id');
+        $this->db->where("FIND_IN_SET($process_id,lead_stage.process_id)>",0);
         $this->db->where('lead_description.comp_id',$comp_id);
-        $this->db->join('(select * from tbl_ticket where date(coml_date)="'.$_GET["date"].'" AND category='.$value['id'].') as tbl_ticket','tbl_ticket.ticket_substage=lead_description.id','left');
+        $this->db->join('(select * from tbl_ticket where date(coml_date)="'.$_GET["date"].'" AND  category='.$value['id'].') as tbl_ticket','tbl_ticket.ticket_substage=lead_description.id','left');
         $this->db->group_by('lead_description.id');   
         $result    =   $this->db->get()->result_array();
         $k = $value['subject_title'];
@@ -87,7 +91,9 @@ if(!empty($failurePoints)){
                                     Failure Points
                                 </th>        
                                 <?php
-                                $this->db->where('comp_id',$comp_id);
+                                $this->db->where('lead_description.comp_id',$comp_id);
+                                $this->db->join('lead_stage','lead_description.lead_stage_id=lead_stage.stg_id');
+                                $this->db->where("FIND_IN_SET($process_id,lead_stage.process_id)>",0);
                                 $description    =   $this->db->get('lead_description')->result_array();
                                 if(!empty($description)){
                                     foreach($description as $d=>$v){
@@ -295,7 +301,20 @@ if(!empty($failurePoints)){
             }
         });
         $('#summ_table2 .tfoot td').eq(index).html('<b>' + total+'</b>');
-    }    
+    }  
+    
+    $('#summ_table th').each(function(i) {
+    var remove = 0;
+
+    var tds = $(this).parents('table').find('tr td:nth-child(' + (i + 1) + ')')
+    tds.each(function(j) { if (this.innerHTML == 0) remove++; });
+
+    if (remove == ($('#summ_table tr').length - 1)) {
+        $(this).hide();
+        tds.hide();
+    }
+});
+
 </script>
 </body>
 </html>
