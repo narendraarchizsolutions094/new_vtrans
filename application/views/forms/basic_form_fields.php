@@ -20,7 +20,7 @@
                       if($companylist['field_id']==FIRST_NAME){?>
                     
                      <div class="form-group col-sm-4 col-md-4 enq-first-name">
-                        <label> <?php echo display("first_name"); ?> <i class="text-danger"></i> </label>
+                        <label> <?php echo display("first_name"); ?> <?php if($this->session->companey_id==65){echo'<i class="text-danger">*</i>';}?>  </label>
                         <div class = "input-group" >
                            <span class="input-group-addon" style="padding:0px!important;border:0px!important;width:30%;">
                               <select class="form-control" name="name_prefix">
@@ -29,7 +29,7 @@
                                  <?php } ?>
                               </select>
                            </span>
-                           <input class="form-control" name="enquirername" type="text" value="<?php  echo set_value('enquirername');?>" placeholder="Enter First Name" style="width:100%;"/>
+                           <input class="form-control" name="enquirername" type="text" value="<?php  echo set_value('enquirername');?>" placeholder="Enter First Name" style="width:100%;" <?php if($this->session->companey_id==65){echo'required';}?>/>
                         </div>
                      </div>
                      <?php
@@ -76,14 +76,14 @@
                              <input class="form-control"  name="other_no[]" type="text" placeholder="Other Number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                           </div>                          
                        </div>
-                     <?php
+                  <?php
                    }
                    ?>
                      <?php
                     if($companylist['field_id']==EMAIL){
                     ?>
                      <div class="form-group col-sm-4 col-md-4 enq-email"> 
-                        <label><?php echo display('email') ?> <i class="text-danger"></i> </label>
+                        <label><?php echo display('email') ?>  </label>
                         <input class="form-control" value="<?php  echo set_value('email');?> " name="email" type="email"  placeholder="Enter Email">  
                      </div>                     
                      <?php

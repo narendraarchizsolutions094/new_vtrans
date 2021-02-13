@@ -1045,7 +1045,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                 <?php echo display('lead_master_search') ?></p> <?php } ?>
                         </a>
                     </li>
-                    <li class="treeview <?php echo (($segment1 == "location") ? "active" : null) ?>" style="<?php if(in_array(10,$module) || in_array(11,$module) || in_array(12,$module) || in_array(12,$module)){ echo 'display:block;'; }else{ 
+                    <li class="treeview <?php echo (($segment1 == "location" && ($segment1 !='user' && $segment2 !='edit' )) ? "active" : null) ?>" style="<?php if(in_array(10,$module) || in_array(11,$module) || in_array(12,$module) || in_array(12,$module)){ echo 'display:block;'; }else{ 
                     echo 'display:none;'; } ?>">
                         <a href="#">
                             <i class="fa fa-map-marker"
@@ -1058,9 +1058,9 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
                                 <?php echo display('location_setting'); ?></p> <?php } ?>
                         </a>
-                        <ul class="treeview-menu <?php echo (($segment1 == "location") ?"menu-open":'') ?>">
+                        <ul class="treeview-menu <?php echo (  $segment2 == "index"  AND ($segment1 == "location") ?"menu-open":'') ?>">
                             <li
-                                class="<?php echo (in_array($segment2,array('country','edit'))?"active":'') ?> <?= ($segment1=='location' && $segment2=='create')?"active":'' ?> ">
+                                class="<?php echo (in_array($segment2,array('country'))?"active":'') ?> <?= ($segment1=='location' && $segment2=='create')?"active":'' ?> ">
                                 <a
                                     href="<?php echo base_url("location/country") ?>"><?php echo display('country_list') ?></a>
                             </li>

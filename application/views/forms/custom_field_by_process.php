@@ -2,8 +2,7 @@
 if(!empty($company_list))
 {?>				   
    <?php foreach($company_list as $companylist){?>                        
-                     
-                     <div class="form-group col-sm-4 <?= $companylist['input_name']?>">
+      <div class="form-group col-sm-4 <?= $companylist['input_name']?>">
                      
                        <?php if($companylist['input_type']==1){?>
                         

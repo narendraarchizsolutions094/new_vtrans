@@ -3,7 +3,6 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <!-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script> -->
-
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
   <div class="col-md-4 col-sm-4 col-xs-4"> 
           <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a> 
@@ -48,15 +47,15 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                     </li>  
                     <li>
                       <label>
-                      <input type="checkbox" value="createdby" id="createdbycheckbox" name="filter_checkbox" <?php if(in_array('createdby',$variable)){echo'checked';} ?>> Company</label>
+                      <input type="checkbox" value="createdby" id="createdbycheckbox" name="filter_checkbox" <?php if(in_array('createdby',$variable)){echo'checked';} ?>> Created By</label>
                     </li>   
                     <li>
                       <label>
-                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>> Created By</label>
+                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>>Company</label>
                     </li>  
                     <li>
                       <label>
-                      <input type="checkbox" value="expensetype" id="expensetypecheckbox" name="filter_checkbox" <?php if(in_array('expensetype',$variable)){echo'checked';} ?>> Created By</label>
+                      <input type="checkbox" value="expensetype" id="expensetypecheckbox" name="filter_checkbox" <?php if(in_array('expensetype',$variable)){echo'checked';} ?>> Expense Type</label>
                     </li>        
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
@@ -68,8 +67,10 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                 <i class="fa fa-sliders"></i>
               </a>  
             <div class="dropdown-menu dropdown_css" style="max-height: 400px;overflow: auto; left: -136px;">
-           
+            <?php if(user_access('1023'))  {  ?>
+
                <a class="btn" data-toggle="modal"  data-target="#approve_expense" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;" onclick="">Approve</a>                        
+               <?php } ?>
                <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;">Table Config</a>                        
             </div>                                         
           </div>
@@ -126,10 +127,18 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     </div>
      <div class="col-lg-3" id="differencefilter" style="<?php if(!in_array('difference',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-            <label for="amount">Difference range: <span id="range_value">0 - 100</span></label>
-            <input type="hidden" id="min">
-            <input type="hidden" id="max">
-          <div id="slider-range"></div>
+            <!-- <label for="amount">Difference range: <span id="range_value">0 - 100</span></label> -->
+            <label>Minimum Difference </label>
+            <input class="form-control" id="min" onkeyup="refresh_table()">
+           
+        </div>
+    </div>
+    <div class="col-lg-3" id="differencefilter" style="<?php if(!in_array('difference',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+        
+            <label>Maximum Difference</label>
+            <input class="form-control"  id="max" onkeyup="refresh_table()">
+          <!-- <div id="slider-range"></div> -->
         </div>
     </div>
 
@@ -163,17 +172,18 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                               <?php }}?>    
                          </select>                       
                         </div>
-                        <!-- <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
+                        <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Expense </label>
-       	<select class="form-control v_filter" name="expensetype">
+       	<select class="form-control" id="expensetype" name="expensetype" onchange="refresh_table_ex();">
               <option value="">Select</option>
-              <option value="1">Fully Approved</option>
-              <option value="2">Partially Approved</option>
-              <option value="3">Rejected</option>
+              <option >Fully Approved</option>
+              <option >Partially Approved</option>
+              <option >Rejected</option>
+              <option >Pending</option>
             </select>
         </div>
-    </div> -->
+    </div>
 </div>
 <script>
 
@@ -245,7 +255,6 @@ $('input[name="filter_checkbox"]').click(function(){
         else{
           $('#expensetypefilter').hide();
     }
-    
 });
 
 </script>
@@ -258,22 +267,44 @@ $('input[name="filter_checkbox"]').click(function(){
 				<table id="datatable" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
 				      <thead>
 				        <tr>
-				          <th> #</th>
-				          <th id="th-1">Visit Date</th>
-				          <th id="th-2">Visit Time</th>
-				          <th id="th-3">Name</th>
+                <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
+				          <th id="th-1" width="15%">Visit Date</th>
+				          <th id="th-2" width="15%">Visit Time</th>
+				          <th id="th-3" >Name</th>
 				          <th id="th-10">Company Name</th>
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
-				          <th id="th-11" >Diffrence</th>
-				          <th id="th-12" >Expense</th>
+				          <th id="th-11" >Difference</th>
+				          <th >Travel Expense</th>
+				          <th>Other Expense</th>
+				          <th>Total Expense</th>
+				          <th>Expense Sttaus</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
 				      <tbody>
 		     		 </tbody>
     			</table>
+
+          <br>
+            <div class="col-md-12">
+            <div class="col-md-4" ></div>
+            <div class="col-md-4" ></div>
+            <div class="col-md-4" >
+            
+            <table class="table table-responsive table-bordered" >
+            <tbody>
+            <tr>
+            <td width="50%"><b>Total Travel Expense:</b></td><td><span id="totaltravelExp"></span> ₹</td>
+            </tr>
+            <tr><td width="50%"><b>Total Other Expense:</b> </td><td><span id="totalotherExpense"></span> ₹</td>
+            </tr>
+            <tr><td width="50%"><b>Total Expense:</b></td><td><span id="totalExpense"></span> ₹</td>
+            </tr></tbody>
+            </table>
+            </div>
+            </div>
 	</div>
 </div>
 <div id="approve_expense" class="modal fade in" role="dialog">
@@ -282,7 +313,7 @@ $('input[name="filter_checkbox"]').click(function(){
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
-            <h4 class="modal-title">Update Expense Approval</h4>
+            <h4 class="modal-title"> Expense Approval</h4>
          </div>
          <div class="modal-body">
             <div class="row">
@@ -316,13 +347,16 @@ $('input[name="filter_checkbox"]').click(function(){
       </div>
    </div>
 </div>
+<style>.tr_hover {
+background-color: #ffb099; 
+}</style>
 <!-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script> -->
 <!-- https://code.jquery.com/jquery-3.5.1.js -->
 
 <script type="text/javascript">
 function expense_status(){
+
       var x = new Array(); 
-      
       $($(".checkbox1:checked")).each(function(k,v){
         x.push($(v).val());
       });
@@ -358,7 +392,7 @@ function refresh_table(){
 
       var tr_list = $("#datatable_wrapper tbody").find('tr');
       $(tr_list).each(function(k,v){
-          var diff = $(v).find('td:eq(8)').text();
+          var diff = $(v).find('td > span.diff').text();
           if(parseInt(diff)>=min && parseInt(diff) <=max)
           {
             $(v).show();
@@ -367,6 +401,39 @@ function refresh_table(){
           { 
             $(v).hide();
           }
+      });
+}
+
+function refresh_table_ex(){
+      var exstatus=$('#expensetype').val();
+      // alert(exstatus);
+      var tr_list = $("#datatable_wrapper tbody").find('tr');
+      $(tr_list).each(function(k,v){
+          var diff = $(v).find('td > span.expstatus').text();
+          // alert(diff);
+          if(diff==exstatus)
+          {
+            alert('1');
+            $(v).show();
+          }
+          else
+          { 
+            $(v).hide();
+          }
+      });
+}
+
+function refresh_table_exs(){
+      // alert(exstatus);
+      var tr_list = $("#datatable_wrapper tbody").find('tr');
+      $(tr_list).each(function(k,v){
+          var diff = $(v).find('td > span.diff').text();
+          // alert(diff);
+          if(diff>=20)
+          {
+            $(v).addClass('tr_hover');
+          }
+         
       });
 }
 
@@ -404,19 +471,48 @@ var table2  =$('#datatable').DataTable({
                     //  d.expensetype = obj[6]['value'];
                      d.to_time = '';//obj[5]['value'];
                      d.view_all=true;
-
                     if(c && c!='')
                       d.allow_cols = c;
-
                     //  console.log(JSON.stringify(d));
                     return d;
-              }
+// alert(d.totaltravelExp);
+
+              },
           },
+          "drawCallback": function(settings) {
+        $("#totaltravelExp").html(settings.json.totaltravelExp);
+          $("#totalotherExpense").html(settings.json.totalotherExpense);
+          $("#totalExpense").html(settings.json.totalExpense);
+          refresh_table_exs();
+},
+          
+          "columnDefs": [{ "orderable": false, "targets":0 }],
+           "order": [[ 1, "desc" ]],
+           
+           
   });
 });
 
 
+function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
 
+ 
 $("select").select2();
 
 </script>  
@@ -823,6 +919,8 @@ function handleClick(myRadio) {
   document.getElementById("vtime").disabled = false;  
   } 
 }
+
+
 </script>
 <style type="text/css">
   #slider-range

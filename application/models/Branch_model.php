@@ -68,7 +68,7 @@ class Branch_model extends CI_model
 		return $this->db->get();
 	}
 
-	public function common_list($where=array())
+	public function common_list($where=array(),$comp_id=0)
 	{
 		if(empty($comp_id))
 			$comp_id= $this->session->companey_id;
@@ -88,10 +88,12 @@ class Branch_model extends CI_model
 		if(empty($comp_id))
 			$comp_id = $this->session->companey_id;
 
-		$this->db->select('rate.*,b1.branch_name bbranch,b1.type btype,b2.branch_name dbranch,b2.type dtype')
+		$this->db->select('rate.*,b1.branch_name bbranch,b1.type btype,b2.branch_name dbranch,b2.type dtype,z1.name as bzname,z2.name as dzname')
 				->from('branchwise_rate rate')
 				->join('branch b1','b1.branch_id=rate.booking_branch')
-				->join('branch b2','b2.branch_id=rate.delivery_branch');
+				->join('branch b2','b2.branch_id=rate.delivery_branch')
+				->join('zones z1','z1.zone_id=b1.zone','left')
+				->join('zones z2','z2.zone_id=b2.zone','left');
 		if(!empty($from))
 		$this->db->where_in('rate.booking_branch',$from);
 		if(!empty($to))

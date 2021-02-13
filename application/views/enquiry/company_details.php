@@ -121,26 +121,12 @@
              <thead class="thead-light">
                <tr>                              
                   <th>S.N.</th>
-                  <th>Name</th>
-                  <th>Branch Type</th>
-                  <th>Business Type</th>
-                  <th>Booking Type</th>
-                  <th>Booking Branch</th>
-                  <th>Delivery Branch</th>
-                  <th>Rate</th>
-                  <th>Discount</th>
-                  <th>Insurance</th>
-                  <th>Paymode</th>
-                  <th>Potential Tonnage</th>
-                  <th>Potential Amount</th>
-                  <th>Expected  Tonnage</th>
-                  <th>Expected  Amount</th>
-                  <th>Vehicle Type</th>
-                  <th>Vehicle Carrying Capacity</th>
-                  <th>Invoice Value</th>
-                  <th>Create Date</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th id="th-1">Name</th>
+                  <th id="th-3">Business Type</th>
+                  <th id="th-4">Booking Type</th>
+                  <th id="th-18">Create Date</th>
+                  <th id="th-19">Status</th>
+                  <th id="th-20">Action</th>
                </tr>
             </thead>
               <tbody>
@@ -463,7 +449,7 @@ table th
 
 <script type="text/javascript">
 $(document).ready(function(){
-
+//var c = getCookie('deals_allowcols');
 var specific_list = "<?=!empty($specific_deals)?$specific_deals:''?>";
 
   $('#deals_table').DataTable({ 

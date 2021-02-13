@@ -2341,52 +2341,28 @@ $cpny_id=$this->session->companey_id;
         $enquiry = $lead = $client = $enq_ct = $lead_ct = $client_ct = $enq_ut = $lead_ut = $client_ut = $enq_drp = $lead_drp = $client_drp = $enq_active = $lead_active = $client_active = $enq_assign = $lead_assign = $client_assign = $hot = $warm = $cold = $ejan = $ljan = $cjan = $efeb = $lfeb = $cfeb = $emar = $lmar = $cmar = $eapr = $lapr = $capr = $emay = $lmay = $cmay = $ejun = $ljun = $cjun = $ejuly = $ljuly = $cjuly = $eaug = $laug = $caug = $esep = $lsep = $csep = $eoct = $loct = $coct = $enov = $lnov = $cnov = $edec = $ldec = $cdec = 0;
 
 
-
         // print_r($_SESSION);die;
-        $all_reporting_ids    =   $this->common_model->get_categories($userid);
-        $cpny_id=$companyid;
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
+      $cpny_id=$companyid;
         //$where = "enquiry.is_delete=1";
-		$where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+		  $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
     	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
       $where .=" AND product_id IN ($process)";
         $where.=" AND enquiry.comp_id=$cpny_id";
 
         $enquiry_separation = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING',$companyid);
+        $all_status  = array(
+                                array('status'=>1,
+                                      'title'=>display('enquiry',$companyid),
+                                    ),
+                                array('status'=>2,
+                                      'title'=>display('lead',$companyid),
+                                    ), 
 
-        $entities[1] = array(  
-                            'title'=>display('enquiry',$companyid),
-                            'tab'=>array(
-                                        'all'=>0,
-                                        'created_today'=>0,
-                                        'updated_today'=>0,
-                                        'active'=>0,
-                                        'dropped'=>0,
-                                        'unassigned'=>0,
-                                        ),
-                            );
-
-        $entities[2] = array(
-                            'title'=>display('lead',$companyid),
-                            'tab'=>array(
-                                        'all'=>0,
-                                        'created_today'=>0,
-                                        'updated_today'=>0,
-                                        'active'=>0,
-                                        'dropped'=>0,
-                                        'unassigned'=>0,
-                                        ),
-                            );
-
-        $entities[3] = array(
-                            'tab'=>array(
-                                        'all'=>0,
-                                        'created_today'=>0,
-                                        'updated_today'=>0,
-                                        'active'=>0,
-                                        'dropped'=>0,
-                                        'unassigned'=>0,
-                                        ),
-                            );
+                                array('status'=>3,
+                                'title'=>display('client',$companyid),
+                              ),
+                      );
 
         if(!empty($enquiry_separation))
         {
@@ -2394,18 +2370,30 @@ $cpny_id=$this->session->companey_id;
 
           foreach ($enquiry_separation as $key => $value) 
           {
-              $entities[$key] = array('title'=>$value['title'],
-                                        'tab'=>array(),
+              $all_status[] = array('status'=>$key,
+                                    'title'=>$value['title'],
                                   );
           }
         }
-      
+
+        foreach ($all_status as $key => $stts) {
+          $tab_list[$stts['status']] = array(  'status'=>$stts['status'],
+                                'title'=>$stts['title'],
+                                'all'=>0,
+                                'created_today'=>0,
+                                'updated_today'=>0,
+                                'active'=>0,
+                                'dropped'=>0,
+                                'unassigned'=>0,
+                            );
+        }
+        
         $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
         $result = $query->result();
 
         foreach($result as $key=> $r)
         {
-          $entities[$r->status]['tab']['all'] = !empty($r->counter)?$r->counter:0;
+          $tab_list[$r->status]['all'] = !empty($r->counter)?$r->counter:0;
         }
         
         $query2 = $this->db->query("SELECT count(enquiry_id)counter,enquiry.status FROM `enquiry` WHERE $where AND DATE(created_date) = CURRENT_DATE GROUP BY enquiry.status");
@@ -2414,32 +2402,31 @@ $cpny_id=$this->session->companey_id;
 
         foreach($result2 as $r)
         {
-            $entities[$r->status]['tab']['created_today'] = !empty($r->counter)?$r->counter:0;
+            $tab_list[$r->status]['created_today'] = !empty($r->counter)?$r->counter:0;
         }
 
         $query3 = $this->db->query("SELECT count(enquiry_id)counter,enquiry.status FROM `enquiry` WHERE $where AND DATE(update_date) = CURRENT_DATE GROUP BY enquiry.status");
-
         $result3 = $query2->result();
 
         foreach($result3 as $r)
         {
-            $entities[$r->status]['tab']['updated_today'] = !empty($r->counter)?$r->counter:0;
+            $tab_list[$r->status]['updated_today'] = !empty($r->counter)?$r->counter:0;
         }
 
-        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason,enquiry.status FROM enquiry left JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND tp.drop_reason IS NULL GROUP BY enquiry.status");
+        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
         $result4 = $query4->result();
 
         foreach($result4 as $r)
         {
-            $entities[$r->status]['tab']['active'] = !empty($r->counter)?$r->counter:0;
+            $tab_list[$r->status]['active'] = !empty($r->counter)?$r->counter:0;
         }
 
-        $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status = 1 GROUP BY enquiry.status");
+        $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status >0 GROUP BY enquiry.status");
 
         $result5 = $query5->result();
         foreach($result5 as $r)
         {
-            $entities[$r->status]['tab']['dropped'] = !empty($r->counter)?$r->counter:0;
+            $tab_list[$r->status]['dropped'] = !empty($r->counter)?$r->counter:0;
         }
 
         $query6 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND aasign_to IS NULL GROUP BY enquiry.status");
@@ -2447,13 +2434,18 @@ $cpny_id=$this->session->companey_id;
         $result6 = $query6->result();
         foreach($result6 as $r)
         {
-            $entities[$r->status]['tab']['unassigned'] = !empty($r->counter)?$r->counter:0;
+           $tab_list[$r->status]['unassigned'] = !empty($r->counter)?$r->counter:0;
         }
 
-        echo json_encode($entities);
-        exit();
+        $new_tab = array();
+        foreach ($tab_list as $key => $value)
+        {
+          $new_tab[] = $value;
+        }
+        $tab_list = $new_tab;
 
         $query7 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.lead_score FROM `enquiry` WHERE $where GROUP BY enquiry.lead_score");
+
 
         $result7 = $query7->result();
         foreach($result7 as $r)
@@ -2472,259 +2464,227 @@ $cpny_id=$this->session->companey_id;
             }
         }
 
-
-        $query8 = $this->db->query("SELECT count(enquiry_id) counter,month(DATE(created_date)) month  FROM `enquiry` WHERE $where AND status = 1 GROUP BY month(DATE(created_date))");
-
-        $result8 = $query8->result();
-
-        foreach($result8 as $r)
+        foreach ($all_status as $key => $stts) 
         {
-            if($r->month == 1 )
-            {
-                $ejan = $r->counter;
-            }
-            if($r->month == 2 )
-            {
-                $efeb = $r->counter;
-            }
-            if($r->month == 3 )
-            {
-                $emar = $r->counter;
-            }
-            if($r->month == 4 )
-            {
-                $eapr = $r->counter;
-            }
-            if($r->month == 5 )
-            {
-                $emay = $r->counter;
-            }
-            if($r->month == 6 )
-            {
-                $ejun = $r->counter;
-            }
-            if($r->month == 7 )
-            {
-                $ejuly = $r->counter;
-            }
-            if($r->month == 8 )
-            {
-                $eaug = $r->counter;
-            }
-            if($r->month == 9 )
-            {
-                $esep = $r->counter;
-            }
-            if($r->month == 10 )
-            {
-                $eoct = $r->counter;
-            }
-            if($r->month == 11 )
-            {
-                $enov = $r->counter;
-            }
-            if($r->month == 12 )
-            {
-                $edec = $r->counter;
-            }
+          $month_list[$stts['status']] = array(  'status'=>$stts['status'],
+                                'title'=>$stts['title'],
+                                'months'=>array(
+                                              'jan'=>0,
+                                              'feb'=>0,
+                                              'mar'=>0,
+                                              'apr'=>0,
+                                              'may'=>0,
+                                              'jun'=>0,
+                                              'jul'=>0,
+                                              'aug'=>0,
+                                              'sep'=>0,
+                                              'oct'=>0,
+                                              'nov'=>0,
+                                              'dec'=>0,
+                                ),
+                            );
+
+          $query8 = $this->db->query("SELECT count(enquiry_id) counter,month(DATE(created_date)) month  FROM `enquiry` WHERE $where AND status = $key GROUP BY month(DATE(created_date))");
+
+          $result8 = $query8->result();
+
+          foreach ($result8 as $key => $r) 
+          {
+              if($r->month == 1 )
+              {
+                  $month_list[$stts['status']]['months']['jan'] = $r->counter;
+              }
+              if($r->month == 2 )
+              {
+                 $month_list[$stts['status']]['months']['feb'] = $r->counter;
+              }
+              if($r->month == 3 )
+              {
+                  $month_list[$stts['status']]['months']['mar'] = $r->counter;
+              }
+              if($r->month == 4 )
+              {
+                  $month_list[$stts['status']]['months']['apr'] = $r->counter;
+              }
+              if($r->month == 5 )
+              {
+                  $month_list[$stts['status']]['months']['may'] = $r->counter;
+              }
+              if($r->month == 6 )
+              {
+                 $month_list[$stts['status']]['months']['jun'] = $r->counter;
+              }
+              if($r->month == 7 )
+              {
+                 $month_list[$stts['status']]['months']['jul'] = $r->counter;
+              }
+              if($r->month == 8 )
+              {
+                 $month_list[$stts['status']]['aug']= $r->counter;
+              }
+              if($r->month == 9 )
+              {
+                  $month_list[$stts['status']]['months']['sep']= $r->counter;
+              }
+              if($r->month == 10 )
+              {
+                  $month_list[$stts['status']]['months']['oct'] = $r->counter;
+              }
+              if($r->month == 11 )
+              {
+                  $month_list[$stts['status']]['months']['nov'] = $r->counter;
+              }
+              if($r->month == 12 )
+              {
+                $month_list[$stts['status']]['months']['dec']= $r->counter;
+              }
+          }
+                 
         }
 
-        $query9 = $this->db->query("SELECT count(enquiry_id) counter,month(DATE(created_date)) month  FROM `enquiry` WHERE $where AND status = 2 GROUP BY month(DATE(created_date))");
-
-        $result9 = $query9->result();
-
-        foreach($result9 as $r)
+        $new_month = array();
+        foreach($month_list as $key=>$value)
         {
-            if($r->month == 1 )
-            {
-                $ljan = $r->counter;
-            }
-            if($r->month == 2 )
-            {
-                $lfeb = $r->counter;
-            }
-            if($r->month == 3 )
-            {
-                $lmar = $r->counter;
-            }
-            if($r->month == 4 )
-            {
-                $lapr = $r->counter;
-            }
-            if($r->month == 5 )
-            {
-                $lmay = $r->counter;
-            }
-            if($r->month == 6 )
-            {
-                $ljun = $r->counter;
-            }
-            if($r->month == 7 )
-            {
-                $ljuly = $r->counter;
-            }
-            if($r->month == 8 )
-            {
-                $laug = $r->counter;
-            }
-            if($r->month == 9 )
-            {
-                $lsep = $r->counter;
-            }
-            if($r->month == 10 )
-            {
-                $loct = $r->counter;
-            }
-            if($r->month == 11 )
-            {
-                $lnov = $r->counter;
-            }
-            if($r->month == 12 )
-            {
-                $ldec = $r->counter;
-            }
+          $new_month[] = $value; 
         }
-
-        $query10 = $this->db->query("SELECT count(enquiry_id) counter,month(DATE(created_date)) month  FROM `enquiry` WHERE $where AND status = 3 GROUP BY month(DATE(created_date))");
-
-        $result10 = $query10->result();
-
-        foreach($result10 as $r)
-        {
-            if($r->month == 1 )
-            {
-                $cjan = $r->counter;
-            }
-            if($r->month == 2 )
-            {
-                $cfeb = $r->counter;
-            }
-            if($r->month == 3 )
-            {
-                $cmar = $r->counter;
-            }
-            if($r->month == 4 )
-            {
-                $capr = $r->counter;
-            }
-            if($r->month == 5 )
-            {
-                $cmay = $r->counter;
-            }
-            if($r->month == 6 )
-            {
-                $cjun = $r->counter;
-            }
-            if($r->month == 7 )
-            {
-                $cjuly = $r->counter;
-            }
-            if($r->month == 8 )
-            {
-                $caug = $r->counter;
-            }
-            if($r->month == 9 )
-            {
-                $csep = $r->counter;
-            }
-            if($r->month == 10 )
-            {
-                $coct = $r->counter;
-            }
-            if($r->month == 11 )
-            {
-                $cnov = $r->counter;
-            }
-            if($r->month == 12 )
-            {
-                $cdec = $r->counter;
-            }
-        }
-
+             
+        $month_list = $new_month;
         $query12 = $this->db->query("SELECT enquiry_id FROM `enquiry` WHERE $where AND enquiry_source = 3 AND status = 1");
         $raw = $query12->num_rows();
 
         $query13 = $this->db->query("SELECT count(enquiry.enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND state_id = 1 GROUP BY enquiry.status");
 
         $result13 = $query13->result();
-        foreach($result13 as $r)
-        {
-            if($r->status == 1)
-            {
-                $upl = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 2)
-            {
-                $upc = (!empty($r->counter)) ? $r->counter : 0;
-            }
-            if($r->status == 3)
-            {
-                $cold = (!empty($r->counter)) ? $r->counter : 0;
-            }
+
+
+        $india_state1 = array();
+        $india_state2 = array();
+
+         foreach ($all_status as $key => $stts) {
+          $india_state1[$stts['status']] = array(
+                                'status'=>$stts['status'],
+                                'title'=>$stts['title'],
+                                'count'=>0,
+                            );
+          $india_state2[$stts['status']] = array(
+                                'status'=>$stts['status'],
+                                'title'=>$stts['title'],
+                                'count'=>0,
+                            );
         }
 
-        $upe = $query13->num_rows();
+        foreach($result13 as $r)
+        {
+            $india_state1[$r->status]['count'] = (!empty($r->counter)) ? $r->counter : 0;
+        }
 
-        $query13 = $this->db->query("SELECT enquiry_id FROM `enquiry` WHERE $where AND state_id = 1 AND status = 2");
-        $upl = $query13->num_rows();
+        $new_state1 = array();
+        foreach ($india_state1 as $key => $value)
+        {
+          $new_state1[] = $value; 
+        }
+        $india_state1 = $new_state1;
 
-        $query13 = $this->db->query("SELECT enquiry_id FROM `enquiry` WHERE $where AND state_id = 1 AND status = 3");
-        $upc = $query13->num_rows();
+        $query13 = $this->db->query("SELECT count(enquiry.enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND state_id = 2 GROUP BY enquiry.status");
 
-        $query13 = $this->db->query("SELECT enquiry_id FROM `enquiry` WHERE $where AND state_id = 2 AND status = 1");
-        $pbe = $query13->num_rows();
+         $result13 = $query13->result();
+       foreach($result13 as $r)
+        {
+            $india_state2[$r->status]['count'] = (!empty($r->counter)) ? $r->counter : 0;
+        }
 
-        $query13 = $this->db->query("SELECT enquiry_id FROM `enquiry` WHERE $where AND state_id = 2 AND status = 2");
-        $pbl = $query13->num_rows();
+        $new_state2 = array();
+        foreach ($india_state2 as $key => $value)
+        {
+          $new_state2[] = $value; 
+        }
+        $india_state2 = $new_state2;
 
-        $query13 = $this->db->query("SELECT enquiry_id FROM `enquiry` WHERE $where AND state_id = 2 AND status = 3");
-        $pbc = $query13->num_rows();
+        $dispo  = array();
+         foreach ($all_status as $key => $stts) 
+         {
+          $dispo[$stts['status']] = array(
+                                'status'=>$stts['status'],
+                                'title'=>$stts['title'],
+                                'data'=>0,
+                            );
+         $despenqqry = $this->db->query("SELECT lead_stage_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.lead_score =  lead_stage.stg_id AND enquiry.status = ".$stts['status'].")counternow FROM lead_stage WHERE lead_stage.comp_id = $cpny_id");
 
-        $despenqqry = $this->db->query("SELECT lead_stage_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.lead_score =  lead_stage.stg_id AND enquiry.status = 1)counternow FROM lead_stage WHERE lead_stage.comp_id = $cpny_id");
+          $dispo[$stts['status']]['data'] = $despenqqry->result();
 
-        $despenq = $despenqqry->result();
+        }
 
-        $despleadqry = $this->db->query("SELECT lead_stage_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.lead_score =  lead_stage.stg_id AND enquiry.status = 2)counternow FROM lead_stage WHERE lead_stage.comp_id = $cpny_id");
+         $new_dispo = array();
+        foreach ($dispo as $key => $value)
+        {
+          $new_dispo[] = $value; 
+        }
+        $dispo = $new_dispo;
 
-        $desplead = $despleadqry->result();
+      $src  = array();
+         foreach ($all_status as $key => $stts) 
+         {
+          $src[$stts['status']] = array(
+                                'status'=>$stts['status'],
+                                'title'=>$stts['title'],
+                                'data'=>0,
+                            );
+          $enquiry_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = ".$stts['status'].")counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
 
-        $despcliqry = $this->db->query("SELECT lead_stage_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.lead_score =  lead_stage.stg_id AND enquiry.status = 3)counternow FROM lead_stage WHERE lead_stage.comp_id = $cpny_id");
+          $src[$stts['status']]['data'] = $enquiry_src_qry->result();
 
-        $despcli = $despcliqry->result();
+        }
 
-        $enquiry_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = 1)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
+        $new_src = array();
+        foreach ($src as $key => $value)
+        {
+          $new_src[] = $value; 
+        }
+        $src = $new_src;
 
-        $EnquirySrc = $enquiry_src_qry->result();
 
-        $lead_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = 2)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
+      $process_wise  = array();
+       foreach ($all_status as $key => $stts) 
+       {
+        $process_wise[$stts['status']] = array(
+                              'status'=>$stts['status'],
+                              'title'=>$stts['title'],
+                              'data'=>0,
+                          );
+        $enquiry_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name FROM enquiry  LEFT JOIN tbl_product as tp ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = ".$stts['status']." AND tp.sb_id In ($process) GROUP BY tp.sb_id");
+        $process_wise[$stts['status']]['data'] = $enquiry_process->result();
+      }
 
-        $leadSrc = $lead_src_qry->result();
 
-        $Client_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = 3)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
 
-        $ClientSrc = $Client_src_qry->result();
+        $new_process = array();
+        foreach ($process_wise as $key => $value)
+        {
+          $new_process[] = $value; 
+        }
+        $process_wise = $new_process;
 
-        $enquiry_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name FROM enquiry  LEFT JOIN tbl_product as tp ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = 1 AND tp.sb_id In ($process) GROUP BY tp.sb_id");
-        $enquiry_processWise = $enquiry_process->result();
-        
-        $lead_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name FROM enquiry  LEFT JOIN tbl_product as tp ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = 2 AND tp.sb_id In ($process) GROUP BY tp.sb_id");
 
-        $lead_processWise = $lead_process->result();
+        $drop_data  = array();
+       foreach ($all_status as $key => $stts) 
+       {
+        $drop_data[$stts['status']] = array(
+                              'status'=>$stts['status'],
+                              'title'=>$stts['title'],
+                              'data'=>0,
+                          );
 
-        $client_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name FROM enquiry  LEFT JOIN tbl_product as tp ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = 3 AND tp.sb_id In ($process) GROUP BY tp.sb_id");
+        $enquiry_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  right JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = ".$stts['status']."  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
+        $drop_data[$stts['status']]['data'] = $enquiry_drop->result();
+      }
 
-        $client_processWise = $client_process->result();
 
-        $enquiry_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  right JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = 1  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
-        $enquiry_dropWise = $enquiry_drop->result();
-        
-        $lead_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  LEFT JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = 2  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
-
-        $lead_dropWise = $lead_drop->result();
-
-        $client_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  LEFT JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = 3  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
-
-      $client_dropWise = $client_drop->result();
+        $new_drop = array();
+        foreach ($drop_data as $key => $value)
+        {
+          $new_drop[] = $value; 
+        }
+        $drop_data = $new_drop;
 
       $enq_count = $this->dashboard_model->countLead(2,$companyid,$userid,$process);
       //echo $this->db->last_query();exit();
@@ -2790,10 +2750,56 @@ $cpny_id=$this->session->companey_id;
         // $pbc = $query14->num_rows(); 
     //print_r($followup);exit();
 
-        $indiamap= array('upe'=>$upe,'upl'=>$upl,'upc'=>$upc,'pbe'=>$pbe,'pbl'=>$pbl,'pbc'=>$pbc);
+        //$indiamap= array('upe'=>$upe,'upl'=>$upl,'upc'=>$upc,'pbe'=>$pbe,'pbl'=>$pbl,'pbc'=>$pbc);
 
-        $funnelchartAry = array('enquiry'=>$enquiry,'lead'=>$lead,"client"=>$client,'enq_ct'=>$enq_ct,'lead_ct'=>$lead_ct,'client_ct'=>$client_ct,'enq_ut'=>$enq_ut,'lead_ut'=>$lead_ut,'client_ut'=>$client_ut,'enq_drp'=>$enq_drp,'lead_drp'=>$lead_drp,'client_drp'=>$client_drp,'enq_active'=>$enq_active,'lead_active'=>$lead_active,'client_active'=>$client_active,'enq_assign'=>$enq_assign,'lead_assign'=>$lead_assign,'client_assign'=>$client_assign,'hot'=>$hot,'warm'=>$warm,'cold'=>$cold,'ejan'=>$ejan,'ljan'=>$ljan,'cjan'=>$cjan,'efeb'=>$efeb,'lfeb'=>$lfeb,'cfeb'=>$cfeb,'emar'=>$emar,'lmar'=>$lmar,'cmar'=>$cmar,'eapr'=>$eapr,'lapr'=>$lapr,'capr'=>$capr,'emay'=>$emay,'lmay'=>$lmay,'cmay'=>$cmay,'ejun'=>$ejun,'ljun'=>$ljun,'cjun'=>$cjun,'ejuly'=>$ejuly,'ljuly'=>$ljuly,'cjuly'=>$cjuly,'eaug'=>$eaug,'laug'=>$laug,'caug'=>$caug,'esep'=>$esep,'lsep'=>$lsep,'csep'=>$csep,'eoct'=>$eoct,'loct'=>$loct,'coct'=>$coct,'enov'=>$enov,'lnov'=>$lnov,'cnov'=>$cnov,'edec'=>$edec,'ldec'=>$ldec,'cdec'=>$cdec,'raw'=>$raw,'indiamap'=>$indiamap,'desposition_enquiry'=>$despenq,'desposition_lead'=>$desplead,'desposition_client'=>$despcli,'EnquirySrc'=>$EnquirySrc,'leadSrc'=>$leadSrc,'ClientSrc'=>$ClientSrc,'enquiry_processWise'=>$enquiry_processWise,'lead_processWise'=>$lead_processWise,'client_processWise'=>$client_processWise,'enquiry_dropWise'=>$enquiry_dropWise,'lead_dropWise'=>$lead_dropWise,'client_dropWise'=>$client_dropWise);
+        $indiamap = array('state1'=>$india_state1,'state2'=>$india_state2);
+        // array_push($indiamap, $india_state1);
+        // array_push($indiamap, $india_state2);
+
+
+        $queryDeals = $this->db->query("SELECT count(info.enquiry_id)counter ,info.id from commercial_info info left join enquiry on enquiry.enquiry_id=info.enquiry_id where $where")->row();
+
+        $alldeals = $queryDeals->counter??0;
+
+        $queryDeals = $this->db->query("SELECT count(info.enquiry_id)counter ,info.id,info.status as info_status from commercial_info info left join enquiry on enquiry.enquiry_id=info.enquiry_id where $where group by info_status")->result();
+        $done_deals = 0;
+        $pending_deals = 0;
+        $deffered_deals = 0;
+        foreach ($queryDeals as $key => $value)
+        {
+            if($value->info_status==1)
+              $done_deals = $value->counter??0;
+            if($value->info_status==0)
+              $pending_deals = $value->counter??0;
+            if($value->info_status==2)
+              $deffered_deals = $value->counter??0;
+        }
+       
+        $deal_amount_list = $this->db->query("SELECT sum(sumvalue) as total,tb.status as info_status from (SELECT sum(deal_data.expected_amount) as sumvalue,info.* from commercial_info info left join enquiry on enquiry.enquiry_id=info.enquiry_id left join deal_data on deal_data.deal_id=info.id  where $where GROUP by info.id) tb GROUP by tb.status")->result();
+        
+        $done_amnt = 0;
+        $pending_amnt = 0;
+        $deffered_amnt = 0;
+        foreach ($deal_amount_list as $key => $value)
+        {
+            if($value->info_status==1)
+              $done_amnt = $value->total??0;
+            if($value->info_status==0)
+              $pending_amnt = $value->total??0;
+            if($value->info_status==2)
+              $deffered_amnt = $value->total??0;
+        }
+
+        $funnelchartAry = array('tabs'=>$tab_list,'hot'=>$hot,'warm'=>$warm,'cold'=>$cold,'month_wise'=>$month_list,'raw'=>$raw,'indiamap'=>$indiamap,'disposition'=>$dispo,'source'=>$src,'process_wise'=>$process_wise,'drop_wise'=>$drop_data);
         $funnelchartAry['followup'] = $followup;
+        $funnelchartAry['deals'] = array('all'=>$alldeals,
+                                          'done'=>$done_deals,
+                                          'pending'=>$pending_deals,
+                                          'deffered'=>$deffered_deals,
+                                          'done_amnt'=>$done_amnt,
+                                          'pending_amnt'=>$pending_amnt,
+                                          'deffered_amnt'=>$deffered_amnt,
+                                        );
         return $funnelchartAry;
     }
 
@@ -2989,7 +2995,7 @@ $cpny_id=$this->session->companey_id;
             }
         }
 
-        $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status = 1 GROUP BY enquiry.status");
+        $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status = 0 GROUP BY enquiry.status");
 
         $result5 = $query5->result();
         foreach($result5 as $r)
@@ -4712,9 +4718,8 @@ public function insertComInfo($data)
         // $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$company_id);
         $this->db->where("tbl_visit.user_id",$user_id);
+        $this->db->order_by("tbl_visit.created_at",'DESC');
         $this->db->where($where);
-
-
         if(!empty($_POST['filters']))
         {
             foreach ($_POST['filters'] as $key => $value)

@@ -1264,7 +1264,7 @@ class Enquiry extends CI_Controller
                     </div>
                   </div>
                 </li>';
-            } else if ($comments->comment_msg == 'Move to leads') {
+            } else if ($comments->comment_msg == 'Move to '.display('lead').'') {
                 $html .= '<li>
                   <div class="cbp_tmicon cbp_tmicon-phone"  style="background:#2980b9;"></div>
                   <div class="cbp_tmlabel"  style="background:#95a5a6;">
@@ -1758,8 +1758,8 @@ Array
             }
             //insert follow up counter (2 is for lead )
             $this->enquiry_model->insetFollowupTime($move_enquiry,2,$enquiry->row()->created_date,date('Y-m-d H:i:s'));
-            
-            $this->session->set_flashdata('message', 'Enquiry Convert to Lead Successfully');
+            $message=display('enquiry').' Convert to '.display('lead').' Successfully';
+            $this->session->set_flashdata('message',$message);
             redirect('enquiry');
         } else {
             echo "<script>alert('Something Went Wrong')</script>";
@@ -3468,6 +3468,31 @@ echo  $details1;
         $diff = $v1 - $v2;
         return $diff < 0 ? (-1) * $diff : $diff;
     }
+    public function notify_rmanager()
+    {
+       $remarks= $this->input->post('remarks');
+       $visit_id= $this->input->post('visit_id');
+       $user_id=$this->session->user_id;
+      $report_touser= $this->db->select('report_to,pk_i_admin_id')->where('pk_i_admin_id',$user_id)->get('tbl_admin')->row();
+       $report_to=$report_touser->report_to;
+                $ins_arr = array(
+                    'comp_id'        =>  $this->session->companey_id,
+                    'subject'        =>  'Need for approval',
+                    'task_type'      =>  18,
+                    'task_status'      =>  2,
+                    'query_id'       =>  $visit_id,
+                    'task_remark'    =>  $remarks,
+                      'task_date'    =>   date("d-m-Y"),
+                    'task_time'        => date("H:i:s"),
+                    'related_to' => $report_to,
+                    'create_by'      =>  $this->session->user_id
+                );
+                $this->db->insert('query_response',$ins_arr);
+                $this->session->set_flashdata('message', 'Request successfully submitted');
+                // redirect($url);
+                redirect($this->agent->referrer()); 
+    }
+    
     public function visit_load_data()
     {
         //print_r($_POST); exit(); 
@@ -3485,52 +3510,50 @@ echo  $details1;
         //print_r($cols); exit();
         $data = array();
         $ix=1;
+        $visit_expSum_s =0;
+        $visit_otexpSum_s =0;
+        $total_expSum_s =0;
         foreach ($result as $res)
         {
-            $sum=0;
-            $km=0;
-            $percentChange=0;
-            if(!empty($res->way_points)){
-            $waypoints=json_decode($res->way_points);
-            $totalpoints=count($waypoints);
-            $newpoints=array();
-            $cuts=$totalpoints/23;
-            for ($i=0; $i < $totalpoints; $i+=$cuts) { 
-              array_push($newpoints,$waypoints[$i]);
+            $visit_totalexp= $this->db->where(array('tbl_expense.visit_id'=> $res->vids))->count_all_results('tbl_expense');
+            $visit_reject= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 1))->count_all_results('tbl_expense');
+            $visit_approve= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 2))->count_all_results('tbl_expense');
+            $visit_pending= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 0))->count_all_results('tbl_expense');
+            $expstatus='N/A';
+            if($visit_totalexp!=0){
+            if($visit_reject==$visit_totalexp){
+                $expstatus='Rejected ';
+            }elseif($visit_approve==$visit_totalexp){
+                $expstatus='Approved';
+            }elseif($visit_pending==$visit_totalexp){
+                // $expstatus='Pending';
+                $expstatus='Pending';
+            }elseif($visit_reject!=0 AND $visit_approve!=0 OR $visit_pending!=0){
+                $expstatus='Partially Approved';
             }
-            $lastKey = key(array_slice($newpoints, -1, 1, true));
-            $firstpoint=$newpoints[0];
-            $secondpoint=$newpoints[$lastKey];
-           
-            // latitude and longitude of Two Points 
-            $latitudeFrom = $firstpoint[0]; 
-            $longitudeFrom =  $firstpoint[1];
-            $latitudeTo = $secondpoint[0]; 
-            $longitudeTo = $secondpoint[1]; 
-            // Distance between Mumbai and New York 
-            $inmiles=$this->twopoints_on_earth( $latitudeFrom, $longitudeFrom,  
-            $latitudeTo,  $longitudeTo); 
-            $km=$inmiles* 1.60934;
-            $x=$waypoints;
-               
-             for ($i=0; $i <count($x)-2; $i++) { 
-                 $sum +=  $this->points_on_earth($x[$i][0],$x[$i][1],$x[$i+1][0],$x[$i+1][1]);
+         
+            // if($res->visit_approve!=$totalexpstatus){
+            //     $expstatus='Partially Approved';
+            // }
+            // if($res->visit_reject!=$totalexpstatus){
+            //     $expstatus='Partially Rejected';
+            // }
+             }
+             $visit_expSum=round(abs($res->visit_expSum));
+             $visit_otexpSum=round(abs($res->visit_otexpSum));
+             $total_expSum=round(abs($res->visit_expSum+$res->visit_otexpSum));
+             $percentChange=0;
+            $km_rate = $this->user_model->get_user_meta($res->user_id,array('km_rate'));
+            if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
+              $rate=10;;
               }
-              $sum;
-              $kmamount=10;
-              $totalpay=$kmamount*$km;
-              $actualamt=$sum*$kmamount;
-           if($actualamt > 0 && $totalpay > 0){
-           $dif= $this->abs_diff($actualamt,$totalpay);
-                $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
-                  }else{
-                          $actualamt=0;
-                          $totalpay=0;
-                  }
-                                    // if(abs($percentChange) < 20){
-                                    //     $percentChange="<span style'color:red'>".$percentChange."</span>";
-                                    //                                     }
-            }
+            $totalpay=($res->actualDistance)*$rate;
+            $idealamt=($res->idealDistance)*$rate;
+         if($idealamt > 0 && $totalpay > 0){
+         $dif= $this->abs_diff($idealamt,$totalpay);
+              $percentChange = (($totalpay - $idealamt) / $idealamt)*100;
+                }
+           
             $sub = array();
             $time = $res->visit_time=='00:00:00'?null:date("g:i a", strtotime($res->visit_time));
             $sub[] ='<input  type="checkbox" name="approve[]" class="checkbox1"  value="'.$res->vids.'"> '. $ix++;
@@ -3555,18 +3578,27 @@ echo  $details1;
             if($colsall || in_array(10,$cols))
             $sub[] = $res->company??'NA';
             if($colsall || in_array(4,$cols))
-            $sub[] = round($sum);
+            $sub[] =$res->idealDistance.' Km';
         if($colsall || in_array(5,$cols))
-            $sub[] = round($km);
+            $sub[] =$res->actualDistance.' Km';
             if($colsall || in_array(6,$cols))
                 $sub[] = $res->rating!=''?$res->rating:'NA';
                 if($colsall || in_array(11,$cols))
-                $sub[] = round(abs($percentChange));
-                if($colsall || in_array(12,$cols))
+                $sub[] = '<span class="diff">'.round(abs($percentChange)).'</span>';
                 $sub[] = round(abs($res->visit_expSum));
+                $sub[] = round(abs($res->visit_otexpSum));
+                $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
+                $sub[] = '<span class="expstatus">'.$expstatus.'<span>';
+                
+
             if($colsall || in_array(9,$cols))
-                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-inr'></i></a>":'';
+                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-plus'></i></a>":'';
             $data[] =$sub;
+            
+            $visit_expSum_s += $visit_expSum;
+            $visit_otexpSum_s +=$visit_otexpSum;
+            $total_expSum_s += $total_expSum;
+            
         }
     
         $output = array(
@@ -3574,6 +3606,9 @@ echo  $details1;
             "recordsTotal" =>$this->visit_datatable_model->countAll(),
             "recordsFiltered" => $this->visit_datatable_model->countFiltered($_POST),
             "data" => $data,
+            "totalotherExpense" => $visit_otexpSum_s,
+            "totaltravelExp" =>$visit_expSum_s,
+            "totalExpense" =>$total_expSum_s,
         );
         echo json_encode($output);
     }

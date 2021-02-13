@@ -13,170 +13,190 @@
   <div class="col-md-4 col-sm-4 col-xs-4"> 
   </div>
   <div class="col-md-4 col-sm-4 col-xs-4 "> 
-  <!-- <a style="float:right;" href="<?= base_url('visit/vist-report') ?>"><button class="btn btn-primary">View Report</button></a> -->
-  
   <button  style="float:right; margin-right:10px;"  data-toggle="modal" data-target="#update_remarks"  class="btn btn-primary">Update  Remarks</button>
- 
   </div>
- 
   <?php } ?>
 </div>
-
 <br>
 <script type="text/javascript">
 $("select").select2();
 </script>
-<!-- ///area// -->
 <div class="row">
-    <div class="col-md-12">
-    <div class="form-group col-md-3">
-                <label>Travel Start Time</label>
-                   <input value="<?= $details->visit_start ?>" disabled class="form-control">
-                </div>
-                <div class="form-group col-md-3">
-                <label>Travel End Time</label>
-                <input value="<?= $details->visit_end ?>" disabled class="form-control">
-               </div>
-               <div class="form-group col-md-3">
-                <label>Meeting Start Time</label>
-                <input value="<?= $details->start_time ?>" disabled class="form-control">
-               </div>
-               <div class="form-group col-md-3">
-                <label>Meeting End Time</label>
-                <input value="<?= $details->end_time ?>" disabled class="form-control">
-               </div>
-        
-    </div>
-
-</div>
 <div class="row">
-<div class="col-md-12">
-<div class="form-group col-md-3">
-<label>Remarks</label>
-                <input value="<?= $details->remarks ?>" disabled class="form-control">
-</div>
-<div class="form-group col-md-3">
-<label>Star</label>
-                <input value="<?= $details->rating ?>" disabled class="form-control">
-</div>
-<div class="form-group col-md-3">
-<label>Travelled Type</label>
-<input value="<?= $details->travelled_type ?>" disabled class="form-control">
-</div>
-</div>
-<div class="row">
-
     <?php
-            $waypoints=json_decode($details->way_points);
-            if(!empty($waypoints)){
-            $totalpoints=count($waypoints);
-            $newpoints=array();
-            // print_r($totalpoints);
-            $cuts=$totalpoints/23;
-            for ($i=0; $i < $totalpoints; $i+=$cuts) { 
-              array_push($newpoints,$waypoints[$i]);
-            }
-             $lastKey = key(array_slice($newpoints, -1, 1, true));
-            $firstpoint=$newpoints[0];
-            $secondpoint=$newpoints[$lastKey];
-            function twopoints_on_earth($latitudeFrom, $longitudeFrom,$latitudeTo,$longitudeTo) 
-            { 
-            $long1 = deg2rad($longitudeFrom); 
-            $long2 = deg2rad($longitudeTo); 
-            $lat1 = deg2rad($latitudeFrom); 
-            $lat2 = deg2rad($latitudeTo); 
-            //Haversine Formula 
-            $dlong = $long2 - $long1; 
-            $dlati = $lat2 - $lat1; 
-            $val = pow(sin($dlati/2),2)+cos($lat1)*cos($lat2)*pow(sin($dlong/2),2); 
-            $res = 2 * asin(sqrt($val)); 
-            $radius = 3958.756; 
-            return ($res*$radius); 
-            } 
-            // latitude and longitude of Two Points 
-            $latitudeFrom = $firstpoint[0]; 
-            $longitudeFrom =  $firstpoint[1];
-            $latitudeTo = $secondpoint[0]; 
-            $longitudeTo = $secondpoint[1]; 
-            // Distance between Mumbai and New York 
-            $inmiles=twopoints_on_earth( $latitudeFrom, $longitudeFrom,  
-            $latitudeTo,  $longitudeTo); 
-            $km=$inmiles* 1.60934;
-            $x=$waypoints;
-            $sum=0;
-                 function points_on_earth($p1,$p2,$l1,$l2)
-                {
-                    $inmiles=twopoints_on_earth( $p1, $p2, $l1,  $l2); 
-                     return  $inmiles * 1.60934;
-                }
-             for ($i=0; $i <count($x)-2; $i++) { 
-                 $sum +=  points_on_earth($x[$i][0],$x[$i][1],$x[$i+1][0],$x[$i+1][1]);
-             }
-              $sum;
-              $kmamount=10;
-              $totalpay=$kmamount*$km;
+        $visittable=$this->db->where(array('visit_id'=>$details->visit_id))->get('visit_details')->result();
 
-              $actualamt=$sum*$kmamount;
-            //   find difference bectween
-            function abs_diff($v1, $v2) {
-                $diff = $v1 - $v2;
-                return $diff < 0 ? (-1) * $diff : $diff;
-            }
+
+
+          //   $waypoints=json_decode($details->way_points);
+          //   if(!empty($waypoints)){
+          //   $totalpoints=count($waypoints);
+          //   $newpoints=array();
+          //   // print_r($totalpoints);
+          //   $cuts=$totalpoints/23;
+          //   for ($i=0; $i < $totalpoints; $i+=$cuts) { 
+          //     array_push($newpoints,$waypoints[$i]);
+          //   }
+          //    $lastKey = key(array_slice($newpoints, -1, 1, true));
+          //   $firstpoint=$newpoints[0];
+          //   $secondpoint=$newpoints[$lastKey];
+          //   function twopoints_on_earth($latitudeFrom, $longitudeFrom,$latitudeTo,$longitudeTo) 
+          //   { 
+          //   $long1 = deg2rad($longitudeFrom); 
+          //   $long2 = deg2rad($longitudeTo); 
+          //   $lat1 = deg2rad($latitudeFrom); 
+          //   $lat2 = deg2rad($latitudeTo); 
+          //   //Haversine Formula 
+          //   $dlong = $long2 - $long1; 
+          //   $dlati = $lat2 - $lat1; 
+          //   $val = pow(sin($dlati/2),2)+cos($lat1)*cos($lat2)*pow(sin($dlong/2),2); 
+          //   $res = 2 * asin(sqrt($val)); 
+          //   $radius = 3963.1906; 
+          //   return ($res*$radius); 
+          //   } 
+          //   // latitude and longitude of Two Points 
+          //   $latitudeFrom = $firstpoint[0]; 
+          //   $longitudeFrom =  $firstpoint[1];
+          //   $latitudeTo = $secondpoint[0]; 
+          //   $longitudeTo = $secondpoint[1]; 
+          //   // Distance between Mumbai and New York 
+          //   $inmiles=twopoints_on_earth( $latitudeFrom, $longitudeFrom,  
+          //   $latitudeTo,  $longitudeTo); 
+          //   $km=$inmiles* 1.60934;
+          //   $x=$waypoints;
+          //   $sum=0;
+          //        function points_on_earth($p1,$p2,$l1,$l2)
+          //       {
+          //           $inmiles=twopoints_on_earth( $p1, $p2, $l1,  $l2); 
+          //            return  $inmiles * 1.60934;
+          //       }
+          //    for ($i=0; $i <count($x)-2; $i++) { 
+          //        $sum +=  points_on_earth($x[$i][0],$x[$i][1],$x[$i+1][0],$x[$i+1][1]);
+          //    }
+          //     $sum;
+          //     $kmamount=10;
+          //     $totalpay=$kmamount*$km;
+
+          //     $actualamt=$sum*$kmamount;
+          //   //   find difference bectween
+          //   function abs_diff($v1, $v2) {
+          //       $diff = $v1 - $v2;
+          //       return $diff < 0 ? (-1) * $diff : $diff;
+          //   }
             
-           $dif= abs_diff($actualamt,$totalpay);
-           $percentChange=0;
-           if($actualamt > 0 && $totalpay > 0){
-           $dif= abs_diff($actualamt,$totalpay);
-                $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
-                  }else{
-                          $actualamt=0;
-                          $totalpay=0;
-                  }
+          //  $dif= abs_diff($actualamt,$totalpay);
+          //  $percentChange=0;
+          //  if($actualamt > 0 && $totalpay > 0){
+          //  $dif= abs_diff($actualamt,$totalpay);
+          //       $percentChange = (($totalpay - $actualamt) / $actualamt)*100;
+          //         }else{
+          //                 $actualamt=0;
+          //                 $totalpay=0;
+          //         }
                
            
 
     ?>
+<div class="col-md-12">
+<br>
+<table class="table table-responseive table-stripped">
+<thead >
+<tr>
+<th> S. No</th>
+<th>Travel Start </th>
+<th>Travel End </th>
+<th>In Hours </th>
+<th>Meeting Start </th>
+<th>Meeting End </th>
+<th>In Hours </th>
 
-    <div class="col-md-12">
- <div class="form-group col-md-3">
-                <label>Travelled Distance</label>
-                <input value="<?php if(!empty($sum)){echo round($sum,2).' Km';}else{ echo'N/A';}  ?>" disabled class="form-control">
-            <div id="msg"></div>  
-            </div>
-            <div class="form-group col-md-3">
-                <label>Actual Cost</label>
-                <input value="<?php if(!empty($actualamt)){echo round($actualamt,0).' ₹';}else{ echo '0'.' ₹';}  ?>" disabled class="form-control">
-            </div>
-            <div class="form-group col-md-3">
-                <label>Travelled Cost</label>
-                <input value="<?php if(!empty($totalpay)){echo round($totalpay,0).' ₹';}else{ echo '0'.' ₹';}  ?>" disabled class="form-control">
-            </div>
-            <div class="form-group col-md-3">
-                <label>Difference (<?= round($dif,0) ?> ₹)</label>
-                <input  style="<?php 
-             if(abs($percentChange)>20){
-               echo  'border:1px solid red;background-color: #eae0e0;';
-            }
-            ?>" value="<?php if(!empty($percentChange)){echo round($percentChange,0).' % ';}else{ echo '0'.' %';}  ?>" disabled class="form-control">
-            </div>
-            </div>
+</tr>
+</thead>
+<tbody>
+<?php 
+$i=1;
+$waypoints=[];
+foreach ($visittable as $key => $value) { ?>
+<tr>
+  <td><?= $i++ ?></td>
+<td>
+<?php
+ if(($value->visit_start)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->visit_start)); } ?>
+</td>
+<td>
+  <?php  if(($value->visit_end)!=NULL ){ echo date("F jS, Y, g:i a ", strtotime($value->visit_end)); } ?>
+</td>
+<td>
+<?php if(($value->visit_end!=NULL AND $value->visit_start!=NULL)){
+ $minutes= round(abs(strtotime($value->visit_start) - strtotime($value->visit_end))/60);
+  echo $hours = floor($minutes / 60).':'.($minutes -   floor($minutes / 60) * 60); }else{
+    echo'N/A';
+
+  } ?>
+</td>
+<td>
+<?php  if(($value->start_time)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->start_time)); } ?>
+</td>
+<td>
+<?php  if(($value->end_time)!=NULL){ echo date("F jS, Y, g:i a", strtotime($value->end_time)); } ?>
+</td>
+<td>
+<?php if(($value->start_time!=NULL AND $value->end_time!=NULL)){
+ $minutes= round(abs(strtotime($value->start_time) - strtotime($value->end_time))/60);
+  echo $hours = floor($minutes / 60).':'.($minutes -   floor($minutes / 60) * 60); }else{
+    echo'N/A';
+  } ?>
+</td>
+</tr>
+<?php
+$waypoints[]=$value->way_points;
+//  array_push(, json_decode($value->way_points));  
+// print_r($way_points);
+} 
+$arr_m=[];
+foreach ($waypoints as $key => $value) {
+foreach (json_decode($value) as $key => $values) {
+   $arr_m[]=$values;
+}
+}
+// print_r($arr_m);
+// die();
+ $totalpoints=count($arr_m);
+$newpoints=array();
+// print_r($totalpoints);
+$cuts=$totalpoints/23;
+for ($i=0; $i < $totalpoints; $i+=$cuts) { 
+  array_push($newpoints,$arr_m[$i]);
+}
+ $lastKey = key(array_slice($newpoints, -1, 1, true));
+$firstpoint=$newpoints[0];
+$secondpoint=$newpoints[$lastKey];
+
+?>
+</tbody>
+</table>
 </div>
 <div class="row">
 <br>
 <br>
 <div class="col-md-12">
 <hr>
-<center>Other Expense</center>
-&nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Expense Approval</button> 
-  <button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
+<center>Expenses</center>
+<?php if(user_access('1024'))  {  ?>
+&nbsp;&nbsp;<button class="btn btn-primary  " style="float:right;" data-toggle="modal" data-target="#approve_expense">Action</button> 
+<?php 
+} ?>
+<button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_approve">Send For Approval</button>
+<button class="btn btn-success  " style="float:right; margin-right: 20px;" data-toggle="modal" data-target="#add_expense">Add Expense</button>
 </div>
 <div class="col-md-12">
 <br>
 <table class="table table-responseive table-stripped">
 <thead >
 <tr>
-<th><input type="checkbox" name="approve_all" class="checked_all1" value="check all"> S. No</th>
+<th><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
 <th>Expense Type</th>
+<th>Title</th>
 <th>Amount</th>
 <th>Status</th>
 <th>Action</th>
@@ -184,17 +204,27 @@ $("select").select2();
 </thead>
 <tbody>
 <?php 
-                $user_id=$this->session->user_id;
-                $comp_id=$this->session->companey_id;
-$i=1;
+    $user_id=$this->session->user_id;
+    $comp_id=$this->session->companey_id;
+$i=2;
 $totalexp=0;
-$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
+$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense','left')->get('tbl_expense')->result();
 foreach ($expense as $key => $value) { 
  $tamount= $value->amount
   ?>
 <tr>
 <td><input  type="checkbox" name="approve[]" class="checkbox1" value="<?= $value->ids ?>"> <?= $i++; ?></td>
-<td><?= $value->title ?></td>
+<td><?php if($value->type==1){
+  echo'Travel Expense';
+}else{
+  echo'Other Expense';
+
+} ?></td>
+<td><?php if($value->type==1){
+  echo'Travel Expense';
+}else{
+  echo $value->title;
+} ?></td>
 <td><?= $value->amount ?> ₹</td>
 <td><?php  if($value->approve_status==0){echo'<span >Pending</span>';}elseif($value->approve_status==2){
 echo'<span style="color:green">Accepted'.' ( '.$value->remarks.' ) </span>';
@@ -202,7 +232,11 @@ echo'<span style="color:green">Accepted'.' ( '.$value->remarks.' ) </span>';
   echo'<span style="color:red">Rejected'.' ( '.$value->remarks.' ) </span>';
 } ?></td>
 <td> <?php if($value->file!=''){ ?><a href="<?= base_url('assets/images/user/'.$value->file) ?>" style="btn btn-xs btn-success" target="_BLANK"><i class="fa fa-file"></i></a> <?php } ?>
-  <?php if($value->approve_status==0){ ?>  <a  class="btn btn-xs  btn-danger" href="<?= base_url('visit-expense/delete/'.$value->ids) ?>"><i class="fa fa-trash"></i></a>
+  <?php if($value->approve_status==0){ ?> 
+    <?php if($value->type!=1){ ?>
+      <a  class="btn btn-xs  btn-danger" href="<?= base_url('visit-expense/delete/'.$value->ids) ?>"><i class="fa fa-trash"></i></a>
+ <?php 
+}  ?>
     <?php } ?>
     </td>
 </tr>
@@ -228,6 +262,24 @@ $totalexp += $tamount;
 <script>
       
        
+function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+ 
     var distance;
       function initMap() {
         var directionsService = new google.maps.DirectionsService;
@@ -319,9 +371,9 @@ $totalexp += $tamount;
     }
     
     </script>
-<?php } ?>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s&callback=initMap"
   type="text/javascript"></script>
+  
 <div id="Save_Visit" class="modal fade" role="dialog">
    <div class="modal-dialog">
       <!-- Modal content-->
@@ -362,7 +414,7 @@ $totalexp += $tamount;
                 </div>
 
                <div class="form-group col-md-6">
-                  <label>Related To (Primary Contact)</label>
+                  <label>Contact Name</label>
                   <select class="form-control" name="enquiry_id">
                     <!-- <option value="">Select</option> -->
                     <?php
@@ -415,7 +467,36 @@ $totalexp += $tamount;
       </div>
    </div>
 </div>   
-
+<div id="add_approve" class="modal fade in" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
+            <h4 class="modal-title">Send For Approval</h4>
+         </div>
+         <form action="<?= base_url('enquiry/notify_rmanager') ?>" method="POST">
+         <div class="modal-body">
+          <input name="visit_id" class="form-control"  value="<?= $details->visit_id ?>" hidden>
+            <div class="col-md-12">
+            <div class="form-group">
+            <label>Remarks</label>
+            <input class="form-control" name="remarks" type="text" >
+            </div>
+            </div>
+          
+               <br>
+               <button class="btn btn-sm btn-success" type="submit" >
+              Send </button>                    
+               <br>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closedmodel()">Close</button>
+         </div>
+         </form>
+      </div>
+      </div>
+      </div>
 <div id="update_remarks" class="modal fade in" role="dialog">
    <div class="modal-dialog">
       <!-- Modal content-->
@@ -474,7 +555,7 @@ $totalexp += $tamount;
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" onclick="closedmodel()">&times;</button>
-            <h4 class="modal-title">Update Expense Approval</h4>
+            <h4 class="modal-title"></h4>
          </div>
          <div class="modal-body">
             <div class="row">
@@ -685,5 +766,32 @@ $(function() {
               } 
               });
     }
+    function select_all(){
+
+var select_all = document.getElementById("selectall"); //select all checkbox
+var checkboxes = document.getElementsByClassName("choose-col"); //checkbox items
+
+//select all checkboxes
+select_all.addEventListener("change", function(e){
+  for (i = 0; i < checkboxes.length; i++) { 
+    checkboxes[i].checked = select_all.checked;
+  }
+});
+
+
+for (var i = 0; i < checkboxes.length; i++) {
+  checkboxes[i].addEventListener('change', function(e){ //".checkbox" change 
+    //uncheck "select all", if one of the listed checkbox item is unchecked
+    if(this.checked == false){
+      select_all.checked = false;
+    }
+    //check "select all" if all checkbox items are checked
+    if(document.querySelectorAll('.choose-col:checked').length == checkboxes.length){
+      select_all.checked = true;
+    }
+  });
+}
+
+}
 
   </script>

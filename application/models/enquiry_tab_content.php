@@ -26,7 +26,7 @@
       if(is_active_field(FIRST_NAME,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6">
-      <label><?=display('first_name')?> <i class="text-danger">*</i> </label>
+      <label><?=display('first_name')?><?php if($this->session->companey_id==65){echo'<i class="text-danger">*</i>';}?>  </label>
       <div class = "input-group">
          <span class = "input-group-addon" style="padding:0px !important;border:0px !important;width:44%;">
             <select class="form-control" name="name_prefix">
@@ -35,7 +35,7 @@
                <?php } ?>
             </select>
          </span>
-         <input class="form-control" name="enquirername" type="text" value="<?php echo $details->name ?>" placeholder="Enter First Name" style="width:100%;" />
+         <input class="form-control" name="enquirername" type="text" value="<?php echo $details->name ?>" placeholder="Enter First Name" style="width:100%;" <?php if($this->session->companey_id==65){echo'required';}?> />
       </div>
    </div>
    <?php }?>
@@ -51,8 +51,8 @@
       if(is_active_field(MOBILE,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6"> 
-      <label><?php echo display('mobile') ?></label>
-      <input class="form-control" name="mobileno" type="text" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+      <label><?php echo display('mobile') ?> <?php if($this->session->companey_id==65){echo'<i class="text-danger">*</i>';}?> </label>
+      <input class="form-control" name="mobileno" type="text" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" <?php if($this->session->companey_id==65){echo'required';}?> >
       <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
    </div>
    <?php }?>
@@ -78,8 +78,8 @@
       if(is_active_field(EMAIL,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6"> 
-      <label><?php echo display('email') ?></label>
-      <input class="form-control" name="email" type="email" value="<?php echo $details->email ?>">  
+      <label><?php echo display('email') ?> <?php if($this->session->companey_id==65){echo'<i class="text-danger">*</i>';}?> </label>
+      <input class="form-control" name="email" type="email" value="<?php echo $details->email ?>" <?php if($this->session->companey_id==65){echo'required';}?> >  
    </div>
    <?php }?>
    <?php
@@ -148,7 +148,7 @@
     if(is_active_field(ADDRESS_FIELD,$process_id)){
     ?>  
    <div class="form-group col-sm-6 col-md-6">
-      <label><?php echo display('address') ?> <i class="text-danger">*</i></label>
+      <label><?php echo display('address') ?></label>
       <textarea class="form-control" name="address"><?php echo $details->address; ?></textarea>
    </div>
    <?php }   
@@ -192,8 +192,8 @@
       if(is_active_field(COMPANY,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6">
-      <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
-      <input class="form-control" name="company" type="company" value="<?php echo $details->company; ?>">
+      <label><?php echo display('company_name') ?> <?php if($this->session->companey_id==65){echo'<i class="text-danger">*</i>';}?> </label>
+      <input class="form-control" name="company" type="company" value="<?php echo $details->company; ?>" <?php if($this->session->companey_id==65){echo'required';}?> >
    </div>
    <?php }
       if(is_active_field(REMARK_FIELD,$process_id)){
@@ -206,7 +206,7 @@
    if(is_active_field(PREFERRED_COUNTRY_FIELD,$process_id)){
    ?>
    <div class="form-group col-sm-6 col-md-6">
-      <label>Country <i class="text-danger">*</i></label>
+      <label>Country</label>
       <?php
          $current_country  = $details->enq_country;             
          $current_country = explode(',',$current_country);                        

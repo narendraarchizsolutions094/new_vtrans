@@ -22,9 +22,11 @@
                     $url  = base_url().'lead/lead_details/'.$value['enquiry_id'];
                   }else if($value['enq_status'] == 3) {
                     $url  = base_url().'client/view/'.$value['enquiry_id'];
+                  }elseif($value['task_type'] == '18'){
+                    $url  = base_url().'visits/visit_details/'.$value['query_id'];
                   }else{
                     $url  = 'javascript:void(0)';
-                  }
+                  } 
               }
               else
               {
@@ -62,7 +64,13 @@
                     <a href="#" class="btn btn-default"><i class="fa fa-bell"></i></a>
                   </div>
                   <div class="media-body" style="text-align: justify;">
-                    <?=ucfirst($value['subject']).' '.$flag?>  <br><small><?=$value['task_remark']?></small><br><a href="<?=$url?>"><?=ucfirst($value['user_name'])?></a>
+                    <?=ucfirst($value['subject']).' '.$flag?>  <br><small><?=$value['task_remark']?></small><br><a href="<?=$url?>">
+                    <?php 
+                    if($value['task_type'] == '18'){
+                      echo'Go to Visit';
+
+                     }else{
+                    echo ucfirst($value['user_name']); }?></a>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -86,6 +94,8 @@
                 $url  = base_url().'lead/lead_details/'.$value['enquiry_id'];
               }else if($value['enq_status'] == 3) {
                 $url  = base_url().'client/view/'.$value['enquiry_id'];
+              }elseif($value['task_type'] == '18'){
+                $url  = base_url().'visits/visit_details/'.$value['query_id'];
               }else{
                 $url  = 'javascript:void(0)';
               } 
@@ -97,7 +107,12 @@
                     <a href="#" class="btn btn-default"><i class="fa fa-bell"></i></a>
                   </div>
                   <div class="media-body" style="text-align: justify;">
-                    <?=ucfirst($value['subject']).' '.$flag?>  <br><small><?=$value['task_remark']?></small><br><a href="<?=$url?>"><?=ucfirst($value['user_name'])?></a>
+                    <?=ucfirst($value['subject']).' '.$flag?>  <br><small><?=$value['task_remark']?></small><br><a href="<?=$url?>"><?php 
+                    if($value['task_type'] == '18'){
+                      echo'Go to Visit';
+
+                     }else{
+                    echo ucfirst($value['user_name']); }?></a>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -121,9 +136,11 @@
                 $url  = base_url().'lead/lead_details/'.$value['enquiry_id'];
               }else if($value['enq_status'] == 3) {
                 $url  = base_url().'client/view/'.$value['enquiry_id'];
+              }elseif($value['task_type'] == '18'){
+                $url  = base_url().'visits/visit_details/'.$value['query_id'];
               }else{
                 $url  = 'javascript:void(0)';
-              }
+              } 
               if (!$value['noti_read']) {
                 $flag = "<a href='javascript:void(0)' onclick='noti_make_read(".$value["resp_id"].")' class='btn btn-default btn-sm pull-right'>Read</a>";
               ?>
@@ -132,7 +149,13 @@
                     <a href="#" class="btn btn-default"><i class="fa fa-bell"></i></a>
                   </div>
                   <div class="media-body" style="text-align: justify;">
-                    <?=ucfirst($value['subject']).' '.$flag?>  <br><small><?=$value['task_remark']?></small><br><a href="<?=$url?>"><?=ucfirst($value['user_name'])?></a>
+                    <?=ucfirst($value['subject']).' '.$flag?>  <br><small><?=$value['task_remark']?></small><br><a href="<?=$url?>">
+                    <?php 
+                    if($value['task_type'] == '18'){
+                      echo'Go to Visit';
+
+                     }else{
+                    echo ucfirst($value['user_name']); }?></a>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -168,7 +191,12 @@
                     <a href="#" class="btn btn-default"><i class="fa fa-bell"></i></a>
                   </div>
                   <div class="media-body" style="text-align: justify;">
-                    <?=ucfirst($value['subject']).' '.$flag?>  <br><small><?=$value['task_remark']?></small><br><a href="<?=$url?>"><?=ucfirst($value['user_name'])?></a>
+                    <?=ucfirst($value['subject']).' '.$flag?>  <br><small><?=$value['task_remark']?></small><br><a href="<?=$url?>"><?php 
+                    if($value['task_type'] == '18'){
+                      echo'Go to Visit';
+
+                     }else{
+                    echo ucfirst($value['user_name']); }?></a>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
