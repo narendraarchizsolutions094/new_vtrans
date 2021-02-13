@@ -47,7 +47,6 @@ th{
 }
 </style>
 <?php
-$process_id = 141;
 $comp_id = 65;
 $this->db->where('comp_id',$comp_id);
 $this->db->where('process_id',$process_id);
@@ -62,7 +61,7 @@ if(!empty($failurePoints)){
         $this->db->join('lead_stage','lead_description.lead_stage_id=lead_stage.stg_id');
         $this->db->where("FIND_IN_SET($process_id,lead_stage.process_id)>",0);
         $this->db->where('lead_description.comp_id',$comp_id);
-        $this->db->join('(select * from tbl_ticket where date(coml_date)="'.$_GET["date"].'" AND  category='.$value['id'].') as tbl_ticket','tbl_ticket.ticket_substage=lead_description.id','left');
+        $this->db->join('(select * from tbl_ticket where date(coml_date)="'.$_GET["date"].'" AND process_id="'.$process_id.'" AND category='.$value['id'].') as tbl_ticket','tbl_ticket.ticket_substage=lead_description.id','left');
         $this->db->group_by('lead_description.id');   
         $result    =   $this->db->get()->result_array();
         $k = $value['subject_title'];
@@ -74,10 +73,33 @@ if(!empty($failurePoints)){
     <!--  form area -->
     <div class="col-sm-12">
         <div  class="panel panel-default thumbnail">
-            <h1>Ticket Summary (<?=$_GET['date']?>)</h1>
+            <h1>Ticket Summary (<?=$_GET['date']?>)
+            
+            <?php if($process_id == 198){ ?>                    
+                V-Xpress Report
+            <?php
+            }else{ ?>
+                V-Trans Report
+            <?php
+            }
+            ?>
+            
+            </h1>
              <div class="panel-heading no-print">   
                 <div class="btn-group"> 
                      <a class="btn btn-primary" href="javascript:void(0)" onclick="window.history.back();"> <i class="fa fa-arrow-left"></i>  Back </a>  
+                </div>
+                <div class="btn-group"> 
+                <?php if($process_id == 198){ ?>                    
+                        <a class="btn btn-primary" href="<?=base_url().'ticket/daily_summary/141?date='.date('Y-m-d',strtotime('-1 days'))?>">   Get V-Trans Report</a>                      
+                    <?php
+                    }else if($process_id == 141){
+                        ?>
+                        <a class="btn btn-primary" href="<?= base_url().'ticket/daily_summary/198?date='.date('Y-m-d',strtotime('-1 days'))?>" >   Get V-Xpress Report</a>  
+                        <?php
+                    }
+                    ?>
+
                 </div>
             </div>
             <div class="panel-body panel-form">
@@ -182,7 +204,8 @@ if(!empty($failurePoints)){
                             <?php
                             
                             $this->db->select('count(process_id) as c,process_id');
-                            $this->db->where('date(coml_date)',$_GET["date"]);       
+                            $this->db->where('date(coml_date)',$_GET["date"]);  
+                            $this->db->where('process_id',$process_id);            
                             $this->db->group_by('process_id');
                             $process_count = $this->db->get('tbl_ticket')->result_array();
 
@@ -301,20 +324,7 @@ if(!empty($failurePoints)){
             }
         });
         $('#summ_table2 .tfoot td').eq(index).html('<b>' + total+'</b>');
-    }  
-    
-    $('#summ_table th').each(function(i) {
-    var remove = 0;
-
-    var tds = $(this).parents('table').find('tr td:nth-child(' + (i + 1) + ')')
-    tds.each(function(j) { if (this.innerHTML == 0) remove++; });
-
-    if (remove == ($('#summ_table tr').length - 1)) {
-        $(this).hide();
-        tds.hide();
-    }
-});
-
+    }    
 </script>
 </body>
 </html>
