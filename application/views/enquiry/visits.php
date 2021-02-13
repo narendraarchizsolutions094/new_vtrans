@@ -175,7 +175,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                         <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Expense </label>
-       	<select class="form-control v_filter" id="expensetype" name="expensetype" onchange="refresh_table_ex();">
+       	<select class="form-control" id="expensetype" name="expensetype" onchange="refresh_table_ex();">
               <option value="">Select</option>
               <option >Fully Approved</option>
               <option >Partially Approved</option>
@@ -403,19 +403,19 @@ function refresh_table(){
 
 function refresh_table_ex(){
       var exstatus=$('#expensetype').val();
-      // alert(exstatus);
+      alert(exstatus);
       var tr_list = $("#datatable_wrapper tbody").find('tr');
       $(tr_list).each(function(k,v){
-          var diff = $(v).find('td > span.expstatus').text();
-          // alert(diff);
-          if(diff==exstatus)
+          var diff = $(v).find('td span.expstatus').text();
+          alert(diff);
+          if(diff.trim()==exstatus.trim())
           {
-            alert('1');
+            //alert('1');
             $(v).show();
           }
           else
           { 
-            $(v).hide();
+            $(v).css('background','red');
           }
       });
 }

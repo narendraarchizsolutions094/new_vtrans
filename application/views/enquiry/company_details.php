@@ -448,6 +448,23 @@ table th
 
 
 <script type="text/javascript">
+
+function update_info_status(id,status)
+{
+     $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>enquiry/update_info_status/?>',
+            data: {id:id,status:status},
+            success:function(data){
+                Swal.fire({
+                  title:'Saved!',
+                  type:'success',
+                  icon:'success',
+                });
+            }
+        });
+}
+
 $(document).ready(function(){
 //var c = getCookie('deals_allowcols');
 var specific_list = "<?=!empty($specific_deals)?$specific_deals:''?>";
@@ -488,6 +505,7 @@ var specific_list = "<?=!empty($specific_deals)?$specific_deals:''?>";
                        { orderable: false, targets: -1 }
                     ]
   });
+
 
 
 var specific_list = "<?=!empty($specific_visits)?$specific_visits:''?>";

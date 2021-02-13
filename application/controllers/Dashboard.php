@@ -2897,7 +2897,65 @@ public function set_layout_to_session() {
                     }
                     else
                     {
-                      $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id GROUP BY bz.zone_id,dz.zone_id");
+                      if($deal->btype=='branch')
+                      {
+                          $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id");
+
+                          if(!empty($query))
+                          {
+                          $result = $query->result();
+
+                          $book = array_unique(array_column($result, 'bb_name'));
+                          $del =  array_unique(array_column($result, 'db_name'));
+                         $freight_table = '<table border="1">';
+
+                          foreach ($book as $key => $value1)
+                          {
+                                if($key==0)
+                                {
+                                  $freight_table.='
+                                  <thead><tr>
+                                  <th>To <i class="fa fa-arrow-right"></i><br>
+                                  From <i class="fa fa-arrow-down"></i></th>';
+                                  foreach ($del as $key2 => $value2)
+                                  {
+                                   $freight_table.='<th>'.$value2.'</th>';
+                                  }
+                                  $freight_table.='</tr></thead>
+                                  <tbody>';
+                                }
+                          $freight_table.='<tr>';
+                          
+                          $freight_table.='<th>'.$value1.'</th>';
+                          
+                          foreach ($del as $key2 => $value2)
+                          {
+                              foreach ($result as $key3 => $value3)
+                              {
+                                if($value1==$value3->bb_name && $value2==$value3->db_name)
+                                { $r = $value3->rate;
+                                  $d = $value3->discount;
+                                  $price = $r*(1-round(($d/100),2));
+                                  $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
+                                }
+                              }
+                          }
+
+                          $freight_table.='</tr>';                   
+                          }
+                        $freight_table.= '</tbody></table>'; 
+                        }//ifend
+                        else
+                        {
+                          $freight_table='';
+                        }
+                        $area_table='';
+
+                      }
+                      else
+                      {
+                      $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id GROUP BY bz.zone_id,dz.zone_id");
+
                         if(!empty($query))
                         {
                         $result = $query->result();
@@ -2930,7 +2988,11 @@ public function set_layout_to_session() {
                               foreach ($result as $key3 => $value3)
                               {
                                 if($value1==$value3->bzone && $value2==$value3->dzone)
-                                  $freight_table.='<td>'.$value3->rate.'/'.$oc['rate_type'].'</td>';    
+                                { $r = $value3->rate;
+                                  $d = $value3->discount;
+                                  $price = $r*(1-round(($d/100),2));
+                                  $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
+                                }
                               }
                           }
 
@@ -2955,22 +3017,25 @@ public function set_layout_to_session() {
                                       ->from('branch b')
                                       ->join('zones z','b.zone=z.zone_id','left')
                                       ->where_in('b.zone',$mean)
+                                      ->where('b.type','area')
                                       ->group_by('b.zone')
                                       ->get()->result();
-                        foreach ($zlist as $key5 => $mean)
-                        { 
-                          $area_table.='<tr><th>'.$mean->zname.'</th><td>'.$mean->blist.'</td></tr>';
-                        }
-                       $area_table.="</tbody>
-                      </table>";
-                        }
 
-                        }else
+                            foreach ($zlist as $key5 => $mean)
+                            { 
+                              $area_table.='<tr><th>'.$mean->zname.'</th><td>'.$mean->blist.'</td></tr>';
+                            }
+                             $area_table.="</tbody>
+                            </table>";
+                          }
+
+                        }
+                        else
                         {
                           $freight_table ='';
                           $area_table='';
                         }
-
+                      }//type-zone/area
                       
                         $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge from oda_matrix GROUP bY dis,we")->result();
                         if(!empty($oda_query))
@@ -3202,13 +3267,17 @@ public function set_layout_to_session() {
                                                     //  }
                     }
                   
-    public function pdf_gen()
+    public function pdf_gen($info_id=0)
     {
         
         $this->load->model('Branch_model');
-          $info_id=$this->input->post('info_id');
 
-        $deal= $this->Branch_model->get_deal($info_id);
+          if(empty($info_id))
+              $info_id = $this->input->post('info_id');
+
+              $this->db->where('id',$info_id);
+             
+        $deal= $this->db->get('commercial_info')->row();
 
         $d_data =  $this->Branch_model->get_deal_data($info_id);
         $oc = (array)json_decode($deal->other_charges);
@@ -3291,7 +3360,66 @@ public function set_layout_to_session() {
       }
       else
       {
-        $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id GROUP BY bz.zone_id,dz.zone_id");
+
+
+        if($deal->btype=='branch')
+        {
+            $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id");
+
+            if(!empty($query))
+            {
+            $result = $query->result();
+
+            $book = array_unique(array_column($result, 'bb_name'));
+            $del =  array_unique(array_column($result, 'db_name'));
+           $freight_table = '<table border="1">';
+
+            foreach ($book as $key => $value1)
+            {
+                  if($key==0)
+                  {
+                    $freight_table.='
+                    <thead><tr>
+                    <th>To <i class="fa fa-arrow-right"></i><br>
+                    From <i class="fa fa-arrow-down"></i></th>';
+                    foreach ($del as $key2 => $value2)
+                    {
+                     $freight_table.='<th>'.$value2.'</th>';
+                    }
+                    $freight_table.='</tr></thead>
+                    <tbody>';
+                  }
+            $freight_table.='<tr>';
+            
+            $freight_table.='<th>'.$value1.'</th>';
+            
+            foreach ($del as $key2 => $value2)
+            {
+                foreach ($result as $key3 => $value3)
+                {
+                  if($value1==$value3->bb_name && $value2==$value3->db_name)
+                  { $r = $value3->rate;
+                    $d = $value3->discount;
+                    $price = $r*(1-round(($d/100),2));
+                    $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
+                  }
+                }
+            }
+
+            $freight_table.='</tr>';                   
+            }
+          $freight_table.= '</tbody></table>'; 
+          }//ifend
+          else
+          {
+            $freight_table='';
+          }
+          $area_table='';
+
+        }
+        else
+        {
+        $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.discount,deal.rate,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id GROUP BY bz.zone_id,dz.zone_id");
           if(!empty($query))
           {
           $result = $query->result();
@@ -3323,8 +3451,11 @@ public function set_layout_to_session() {
             {
                 foreach ($result as $key3 => $value3)
                 {
+                  $r = $value3->rate;
+                  $d = $value3->discount;
+                  $price = $r*(1-round(($d/100),2));
                   if($value1==$value3->bzone && $value2==$value3->dzone)
-                    $freight_table.='<td>'.$value3->rate.'/'.$oc['rate_type'].'</td>';    
+                    $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';    
                 }
             }
 
@@ -3365,6 +3496,7 @@ public function set_layout_to_session() {
             $freight_table ='';
             $area_table='';
           }
+        }//else end
 
           $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge from oda_matrix GROUP bY dis,we")->result();
             if(!empty($oda_query))

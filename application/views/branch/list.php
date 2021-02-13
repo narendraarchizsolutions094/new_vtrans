@@ -50,7 +50,7 @@
                 <td><?php echo $sl; ?></td>
                 <td width=""><?= $branch->branch_name ?></td>
                 <td width=""><?= ucwords($branch->type)??'NA' ?></td>
-                <td><?=$branch->zone_name?></td>
+                <td><?php if($branch->type=='area')echo$branch->zone_name; else echo'-';?></td>
                 <td><?php echo (($branch->branch_status == 1) ? display('active') : display('inactive')); ?></td>
                 <td width=""><?= $branch->created_at ?></td>
                 <td class="center">
@@ -101,18 +101,27 @@
         <div class="modal-body">
           <div class="row">
             <div class="form-group">
-              <label>Branch Name </label>
+              <label id="label">Branch Name </label>
               <input type="text" name="branch" class="form-control">
             </div>
             <div class="form-group">
               <label>Type </label>
-              <select class="form-control" name="type" onchange="//{if(this.value=='zone')$('#zone_box').show(); else $('#zone_box').hide();}">
+              <select class="form-control" name="type" onchange="{if(this.value=='area')
+              {
+                $('#zone_box').show(); 
+                $('#label').html('Area Name');
+              }else 
+              {
+                $('#zone_box').hide();
+                $('#label').html('Branch Name');
+              }
+              }">
                 <option value="branch">Branch</option>
                 <!-- <option value="zone">Zone</option> -->
                 <option value="area">Area</option>
               </select>
             </div>
-           <div id="zone_box" class="form-group" style="display: block;">
+           <div id="zone_box" class="form-group" style="display: none;">
               <label>Select Zone </label>
               <select class="form-control" name="zone">
                 <?php
