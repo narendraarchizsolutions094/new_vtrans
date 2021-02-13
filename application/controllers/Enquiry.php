@@ -3545,8 +3545,9 @@ echo  $details1;
                     $url = base_url('enquiry/view/').$res->enquiry_id;
                 else if($res->enq_type=='2')
                     $url = base_url('lead/lead_details/').$res->enquiry_id;
-                else if($res->enq_type=='3')
+                else
                     $url = base_url('client/view/').$res->enquiry_id;
+
                     if($colsall || in_array(3,$cols))
                     $sub[] = '<a href="'.$url.'">'.$res->name.'</a>'??'NA';
             }
