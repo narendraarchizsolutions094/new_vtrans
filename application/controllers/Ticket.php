@@ -3144,9 +3144,12 @@ class Ticket extends CI_Controller
 			}
 		}
 
-		public function daily_summary(){
+		public function daily_summary($process_id){
+			$data['process_id'] = $process_id;
 			$data['title'] = "Ticket Summary (".$_GET['date'].")";
 			$this->load->model('dash_model');
+
+			$this->db->where('sb_id', $process_id);
 			$data['process_list'] = $this->dash_model->get_user_product_list_bycompany(65);
 			$this->load->view('ticket/daily-summary', $data);
 			//$this->load->view('layout/login_wrapper', $data);			

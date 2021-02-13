@@ -347,6 +347,9 @@ $('input[name="filter_checkbox"]').click(function(){
       </div>
    </div>
 </div>
+<style>.tr_hover {
+background-color: #ffb099; 
+}</style>
 <!-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script> -->
 <!-- https://code.jquery.com/jquery-3.5.1.js -->
 
@@ -419,6 +422,21 @@ function refresh_table_ex(){
           }
       });
 }
+
+function refresh_table_exs(){
+      // alert(exstatus);
+      var tr_list = $("#datatable_wrapper tbody").find('tr');
+      $(tr_list).each(function(k,v){
+          var diff = $(v).find('td > span.diff').text();
+          // alert(diff);
+          if(diff>=20)
+          {
+            $(v).addClass('tr_hover');
+          }
+         
+      });
+}
+
 var c = getCookie('visit_allowcols');
 
 var Data = {"from_data":"","to_date":"","from_time":"","to_time":""};
@@ -465,6 +483,7 @@ var table2  =$('#datatable').DataTable({
         $("#totaltravelExp").html(settings.json.totaltravelExp);
           $("#totalotherExpense").html(settings.json.totalotherExpense);
           $("#totalExpense").html(settings.json.totalExpense);
+          refresh_table_exs();
 },
           
           "columnDefs": [{ "orderable": false, "targets":0 }],
