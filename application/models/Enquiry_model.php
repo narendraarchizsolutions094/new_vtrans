@@ -4625,11 +4625,9 @@ public function insertComInfo($data)
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
         $where.=" AND enq.drop_status=0 and enq.product_id IN (".$process.")";
 
-        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type, book.branch_name as booking_branch_name, deliver.branch_name as delivery_branch_name');
+        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type,enq.company');
         $this->db->from ('commercial_info info');
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
-        $this->db->join('branch book','book.branch_id=info.booking_branch','left');
-        $this->db->join('branch deliver','deliver.branch_id=info.delivery_branch','left');
         $this->db->where("info.comp_id",$company_id);
         $this->db->where($where);
 

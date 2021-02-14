@@ -38,11 +38,18 @@ a:hover, a:focus {
         <form action="<?=base_url().'setting/addbranch_rate'?>" enctype="multipart/form-data" method='post'>
           <div class="modal-body">
                 <div class="row">
+                  <div class="col-md-12">
+                      <label>Type </label>
+                      <select id="type" class="form-control" onchange="load_branch(this)">
+                        <option value="branch">Branch</option>
+                        <option value="area">Area</option>
+                      </select>
+                  </div>
                 <div class="col-md-12">
                 <label>Booking Branch </label>
-                <select name="bbranch" class="form-control">
+                <select name="bbranch" class="form-control op-list">
                  <?php
-                 if(!empty($branch))
+                 if(!empty($branch) && 0)
                  {
                   foreach ($branch as $key => $value) { 
                     ?>
@@ -57,11 +64,15 @@ a:hover, a:focus {
 
             <div class="col-md-12">
                 <label>Delivery Branch </label>
-             <select name="dbranch" class="form-control">
-             <?php foreach ($branch as $key => $value) { ?>
+             <select name="dbranch" class="form-control op-list">
+             <?php 
+             if(0)
+             {
+              foreach ($branch as $key => $value) { ?>
                     <option value="<?= $value->branch_id ?>"><?= $value->branch_name.' ('.($value->type=='zone'?ucwords($value->zone_name):'').' '.$value->type.')' ?></option>
                    <?php
-                 } ?>
+                 } 
+              }?>
              </select>
             </div> 
             <div class="col-md-12">
@@ -154,5 +165,30 @@ a:hover, a:focus {
 $(document).ready(function() {
 
     $('#example').DataTable();
+    $('#type').trigger('change');
 } );
+
+
+function load_branch(t)
+{
+  var dtype = '';
+  var key = t.value;
+
+  $.ajax({
+    url:'<?=base_url('setting/load_branchs')?>',
+    type:'POST',
+    data:{dtype:dtype,key:key},
+    beforeSend:function(){
+      // if(dtype=='booking')
+      //  $("#booking_branch").parent().find('font').html('<');
+      // else
+      //  $("#delivery_branch").parent().find('font').html();
+    },
+    success:function(res)
+    { 
+      $('.op-list').html(res);
+      $('.op-list').select2();
+    }
+  })
+}
 </script>

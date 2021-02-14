@@ -2269,11 +2269,13 @@ public function all_update_expense_status()
             $enquiry_id = $this->input->post('enq_for');
             $deal_id= $this->input->post('deal_id')??0;
             $deal_data = $this->Branch_model->get_deal($deal_id);
+
             if($btype=='zone')
             {
                 $x = implode(',',$bbranch);
                 //echo $x;exit();
-                $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) ")->result();
+                $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) and branch.type='area' ")->result();
+
                 $bbranch = array_column($fetch_list,'branch_id');
                 //print_r($bbranch);exit();
             }
@@ -2282,17 +2284,21 @@ public function all_update_expense_status()
             {
                 $x = implode(',',$dbranch);
                 //echo $x;exit();
-                $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) ")->result();
+                $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) and branch.type='area' ")->result();
+               //echo $this->db->last_query();exit();;
+
                 $dbranch = array_column($fetch_list,'branch_id');
                 //print_r($bbranch);exit();
             }
 
             if(empty($bbranch))
-                $bbranch = array();
+                $bbranch = array(0);
             if(empty($dbranch))
-                $dbranch = array();  
+                $dbranch = array(0);  
 
             $query = $this->Branch_model->from_to_table($bbranch,$dbranch)->result();
+
+           //echo $this->db->last_query();exit();
             if(!empty($query))
             {
                 $oc = array('',//0
@@ -2409,10 +2415,10 @@ public function all_update_expense_status()
                     echo'<tr>
                             <td>'.$i++.'</td>
                             <td><input type="hidden" name="bid['.$row->id.']" value="'.$row->booking_branch.'">'.$row->bbranch.'<br>
-                                <small>('.ucwords($row->btype).') '.$row->bzname.'</small>
+                                <small>('.ucwords($row->btype).') '.($row->btype=='area'?'<br>'.$row->bzname:'').'</small>
                             </td>
                             <td><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->dbranch.'<br>
-                                <small>('.ucwords($row->dtype).')<br> '.$row->dzname.'</small>
+                                <small>('.ucwords($row->dtype).') '.($row->dtype=='area'?'<br>'.$row->dzname:'').'</small>
                             </td>';
                     if($booking_type=='sundry')
                     {
@@ -2827,10 +2833,10 @@ public function all_update_expense_status()
         $zone = $this->input->post('zone_id');
 
 
-    $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_aggriment')->row();
-    $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
+        $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_aggriment')->row();
+        $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
 
-        $_POST['ref_no'] = $ref_no;
+    $_POST[1] = $_POST[0] = $ref_no;
         $_POST['edit'] = 1;
         $_POST['checkss'] = array();
         $deal   =    $this->Branch_model->get_deal($deal_id);
@@ -2845,17 +2851,20 @@ public function all_update_expense_status()
                         ->where('e.enquiry_id',$deal->enquiry_id)
                         ->get()->row();
 
-
+        $city = $this->db->where('id',$enq->city_id)->get('city')->row();
 
         $dynamic = $this->db->select('fvalue')
                                 ->from('extra_enquery')
                                 ->where('parent',$deal->enquiry_id)
                                 ->where('input','4482')//id of dynaic field of dynamic field in v-trans 
                                 ->get()->row();
-        $enq_designation = !empty($dynamic)?$dynamic->fvalue:'';
 
-        $_POST['customer_name'] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
-        $_POST['region_name'] = $enq->region_name;
+$enq_designation = !empty($dynamic)?$dynamic->fvalue:'';
+
+        $_POST[1] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+        $_POST[2] = $enq->region_name;
+        $_POST[3] = '';
+
 $_POST['ip'][46] =  $_POST['ms'] = $enq->company;
 $_POST['ip'][47] = $_POST['reg_add'] = $enq->address;
         $_POST['account_number1'] = $bank->account_no;
@@ -2895,21 +2904,103 @@ $_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2
 
         $_POST['ip'][50] = $enq->email;
 
-    
+        
 
-        echo $this->load->view('aggrement/input-vtrans',array(),TRUE);
+        echo $this->load->view('aggrement/new-input-vtrans',$_POST,TRUE);
         
     }
 
-    function new_vtrans()
+    function prepare_vtrans()
     {
-        $this->load->view('aggrement/new-input-vtrans');
+        $this->load->model(array('Branch_model','Leads_Model','Location_model'));
+
+        $user = $this->db->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row();
+        $deal_id = $this->input->post('deal_id');
+        $zone = $this->input->post('zone_id');
+
+
+        $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_aggriment')->row();
+        $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
+
+        $deal   =    $this->Branch_model->get_deal($deal_id);
+        $oc =(array) json_decode($deal->other_charges);
+
+        $deal_data = $this->Branch_model->get_deal_data($deal_id);
+        $bank = $this->Branch_model->bank_by_zone($zone);
+
+        $enq = $this->db->select('e.*,r.region_name')
+                        ->from('enquiry e')
+                        ->join('tbl_region r','r.region_id=e.region_id','left')
+                        ->where('e.enquiry_id',$deal->enquiry_id)
+                        ->get()->row();
+
+        $city = $this->db->where('id',$enq->city_id)->get('city')->row();
+
+        $dynamic = $this->db->select('fvalue')
+                                ->from('extra_enquery')
+                                ->where('parent',$deal->enquiry_id)
+                                ->where('input','4482')//id of dynaic field of dynamic field in v-trans 
+                                ->get()->row();
+
+        $enq_designation = !empty($dynamic)?$dynamic->fvalue:'';
+        
+        $input['ip'][0] = $input['ip'][5] = $ref_no;
+        $input['ip'][1] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+        $input['ip'][2] = $enq->region_name;
+        $input['ip'][3] = '';
+        $input['ip'][4] = '';
+        $input['ip'][6] = date('d');
+        $input['ip'][7] = date('F');
+        $input['ip'][8] = date('y');
+        $input['ip'][9] = $enq->city_id;
+        $input['ip'][10] = $enq->company;
+        $input['ip'][11] = $enq->address;
+        $input['ip'][12] = date('m/d/Y');
+
+
+        for($i=13; $i<60;$i++)
+        {
+            $input['ip'][$i] = '';
+        }
+
+        $raw['ip'] = $input['ip'];
+        $raw['city_list'] = $this->location_model->city_list();
+
+        //print_r($raw['city_list']);exit();
+       $data =  $this->load->view('aggrement/new-input-vtrans',$raw,TRUE);
+
+        echo'<!DOCTYPE html>
+        <html>
+        <head>
+            <title>Form</title>
+        </head>
+        <body align="center" style="background:black;">  
+        <div style="width:100%;" align="center">
+            <form action="'.base_url('client/attach_agreement_data').'" method="post">
+            <div style="width:735px; min-height:100%; padding:40px; margin:15px; background:white;">
+            '.$data.'
+            </div>
+            <center><button >Generate PDF</button></center>
+            </form>
+        </div>
+        </body>
+        </html>';
+
     }
 
-    function print_new()
+    public function attach_agreement_data()
     {
+       $this->print_new($_POST['ip']);
+    }
+
+    function print_new($data)
+    {   
+        
+        $input['ip'] = $data;
         $this->load->library('pdf');
-        $res =   $this->load->view('aggrement/new-input-vtrans',array(),true);
+
+        $res =   $this->load->view('aggrement/print_vtrans',$input,true);
+        //echo $res;
         $this->pdf->create($res,0);
     }
 }

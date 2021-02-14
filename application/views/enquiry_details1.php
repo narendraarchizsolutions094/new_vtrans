@@ -2372,7 +2372,7 @@ function set_agreement_id(ag_id)
 </script> 
 
 <div class="row" style="padding: 16px 0px;">
-<form target="_blank" action="<?=base_url('client/create_agreement_pdf')?>" method="post">
+<form target="_blank" action="<?=base_url('client/prepare_vtrans')?>" method="post">
 
 <div class="col-md-8">
   <div class="form-group">

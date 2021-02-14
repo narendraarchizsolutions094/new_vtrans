@@ -46,11 +46,10 @@ class Deals extends REST_Controller {
             $res['total'] = $total;
             $res['list'] = array();
 
-
+            
             foreach($data['result']->result() as $value)
             {
-          
-              array_push($res['list'],array('id'=>$value->id,'name'=>'name','enquery_id'=>$value->enquiry_id,'branch_type'=>$value->branch_type,'booking_type'=>$value->booking_type,'booking_branch'=>$value->booking_branch_name,'delivery_branch'=>$value->delivery_branch_name,'rate'=>$value->rate,'status'=>$value->status,'creation_date'=>$value->creation_date));  
+              array_push($res['list'],array('id'=>$value->id,'name'=>$value->name,'enquery_id'=>$value->enquiry_id,'booking_type'=>$value->booking_type,'business_type'=>$value->business_type,'deal_type'=>$value->deal_type,'company'=>$value->company,'status'=>$value->status,'creation_date'=>$value->creation_date,'quotation_url'=>base_url('dashboard/pdf_gen/').$value->id));  
             } 
             $this->set_response([
                 'status' => TRUE,
