@@ -1002,7 +1002,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
          // validity expired popup
          if($this->session->userdata('validity_status')==2){?>
         <script>
-        swal("<?= $this->session->userdata('validity_msg') ?>");
+        Swal.fire("<?= $this->session->userdata('validity_msg') ?>");
         </script>
         <?php   }?>
         <aside class="main-sidebar" id="btn">
