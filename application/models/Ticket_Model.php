@@ -558,15 +558,11 @@ class Ticket_Model extends CI_Model
 
 	public function filterticket($where)
 	{
-
 		$this->db->select("tck.*,enq.gender,prd.product_name, concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname , stage.lead_stage_name,sub_stage.description,tbl_ticket_status.status_name as ticket_status_name");
 		$this->db->where("tck.company", $this->session->companey_id);
-
 		if (!empty($where)) {
-
 			$this->db->where($where);
 		}
-
 		$this->db->from("tbl_ticket tck");
 		$this->db->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT");
 		$this->db->join("tbl_product prd", "prd.sb_id = tck.product", "LEFT");
@@ -575,7 +571,7 @@ class Ticket_Model extends CI_Model
 		$this->db->join("tbl_ticket_status", "tbl_ticket_status.id = tck.ticket_status", "LEFT");
 		$this->db->order_by("tck.id DESC");
 		$this->db->group_by("tck.id");
-
+		$this->db->limit(5);
 		return	 $this->db->get()
 			->result();
 	}
