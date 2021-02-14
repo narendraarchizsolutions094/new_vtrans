@@ -2,7 +2,7 @@
 $(document).ready(function () {
     $('form').attr('autocomplete','off');
     $('select[class~="form-control"]').select2();    
-    setTimeout($('select[class~="form-control"]').select2(),1000);
+    setTimeout($('select[class~="form-control"]').select2(),2500);
     $('[data-toggle="tooltip"]').tooltip();
     tinymce.init({
       selector: '.tinymce',      
