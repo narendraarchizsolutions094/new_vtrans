@@ -3697,7 +3697,11 @@ echo  $details1;
     }
 
 
-    public function lead_aging_rule_exec($comp_id,$lid){       
+    public function lead_aging_rule_exec($comp_id,$lid){      
+
+        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		$this->db->insert('cron_log',array('created_at_php'=>date('Y-m-d H:i:s'),'url'=>$actual_link));
+ 
         $this->load->model('rule_model');
         $this->db->where('id',$lid);
         $rules = $this->rule_model->get_rules(array(11),$comp_id);
