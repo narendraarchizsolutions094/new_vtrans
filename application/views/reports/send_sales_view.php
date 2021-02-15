@@ -85,7 +85,10 @@
         <div class="panel panel-default">
           
             <div class="panel-body">
-                <div class="widget-title">                    
+                <div class="widget-title text-center">             
+                    <?php
+                    echo " Sales Report of ".$from;
+                    ?>       
                 </div>
                 <hr>
              

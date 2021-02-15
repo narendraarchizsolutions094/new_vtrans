@@ -81,6 +81,11 @@
       <div class="btn-group" > 
                          <a  target="_BLANK" class="btn btn-primary" href="<?=base_url().'ticket/daily_summary/141?date='.date('Y-m-d',strtotime('-1 days'))?>"> <i class="fa fa-arrow-right"></i>  Ticket Summary </a>  
                     </div> 
+        <div class="row text-center" > 
+        <?php 
+        echo " Ticket Report of  <b>".$fromdate.' </b>';
+        ?>
+        </div>
 					<div class="row">
           <div class='' style=" margin-top:50px; padding: 10px;">
                     <div class='row'>

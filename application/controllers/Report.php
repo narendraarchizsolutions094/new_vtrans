@@ -274,7 +274,7 @@ class Report extends CI_Controller
       $this->load->view('reports/send_sales_view', $data);
     } else {
       $filters = json_decode($report_row['filters'], true);
-      $data['title'] = 'View Report';
+      $data['title'] = 'View Report ';
       $data['filters'] = $filters;
       $comp_id = $report_row['comp_id'];
       $user_id = $report_row['created_by'];
