@@ -3278,24 +3278,27 @@ public function set_layout_to_session() {
               $this->db->where('id',$info_id);
              
         $deal= $this->db->get('commercial_info')->row();
-
-        $d_data =  $this->Branch_model->get_deal_data($info_id);
-        $oc = (array)json_decode($deal->other_charges);
         if(empty($deal))
         {
             echo'No data';exit();
         }
+        $company = $deal->comp_id;
+        $user_id = $deal->createdby;
+
+        $d_data =  $this->Branch_model->get_deal_data($info_id);
+        $oc = (array)json_decode($deal->other_charges);
+        
         $enquiry_id = $deal->enquiry_id;
         $booking_type = $deal->booking_type;
         //$docTemplate=$this->db->where(array('comp_id'=>65,'title'=>$deal->booking_type))->get('tbl_doctemplate')->result();
         //echo'asdfsf';
 
-        $this->db->where('comp_id',$this->session->companey_id);
+        $this->db->where('comp_id',$company);
         $enquiry = $this->db->where('enquiry_id',$enquiry_id)->get('enquiry');
         $evalue = $enquiry->row();
        
         //print_r($evalue);exit();
-        $usrarr = $this->db->select("pk_i_admin_id,s_display_name,last_name,s_phoneno,s_user_email,designation")->where("pk_i_admin_id", $this->session->user_id)
+        $usrarr = $this->db->select("pk_i_admin_id,s_display_name,last_name,s_phoneno,s_user_email,designation")->where("pk_i_admin_id", $user_id)
                                ->from("tbl_admin")->get() ->row();
 
       if($booking_type=='ftl')
