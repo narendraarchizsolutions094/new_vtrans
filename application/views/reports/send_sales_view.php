@@ -87,7 +87,7 @@
             <div class="panel-body">
                 <div class="widget-title text-center">             
                     <?php
-                    echo " Sales Report of ".$from;
+                    echo " Sales Report of ".$this->session->from1;
                     ?>       
                 </div>
                 <hr>
