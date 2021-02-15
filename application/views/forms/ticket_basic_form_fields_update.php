@@ -425,3 +425,7 @@ echo'
            }
           }
           ?> 
+<script>
+  $(document).ready(function () {
+    $('select[class~="add-select2"]').select2();        
+  });

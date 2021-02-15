@@ -392,7 +392,7 @@ echo'<div class="trackingDetails"></div>';
           ?> 
           <script>
           $(document).ready(function () {
-            $('select[class="form-control"]').select2();
+            $('select[class~="form-control"]').select2();        
           });
             function add_more_org(type='add_more_org'){
               $("#addmoreorg").hide();                            
