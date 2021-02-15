@@ -1,8 +1,10 @@
 "use strict";
+$(document).ajaxComplete(function(){ 
+    $('select[class~="form-control"]').select2();        
+});
 $(document).ready(function () {
     $('form').attr('autocomplete','off');
-    $('select[class="form-control"]').select2();
-        
+    $('select[class~="form-control"]').select2();        
     $('[data-toggle="tooltip"]').tooltip();
     tinymce.init({
       selector: '.tinymce',      

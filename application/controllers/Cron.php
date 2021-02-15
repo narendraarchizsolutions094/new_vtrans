@@ -247,6 +247,10 @@ public function msgsend_app()
 
 public function run()
 {
+    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $this->db->insert('cron_log',array('created_at_php'=>date('Y-m-d H:i:s'),'url'=>$actual_link));
+
+    
     date_default_timezone_set("Asia/kolkata");
     $currentTime=date('Y-m-d H:i');
     $cron=$this->db->where('status',0)->get('cronjobs')->result();
