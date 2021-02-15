@@ -3021,7 +3021,7 @@ class Ticket extends CI_Controller
 					$comment_id = $this->Ticket_Model->saveconv($tid,'Ticket Status Changed','', $this->input->post('client'),$this->session->user_id,0,0,$status,$comp_id);
 					$ticketno = $this->input->post('ticketno');
 					$this->load->model('rule_model');
-					$this->rule_model->execute_rules($ticketno, array(3,6,7));
+					$this->rule_model->execute_rules($ticketno, array(6,7));
 				}
 			}
 		}
