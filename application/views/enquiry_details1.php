@@ -5660,9 +5660,7 @@ $("a[href$='#related_enquiry']").on('click',function(){
     var form = $(this);
     var url = form.attr('action');
     var formData = new FormData($(this)[0]);
-    if("<?=$this->session->companey_id?>"== 90 && ($("input[name='mobileno']").val() || $("input[name='email']").val())){
-
-    }else{
+    if("<?=$this->session->companey_id?>"== 90 && ($("input[name='mobileno']").val() == '' && $("input[name='email']").val()=='' )){
        alert('Either Mobile or Email filed is requiry');
        return false;
     }
