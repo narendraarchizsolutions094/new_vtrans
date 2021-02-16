@@ -1763,9 +1763,10 @@ Array
            // echo $this->db->last_query(); exit();
             $this->load->model('rule_model');
             $this->rule_model->execute_rules($enquiry->row()->Enquery_id, array(1, 2, 3, 6, 7));
-            $this->Leads_Model->add_comment_for_events($this->lang->line("move_to_lead"), $enquiry->row()->Enquery_id);
+
+            $this->Leads_Model->add_comment_for_events(display("move_to_lead"), $enquiry->row()->Enquery_id);
             if ((!empty($assign_employee)) AND $assign_employee!=0) {
-            $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_assign"), $enquiry->row()->Enquery_id);
+            $this->Leads_Model->add_comment_for_events(display("enquery_assign"), $enquiry->row()->Enquery_id);
             }
             //insert follow up counter (2 is for lead )
             $this->enquiry_model->insetFollowupTime($move_enquiry,2,$enquiry->row()->created_date,date('Y-m-d H:i:s'));
