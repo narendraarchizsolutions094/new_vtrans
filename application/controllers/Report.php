@@ -274,7 +274,7 @@ class Report extends CI_Controller
       $this->load->view('reports/send_sales_view', $data);
     } else {
       $filters = json_decode($report_row['filters'], true);
-      $data['title'] = 'View Report';
+      $data['title'] = 'View Report ';
       $data['filters'] = $filters;
       $comp_id = $report_row['comp_id'];
       $user_id = $report_row['created_by'];
@@ -284,7 +284,7 @@ class Report extends CI_Controller
       $this->session->set_userdata('process_id_id',$filters['process_id']);
       }
       $data['filters'] = json_decode($report_row['filters'], true);
-      $cdate = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
+      $cdate = date('Y-m-d', strtotime('-2 day', strtotime($todays)));
       $data['fromdate'] = $cdate;
       $data['todate'] = $cdate;
       $from = $this->session->set_userdata('fromdt', $cdate);
@@ -886,6 +886,7 @@ class Report extends CI_Controller
     $productlst = $this->session->userdata('productlst');
     $Enquiry_Id = $this->session->userdata('Enquiry_Id');
     $rep_details = $this->report_datatable_model->get_datatables();
+   // echo $this->db->last_query();
     $i = 1;
     $data = array();
     foreach ($rep_details as  $repdetails) {

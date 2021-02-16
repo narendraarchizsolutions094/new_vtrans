@@ -55,11 +55,11 @@ class Report_datatable_model extends CI_Model {
             } else if ($from && !$to) {
                 $from = str_replace('/', '-', $from);            
                 $from = date('Y-m-d', strtotime($from));
-                $where .= " AND Date(enquiry.created_date) LIKE '%$from%'";
+                $where .= " AND Date(enquiry.created_date) = '$from'";
             } else if (!$from && $to) {            
                 $to = str_replace('/', '-', $to);
                 $to = date('Y-m-d', strtotime($to));
-                $where .= " AND Date(enquiry.created_date) LIKE '%$to%'";
+                $where .= " AND Date(enquiry.created_date) = '$to'";
             }            
 
            if($employe!=''){	            		

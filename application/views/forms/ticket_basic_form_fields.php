@@ -221,8 +221,19 @@ echo'<div class="trackingDetails"></div>';
                     ?>
                     <div class="col-md-6">
                         <div class="form-group">
-                          <label>Phone <i class="text-danger">*</i></label>
-                          <input type = "text" class="form-control" name = "phone" required value="<?=!empty($_GET['phone'])?$_GET['phone']:''?>" onkeyup="autoFill('phone',this.value)"> 
+                          <?php
+                          $required = 'required';
+                          if($this->session->companey_id == 90){
+                            $required = ''; ?>
+                            <label>Phone</label>
+                            <?php
+                          }else{
+                            ?>
+                            <label>Phone <i class="text-danger">*</i></label>
+                            <?php
+                          }
+                          ?>
+                          <input type = "text" class="form-control" name = "phone" <?=$required?> value="<?=!empty($_GET['phone'])?$_GET['phone']:''?>" onkeyup="autoFill('phone',this.value)"> 
                           <div id="is-avl-mobile"></div>
                         </div>
                     </div>                   
@@ -392,7 +403,7 @@ echo'<div class="trackingDetails"></div>';
           ?> 
           <script>
           $(document).ready(function () {
-            $('select[class="form-control"]').select2();
+            $('select[class~="form-control"]').select2();        
           });
             function add_more_org(type='add_more_org'){
               $("#addmoreorg").hide();                            
