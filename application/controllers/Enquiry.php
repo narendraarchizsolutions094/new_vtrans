@@ -460,7 +460,7 @@ class Enquiry extends CI_Controller
         //         $this->form_validation->set_rules('mobileno', display('mobileno'), 'max_length[20]|callback_phone_check|required', array('phone_check' => 'Duplicate Entry for phone'));
         //     }
         // }
-        $this->form_validation->set_rules('mobileno', display('mobileno'), 'max_length[20]|callback_phone_check', array('phone_check' => 'Duplicate Entry for phone'));
+        $this->form_validation->set_rules('mobileno', display('mobileno'), 'max_length[20]|callback_phone_check');
         if (!empty($this->input->post('email'))) {
             $this->form_validation->set_rules('email', display('email'), 'callback_email_check', array('email_check' => 'The Email you entered is already exist'));
         }
