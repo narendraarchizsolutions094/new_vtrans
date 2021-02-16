@@ -513,7 +513,7 @@ class Visits extends REST_Controller {
     		$update_visit_data = array( 'remarks'=>$this->input->post('remarks'),
                             'rating'=>$this->input->post('rating'),  );
          $res = $this->db->where(array('comp_id'=>$comp_id,'user_id'=>$user_id,'id'=>$visit_id))->update('tbl_visit',$update_visit_data);
-    		 
+
          $done = 0;
             $res = $this->db->where(array('enquiry_id'=>$enquiry_id))->get('enquiry')->row();
             $done = 1;
@@ -538,25 +538,28 @@ class Visits extends REST_Controller {
               if(!empty($_POST['expense'])){
                foreach ($_POST['expense'] as $key =>$value ) 
                {
+                  $exp_data = array();
                   $finalfilename='';
                   $expense = $_POST['expense'][$key];
                   $amount = $_POST['amount'][$key];
-                  if(!empty($_FILES['imagefile']['name'][$key])){
-                  $file_name =$_FILES['imagefile']['name'][$key];
-                  $file_size =$_FILES['imagefile']['size'][$key];
-                  $file_tmp  =$_FILES['imagefile']['tmp_name'][$key];
-                  $file_type =$_FILES['imagefile']['type'][$key];  
-                  $upload_path    =   "assets/images/user/";
-                  $finalfilename='expense_'.time().$file_name;
-                  move_uploaded_file($file_tmp,$upload_path.$finalfilename);
-                   $exp_data['file'] = $finalfilename;
+                  if(!empty($_FILES['imagefile']['name'][$key]))
+                  {
+                      $file_name =$_FILES['imagefile']['name'][$key];
+                      $file_size =$_FILES['imagefile']['size'][$key];
+                      $file_tmp  =$_FILES['imagefile']['tmp_name'][$key];
+                      $file_type =$_FILES['imagefile']['type'][$key];  
+                      $upload_path    =   "assets/images/user/";
+                      $finalfilename='expense_'.time().$file_name;
+                      move_uploaded_file($file_tmp,$upload_path.$finalfilename);
+
+                  $exp_data['file'] = $finalfilename;
+
                   }
-                  // visit type =2
-                  
-                  $exp_data=[
-                             'amount'=>$amount,
-                             'expense'=>$expense,
-                             ];
+
+                  $exp_data['amount']=$amount;
+                  $exp_data['expense']=$expense;
+                
+             
                     if(empty($_POST['ids'][$key]))
                     {
                       $exp_data['type'] = 2;
