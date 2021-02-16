@@ -284,7 +284,7 @@ ul
 	{margin-bottom:0in;}
 </style>
 </head>
-
+<input type="hidden" name="deal_id" value="<?=$deal_id?>">
 <body style="width:100%; padding-top: 47px;">
 <div style="width: auto; height: 910px; border:3px solid #f1f1f1; padding: 7px; margin: 5px;">
 	<div style="width: auto; height:905px; border:2px solid #e2e1e1;">
@@ -358,18 +358,18 @@ Service Contract is made on this <input type="" name="ip[6]" style="width: 15px;
 </select>
  20<input name="ip[8]" value="<?=$ip[8]?>" style="width: 17px;"> at 
 
-<!-- <input type="text" name="ip[9]" value=""> -->
-<select name="ip[9]" style="width: 145px;">
+<input type="text" name="ip[9]" value="<?=$ip[9]?>">
+<!-- <select name="ip[9]" style="width: 145px;">
 	<?php
-	if(!empty($city_list))
-	{
-		foreach ($city_list as $key => $value)
-		{
-			echo'<option value="'.$value->city.'" '.($value->id==$ip[9]?'selected':'').'>'.$value->city.'</option>';
-		}
-	}
+	// if(!empty($city_list))
+	// {
+	// 	foreach ($city_list as $key => $value)
+	// 	{
+	// 		echo'<option value="'.$value->city.'" '.($value->id==$ip[9]?'selected':'').'>'.$value->city.'</option>';
+	// 	}
+	// }
 	?>
-</select>
+</select> -->
 
  by and </span><span style="color:#010202;mso-font-width:90%">between</span></p>
 
@@ -487,12 +487,18 @@ avail credit facility, the minimum monthly business shall be greater than Rs.
 50,000/-</span></p>
 
 <p class="MsoBodyText" align="center" style="margin-top:.4pt;margin-right:.15in;
-margin-bottom:0in;margin-left:0in;margin-bottom:.0001pt;text-align:center;
-tab-stops:210.9pt 280.05pt 351.65pt"><span style="color:#010202">Existing customer 
-	<select name="ip[16]" style="width: 60px;">
+margin-bottom:0in;margin-left:0in;margin-bottom:.0001pt;text-align:left;
+tab-stops:210.9pt 280.05pt 351.65pt"><span style="color:#010202; margin-left: 27px;">Existing customer 
+	<select name="ip[16]" style="width: 60px;" onchange="{
+		if(this.value=='YES')
+			$('.existing').show();
+		else
+			$('.existing').hide();
+	}">
 		<option <?=$ip[16]=='Yes'?'selected':''?>>YES</option>
 		<option <?=$ip[16]=='No'?'selected':''?>>NO</option>
 	</select>
+<span class="existing">
  earlier 
  	<select name="ip[17]" style="width: 80px;">
 		<option <?=$ip[17]=='Paid'?'selected':''?>>PAID</option>
@@ -504,8 +510,8 @@ Business
 <select name="ip[18]" style="width: 60px;">
 	<option <?=$ip[18]=='Yes'?'selected':''?>>YES</option>
 	<option <?=$ip[18]=='No'?'selected':''?>>NO</option>
-</select> </p>
-
+</select> </span>
+</p>
 <h1 style="margin-top:6.95pt;margin-right:0in;margin-bottom:0in;margin-left:
 20.95pt;margin-bottom:.0001pt;text-indent:-13.0pt;mso-list:l0 level1 lfo1;
 tab-stops:21.0pt"><!--[if !supportLists]--><span style="color:#214685;mso-font-width:
@@ -547,7 +553,11 @@ to<span style="letter-spacing:-1.55pt"> </span>make<span style="letter-spacing:
 0in;margin-left:34.15pt;margin-bottom:.0001pt;text-align:justify;text-indent:
 -14.05pt;line-height:102%;mso-list:l0 level2 lfo1;tab-stops:35.5pt"><!--[if !supportLists]--><span style="color:#010202;mso-font-width:84%"><span style="mso-list:Ignore">c)<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="color:#010202">The<span style="letter-spacing:-1.7pt"> </span>customer<span style="letter-spacing:-1.7pt"> </span>agrees<span style="letter-spacing:-1.7pt">
 </span>to<span style="letter-spacing:-1.7pt"> </span>pay<span style="letter-spacing:
--1.7pt"> </span>all<span style="letter-spacing:-1.7pt"> </span>invoice/s<span style="letter-spacing:-1.65pt"> </span>within<span style="letter-spacing:.15pt">
+-1.7pt"> </span>all<span style="letter-spacing:-1.7pt"> </span>invoice/s<span style="letter-spacing:-1.65pt"> </span>within 
+
+<input type="text" name="ip[19]" style="width: 15px">
+
+<span style="letter-spacing:.15pt">
 </span>days<span style="letter-spacing:-1.7pt"> </span>from<span style="letter-spacing:-1.7pt"> </span>the<span style="letter-spacing:-1.7pt"> </span>date<span style="letter-spacing:-1.7pt"> </span>of<span style="letter-spacing:-1.7pt"> </span>invoice<span style="letter-spacing:-1.65pt"> </span>submission.<span style="letter-spacing:
 -2.2pt"> </span>Upon<span style="letter-spacing:-1.7pt"> </span>failure to<span style="letter-spacing:-2.2pt"> </span>pay<span style="letter-spacing:-2.15pt"> </span>the<span style="letter-spacing:-2.15pt"> </span>same<span style="letter-spacing:-2.15pt">
 </span>interest,<span style="letter-spacing:-2.45pt"> </span>@18%<span style="letter-spacing:-2.15pt"> </span>per<span style="letter-spacing:-2.15pt">
@@ -583,9 +593,9 @@ mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></p>
 		</tr>
 		<tr>
 			<th class="bg-l">HDFC Bank Ltd.</th>
-			<td><input type="text" name="" style="width: 200px;"></td>
-			<td><input type="text" name=""  style="width: 100px;"></td>
-			<td><input type="text" name=""  style="width: 200px;"></td>
+			<td><input type="text" name="ip[20]" value="<?=$ip[20]?>" style="width: 200px;"></td>
+			<td><input type="text" name="ip[21]"  value="<?=$ip[21]?>"  style="width: 100px;"></td>
+			<td><input type="text" name="ip[22]"  value="<?=$ip[22]?>"  style="width: 200px;"></td>
 		</tr>
 </table>
 
@@ -600,14 +610,14 @@ mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></p>
 		<tr>
 			<td style=" padding:10px;padding-top: 70px; width: 50%;">
 				<table>
-					<tr><th>Name: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
-					<tr><th>Designation: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
+					<tr><th>Name: </th><td> <input type="" name="ip[23]" value="<?=$ip[23]?>" style="width: 200px;"></td></tr>
+					<tr><th>Designation: </th><td> <input type="" value="<?=$ip[24]?>" name="ip[24]" style="width: 200px;"></td></tr>
 				</table>
 			</td>
 			<td style=" padding:10px;padding-top: 70px;">
 				<table>
-					<tr><th>Name: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
-					<tr><th>Designation: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
+					<tr><th>Name: </th><td> <input type="" name="ip[25]" value="<?=$ip[25]?>" style="width: 200px;"></td></tr>
+					<tr><th>Designation: </th><td> <input type="" name="ip[26]" value="<?=$ip[26]?>" style="width: 200px;"></td></tr>
 				</table>
 			</td>
 		</tr>
@@ -692,7 +702,7 @@ mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></p>
 		<tr>
 			<td>
 				<table id="email_list" style="width: 90%;">
-					<tr><td><input type="" name="email_list[]" placeholder="Email ID"></td></tr>
+					<tr><td><input type="" name="email_list[]" value="<?=$email_list[0]?>" placeholder="Email ID"></td></tr>
 				</table>
 				<div align="right">
 					<button type="button" onclick="add_more_email()">Add More</button>
@@ -721,10 +731,15 @@ tab-stops:20.7pt"><!--[if !supportLists]--><span style="color:#214685;mso-font-w
 tab-stops:35.45pt 406.85pt 498.75pt"><!--[if !supportLists]--><span style="color:#010202;mso-font-width:84%"><span style="mso-list:Ignore">a)<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="color:#010202">Under<span style="letter-spacing:-2.35pt"> </span>this<span style="letter-spacing:-2.3pt"> </span>contract<span style="letter-spacing:-2.3pt">
 </span>all<span style="letter-spacing:-2.3pt"> </span>the<span style="letter-spacing:-2.3pt"> </span>consignment<span style="letter-spacing:
 -2.3pt"> </span>shall<span style="letter-spacing:-2.3pt"> </span>be<span style="letter-spacing:-2.3pt"> </span>booked<span style="letter-spacing:-2.3pt">
-</span>at<span style="letter-spacing:-2.3pt"> </span>Owners<span style="letter-spacing:-2.3pt"> </span>Risk<span style="letter-spacing:-2.3pt"> </span>(<u style="text-underline:#000101"> <span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></u>)
+</span>at<span style="letter-spacing:-2.3pt"> </span>Owners<span style="letter-spacing:-2.3pt"> </span>Risk<span style="letter-spacing:-2.3pt"> </span>
+(
+<input type="radio" name="ip[27]" value="owner">
+)
 Carrier<span style="letter-spacing:-1.9pt"> </span>Risk<span style="letter-spacing:
--1.15pt"> </span>(<u style="text-underline:#000101"> <span style="mso-tab-count:
-1">&nbsp;&nbsp;&nbsp; </span></u>)</span></p>
+-1.15pt"> </span>(
+<input type="radio" name="ip[27]" value="carrier" checked>
+
+)</span></p>
 
 <p class="MsoListParagraph" style="margin-top:2.75pt;margin-right:0in;margin-bottom:
 0in;margin-left:34.65pt;margin-bottom:.0001pt;mso-list:l0 level2 lfo1;
@@ -751,17 +766,42 @@ tab-stops:34.65pt 146.45pt 519.0pt"><!--[if !supportLists]--><span style="color:
  <v:textbox inset="0,0,0,0"/>
  <w:wrap anchorx="page"/>
 </v:shape><![endif]--><!--[if !vml]--><!--[endif]--><span style="color:#010202">Goods<span style="letter-spacing:
--1.15pt"> </span>Insured<span style="letter-spacing:-1.1pt"> </span>(<span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="mso-font-width:95%">Name<span style="letter-spacing:-2.0pt"> </span>of<span style="letter-spacing:-2.05pt"> </span>Insurance<span style="letter-spacing:-2.0pt"> </span>company:</span><u style="text-underline:
-#000101"><span style="mso-font-width:92%"> </span><span style="mso-tab-count:
-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></u></span></p>
+-1.15pt"> </span>Insured 
 
-<p class="MsoBodyText" style="margin-top:.4pt;margin-right:0in;margin-bottom:
-0in;margin-left:35.3pt;margin-bottom:.0001pt;tab-stops:120.3pt 302.55pt 412.55pt 484.35pt"><u style="text-underline:#000101"><span style="color:#010202;mso-font-width:92%"><span style="mso-spacerun:yes">&nbsp;</span></span><span style="color:#010202"><span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></u><span style="color:#010202">Marine<span style="letter-spacing:-1.55pt"> </span>policy<span style="letter-spacing:-1.5pt"> </span><span style="letter-spacing:-.15pt">No.</span><span style="letter-spacing:-2.2pt"> </span>(<u style="text-underline:#000101"> <span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></u><span style="mso-font-width:95%">)<span style="letter-spacing:-2.3pt"> </span>Validity<span style="letter-spacing:-1.4pt"> </span>(From<u style="text-underline:#000101"> <span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></u></span><span style="letter-spacing:
--.85pt">To<u style="text-underline:#000101"> <span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></u></span>)</span></p>
+<input type="radio" name="ip[28]" value="Yes" checked> Yes
 
+<input type="radio" name="ip[28]" value="No" > No
+
+<script type="text/javascript">
+	$('input[name="ip[28]"]').on('click',function(){
+
+		if(this.value=='Yes')
+			$('.insurance').show();
+		else
+			$('.insurance').hide();
+	});
+</script>
+
+<span class="insurance">
+	(Name of Insurance company:
+	<input type="" name="ip[29]" style="width: 285px;">
+
+
+	<p class="insurance" style="padding-left: 20px;">
+		<input type="" name="ip[30]" style="width: 80px;">
+		<span style="color:#010202">Marine policy No.( 
+
+			<input type="" name="ip[31]" style="width: 80px;"> 
+
+			) Validity (From <input type="date" name="ip[32]" style="width: 124px;">  
+			To
+			 <input type="date" name="ip[33]" style="width: 124px;">  
+			 )</span></p>
 <p class="MsoListParagraph" style="margin-top:1.0pt;margin-right:12.4pt;
 margin-bottom:0in;margin-left:34.8pt;margin-bottom:.0001pt;text-indent:-13.7pt;
-line-height:102%;mso-list:l0 level2 lfo1;tab-stops:34.85pt"><!--[if !supportLists]--><span style="color:#010202;mso-font-width:84%"><span style="mso-list:Ignore">c)<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="color:#010202;mso-font-width:95%">Claim<span style="letter-spacing:-.75pt">
+line-height:102%;mso-list:l0 level2 lfo1;tab-stops:34.85pt"><!--[if !supportLists]--><span style="color:#010202;mso-font-width:84%"><span style="mso-list:Ignore">
+
+	c)<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="color:#010202;mso-font-width:95%">Claim<span style="letter-spacing:-.75pt">
 </span>shall<span style="letter-spacing:-.7pt"> </span>be<span style="letter-spacing:-.75pt"> </span>lodged<span style="letter-spacing:-.7pt">
 </span>by<span style="letter-spacing:-.7pt"> </span>the<span style="letter-spacing:
 -.75pt"> </span>customer<span style="letter-spacing:-.7pt"> </span>within<span style="letter-spacing:-.7pt"> </span>7days<span style="letter-spacing:-.75pt"> </span>of<span style="letter-spacing:-.7pt"> </span>incidence<span style="letter-spacing:-.7pt">
@@ -964,14 +1004,14 @@ mso-list:l0 level2 lfo1;tab-stops:34.65pt"><!--[if !supportLists]--><span style=
 		<tr>
 			<td style=" padding:10px;padding-top: 70px; width: 50%;">
 				<table>
-					<tr><th>Name: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
-					<tr><th>Designation: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
+					<tr><th>Name: </th><td> <input type="" name="ip[34]" value="<?=$ip[34]?>" style="width: 200px;"></td></tr>
+					<tr><th>Designation: </th><td> <input type="" name="ip[35]"  value="<?=$ip[35]?>" style="width: 200px;"></td></tr>
 				</table>
 			</td>
 			<td style=" padding:10px;padding-top: 70px;">
 				<table>
-					<tr><th>Name: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
-					<tr><th>Designation: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
+					<tr><th>Name: </th><td> <input type="" name="ip[36]"  value="<?=$ip[36]?>"style="width: 200px;"></td></tr>
+					<tr><th>Designation: </th><td> <input type="" name="ip[37]"  value="<?=$ip[37]?>" style="width: 200px;"></td></tr>
 				</table>
 			</td>
 		</tr>
@@ -999,17 +1039,17 @@ normal"><span style="font-size:12.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 	<div style="width:70%; display: inline-block;">
 		Name of the customer:
 		<br>
-		<input type="" name="" style="width: 60%;">
+		<input type="" name="ip[38]"  value="<?=$ip[38]?>" style="width: 60%;">
 		</div>
 		<div style="width: 28%; display: inline-block;" align="right">
 			<table border="1px" cellspacing="0px" style="color: black; font-size:14px;">
 			<tr>
-				<td style="padding:3px">Sundry</td>
-				<td style="width: 18px;"><i class="fa fa-check"></i></td>
+				<td style="padding:3px">Sundry </td>
+				<td style="width: 18px;"><input type="radio" name="ip[39]"  value="sundry" <?=$ip[39]=='sundry'?'checked':''?>></td>
 				<td>FTL</td>
-				<td style="width: 18px;"></td>
+				<td style="width: 18px;"><input type="radio" name="ip[39]"  value="ftl" <?=$ip[39]=='ftl'?'checked':''?>></td>
 				<td>Both</td>
-				<td style="width: 18px;"></td>
+				<td style="width: 18px;"><input type="radio" name="ip[39]"  value="both" <?=$ip[39]=='both'?'checked':''?>></td>
 			</tr>
 		</table>
 		</div>
@@ -1042,85 +1082,141 @@ information:</span></h1>
 
 <table style="width: 100%;" border="1px" cellspacing="0">
 	<tr>
-		<th>Name of Charges</th>
+		<th class="bg-l">Name of Charges</th>
 		<td><b>Amount (Rs.)</b></td>
 		<td colspan="2"><b>Units</b></td>
 	</tr>
 	<tr>
-		<td>GC Charges</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td  class="bg-d">GC Charges</td>
+		<td><!-- <input type="" name="charges[1]" value=" --><?=$charges[1]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
 	<tr>
-		<td>Minimum Chargeble Wt</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-l">Minimum Chargeble Wt</td>
+		<td><!-- <input type="" name="charges[2]" value=" --><?=$charges[2]?><!-- " style="width: 100px;"> --></td>
 		<td>KG</td>
 		<td><b>Whichever is Higher</b></td>
 	</tr>
 	<tr>
-		<td>Minimum Freight Value</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td  class="bg-d">Minimum Freight Value</td>
+		<td><!-- <input type="" name="charges[3]" value=" --><?=$charges[3]?><!-- " style="width: 100px;"> --></td>
 		<td>RS</td>
 		<td></td>
 	</tr>
 	<tr>
-		<td>CFT Factor</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-l">CFT Factor</td>
+		<td><!-- <input type="" name="charges[4]" value=" --><?=$charges[4]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">KG</td>
 	</tr>
 	<tr>
-		<td>Hamali Charges</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-d">Hamali Charges</td>
+		<td><!-- <input type="" name="charges[5]" value=" --><?=$charges[5]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per Kg/Box</td>
 	</tr>
 	<tr>
-		<td>FOV Charges (Owner risk)</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-l">FOV Charges (Owner risk)</td>
+		<td><!-- <input type="" name="charges[6]" value=" --><?=$charges[6]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of Invoice Value</td>
 	</tr>
 	<tr>
-		<td>FOV Charges (Carrier risk)</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-d">FOV Charges (Carrier risk)</td>
+		<td><!-- <input type="" name="charges[7]" value=" --><?=$charges[7]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of Invoice Value</td>
 	</tr>
 	<tr>
-		<td>AOC Charges</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-l">AOC Charges</td>
+		<td><!-- <input type="" name="charges[8]" value=" --><?=$charges[8]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of Total Freight</td>
 	</tr>
 	<tr>
-		<td>COD/DOD Charges</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-d">COD/DOD Charges</td>
+		<td><!-- <input type="" name="charges[9]" value=" --><?=$charges[8]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
 	<tr>
-		<td>Dynamic Fuel Surcharges in %</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-l">Dynamic Fuel Surcharges in %</td>
+		<td><!-- <input type="" name="charges[10]" value=" --><?=$charges[17]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of basic freight</td>
 	</tr>
 	<tr>
-		<td>DACC Charges</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-d">DACC Charges</td>
+		<td><!-- <input type="" name="charges[11]" value=" --><?=$charges[9]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
 	<tr>
-		<td>E-way bill charge</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-l">E-way bill charge</td>
+		<td><!-- <input type="" name="charges[12]" value=" --><?=$charges[18]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
 	<tr>
-		<td>Door Collection Charges</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-d">Door Collection Charges</td>
+		<td>
+			
+			<?php
+			if(!empty($charges[19]))
+			{
+				echo'<table border="1" style="max-width:252px!important">
+                            <thead>
+                              <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Charge</th>
+                                <th style="width:100px;">Unit</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>';
+                              foreach ($charges[19] as $d => $door)
+                              {
+                                echo'<tr>
+                                              <td>'.$door->from.'</td>
+                                              <td>'.$door->to.'</td>
+                                              <td>'.$door->charge.' Rs.</td>
+                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
+                                            </tr>';
+                              }
+                        echo'</tbody></table>';
+			}
+			?>
+
+		</td>
 		<td colspan="2">Upto 3 MT Per GC</td>
 	</tr>
 	<tr>
-		<td>Last Mile Delivery Charges</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-l">Last Mile Delivery Charges</td>
+		<td>
+			<?php
+			if(!empty($charges[20]))
+			{
+				echo'<table border="1" style="max-width:252px!important">
+                            <thead>
+                              <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Charge</th>
+                                <th style="width:100px;">Unit</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>';
+                              foreach ($charges[20] as $d => $door)
+                              {
+                                echo'<tr>
+                                              <td>'.$door->from.'</td>
+                                              <td>'.$door->to.'</td>
+                                              <td>'.$door->charge.' Rs.</td>
+                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
+                                            </tr>';
+                              }
+                        echo'</tbody></table>';
+			}
+			?>
+		</td>
 		<td colspan="2">Upto 3 MT Per GC</td>
 	</tr>
 	<tr>
-		<td>Other (Pelase Specify)</td>
-		<td><input type="" name="" style="width: 100px;"></td>
+		<td class="bg-d">Other (Pelase Specify)</td>
+		<td><!-- <input type="" name="" style="width: 100px;"> --><?=$charges[11]?></td>
 		<td colspan="2">At Actual</td>
 	</tr>
 </table>
@@ -1130,7 +1226,10 @@ normal"><span style="font-size:19.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 
 <p class="MsoNormal" align="center" style="margin-right:12.15pt;text-align:center;
 tab-stops:257.1pt 346.7pt"><b style="mso-bidi-font-weight:normal"><span style="color:#214685;mso-font-width:105%">Demurrage<span style="letter-spacing:
--.75pt"> </span>Charges<span style="letter-spacing:-.75pt"> </span>to<span style="letter-spacing:-.7pt"> </span>be<span style="letter-spacing:-.75pt"> </span>Paid<span style="letter-spacing:-.75pt"> </span>By<span style="letter-spacing:-.7pt"> </span>Consignor(<input type="radio" name="dm_charge" required checked>)<span style="letter-spacing:-.75pt"> </span>Consignee (<input type="radio" name="dm_charge">)</span><o:p></o:p></b></p>
+-.75pt"> </span>Charges<span style="letter-spacing:-.75pt"> </span>to<span style="letter-spacing:-.7pt"> </span>be<span style="letter-spacing:-.75pt"> </span>Paid<span style="letter-spacing:-.75pt"> </span>By<span style="letter-spacing:-.7pt"> </span>
+<?=$charges[14]?>
+</b>
+</p>
 
 <p class="MsoBodyText" style="margin-top:.5pt"><b style="mso-bidi-font-weight:
 normal"><span style="font-size:7.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></b></p>
@@ -1138,9 +1237,9 @@ normal"><span style="font-size:7.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 <table style="width: 100%;" border="1px" cellspacing="0">
 	<tr>
 		<th class="bg-l" style="width: 218px; font-weight: normal">
-		Demurrage charges beyond <input type="" name="" style="width: 25px;"> days of arrival at destination (Max 7 Days Free)
+		Demurrage charges beyond <input type="" name="ip[40]" style="width: 25px;"> days of arrival at destination (Max 7 Days Free)
 		</th>
-		<td><input type="" name="" style="width: 100px;"> + GST</td>
+		<td> <?=$charges[13]?> + GST</td>
 		<td>
 			Per KG on Per day basis
 		</td>
@@ -1152,7 +1251,7 @@ normal"><span style="font-size:16.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 
 <p class="MsoNormal" align="center" style="margin-right:20.2pt;text-align:center;
 tab-stops:220.1pt 306.65pt"><b style="mso-bidi-font-weight:normal"><span style="color:#214685;mso-font-width:105%">CR<span style="letter-spacing:-.5pt">
-</span>Charges<span style="letter-spacing:-.5pt"> </span>to<span style="letter-spacing:-.5pt"> </span>be<span style="letter-spacing:-.45pt"> </span>Paid<span style="letter-spacing:-.5pt"> </span>By<span style="letter-spacing:-.5pt"> </span>Consignor(<input type="radio" name="cr_charge" required checked>) Consignee(<input type="radio" name="cr_charge">)</span><o:p></o:p></b></p>
+</span>Charges<span style="letter-spacing:-.5pt"> </span>to<span style="letter-spacing:-.5pt"> </span>be<span style="letter-spacing:-.45pt"> </span>Paid<span style="letter-spacing:-.5pt"> </span>By<span style="letter-spacing:-.5pt"> </span> <?=$charges[12]?></p>
 
 <p class="MsoBodyText" style="margin-top:.4pt"><b style="mso-bidi-font-weight:
 normal"><span style="font-size:7.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></b></p>
@@ -1162,7 +1261,7 @@ normal"><span style="font-size:7.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<th class="bg-d" style="width: 218px; font-weight: normal">
 		Loading/Unloading Charges
 		</th>
-		<td style="width: 300px;"></td>
+		<td style="width: 300px;"><?=$charges[15]?></td>
 		<td>
 			Per KG / Box
 		</td>
@@ -1171,7 +1270,7 @@ normal"><span style="font-size:7.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<th class="bg-l" style="width: 218px; font-weight: normal">
 		GI Charges
 		</th>
-		<td></td>
+		<td><?=$charges[16]?></td>
 		<td>
 			Rs per GC
 		</td>
@@ -1216,14 +1315,14 @@ normal"><span style="font-size:8.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<tr>
 			<td style=" padding:10px;padding-top: 70px; width: 50%;">
 				<table>
-					<tr><th>Name: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
-					<tr><th>Designation: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
+					<tr><th>Name: </th><td> <input type="" name="ip[41]" value="<?=$ip[41]?>" style="width: 200px;"></td></tr>
+					<tr><th>Designation: </th><td> <input type="" name="ip[42]" value="<?=$ip[42]?>" style="width: 200px;"></td></tr>
 				</table>
 			</td>
 			<td style=" padding:10px;padding-top: 70px;">
 				<table>
-					<tr><th>Name: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
-					<tr><th>Designation: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
+					<tr><th>Name: </th><td> <input type="" name="ip[43]" value="<?=$ip[43]?>" style="width: 200px;"></td></tr>
+					<tr><th>Designation: </th><td> <input type="" name="ip[44]" value="<?=$ip[44]?>"style="width: 200px;"></td></tr>
 				</table>
 			</td>
 		</tr>
@@ -1646,7 +1745,11 @@ normal"><span style="font-size:3.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 </span>at<span style="letter-spacing:-1.55pt"> </span>the<span style="letter-spacing:-1.55pt"> </span>time<span style="letter-spacing:-1.55pt">
 </span>of<span style="letter-spacing:-1.55pt"> </span>signing<span style="letter-spacing:-1.55pt"> </span>the<span style="letter-spacing:-1.55pt">
 </span>contract<span style="letter-spacing:-1.55pt"> </span>is<span style="mso-tab-count:1 dotted">
-<input type="" name="fule_price"> </span></span><span style="color:#010202">per<span style="letter-spacing:-.4pt"> </span><span style="letter-spacing:-.35pt">Ltr.</span></span></p>
+
+<!-- <input type="" name="fule_price"> -->
+<?=$charges[21]?>
+
+ </span></span><span style="color:#010202">per<span style="letter-spacing:-.4pt"> </span><span style="letter-spacing:-.35pt">Ltr.</span></span></p>
 
 <p class="MsoNormal" style="margin-top:1.25pt;margin-right:0in;margin-bottom:
 0in;margin-left:6.85pt;margin-bottom:.0001pt"><b style="mso-bidi-font-weight:
@@ -1677,15 +1780,17 @@ mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></p>
 		<td class="bg-l" rowspan="4" style="padding: 20px; width: 300px;">
 			Unit No. 6 Corporate Park,V N Purav Marg, Chembur, Mumbai – 400071<br>
 
-			Email <input type="" name="" style="width: 120px;"> @vtransgroup.com<br>
+			Email <input type="" name="ip[45]" style="width: 200px;" value="<?=$ip[45]?>"> <!-- @vtransgroup.com --><br>
 
-			Kind Att: Mr <input type="" name="" style="width: 160px;">
+			Kind Att: Mr <input type="" name="ip[46]" value="<?=$ip[46]?>" style="width: 160px;">
 		</td>
-		<td>M/S/Mr.:- <input type="" name="" style="width: 230px;"></td>
+
+		<td>
+			M/S/Mr.:- <input type="" name="ip[47]" value="<?=$ip[47]?>" style="width: 230px;"></td>
 	</tr>
-	<tr><td>Address:- <input type="" name="" style="width: 230px;"></td></tr>
-	<tr><td>Email ID:-  <input type="" name="" style="width: 230px;"></td></tr>
-	<tr><td>Name of Person:- <input type="" name="" style="width: 230px;"></td></tr>
+	<tr><td>Address:- <input type="" name="ip[48]" value="<?=$ip[48]?>" style="width: 230px;"></td></tr>
+	<tr><td>Email ID:-  <input type="" name="ip[49]" value="<?=$ip[49]?>" style="width: 230px;"></td></tr>
+	<tr><td>Name of Person:- <input type="" name="ip[50]" value="<?=$ip[50]?>" style="width: 230px;"></td></tr>
 </table>
 
 <p class="MsoBodyText" style="margin-top:2.3pt;margin-right:11.0pt;margin-bottom:
@@ -1749,7 +1854,7 @@ mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></p>
 			<div style="width: 300px; border: 2px solid black; height: 40px;"></div>
 		</td>
 		<td style="padding: 15px;" align="center">
-			<input type="" name="" style="width: 280px;">
+			<input type="" name="ip[51]" value="<?=$ip[51]?>" style="width: 280px;">
 		</td>
 	</tr>
 </table>
@@ -1814,19 +1919,67 @@ normal"><span style="font-size:3.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 <table style="width: 100%;" border="1px" cellpadding="4px" cellspacing="0px">
 	<tr>
 		<td class="bg-d" colspan="4">
-			Name of Customer: <input type="" style="width: 78%;" name="">
+			Name of Customer: <input type="" style="width: 78%;" name="ip[52]" value="<?=$ip[52]?>">
 		</td>
 	</tr>
 	<tr>
 		<td class="bd-l">Type of customer entity:</td>
 		<td colspan="3">
-		<select style="width: 260px;">
-			
-		</select></td>
+		<select name="ip[53]" style="width: 260px;" onchange="{
+			if(this.value=='Others'){
+				$('.other').show();
+				$('.other').find('input').attr('name','ip[53]');
+			}
+			else{
+				$('.other').hide();
+				$('.other').find('input').removeAttr('name');
+			}
+		}">
+			<?php
+				if(!empty($client_type))
+				{
+					foreach (explode(',', $client_type['input_values']) as $key => $value)
+					{
+						echo'<option>'.$value.'</option>';
+					}
+				}
+				?>
+		</select>
+			<div class="other" style="display: none;"> 
+			<label>Please Speficy</label>
+				<input type="" name="">
+			</div>
+		</td>
 	</tr>
 	<tr>
 		<td class="bg-d"> Industry Type</td>
-		<td colspan="3"> <select style="width: 260px"></select></td>
+		<td colspan="3"> 
+
+			<select name="ip[54]" style="width: 260px;" onchange="{
+			if(this.value=='Others'){
+				$('.other2').show();
+				$('.other2').find('input').attr('name','ip[54]');
+			}
+			else{
+				$('.other2').hide();
+				$('.other2').find('input').removeAttr('name');
+			}
+			}">
+				<?php
+				if(!empty($industries))
+				{
+					foreach (explode(',', $industries['input_values']) as $key => $value)
+					{
+						echo'<option>'.$value.'</option>';
+					}
+				}
+				?>
+			</select>
+			<div class="other2" style="display: none;"> 
+			<label>Please Speficy</label>
+				<input type="" name="">
+			</div>
+		</td>
 	</tr>
 	<tr>
 		<td rowspan="2" class="bg-l">Address:</td>
@@ -1835,45 +1988,45 @@ normal"><span style="font-size:3.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<td>Communication Address</td>
 	</tr>
 	<tr>
-		<td style="height: 25px;"></td>
-		<td></td>
-		<td></td>
+		<td style="height: 25px;"><input type="" name="ip[55]"></td>
+		<td><input type="" name="ip[56]"></td>
+		<td><input type="" name="ip[57]"></td>
 	</tr>
 	<tr>
 		<td class="bg-d">City</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><input type="" name="ip[58]"></td>
+		<td><input type="" name="ip[59]"></td>
+		<td><input type="" name="ip[60]"></td>
 	</tr>
 	<tr>
 		<td class="bg-l">State and PIN</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><input type="" name="ip[61]"></td>
+		<td><input type="" name="ip[62]"></td>
+		<td><input type="" name="ip[63]"></td>
 	</tr>
 	<tr>
 		<td class="bg-d">Contact Person & Designation</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><input type="" name="ip[64]"></td>
+		<td><input type="" name="ip[65]"></td>
+		<td><input type="" name="ip[66]"></td>
 	</tr>
 	<tr>
 		<td class="bg-l">Email ID</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><input type="" name="ip[67]"></td>
+		<td><input type="" name="ip[68]"></td>
+		<td><input type="" name="ip[69]"></td>
 	</tr>
 	<tr>
 		<td class="bg-d">Phone No</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><input type="" name="ip[70]"></td>
+		<td><input type="" name="ip[71]"></td>
+		<td><input type="" name="ip[72]"></td>
 	</tr>
 	<tr>
 		<td class="bg-l">Mobile No</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><input type="" name="ip[73]"></td>
+		<td><input type="" name="ip[74]"></td>
+		<td><input type="" name="ip[75]"></td>
 	</tr>
 </table>
 
@@ -1886,27 +2039,27 @@ normal"><span style="color:#214685;mso-font-width:120%">TAX DETAILS OF CUSTOMER<
 <table style="width: 100%" cellspacing="0px" border="1px">
 	<tr>
 		<td style="width: 25%" class="bg-d">*GSTIN No.</td>
-		<td  style="width: 25%"><input type="" style="width: 95%;" name=""></td>
+		<td  style="width: 25%"><input type="" style="width: 95%;" name="ip[76]"></td>
 		<td  style="width: 25%" class="bg-l">PAN No.</td>
-		<td  style="width: 25%"><input type=""  style="width: 95%;" name=""></td>
+		<td  style="width: 25%"><input type=""  style="width: 95%;" name="ip[77]"></td>
 	</tr>
 	<tr>
 		<td class="bg-l"> CIN/LLPIN (In Case of Company/LLP)</td>
-		<td><input type=""  style="width: 95%;" name=""></td>
+		<td><input type=""  style="width: 95%;" name="ip[78]"></td>
 		<td class="bg-d">TAN No.</td>
-		<td><input type=""  style="width: 95%;" name=""></td>
+		<td><input type=""  style="width: 95%;" name="ip[79]"></td>
 	</tr>
 	<tr>
 		<td class="bg-d">Legal Name of Client</td>
-		<td><input type=""  style="width: 95%;" name=""></td>
+		<td><input type=""  style="width: 95%;" name="ip[80]"></td>
 		<td class="bg-l">Contact Person Name for GSTIN </td>
-		<td><input type=""  style="width: 95%;" name=""></td>
+		<td><input type=""  style="width: 95%;" name="ip[81]"></td>
 	</tr>
 	<tr>
 		<td class="bg-l">Trade Name of Client</td>
-		<td><input type=""  style="width: 95%;" name=""></td>
+		<td><input type=""  style="width: 95%;" name="ip[82]"></td>
 		<td class="bg-d">Contact Person Email ID for GSTIN </td>
-		<td><input type=""  style="width: 95%;" name=""></td>
+		<td><input type=""  style="width: 95%;" name="ip[83]"></td>
 	</tr>
 </table>
 
@@ -1914,12 +2067,22 @@ normal"><span style="color:#214685;mso-font-width:120%">TAX DETAILS OF CUSTOMER<
 0in;margin-left:9.55pt;margin-bottom:.0001pt;tab-stops:358.35pt"><span style="color:#214685;mso-font-width:95%">Exempt<span style="letter-spacing:
 -.85pt"> </span>from<span style="letter-spacing:-.8pt"> </span>GST<span style="letter-spacing:-.8pt"> </span>Registration<span style="letter-spacing:
 -.8pt"> </span>for<span style="letter-spacing:-1.85pt"> </span>Transportation<span style="letter-spacing:-.8pt"> </span>of<span style="letter-spacing:-.8pt"> </span>Goods (Yes/No) :</span><span style="color:#214685;letter-spacing:-.3pt"> </span>
-	<select style="width: 140px;"><option>Yes</option><option>No</option></select>
+
+	<select name="ip[84]" style="width: 140px;" onchange="{
+		if(this.value=='Yes')
+			$('.gst-box').show();
+		else
+			$('.gst-box').hide();
+	}">
+		<option>Yes</option>
+		<option>No</option>
+	</select>
+
 </p>
 
-<p class="MsoBodyText" style="margin-top:.45pt;margin-right:0in;margin-bottom:
+<p class="MsoBodyText gst-box" style="margin-top:.45pt;margin-right:0in;margin-bottom:
 0in;margin-left:9.55pt;margin-bottom:.0001pt;tab-stops:394.4pt"><span style="color:#214685;mso-font-width:90%">Please Specified the Category of<span style="letter-spacing:-1.5pt"> </span>Exemption:
-	<input type="" name="" style="width:300px;">
+	<input type="" name="gst_specify" style="width:300px;">
 </p>
 
 <p class="MsoBodyText" style="margin-top:.1in;margin-right:0in;margin-bottom:
@@ -1947,16 +2110,28 @@ normal"><span style="font-size:4.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<td>Details</td>
 	</tr>
 	<tr>
-		<td class="bg-l">Bill Submission Address :-</td>
-		<td>Mode of payment :- <select style="width: 200px;"></select></td>
+		<td class="bg-l">Bill Submission Address :-
+			<input type="" name="ip[85]">
+		</td>
+		<td>Mode of payment :- <select style="width: 200px;" name="ip[86]">
+			<option>Cheque</option>
+			<option>NEFT</option>
+			<option>RTGS</option>
+		</select></td>
 	</tr>
 	<tr>
-		<td class="bg-d">Payment processing Address :-</td>
-		<td>Vendor registration required :-</td>
+		<td class="bg-d">Payment processing Address :-
+			<input type="" name="ip[87]">
+		</td>
+		<td>Vendor registration required :-
+			<input type="" name="ip[88]">
+		</td>
 	</tr>
 	<tr>
 		<td class="bg-l">Contact details of the person responsible for processing Bills & payment :</td>
-		<td></td>
+		<td>
+			<input type="" style="width: 80%" name="ip[89]">
+		</td>
 	</tr>
 
 
@@ -1973,14 +2148,14 @@ normal"><span style="font-size:10.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 		<tr>
 			<td style=" padding:10px;padding-top: 70px; width: 50%;">
 				<table>
-					<tr><th>Name: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
-					<tr><th>Designation: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
+					<tr><th>Name: </th><td> <input type="" name="ip[90]" value="<?=$ip[90]?>" style="width: 200px;"></td></tr>
+					<tr><th>Designation: </th><td> <input type="" name="ip[91]" value="<?=$ip[91]?>" style="width: 200px;"></td></tr>
 				</table>
 			</td>
 			<td style=" padding:10px;padding-top: 70px;">
 				<table>
-					<tr><th>Name: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
-					<tr><th>Designation: </th><td> <input type="" name="" style="width: 200px;"></td></tr>
+					<tr><th>Name: </th><td> <input type="" name="ip[92]" value="<?=$ip[92]?>" style="width: 200px;"></td></tr>
+					<tr><th>Designation: </th><td> <input type="" name="ip[93]" value="<?=$ip[93]?>" style="width: 200px;"></td></tr>
 				</table>
 			</td>
 		</tr>
@@ -2004,7 +2179,7 @@ normal"><span style="font-size:11.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 
 <p class="MsoNormal" align="center" style="margin-top:.05pt;margin-right:6.35pt;
 margin-bottom:0in;margin-left:3.85pt;margin-bottom:.0001pt;text-align:left;">
-	Client Proposed By (Name & Designation): <input type="" style="width: 50%;" name="">
+	Client Proposed By (Name & Designation): <input type="" style="width: 50%;" name="ip[94]" value="<?=$ip[94]?>">
 </p>
 
 <p class="MsoBodyText" style="margin-top:.35pt"><b style="mso-bidi-font-weight:
@@ -2018,10 +2193,10 @@ normal"><span style="font-size:4.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<td class="bg-d">Date</td>
 	</tr>
 	<tr>
-		<td><input type="" style="width: 95%;" name=""></td>
-		<td><input type="" style="width: 95%;" name=""></td>
+		<td><input type="" style="width: 95%;" name="ip[95]" value="<?=$ip[95]?>"></td>
+		<td><input type="" style="width: 95%;" name="ip[96]" value="<?=$ip[96]?>"></td>
 		<td style="width: 180px"></td>
-		<td><input type="" style="width: 95%;" name=""></td>
+		<td><input type="date" style="width: 95%;" name="ip[97]" value="<?=$ip[97]?>"></td>
 	</tr>
 </table>
 
@@ -2043,10 +2218,22 @@ normal"><span style="color:#214685;mso-font-width:105%">Client Verified By (CCD
 		<td class="bg-d">Date</td>
 	</tr>
 	<tr>
-		<td><input type="" style="width: 95%;" name=""></td>
-		<td><input type="" style="width: 95%;" name=""></td>
+		<td>
+			<select name="ip[98]" onchange="{
+				$('input[name=\'ip[99]\'').val($(this).find('option:selected').data('desg'));
+			}">
+				<?php
+				echo'<option value="">None</option>';
+				foreach ($emp_list as $key => $value)
+				{
+					echo'<option data-desg="'.$value->designation.'"">'.$value->emp_name.'</option>';
+				}
+				?>
+			</select>
+			<!-- <input type="" style="width: 95%;" name="ip[98]"> --></td>
+		<td><input type="" style="width: 95%;" name="ip[99]"></td>
 		<td style="width: 180px"></td>
-		<td><input type="" style="width: 95%;" name=""></td>
+		<td><input type="date" style="width: 95%;" name="ip[100]"></td>
 	</tr>
 </table>
 
@@ -2068,10 +2255,22 @@ normal"><span style="font-size:6.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<td class="bg-d">Date</td>
 	</tr>
 	<tr>
-		<td><input type="" style="width: 95%;" name=""></td>
-		<td><input type="" style="width: 95%;" name=""></td>
+		<td>
+			<select name="ip[101]" onchange="{
+				$('input[name=\'ip[102]\'').val($(this).find('option:selected').data('desg'));
+			}">
+				<?php
+				echo'<option value="">None</option>';
+				foreach ($emp_list as $key => $value)
+				{
+					echo'<option data-desg="'.$value->designation.'"">'.$value->emp_name.'</option>';
+				}
+				?>
+			</select>
+			<!-- <input type="" style="width: 95%;" name="ip[101]"> --></td>
+		<td><input type="" style="width: 95%;" name="ip[102]"></td>
 		<td style="width: 180px"></td>
-		<td><input type="" style="width: 95%;" name=""></td>
+		<td><input type="date" style="width: 95%;" name="ip[103]"></td>
 	</tr>
 </table>
 
@@ -2095,10 +2294,23 @@ normal"><span style="color:#214685;mso-font-width:105%">Client<span style="lette
 		<td class="bg-d">Date</td>
 	</tr>
 	<tr>
-		<td><input type="" style="width: 95%;" name=""></td>
-		<td><input type="" style="width: 95%;" name=""></td>
+		<td>
+			<select name="ip[104]" onchange="{
+				$('input[name=\'ip[105]\'').val($(this).find('option:selected').data('desg'));
+			}">
+				<?php
+				echo'<option value="">None</option>';
+				foreach ($emp_list as $key => $value)
+				{
+					echo'<option data-desg="'.$value->designation.'"">'.$value->emp_name.'</option>';
+				}
+				?>
+			</select>
+			<!-- <input type="" style="width: 95%;" name="ip[104]"> -->
+		</td>
+		<td><input type="" style="width: 95%;" name="ip[105]"></td>
 		<td style="width: 180px"></td>
-		<td><input type="" style="width: 95%;" name=""></td>
+		<td><input type="date" style="width: 95%;" name="ip[106]"></td>
 	</tr>
 </table>
 
@@ -2112,12 +2324,40 @@ normal"><span style="color:#214685">Previous Service Provider details</span><o:p
 normal"><span style="font-size:7.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></b></p>
 <table style="width: 100%" cellspacing="0px" border="1px">
 	<tr>
-		<td class="bg-d" colspan="3">Name <input type="" style="width: 80%" name=""></td>
+		<td class="bg-d" colspan="3">Name
+
+			<select name="ip[107]" style="width: 260px;" onchange="{
+			if(this.value=='Others'){
+				$('.other3').show();
+				$('.other3').find('input').attr('name','ip[107]');
+			}
+			else{
+				$('.other3').hide();
+				$('.other3').find('input').removeAttr('name');
+			}
+			}">
+				<?php
+				if(!empty($compt))
+				{
+					foreach (explode(',', $compt['input_values']) as $key => $value)
+					{
+						echo'<option>'.$value.'</option>';
+					}
+				}
+				?>
+			</select>
+			<div class="other3" style="display: none;"> 
+			<label>Please Speficy</label>
+				<input type="" name="" style="width: 70%">
+			</div>
+
+		 <!-- <input type="" style="width: 80%" name="ip[107]"> -->
+		 </td>
 		
 	</tr>
 	<tr>
 		<td class="bg-l">Business per month</td>
-		<td>Rs.<input type="" style="width: 60%;" name=""></td>
+		<td>Rs.<input type="" style="width: 60%;" name="ip[108]"></td>
 		<td>Tonnage</td>
 	</tr>
 </table>
@@ -2128,63 +2368,75 @@ normal"><span style="font-size:7.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 0in;margin-left:8.2pt;margin-bottom:.0001pt"><b style="mso-bidi-font-weight:
 normal"><span style="color:#214685">Mandatory KYC (Know<span style="letter-spacing:
 -2.8pt"> </span><span style="letter-spacing:-.45pt">Your </span>Customer) -
-Documents Enclosed: <select style="width: 90px;"><option>Yes</option><option>No</option></select> </span><o:p></o:p></b></p>
+Documents Enclosed: 
+
+<select name="ip[109]" style="width: 90px;">
+	<option>Yes</option>
+	<option>No</option>
+</select> 
+</span><o:p></o:p></b></p>
 
 <p class="MsoBodyText" style="margin-top:.2pt"><b style="mso-bidi-font-weight:
 normal"><span style="font-size:7.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></b></p>
 
-<table style="width: 100%" cellspacing="0px" border="1px">
+<table class="files" style="width: 100%" cellspacing="0px" border="1px">
 	<tr>
 		<td>Sr. No.</td>
 		<td>Particulars</td>
-		<td>Received (Yes/No)</td>
+		<td>Received (Upload, if received)</td>
 	</tr>
 	<tr>
 		<td>1</td>
 		<td>Copy of Address proof</td>
 		<td>
-			<input type="radio" name="" value="Yes">Yes 
-			<input type="radio" name="" value="No" checked>No 
+		<!-- 	<input type="radio" name="ip[110][status]" value="Yes">Yes 
+			<input type="radio" name="ip[110][status]" value="No" checked>No  -->
+			<input type="file" name="ip[110]" style="width: 180px;">
 		</td>
 	</tr>
 	<tr>
 		<td>2</td>
 		<td>Copy of Address proof</td>
 		<td>
-			<input type="radio" name="" value="Yes">Yes 
-			<input type="radio" name="" value="No" checked>No 
+			<!-- <input type="radio" name="ip[111][status]" value="Yes" >Yes 
+			<input type="radio" name="ip[111][status" value="No" checked>No  -->
+			<input type="file" name="ip[111]" style="width: 180px;">
 		</td>
 	</tr>
 	<tr>
 		<td>3</td>
 		<td>Copy of GST Registration certificate</td>
 		<td>
-			<input type="radio" name="" value="Yes">Yes 
-			<input type="radio" name="" value="No" checked="">No 
+			<!-- <input type="radio" name="ip[112][status]" value="Yes">Yes 
+			<input type="radio" name="ip[112][status]" value="No" checked="">No  -->
+			<input type="file" name="ip[112]" style="width: 180px;">
 		</td>
 	</tr>
 	<tr>
 		<td>4</td>
 		<td>Copy of CIN No. / LLPIN</td>
 		<td>
-			<input type="radio" name="" value="Yes">Yes 
-			<input type="radio" name="" value="No" checked>No 
+			<!-- <input type="radio" name="ip[113][status]" value="Yes">Yes 
+			<input type="radio" name="ip[113][status]" value="No" checked>No  -->
+			<input type="file" name="ip[113]" style="width: 180px;">
 		</td>
 	</tr>
 	<tr>
 		<td>5</td>
 		<td>Partnership Deed</td>
 		<td>
-			<input type="radio" name="" value="Yes">Yes 
-			<input type="radio" name="" value="No" checked>No 
+			<!-- <input type="radio" name="ip[114][status]" value="Yes">Yes 
+			<input type="radio" name="ip[114][status]" value="No" checked>No  -->
+			<input type="file" name="ip[114]" style="width: 180px;">
 		</td>
 	</tr>
 	<tr>
 		<td>6</td>
 		<td>MOA & AOA of Company</td>
 		<td>
-			<input type="radio" name="" value="Yes">Yes 
-			<input type="radio" name="" value="No" checked>No 
+			<!-- <input type="radio" name="ip[115][status]" value="Yes">Yes 
+			<input type="radio" name="ip[115][status]" value="No" checked>No  -->
+			<input type="file" name="ip[115]" style="width: 180px;">
 		</td>
 	</tr>
 </table>
