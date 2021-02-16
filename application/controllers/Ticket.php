@@ -453,7 +453,7 @@ class Ticket extends CI_Controller
 		$this->load->model('Ticket_datatable_model');
 		$this->load->model('enquiry_model');
 		$res = $this->Ticket_datatable_model->getRows($_POST);
-
+		echo $this->db->last_query();
 		//print_r($res); exit();
 		$data  = array();
 		$dfields = $this->enquiry_model->getformfield(2);
