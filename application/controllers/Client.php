@@ -1436,56 +1436,63 @@ if(empty($eid)){
     }
 	
 	public function upload_aggrement_team() {
-//     $ag_id = $this->input->post('ide');
-//     $ddata =  $this->db->where('id',$ag_id)->get('tbl_aggriment')->row();
+    $ag_id = $this->input->post('ide');
+    $ddata =  $this->db->where('id',$ag_id)->get('tbl_aggriment')->row();
 
-//     $this->db->from('enquiry');
-//                     $this->db->where('enquiry_id',$ddata->enquiry_id);
-//                     $q= $this->db->get()->row();
-//     $enq_id =$q->Enquery_id;
-//     $phone =$q->phone;
+    $this->db->from('enquiry');
+                    $this->db->where('Enquery_id',$ddata->enq_id);
+                    $q= $this->db->get()->row();
+
+    $enq_id =$q->Enquery_id;
+    $phone =$q->phone;
     
-//     $this->db->where('s_phoneno',$phone);
-//     $this->db->from('tbl_admin');
-//                     $q1= $this->db->get()->row();
+    $this->db->where('s_phoneno',$phone);
+    $this->db->from('tbl_admin');
+                    $q1= $this->db->get()->row();
    
-// if(!empty($q1)){
-//     $noti_id =$q1->pk_i_admin_id;
-//    }else{
-// 	$noti_id = $this->session->user_id;
-//    }	
-// if(!empty($_FILES['file']['name'])){
-// 				$this->load->library("aws");
-// 				$_FILES['userfile']['name']= $_FILES['file']['name'];
-// 				$_FILES['userfile']['type']= $_FILES['file']['type'];
-// 				$_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
-// 				$_FILES['userfile']['error']= $_FILES['file']['error'];
-// 				$_FILES['userfile']['size']= $_FILES['file']['size'];    
+if(!empty($q1)){
+    $noti_id =$q1->pk_i_admin_id;
+   }else{
+	$noti_id = $this->session->user_id;
+   }
+
+if(!empty($_FILES['file']['name']))
+{
+
+				$this->load->library("aws");
+				$_FILES['userfile']['name']= $_FILES['file']['name'];
+				$_FILES['userfile']['type']= $_FILES['file']['type'];
+				$_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
+				$_FILES['userfile']['error']= $_FILES['file']['error'];
+				$_FILES['userfile']['size']= $_FILES['file']['size'];    
 				
-// 				$image=$_FILES['userfile']['name'];
-// 				$path=  "uploads/agrmnt/".$image;
-//         		$ret = move_uploaded_file($_FILES['userfile']['tmp_name'] ,$path);
-// 			if($ret){
-//                 $this->aws->upload("",$path);	
-//                 								}
-//                 $this->db->set('file',$path);
-//                 $this->db->where('enq_id', $enq_id);
-//                 $this->db->update('tbl_aggriment');	
-// 			}
-// 			$assign_data_noti[]=array('create_by'=> $noti_id,
-//                         'subject'=>'Agrrement Uploded',
-//                         'query_id'=>$enq_id,
-//                         'task_date'=>date('d-m-Y'),
-//                         'task_time'=>date('H:i:s')
-//                         );
-//            $this->db->insert_batch('query_response',$assign_data_noti);
-//            $this->load->library('user_agent');
+				$image=$_FILES['userfile']['name'];
+				$path=  "uploads/agrmnt/".$image;
+        		$ret = move_uploaded_file($_FILES['file']['tmp_name'] ,$path);
+
+			if($ret){
+                $this->aws->upload("",$path);	
+                								}
+                $this->db->set('file',$path);
+                $this->db->where('id', $ag_id);
+                $this->db->update('tbl_aggriment');	
+               
+			}
+            
+			$assign_data_noti[]=array('create_by'=> $noti_id,
+                        'subject'=>'Agrrement Uploded',
+                        'query_id'=>$enq_id,
+                        'task_date'=>date('d-m-Y'),
+                        'task_time'=>date('H:i:s')
+                        );
+           $this->db->insert_batch('query_response',$assign_data_noti);
+           $this->load->library('user_agent');
            
-//            if($this->input->post('redirect_url')){
-//             redirect($this->input->post('redirect_url')); //updateclient                
-//            }else{
-//              redirect($this->agent->referrer()); //updateclient
-//            }
+           if($this->input->post('redirect_url')){
+            redirect($this->input->post('redirect_url')); //updateclient                
+           }else{
+             redirect($this->agent->referrer()); //updateclient
+           }
 }
 /*******************************************************************************end add aggriment***************************************************/
 	public function upload_aggrement_student() {
@@ -2316,7 +2323,7 @@ public function all_update_expense_status()
                             'Consignor',//12
                             '0.15 Paise',//13
                             'Consignor',//14
-                            'Consignor',//15
+                            '',//15
                             'NA',//16
                             '15',//17
                             '25',//18
@@ -2552,10 +2559,7 @@ public function all_update_expense_status()
                     }
                     echo'<tr>
                             <td>Loading/Unloading Charges/Union Charges</td>
-                            <td><select name="oc[15]">
-                                <option '.($oc[15]=='Consignee'?'selected':'').'>Consignee</option>
-                                <option '.($oc[15]=='Consignor'?'selected':'').'>Consignor</option>
-                                </select></td>
+                            <td><input name="oc[15]" value="'.$oc[15].'"></td>
                             <td>Per Kg / Box</td>
                         </tr>';
                     if($booking_type=='sundry')
@@ -2915,9 +2919,11 @@ $_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2
         $this->load->model(array('Branch_model','Leads_Model','Location_model'));
 
         $user = $this->db->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row();
-        $deal_id = $this->input->post('deal_id');
-        $zone = $this->input->post('zone_id');
 
+        $deal_id = $this->input->post('deal_id');
+
+        $zone = $this->input->post('zone_id');
+        $bank = $this->Branch_model->bank_by_zone($zone);
 
         $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_aggriment')->row();
         $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
@@ -2926,7 +2932,7 @@ $_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2
         $oc =(array) json_decode($deal->other_charges);
 
         $deal_data = $this->Branch_model->get_deal_data($deal_id);
-        $bank = $this->Branch_model->bank_by_zone($zone);
+      
 
         $enq = $this->db->select('e.*,r.region_name')
                         ->from('enquiry e')
@@ -2944,28 +2950,92 @@ $_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2
 
         $enq_designation = !empty($dynamic)?$dynamic->fvalue:'';
         
+        for($i=1; $i<150;$i++)
+        {
+            $input['ip'][$i] = '';
+        }
+
+
         $input['ip'][0] = $input['ip'][5] = $ref_no;
-        $input['ip'][1] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+$input['ip'][50] = $input['ip'][38] = $input['ip'][1] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
         $input['ip'][2] = $enq->region_name;
         $input['ip'][3] = '';
         $input['ip'][4] = '';
         $input['ip'][6] = date('d');
         $input['ip'][7] = date('F');
         $input['ip'][8] = date('y');
-        $input['ip'][9] = $enq->city_id;
-        $input['ip'][10] = $enq->company;
-        $input['ip'][11] = $enq->address;
-        $input['ip'][12] = date('m/d/Y');
+        $city = $this->db->select('city')->from('city')->where('id',$enq->city_id)->get()->row();
+        $city_name ='';
+        if(!empty($city))
+            $city_name = $city->city;
+        $input['ip'][9] =  $city_name; //$enq->city_id;
+
+    $input['ip'][52] = $input['ip'][47] = $input['ip'][10] = $enq->company;
+    
+        $input['ip'][48]= $input['ip'][11] = $enq->address;
+        $input['ip'][12] = date('Y-m-d');
+
+        $input['ip'][16] = 'Yes';
+
+        //Acount details -
+
+        $input['ip'][20]= $bank->account_no;
+        $input['ip'][21] = $bank->ifsc;
+        $input['ip'][22] = $bank->bank_branch;
+
+        //user Details 
+
+$input['ip'][95] = $input['ip'][94] = $input['ip'][90] =$input['ip'][46] =$input['ip'][41]=$input['ip'][34] = $input['ip'][23] = $user->s_display_name.' '.$user->last_name;
+$input['ip'][96] = $input['ip'][91] = $input['ip'][42]=$input['ip'][35] = $input['ip'][24] = $user->designation;
+
+$input['ip'][97] = date('Y-m-d');
+
+$input['ip'][45]= $user->s_user_email;
+
+    ///enq details =
+
+$input['ip'][92] = $input['ip'][43]=$input['ip'][36] = $input['ip'][25] =$enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+$input['ip'][93] = $input['ip'][44]=$input['ip'][37] = $input['ip'][26] =$enq_designation;
+
+$email_list[0] = $input['ip'][49] = $enq->email;
+ 
+        $input['ip'][39] = $deal->booking_type;
 
 
-        for($i=13; $i<60;$i++)
-        {
-            $input['ip'][$i] = '';
-        }
+$user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,designation')->from('tbl_admin')->where('companey_id',$this->session->companey_id)->get()->result();
 
         $raw['ip'] = $input['ip'];
-        $raw['city_list'] = $this->location_model->city_list();
+        $raw['email_list'] = $email_list;
+        $raw['charges'] = $oc;
 
+        // Industries list
+
+    $this->db->select("tbl_input.*,input_types.title as type");
+    $this->db->from('tbl_input');
+    $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
+    $this->db->where('input_id','305'); //for v-trans dynamic field 4478 
+    $industries = $this->db->get()->row_array();
+
+    $this->db->select("tbl_input.*,input_types.title as type");
+    $this->db->from('tbl_input');
+    $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
+    $this->db->where('input_id','287');
+    $client_type = $this->db->get()->row_array();
+
+    $this->db->select("tbl_input.*,input_types.title as type");
+    $this->db->from('tbl_input');
+    $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
+    $this->db->where('input_id','4478');
+    $compt = $this->db->get()->row_array();
+
+
+        $raw['industries'] = $industries;
+        $raw['client_type'] = $client_type;
+        $raw['compt'] = $client_type;
+        //print_r($oc);exit();
+        $raw['deal_id'] = $deal_id;
+        $raw['city_list'] = $this->location_model->city_list();
+        $raw['emp_list'] = $user_list;
         //print_r($raw['city_list']);exit();
        $data =  $this->load->view('aggrement/new-input-vtrans',$raw,TRUE);
 
@@ -2976,7 +3046,7 @@ $_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2
         </head>
         <body align="center" style="background:black;">  
         <div style="width:100%;" align="center">
-            <form action="'.base_url('client/attach_agreement_data').'" method="post">
+            <form action="'.base_url('client/attach_agreement_data').'" method="post" enctype="multipart/form-data">
             <div style="width:735px; min-height:100%; padding:40px; margin:15px; background:white;">
             '.$data.'
             </div>
@@ -2990,13 +3060,47 @@ $_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2
 
     public function attach_agreement_data()
     {
-       $this->print_new($_POST['ip']);
+        //print_r($_POST);exit();
+        $this->load->model(array('Branch_model','Leads_Model','Location_model'));
+        $deal_id = $this->input->post('deal_id');
+        $deal   =    $this->Branch_model->get_deal($deal_id);
+        $oc =(array) json_decode($deal->other_charges);
+
+        for($i=110;$i<=115;$i++)
+        {   
+            $_POST['ip'][$i] = 'No';
+
+            if(!empty($_FILES['ip']['tmp_name'][$i]))
+            {
+                $fname = $_FILES['ip']['name'][$i];
+                $ep = explode('.', $fname);
+                $ext = end($ep);
+                $nf = 'Doc'.time().rand(1000,9999).'.'.$ext;
+
+                $path = 'uploads/enquiry_documents/'.$this->session->companey_id;
+
+               if (!file_exists($path)) {
+                    mkdir($path, 0777, true);
+                }
+                $path= $path.'/'.$nf;
+                if(move_uploaded_file($_FILES['ip']['tmp_name'][$i],$path))
+                    $_POST['ip'][$i] ='Yes';
+            }
+        }
+        $data = $_POST;
+        $data['oc'] =$oc;
+       $this->print_new($data);
     }
 
     function print_new($data)
     {   
         
-        $input['ip'] = $data;
+        $input['ip'] = $data['ip'];
+        // $input['ip'][24]= ' designation';
+        // $input['ip'][87]='dsf';
+        $input['email_list'] = $data['email_list'];
+        $input['oc'] = $data['oc'];
+        $input['gst_specify'] = $data['gst_specify'];
         $this->load->library('pdf');
 
         $res =   $this->load->view('aggrement/print_vtrans',$input,true);
