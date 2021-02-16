@@ -886,6 +886,7 @@ class Report extends CI_Controller
     $productlst = $this->session->userdata('productlst');
     $Enquiry_Id = $this->session->userdata('Enquiry_Id');
     $rep_details = $this->report_datatable_model->get_datatables();
+    echo $this->db->last_query();
     $i = 1;
     $data = array();
     foreach ($rep_details as  $repdetails) {
