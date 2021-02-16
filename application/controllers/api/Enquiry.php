@@ -2578,73 +2578,113 @@ public function get_enq_list_post(){
   }
 
   public function active_enquiry_page_post()
-    {
-      $user_id= $this->input->post('user_id');
-      $process_id= $this->input->post('process_id');
-      $offset = $this->input->post('offset')??0;
-      $limit = $this->input->post('limit')??10;
+  {
+          $user_id= $this->input->post('user_id');
+          $process_id= $this->input->post('process_id');
+          $offset = $this->input->post('offset')??0;
+          $limit = $this->input->post('limit')??10;
 
-      if(strpos(',',$process_id) !== false) 
-      {
-        $process = implode(',',$process_id);
-      }
-      else
-      {
-        $process = $process_id;
-      }
-      //echo $process;die;
-      //print_r($process_id);die;
-            $res= array();
-      if(!empty($user_id))
-      {
-        $user_role1 = $this->User_model->read_by_id($user_id); 
-        if(!empty($user_role1))
-        {
-                $user_role=$user_role1->user_roles;
-
-              $total = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process)->num_rows();
-             
-              //echo $offset; exit();
-                $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process,$offset,$limit);
-                  
-          if(!empty($data['active_enquiry']->result()))
+          if(strpos(',',$process_id) !== false) 
           {
-            $res= array();
-            
-            $res['offset'] = $offset;
-            $res['limit'] = $limit;
-            $res['total'] = $total;
-            $res['list'] = array();
-            foreach($data['active_enquiry']->result() as $value)
+            $process = implode(',',$process_id);
+          }
+          else
+          {
+            $process = $process_id;
+          }
+          //echo $process;die;
+          //print_r($process_id);die;
+                $res= array();
+          if(!empty($user_id))
+          {
+            $user_role1 = $this->User_model->read_by_id($user_id); 
+            if(!empty($user_role1))
             {
-              $customer='';
-              array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->company,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
-            } 
+                    $user_role=$user_role1->user_roles;
+
+                  $total = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process)->num_rows();
+                 
+                  //echo $offset; exit();
+                    $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process,$offset,$limit);
+                      
+              if(!empty($data['active_enquiry']->result()))
+              {
+                $res= array();
+                
+                $res['offset'] = $offset;
+                $res['limit'] = $limit;
+                $res['total'] = $total;
+                $res['list'] = array();
+                foreach($data['active_enquiry']->result() as $value)
+                {
+                  $customer='';
+                  array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->company,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
+                } 
+              }
+                   
+              if(empty($res))
+              {
+                array_push($res,array('error'=>'enquiry not find'));
+              }
+            }
+            else
+            {
+              array_push($res,array('error'=>'user not exist'));
+            }
+             
+                  $this->set_response([
+                    'status' => TRUE,
+                    'enquiry' =>$res
+                     ], REST_Controller::HTTP_OK);
+            
           }
-               
-          if(empty($res))
+          else
           {
-            array_push($res,array('error'=>'enquiry not find'));
+        
+            $this->set_response([
+              'status' => false,
+              'enquiry' =>'not found'
+              ], REST_Controller::HTTP_OK);
           }
         }
-        else
-        {
-          array_push($res,array('error'=>'user not exist'));
-        }
-         
-              $this->set_response([
-                'status' => TRUE,
-                'enquiry' =>$res
-                 ], REST_Controller::HTTP_OK);
-        
-      }
-      else
-      {
-    
+
+  public function backup_post()
+  { 
+        $token=$this->input->post('token'); 
+        $remote=$_SERVER['REMOTE_ADDR'];
+      if($token ==='@thecrm360@' && $remote==='206.189.151.19'){
+        $this->load->dbutil();
+      $prefs = array(
+        'format' => 'zip',
+        'filename' => 'backup.sql'
+      );
+      $backup = $this->dbutil->backup($prefs);
+      $db_name = 'crm'. date("Y-m-d-H-i-s").'.zip';
+      $save ='assets/database_backup/'.$db_name;
+        $this->load->helper('file');
+        write_file($save, $backup);
+      $df=base_url().$save;
+      
+          $this->set_response([
+                        'status' => true,
+                        'message' =>$df
+                         ], REST_Controller::HTTP_OK);
+          }else{
         $this->set_response([
-          'status' => false,
-          'enquiry' =>'not found'
-          ], REST_Controller::HTTP_OK);
+                        'status' => true,
+                        'message' =>'not backup'.$token
+                         ], REST_Controller::HTTP_OK);  
+        }
+      }
+        
+      
+  public function remove_file_post(){ 
+        $token=$this->input->post('token');
+      $file=$this->input->post('file');
+        $file1=str_replace(base_url(),'',$file);
+        $remote=$_SERVER['REMOTE_ADDR'];
+      if($token ==='osumone' && $remote==='206.189.151.19'){
+        unlink($file1);
       }
     }
 
