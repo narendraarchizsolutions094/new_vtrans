@@ -384,7 +384,7 @@ class Enquiry extends CI_Controller
     }
     function phone_check($phone)
     {
-        if(!($this->session->companey_id == 90 && ($this->input->post('mobileno') || $this->input->post('email')))){
+        if($this->session->companey_id == 90 && (empty($this->input->post('mobileno')) && empty($this->input->post('email')))){
             $this->form_validation->set_message('phone_check', 'Either Mobile no or email field is required');
             return false;
         }
@@ -463,7 +463,7 @@ class Enquiry extends CI_Controller
         if($this->session->companey_id == 90){
             $this->form_validation->set_rules('mobileno', display('mobileno'), 'max_length[20]|callback_phone_check');
         }else{
-            $this->form_validation->set_rules('mobileno', display('mobileno'), 'max_length[20]|callback_phone_check', array('phone_check' => 'Duplicate Entry for phone'));
+            $this->form_validation->set_rules('mobileno', display('mobileno'), 'required|max_length[20]|callback_phone_check', array('phone_check' => 'Duplicate Entry for phone'));
         }
         if (!empty($this->input->post('email'))) {
             $this->form_validation->set_rules('email', display('email'), 'callback_email_check', array('email_check' => 'The Email you entered is already exist'));
