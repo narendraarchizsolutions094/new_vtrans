@@ -3125,15 +3125,3 @@ jQuery(function($) { //on document.ready
     });
 });
 </script>
-<script type="text/javascript">
-    window.addEventListener('message', receiveMessage, false);
-    function receiveMessage(event){
-        console.log(event.data.Phone);
-        if(event.data.action=='call_dispo'){
-            recordId = event.data.record_id;
-            disposition=event.data.disposition;
-            //used the disposition function 
-            //add_dispo(recordID, disposition);
-        }
-    }
-</script>
