@@ -2594,56 +2594,62 @@ public function get_enq_list_post(){
           }
           //echo $process;die;
           //print_r($process_id);die;
-                $res= array();
+          $res= array();
           if(!empty($user_id))
           {
             $user_role1 = $this->User_model->read_by_id($user_id); 
+
             if(!empty($user_role1))
             {
-                    $user_role=$user_role1->user_roles;
+              $user_role=$user_role1->user_roles;
 
-                  $total = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process)->num_rows();
+              $total = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process)->num_rows();
                  
                   //echo $offset; exit();
-                    $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process,$offset,$limit);
+              $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process,$offset,$limit);
                       
-              if(!empty($data['active_enquiry']->result()))
-              {
-                $res= array();
-                
-                $res['offset'] = $offset;
-                $res['limit'] = $limit;
-                $res['total'] = $total;
-                $res['list'] = array();
-                foreach($data['active_enquiry']->result() as $value)
+                if(!empty($data['active_enquiry']->result()))
                 {
-                  $customer='';
-                  array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->company,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
-                } 
-              }
-                   
-              if(empty($res))
-              {
-                array_push($res,array('error'=>'enquiry not find'));
-              }
+                  $res= array();
+                  
+                  $res['offset'] = $offset;
+                  $res['limit'] = $limit;
+                  $res['total'] = $total;
+                  $res['list'] = array();
+                  foreach($data['active_enquiry']->result() as $value)
+                  {
+                    $customer='';
+                    array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->company,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
+                  } 
+
+                   $this->set_response([
+                          'status' => true,
+                          'data' =>$res,
+                          ], REST_Controller::HTTP_OK);
+                }
+                else
+                {
+                     $this->set_response([
+                                'status' => false,
+                                'message' =>'data not found'
+                                ], REST_Controller::HTTP_OK);
+                }
             }
             else
             {
-              array_push($res,array('error'=>'user not exist'));
+               $this->set_response([
+                  'status' => false,
+                  'message' =>'user not found'
+                  ], REST_Controller::HTTP_OK);
             }
-             
-                  $this->set_response([
-                    'status' => TRUE,
-                    'enquiry' =>$res
-                     ], REST_Controller::HTTP_OK);
-            
+           
           }
           else
           {
         
             $this->set_response([
               'status' => false,
-              'enquiry' =>'not found'
+              'message' =>'user_id missing'
               ], REST_Controller::HTTP_OK);
           }
         }

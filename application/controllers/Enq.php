@@ -272,10 +272,9 @@ class Enq extends CI_Controller
 		$data['all_enquery_num'] = $this->db->count_all_results();
 
 
-		$this->common_query_short_dashboard();
+		$this->common_query_short_dashboard(0);
 		$this->db->where('enquiry.drop_status>0');
 		$data['all_drop_num'] = $this->db->count_all_results();
-
 
 		$this->common_query_short_dashboard();
 		$this->db->where(' enquiry.drop_status=0');
@@ -469,7 +468,7 @@ class Enq extends CI_Controller
 			$this->db->update('enquiry');
 		}
 	}
-	public function common_query_short_dashboard()
+	public function common_query_short_dashboard($drop=1)
 	{
 		$this->load->model('common_model');
 
@@ -528,7 +527,8 @@ class Enq extends CI_Controller
         $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left');        
 	
 		$where.="  enquiry.status=$data_type";
-		$where.=" AND enquiry.drop_status=0";
+		if($drop==1)
+			$where.=" AND enquiry.drop_status=0";
 
         if(isset($enquiry_filters_sess['lead_stages']) && $enquiry_filters_sess['lead_stages'] !=-1){
             $stage  =   $enquiry_filters_sess['lead_stages'];
