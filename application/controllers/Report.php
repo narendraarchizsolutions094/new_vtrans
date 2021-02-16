@@ -119,20 +119,20 @@ class Report extends CI_Controller
 
       if ($this->input->post('from_exp') == '') {
         $from = '';
-        $from = date('d/m/Y', strtotime('-2 day', strtotime($todays)));
+        $from = date('d/m/Y', strtotime('-1 day', strtotime($todays)));
       } else {
         // $dfrom= $this->input->post('from_exp');
-        $from = date('d/m/Y', strtotime('-2 day', strtotime($todays)));
+        $from = date('d/m/Y', strtotime('-1 day', strtotime($todays)));
         // $from = date("d/m/Y", strtotime($dfrom));
 
       }
       if ($this->input->post('to_exp') == '') {
         $to = '';
-        $to = date('d/m/Y', strtotime('-2 day', strtotime($todays)));
+        $to = date('d/m/Y', strtotime('-1 day', strtotime($todays)));
       } else {
         // $tto= $this->input->post('to_exp');
         // $to = date("d/m/Y", strtotime($tto)); 
-        $to = date('d/m/Y', strtotime('-2 day', strtotime($todays)));
+        $to = date('d/m/Y', strtotime('-1 day', strtotime($todays)));
       }
       if ($this->input->post('updated_from_exp') == '') {
         $updated_from = '';
