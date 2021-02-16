@@ -384,6 +384,10 @@ class Enquiry extends CI_Controller
     }
     function phone_check($phone)
     {
+        if(!($this->session->companey_id == 90 && ($this->input->post('mobileno') || $this->input->post('email')))){
+            $this->form_validation->set_message('phone_check', 'Either Mobile no or email field is required');
+                return false;
+        }
         $product_id    =   $this->input->post('product_id');
         if ($product_id) {
             $query = $this->db->query("select phone from enquiry where product_id=$product_id AND phone=$phone");
