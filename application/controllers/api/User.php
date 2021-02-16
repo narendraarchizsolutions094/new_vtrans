@@ -25,28 +25,44 @@ class User extends REST_Controller
     		//$process_id   = $this->input->post('process_id');
 	        $user_id    =   $this->input->post('user_id');
 
-	       	$backup =  $this->session->userdata()??'';
+	       	// $backup =  $this->session->userdata()??'';
 
-	        $this->session->companey_id = $company_id;
-	        $this->session->user_id = $user_id;
+	        // $this->session->companey_id = $company_id;
+	        // $this->session->user_id = $user_id;
 
-	       	$data['user_data'] =  $this->user_model->read_by_id($user_id);
+	       	// $data['user_data'] =  $this->user_model->read_by_id($user_id);
 
-	       	$data['state_list'] = $this->location_model->state_list();
-            $data['city_list'] = $this->location_model->city_list();
-            $data['region_list'] = $this->location_model->region_list();
-            $data['territory_lsit'] = $this->location_model->territory_lsit();
+	       	// $data['state_list'] = $this->location_model->state_list();
+         //    $data['city_list'] = $this->location_model->city_list();
+         //    $data['region_list'] = $this->location_model->region_list();
+         //    $data['territory_lsit'] = $this->location_model->territory_lsit();
             //$data['user_list'] = $this->user_model->user_list();
            // $data['department_list'] = $this->Modules_model->modules_list();
             //$data['user_role'] = $this->db->get('tbl_user_role')->result();
-            $data['county_list'] = $this->location_model->country();
+            //$data['county_list'] = $this->location_model->country();
 
-            $this->session->set_userdata($backup);
+        
+        $data =   $this->db->select('pk_i_admin_id,s_display_name,last_name,s_user_email,s_phoneno,picture')
+                        ->from('tbl_admin')
+                        ->where('pk_i_admin_id',$user_id)
+                        ->where('companey_id',$company_id)
+                        ->get()->row();
 
-    		$this->set_response([
+            if(!empty($data))
+            {
+                $data->picture = base_url('/').$data->picture;
+                $this->set_response([
                 'status' => TRUE,
                 'data' => $data
             ], REST_Controller::HTTP_OK);
+            }
+            else{
+                $this->set_response([
+                'status' => FALSE,
+                'message' => 'No user found'
+            ], REST_Controller::HTTP_OK);
+            }
+    		
   		} 
   		else 
         {		     
