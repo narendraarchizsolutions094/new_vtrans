@@ -535,8 +535,9 @@ class Visits extends REST_Controller {
 	            $done = 1;
             }	
                //add expense start
-                if(!empty($_POST['expense'])){
-               foreach ($_POST['expense'] as $key =>$value ) {
+              if(!empty($_POST['expense'])){
+               foreach ($_POST['expense'] as $key =>$value ) 
+               {
                   $finalfilename='';
                   $expense = $_POST['expense'][$key];
                   $amount = $_POST['amount'][$key];
@@ -548,17 +549,27 @@ class Visits extends REST_Controller {
                   $upload_path    =   "assets/images/user/";
                   $finalfilename='expense_'.time().$file_name;
                   move_uploaded_file($file_tmp,$upload_path.$finalfilename);
+                   $exp_data['file'] = $finalfilename;
                   }
                   // visit type =2
-                  $exp_data=['type'=>2,
-                         'amount'=>$amount,
-                         'visit_id'=>$visit_id,
-                         'created_by'=>$user_id,
-                         'expense'=>$expense,
-                         'file'=>$finalfilename,
-                         'comp_id'=>$comp_id,
-                         ];
-              $this->db->insert('tbl_expense',$exp_data);
+                  
+                  $exp_data=[
+                             'amount'=>$amount,
+                             'expense'=>$expense,
+                             ];
+                    if(empty($_POST['ids'][$key]))
+                    {
+                      $exp_data['type'] = 2;
+                      $exp_data['visit_id']=$visit_id;
+                      $exp_data['created_by']=$user_id;
+                      $exp_data['comp_id']=$comp_id;
+                      $this->db->insert('tbl_expense',$exp_data);
+                    }
+                    else
+                    {
+                      $this->db->where('id',$_POST['ids'][$key]);
+                      $this->db->update('tbl_expense',$exp_data);
+                    }
                   }
                }
 

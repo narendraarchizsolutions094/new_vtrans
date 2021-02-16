@@ -287,6 +287,7 @@ class Enquiry_model extends CI_Model {
         					'field_list'=>array_merge($basic,$dynamic),
     						);
 
+       return $tabs;
   //       $match = array(
 		// 	'ticket_no' => $ticket->ticketno,
 		// 	'tck.client' => $ticket->client,

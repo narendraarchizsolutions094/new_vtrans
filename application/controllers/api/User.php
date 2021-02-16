@@ -53,7 +53,7 @@ class User extends REST_Controller
                 $data->picture = base_url('/').$data->picture;
                 $this->set_response([
                 'status' => TRUE,
-                'data' => $data
+                'data' => array('user_data'=>$data),
             ], REST_Controller::HTTP_OK);
             }
             else{
