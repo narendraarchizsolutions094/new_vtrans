@@ -535,8 +535,9 @@ class Visits extends REST_Controller {
 	            $done = 1;
             }	
                //add expense start
-                if(!empty($_POST['expense'])){
-               foreach ($_POST['expense'] as $key =>$value ) {
+              if(!empty($_POST['expense'])){
+               foreach ($_POST['expense'] as $key =>$value ) 
+               {
                   $finalfilename='';
                   $expense = $_POST['expense'][$key];
                   $amount = $_POST['amount'][$key];
@@ -548,17 +549,27 @@ class Visits extends REST_Controller {
                   $upload_path    =   "assets/images/user/";
                   $finalfilename='expense_'.time().$file_name;
                   move_uploaded_file($file_tmp,$upload_path.$finalfilename);
+                   $exp_data['file'] = $finalfilename;
                   }
                   // visit type =2
-                  $exp_data=['type'=>2,
-                         'amount'=>$amount,
-                         'visit_id'=>$visit_id,
-                         'created_by'=>$user_id,
-                         'expense'=>$expense,
-                         'file'=>$finalfilename,
-                         'comp_id'=>$comp_id,
-                         ];
-              $this->db->insert('tbl_expense',$exp_data);
+                  
+                  $exp_data=[
+                             'amount'=>$amount,
+                             'expense'=>$expense,
+                             ];
+                    if(empty($_POST['ids'][$key]))
+                    {
+                      $exp_data['type'] = 2;
+                      $exp_data['visit_id']=$visit_id;
+                      $exp_data['created_by']=$user_id;
+                      $exp_data['comp_id']=$comp_id;
+                      $this->db->insert('tbl_expense',$exp_data);
+                    }
+                    else
+                    {
+                      $this->db->where('id',$_POST['ids'][$key]);
+                      $this->db->update('tbl_expense',$exp_data);
+                    }
                   }
                }
 
@@ -730,5 +741,99 @@ $fdistance=$this->distance_actual($actualurl);
       $sum=0;
    }
 return $sum;
+   }
+
+   public function delete_expense_post()
+   {
+      $this->form_validation->set_rules('expense_id','expense_id','required');
+      $this->form_validation->set_rules('visit_id','visit_id','required');
+      
+      if($this->form_validation->run())
+      {
+        $exp_id = $this->input->post('expense_id');
+        $visit_id = $this->input->post('visit_id');
+        
+          $this->db->where('id',$exp_id)
+                    ->where('visit_id',$visit_id)
+                    ->delete('tbl_expense');
+          if($this->db->affected_rows())
+          {
+            $this->set_response([
+                  'status' => true,
+                  'message' =>'Deleted Successfully!',
+               ], REST_Controller::HTTP_OK);
+          }
+          else
+          {
+             $this->set_response([
+                  'status' => true,
+                  'message' =>'Unable to delete',
+               ], REST_Controller::HTTP_OK);
+          }
+          
+      }
+      else
+      {
+          $this->set_response([
+                  'status' => false,
+                  'message' =>strip_tags(validation_errors())
+               ], REST_Controller::HTTP_OK);
+      }
+   }
+
+   public function update_expense_post()
+   {
+      $this->form_validation->set_rules('expense_id','expense_id','required');
+      $this->form_validation->set_rules('amount','amount','required');
+      $this->form_validation->set_rules('remarks','remarks','required');
+      $this->form_validation->set_rules('expense','expense','required');
+      if($this->form_validation->run())
+      {
+        $exp_id = $this->input->post('expense_id');
+        $amount = $this->input->post('amount');
+        $remarks = $this->input->post('remarks');
+        $expense = $this->input->post('expense');
+          $data =array(
+                      'expense'=>$expense,
+                      'amount'=>$amount,
+                      'remarks'=>$remarks
+          );
+          $filename='';
+          if(!empty($_FILES['file']))
+          {
+              $filename='expense_'.time().$_FILES['file']['name'];
+              $upload_path    =   "assets/images/user/".$filename;
+
+              if(move_uploaded_file($_FILES['file']['tmp_name'], $upload_path))
+              {
+                $data['file'] = $filename;
+              }
+          }
+
+          $this->db->where('id',$exp_id)
+                    ->update('tbl_expense',$data);
+          if($this->db->affected_rows())
+          {
+            $this->set_response([
+                  'status' => true,
+                  'message' =>'Updated Successfully!',
+               ], REST_Controller::HTTP_OK);
+          }
+          else
+          {
+             $this->set_response([
+                  'status' => true,
+                  'message' =>'Unable to Update',
+               ], REST_Controller::HTTP_OK);
+          }
+          
+      }
+      else
+      {
+          $this->set_response([
+                  'status' => false,
+                  'message' =>strip_tags(validation_errors())
+               ], REST_Controller::HTTP_OK);
+      }
    }
 }
