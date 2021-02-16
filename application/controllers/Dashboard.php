@@ -3278,6 +3278,7 @@ public function set_layout_to_session() {
               $this->db->where('id',$info_id);
              
         $deal= $this->db->get('commercial_info')->row();
+
         if(empty($deal))
         {
             echo'No data';exit();
@@ -3726,9 +3727,10 @@ public function set_layout_to_session() {
         $content = str_replace('@oc_table', $oc_table,$content);
         $content = str_replace('@area_table', $area_table,$content);
         $content = str_replace('@oda_table',$oda_table, $content);
-        $submitemail=$this->input->post('email');
+        $submitemail=$evalue->email;
         $this->load->library('pdf');
         // $download=$this->input->post('download');
+
         if(isset($submitemail))
         {
         $folder =  explode('/',$_SERVER['REQUEST_URI'])[1];
@@ -3736,10 +3738,26 @@ public function set_layout_to_session() {
 
         $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/".$folder."/uploads/quotations/quotations-".time().".pdf";
         $pdf=   $this->pdf->create($content,0,$pdfFilePath1);
+
+        //get template of caf
+
+        $temp = $this->db->where('auto_mail_for','5')
+                          ->where('comp_id',$company)
+                          ->get('api_templates')
+                          ->row();
+
+
         $message = 'Dear Sir/Madam,<br> Please find the quotation attachment below.';
         $email_subject = 'V-Trans Quotation';
+
+        if(!empty($temp))
+        {
+          $message = $temp->template_content;
+          $email_subject = $temp->mail_subject;
+        }
+
         $move_enquiry = $enquiry_id;
-        $this->db->where('comp_id',$this->session->companey_id);
+        $this->db->where('comp_id',$company);
         $this->db->where('status',1);
         $email_row = $this->db->get('email_integration')->row_array();                        
         if(empty($email_row)){
@@ -3768,12 +3786,24 @@ public function set_layout_to_session() {
         $this->email->message($message); 
         $this->email->set_mailtype('html');
         $this->email->attach($pdfFilePath1);
-        if($this->email->send()){
+
+
+
+        if($this->email->send())
+        {
+          if($this->input->post('api'))
+          {
+            echo json_encode(array('status'=>true,'message'=>'Mail Send'));
+            exit();
+          }
             $this->session->set_flashdata('message','Mail Send Successfully');
         }else{
-            //echo $this->email->print_debugger();
-             $this->session->set_flashdata('exception','Something went wrong'); 
-                                
+          if($this->input->post('api'))
+          {
+            echo json_encode(array('status'=>false,'message'=>'Unable to Send Mail'));
+            exit();
+          }
+             $this->session->set_flashdata('exception','Something went wrong');                     
         }
         redirect('enquiry/view/'.$enquiry_id.'/');  
     }

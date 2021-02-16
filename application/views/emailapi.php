@@ -539,14 +539,15 @@
                   </select>
                </div>
                <div class="form-group col-sm-12">
-                  <div class="form-group col-sm-6" style="display:none;margin-lef:0px !important" id="auto-div">
-                     <label>Auto mail for.</label>
+                  <div class="form-group col-sm-6" style="display:none;margin-left:0px !important" id="auto-div">
+                     <label>Auto mail for</label>
                      <select class="form-control" name="auto_mail_for" id="auto-mail-to">
                         <option value="" style="display:none;">---Select---</option>
                         <option value="1">Enquiry customer introduction mail</option>
                         <option value="4">Enquiry channel partner introduction mail</option>
                         <option value="2">Customer welcome mail</option>
                         <option value="3">Channel partner welcome mail</option>
+                        <option value="5">CAF Form</option>
                      </select>
                   </div>
                   <div class="form-group col-sm-6 " style="margin-lef:0px !important">
