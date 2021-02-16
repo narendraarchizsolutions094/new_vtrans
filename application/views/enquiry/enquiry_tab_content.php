@@ -72,9 +72,14 @@ $type="text";
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
       <input class="form-control mask-number" name="mobileno" type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
       <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
-      <?php }else{ ?>
+      <?php }else{ 
+         $disabled = 'disabled';
+         if($this->session->companey_id == 90){ 
+            $disabled = '';
+         }
+         ?>
          <input class="form-control mask-number" hidden name="mobileno" type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
-      <input class="form-control mask-number" disabled  type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+      <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
       <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
          <?php } ?>
    </div>
@@ -105,9 +110,14 @@ $type="text";
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
 
       <input class="form-control" name="email" type="email" value="<?php echo $details->email ?>">  
-      <?php }else{ ?>
+      <?php }else{ 
+         $disabled = 'disabled';
+         if($this->session->companey_id == 90){ 
+            $disabled = '';
+         }
+         ?>
          <input class="form-control" name="email" hidden type="email" value="<?php echo $details->email ?>">  
-         <input class="form-control" disabled type="email" value="<?php echo $details->email ?>">  
+         <input class="form-control" <?=$disabled?> type="email" value="<?php echo $details->email ?>">  
 
      <?php }  ?>
    </div>
