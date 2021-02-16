@@ -1711,7 +1711,7 @@ class Ticket extends CI_Controller
                 } //foreach loop end               
             }    
 				$this->load->model('rule_model');
-				$this->rule_model->execute_rules($res, array(9));
+				$this->rule_model->execute_rules($res, array(3,9));
 				$response="Ticket Added Successfully";
 				if(user_access('319'))
 				{
