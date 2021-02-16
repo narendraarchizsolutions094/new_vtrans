@@ -894,7 +894,11 @@ class Lead extends CI_Controller
                     $this->Message_models->smssend($data['enquiry']->phone, $message);
                     $msg .=    " And user created successfully";
                 } else {
-                    $msg .=    " And user already exist";
+                    if($this->session->companey_id == 76 && $user_id){
+                        $msg .=    " And user created";
+                    }else{
+                        $msg .=    " And user already exist";
+                    }
                 }
             }
             //$mail_access = $this->enquiry_model->access_mail_temp(); //access mail template..
