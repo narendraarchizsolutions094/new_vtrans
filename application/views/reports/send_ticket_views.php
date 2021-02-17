@@ -707,7 +707,7 @@
     <script src="<?php echo base_url('assets/js/jquery-ui.min.js') ?>" type="text/javascript"></script>
     <!-- DataTables JavaScript -->
     <script src="<?php echo base_url("assets/datatables/js/dataTables.min.js") ?>"></script>
-    <script src="<?php echo base_url() ?>assets/js/custom.js" type="text/javascript"></script>
+   
     <script>
     $('#something').click(function() {
         //alert('hi');  
