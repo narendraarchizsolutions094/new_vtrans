@@ -15,7 +15,7 @@ class Ticket_Report_datatable_model extends CI_Model {
         }  
         $all_reporting_ids    =    $this->common_model->get_categories($user_id);    
         $from = $this->input->post('from_created');
-        echo $from.'from';
+        
         $to= $this->input->post('to_created');
         $updated_from = $this->input->post('update_from_created');
         $updated_to = $this->input->post('update_to_created');
