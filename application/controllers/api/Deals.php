@@ -471,22 +471,54 @@ class Deals extends REST_Controller {
 
     }
     //===========================================================
-   //  public function deals_info_type_post()
-   //  {	
-   //  	$data = array(
-   //  					'1'=>'Branch',
-   //  					'2'=>'Zone',
-   //  					'3'=>'Areawise',
-   //  				);
+  public function mail_quotation_post()
+  {
+  		$this->form_validation->set_rules('info_id','info_id','required');
+  		if($this->form_validation->run())
+  		{
+  			$info_id = $this->input->post('info_id');
 
-   //  	if($key = $this->input->post('key'))
-			// $data = $data[$key];
+  			$url = base_url('dashboard/pdf_gen');
+  			$fields = array('info_id'=>$info_id,
+  							'email'=>1,
+  							'api'=>1,
+  							);
+  			
 
-			// $this->set_response([
-   //            'status' => true,
-   //            'data' =>$data,
-   //         ], REST_Controller::HTTP_OK);
+  			$ch = curl_init();
+			$curlConfig = array(
+			    CURLOPT_URL            => base_url('dashboard/pdf_gen'),
+			    CURLOPT_POST           => true,
+			    CURLOPT_RETURNTRANSFER => true,
+			    CURLOPT_SSL_VERIFYPEER => false,
+			    CURLOPT_POSTFIELDS     => $fields,
+			);
+			curl_setopt_array($ch, $curlConfig);
+			$result = curl_exec($ch);
+			
 
-   //  }
+  			if(curl_errno($ch))
+  			{
+  				curl_close($ch);
+			$this->set_response([
+	                  'status' => false,
+	                  'message' =>'Error: '.curl_errno($ch),
+	               ], REST_Controller::HTTP_OK);
+  			}
+  			else
+  			{
+  				curl_close($ch);
+  				$this->set_response(json_decode($result), REST_Controller::HTTP_OK);
+  			}
+  		}
+  		else
+  		{
+  			 $this->set_response([
+                  'status' => false,
+                  'message' =>strip_tags(validation_errors())
+               ], REST_Controller::HTTP_OK);
+  		}
+
+  }
 }
 ?>
