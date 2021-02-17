@@ -7,18 +7,16 @@ class Ticket_Report_datatable_model extends CI_Model {
     }
     var $table = 'tbl_ticket'; 
     function report_analitics($for){
-        echo $for;
-        print_r($_POST);
-        
-        $user_id = $this->session->userdata('user_id');
-       
-           if($this->session->user_id==''){  $user_id=$user_id;  }else{  $user_id=$this->session->user_id;  }  
-           $all_reporting_ids    =    $this->common_model->get_categories($user_id);    
-        
-           
+        $user_id = $this->session->userdata('user_id');       
+        if($this->session->user_id==''){  
+            $user_id=$user_id;  
+        }else{  
+            $user_id=$this->session->user_id;  
+        }  
+        $all_reporting_ids    =    $this->common_model->get_categories($user_id);    
         $from = $this->input->post('from_created');
+        echo $from.'from';
         $to= $this->input->post('to_created');
-        
         $updated_from = $this->input->post('update_from_created');
         $updated_to = $this->input->post('update_to_created');
         $process_id = $this->input->post('process_id');
@@ -32,7 +30,6 @@ class Ticket_Report_datatable_model extends CI_Model {
         $stage = $this->input->post('stage');
         $sub_stage = $this->input->post('sub_stage');
         $ticket_status = $this->input->post('ticket_status');
-
         $companey_id = $this->session->userdata('companey_id');
         $group_by = '';
         $from_table    =   'tbl_ticket';
@@ -60,7 +57,7 @@ class Ticket_Report_datatable_model extends CI_Model {
         }else{
             $select = 'count(tbl_ticket.ticketno) as count,lead_source.lead_name as title';
             $group_by = 'tbl_ticket.sourse';
-              }            
+        }            
             $this->db->select($select);   
             if($this->session->companey_id==''){
                 $comp_id=$companey_id;
