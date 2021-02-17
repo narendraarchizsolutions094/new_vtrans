@@ -542,12 +542,14 @@ $(window).load(function(){
          </div>
          <div class="modal-footer">
            <a id="red" href="" onclick="{
-                if($('select[name=enquiry_id]').val()=='')
-                {alert('Contact not selected')
+                if($('select[name=enquiry_id]').val()=='' || $('select[name=enquiry_id]').val()==null)
+                {
+                  alert('Contact not selected')
                   return false;
                 }
                 
-           }"> <button type="button" class="btn btn-primary">Create</button></a>
+           }">
+            <button type="button" class="btn btn-primary">Create</button></a>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
          </div>
       </div>
@@ -628,12 +630,13 @@ $(window).load(function(){
 
 <script>
 function match()
-{ var x = $('select[name=enquiry_id]').val();
+{ 
+  var x = $('select[name=enquiry_id]').val();
  
   if(x=='')
     $('#red').attr('href','');
   else
-     $('#red').attr('href','<?=base_url('client/commercial_info/')?>'+x);
+     $('#red').attr('href','<?=base_url('client/commercial_info/')?>'+x+'/by_deals');
 }
 function quotation_pdf(info_id) {
     $(".data_value").html('<center><i class="fa fa-spinner fa-spin" style="font-size:34px;"></i></center>');
