@@ -847,23 +847,22 @@ $("#filter_and_save").on("click", function(e) {
                 {
                   alert(w);
                 }
-                },              
+          },          
+          drawCallback: function (settings) {
+            var api = this.api();
+            var $table = $(api.table().node());  
+            var info = table.page.info();
+            
+            returned_rows = table.rows().count();
+            
+            if(returned_rows == 0 || returned_rows < info.length){
+              $('#ticket_table').addClass('disabled');
+            }
+            
+            $('#ticket_table').after('<li><a class="btn btn-secondary btn-sm" style="padding: 4px;line-height: 2;" href="javascript:void(0)">'+info.page+'</a></li>');
+          },    
                 <?php if(user_access(317)) { ?>
           dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp", 
-          ,
-        drawCallback: function (settings) {
-          var api = this.api();
-          var $table = $(api.table().node());  
-          var info = table.page.info();
-          
-          returned_rows = table.rows().count();
-          
-          if(returned_rows == 0 || returned_rows < info.length){
-            $('#ticket_table').addClass('disabled');
-          }
-          
-          $('#ticket_table').after('<li><a class="btn btn-secondary btn-sm" style="padding: 4px;line-height: 2;" href="javascript:void(0)">'+info.page+'</a></li>');
-        },
           buttons: [  
               {extend: 'copy', className: 'btn-xs btn',exportOptions: {
                           columns: "thead th:not(.noExport)"
