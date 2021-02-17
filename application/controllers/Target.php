@@ -173,7 +173,7 @@ class Target extends CI_controller
 
 	public function load_goal_table()
 	{
-		exit();
+		//exit();
 		$start_date_from = $this->input->post('start_date_from')??0;
 		$start_date_to = $this->input->post('start_date_to')??0;
 

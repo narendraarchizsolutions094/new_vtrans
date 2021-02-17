@@ -671,7 +671,7 @@ public function bank_details()
 				'comp_id'=>$this->session->companey_id,
 		);
 
-		$chk = $this->db->where('zone_id',$data['zone_id'])->get('bank_details')->num_rows();
+		$chk = $this->db->where(array('zone_id'=>$data['zone_id'],'comp_id'=>$this->session->companey_id))->get('bank_details')->num_rows();
 		if($chk)
 		{
 			$this->session->set_flashdata('exception','Bank Details already Exist for selected zone! ');

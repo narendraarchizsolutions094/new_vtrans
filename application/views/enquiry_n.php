@@ -1792,7 +1792,7 @@ if($('.checkbox1:checked').size() > 1000){
   url: p_url,
   data: $('#enquery_assing_from').serialize(),
   success:function(data){
-          if(data=='1'){
+          if(data.trim()=='1'){
          alert('Successfully Droped <?=display('enquiry')?>'); 
         window.location.href=re_url;
       }else{

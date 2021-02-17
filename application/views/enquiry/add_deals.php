@@ -114,7 +114,19 @@ $(document).on('submit','#data_table',function(e){
 					type:'success',
 					timer: 2000,
 				});
-				location.href="<?=base_url('enquiry/enq_page/'.$details->enquiry_id)?>#COMMERCIAL_INFORMATION";
+				<?php
+				if(empty($by))
+				{
+				?>
+					location.href="<?=base_url('enquiry/enq_page/'.$details->enquiry_id)?>#COMMERCIAL_INFORMATION";
+				<?php
+				}
+				else
+				{?>
+					location.href="<?=base_url('client/deals')?>";
+				<?php
+					}
+				?>
 			}
 			else{
 				Swal.fire({

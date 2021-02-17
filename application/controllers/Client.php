@@ -2243,7 +2243,7 @@ public function all_update_expense_status()
     }
 
 
-    public function commercial_info($enquiry_id)
+    public function commercial_info($enquiry_id,$by=0)
     {
         $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
 
@@ -2257,6 +2257,7 @@ public function all_update_expense_status()
                                         ->where('a.pk_i_admin_id='.$this->session->user_id)
                                         ->get()->row();
         $data['max_discount'] = !empty($dis)?$dis->discount:100;
+        $data['by'] = $by;
         $data['content'] = $this->load->view('enquiry/add_deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }

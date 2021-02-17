@@ -2954,14 +2954,43 @@ public function set_layout_to_session() {
                       }
                       else
                       {
-                      $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id GROUP BY bz.zone_id,dz.zone_id");
 
-                        if(!empty($query))
-                        {
+                        $qry = "SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id ";
+                    
+                      if($deal->btype=='zone' || $deal->dtype=='zone')
+                      {
+                           $qry.=' group by bzid,dzid';
+                      }
+                           
+                      $query = $this->db->query($qry);
+
+                      if(!empty($query))
+                      {
                         $result = $query->result();
+                        $tb_key1 = '';
+                        $tb_key2 = '';
+                        if($deal->btype=='zone')
+                        {
+                          $book = array_unique(array_column($result, 'bzone'));
+                          $tb_key1 = 'bzone';
+                        }
+                        else
+                        {
+                          $book = array_unique(array_column($result, 'bb_name'));
+                          $tb_key1 = 'bb_name';
+                        }
 
-                        $book = array_unique(array_column($result, 'bzone'));
-                        $del =  array_unique(array_column($result, 'dzone'));
+                        if($deal->dtype=='zone')
+                        {
+                          $del =  array_unique(array_column($result, 'dzone'));
+                          $tb_key2 = 'dzone';
+                        }
+                        else
+                        {
+                          $del = array_unique(array_column($result, 'db_name'));
+                          $tb_key2 = 'db_name';
+                        }
+                       // echo $tb_key1.'-'.$tb_key2;exit();
                        $freight_table = '<table border="1">';
 
                         foreach ($book as $key => $value1)
@@ -2987,7 +3016,7 @@ public function set_layout_to_session() {
                           {
                               foreach ($result as $key3 => $value3)
                               {
-                                if($value1==$value3->bzone && $value2==$value3->dzone)
+                                if($value1==$value3->{$tb_key1} && $value2==$value3->{$tb_key2})
                                 { $r = $value3->rate;
                                   $d = $value3->discount;
                                   $price = $r*(1-round(($d/100),2));
@@ -3013,6 +3042,9 @@ public function set_layout_to_session() {
                           </tr>
                         </thead>
                         <tbody>";
+                        // $branchs = $this->db->query("SELECT CONCAT(GROUP_CONCAT(booking_branch),',',GROUP_CONCAT(delivery_branch)) as blist FROM `deal_data` where deal_id=".$deal->id." GROUP BY deal_id");
+                        // if(!empty($branchs))
+
                         $zlist = $this->db->select('z.zone_id,z.name zname,GROUP_CONCAT(b.branch_name) as blist')
                                       ->from('branch b')
                                       ->join('zones z','b.zone=z.zone_id','left')
@@ -3020,7 +3052,7 @@ public function set_layout_to_session() {
                                       ->where('b.type','area')
                                       ->group_by('b.zone')
                                       ->get()->result();
-
+                            //echo $this->db->last_query();exit();
                             foreach ($zlist as $key5 => $mean)
                             { 
                               $area_table.='<tr><th>'.$mean->zname.'</th><td>'.$mean->blist.'</td></tr>';
@@ -3423,13 +3455,44 @@ public function set_layout_to_session() {
         }
         else
         {
-        $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.discount,deal.rate,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id GROUP BY bz.zone_id,dz.zone_id");
+
+        $qry = "SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id";
+
+          if($deal->btype=='zone' || $deal->dtype=='zone')
+          {
+               $qry.=' group by bzid,dzid';
+          }
+               
+          $query = $this->db->query($qry);
+
           if(!empty($query))
           {
-          $result = $query->result();
+            $result = $query->result();
+            $tb_key1 = '';
+            $tb_key2 = '';
+            if($deal->btype=='zone')
+            {
+              $book = array_unique(array_column($result, 'bzone'));
+              $tb_key1 = 'bzone';
+            }
+            else
+            {
+              $book = array_unique(array_column($result, 'bb_name'));
+              $tb_key1 = 'bb_name';
+            }
 
-          $book = array_unique(array_column($result, 'bzone'));
-          $del =  array_unique(array_column($result, 'dzone'));
+            if($deal->dtype=='zone')
+            {
+              $del =  array_unique(array_column($result, 'dzone'));
+              $tb_key2 = 'dzone';
+            }
+            else
+            {
+              $del = array_unique(array_column($result, 'db_name'));
+              $tb_key2 = 'db_name';
+            }
+      
+
          $freight_table = '<table border="1">';
 
           foreach ($book as $key => $value1)
@@ -3458,7 +3521,7 @@ public function set_layout_to_session() {
                   $r = $value3->rate;
                   $d = $value3->discount;
                   $price = $r*(1-round(($d/100),2));
-                  if($value1==$value3->bzone && $value2==$value3->dzone)
+                  if($value1==$value3->{$tb_key1} && $value2==$value3->{$tb_key2})
                     $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';    
                 }
             }
@@ -3731,7 +3794,7 @@ public function set_layout_to_session() {
         $this->load->library('pdf');
         // $download=$this->input->post('download');
 
-        if(isset($submitemail))
+        if(!empty($this->input->post('email')))
         {
         $folder =  explode('/',$_SERVER['REQUEST_URI'])[1];
 
@@ -3796,8 +3859,10 @@ public function set_layout_to_session() {
             echo json_encode(array('status'=>true,'message'=>'Mail Send'));
             exit();
           }
-            $this->session->set_flashdata('message','Mail Send Successfully');
-        }else{
+            $this->session->set_flashdata('message','Email Send');
+        }
+        else
+        {
           if($this->input->post('api'))
           {
             echo json_encode(array('status'=>false,'message'=>'Unable to Send Mail'));
@@ -3809,13 +3874,15 @@ public function set_layout_to_session() {
     }
     else
     {       
-        //echo $content;exit();
-        $this->pdf->create($content,0);
+        // echo $content;
+        // exit();
+      
+        $this->pdf->create($content,1);
       
         if($this->input->post('redirect_url')){
             redirect($this->input->post('redirect_url')); //updateclient                
         }else{
-            redirect('enquiry/view/'.$enquiry_id.'/');            
+            redirect('enquiry/view/'.$enquiry_id.'/');
         }
         
     }
