@@ -48,7 +48,6 @@ class Report extends CI_Controller
 
   public function set_schedule()
   {
-
     $id = $this->input->post('id');
     $users = $this->input->post('users');
     $path = $this->input->post('path');
@@ -60,7 +59,7 @@ class Report extends CI_Controller
       $this->db->where('id', $id)->update('reports', $data);
     }
     $this->session->set_flashdata('message', 'Schedule Updated ');
-    redirect($path);
+    redirect($this->agent->referrer());
   }
 
   public function view($id)
@@ -95,7 +94,7 @@ class Report extends CI_Controller
     $schid = $this->encryption->decrypt($cidss);
     $sch_dates = $this->encryption->decrypt($sch_dates);
     $id = $schid;
-    $data['rid'] = $schid;
+    $data['rid'] = $schid;    
     $this->session->set_userdata('reportid', $id);
     $this->db->where('id', $id);
     $report_row =   $this->db->get('reports')->row_array();
