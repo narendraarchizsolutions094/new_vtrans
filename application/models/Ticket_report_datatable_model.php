@@ -6,8 +6,9 @@ class Ticket_Report_datatable_model extends CI_Model {
         $this->load->model('common_model');		
     }
     var $table = 'tbl_ticket'; 
-    function report_analitics($for){
+    function report_analitics($for){        
         print_r($_POST);
+
         $user_id = $this->session->userdata('user_id');       
         if($this->session->user_id==''){  
             $user_id=$user_id;  
