@@ -431,7 +431,8 @@ $('input:checkbox').removeAttr('checked');
   $(document).ready(function() {
     $('#ticket_table').DataTable({         
             "processing": true,
-            "scrollX": true,            
+            "scrollX": true,     
+            "scrollY": 800,       
             "serverSide": true,          
             "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
             "columnDefs": [{ "orderable": false, "targets": 0 }],

@@ -404,6 +404,8 @@ $("#filter_and_save").on("click", function(e) {
             "processing": true,
             "scrollX": true,
             "scrollY": 520,
+            "pagingType": "simple",
+            "bInfo": false,
             "serverSide": true,          
             "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
             "columnDefs": [{ "orderable": false, "targets": 0 }],
