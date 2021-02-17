@@ -75,11 +75,11 @@ class Ticket_Report_datatable_model extends CI_Model {
             } else if ($from && !$to) {
                 $from = str_replace('/', '-', $from);            
                 $from = date('Y-m-d', strtotime($from));
-                $where .= " AND Date(tbl_ticket.coml_date) LIKE '%$from%'";
+                $where .= " AND Date(tbl_ticket.coml_date) = '$from'";
             } else if (!$from && $to) {            
                 $to = str_replace('/', '-', $to);
                 $to = date('Y-m-d', strtotime($to));
-                $where .= " AND Date(tbl_ticket.coml_date) LIKE '%$to%'";
+                $where .= " AND Date(tbl_ticket.coml_date) = '$to'";
             }            
            if($createdby!=''){	            		
     			$where .= " AND ( tbl_ticket.added_by =".$createdby.")";
