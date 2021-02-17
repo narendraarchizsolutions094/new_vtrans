@@ -153,7 +153,7 @@ class Ticket_Report_datatable_model extends CI_Model {
                 $this->db->group_by($group_by);
             }                           
             $result    =   $this->db->get($from_table)->result_array();
-            // echo $this->db->last_query();
+             echo $this->db->last_query();
             // exit();
             $res = array();
             if(!empty($result)){
