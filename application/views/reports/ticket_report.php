@@ -832,7 +832,7 @@ $("#filter_and_save").on("click", function(e) {
   if(!empty($_POST)){
   ?>
   $(document).ready(function() {
-    $('#ticket_table').DataTable({         
+    var table = $('#ticket_table').DataTable({         
             "processing": true,
             "scrollX": true,
             "scrollY": 520,
