@@ -7,6 +7,7 @@ class Ticket_Report_datatable_model extends CI_Model {
     }
     var $table = 'tbl_ticket'; 
     function report_analitics($for){
+        print_r($_POST);
         $user_id = $this->session->userdata('user_id');       
         if($this->session->user_id==''){  
             $user_id=$user_id;  
@@ -152,8 +153,7 @@ class Ticket_Report_datatable_model extends CI_Model {
             if(!empty($group_by)){
                 $this->db->group_by($group_by);
             }                           
-            $result    =   $this->db->get($from_table)->result_array();
-             echo $this->db->last_query();
+            $result    =   $this->db->get($from_table)->result_array();             
             // exit();
             $res = array();
             if(!empty($result)){
