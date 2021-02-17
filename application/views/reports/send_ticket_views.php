@@ -738,7 +738,7 @@
     <!-- Admin Script -->
     <script src="<?= base_url() ?>assets/js/frame.js?v=1.0?v=1.0" type="text/javascript"></script>
     <!-- Custom Theme JavaScript -->
-    <script src="<?= base_url() ?>assets/js/custom.js?v=1.0.1" type="text/javascript"></script>
+    <!-- <script src="<?= base_url() ?>assets/js/custom.js?v=1.0.1" type="text/javascript"></script> -->
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
