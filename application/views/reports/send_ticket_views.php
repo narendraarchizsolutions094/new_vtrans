@@ -48,6 +48,11 @@
 }
 </script>
 <style>
+#chartdiv_substage {
+    width: 100%;
+    height: 550px;
+    margin-left: auto;
+}
 .card-graph{
     min-height:250px;
     max-height:400px;
@@ -426,10 +431,9 @@ $('input:checkbox').removeAttr('checked');
   $(document).ready(function() {
     $('#ticket_table').DataTable({         
             "processing": true,
-            "scrollX": true,
-            "scrollY": 820,
+            "scrollX": true,            
             "serverSide": true,          
-            "lengthMenu": [ [ -1], ["All"] ],
+            "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
             "columnDefs": [{ "orderable": false, "targets": 0 }],
             "order": [[ 1, "desc" ]],
             "ajax": {
