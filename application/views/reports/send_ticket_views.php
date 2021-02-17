@@ -236,6 +236,11 @@
             ?>';
 
     function generate_pie_graph(elm, title) {
+        var send_data = '<?php 
+             $filters['from_created']=$fromdate;
+             $filters['to_created']=$fromdate;
+             echo json_encode($filters);
+            ?>';
         // $form_data= serialize;
         var url = "<?=base_url().'report/ticket_report_analitics/'?>" + elm;
         $.ajax({
