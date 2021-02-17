@@ -95,6 +95,9 @@ class Report extends CI_Controller
     $sch_dates = $this->encryption->decrypt($sch_dates);
     $id = $schid;
     $data['rid'] = $schid;
+
+    print_r($data);
+    
     $this->session->set_userdata('reportid', $id);
     $this->db->where('id', $id);
     $report_row =   $this->db->get('reports')->row_array();
