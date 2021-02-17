@@ -246,7 +246,7 @@
         $.ajax({
             url: url,
             type: 'POST',
-            data: send_data,
+            data: JSON.parse(send_data),
             success: function(result) {
                 result = JSON.parse(result);
 
