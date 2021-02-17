@@ -272,7 +272,7 @@ class Enq extends CI_Controller
 		$data['all_enquery_num'] = $this->db->count_all_results();
 
 
-		$this->common_query_short_dashboard(0);
+		$this->common_query_short_dashboard(0); 
 		$this->db->where('enquiry.drop_status>0');
 		$data['all_drop_num'] = $this->db->count_all_results();
 
