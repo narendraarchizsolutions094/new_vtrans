@@ -906,8 +906,8 @@ class Ticket_Model extends CI_Model
 		$count = $this->db->where(array('tbl_ticket.process_id' => $process,'tbl_ticket.company' => $comp_id, 'tbl_ticket.ticket_substage' => $stg_id));
 		
 		if($fromdate!='all'){
-			$count=$this->db->where('coml_date >=', $fromdate);
-			$count=$this->db->where('coml_date <=', $todate);
+			$count=$this->db->where('date(coml_date) >=', $fromdate);
+			$count=$this->db->where('date(coml_date) <=', $todate);
 							 }
 							$count= $this->db->count_all_results('tbl_ticket');
 		return $count;
