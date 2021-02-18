@@ -521,7 +521,7 @@
                     // Create chart instance
                     var chart = am4core.create("chartdiv7", am4charts.XYChart);
                     chart.scrollbarX = new am4core.Scrollbar();
-
+                    chart.yAxis = { allowDecimals: false };
                     // Add data
                     chart.data = response;
 
