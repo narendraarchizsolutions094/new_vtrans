@@ -85,7 +85,7 @@ class Report extends CI_Controller
   }
   public function send_sales_view($id)
   {
-    $this->session->destroy();
+    $this->session->sess_destroy();
     // if (user_role('120') == true) {}
     $todays = date('Y-m-d');
     $cids = $this->uri->segment(2);
