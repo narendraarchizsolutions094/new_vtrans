@@ -302,6 +302,8 @@ class Ticket extends CI_Controller
 	}
 	public function report_ticket_load_data()
 	{
+		//print_r($_SESSION);
+		
 		// $_POST = array('search'=>array('value'=>''),'length'=>10,'start'=>0);
 		$this->load->model('report_Ticket_datatable_model');
 		$this->load->model('enquiry_model');
@@ -332,7 +334,7 @@ class Ticket extends CI_Controller
 			if ($showall or in_array(1, $acolarr)) {
 				$sub[] =$point->ticketno ;
 			}
-        if($this->session->comp_id==65)
+        if($this->session->companey_id==65)
         {
 			if ($showall or in_array(15, $acolarr)) {
 				$sub[] = $point->tracking_no == '' ? 'NA' : $point->tracking_no;
@@ -2154,10 +2156,10 @@ class Ticket extends CI_Controller
 
 		$fromdate=$this->uri->segment(3);
 		$todate=$this->uri->segment(4);
-		$comp_id= $this->session->userdata('comp_id');
-		$user_id= $this->session->userdata('user_id_id');
+		$comp_id= $this->session->userdata('companey_id');
+		$user_id= $this->session->userdata('user_id');
 		$sdata=$this->session->userdata('ticket_filters_sess');
-		$process=$this->session->process_id_id;
+		$process=$this->session->process[0];
 			//   print_r($sdata['priority']);
 			  if(empty($sdata['priority'])){
 				$low = $this->Ticket_Model->report_countPriority(1,$fromdate,$todate,$process,$user_id,$comp_id);
@@ -2252,9 +2254,9 @@ class Ticket extends CI_Controller
 		$fromdate=$this->uri->segment(3);
 		$todate=$this->uri->segment(4);
 
-		$process	=	$this->session->userdata('process_id_id')??0;	
-		$user_id  	=  $this->session->userdata('user_id_id');
-		$comp_id = $this->session->userdata('comp_id');
+		$process	=	$this->session->userdata('process')[0];	
+		$user_id  	=  $this->session->userdata('user_id');
+		$comp_id = $this->session->userdata('companey_id');
 		
 		$all_reporting_ids  = $this->common_model->get_categories($user_id);
 
@@ -2268,11 +2270,12 @@ class Ticket extends CI_Controller
 		$this->db->where('tbl_ticket.process_id IN ('.$process.')');
 		$this->db->where('tbl_ticket.company',$comp_id);
 		if($fromdate!='all'){
-			$this->db->where('tbl_ticket.last_update >=', $fromdate);
-			$this->db->where('tbl_ticket.last_update <=', $todate);
+			$this->db->where('tbl_ticket.coml_date >=', $fromdate);
+			$this->db->where('tbl_ticket.coml_date <=', $todate);
 		}
 		$this->db->group_by('tbl_ticket.category');
 		$result = $this->db->get()->result_array();
+		//echo $this->db->last_query();
 		echo json_encode($result);		
 	}
 	public function stage_typeJson()
@@ -2337,10 +2340,11 @@ class Ticket extends CI_Controller
 		//substage wise 
 		$data=[];
 		$this->load->helper('text');
-		$process	=	$this->session->userdata('process_id_id')??0;	
-		$comp_id = $this->session->userdata('comp_id');
+		$process	=	$this->session->userdata('process')[0];	
+		$comp_id = $this->session->userdata('companey_id');
 
 		$subsource = $this->Ticket_Model->send_subsource();
+		//print_r($subsource);
 		foreach ($subsource as $key => $value) {
 			$count = $this->Ticket_Model->send_countSubsource($value->id,$fromdate,$todate);
 			$name = substr($value->description,0,50);

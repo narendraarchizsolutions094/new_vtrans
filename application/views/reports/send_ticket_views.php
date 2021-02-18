@@ -1,6 +1,3 @@
-<?php
-print_r($_SESSION);
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -176,7 +173,7 @@ print_r($_SESSION);
                                         <?=($showall or in_array(1,$acolarr))?'<th>Ticket</th>':''?>
 
                                         <?php
-                      if($this->session->comp_id==65)
+                      if($this->session->companey_id==65)
                       {
                       ?>
                                         <?=($showall or in_array(15,$acolarr))?'<th>'.display('tracking_no').'</th>':''?>
@@ -225,6 +222,7 @@ print_r($_SESSION);
             </div>
         </div>
     </div>
+    
     <!--------------------TABLE COLOUMN CONFIG----------------------------------------------->
     <script type="text/javascript">
     generate_pie_graph('source_chart', 'Source Wise');
@@ -415,10 +413,12 @@ print_r($_SESSION);
   if(!empty($_POST)){
   ?>
     $(document).ready(function() {
-        $('#ticket_table').DataTable({
+        var table = $('#ticket_table').DataTable({
             "processing": true,
             "scrollX": true,
-            "scrollY": 800,
+            "scrollY": 800,            
+            "pagingType": "simple",
+            "bInfo": false,
             "serverSide": true,
             "lengthMenu": [
                 [10, 30, 50, 100, 500, 1000, -1],
@@ -437,6 +437,19 @@ print_r($_SESSION);
                 error: function(u, v, w) {
                     alert(w);
                 }
+            },
+            drawCallback: function (settings) {
+                var api = this.api();
+                var $table = $(api.table().node());  
+                var info = table.page.info();
+                
+                returned_rows = table.rows().count();
+                
+                if(returned_rows == 0 || returned_rows < info.length){
+                    $('#ticket_table_next').addClass('disabled');
+                }
+                
+                $('#ticket_table_previous').after('<li><a class="btn btn-secondary btn-sm" style="padding: 4px;line-height: 2;" href="javascript:void(0)">'+info.page+'</a></li>');
             },
             <?php if(user_access(317)) { ?>
             dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",

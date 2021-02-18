@@ -85,7 +85,8 @@ class Report extends CI_Controller
   }
   public function send_sales_view($id)
   {
-    $this->session->sess_destroy();
+   // $this->session->sess_destroy();
+   session_unset();   
     // if (user_role('120') == true) {}
     $todays = date('Y-m-d');
     $cids = $this->uri->segment(2);
@@ -281,16 +282,17 @@ class Report extends CI_Controller
       $this->session->set_userdata('companey_id', $comp_id);
       $this->session->set_userdata('user_id', $user_id);
       if(!empty($filters['process_id'])){
-      $this->session->set_userdata('process_id',$filters['process_id']);
+      $this->session->set_userdata('process',array($filters['process_id']));
       }
       $data['filters'] = json_decode($report_row['filters'], true);
-      $cdate = date('Y-m-d', strtotime('-2 day', strtotime($todays)));
+      $cdate = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
       $data['fromdate'] = $cdate;
       $data['todate'] = $cdate;
       $from = $this->session->set_userdata('fromdt', $cdate);
       $to =  $this->session->set_userdata('todt', $cdate);
       $data['title'] = 'View Ticket Report';      
       $this->session->set_userdata('ticket_filters_sess', $data['filters']);
+      
       $this->load->view('reports/send_ticket_views', $data);
     }
   }
@@ -1121,7 +1123,7 @@ class Report extends CI_Controller
     }
     public function ticket_report_analitics($for){
       // die();
-      print_r($_SESSION);
+    
       $this->load->model('ticket_report_datatable_model');
       $result  = $this->ticket_report_datatable_model->report_analitics($for);      
       echo json_encode($result);  
