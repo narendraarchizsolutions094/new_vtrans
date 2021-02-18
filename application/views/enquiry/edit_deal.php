@@ -62,7 +62,7 @@ if(!empty($deal_data))
 <div class="row">
 	<div class="col-lg-5">
 		<div class="form-group"> 
-	        <label>Type <font color="red">*</font></label>
+	        <label>From Type <font color="red">*</font></label>
 			<select class="form-control" name="btype" onchange="load_branch(this)" data-type="booking" data-sel="<?=implode(',',$booking)?>">
 				<option value="branch" <?=$deal->btype=='branch'?'selected':''?>>Branch</option>
 				<option value="zone" <?=$deal->btype=='zone'?'selected':''?>>Zone</option>
@@ -82,7 +82,7 @@ if(!empty($deal_data))
 	
 	<div class="col-lg-5">
 		<div class="form-group"> 
-	        <label>Type <font color="red">*</font></label>
+	        <label>To Type <font color="red">*</font></label>
 			<select class="form-control" name="dtype" onchange="load_branch(this)" data-type="delivery" data-sel="<?=implode(',',$delivery)?>">
 				<option value="branch" <?=$deal->dtype=='branch'?'selected':''?>>Branch</option>
 				<option value="zone" <?=$deal->dtype=='zone'?'selected':''?>>Zone</option>
@@ -109,6 +109,23 @@ if(!empty($deal_data))
 		</div>
 </div>
 <script type="text/javascript">
+
+<?php
+if($deal->dtype=='area')
+{
+?>
+$(document).ready(function(){
+	loadx();
+});
+function loadx()
+{
+	setTimeout(function(){
+	$("select[name=dtype]").val('area').trigger('change');
+	},1000);
+}
+<?php
+}
+?>
 
 $(document).on('submit','#data_table',function(e){
 	e.preventDefault();

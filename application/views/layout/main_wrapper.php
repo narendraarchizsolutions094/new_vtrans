@@ -1317,6 +1317,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     Bank Details
                                 </a>
                             </li>
+                            <li class="<?php echo (in_array($segment2,array('expense_master')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/expensemaster">
+                                    Expense Master
+                                </a>
+                            </li>
                             <?php }  if (user_access('e34')) {  ?>
 
                             <li

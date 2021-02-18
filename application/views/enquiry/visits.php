@@ -67,7 +67,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                 <i class="fa fa-sliders"></i>
               </a>  
             <div class="dropdown-menu dropdown_css" style="max-height: 400px;overflow: auto; left: -136px;">
-            <?php if(user_access('1023'))  {  ?>
+            <?php if(user_access('1024'))  {  ?>
 
                <a class="btn" data-toggle="modal"  data-target="#approve_expense" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;" onclick="">Approve</a>                        
                <?php } ?>
@@ -275,7 +275,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
-				          <th id="th-11" >Difference</th>
+				          <th id="th-11" >Difference (%)</th>
 				          <th >Travel Expense</th>
 				          <th>Other Expense</th>
 				          <th>Total Expense</th>

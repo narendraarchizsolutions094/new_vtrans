@@ -3568,7 +3568,10 @@ echo  $details1;
            
             $sub = array();
             $time = $res->visit_time=='00:00:00'?null:date("g:i A", strtotime($res->visit_time));
-            $sub[] ='<input  type="checkbox" name="approve[]" class="checkbox1"  value="'.$res->vids.'"> '. $ix++;
+            $first = '';
+            if($this->session->user_id!=$res->user_id)
+            $first = '<input  type="checkbox" name="approve[]" class="checkbox1"  value="'.$res->vids.'"> ';
+            $sub[] = $first.' '.$ix++;
 
             if($colsall || in_array(1,$cols))
                 $sub[] = $res->visit_date!='0000-00-00'?date("d-m-Y", strtotime($res->visit_date)):'NA';
@@ -3605,7 +3608,15 @@ echo  $details1;
                 
 
             if($colsall || in_array(9,$cols))
-                $sub[] = user_access('1021')?"<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a>  <a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-plus'></i></a>":'';
+            {
+               $act  = "<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a> ";
+
+             $act.= "<a class='btn btn-xs btn-warning checkvisit'   data-toggle='modal' data-target='#add_expense' onclick='checkvisit(".$res->vids.")' id='checkvisit' ><i class='fa fa-plus'></i></a>";
+
+                  $sub[] = $act;
+            }
+
+
             $data[] =$sub;
             
             $visit_expSum_s += $visit_expSum;

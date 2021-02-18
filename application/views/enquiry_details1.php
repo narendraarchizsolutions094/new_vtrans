@@ -603,7 +603,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                 <a class="btn btn-primary btn-sm"  data-toggle="modal" type="button" title="Send Whatsapp" data-target="#sendsms<?php echo $enquiry->enquiry_id ?>" data-toggle="modal"  onclick="getTemplates('1','Send Whatsapp')">
                 <i class="fa fa-whatsapp"></i>
                 </a>
-               <?php   if ($this->session->companey_id==65) {   ?>         
+               <?php   if ($this->session->companey_id==65 && $enquiry->status!=1) {   ?>         
 
                <!-- // multiple move buttons  -->
                <div class="dropdown" style="display: inline-block;"> 

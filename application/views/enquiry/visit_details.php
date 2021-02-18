@@ -213,7 +213,12 @@ foreach ($expense as $key => $value) {
  $tamount= $value->amount
   ?>
 <tr>
-<td><input  type="checkbox" name="approve[]" class="checkbox1" value="<?= $value->ids ?>"> <?= $i++; ?></td>
+<td>
+  <?php
+    echo'<input  type="checkbox" name="approve[]" class="checkbox1" value="<?= $value->ids ?>">';
+  ?> 
+  <?= $i++; ?>
+</td>
 <td><?php if($value->type==1){
   echo'Travel Expense';
 }else{

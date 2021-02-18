@@ -294,7 +294,7 @@ input[name=lead_stages]{
                   <a class="btn " data-target="#sendsms" data-toggle="modal"  onclick="getTemplates('2','Send Sms');" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo display('send_bulk_sms'); ?></a>
               <?php
                   }
-              }else if ($data_type == 3) { ?>
+              }else { ?>
                 <?php if (user_access(67)==true) { ?>
                   <a class="btn" data-toggle="modal" data-target="#AssignSelected" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #fff;"><?php echo display('assign_selected'); ?></a>
                   <?php } if (user_access(64)==true) {  ?>
