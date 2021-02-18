@@ -855,10 +855,10 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             <li href="#login-tab" data-toggle="tab" >Login Trail</li>
             <?php } ?>
             <?php 
-            if(user_access('1000') && $details->status!='1')
+            if(user_access('1000') && $details->status!='1') //
             {  ?>
             <!-- <li href="#COMMERCIAL_INFORMATION" data-toggle="tab" >Commercial Information</li> -->
-            <li href="#COMMERCIAL_INFORMATION" data-toggle="tab" >Commercial Information</li>
+            <li href="#COMMERCIAL_INFORMATION" data-toggle="tab">Commercial Information</li>
             <?php
             }
             ?>
@@ -890,6 +890,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             manageScroll();
                function manageScroll()
                {
+
                if($(".nav-tabs")[0].scrollWidth > $(".nav-tabs")[0].clientWidth)
                            {
                $(".scrollTab").show();
@@ -1770,7 +1771,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                      </div>
                   </form>
                </div>
-               <?php if(user_access('1000'))
+               <?php if(user_access('1000'))//
                { ?>
               <div class="tab-pane" id="COMMERCIAL_INFORMATION" >
               <p align="right">
@@ -1921,7 +1922,7 @@ $(document).ready(function(){
           },
           columnDefs: [
                        { orderable: false, targets: -1 }
-                    ]
+                    ],
   });
 
 });
@@ -5882,4 +5883,8 @@ $(document).ready(function(){
 <?php
 }
 ?>
+$(".nav-tabs li").on('click',function(){
+  $(window).trigger('resize');
+  $(window).trigger('resize');
+});
 </script>

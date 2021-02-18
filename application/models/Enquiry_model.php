@@ -11,14 +11,14 @@ class Enquiry_model extends CI_Model {
     $this->db->insert($this->table, $data);
 	
 		$insid = $this->db->insert_id();
-	
+	//echo $insid;exit();
 
     //=====Create default Contact for Enquiry
-   if(!empty($_POST['name'])){
+   if(!empty($data['name'])){
            $name = $data['name'];
-        $mobile = $data['phone'];
-        $email = $data['email'];
-        $otherdetails ='';
+          $mobile = $data['phone'];
+          $email = $data['email'];
+          $otherdetails ='';
         $data2 = array(
             'comp_id'=>$data['comp_id'],
             'client_id' =>$insid,
@@ -29,6 +29,7 @@ class Enquiry_model extends CI_Model {
             'other_detail' =>$otherdetails,
             'decision_maker' => 1,
         );
+        
         $this->db->insert('tbl_client_contacts', $data2);
         }
     //===================================
