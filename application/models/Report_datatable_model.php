@@ -111,7 +111,7 @@ class Report_datatable_model extends CI_Model {
                 }                
                 $this->db->join('tbl_comment','tbl_comment.lead_id=enquiry.Enquery_id','inner');              
                 if($all!=''){
-                    $where.= "AND comment_msg='Stage Updated'";
+                   // $where.= "AND comment_msg='Stage Updated'";
                     $this->db->join('lead_stage as lead_stage2','lead_stage2.stg_id=tbl_comment.stage_id','left'); 
                 }
             }
