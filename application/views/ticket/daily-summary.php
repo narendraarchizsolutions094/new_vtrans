@@ -155,13 +155,13 @@ if(!empty($failurePoints)){
                             ?>                            
                         </tbody>                        
                         <tr class="tfoot small-tr" style="background: yellow;">
-                            <td>
+                            <td class="footer-table">
                                 Grand Total
                             </td>  
                             <?php
                                 if(!empty($description)){
                                     foreach($description as $key=>$value){
-                                        echo "<td></td>";
+                                        echo "<td class='footer-table'></td>";
                                     }
                                 }
                             ?>
@@ -313,6 +313,24 @@ if(!empty($failurePoints)){
                 calculateColumn1(i);
             }
         });
+
+
+
+        $('#summ_table th').each(function(i) {
+            var remove = 0;
+
+            var tds = $(this).parents('table').find('tr td:nth-child(' + (i + 1) + ')')
+            tds.each(function(j) { 
+                if (this.innerHTML == 0) remove++; 
+            });
+
+            if (remove == ($('#summ_table tr').length - 2)) {
+                $(this).hide();
+                tds.hide();
+            }
+        });
+
+
     });
 
     function calculateColumn1(index) {
