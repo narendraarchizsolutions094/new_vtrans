@@ -482,7 +482,8 @@ class Enquiry_model extends CI_Model {
 
         $msg = $tab_data->title.' Updated';
 
-        if($type == 1){                 
+        if($type == 1)
+        {                 
             $comment_id = $this->Leads_Model->add_comment_for_events($msg, $en_comments);                    
         }else if($type == 2){                   
              $comment_id = $this->Leads_Model->add_comment_for_events($msg, $en_comments);                   
@@ -1939,12 +1940,24 @@ class Enquiry_model extends CI_Model {
                         ->get()
                         ->row();
 	  }
-       public function user_list_api($comp) {
-        return $this->db->select('*')
+       public function user_list_api($comp,$user_id=0) {
+        $all_reporting_ids = array();
+
+        if(!empty($user_id))
+        {
+              $this->load->model('common_model');
+              
+              $all_reporting_ids    =   $this->common_model->get_categories($user_id); 
+        }
+        
+        $this->db->select('*')
                         ->from('tbl_admin')
-                        ->where('companey_id',$comp)
-                        ->get()
-                        ->result();
+                        ->where('companey_id',$comp);
+        if(!empty($all_reporting_ids))
+        $this->db->where_in('pk_i_admin_id',$all_reporting_ids);  
+         
+          return  $this->db->get()->result();
+
     }
  
     public function assign_enquery_api($key,$assign_employee,$enquiry_code,$user_id){

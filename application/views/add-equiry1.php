@@ -160,7 +160,9 @@
   }
 
 
-
+<?php
+if($this->session->companey_id!=65)
+?>
   $(document).on("change", '#fcity', function() {
     var selDpto = $(this).val(); // <-- change this line
     $.ajax({
@@ -178,9 +180,12 @@
       }
     })
   });
-
+<?php
+}
+?>
 
   $(document).on("change", '#fstate', function() {
+
     var id = $(this).val(); // <-- change this line
     $.ajax({
       url: "<?php echo base_url(); ?>location/get_city_byid",
