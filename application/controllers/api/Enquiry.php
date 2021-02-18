@@ -1584,10 +1584,12 @@ public function updateEnquiryTab_post()
       
   //user list   
     public function user_list_post()
-        { 
-		$comp=$this->input->post('company_id');		
-         $result = $this->enquiry_model->user_list_api($comp);
-         $users=array();
+    { 
+    		$comp=$this->input->post('company_id');	
+        $user_id = $this->input->post('user_id')??0;	
+        $result = $this->enquiry_model->user_list_api($comp,$user_id);
+      
+        $users=array();
          foreach($result  as $user2){
              array_push($users,array('id'=>$user2->pk_i_admin_id,'user_name'=>$user2->s_display_name.' '.$user2->last_name));
           }
