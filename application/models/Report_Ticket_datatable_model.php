@@ -149,7 +149,7 @@ class Report_Ticket_datatable_model extends CI_Model{
     public function _get_datatables_query($postData){
         $this->load->model('common_model');
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id_id);
-        $comp_id = $this->session->comp_id;
+        $comp_id = $this->session->companey_id;
         $acolarr = array();
         $dacolarr = array();
         if(isset($_COOKIE["ticket_allowcols"])) {
@@ -315,7 +315,7 @@ class Report_Ticket_datatable_model extends CI_Model{
            $this->db->join('lead_description for_conv_desc','conv.sub_stage=for_conv_desc.id','left');
         }
 
-         $this->db->where("tck.company",$this->session->comp_id);
+         $this->db->where("tck.company",$this->session->companey_id);
 
          if(!empty($this->session->process_id_id)){              
             $arr = $this->session->process_id_id;           

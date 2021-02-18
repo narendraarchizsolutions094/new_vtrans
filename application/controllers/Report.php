@@ -85,6 +85,7 @@ class Report extends CI_Controller
   }
   public function send_sales_view($id)
   {
+    $this->session->destroy();
     // if (user_role('120') == true) {}
     $todays = date('Y-m-d');
     $cids = $this->uri->segment(2);
@@ -94,7 +95,7 @@ class Report extends CI_Controller
     $schid = $this->encryption->decrypt($cidss);
     $sch_dates = $this->encryption->decrypt($sch_dates);
     $id = $schid;
-    $data['rid'] = $schid;    
+    $data['rid'] = $schid;
     $this->session->set_userdata('reportid', $id);
     $this->db->where('id', $id);
     $report_row =   $this->db->get('reports')->row_array();
