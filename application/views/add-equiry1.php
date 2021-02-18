@@ -162,6 +162,7 @@
 
 <?php
 if($this->session->companey_id!=65)
+{
 ?>
   $(document).on("change", '#fcity', function() {
     var selDpto = $(this).val(); // <-- change this line
