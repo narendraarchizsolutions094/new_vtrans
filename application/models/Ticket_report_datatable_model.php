@@ -9,7 +9,7 @@ class Ticket_Report_datatable_model extends CI_Model {
     function report_analitics($for){
         $user_id = $this->session->userdata('user_id');
        
-           if($this->session->user_id==''){  $user_id=$user_id;  }else{  $user_id=$this->session->user_id_id;  }  
+           if($this->session->user_id==''){  $user_id=$user_id;  }else{  $user_id=$this->session->user_id;  }  
            $all_reporting_ids    =    $this->common_model->get_categories($user_id);    
         
            
