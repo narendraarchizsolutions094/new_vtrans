@@ -72,7 +72,7 @@ class Auth extends CI_Controller {
 			$insert_id = $this->enquiry_model->create($enq_data);			
 			if ($insert_id) {
 				$this->load->model('Leads_Model');                                				                
-                $this->Leads_Model->add_comment_for_events_stage_api($this->lang->line("enquery_create"),$enq_code,'','','',$enq_created_by,'');
+                $this->Leads_Model->add_comment_for_events_stage_api(display("enquery_create"),$enq_code,'','','',$enq_created_by,'');
                 if ($user_comp_id == 67) {
 					$stage_id = 218; // payment done 			
 	                $this->Leads_Model->add_comment_for_events_stage_api('Stage Updated',$enq_code,$stage_id,'','',$enq_created_by,'');                	

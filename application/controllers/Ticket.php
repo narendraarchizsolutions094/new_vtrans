@@ -1081,11 +1081,11 @@ class Ticket extends CI_Controller
         $en_comments = $enqarr->ticketno;
         $type = $enqarr->status;
         // if($type == 1){                 
-        //     $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('enquery_updated'), $en_comments);                    
+        //     $comment_id = $this->Leads_Model->add_comment_for_events(display('enquery_updated'), $en_comments);                    
         // }else if($type == 2){                   
-        //      $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('lead_updated'), $en_comments);                   
+        //      $comment_id = $this->Leads_Model->add_comment_for_events(display('lead_updated'), $en_comments);                   
         // }else if($type == 3){
-        //      $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('client_updated'), $en_comments);
+        //      $comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
         // }	
         
        $comment_id = $this->Ticket_Model->saveconv($tck_id,'Details Updated','', $enqarr->client,$this->session->user_id);

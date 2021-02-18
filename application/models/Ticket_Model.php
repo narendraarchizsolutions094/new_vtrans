@@ -1556,18 +1556,9 @@ class Ticket_Model extends CI_Model
         $type = $enqarr->status;
         $user_id = $this->session->user_id??$user_id;
         $comp_id = $this->session->companey_id??$comp_id;
-        //$msg = 
-        // if($type == 1){                 
-        //     $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('enquery_updated'), $en_comments);                    
-        // }else if($type == 2){                   
-        //      $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('lead_updated'), $en_comments);                   
-        // }else if($type == 3){
-        //      $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('client_updated'), $en_comments);
-        // }	
-        
-
+    
        $comment_id = $this->Ticket_Model->saveconv($tck_id,'Details Updated','', $enqarr->client,$user_id,0,0,0,$comp_id);
-//echo $comment_id; exit();
+
         if(!empty($enqarr)){        
             if(isset($_POST['inputfieldno'])) {                    
                 $inputno   = $this->input->post("inputfieldno", true);

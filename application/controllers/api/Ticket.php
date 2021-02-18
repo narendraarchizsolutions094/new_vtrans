@@ -910,11 +910,11 @@ class Ticket extends REST_Controller {
       if($this->form_validation->run()==true)
       {
         // if($type == 1){                 
-        //     $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('enquery_updated'), $en_comments);                    
+        //     $comment_id = $this->Leads_Model->add_comment_for_events(display('enquery_updated'), $en_comments);                    
         // }else if($type == 2){                   
-        //      $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('lead_updated'), $en_comments);                   
+        //      $comment_id = $this->Leads_Model->add_comment_for_events(display('lead_updated'), $en_comments);                   
         // }else if($type == 3){
-        //      $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('client_updated'), $en_comments);
+        //      $comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
         // }  
           $res = $this->Ticket_Model->update_dynamic_query($user_id,$comp_id);
           if($res)

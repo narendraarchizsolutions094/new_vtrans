@@ -215,10 +215,10 @@ class Client extends REST_Controller {
                 $this->Client_Model->assign_enquery_api($enquiry_id,$assign_employee,$enquiry_code,$user_id);
                 $customer_name  .= $data['enquiry']->name_prefix.''.$data['enquiry']->name.' '.$data['enquiry']->lastname.',';
                 $customer_name1  = $data['enquiry']->name_prefix.''.$data['enquiry']->name.' '.$data['enquiry']->lastname;
-                $notification_msg = sprintf($this->lang->line('client_assigned_to'),trim($customer_name1),trim($assign_to_name),trim($assigner_name));
+                $notification_msg = sprintf(display('client_assigned_to'),trim($customer_name1),trim($assign_to_name),trim($assigner_name));
                 $this->Leads_Model->add_comment_for_events_api($notification_msg,$enquiry_code,$user_id);
               }
-              $notification_msg = sprintf($this->lang->line('client_assigned_to'),trim($customer_name),trim($assign_to_name),trim($assigner_name));
+              $notification_msg = sprintf(display('client_assigned_to'),trim($customer_name),trim($assign_to_name),trim($assigner_name));
               $this->Message_models->sendwhatsapp($assignee_phone,$notification_msg); 
             
               $this->set_response([
@@ -282,12 +282,12 @@ class Client extends REST_Controller {
                       
                       $customer_name1  = $data['enquiry']->name_prefix.''.$data['enquiry']->name.' '.$data['enquiry']->lastname;
                       
-                      $notification_msg = sprintf($this->lang->line('client_assign_for_installation'),trim($customer_name1),trim($assign_to_name),trim($assigner_name));
+                      $notification_msg = sprintf(display('client_assign_for_installation'),trim($customer_name1),trim($assign_to_name),trim($assigner_name));
                       $this->Leads_Model->add_comment_for_events_api($notification_msg,$key,$user_id);
 
                     }
                   }
-                  $notification_msg = sprintf($this->lang->line('client_assign_for_installation'),trim($customer_name),trim($assign_to_name),trim($assigner_name));
+                  $notification_msg = sprintf(display('client_assign_for_installation'),trim($customer_name),trim($assign_to_name),trim($assigner_name));
                   $this->Message_models->sendwhatsapp($assignee_phone,$notification_msg);
 
                        $this->set_response([

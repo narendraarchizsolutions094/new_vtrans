@@ -412,7 +412,7 @@ class Lead extends REST_Controller {
             $assign_to_name = $user->s_display_name.' '.$user->last_name;
             
             $assign_by_name = $assigner_user->s_display_name.' '.$assigner_user->last_name;
-          $notification_msg = sprintf($this->lang->line('lead_assigned_to'),trim($customer_name),trim($assign_to_name),trim($assign_by_name));
+          $notification_msg = sprintf(display('lead_assigned_to'),trim($customer_name),trim($assign_to_name),trim($assign_by_name));
           $this->Message_models->sendwhatsapp($assignee_phone,$notification_msg);
             $this->set_response([
               'status' => true,
@@ -575,7 +575,7 @@ class Lead extends REST_Controller {
               $creator_phone = '91'.$phone_no;          
               
               $enq_of_name = $enq->name_prefix.''.$enq->name.' '.$enq->lastname;
-              $notification_msg = sprintf($this->lang->line('enquiry_converted_to_lead'),trim($enq_of_name));
+              $notification_msg = sprintf(display('enquiry_converted_to_lead'),trim($enq_of_name));
         
               $this->Message_models->sendwhatsapp($convertor_phone,$notification_msg);
               
@@ -711,7 +711,7 @@ class Lead extends REST_Controller {
               $this->session->set_flashdata('message','Lead converted successfully to Client');            
               $user = $this->User_model->read_by_id($lead->created_by);            
               $customer_name = $lead->name_prefix.''.$lead->name.' '.$lead->lastname;
-              $notification_msg = sprintf($this->lang->line('lead_convert_to_client'),trim($customer_name));      
+              $notification_msg = sprintf(display('lead_convert_to_client'),trim($customer_name));      
               $creator_phone = $user->s_phoneno;      
               $this->Message_models->sendwhatsapp($creator_phone,$notification_msg);             
               redirect('lead');

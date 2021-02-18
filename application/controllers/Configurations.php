@@ -164,7 +164,7 @@ class Configurations extends CI_Controller {
                     }
                 }
 
-                $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_create"), $encode,'',$crtdby);
+                $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode,'',$crtdby);
                 // $this->load->model('rule_model');
                 // $this->rule_model->execute_rules($encode,array(1,2,3,6,7),$compid,$crtdby);  
 

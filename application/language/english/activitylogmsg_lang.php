@@ -1,5 +1,4 @@
 <?php
-$lang['text_rest_invalid_credentials'] = 'Invalid credentials';
 $lang['enquery_create'] = "Enquiry Created";
 $lang['move_to_lead']   = "Move to leads";
 $lang['enquery_assign']   = "Enquiry Assigned";

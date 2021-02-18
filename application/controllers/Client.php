@@ -237,7 +237,7 @@ class Client extends CI_Controller {
             $this->db->update('clients');
             $data['clientDetails'] = $this->Client_Model->clientdetail_by_id($clientid);
             $enquiry_code = $data['clientDetails']->Enquery_id;
-            $this->Leads_Model->add_comment_for_events($this->lang->line("information_updated"), $enquiry_code);
+            $this->Leads_Model->add_comment_for_events(display("information_updated"), $enquiry_code);
             $this->session->set_flashdata('message', 'Informanation Updated Successfully');
             redirect('client/view/' . $clientid);
         }
@@ -268,7 +268,7 @@ class Client extends CI_Controller {
             );
            $enq = $this->Enquiry_Model->getEnquiry(array('enquiry_id'=>$clientid));
             $enquiry_code = $enq->row()->Enquery_id;
-            $this->Leads_Model->add_comment_for_events($this->lang->line("new_contact_detail_added") , $enquiry_code);
+            $this->Leads_Model->add_comment_for_events(display("new_contact_detail_added") , $enquiry_code);
             $insert_id = $this->Client_Model->clientContact($data);
             $this->session->set_flashdata('message', 'Client Contact Add Successfully');
         }
@@ -482,7 +482,7 @@ class Client extends CI_Controller {
             );
             $clientDetails = $this->Client_Model->clientdetail_by_id($clientid);
             $enquiry_code = $clientDetails->Enquery_id;
-            $this->Leads_Model->add_comment_for_events($this->lang->line("new_contact_detail_added") , $enquiry_code);
+            $this->Leads_Model->add_comment_for_events(display("new_contact_detail_added") , $enquiry_code);
             $insert_id = $this->Client_Model->clientContact($data);
             $this->session->set_flashdata('message', 'Client Contact Add Successfully');
             redirect('client/view/' . $clientid);
@@ -578,13 +578,13 @@ class Client extends CI_Controller {
             );
             $insert_id = $this->Leads_Model->LeadAdd($data);
             if ($lead_stage == 5) {
-                $this->Leads_Model->add_comment_for_events( $this->lang->line("circuit_sheet_created") , $enquiry->Enquery_id);
+                $this->Leads_Model->add_comment_for_events( display("circuit_sheet_created") , $enquiry->Enquery_id);
                 redirect(base_url() . 'boq-add/' . base64_encode($enquiry->Enquery_id));
             } elseif ($lead_stage == 8) {
-                $this->Leads_Model->add_comment_for_events($this->lang->line("po_attached"), $enquiry->Enquery_id);
+                $this->Leads_Model->add_comment_for_events(display("po_attached"), $enquiry->Enquery_id);
                 redirect(base_url() . 'enquiry/attach_po/' . base64_encode($enquiry->Enquery_id));
             } else {
-                $this->Leads_Model->add_comment_for_events($this->lang->line("enquiry_moved"), $enquiry->Enquery_id);
+                $this->Leads_Model->add_comment_for_events(display("enquiry_moved"), $enquiry->Enquery_id);
                 redirect('lead');
             }
         } else {
@@ -679,7 +679,7 @@ class Client extends CI_Controller {
                 'child_id' => $key
             );
             $insert_id = $this->Leads_Model->LeadAdd($data);
-           $this->Leads_Model->add_comment_for_events($this->lang->line("enquiry_moved"), $enquiry->Enquery_id);
+           $this->Leads_Model->add_comment_for_events(display("enquiry_moved"), $enquiry->Enquery_id);
            $this->session->set_flashdata('message', 'New deal added successfully');
             redirect('led');
             
@@ -788,11 +788,11 @@ class Client extends CI_Controller {
             
             $type = $enqarr->status;                
             if($type == 1){                 
-                $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('enquery_updated'), $en_comments);                    
+                $comment_id = $this->Leads_Model->add_comment_for_events(display('enquery_updated'), $en_comments);                    
             }else if($type == 2){                   
-                $comment_id  = $this->Leads_Model->add_comment_for_events($this->lang->line('lead_updated'), $en_comments);                   
+                $comment_id  = $this->Leads_Model->add_comment_for_events(display('lead_updated'), $en_comments);                   
             }else if($type == 3){
-                $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('client_updated'), $en_comments);
+                $comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
             }else{
                 $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');
                 if (!empty($enquiry_separation)) {                    
@@ -932,11 +932,11 @@ class Client extends CI_Controller {
         $en_comments = $enqarr->Enquery_id;
         $type = $enqarr->status;                
         if($type == 1){                 
-            $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('enquery_updated'), $en_comments);                    
+            $comment_id = $this->Leads_Model->add_comment_for_events(display('enquery_updated'), $en_comments);                    
         }else if($type == 2){                   
-             $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('lead_updated'), $en_comments);                   
+             $comment_id = $this->Leads_Model->add_comment_for_events(display('lead_updated'), $en_comments);                   
         }else if($type == 3){
-             $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('client_updated'), $en_comments);
+             $comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
         }
         
         if(!empty($enqarr)){        
@@ -1094,7 +1094,7 @@ public function updateclientpersonel() {
             'created_by' => $this->session->user_id
            ); 
            $this->Taskstatus_model->insertpersonel($data);
-           $this->Leads_Model->add_comment_for_events( $this->lang->line('Personel Details Inserted') , $unique_number);
+           $this->Leads_Model->add_comment_for_events( display('Personel Details Inserted') , $unique_number);
             $this->session->set_flashdata('message', 'Save successfully');
            }else{
                 $data = array(   
@@ -1125,7 +1125,7 @@ public function updateclientpersonel() {
             'created_by' => $this->session->user_id
            ); 
              $this->Taskstatus_model->updatepersonel($data); 
-             $this->Leads_Model->add_comment_for_events($this->lang->line("personel_details_updated") , $unique_number);
+             $this->Leads_Model->add_comment_for_events(display("personel_details_updated") , $unique_number);
            }  
             $this->session->set_flashdata('message', 'Save successfully');
             redirect($this->agent->referrer()); //updateclient
@@ -1153,7 +1153,7 @@ public function updateclientpersonel() {
                         'enq_id'=> $key,
                         'enq_code'=>$enquiry_code,
                         'assign_status'=> 0);
-                    $this->Leads_Model->add_comment_for_events($this->lang->line('client_assigned'), $enquiry_code);
+                    $this->Leads_Model->add_comment_for_events(display('client_assigned'), $enquiry_code);
                 }
                 $this->db->update_batch('enquiry',$assign_data,'enquiry_id');
                 $this->db->insert_batch('tbl_assign_notification',$notification_data);

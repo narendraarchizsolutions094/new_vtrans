@@ -590,7 +590,7 @@ class Enquiry extends CI_Controller
             $this->load->model('rule_model');
             $this->rule_model->execute_rules($encode, array(1, 2, 3, 6, 7));
             if ($insert_id) {
-                $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_create"), $encode);
+                $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode);
                 if ($this->input->is_ajax_request()) {
                     echo json_encode(array('status' => 'success'));
                 } else {
@@ -781,7 +781,7 @@ class Enquiry extends CI_Controller
                         $this->Leads_Model->add_comment_for_events_popup($stage_remark, $stage_date, $contact_person, $mobileno, $email, $designation, $stage_time, $encode);
                     }
                 }
-                $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_create"), $encode);
+                $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode);
                 $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
                 redirect(base_url() . 'enquiry');
             }
@@ -864,7 +864,7 @@ class Enquiry extends CI_Controller
             ];
             if ($this->enquiry_model->create($postData)) {
                 $insert_id = $this->db->insert_id();
-                $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_create"), $encode);
+                $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode);
                 $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
                 redirect(base_url() . 'enquiry/view/' . $insert_id);
             }
@@ -988,7 +988,7 @@ class Enquiry extends CI_Controller
                         'enq_code' => $enquiry_code,
                         'assign_status' => 0
                     );
-                    $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_assign"), $enquiry_code);
+                    $this->Leads_Model->add_comment_for_events(display("enquery_assign"), $enquiry_code);
 
                     $this->db->set('comp_id',$this->session->companey_id);
                     $this->db->set('query_id',$enquiry_code);
@@ -1680,7 +1680,7 @@ Array
                     $this->rule_model->execute_rules($enq->Enquery_id, array(1, 2, 3, 6, 7));
                     
                     
-                    $this->Leads_Model->add_comment_for_events($this->lang->line("move_to_lead"), $enq->Enquery_id);
+                    $this->Leads_Model->add_comment_for_events(display("move_to_lead"), $enq->Enquery_id);
                     $insert_id = $this->Leads_Model->LeadAdd($data);
                     //insert follow up counter (2 is for lead )
                     $this->enquiry_model->insetFollowupTime($key, 2, $enq->created_date, date('Y-m-d H:i:s'));
@@ -1867,7 +1867,7 @@ Array
                     $this->db->update('enquiry');
                     $data['enquiry'] = $this->enquiry_model->enquiry_by_id($key);
                     $enquiry_code = $data['enquiry']->Enquery_id;
-                    $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_dropped"), $enquiry_code);
+                    $this->Leads_Model->add_comment_for_events(display("enquery_dropped"), $enquiry_code);
                 }
                 echo '1';
             } else {
@@ -2951,7 +2951,7 @@ Array
     //            ];
     //            if ($this->enquiry_model->create($postData)) {
     //                $insert_id = $this->db->insert_id();
-    //                $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_create"), $encode);				
+    //                $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode);				
     //                echo '<br><br>Your Enquiry has been  Successfully created';
     //            }
     //        } else {

@@ -419,7 +419,7 @@ class Enquiry_model extends CI_Model {
     $user_id = $this->session->user_id??$user_id;
     $comp_id  = $this->input->post('comp_id')??$comp_id;   
 
-          $this->Leads_Model->add_comment_for_events($this->lang->line("information_updated"),$en_comments,'',$user_id);
+          $this->Leads_Model->add_comment_for_events(display("information_updated"),$en_comments,'',$user_id);
 
         if(!empty($enqarr)){        
             if(isset($_POST['inputfieldno'])) {                    

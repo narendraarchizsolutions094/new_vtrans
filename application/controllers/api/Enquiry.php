@@ -121,7 +121,7 @@ class Enquiry extends REST_Controller {
     			    $this->db->where('Enquery_id',$this->input->post('update'));
     			    $e_row	=	$this->db->get('enquiry')->row_array();
     			    $msg	=	'Enquiry successfully updated';
-			        $this->Leads_Model->add_comment_for_events($this->lang->line("information_updated"), $this->input->post('update'),'',$this->input->post('user_id'));
+			        $this->Leads_Model->add_comment_for_events(display("information_updated"), $this->input->post('update'),'',$this->input->post('user_id'));
             }
             else
             {
@@ -143,7 +143,7 @@ class Enquiry extends REST_Controller {
     			    $e_row	=	$this->db->get('enquiry')->row_array();
     			    $msg	=	'Enquiry successfully created';
 			    
-			        $this->Leads_Model->add_comment_for_events($this->lang->line("enquery_create"), $encode,'',$this->input->post('user_id'));
+			        $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode,'',$this->input->post('user_id'));
             }
             if($insert_id)
             {
@@ -897,7 +897,7 @@ public function updateEnquiryTab_post()
 				$insarr['lead_stage'] = 172; 		//first form submitted;
 				$ret = $this->db->insert('enquiry', $insarr);	
 				$enqno = $this->db->insert_id();		
-				$comment = $this->lang->line("enquery_create");
+				$comment = display("enquery_create");
                 $this->Leads_Model->add_comment_for_events_stage_api($comment, $encode,0,'','',191,0);
                 $this->Leads_Model->add_comment_for_events_stage_api('Stage Updated', $encode,172,'','',191,0);
 				$process_id	=	$this->input->post('process_id', true);				
@@ -1116,7 +1116,7 @@ public function updateEnquiryTab_post()
           $updated_by_name = $user_row->s_display_name.' '.$user_row->last_name;
           
           $enq_of_name = $enquiry_row->name_prefix.''.$enquiry_row->name.' '.$enquiry_row->lastname;
-          $notification_msg = sprintf($this->lang->line('enquiry_update_text'),trim($enq_of_name),trim($updated_by_name));
+          $notification_msg = sprintf(display('enquiry_update_text'),trim($enq_of_name),trim($updated_by_name));
           $this->Message_models->sendwhatsapp($creator_phone,$notification_msg);
           $this->Leads_Model->add_comment_for_events_api($notification_msg,$enquiry_id,$ld_updt_by);
           /
@@ -1644,7 +1644,7 @@ public function updateEnquiryTab_post()
           
                 $this->enquiry_model->assign_enquery_api($key,$assign_employee,$enquiry_code,$assigner_user_id);
                // $customer_name = $data['enquiry']->name_prefix.''.$data['enquiry']->name.' '.$data['enquiry']->lastname.' ';
-              //  $notification_msg = sprintf($this->lang->line('enquiry_assigned_to'),trim($customer_name),trim($assign_to_name),trim($assign_by_name));
+              //  $notification_msg = sprintf(display('enquiry_assigned_to'),trim($customer_name),trim($assign_to_name),trim($assign_by_name));
                // $this->Message_models->sendwhatsapp($assignee_phone,$notification_msg);
               //  $this->Message_models->sendwhatsapp($assigner_phone,$notification_msg);
               //  $this->Leads_Model->add_comment_for_events_api($notification_msg,$enquiry_code,$assigner_user_id);
@@ -1755,7 +1755,7 @@ public function updateEnquiryTab_post()
                       $creator_phone = '91'.$phone_no;          
                       
                       $enq_of_name = $enq->name_prefix.''.$enq->name.' '.$enq->lastname;
-                      $notification_msg = sprintf($this->lang->line('enquiry_converted_to_lead'),trim($enq_of_name));
+                      $notification_msg = sprintf(display('enquiry_converted_to_lead'),trim($enq_of_name));
                 
                       $this->Message_models->sendwhatsapp($convertor_phone,$notification_msg);
                       
@@ -2510,11 +2510,11 @@ public function get_enq_list_post(){
       if($this->form_validation->run()==true)
       {
         // if($type == 1){                 
-        //     $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('enquery_updated'), $en_comments);                    
+        //     $comment_id = $this->Leads_Model->add_comment_for_events(display('enquery_updated'), $en_comments);                    
         // }else if($type == 2){                   
-        //      $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('lead_updated'), $en_comments);                   
+        //      $comment_id = $this->Leads_Model->add_comment_for_events(display('lead_updated'), $en_comments);                   
         // }else if($type == 3){
-        //      $comment_id = $this->Leads_Model->add_comment_for_events($this->lang->line('client_updated'), $en_comments);
+        //      $comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
         // }  
           $res = $this->Enquiry_model->update_dynamic_query($user_id,$comp_id);
           if($res)
