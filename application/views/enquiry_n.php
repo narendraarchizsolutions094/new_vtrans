@@ -154,7 +154,7 @@ input[name=lead_stages]{
         <div class="col-md-4 col-sm-4 col-xs-4" > 
           <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>        
           <?php if (user_access(60)==true OR user_access(70)==true OR user_access(80)==true) { ?> 
-          <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" id="enq-create" href="<?php echo base_url()?>enquiry/create?status=<?= $data_type ?>" title="<?php echo display('add_new_enquiry');?>"></a>         
+          <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" id="enq-create" href="<?php echo base_url()?>enquiry/create?status=1" title="<?php echo display('add_new_enquiry');?>"></a>         
           <?php } ?>          
         </div>
          <div class="col-md-4 col-sm-8 col-xs-8 pull-right" >  

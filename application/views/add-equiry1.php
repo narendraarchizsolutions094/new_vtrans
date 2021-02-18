@@ -174,6 +174,7 @@
       success: function(data) {
         var obj = JSON.parse(data);
         $('#fstate option[value="' + obj.state_id + '"]').attr("selected", "selected");
+        $('#fstate').trigger('change');
       }
     })
   });
