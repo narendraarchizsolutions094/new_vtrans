@@ -2270,8 +2270,8 @@ class Ticket extends CI_Controller
 		$this->db->where('tbl_ticket.process_id IN ('.$process.')');
 		$this->db->where('tbl_ticket.company',$comp_id);
 		if($fromdate!='all'){
-			$this->db->where('tbl_ticket.coml_date >=', $fromdate);
-			$this->db->where('tbl_ticket.coml_date <=', $todate);
+			$this->db->where('date(tbl_ticket.coml_date) >=', $fromdate);
+			$this->db->where('date(tbl_ticket.coml_date) <=', $todate);
 		}
 		$this->db->group_by('tbl_ticket.category');
 		$result = $this->db->get()->result_array();
