@@ -269,20 +269,18 @@ class Report extends CI_Controller
         'companey_id' => $comp_id,
         'user_id' => $user_id,
       );
-      $data['report']  = $report_row;
       $this->session->set_userdata($data_arr);
       $this->load->view('reports/send_sales_view', $data);
     } else {
       $filters = json_decode($report_row['filters'], true);
-      $data['report'] = $report_row;
       $data['title'] = 'View Report ';
       $data['filters'] = $filters;
       $comp_id = $report_row['comp_id'];
       $user_id = $report_row['created_by'];
-      $this->session->set_userdata('comp_id', $comp_id);
-      $this->session->set_userdata('user_id_id', $user_id);
+      $this->session->set_userdata('companey_id', $comp_id);
+      $this->session->set_userdata('user_id', $user_id);
       if(!empty($filters['process_id'])){
-      $this->session->set_userdata('process_id_id',$filters['process_id']);
+      $this->session->set_userdata('process_id',$filters['process_id']);
       }
       $data['filters'] = json_decode($report_row['filters'], true);
       $cdate = date('Y-m-d', strtotime('-2 day', strtotime($todays)));
