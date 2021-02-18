@@ -16,11 +16,7 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <!-- semantic css -->
     <link href="<?= base_url() ?>assets/css/semantic.min.css" rel="stylesheet" type="text/css" />
-    <!-- sliderAccess css -->
-    <link href="<?= base_url() ?>assets/css/jquery-ui-timepicker-addon.min.css" rel="stylesheet"
-        type="text/css" />
-    <!-- slider  -->
-    <link href="<?= base_url() ?>assets/css/select2.min.css" rel="stylesheet" type="text/css" />
+    
     <!-- DataTables CSS -->
     <link href="<?= base_url() ?>assets/datatables/css/dataTables.min.css?v=1.0" rel="stylesheet" type="text/css" />
     <!-- pe-icon-7-stroke -->
@@ -30,8 +26,7 @@
     <!-- Pace css -->
     <link href="<?= base_url() ?>assets/css/flash.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
-    <link href="<?= base_url() ?>assets/css/custom.css?v=1.0" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link href="<?= base_url() ?>assets/css/custom.css?v=1.0" rel="stylesheet" type="text/css" />    
         <!-- jQuery  -->
     <script src="<?= base_url() ?>assets/js/jquery.min.js?v=1.0" type="text/javascript"></script>
 <script type="text/javascript">
@@ -78,7 +73,11 @@
 }
 
 </style>
-
+<?php
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "</pre>";
+?>
 <!------ Filter Div ---------->
 <div class="row">
     <div class="col-lg-12">
@@ -291,14 +290,14 @@ $(document).ready(function() {
     var d = new Date($.now());
     var report_name = 'Report_' + d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear() + " " + d
         .getHours() + "_" + d.getMinutes() + "_" + d.getSeconds();
-    $('#example').DataTable({
+    var table = $('#example').DataTable({
         "processing": true,
         "scrollX": true,
         "serverSide": true,
         "lengthMenu": [
-            [-1],
-            ["All"]
-        ],
+                [10, 30, 50, 100, 500, 1000, -1],
+                [10, 30, 50, 100, 500, 1000, "All"]
+            ],       
         "ajax": {
             "url": "<?=base_url().'report/all_report_filterdata'?>",
             "type": "POST",
@@ -335,14 +334,7 @@ $(document).ready(function() {
         //document.location = '';
     });
     </script>
-    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
-
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-database.js"></script>
-
-    <script src="<?= base_url() ?>assets/js/jquery-ui.min.js" type="text/javascript"></script>
+   <script src="<?= base_url() ?>assets/js/jquery-ui.min.js" type="text/javascript"></script>
     <!---- new js file added by pp ------------->
     <script src="<?= base_url() ?>assets/js/dashboard_js.js" type="text/javascript"></script>
     <!----------------------------------------------------------------------------------------------->
@@ -361,13 +353,13 @@ $(document).ready(function() {
     <!-- DataTables JavaScript -->
     <script src="<?= base_url() ?>assets/datatables/js/dataTables.min.js?v=1.0"></script>
     <!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>     -->
-    <script src="<?= base_url() ?>assets/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+  
     <script src="<?= base_url() ?>assets/js/tableHeadFixer.js?v=1.0" type="text/javascript"></script>
     <!-- Admin Script -->
     <script src="<?= base_url() ?>assets/js/frame.js?v=1.0?v=1.0" type="text/javascript"></script>
     <!-- Custom Theme JavaScript -->
-    <script src="<?= base_url() ?>assets/js/custom.js?v=1.0.1" type="text/javascript"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+  
+  
 </body>
 
 </html>

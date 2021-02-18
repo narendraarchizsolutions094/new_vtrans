@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Report_datatable_model extends CI_Model {    
     public function __construct(){
         parent::__construct();
-        $this->load->model('common_model');		
+        $this->load->model('common_model');     
     }
     var $table = 'enquiry'; 
     public function _get_datatables_query(){
@@ -12,7 +12,7 @@ class Report_datatable_model extends CI_Model {
            $uid = $employe[0];
            $employe    =    $this->common_model->get_categories($uid);                  
         }else{
-    	   $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+           $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
         }
         $from = $this->session->userdata('from1');
         $to= $this->session->userdata('to1');
@@ -62,13 +62,13 @@ class Report_datatable_model extends CI_Model {
                 $where .= " AND Date(enquiry.created_date) = '$to'";
             }            
 
-           if($employe!=''){	            		
-    			$where .= " AND ( enquiry.created_by IN (".implode(',', $employe).')';
-    			$where .= " OR enquiry.aasign_to IN (".implode(',', $employe).'))';  		  
+           if($employe!=''){                        
+                $where .= " AND ( enquiry.created_by IN (".implode(',', $employe).')';
+                $where .= " OR enquiry.aasign_to IN (".implode(',', $employe).'))';           
             }else{
-    			$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    			$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
-    		}    
+                $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+                $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+            }    
             if($source!=''){
                $where .= " AND enquiry.enquiry_source IN (".implode(',', $source).')';  
             }
@@ -158,7 +158,7 @@ class Report_datatable_model extends CI_Model {
                 $this->db->order_by('enquiry.enquiry_id,tbl_comment.created_date','DESC');                    
             }        
     }
-    function get_datatables(){   	        
+    function get_datatables(){              
         $this->_get_datatables_query();
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
@@ -177,7 +177,7 @@ class Report_datatable_model extends CI_Model {
            $uid = $employe[0];
            $all_reporting_ids    =    $this->common_model->get_categories($uid);                  
         }else{
-    	   $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+           $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
         }
         //$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         $this->db->from($this->table);        
@@ -198,7 +198,7 @@ class Report_datatable_model extends CI_Model {
            $employe    =    $this->common_model->get_categories($uid);                  
         }else{
            if($this->session->user_id==''){  $user_id=$user_id;  }else{  $user_id=$this->session->user_id;  }  
-    	   $all_reporting_ids    =    $this->common_model->get_categories($user_id);      
+           $all_reporting_ids    =    $this->common_model->get_categories($user_id);      
         }
         $from = $this->session->userdata('from1');
         $to= $this->session->userdata('to1');
@@ -270,13 +270,13 @@ class Report_datatable_model extends CI_Model {
                 $where .= " AND Date(enquiry.created_date) LIKE '%$to%'";
             }            
 
-           if($employe!=''){	            		
-    			$where .= " AND ( enquiry.created_by IN (".implode(',', $employe).')';
-    			$where .= " OR enquiry.aasign_to IN (".implode(',', $employe).'))';  		  
+           if($employe!=''){                        
+                $where .= " AND ( enquiry.created_by IN (".implode(',', $employe).')';
+                $where .= " OR enquiry.aasign_to IN (".implode(',', $employe).'))';           
             }else{
-    			$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    			$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
-    		}    
+                $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+                $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+            }    
             if($source!=''){
                $where .= " AND enquiry.enquiry_source IN (".implode(',', $source).')';  
             }
@@ -319,7 +319,7 @@ class Report_datatable_model extends CI_Model {
                 }                
                 $this->db->join('tbl_comment','tbl_comment.lead_id=enquiry.Enquery_id','inner');              
                 if($all!=''){
-                    $where.= "AND comment_msg='Stage Updated'";
+                    //$where.= "AND comment_msg='Stage Updated'";
                     $this->db->join('lead_stage as lead_stage2','lead_stage2.stg_id=tbl_comment.stage_id','left'); 
                 }
             }
