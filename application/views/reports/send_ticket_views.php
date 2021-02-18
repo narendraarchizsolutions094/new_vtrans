@@ -521,7 +521,7 @@
                     // Create chart instance
                     var chart = am4core.create("chartdiv7", am4charts.XYChart);
                     chart.scrollbarX = new am4core.Scrollbar();
-                    chart.numberFormatter.numberFormat = "#";
+                    chart.numberFormatter.numberFormat = "#.";
                     chart.yAxis = { allowDecimals: false };
                     // Add data
                     chart.data = response;
@@ -593,7 +593,7 @@
 
                     // Add data
                     chart.data = response.result;
-                    chart.numberFormatter.numberFormat = "#";
+                    chart.numberFormatter.numberFormat = "#.";
                     // Create axes
                     var yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
                     yAxis.dataFields.category = "state";
