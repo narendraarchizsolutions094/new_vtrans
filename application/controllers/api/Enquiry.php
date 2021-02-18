@@ -2305,6 +2305,8 @@ public function get_enq_list_post(){
 	/*CAREERex contact form data */
 	public function career_ex_contact_form_post(){
 		
+		$this->db->insert('api_responses',array('comp_id'=>81,'res'=>json_encode($_POST),'type'=>'careerExContact','endpoint'=>''));		
+
 		$course 	= $this->input->post('course');	
 		$this->load->model('product_model');				
 		$product_row	=	$this->product_model->get_product_id_by_name(trim($course));

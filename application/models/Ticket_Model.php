@@ -762,7 +762,7 @@ class Ticket_Model extends CI_Model
 		$all_reporting_ids  = $this->common_model->get_categories($user_id);
 		$where = " ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
 		$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))';
-		 $process=$this->session->userdata('process_id_id');
+		 $process=$this->session->userdata('process');
 		$this->db->where($where);
 		if(empty($process) AND $process==''){
 			$data = $this->db->where(array('company' => $comp_id, 'priority' => $type));
@@ -863,8 +863,8 @@ class Ticket_Model extends CI_Model
 	}
 	public function send_subsource()
 	{
-		$process	=	$this->session->userdata('process_id_id')??0;	
-		$comp_id = $this->session->userdata('comp_id');
+		$process	=	$this->session->userdata('process')[0];	
+		$comp_id = $this->session->userdata('companey_id');
 
 		$this->db->join('lead_stage','lead_stage.stg_id=lead_description.lead_stage_id');
 		$this->db->where("FIND_IN_SET($process,lead_stage.process_id)>",0);
@@ -893,9 +893,9 @@ class Ticket_Model extends CI_Model
 	}
 	public function send_countSubsource($stg_id,$fromdate,$todate)
 	{
-		$process	=	$this->session->userdata('process_id_id')??0;	
-		$comp_id = $this->session->userdata('comp_id');
-		$user_id = $this->session->userdata('user_id_id');
+		$process	=	$this->session->userdata('process')[0];	
+		$comp_id = $this->session->userdata('companey_id');
+		$user_id = $this->session->userdata('user_id');
 	
 		$all_reporting_ids  = $this->common_model->get_categories($user_id);
 		
@@ -906,8 +906,8 @@ class Ticket_Model extends CI_Model
 		$count = $this->db->where(array('tbl_ticket.process_id' => $process,'tbl_ticket.company' => $comp_id, 'tbl_ticket.ticket_substage' => $stg_id));
 		
 		if($fromdate!='all'){
-			$count=$this->db->where('last_update >=', $fromdate);
-			$count=$this->db->where('last_update <=', $todate);
+			$count=$this->db->where('coml_date >=', $fromdate);
+			$count=$this->db->where('coml_date <=', $todate);
 							 }
 							$count= $this->db->count_all_results('tbl_ticket');
 		return $count;

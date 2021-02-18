@@ -122,13 +122,13 @@ class Report_Ticket_datatable_model extends CI_Model{
             $this->db->where($where);
         }
 
-        if(!empty($this->session->process_id_id)){              
-        $arr = $this->session->process_id_id;           
+        if(!empty($this->session->process)){              
+        $arr = $this->session->process;           
             if(is_array($arr)){
                 $this->db->where_in("tbl_ticket.process_id",$arr);
             }    
         }
-        $this->db->where('company',$this->session->comp_id);
+        $this->db->where('company',$this->session->companey_id);
         return $this->db->count_all_results();
     }
     
@@ -148,8 +148,8 @@ class Report_Ticket_datatable_model extends CI_Model{
      */
     public function _get_datatables_query($postData){
         $this->load->model('common_model');
-        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id_id);
-        $comp_id = $this->session->comp_id;
+        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        $comp_id = $this->session->companey_id;
         $acolarr = array();
         $dacolarr = array();
         if(isset($_COOKIE["ticket_allowcols"])) {
@@ -315,10 +315,10 @@ class Report_Ticket_datatable_model extends CI_Model{
            $this->db->join('lead_description for_conv_desc','conv.sub_stage=for_conv_desc.id','left');
         }
 
-         $this->db->where("tck.company",$this->session->comp_id);
+         $this->db->where("tck.company",$this->session->companey_id);
 
-         if(!empty($this->session->process_id_id)){              
-            $arr = $this->session->process_id_id;           
+         if(!empty($this->session->process)){              
+            $arr = $this->session->process;           
             if(is_array($arr)){
                 $this->db->where_in("tck.process_id",$arr);
             }                       
@@ -535,7 +535,7 @@ $CHK = 0;
             $where .= " tck.ticket_status =  '".$ticket_status."'"; 
             $CHK =1;                             
         }
-        $uid    =   $this->session->user_id_id;
+        $uid    =   $this->session->user_id;
         if($top_filter=='total'){            
 
         }elseif($top_filter=='created'){            
