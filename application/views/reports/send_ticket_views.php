@@ -232,6 +232,7 @@
     var send_data = '<?php 
              $filters['from_created']=$fromdate;
              $filters['to_created']=$fromdate;
+             $filters['report']=$report;
              echo json_encode($filters);
             ?>';
 

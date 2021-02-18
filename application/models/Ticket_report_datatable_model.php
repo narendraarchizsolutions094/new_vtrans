@@ -6,18 +6,14 @@ class Ticket_Report_datatable_model extends CI_Model {
         $this->load->model('common_model');		
     }
     var $table = 'tbl_ticket'; 
-    function report_analitics($for){        
-        print_r($_POST);
+    function report_analitics($for){               
+        $report = $this->input->post('report');
+        $user_id = $report('created_by');      
 
-        $user_id = $this->session->userdata('user_id');       
-        if($this->session->user_id==''){  
-            $user_id=$user_id;  
-        }else{  
-            $user_id=$this->session->user_id;  
-        }  
-        $all_reporting_ids    =    $this->common_model->get_categories($user_id);    
-        $from = $this->input->post('from_created');
+        $user_id=$user_id;  
         
+        $all_reporting_ids    =    $this->common_model->get_categories($user_id);    
+        $from = $this->input->post('from_created');        
         $to= $this->input->post('to_created');
         $updated_from = $this->input->post('update_from_created');
         $updated_to = $this->input->post('update_to_created');
@@ -32,7 +28,7 @@ class Ticket_Report_datatable_model extends CI_Model {
         $stage = $this->input->post('stage');
         $sub_stage = $this->input->post('sub_stage');
         $ticket_status = $this->input->post('ticket_status');
-        $companey_id = $this->session->userdata('companey_id');
+        $companey_id = $report['comp_id'];
         $group_by = '';
         $from_table    =   'tbl_ticket';
         if($for == 'source_chart'){
@@ -60,13 +56,9 @@ class Ticket_Report_datatable_model extends CI_Model {
             $select = 'count(tbl_ticket.ticketno) as count,lead_source.lead_name as title';
             $group_by = 'tbl_ticket.sourse';
         }            
-            $this->db->select($select);   
-            if($this->session->companey_id==''){
-                $comp_id=$companey_id;
-            }else{
-                $comp_id=$this->session->companey_id;
-
-            }                   
+            $this->db->select($select);               
+            $comp_id=$companey_id;
+            
             $where = " tbl_ticket.company=".$comp_id."";      
             if ($from && $to) {
                 $to = str_replace('/', '-', $to);
@@ -107,11 +99,7 @@ class Ticket_Report_datatable_model extends CI_Model {
             }
            
             if($process_id!=''){
-            //    $where .= " AND tbl_ticket.process_id =".$process_id."";  
-            // print_r($process_id);
-            // die();
                $where .= " AND tbl_ticket.process_id IN (".$process_id. ")";  
-
             }
             if($problem!=''){
                 $where .= " AND tbl_ticket.issue =".$problem."";
@@ -129,11 +117,11 @@ class Ticket_Report_datatable_model extends CI_Model {
                 } else if ($updated_from && !$updated_to) {
                     $updated_from = str_replace('/', '-', $updated_from);            
                     $updated_from = date('Y-m-d', strtotime($updated_from));
-                    $where .= " AND Date(tbl_ticket_conv.send_date) LIKE '%$updated_from%'";
+                    $where .= " AND Date(tbl_ticket_conv.send_date) = '$updated_from'";
                 } else if (!$updated_from && $updated_to) {            
                     $updated_to = str_replace('/', '-', $updated_to);           
                      $updated_to = date('Y-m-d', strtotime($updated_to));
-                    $where .= " AND Date(tbl_ticket_conv.send_date) LIKE '%$updated_to%'";
+                    $where .= " AND Date(tbl_ticket_conv.send_date) = '$updated_to'";
                 }                
                 $this->db->join('tbl_ticket_conv','tbl_ticket_conv.tck_id=tbl_ticket.id','inner');              
               
@@ -263,17 +251,17 @@ class Ticket_Report_datatable_model extends CI_Model {
                 } else if ($updated_from && !$updated_to) {
                     $updated_from = str_replace('/', '-', $updated_from);            
                     $updated_from = date('Y-m-d', strtotime($updated_from));
-                    $where .= " AND Date(tbl_ticket_conv.send_date) LIKE '%$updated_from%'";
+                    $where .= " AND Date(tbl_ticket_conv.send_date) = '$updated_from'";
                 } else if (!$updated_from && $updated_to) {            
                     $updated_to = str_replace('/', '-', $updated_to);           
                      $updated_to = date('Y-m-d', strtotime($updated_to));
-                    $where .= " AND Date(tbl_ticket_conv.send_date) LIKE '%$updated_to%'";
+                    $where .= " AND Date(tbl_ticket_conv.send_date) = '$updated_to'";
                 }                
                 $this->db->join('tbl_ticket_conv','tbl_ticket_conv.tck_id=tbl_ticket.id','inner');              
               
             }
             if($ticket_status!=''){            
-                        $where .= " AND enquiry.ticket_status=".$ticket_status."";
+                $where .= " AND enquiry.ticket_status=".$ticket_status."";
             }
                      
             $this->db->join('tbl_product_country','tbl_product_country.id=tbl_ticket.product','left');   
