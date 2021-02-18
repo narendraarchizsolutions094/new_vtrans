@@ -40,6 +40,10 @@
         height: 550px;
         margin-left: auto;
     }
+    #chartdiv7{
+        width: 100%;
+        height: 660px;
+    }
 
     .card-graph {
         min-height: 250px;
