@@ -413,72 +413,72 @@
   if(!empty($_POST)){
   ?>
     $(document).ready(function() {
-        $('#ticket_table').DataTable({
-            "processing": true,
-            "scrollX": true,
-            "scrollY": 800,
-            "serverSide": true,
-            "lengthMenu": [
-                [10, 30, 50, 100, 500, 1000, -1],
-                [10, 30, 50, 100, 500, 1000, "All"]
-            ],
-            "columnDefs": [{
-                "orderable": false,
-                "targets": 0
-            }],
-            "order": [
-                [1, "desc"]
-            ],
-            "ajax": {
-                "url": "<?=base_url().'Ticket/report_ticket_load_data'?>",
-                "type": "POST",
-                error: function(u, v, w) {
-                    alert(w);
-                }
-            },
-            <?php if(user_access(317)) { ?>
-            dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",
-            buttons: [{
-                    extend: 'copy',
-                    className: 'btn-xs btn',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }
-                },
-                {
-                    extend: 'csv',
-                    title: 'list<?=date("Y-m-d H:i:s")?>',
-                    className: 'btn-xs btn',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }
-                },
-                {
-                    extend: 'excel',
-                    title: 'list<?=date("Y-m-d H:i:s")?>',
-                    className: 'btn-xs btn',
-                    title: 'exportTitle',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    title: 'list<?=date("Y-m-d H:i:s")?>',
-                    className: 'btn-xs btn',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }
-                },
-                {
-                    extend: 'print',
-                    className: 'btn-xs btn',
-                    exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }
-                }
-            ] <?php  } ?>
-        });
+        // $('#ticket_table').DataTable({
+        //     "processing": true,
+        //     "scrollX": true,
+        //     "scrollY": 800,
+        //     "serverSide": true,
+        //     "lengthMenu": [
+        //         [10, 30, 50, 100, 500, 1000, -1],
+        //         [10, 30, 50, 100, 500, 1000, "All"]
+        //     ],
+        //     "columnDefs": [{
+        //         "orderable": false,
+        //         "targets": 0
+        //     }],
+        //     "order": [
+        //         [1, "desc"]
+        //     ],
+        //     "ajax": {
+        //         "url": "<?=base_url().'Ticket/report_ticket_load_data'?>",
+        //         "type": "POST",
+        //         error: function(u, v, w) {
+        //             alert(w);
+        //         }
+        //     },
+        //     <?php if(user_access(317)) { ?>
+        //     dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",
+        //     buttons: [{
+        //             extend: 'copy',
+        //             className: 'btn-xs btn',
+        //             exportOptions: {
+        //                 columns: "thead th:not(.noExport)"
+        //             }
+        //         },
+        //         {
+        //             extend: 'csv',
+        //             title: 'list<?=date("Y-m-d H:i:s")?>',
+        //             className: 'btn-xs btn',
+        //             exportOptions: {
+        //                 columns: "thead th:not(.noExport)"
+        //             }
+        //         },
+        //         {
+        //             extend: 'excel',
+        //             title: 'list<?=date("Y-m-d H:i:s")?>',
+        //             className: 'btn-xs btn',
+        //             title: 'exportTitle',
+        //             exportOptions: {
+        //                 columns: "thead th:not(.noExport)"
+        //             }
+        //         },
+        //         {
+        //             extend: 'pdf',
+        //             title: 'list<?=date("Y-m-d H:i:s")?>',
+        //             className: 'btn-xs btn',
+        //             exportOptions: {
+        //                 columns: "thead th:not(.noExport)"
+        //             }
+        //         },
+        //         {
+        //             extend: 'print',
+        //             className: 'btn-xs btn',
+        //             exportOptions: {
+        //                 columns: "thead th:not(.noExport)"
+        //             }
+        //         }
+        //     ] <?php  } ?>
+        // });
     });
     <?php
   }
