@@ -211,6 +211,7 @@ if(!empty($failurePoints)){
 
                             if(!empty($description)){
                                 foreach($description as $key=>$value){
+                                    if ($value['lead_stage_id'] == 1) {
                                     ?>
                                     <tr>
                                         <td><?=$value['description']?></td>
@@ -258,6 +259,7 @@ if(!empty($failurePoints)){
                                         ?>       
                                     </tr>
                                     <?php
+                                }
                                 }
                             }
                             ?>
