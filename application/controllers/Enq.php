@@ -79,6 +79,7 @@ class Enq extends CI_Controller
 		
 		$this->load->model('enquiry_datatable_model');
 		$list = $this->enquiry_datatable_model->get_datatables();
+
 		if($this->session->companey_id == 1){
 			//echo $this->db->last_query();
 		}
@@ -99,7 +100,8 @@ class Enq extends CI_Controller
 		if (!empty($enqarr) and !empty($dacolarr)) {
 		}
 		$fieldval =  $this->enquiry_model->getfieldvalue(); 
-		foreach ($list as $each) {
+		foreach ($list as $each) 
+		{
 			$no++;
 			$row = array();
 			$row[] = "<input onclick='event.stopPropagation();'' type='checkbox' name='enquiry_id[]'' class='checkbox1' value=" . $each->enquiry_id . ">";
@@ -268,13 +270,15 @@ class Enq extends CI_Controller
 	}
 	public function short_dashboard_count()
 	{
-		$this->common_query_short_dashboard();
+		$this->common_query_short_dashboard(0);
 		$data['all_enquery_num'] = $this->db->count_all_results();
 
 
 		$this->common_query_short_dashboard(0); 
 		$this->db->where('enquiry.drop_status>0');
 		$data['all_drop_num'] = $this->db->count_all_results();
+
+	
 
 		$this->common_query_short_dashboard();
 		$this->db->where(' enquiry.drop_status=0');
@@ -361,12 +365,14 @@ class Enq extends CI_Controller
 	}
 	public function enquiry_set_filters_session()
 	{
+
 		$this->session->set_userdata('enquiry_filters_sess', $_POST);
 	}
 	public function set_process_session()
 	{
 		$this->session->set_userdata('process', $this->input->post('process'));
 	}
+	
 	public function enquiry_disposition($enq)
 	{
 
@@ -478,9 +484,10 @@ class Enq extends CI_Controller
 	    $column_search = array('enquiry.name_prefix','enquiry.enquiry_id','enquiry.company','enquiry.org_name','enquiry.name','enquiry.lastname','enquiry.email','enquiry.phone','enquiry.address','enquiry.created_date','enquiry.enquiry_source','lead_source.icon_url','lead_source.lsid','lead_source.score_count','lead_source.lead_name','tbl_datasource.datasource_name','tbl_product.product_name',"CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name )","CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name)"); //set column field database for datatable searchable 
 	    $order = array('enquiry.enquiry_id' => 'desc'); // default order 
 	    $all_reporting_ids  = $this->common_model->get_categories($this->session->user_id);
+
 	       $this->db->from($table);       
 	       
-	       $user_id   = $this->session->user_id;
+	      $user_id   = $this->session->user_id;
 	    $where='';
         $enquiry_filters_sess   =   $this->session->enquiry_filters_sess;
         $top_filter             =   !empty($enquiry_filters_sess['top_filter'])?$enquiry_filters_sess['top_filter']:'';        

@@ -222,11 +222,11 @@ class Dashboard extends REST_Controller {
 
     public function unique_company_list_post()
     {
-        $user_id = $this->input->post('user_id');
+        $user_id = $this->input->post('user_id')??0;
         $company_id = $this->input->post('company_id');
         $process =  $this->input->post('process');//can be multiple
         $key = $this->input->post('key')??'';
-        $this->form_validation->set_rules('user_id','user_id', 'trim|required');
+
         $this->form_validation->set_rules('company_id','company_id', 'trim|required');
         $this->form_validation->set_rules('process','process', 'trim|required');
         if($this->form_validation->run()==true)

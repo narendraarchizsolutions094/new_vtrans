@@ -1505,6 +1505,7 @@ $(document).on('click',".top_pill",function(){
         
         //update_top_filter_counter(); 
         var form_data = $("#enq_filter").serialize();  
+        console.log(form_data);
         <?php
           if(!empty($_GET['desposition']))
           {
@@ -1793,7 +1794,7 @@ if($('.checkbox1:checked').size() > 1000){
   data: $('#enquery_assing_from').serialize(),
   success:function(data){
           if(data.trim()=='1'){
-         alert('Successfully Droped <?=display('enquiry')?>'); 
+         alert('Successfully Dropped <?=display('enquiry')?>'); 
         window.location.href=re_url;
       }else{
         alert(data); 

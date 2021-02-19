@@ -595,10 +595,10 @@ class Enquiry extends CI_Controller
                     echo json_encode(array('status' => 'success'));
                 } else {
                      if($this->input->post('red')=='visits'){
-                        $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
+                        $this->session->set_flashdata('message', 'Your '.display('enquiry').' has been  Successfully created');
                         redirect(base_url('client/visits'));
                      }else{
-                        $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
+                        $this->session->set_flashdata('message', 'Your '.display('enquiry').' has been  Successfully created');
                         redirect(base_url() . 'enquiry/view/' . $insert_id);
                      }
 
@@ -3779,7 +3779,7 @@ echo  $details1;
         $key = $this->input->post('search');
         $this->load->model('Client_Model');
         $company_id = $this->session->companey_id;
-        $user_id = $this->session->user_id;
+        $user_id = 0; //$this->session->user_id;
         $process = $this->session->process;
         $res = $this->Client_Model->getCompanyList($key,$company_id,$user_id,$process,'data',10,0)->result_array();
         

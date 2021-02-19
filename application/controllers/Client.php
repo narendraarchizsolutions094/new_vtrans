@@ -1667,6 +1667,7 @@ public function view_editable_aggrement()
 		}  
        // print_r($data['contact_list']->result_array()); exit();
         $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
+        
         $data['company_list'] = $this->Client_Model->getCompanyList()->result();
         $data['content'] = $this->load->view('enquiry/visits', $data, true);
         $this->load->view('layout/main_wrapper', $data);

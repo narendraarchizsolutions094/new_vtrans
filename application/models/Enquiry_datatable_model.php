@@ -94,7 +94,7 @@ class Enquiry_datatable_model extends CI_Model {
     // echo $top_filter; exit();
 
         if($top_filter=='all')
-        {            
+        {
             $where.="  enquiry.status=$data_type";
         }
         else if($top_filter=='droped')
@@ -121,22 +121,22 @@ class Enquiry_datatable_model extends CI_Model {
         else if($top_filter == 'assigned')
         {   
             $where.=" enquiry.status=$data_type";
-            $where.=" AND enquiry.aasign_to is not NULL";
+            $where.=" AND enquiry.aasign_to is not NULL AND enquiry.drop_status=0" ;
 
         }
         else if($top_filter == 'unassigned')
         {
             $where.="enquiry.status=$data_type";
-            $where.=" AND enquiry.aasign_to is NULL";
+            $where.=" AND enquiry.aasign_to is NULL AND enquiry.drop_status=0";
         }
         else if($top_filter == 'pending')
         {
             $where.="  enquiry.status=$data_type";
-            $where.=" AND enquiry.lead_stage=0";
+            $where.=" AND enquiry.lead_stage=0 AND enquiry.drop_status=0";
         }
         else{                        
             $where.="  enquiry.status=$data_type";
-            $where.=" AND enquiry.drop_status=0";
+            $where.=" AND enquiry.drop_status=0 ";
         }                   
         if(isset($enquiry_filters_sess['lead_stages']) && $enquiry_filters_sess['lead_stages'] !=-1){
             $stage  =   $enquiry_filters_sess['lead_stages'];
