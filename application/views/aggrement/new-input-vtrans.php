@@ -1051,7 +1051,7 @@ normal"><span style="font-size:12.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 				<td>Both</td>
 				<td style="width: 18px;"><input type="radio" name="ip[39]"  value="both" <?=$ip[39]=='both'?'checked':''?>></td>
 			</tr>
-		</table>
+			</table>
 		</div>
 	</div>
 </div>

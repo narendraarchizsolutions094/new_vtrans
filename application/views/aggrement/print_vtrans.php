@@ -995,12 +995,18 @@ normal"><span style="font-size:12.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 		<?=$ip[38]?>
 		</div>
 		<div style="width: 28%; display: inline-block;" align="right">
+
 			<table border="1px" cellspacing="0px" style="color: black; font-size:14px;">
 			<tr>
-
-				<td style="padding:3px"><?=ucwords($ip[39])?></td>
+				<td style="padding:3px">Sundry </td>
+				<td style="width: 18px;"><?=$ip[39]=='sundry'?'<i class="fa fa-check"></i>':''?></td>
+				<td>FTL</td>
+				<td style="width: 18px;"><?=$ip[39]=='ftl'?'<i class="fa fa-check"></i>':''?></td>
+				<td>Both</td>
+				<td style="width: 18px;"><?=$ip[39]=='both'?'<i class="fa fa-check"></i>':''?></td>
 			</tr>
-		</table>
+			</table>
+
 		</div>
 	</div>
 </div>

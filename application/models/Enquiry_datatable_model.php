@@ -95,7 +95,7 @@ class Enquiry_datatable_model extends CI_Model {
 
         if($top_filter=='all')
         {
-            $where.="  enquiry.status=$data_type";
+            $where.="  enquiry.status=$data_type ";
         }
         else if($top_filter=='droped')
         {            
@@ -136,7 +136,7 @@ class Enquiry_datatable_model extends CI_Model {
         }
         else{                        
             $where.="  enquiry.status=$data_type";
-            $where.=" AND enquiry.drop_status=0 ";
+            $where.=" AND enquiry.drop_status=0";
         }                   
         if(isset($enquiry_filters_sess['lead_stages']) && $enquiry_filters_sess['lead_stages'] !=-1){
             $stage  =   $enquiry_filters_sess['lead_stages'];

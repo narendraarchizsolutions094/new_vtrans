@@ -656,7 +656,7 @@ class Lead extends REST_Controller {
                $this->db->update('allleads');
                $data['enquiry'] = $this->Leads_Model->get_leadListDetailsby_ledsonly($key);
                $lead_code = $data['enquiry']->lead_code;
-               $this->Leads_Model->add_comment_for_events('Converted to clients',$lead_code);
+               $this->Leads_Model->add_comment_for_events('Converted to '.display('client'),$lead_code);
              
                $mail_access  = $this->enquiry_model->access_mail_temp(); //access mail template..
                

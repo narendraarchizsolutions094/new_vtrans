@@ -155,7 +155,7 @@ class Lead extends CI_Controller
             $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
             $lead_code = $data['details']->Enquery_id;
             $stage_code = $data['details']->lead_stage;
-            $this->Leads_Model->add_comment_for_events('Update Leads', $lead_code, $stage_code);
+            $this->Leads_Model->add_comment_for_events('Update '.display('lead'), $lead_code, $stage_code);
             redirect('lead/lead_details/' . $enquiry_id);
         }
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
@@ -796,7 +796,7 @@ class Lead extends CI_Controller
                         }
                     }
                 } else  {
-                    $ccomment = 'Converted to clients';
+                    $ccomment = 'Converted to '.display('client');
                 }
                 // get data from comment and insert into follow up table.
                 $getComment = $this->db->where(array('comment_msg' => $ccomment, 'lead_id' => $Enquery_id))->get('tbl_comment');
@@ -1073,7 +1073,7 @@ class Lead extends CI_Controller
                 redirect('lead');
                 $data['enquiry'] = $this->Leads_Model->get_leadListDetailsby_id($this->input->post('lead_id_name'));
                 $lead_code = $data['enquiry']->lead_code;
-                $this->Leads_Model->add_comment_for_events('Converted to clients', $lead_code);
+                $this->Leads_Model->add_comment_for_events('Converted to '.display('client'), $lead_code);
             }
         }
     }
@@ -1148,7 +1148,7 @@ class Lead extends CI_Controller
         $this->db->update('enquiry');
         $data['enquiry'] = $this->Leads_Model->get_leadListDetailsby_ledsonly($id);
         $lead_code = $data['enquiry']->Enquery_id;
-        $this->Leads_Model->add_comment_for_events('Lead actived ', $lead_code);
+        $this->Leads_Model->add_comment_for_events(display('lead').' actived ', $lead_code);
         $this->session->set_flashdata('message', "Activated Successfully");
         redirect('lead/lead_details/' . $id);
     }
@@ -1168,7 +1168,7 @@ class Lead extends CI_Controller
                     $this->db->update('enquiry');
                     $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($key);
                     $lead_code = $data['details']->Enquery_id;
-                    $this->Leads_Model->add_comment_for_events('Assign Leads', $lead_code);
+                    $this->Leads_Model->add_comment_for_events('Assign '.display('lead'), $lead_code);
                 }
                 echo display('save_successfully');
             } else {
@@ -1190,7 +1190,7 @@ class Lead extends CI_Controller
                     $this->db->update('allleads');
                     $data['enquiry'] = $this->Leads_Model->get_leadListDetailsby_ledsonly($key);
                     $lead_code = $data['enquiry']->lead_code;
-                    $this->Leads_Model->add_comment_for_events('Leads Assigned To Pre-Salses', $lead_code);
+                    $this->Leads_Model->add_comment_for_events(display('lead').' Assigned To Pre-Salses', $lead_code);
                 }
                 echo '1';
             } else {
@@ -1212,7 +1212,7 @@ class Lead extends CI_Controller
                     $this->db->update('enquiry');
                     $data['enquiry'] = $this->Leads_Model->get_leadListDetailsby_ledsonly($key);
                     $lead_code = $data['enquiry']->Enquery_id;
-                    $this->Leads_Model->add_comment_for_events('Dropped Leads', $lead_code);
+                    $this->Leads_Model->add_comment_for_events('Dropped '.display('lead'), $lead_code);
                 }
                 echo '1';
             } else {

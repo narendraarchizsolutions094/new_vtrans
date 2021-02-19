@@ -155,6 +155,7 @@
 
         if(typeof(relocate_mobile)=== 'function')
           relocate_mobile();
+        $('select').select2();
       }
     });
   }

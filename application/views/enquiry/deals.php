@@ -573,15 +573,14 @@ $(window).load(function(){
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <input type="submit" name="download" class="btn btn-primary" value="Download">
-            <input type="submit" name="email" class="btn btn-primary" value="Email">
+            <input type="submit" name="submit" class="btn btn-primary" value="Download">
+            <input type="submit" onclick="return confirm('Are you sure?')" name="submit" class="btn btn-primary" value="Email">
          </div>
          </form> 
 
       </div>
    </div>
 </div>
-
 
 <div id="table-col-conf" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg" style="width: 96%;">

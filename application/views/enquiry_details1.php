@@ -1845,8 +1845,8 @@ function update_info_status(id,status)
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <input type="submit" name="download" class="btn btn-primary" value="Download">
-            <input type="submit" name="email" class="btn btn-primary" value="Email">
+            <input id="download-q" type="submit" name="submit" class="btn btn-primary" value="Download">
+            <input id="send-q" type="submit" name="submit" value="Email" class="btn btn-primary">
          </div>
          </form> 
 
@@ -1855,7 +1855,8 @@ function update_info_status(id,status)
 </div>
 <script>
 
-function quotation_pdf(info_id) {
+function quotation_pdf(info_id) 
+{
     $(".data_value").html('<center><i class="fa fa-spinner fa-spin" style="font-size:34px;"></i></center>');
    // var elem = document.getElementById('view_sdatas');
     $.ajax({
@@ -5674,6 +5675,9 @@ $("a[href$='#related_enquiry']").on('click',function(){
        cache: false,
        contentType: false,
        processData: false,
+       beforeSend:function(){
+        $(form).find('input[type=submit]').attr('disabled','disabled');
+       },
        success: function(data)
        {
            res = JSON.parse(data);
@@ -5698,7 +5702,8 @@ $("a[href$='#related_enquiry']").on('click',function(){
               title: 'Oops...',
               text: 'Something went wrong!'
             })
-           }           
+           }  
+           $(form).find('input[type=submit]').removeAttr('disabled');         
        }
      });
   });

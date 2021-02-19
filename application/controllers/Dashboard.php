@@ -3794,7 +3794,7 @@ public function set_layout_to_session() {
         $this->load->library('pdf');
         // $download=$this->input->post('download');
 
-        if(!empty($this->input->post('email')))
+        if($this->input->post('submit')=='Email')
         {
         $folder =  explode('/',$_SERVER['REQUEST_URI'])[1];
 

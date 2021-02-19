@@ -43,7 +43,7 @@ if (!function_exists('display')) {
                         if (!empty($row->$language)) {
                             return $row->$language;
                         } else {
-                            return false;
+                            return $text;
                         }
                     } else {
                         return false;

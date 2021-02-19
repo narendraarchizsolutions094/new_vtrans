@@ -2471,7 +2471,7 @@ public function get_enq_list_post(){
           $res =$this->db->affected_rows(); 
           if($res)
           {
-            $this->Leads_Model->add_comment_for_events($tabname." Deleted  From This Enquiry", $enquiry_code);
+            $this->Leads_Model->add_comment_for_events($tabname." Deleted ", $enquiry_code);
             $this->set_response([
             'status'      => TRUE,           
             'msg'  => 'success',

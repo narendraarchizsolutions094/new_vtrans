@@ -223,14 +223,14 @@ class Client extends REST_Controller {
             
               $this->set_response([
               'status' => true,
-              'message' => array(array('error'=>'Client Assigned successfully to Sales'))  
+              'message' => array(array('error'=>display('client').' Assigned successfully to Sales'))  
                ], REST_Controller::HTTP_OK);
             
             }else{
             
                $this->set_response([
               'status' => false,
-              'message' => array(array('error'=>'No client found to assign.'))  
+              'message' => array(array('error'=>'No '.display('client').' found to assign.'))  
                ], REST_Controller::HTTP_OK);
             
             }
@@ -244,7 +244,7 @@ class Client extends REST_Controller {
       }
 
        public function assign_installation_post(){  // assign to service
-          $this->form_validation->set_rules('client_code[]','Client Code','required');
+          $this->form_validation->set_rules('client_code[]',display('client').' Code','required');
           $this->form_validation->set_rules('user_id','User Id','required');
           $this->form_validation->set_rules('assign_employee','Assigned to user id','required');
           
@@ -292,14 +292,14 @@ class Client extends REST_Controller {
 
                        $this->set_response([
                   'status' => true,
-                  'message' => array(array('error'=>'Client Assigned successfully for Installation'))  
+                  'message' => array(array('error'=>display('client').' Assigned successfully for Installation'))  
                    ], REST_Controller::HTTP_OK);
                       
                 }else{
             
                  $this->set_response([
                 'status' => false,
-                'message' => array(array('error'=>'No client found to assign.'))  
+                'message' => array(array('error'=>'No '.display('client').' found to assign.'))  
                  ], REST_Controller::HTTP_OK);
             
               }

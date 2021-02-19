@@ -270,7 +270,7 @@ class Client extends CI_Controller {
             $enquiry_code = $enq->row()->Enquery_id;
             $this->Leads_Model->add_comment_for_events(display("new_contact_detail_added") , $enquiry_code);
             $insert_id = $this->Client_Model->clientContact($data);
-            $this->session->set_flashdata('message', 'Client Contact Add Successfully');
+            $this->session->set_flashdata('message', display('client').' Contact Add Successfully');
         }
 
         if($this->input->post('redirect_url')){
@@ -938,7 +938,18 @@ class Client extends CI_Controller {
         }else if($type == 3){
              $comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
         }
-        
+        else
+        {
+             $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');
+                if (!empty($enquiry_separation)) {                    
+                    
+                    $enquiry_separation = json_decode($enquiry_separation,true);                    
+                    $title = $enquiry_separation[$type]['title'];                    
+                    $comment_msg = $title.' Updated'; 
+                    $comment_id = $this->Leads_Model->add_comment_for_events($comment_msg, $en_comments,$enqarr->comp_id);
+                    
+                }
+        }
         if(!empty($enqarr)){        
             if(isset($_POST['inputfieldno'])) {                    
                 $inputno   = $this->input->post("inputfieldno", true);

@@ -782,7 +782,7 @@ class Enquiry extends CI_Controller
                     }
                 }
                 $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode);
-                $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
+                $this->session->set_flashdata('message', 'Your '.display('enquiry').' has been  Successfully created');
                 redirect(base_url() . 'enquiry');
             }
         } else {
@@ -865,7 +865,7 @@ class Enquiry extends CI_Controller
             if ($this->enquiry_model->create($postData)) {
                 $insert_id = $this->db->insert_id();
                 $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode);
-                $this->session->set_flashdata('message', 'Your Enquiry has been  Successfully created');
+                $this->session->set_flashdata('message', 'Your '.display('enquiry').' has been  Successfully created');
                 redirect(base_url() . 'enquiry/view/' . $insert_id);
             }
         } else {
@@ -1000,7 +1000,7 @@ class Enquiry extends CI_Controller
                     $this->db->set('task_time',date('H:i:s'));
                     $this->db->set('create_by',$this->session->user_id);
                     $this->db->set('task_type','0');
-                    $this->db->set('subject','Enquiry Assigned');
+                    $this->db->set('subject',display('enquiry').' Assigned');
                     $this->db->insert('query_response');
                 }
                 $this->db->update_batch('enquiry', $assign_data, 'enquiry_id');
@@ -1295,7 +1295,7 @@ class Enquiry extends CI_Controller
                     </div>
                   </div>
                 </li>';
-            } else if ($comments->comment_msg == 'Enquiry Created') {
+            } else if ($comments->comment_msg == display('enquery_create')) {
                 $html .= '   <li>
                   <div class="cbp_tmicon cbp_tmicon-phone"  style="background:#d68910;"></div>
                   <div class="cbp_tmlabel"  style="background:#95a5a6;">
@@ -1401,7 +1401,7 @@ class Enquiry extends CI_Controller
                     unlink($k['fvalue']);
                 }
             }
-            $this->Leads_Model->add_comment_for_events("$tabname Deleted From This Enquiry", $enqcode);
+            $this->Leads_Model->add_comment_for_events("$tabname Deleted ", $enqcode);
         }
         redirect($this->agent->referrer());
     }
