@@ -555,12 +555,12 @@ to<span style="letter-spacing:-1.55pt"> </span>make<span style="letter-spacing:
 </span>to<span style="letter-spacing:-1.7pt"> </span>pay<span style="letter-spacing:
 -1.7pt"> </span>all<span style="letter-spacing:-1.7pt"> </span>invoice/s<span style="letter-spacing:-1.65pt"> </span>within 
 
-<input type="text" name="ip[19]" style="width: 15px">
+<input type="text" name="ip[19][0]" value="7" style="width: 15px">
 
 <span style="letter-spacing:.15pt">
 </span>days<span style="letter-spacing:-1.7pt"> </span>from<span style="letter-spacing:-1.7pt"> </span>the<span style="letter-spacing:-1.7pt"> </span>date<span style="letter-spacing:-1.7pt"> </span>of<span style="letter-spacing:-1.7pt"> </span>invoice<span style="letter-spacing:-1.65pt"> </span>submission.<span style="letter-spacing:
 -2.2pt"> </span>Upon<span style="letter-spacing:-1.7pt"> </span>failure to<span style="letter-spacing:-2.2pt"> </span>pay<span style="letter-spacing:-2.15pt"> </span>the<span style="letter-spacing:-2.15pt"> </span>same<span style="letter-spacing:-2.15pt">
-</span>interest,<span style="letter-spacing:-2.45pt"> </span>@18%<span style="letter-spacing:-2.15pt"> </span>per<span style="letter-spacing:-2.15pt">
+</span> interest,<span style="letter-spacing:-2.45pt"> </span>@ <input name="ip[19][1]" value="18" style="width:35px">%<span style="letter-spacing:-2.15pt"> </span>per<span style="letter-spacing:-2.15pt">
 </span>annum<span style="letter-spacing:-2.15pt"> </span>shall<span style="letter-spacing:-2.1pt"> </span>be<span style="letter-spacing:-2.15pt"> </span>charged<span style="letter-spacing:-2.15pt"> </span>on<span style="letter-spacing:-2.15pt"> </span>the<span style="letter-spacing:-2.15pt"> </span>overdue<span style="letter-spacing:-2.15pt">
 </span>outstanding<span style="letter-spacing:-2.2pt"> </span>amount<span style="letter-spacing:-2.15pt"> </span>plus<span style="letter-spacing:-2.15pt">
 </span>GST<span style="letter-spacing:-2.1pt"> </span>at <span style="mso-font-width:95%">the<span style="letter-spacing:-.9pt"> </span>applicable<span style="letter-spacing:-.2pt"> </span>rate.<span style="letter-spacing:-2.05pt">

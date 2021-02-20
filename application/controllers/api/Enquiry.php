@@ -84,7 +84,7 @@ class Enquiry extends REST_Controller {
       			$user =$this->User_model->read_by_id($crtdby);
             $postData = [                
                 'user_role' => $user->user_roles,
-                'email' => $this->input->post('email', true),
+                'email' => $this->input->post('email', true)??'',
         				'phone' => $this->input->post('mobileno', true),
         				'other_phone' => $this->input->post('other_phone', true),				
                 'name_prefix' => $this->input->post('name_prefix', true),
@@ -120,7 +120,7 @@ class Enquiry extends REST_Controller {
             	$this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');
     			    $this->db->where('Enquery_id',$this->input->post('update'));
     			    $e_row	=	$this->db->get('enquiry')->row_array();
-    			    $msg	=	'Enquiry successfully updated';
+    			    $msg	=	display('enquiry',$comp_id).' successfully updated';
 			        $this->Leads_Model->add_comment_for_events(display("information_updated"), $this->input->post('update'),'',$this->input->post('user_id'));
             }
             else
@@ -136,14 +136,14 @@ class Enquiry extends REST_Controller {
                 $data_type_id = $_POST['other_id'];
 
             	$postData['status'] = $data_type_id;
-            	$this->enquiry_model->create($postData,$this->input->post('company_id'));
-    			    $insert_id = $this->db->insert_id();
+            	
+    			    $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_id'));
     			    $this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');
     			    $this->db->where('enquiry_id',$insert_id);
     			    $e_row	=	$this->db->get('enquiry')->row_array();
-    			    $msg	=	'Enquiry successfully created';
+    			    $msg	=	display('enquiry').' successfully created';
 			    
-			        $this->Leads_Model->add_comment_for_events(display("enquery_create"), $encode,'',$this->input->post('user_id'));
+			        $this->Leads_Model->add_comment_for_events(display("enquery_create",$comp_id), $encode,'',$this->input->post('user_id'));
             }
             if($insert_id)
             {
@@ -174,7 +174,7 @@ class Enquiry extends REST_Controller {
                               $this->db->insert('extra_enquery',$biarr);
                         }
                     }
-                  } 
+              } 
               if(!empty($this->input->post('inputtype')))
               {
                 foreach($this->input->post('inputtype') as $ind => $val)
@@ -897,7 +897,7 @@ public function updateEnquiryTab_post()
 				$insarr['lead_stage'] = 172; 		//first form submitted;
 				$ret = $this->db->insert('enquiry', $insarr);	
 				$enqno = $this->db->insert_id();		
-				$comment = display("enquery_create");
+				$comment = display("enquery_create",$comp_id);
                 $this->Leads_Model->add_comment_for_events_stage_api($comment, $encode,0,'','',191,0);
                 $this->Leads_Model->add_comment_for_events_stage_api('Stage Updated', $encode,172,'','',191,0);
 				$process_id	=	$this->input->post('process_id', true);				

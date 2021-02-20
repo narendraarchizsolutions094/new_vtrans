@@ -2359,7 +2359,7 @@ public function all_update_expense_status()
 
                 echo'
                 <form id="data_table">
-                <input name="deal_type" type="hidden" value="'.$deal_type.'">
+                <input name="deal_type" type="hidden" value="'.implode(',',$deal_type).'">
                 <input name="booking_type" type="hidden" value="'.$booking_type.'">
                 <input name="business_type" type="hidden" value="'.$business_type.'">
                 <input name="btype" type="hidden" value="'.$btype.'">
@@ -2382,9 +2382,9 @@ public function all_update_expense_status()
                                     <option '.($oc['rate_type']=='KG'?'selected':'').'>KG</option>
                                     <option '.($oc['rate_type']=='Box'?'selected':'').'>Box</option>
                                 </select></th>
-                        <th style="width:95px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>
-                        <th style="width:98px">Paymode <label class="badge pull-right" onclick="rep_paymode()">R</label></th>
-                        <th style="width:100px">Insurance <label class="badge pull-right" onclick="rep_insurance()">R</label></th>
+                        <th style="width:75px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>
+                        <th style="width:130px">Paymode <label class="badge pull-right" onclick="rep_paymode()">R</label></th>
+                        <th style="width:115px">Insurance <label class="badge pull-right" onclick="rep_insurance()">R</label></th>
                         <th>Expected Tonnage <label class="badge pull-right" onclick="rep_eton()">R</label></th>
                         <th>Expected Amount</th>
                         <th>Potential Tonnage <label class="badge pull-right" onclick="rep_pton()">R</label></th>
@@ -2448,6 +2448,8 @@ public function all_update_expense_status()
                                 <option value="paid" '.($paymode=='paid'?'selected':'').'>Paid</option>
                                 <option value="topay" '.($paymode=='topay'?'selected':'').'>To-Pay</option>
                                 <option value="tbb" '.($paymode=='tbb'?'selected':'').'>TBB</option>
+                                <option value="tbb_topay" '.($paymode=='tbb_topay'?'selected':'').'>TBB + To-pay</option>
+                                <option value="paid_topay" '.($paymode=='paid_topay'?'selected':'').'>Paid + To-pay</option>
                                 </select>
                             </td>
                             <td><select name="insurance['.$row->id.']" data-id="'.$row->id.'"  class="insurance_ip">
@@ -3063,7 +3065,14 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
             <div style="width:735px; min-height:100%; padding:40px; margin:15px; background:white;">
             '.$data.'
             </div>
-            <center><button >Generate PDF</button></center>
+            <center><button style="    padding: 15px 25px;
+    background: #209ed9;
+    color: white;
+    margin: 15px;
+    border: 0px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 15px;" onclick="">Generate PDF</button></center>
             </form>
         </div>
         </body>

@@ -447,6 +447,22 @@ if($root=='https://student.spaceinternationals.com'){  ?>
     ;
     </style>
 
+<div class="screen-cover" align="center">
+  <img src="https://i.stack.imgur.com/kOnzy.gif" style="width: 100px; margin:15%">
+</div>
+<style type="text/css">
+  .screen-cover
+  {
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    background: rgb(255 255 255 / 98%);
+    position: fixed;
+    z-index: 9190;
+  }
+</style>
+
 </head>
 
 <body class="sidebar-mini <?php if($this->session->menu==1){echo 'sidebar-collapse';}?>"
@@ -3128,5 +3144,8 @@ jQuery(function($) { //on document.ready
     $('.form-date').datepicker({
         dateFormat: 'yy-mm-dd'
     });
+});
+$(document).on('ready',function(){
+  $(".screen-cover").hide();
 });
 </script>

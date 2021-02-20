@@ -848,9 +848,9 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
 			    <li href="#payment" data-toggle="tab" >Payment</li>
               <li  href="#aggrement" data-toggle="tab" >Aggrement</li>
 			<?php } ?>
-			<li href="#task" data-toggle="tab" >Task</li>
+			     <li href="#task" data-toggle="tab" >Task</li>
             
-            <li href="#related_enquiry" data-toggle="tab">Related Data</li>
+           <!--  <li href="#related_enquiry" data-toggle="tab">Related Data</li> -->
             <?php if($this->session->companey_id=='83'){ ?>
             <li href="#login-tab" data-toggle="tab" >Login Trail</li>
             <?php } ?>
@@ -5892,4 +5892,5 @@ $(".nav-tabs li").on('click',function(){
   $(window).trigger('resize');
   $(window).trigger('resize');
 });
+
 </script>

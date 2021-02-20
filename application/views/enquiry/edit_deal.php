@@ -26,9 +26,16 @@ if(!empty($deal_data))
 			<label>Deal Type</label>
 	        <select class="form-control" name="deal_type" onchange="{
 	        	$('input[name=deal_type]').val(this.value);
-	        }">
-	            <option value="domestic" <?=$deal->deal_type=='domestic'?'selected':''?>>Domestic</option>
-	            <option value="saarc" <?=$deal->deal_type=='saarc'?'selected':''?>>Saarc</option>
+	        }" multiple>
+	        <?php
+	        $d_array = array();
+	        if(!empty($deal->deal_type))
+	        {
+	        	$d_array = explode(',', $deal->deal_type);
+	        }
+	        ?>
+	            <option value="domestic" <?=in_array('domestic',$d_array)?'selected':''?>>Domestic</option>
+	            <option value="saarc" <?=in_array('saarc',$d_array)?'selected':''?>>Saarc</option>
 	        </select>
 		</div>
 		<div class="col-lg-3">

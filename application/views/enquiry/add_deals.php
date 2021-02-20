@@ -13,9 +13,9 @@
 			<label>Deal Type</label>
 	        <select class="form-control" name="deal_type" onchange="{
 	        	$('input[name=deal_type]').val(this.value);
-	        }">
+	        }" multiple>
 	            <option value="domestic">Domestic</option>
-	            <option value="saarc">Saarc</option>
+	            <option value="saarc">SAARC</option>
 	        </select>
 		</div>
 		<div class="col-lg-3">
