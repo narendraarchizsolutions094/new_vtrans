@@ -14,7 +14,7 @@
   define('REMARK_FIELD',12);  
   define('PREFERRED_COUNTRY_FIELD',13);  
   define('PIN_CODE',14);
-  define('SUB_SOURCE',15);
+  define('SUB_SOURCE',51);
   ?>
 <hr>
 <?php echo form_open_multipart('client/updateclient/'.$details->enquiry_id,'class="form-inner"') ?>  

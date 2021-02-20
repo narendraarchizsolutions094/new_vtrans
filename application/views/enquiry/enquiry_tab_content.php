@@ -31,7 +31,7 @@ $type="text";
   define('REMARK_FIELD',12);  
   define('PREFERRED_COUNTRY_FIELD',13);  
   define('PIN_CODE',14);
-  define('SUB_SOURCE',15);
+  define('SUB_SOURCE',51);
   ?>
 <hr>
 <?php $viewpro=$this->uri->segment(2); ?>
@@ -189,7 +189,7 @@ $type="text";
    <div class="form-group   col-sm-4 col-md-6 enq-source">
       <label><?php echo display('lead_source') ?></label>
       <select class="form-control" name="lead_source" id="lead_source" onchange="find_sub1()">
-         <option value=""><?php echo display('lead_source') ?></option>
+         <option value="">--Select Source--</option>
          <?php 
             foreach ($leadsource as $post){?>
          <option value="<?= $post->lsid?>" <?php if($details->enquiry_source==$post->lsid){echo 'selected';}?>><?= $post->lead_name?></option>
@@ -204,7 +204,7 @@ $type="text";
       <select class="form-control" name="subsource" id="subsource">
       </select>
    </div>
-   <?php }   
+   <?php }  
     if(is_active_field(ADDRESS_FIELD,$process_id)){
     ?>  
    <div class="form-group col-sm-6 col-md-6 enq-address">

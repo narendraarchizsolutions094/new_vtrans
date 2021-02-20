@@ -537,6 +537,7 @@ class Enquiry extends CI_Controller
                 'enquiry' => $this->input->post('enquiry', true),
                 'enquiry_source' => $this->input->post('lead_source'),
                 'enquiry_subsource' => $this->input->post('sub_source'),
+                'sub_source'=> $this->input->post('subsource'), //lead subsource
                 'company' => $this->input->post('company'),
                 'address' => $this->input->post('address'),
                 'pin_code' => $this->input->post('pin_code'),
