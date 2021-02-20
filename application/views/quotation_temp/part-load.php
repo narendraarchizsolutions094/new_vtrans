@@ -2321,13 +2321,6 @@
 		<li class="c9 c48 li-bullet-0"><span class="c10">Demurrage charges shall be applicable beyond maximum of 7 days from the date of arrival at destination. V-Trans shall provide 45 days period to collect the goods , in case of failure V-Trans shall have right to sell the goods by auction, private contract or otherwise or even destroy the consignment as required under any laws applicable from time to time, without prejudice to its other legal remedies to recover its dues. V-Trans shall have the right of reconciliation of customer&rsquo;s ledger and balance/accounts in books at the end of every quarter and customer shall provide all relevant details and documents as and when required by V-Trans.</span></li>
 		<li class="c9 c48 li-bullet-0"><span class="c10">Customer shall defend, indemnify, and hold V-Trans and its employees and agents harmless from and against all claims, liabilities, losses, damages, fines, penalties, payments, costs, and expenses, including, but not limited to attorney fees and costs of suit caused by and resulting from the violations of the terms of this contract or negligence on the part of customer.</span></li>
 	</ol>
-	<p class="c9 c44"><span class="c10"></span></p>
-	<p class="c9 c44"><span class="c10"></span></p>
-	<p class="c9 c44"><span class="c10"></span></p>
-	<p class="c9 c44"><span class="c10"></span></p>
-	<p class="c9 c44"><span class="c10"></span></p>
-	<p class="c9 c44"><span class="c10"></span></p>
-	<p class="c9 c44"><span class="c10"></span></p>
 	<ol class="c28 lst-kix_list_7-0" start="7">
 		<li class="c9 c48 li-bullet-0"><span class="c10">The consignment shall not contain any items or materials which are classified as prohibited or restricted or hazardous or dangerous by any Authority or regulations or provisions of any Indian Law or by Laws of public authority. In the event of any consignment being found containing any of the aforesaid items or materials, the customers agrees and undertakes to indemnify V-Trans and its officers in respect of all claims and losses that may arise consequent thereto. Further, the customer will be solely responsible for all cost and consequences for booking any such items or materials through V-Trans.</span></li>
 		<li class="c9 c48 li-bullet-0"><span class="c10">The customer shall ensure that the packaging of the shipments is adequate to carry the shipment, carriage worthy, so as to withstand the normal rigors, jerks and jolts of transportation hazards. V-Trans reserve its right to reject any shipment, if the packing is not transit worthy.</span></li>

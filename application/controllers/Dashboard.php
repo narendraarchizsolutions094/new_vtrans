@@ -3416,8 +3416,16 @@ public function set_layout_to_session() {
                   {
                     $freight_table.='
                     <thead><tr>
-                    <th>To <i class="fa fa-arrow-right"></i><br>
-                    From <i class="fa fa-arrow-down"></i></th>';
+                    <th>
+                    <div style="display:inline-block;">
+                      To<br>
+                      From 
+                    </div>
+                    <div style="display:inline-block; width:50px;">
+                      <i class="fa fa-arrow-right"></i><br>
+                      <i class="fa fa-arrow-down"></i>
+                    </div>
+                    </th>';
                     foreach ($del as $key2 => $value2)
                     {
                      $freight_table.='<th>'.$value2.'</th>';
@@ -3877,7 +3885,7 @@ public function set_layout_to_session() {
         // echo $content;
         // exit();
       
-        $this->pdf->create($content,1);
+        $this->pdf->create($content,0);
       
         if($this->input->post('redirect_url')){
             redirect($this->input->post('redirect_url')); //updateclient                

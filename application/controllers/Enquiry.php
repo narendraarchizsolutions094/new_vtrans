@@ -1893,6 +1893,7 @@ Array
             }
         }
     }
+
     function upload_enquiry()
     {
         ini_set('max_execution_time', '-1');
@@ -2070,7 +2071,7 @@ Array
                     } else {
                         $failed_record++;
                     }
-                    if (!empty($dat_array)) {
+                    if(!empty($dat_array)) {
                         $this->db->insert('enquiry2', $dat_array);
                         $l_id = $this->db->insert_id();
                         //print_r($l_id);exit;
@@ -2085,7 +2086,7 @@ Array
                                         "enq_no"  => "",
                                         "input"   => $column_id,
                                         "parent"  => $l_id,
-                                        "fvalue"  => $filesop[$j],
+                                        "fvalue"  => !empty($filesop[$j])?$filesop[$j]:'',
                                         "cmp_no"  => $this->session->companey_id,
                                     );
                                     // print_r($biarr);exit;

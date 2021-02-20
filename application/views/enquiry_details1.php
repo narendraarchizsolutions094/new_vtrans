@@ -884,7 +884,10 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             </ul>
             <div class="tab-content clearfix">
                 <div class="tab-pane active" id="basic">
-                  <?php echo tab_content(1,$this->session->companey_id,$enquiry_id); ?>
+                  <?php 
+                  echo tab_content(1,$this->session->companey_id,$enquiry_id);
+
+                   ?>
                </div>
             <script type="text/javascript">
             manageScroll();
