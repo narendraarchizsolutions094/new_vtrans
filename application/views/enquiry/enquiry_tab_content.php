@@ -74,7 +74,7 @@ $type="text";
       <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
       <?php }else{ 
          $disabled = 'disabled';
-         if($this->session->companey_id == 90 || $this->session->companey_id == 84){
+         if($this->session->companey_id == 90){ 
             $disabled = '';
             ?>
             <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" name="mobileno" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
