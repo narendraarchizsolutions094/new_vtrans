@@ -118,9 +118,8 @@ $type="text";
       <input class="form-control" name="email" type="email" value="<?php echo $details->email ?>">  
       <?php }else{ 
          $disabled = 'disabled';
-         if($this->session->companey_id == 90){ 
+         if($this->session->companey_id == 90 || $this->session->companey_id == 84){
             $disabled = '';?>
-            
             <input name="email" class="form-control" <?=$disabled?> type="email" value="<?php echo $details->email ?>">  
             <?php
          }else{ ?>
