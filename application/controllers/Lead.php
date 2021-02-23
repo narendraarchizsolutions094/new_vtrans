@@ -1168,7 +1168,7 @@ class Lead extends CI_Controller
                     $this->db->update('enquiry');
                     $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($key);
                     $lead_code = $data['details']->Enquery_id;
-                    $this->Leads_Model->add_comment_for_events('Assign '.display('lead'), $lead_code);
+                    $this->Leads_Model->add_comment_for_events(display('lead_assigned'), $lead_code);
                 }
                 echo display('save_successfully');
             } else {

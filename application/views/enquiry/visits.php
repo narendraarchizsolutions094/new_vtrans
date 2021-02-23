@@ -589,7 +589,7 @@ $("select").select2();
          <div class="modal-body">
             <div class="row" >
 
-<form action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
+<form id="visit_create_form" action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
           <div class="row">
                         <div class="form-group col-md-12">
                         <label>Select Visit Type</label>
@@ -604,7 +604,7 @@ $("select").select2();
 
                 <div class="form-group col-md-6">
                     <label style="width:100%;">Company <a style="float: right;" href="<?= base_url('enquiry/create?status=1&red=visits') ?>" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a></label>
-                    <select class="form-control" name="company" onchange="filter_related_to(this.value)">
+                    <select class="form-control" name="company" onchange="filter_related_to(this.value)" required>
                       <option value="-1">Select</option>
                       <?php
                       if(!empty($company_list))
@@ -620,14 +620,14 @@ $("select").select2();
 
                <div class="form-group col-md-6">
                   <label>Contact Name</label>
-                  <select class="form-control" name="enquiry_id">
+                  <select class="form-control" name="enquiry_id" required>
                     <option value="">Select</option>
                     <?php
                   if(!empty($all_enquiry))
                   {
                     foreach ($all_enquiry as $row)
                     {
-                      echo'<option value="'.$row->enquiry_id.'">'.$row->name.'</option>';
+                      echo'<option value="'.$row->enquiry_id.'" >'.$row->name_prefix.' '.$row->name.' '.$row->lastname.'</option>';
                     }
                   }
                     ?>
@@ -636,11 +636,11 @@ $("select").select2();
 
                 <div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
-          <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>">
+          <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>" required>
         </div>
         <div class="form-group col-md-6 visit-time col-md-6">     
          <label>Visit Time</label>
-          <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>">
+          <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>" required>
         </div>
      
         <!-- <div class="form-group col-md-6 distance-travelled-type col-md-6">      
@@ -676,10 +676,10 @@ $("select").select2();
              <input type="text" name="next_location" class="form-control">
           </div>
                    -->
-
+        <input type="hidden" name="dis_notification_id" value="">
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
-               <input type="submit" name="submit_only" class="btn btn-primary" value="Save">
+               <input id="visit_create_btn" type="submit" name="submit_only" class="btn btn-primary" value="Save">
             </div>
          </div>
 

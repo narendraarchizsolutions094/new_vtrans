@@ -1091,7 +1091,7 @@ if(user_access('260') || user_access('261') || user_access('250'))
                                     .SlicedChart);
                                 chart.hiddenState.properties.opacity =
                                 0; // this makes initial fade in effect
-
+                                //document.write(JSON.stringify(data.data));
                                 chart.data = data.data;
 
                                 var series = chart.series.push(new am4charts
@@ -1108,6 +1108,8 @@ if(user_access('260') || user_access('261') || user_access('250'))
                                 //series.bottomRatio = 1;
 
                                 chart.legend = new am4charts.Legend();
+                                // chart.legend.minWidth = 300;
+                                chart.legend.labels.template.truncate = false;
                                 chart.legend.position = "left";
                                 chart.legend.valign = "bottom";
                                 chart.legend.margin(5, 5, 20, 5);

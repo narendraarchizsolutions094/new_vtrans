@@ -989,7 +989,7 @@ class Enquiry extends CI_Controller
                         'enq_code' => $enquiry_code,
                         'assign_status' => 0
                     );
-                    $this->Leads_Model->add_comment_for_events(display("enquery_assign"), $enquiry_code);
+                    $this->Leads_Model->add_comment_for_events(display("enquery_assigned"), $enquiry_code);
 
                     $this->db->set('comp_id',$this->session->companey_id);
                     $this->db->set('query_id',$enquiry_code);
@@ -1234,7 +1234,7 @@ class Enquiry extends CI_Controller
         }
             //fetching assigned user end
             if ($comments->comment_msg == 'Stage Updated') {
-                $html .= '<li>
+         $html .= '<li>
                    <div class="cbp_tmicon cbp_tmicon-phone" style="background:#cb4335;"></div>
                    <div class="cbp_tmlabel"  style="background:#95a5a6;">
                     <span style="font-weight:900;font-size:13px;">' . ucfirst($comments->comment_msg) . '</span></br>';
@@ -1348,9 +1348,15 @@ class Enquiry extends CI_Controller
                   </div>
                 </li>';
             } else {
-                     $html .= '  <li>
+                $js_call = '';
+                if(in_array($comments->comment_msg,array('Send Mail','Send SMS','Send Whatsapp')))
+                {
+                    $js_call = 'onclick="getTimelinestatus('.$comments->comm_id.');" data-target="#timelineshow_d"';
+                }
+                
+                $html .= '  <li>
                     <div class="cbp_tmicon cbp_tmicon-phone"  style=""></div>
-                    <div class="cbp_tmlabel"  onclick="getTimelinestatus('.$comments->comm_id.');"  style="background:#95a5a6;" data-toggle="modal" data-target="#timelineshow_d">
+                    <div class="cbp_tmlabel"  '.$js_call.' style="background:#95a5a6;" data-toggle="modal" >
                     <span style="font-weight:900;font-size:13px;">' . ucfirst($comments->comment_msg) . ' </span></br>
                     <span style="font-weight:900;font-size:10px;">' . ucfirst($comments->remark) . '</span>';
                 if ($comments->comment_msg == 'Stage Updated') {
@@ -1362,8 +1368,8 @@ class Enquiry extends CI_Controller
                 }
                 if ($assigned_user != NULL) {
                     if($countdassigned==1){
-                    if ($comments->comment_msg == 'Enquiry Assigned' OR $comments->comment_msg == 'Assign Leads' OR $comments->comment_msg == 'Client Assigned' ) {
-                    $html .= '<br>Assigned To: <strong>'.$userFName.' '.$userlName.' </strong>';
+                    if ($comments->comment_msg == display('enquery_assigned') OR $comments->comment_msg == display('lead_assigned') OR $comments->comment_msg == display('client_assigned') ) {
+                    $html .= '<br>Assigned To: '.$userFName.' '.$userlName.' ';
                     }
                 }
                 }
@@ -3432,8 +3438,14 @@ echo  $details1;
             $mobileno = $res->phone;
             $email = $res->email;
             $stage_time = $this->input->post('next_visit_time');
-            $enq_code  = $this->input->post('enq_code');
+            $enq_code  = $res->Enquery_id;
+            
             $notification_id = '';
+            if($visit_type==2)
+            {
+                $notification_id = $this->input->post('dis_notification_id');
+            }
+          
 
             $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $stage_time, $enq_code, $notification_id, 'Visit',1,3);
 
@@ -3774,6 +3786,19 @@ echo  $details1;
              redirect(base_url('lead/lead_details/'.$enq_id));
          else 
              redirect(base_url('client/view/'.$enq_id));
+    }
+
+    public function enq_code_by_id($enq_code=0)
+    {  
+        if(!empty($enq_code))
+        {
+            $res =  $this->db->where('enquiry_id',$enq_code)->get('enquiry')->row();
+            if(!empty($res))
+            {
+                echo $res->Enquery_id;
+            }
+        }
+
     }
 
     public function suggest_company()

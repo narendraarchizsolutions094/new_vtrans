@@ -343,19 +343,24 @@ class Lead extends REST_Controller {
               $this->db->where('Enquery_id',$key);
           
               $this->db->update('enquiry');
-              $this->Leads_Model->add_comment_for_events_api('Dropped Leads',$key,$user_id);
+
+              $comp_id =  $this->db->select('comp_id')->where('Enquery_id',$key)->get('enquiry')->row_array();
+              if(!empty($comp_id))
+                $comp_id = $comp_id['comp_id'];
+
+              $this->Leads_Model->add_comment_for_events_api(display('lead',$comp_id).' Dropped.',$key,$user_id);
           
             } 
             $this->set_response([
                 'status' => true,
-                'message' => array(array('error'=>'Lead droped successfully'))  
+                'message' => array(array('error'=>'Droped successfully'))  
                  ], REST_Controller::HTTP_OK);
           
           }else{
           
             $this->set_response([
               'status' => false,
-              'message' => array(array('error'=>'No lead found to drop.'))  
+              'message' => array(array('error'=>'No data found to drop.'))  
                ], REST_Controller::HTTP_OK);
         
         }
@@ -404,7 +409,13 @@ class Lead extends REST_Controller {
               print_r($enquiry_row);
               exit();*/
               $customer_name  .= $enquiry_row->name_prefix.''.$enquiry_row->name.' '.$enquiry_row->lastname.', ';
-              $this->Leads_Model->add_comment_for_events_api('Lead Assigned successfully to Sales',$key,$user_id);
+
+              $comp_id =  $this->db->select('comp_id')->where('Enquery_id',$key)->get('enquiry')->row_array();
+              if(!empty($comp_id))
+                $comp_id = $comp_id['comp_id'];
+
+
+              $this->Leads_Model->add_comment_for_events_api(display('lead',$comp_id).' Assigned successfully',$key,$user_id);
           
             }
             $assigner_user = $this->User_model->read_by_id($user_id); // assigner user row
@@ -542,7 +553,7 @@ class Lead extends REST_Controller {
             $status=$this->input->post('status');
            if($status==''){
              $status=3;
-           }
+           } 
             if(!is_array($move_enquiry))
             {
                 $this->set_response([
@@ -656,7 +667,7 @@ class Lead extends REST_Controller {
                $this->db->update('allleads');
                $data['enquiry'] = $this->Leads_Model->get_leadListDetailsby_ledsonly($key);
                $lead_code = $data['enquiry']->lead_code;
-               $this->Leads_Model->add_comment_for_events('Converted to '.display('client'),$lead_code);
+               $this->Leads_Model->add_comment_for_events('Converted to '.display('client',$data['enquiry']->comp_id),$lead_code);
              
                $mail_access  = $this->enquiry_model->access_mail_temp(); //access mail template..
                

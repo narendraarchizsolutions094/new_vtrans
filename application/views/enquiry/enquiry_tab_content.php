@@ -408,9 +408,9 @@ $type="text";
 </div>
 <?php if($details->status==2 OR $details->status==3 ){ ?>
  <div class="form-group col-sm-6">  
-                           <label>Expected Closer Date </label>                  
-                           <input class="form-control"   type="text" value="<?php  if($details->lead_expected_date!='0000-00-00 00:00:00' AND $details->lead_expected_date!=NULL ){echo date("F jS, Y", strtotime($details->lead_expected_date));}else{ echo 'N/A';}?>" readonly>                
-                        </div><?php }?>
+     <label>Expected Closer Date </label>                  
+     <input class="form-control" name="expected_closure_date"  type="date" value="<?php  if($details->lead_expected_date!='0000-00-00 00:00:00' AND $details->lead_expected_date!=NULL ){echo date("Y-m-d", strtotime($details->lead_expected_date));}else{ echo 'N/A';}?>" >                
+  </div><?php }?>
 <div class="row"   id="save_button">
    <div class="col-md-12 text-center">                                                      
       <input type="submit" name="submit_only" class="btn btn-primary" value="Save" >

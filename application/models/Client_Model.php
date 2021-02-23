@@ -105,17 +105,17 @@ class Client_Model extends CI_Model
     
     
     public function getContactList($specific=array(),$action='data',$comp_id=0,$user_id=0,$limit=-1,$offset=-1)
-    {
-        $comp_id = $comp_id??$this->session->companey_id;
-        $user_id = $user_id??$this->session->user_id;
-
+    {   
+        $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
+        $user_id = !empty($user_id)?$user_id:$this->session->user_id;
+        
         $where = 'enquiry.comp_id='.$comp_id;
         $all_reporting_ids    =   $this->common_model->get_categories($user_id);
         $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
         if($where)
             $this->db->where($where);
-
+       
         if(!empty($specific))
             $this->db->where_in('cc_id',$specific);
 

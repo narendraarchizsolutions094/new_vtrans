@@ -446,10 +446,12 @@ class Client extends CI_Controller {
     $data['specific_visits'] = count($visits)? implode(',', $visits):'-1';
 
     $contacts =   $this->Client_Model->getCompanyData(explode(',',$c->enq_ids),'contacts')->result();
-    $contacts = array_column((array)$visits, 'cc_id');
-    $contacts = count($contacts)?$contacts:array('-1');
-    $data['contact_list'] = $this->Client_Model->getContactList($contacts);
 
+    $contacts = array_column((array)$contacts, 'cc_id');
+
+    $contacts = count($contacts)?$contacts:array('-1');
+
+    $data['contact_list'] = $this->Client_Model->getContactList($contacts);
 
     $data['specific_accounts'] = $c->enq_ids;
     $data['dfields']  = $this->enquiry_model->getformfield();
@@ -764,6 +766,11 @@ class Client extends CI_Controller {
             }else{
                 $process_id    =   $this->input->post('product_id');
             }
+
+            if($exp_date = $this->input->post('expected_closure_date'))
+                $this->db->set('lead_expected_date', $exp_date);
+
+
             $this->db->set('phone', $mobile);
             $this->db->set('other_phone', $other_phone);
             $this->db->set('country_id', $country_id);            

@@ -2867,6 +2867,55 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
     });
 
+
+    $("#visit_create_btn").on('click', function(e) {
+        e.preventDefault();
+
+        var vform = $("#visit_create_form");
+        var vtype =  $(vform).find('input[name=type]:checked').val();
+        
+        var _contact = $(vform).find("select[name='enquiry_id'] option:selected"); 
+        var cname =  $(_contact).html();
+        enq_id = $(_contact).val();
+       
+        time = $(vform).find("#vtime").val();
+        task_date = $(vform).find("#vdate").val();
+        subject = 'Visit : '+cname;
+        var uid = "<?=$this->session->user_id?>";
+
+        if(cname=='' || enq_id=='' || time=='' || task_date=='' || subject=='' || uid=='')
+        {
+            alert('Fill all the fields.');
+            return;
+        }
+
+        if(vtype==2)
+        {   
+            // alert("UID:"+uid+" subj:"+subject+" enqid:"+enq_id+" task:"+task_date+" time:"+time); 
+           
+            $.ajax({
+                url:'<?=base_url('enquiry/enq_code_by_id/')?>'+enq_id,
+                type:'post',
+                success:function(res)
+                {
+                    id = writeUserData(uid, subject, res.trim(), task_date, time);
+                    //console.log(id);
+
+                    $(vform).find("input[name='dis_notification_id']").val(id);
+                    $("#visit_create_form").submit();
+                }
+            });
+         
+        }
+        else
+        {
+            $("#visit_create_form").submit();
+        }
+       //
+
+    });
+
+
     $(document).on('click', '#task_update_btn', function(e) {
         e.preventDefault();
         //alert('abc');

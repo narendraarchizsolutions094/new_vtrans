@@ -1130,7 +1130,7 @@ public function updateEnquiryTab_post()
         
         $this->set_response([
               'status' => TRUE,
-              'message' => 'Enquiry successfully updated'
+              'message' => 'Successfully updated'
           ], REST_Controller::HTTP_OK);      
       }else{
         $error='Something went wrong!';
@@ -1743,7 +1743,7 @@ public function updateEnquiryTab_post()
                     $this->db->where('Enquery_id',$key);
                     $this->db->update('enquiry');
                   	
-                  	$this->Leads_Model->add_comment_for_events_stage_api("Enquiry Moved",$enq->Enquery_id,'','','',$assigner_user_id);
+                  	$this->Leads_Model->add_comment_for_events_stage_api(display('move_to_lead',$enq->comp_id),$enq->Enquery_id,'','','',$assigner_user_id);
                   	
                   	//$this->Leads_Model->('Enquiry Moved ',$enq->Enquery_id,'','','',$assigner_user_id);             
                      /*
@@ -1808,7 +1808,7 @@ public function updateEnquiryTab_post()
                
             $data['enquiry'] = $this->enquiry_model->enquiry_by_code($key);
             $enquiry_code = $data['enquiry']->Enquery_id;
-            $this->Leads_Model->add_comment_for_events_api('Enquiry Dropped',$enquiry_code,$login_id);
+            $this->Leads_Model->add_comment_for_events_api(display('enquiry',$data['enquiry']->comp_id).' Dropped',$enquiry_code,$login_id);
           }
           $this->set_response([
               'status' => true,
