@@ -187,7 +187,7 @@ input[name=lead_stages]{
                     </li>                
                     <li>
                       <label>
-                      <input type="checkbox" value="subsource" id="subsourcecheckbox" name="filter_checkbox">Sub Source</label>
+                      <input type="checkbox" value="subsource" id="subsourcecheckbox" name="filter_checkbox"> Sub Source</label>
                     </li>                
                    <li>
                       <label>
@@ -235,16 +235,16 @@ input[name=lead_stages]{
                     </li> 
                      <li>
                       <label>
-                      <input type="checkbox" value="stage" id="stageheckbox" name="filter_checkbox">Stage</label>
+                      <input type="checkbox" value="stage" id="stageheckbox" name="filter_checkbox"> Stage</label>
                     </li>
                     <li>
                       <label>
-                      <input type="checkbox" value="probability" id="probabilitycheckbox" name="filter_checkbox">Probability</label>
+                      <input type="checkbox" value="probability" id="probabilitycheckbox" name="filter_checkbox"> Probability</label>
                     </li> 
                     <?php if(!empty($aging_rule)){ ?>
                     <li>
                       <label>
-                      <input type="checkbox" value="aging_rule" id="agingRulecheckbox" name="filter_checkbox">Aging Rule</label>
+                      <input type="checkbox" value="aging_rule" id="agingRulecheckbox" name="filter_checkbox"> Aging Rule</label>
                     </li> 
                     <?php
                     }
@@ -533,7 +533,7 @@ display: block;
                     <div class="form-row">                      
                         <div class="form-group col-md-3" id="phonefilter">
                           <label for="">Phone</label>
-                         <input type="text" name="phone" class="form-control" value="<?= $filterData['enq_product'] ?>">                        
+                         <input type="text" name="phone" class="form-control" value="<?= $filterData['phone'] ?>">                        
                         </div>
                          <div class="form-group col-md-3" id="createdbyfilter">
                           <label for="">Created By</label>
