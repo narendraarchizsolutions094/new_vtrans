@@ -294,6 +294,7 @@ $route['visit/vist-report'] = 'client/report/';
 $route['setting/expense-master'] = 'setting/expenseMaster/';
 $route['visit-expense/delete/:any'] = 'setting/visit_expense_delete/$i';
 
+$route['visits/visit_map/:any'] = 'client/visit_map_only/$i';
 
 $route['404_override']            = '';
 
