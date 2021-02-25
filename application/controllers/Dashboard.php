@@ -17,6 +17,9 @@ class Dashboard extends CI_Controller {
             'Product_model'
         ));
     }
+    public function hello(){
+        echo "hwllow worlkd";
+    }
          public function fb_token() { 
       $challenge = $_REQUEST['hub_challenge'];
         $verify_token = $_REQUEST['hub_verify_token'];
