@@ -8,8 +8,13 @@ class Visits extends REST_Controller {
   {
       parent::__construct();
       $this->load->library('form_validation');
-	  $this->load->model(array('enquiry_model','common_model'));
+	  $this->load->model(array('enquiry_model','common_model','user_model'));
   }
+  
+  public function abs_diff($v1, $v2) {
+        $diff = $v1 - $v2;
+        return $diff < 0 ? (-1) * $diff : $diff;
+    }
 
   	public function visit_list_page_post()
     {
@@ -32,17 +37,38 @@ class Visits extends REST_Controller {
        $res= array();
     
         $total = $this->enquiry_model->visit_list_api($company_id,$user_id,$process)->num_rows();
-
+$result =array();
         $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$limit,$offset);
-                  
-          if(!empty($data['result']->result()))
+		foreach($data['result']->result() as $key=> $value){
+			$ades = $value->actualDistance;
+			$ides = $value->idealDistance;
+		
+		//print_r($data['result']->result());exit;
+//add code for color coding in table		
+		$percentChange=0;
+            $km_rate = $this->user_model->get_user_meta($user_id,array('km_rate'));
+            if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
+              $rate=10;
+              }
+            $totalpay=($ades)*$rate;
+            $idealamt=($ides)*$rate;
+         if($idealamt > 0 && $totalpay > 0){
+         $dif= $this->abs_diff($idealamt,$totalpay);
+             $percentChange = (($totalpay - $idealamt) / $idealamt)*100;
+                }
+ //add code for color coding in table
+ $result[$key]=(array)$value;
+ $result[$key]['diff']=$percentChange;
+		}
+ //print_r($result);exit;
+          if(!empty($result))
           {
             $res= array();
             
             $res['offset'] = $offset;
             $res['limit'] = $limit;
             $res['total'] = $total;
-            $res['list'] = $data['result']->result();
+            $res['list'] = $result;
 
             $this->set_response([
                 'status' => TRUE,
