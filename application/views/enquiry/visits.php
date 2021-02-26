@@ -270,6 +270,7 @@ $('input[name="filter_checkbox"]').click(function(){
                 <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
 				          <th id="th-1" width="15%">Visit Date</th>
 				          <th id="th-2" width="15%">Visit Time</th>
+						  <th id="th-13" width="15%">Purpose of meeting</th>
 				          <th id="th-3" >Name</th>
 				          <th id="th-10">Company Name</th>
 				          <th id="th-4">Shortest Distance</th>
@@ -601,6 +602,11 @@ $("select").select2();
                           </div>
                         </div>
                         </div>
+						
+				<div class="form-group col-md-6 visit-time col-md-6">     
+                    <label>Purpose of meeting</label>
+                    <input type="text" name="m_purpose" id="m_purpose" class="form-control" required>
+                </div>
 
                 <div class="form-group col-md-6">
                     <label style="width:100%;">Company <a style="float: right;" href="<?= base_url('enquiry/create?status=1&red=visits') ?>" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a></label>
@@ -716,6 +722,9 @@ $("select").select2();
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="2">  Visit Time</label>
+            </div>
+			<div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="13">  Purpose of meeting</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="3"> Name</label>
