@@ -3,15 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Dashboard extends CI_Controller {
     public function __construct() {
         parent::__construct();
-		$this->load->library('user_agent');
-		$this->load->library('upload');
+    $this->load->library('user_agent');
+    $this->load->library('upload');
         $this->load->model(array(
             'dashboard_model',
             'setting_model',
             'user_model',
-			'website/home_model',
-			'Institute_model',
-			'schedule_model',
+      'website/home_model',
+      'Institute_model',
+      'schedule_model',
             'report', 'location_model', 'report_model','Modules_model',
             'enquiry_model', 'Leads_Model', 'Client_Model','Message_models',
             'Product_model'
@@ -380,13 +380,13 @@ class Dashboard extends CI_Controller {
                         ->from("city")
                         ->where('id', $check_user->row()->city_id)
                         ->get();
-	if($check_user->row()->user_permissions==151){
-	$menu=1;
-	}else{
-		$menu=2;
-	}
+  if($check_user->row()->user_permissions==151){
+  $menu=1;
+  }else{
+    $menu=2;
+  }
                 $data = $this->session->set_userdata([
-				    'menu' => $menu,
+            'menu' => $menu,
                     'isLogIn' => true,
                     'user_id' => $check_user->row()->pk_i_admin_id,
                     'companey_id' => $check_user->row()->companey_id,
@@ -411,7 +411,7 @@ class Dashboard extends CI_Controller {
                     'footer_text' => (!empty($setting->footer_text) ? $setting->footer_text : null),
                     // 'process' => $process,
                     'telephony_agent_id' => $check_user->row()->telephony_agent_id,
-					'telephony_token'    => $check_user->row()->telephony_token,
+          'telephony_token'    => $check_user->row()->telephony_token,
                     'availability'    => $check_user->row()->availability,
                     'expiry_date'       => strtotime($check_user->row()->valid_upto),
                 ]);
@@ -431,17 +431,17 @@ class Dashboard extends CI_Controller {
    public function backupDatabase(){  
   if ($this->session->user_right == 1) {    
    $this->load->dbutil();
-	$prefs = array(
-		'format' => 'zip',
-		'filename' => 'crmdata.sql'
-	);
-	$backup = & $this->dbutil->backup($prefs);
-	$db_name = 'crm-on-' . date("Y-m-d-H-i-s") . '.zip';
-	$save = 'assets/database_backup/' . $db_name;
-	$this->load->helper('file');
-	write_file($save, $backup);
-	$this->load->helper('download');
-	force_download($db_name, $backup); 
+  $prefs = array(
+    'format' => 'zip',
+    'filename' => 'crmdata.sql'
+  );
+  $backup = & $this->dbutil->backup($prefs);
+  $db_name = 'crm-on-' . date("Y-m-d-H-i-s") . '.zip';
+  $save = 'assets/database_backup/' . $db_name;
+  $this->load->helper('file');
+  write_file($save, $backup);
+  $this->load->helper('download');
+  force_download($db_name, $backup); 
   }
 }
  public function backupfiles(){ 
@@ -454,7 +454,7 @@ $this->load->library('zip');
  }
     public function validate_login() {  
         
-	
+  
         $this->form_validation->set_rules('email', display('email'), 'required|max_length[50]|trim');
         $this->form_validation->set_rules('password', display('password'), 'required|max_length[32]|md5');        
         
@@ -573,30 +573,30 @@ $this->load->library('zip');
                        $process_html = '';
                        
                        if(!empty($process_arr)){
-							
-                            if(user_access(270)){								
-								$process_html .= "<select class='form-control text-center' name='user_process[]' multiple id='process_elem'>";
-							}else{
-								$process_html .= "<select class='form-control text-center' name='user_process[]' id='process_elem'>";
-							}
+              
+                            if(user_access(270)){               
+                $process_html .= "<select class='form-control text-center' name='user_process[]' multiple id='process_elem'>";
+              }else{
+                $process_html .= "<select class='form-control text-center' name='user_process[]' id='process_elem'>";
+              }
                             foreach ($process_arr as $value) {                                
                                 $process_html .= "<option value='".$value['sb_id']."'>".$value['product_name']."</option>";
                                 $process[$value['sb_id']] = $value['product_name'];
                             }
-							$process_html .= "</select>";                                                       
+              $process_html .= "</select>";                                                       
                             $res = array('status'=>true,'message'=>'Successfully Logged In','process'=>$process_html);
                        }else{
                             $res = array('status'=>false,'message'=>'You are not in any process. Please contact your admin!','process'=>$process_html);
                        }
                    }else{
-					   if($user_data->user_permissions==151){
-                    	   $menu=1;
-                    	}else{
-                    	   $menu=2;
+             if($user_data->user_permissions==151){
+                         $menu=1;
+                      }else{
+                         $menu=2;
                         }
                         $login_token= random_string('alnum', 30);
                         $data = $this->session->set_userdata([
-						    'menu'                  => $menu,
+                'menu'                  => $menu,
                             'isLogIn'               => true,
                             'user_id'               =>$user_data->pk_i_admin_id,
                             'companey_id'           =>$user_data->companey_id,
@@ -619,7 +619,7 @@ $this->load->library('zip');
                             'favicon'               => (!empty($setting->favicon) ? $setting->favicon : null),
                             'footer_text'           => (!empty($setting->footer_text) ? $setting->footer_text : null),                    
                             'telephony_agent_id'    => $user_data->telephony_agent_id,
-							'telephony_token'       => $user_data->telephony_token,
+              'telephony_token'       => $user_data->telephony_token,
                             'expiry_date'           => strtotime($user_data->valid_upto),
                             'availability'          => $user_data->availability,
                             'validity_status'       => $validity_status,
@@ -686,13 +686,13 @@ public function login_in_process(){
                 }else{
                     $process_ids = array($this->input->post('process_ids'));
                 }
-				if($check_user->row()->user_permissions==151){
-	$menu=1;
-	}else{
-		$menu=2;
-	}
+        if($check_user->row()->user_permissions==151){
+  $menu=1;
+  }else{
+    $menu=2;
+  }
                     $data = $this->session->set_userdata([
-					    'menu'                  => $menu,
+              'menu'                  => $menu,
                         'isLogIn'               => true,
                         'user_id'               => $check_user->row()->pk_i_admin_id,
                         'companey_id'           => $check_user->row()->companey_id,
@@ -714,7 +714,7 @@ public function login_in_process(){
                         'favicon'               => (!empty($setting->favicon) ? $setting->favicon : null),
                         'footer_text'           => (!empty($setting->footer_text) ? $setting->footer_text : null),                 
                         'telephony_agent_id'    => $check_user->row()->telephony_agent_id,
-						'telephony_token'       => $check_user->row()->telephony_token,
+            'telephony_token'       => $check_user->row()->telephony_token,
                         'process'               => $process_ids,
                         'expiry_date'           => strtotime($check_user->row()->valid_upto),
                         'account_type'          => $check_user->row()->account_type,
@@ -752,8 +752,8 @@ public function login_in_process(){
         $data['content'] = $this->load->view('home', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
-	
-	public function home() 
+  
+  public function home() 
     {      
          
         if ($this->session->userdata('isLogIn') == false)
@@ -814,7 +814,7 @@ public function login_in_process(){
     //    print_r($data['filterData']);
     //    exit;
      if($this->session->userdata('filter')){$data['fdata']=$this->session->userdata('filter'); }
-        $data['content'] = $this->load->view('home', $data, true);	     
+        $data['content'] = $this->load->view('home', $data, true);       
         $this->load->view('layout/main_wrapper', $data);
     }
     public function master()
@@ -1650,157 +1650,157 @@ if (!empty($enquiry_separation)) {
             echo "not allowed";
         }
     }
-	
-	/*******************************************************8student panel****************************************/
-	public function select_state() {
+  
+  /*******************************************************8student panel****************************************/
+  public function select_state() {
         $state = $this->input->post('lead_stage');
         echo json_encode($this->location_model->all_state($state));
        // echo $diesc;
     }
-	
-	public function select_ins() {
+  
+  public function select_ins() {
             $ctnry = $this->input->post('l_con');
-	     	$sta = $this->input->post('l_sta');
-	    	$lvl = $this->input->post('l_lvl');
-	    	$lgth = $this->input->post('l_lgth');
-	    	$disc = $this->input->post('l_disc');
+        $sta = $this->input->post('l_sta');
+        $lvl = $this->input->post('l_lvl');
+        $lgth = $this->input->post('l_lgth');
+        $disc = $this->input->post('l_disc');
         echo json_encode($this->location_model->all_institute($ctnry,$sta,$lvl,$lgth,$disc));
-		
+    
     }
-	
-	public function select_crs() {
+  
+  public function select_crs() {
             $ctnry = $this->input->post('l_con');
-	     	$sta = $this->input->post('l_sta');
-	    	$lvl = $this->input->post('l_lvl');
-	    	$lgth = $this->input->post('l_lgth');
-	    	$disc = $this->input->post('l_disc');
-			$ins = $this->input->post('l_ins');
+        $sta = $this->input->post('l_sta');
+        $lvl = $this->input->post('l_lvl');
+        $lgth = $this->input->post('l_lgth');
+        $disc = $this->input->post('l_disc');
+      $ins = $this->input->post('l_ins');
         echo json_encode($this->location_model->all_course($ctnry,$sta,$lvl,$lgth,$disc,$ins));
        // echo $diesc;
     }
-	
-	public function search_programs() {
-		$data['title'] = display('search_programs');
+  
+  public function search_programs() {
+    $data['title'] = display('search_programs');
         $user_id = $this->session->userdata('user_id');
         $comp_id = $this->session->userdata('companey_id');
-		$stu_phone = $this->session->userdata('phone');
-		
-		/*$this->db->select("*,tbl_crsmaster.course_name");
+    $stu_phone = $this->session->userdata('phone');
+    
+    /*$this->db->select("*,tbl_crsmaster.course_name");
         $this->db->from('tbl_course');
-		$this->db->join('tbl_institute','tbl_institute.institute_id = tbl_course.institute_id');
-		$this->db->join('tbl_country','tbl_country.id_c=tbl_institute.country_id','left');
-		$this->db->join('tbl_crsmaster','tbl_crsmaster.id = tbl_course.course_name');
-		if($this->session->userdata('companey_id')!=67){
-    		$this->db->join('tbl_schdl','tbl_schdl.ins_id=tbl_institute.institute_id','left');
-    		$this->db->order_by('tbl_institute.institute_id','asc');
+    $this->db->join('tbl_institute','tbl_institute.institute_id = tbl_course.institute_id');
+    $this->db->join('tbl_country','tbl_country.id_c=tbl_institute.country_id','left');
+    $this->db->join('tbl_crsmaster','tbl_crsmaster.id = tbl_course.course_name');
+    if($this->session->userdata('companey_id')!=67){
+        $this->db->join('tbl_schdl','tbl_schdl.ins_id=tbl_institute.institute_id','left');
+        $this->db->order_by('tbl_institute.institute_id','asc');
             $q = $this->db->get()->result();
-		}else{
+    }else{
             $this->db->order_by('tbl_course.institute_id','asc');
-    		$this->db->where('tbl_course.comp_id',$comp_id);
+        $this->db->where('tbl_course.comp_id',$comp_id);
             $q = $this->db->get()->result();
-		}*/
+    }*/
         $this->load->model('program_model');
         $q  =   $this->program_model->get_data();
         $data['count_filtered_data']  =   $this->program_model->count_filtered_data();
         $data['all_data_count']  =   $this->program_model->count_all_data();
         $data['courses'] = $q;
         $data['i'] = 1;
-		$data["courses"] = $q;
-		
-		if($this->session->userdata('companey_id')==67){
-		  $data['discipline'] = $this->location_model->find_discipline();
-		  $data['level'] = $this->location_model->find_level();
-		}
-		$data['vid_list'] = $this->Institute_model->videos();
-		$data['state_list'] = $this->location_model->all_states();
-		$data['county_list'] = $this->location_model->country();
-		$data['ins_list'] = $this->location_model->stu_ins_list();
-		$data['crs_list'] = $this->location_model->stu_crs_list();
-		$data['course'] = $this->Institute_model->all_crs_list();
+    $data["courses"] = $q;
+    
+    if($this->session->userdata('companey_id')==67){
+      $data['discipline'] = $this->location_model->find_discipline();
+      $data['level'] = $this->location_model->find_level();
+    }
+    $data['vid_list'] = $this->Institute_model->videos();
+    $data['state_list'] = $this->location_model->all_states();
+    $data['county_list'] = $this->location_model->country();
+    $data['ins_list'] = $this->location_model->stu_ins_list();
+    $data['crs_list'] = $this->location_model->stu_crs_list();
+    $data['course'] = $this->Institute_model->all_crs_list();
         $data['student_Details'] = $this->home_model->studentdetail($stu_phone);
         $data['content'] = $this->load->view('student/search_programs', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
-	
-	public function get_uni_data(){
+  
+  public function get_uni_data(){
          $layout = $this->session->userdata('layout');
-		 $crs = $this->input->post('crs_id');
+     $crs = $this->input->post('crs_id');
          $ins = $this->input->post('ins_id');
          $cntry = $this->input->post('cntry');
-		 $dt = $this->input->post('date');
-		 $discipline = $this->input->post('discipline');
-		 $length = $this->input->post('length');
-		 $level = $this->input->post('level');
-		 $state = $this->input->post('state_id');
-		 $ielts = $this->input->post('ielts');
+     $dt = $this->input->post('date');
+     $discipline = $this->input->post('discipline');
+     $length = $this->input->post('length');
+     $level = $this->input->post('level');
+     $state = $this->input->post('state_id');
+     $ielts = $this->input->post('ielts');
         $this->load->model('program_model');
         $q  =   $this->program_model->get_data();
         $data['count_filtered_data']  =   $this->program_model->count_filtered_data();
         $data['all_data_count']  =   $this->program_model->count_all_data();
         $data['i'] = 0;
-	
-	    $datafilter = array($dt,$cntry,$level,$length,$discipline,$ins,$crs,$state,$ielts);		
-	    $data["courses"] = $q;
-	    $data["filter"] = $datafilter;
-		$ttlpagearr  = count($q);			
-		$data["totpage"] = (!empty($ttlpagearr[0]->total)) ? $ttlpagearr[0]->total : 0;
-		$data["pageno"]  = (!empty($ttlpagearr[0]->total)) ? ceil($ttlpagearr[0]->total/$limit) : 0; 
-		$data["currpage"]=  1;
-		$grnrid = "";
-		$data['vid_list'] = $this->Institute_model->videos();
-		$data['state_list'] = $this->location_model->all_states();
-		$data['county_list'] = $this->location_model->country();
-	    $data['ins_list'] = $this->location_model->stu_ins_list();
-	    $data['crs_list'] = $this->location_model->stu_crs_list();
-		$data['course'] = $this->Institute_model->all_crs_list();
-		$data['discipline'] = $this->location_model->find_discipline();
-	    $data['level'] = $this->location_model->find_level();
-	    $data['length'] = $this->location_model->find_length();
-		$data['content'] = $this->load->view('student/search_programs', $data, true);
+  
+      $datafilter = array($dt,$cntry,$level,$length,$discipline,$ins,$crs,$state,$ielts);   
+      $data["courses"] = $q;
+      $data["filter"] = $datafilter;
+    $ttlpagearr  = count($q);     
+    $data["totpage"] = (!empty($ttlpagearr[0]->total)) ? $ttlpagearr[0]->total : 0;
+    $data["pageno"]  = (!empty($ttlpagearr[0]->total)) ? ceil($ttlpagearr[0]->total/$limit) : 0; 
+    $data["currpage"]=  1;
+    $grnrid = "";
+    $data['vid_list'] = $this->Institute_model->videos();
+    $data['state_list'] = $this->location_model->all_states();
+    $data['county_list'] = $this->location_model->country();
+      $data['ins_list'] = $this->location_model->stu_ins_list();
+      $data['crs_list'] = $this->location_model->stu_crs_list();
+    $data['course'] = $this->Institute_model->all_crs_list();
+    $data['discipline'] = $this->location_model->find_discipline();
+      $data['level'] = $this->location_model->find_level();
+      $data['length'] = $this->location_model->find_length();
+    $data['content'] = $this->load->view('student/search_programs', $data, true);
         $this->load->view('layout/main_wrapper', $data);
  
     }
-		
+    
 public function user_profile() {
     if (user_role('340') == true) {}
-		$data['title'] = display('user_profile');
+    $data['title'] = display('user_profile');
         $user_id = $this->session->userdata('user_id');
-		 $stu_phone=$this->session->userdata('phone');
+     $stu_phone=$this->session->userdata('phone');
         $data['student_Details'] = $this->home_model->studentdetail($stu_phone);
        // print_r($data['student_Details']);die;
         $studetails = $this->home_model->studentdetail($stu_phone);
         
         $en_id=$studetails['Enquery_id'];
         $comp_id=$studetails['comp_id'];
-		if($this->session->userdata('companey_id')!=67){
+    if($this->session->userdata('companey_id')!=67){
             $data['vid_list'] = $this->schedule_model->vid_list();  
             $data['faq_list'] = $this->schedule_model->faq_list(); 
             $data['country'] = $this->location_model->country();
-    		$data['ins_list'] = $this->location_model->stu_ins_list();
+        $data['ins_list'] = $this->location_model->stu_ins_list();
             $data['schdl_list'] = $this->schedule_model->get_schedule_list();
-		}
+    }
         $data['lead_stage']    =   $this->Leads_Model->find_stage();
-		$data['source_list'] = $this->home_model->sour_list();
-		$data['process_list'] = $this->home_model->pro_list();
-        $data['invoice_details'] = $this->home_model->invoicedetail($en_id);		
+    $data['source_list'] = $this->home_model->sour_list();
+    $data['process_list'] = $this->home_model->pro_list();
+        $data['invoice_details'] = $this->home_model->invoicedetail($en_id);    
         $data['state_list'] = $this->home_model->estate_list();
         $data['city_list'] = $this->home_model->ecity_list();
-		$data['agrrem_doc'] = $this->home_model->aggr_doc($en_id);
-		$data['country_list'] = $this->home_model->cntry_list();
-		$data['all_institute'] = $this->location_model->institute_data($en_id);
-		$data['discipline'] = $this->location_model->find_discipline();
-		$data['level'] = $this->location_model->find_level();
-		$data['length'] = $this->location_model->find_length();
-		$data['course_list'] = $this->Institute_model->courselist();
-		$data['institute_list'] = $this->Institute_model->institutelist();
-		$data['institute'] = $this->Institute_model->findinstitute();
+    $data['agrrem_doc'] = $this->home_model->aggr_doc($en_id);
+    $data['country_list'] = $this->home_model->cntry_list();
+    $data['all_institute'] = $this->location_model->institute_data($en_id);
+    $data['discipline'] = $this->location_model->find_discipline();
+    $data['level'] = $this->location_model->find_level();
+    $data['length'] = $this->location_model->find_length();
+    $data['course_list'] = $this->Institute_model->courselist();
+    $data['institute_list'] = $this->Institute_model->institutelist();
+    $data['institute'] = $this->Institute_model->findinstitute();
     
     $data['all_faq'] = $this->Leads_Model->faq_select();
     
-    $data['login_details'] = $this->Leads_Model->logdata_select();		
+    $data['login_details'] = $this->Leads_Model->logdata_select();    
     
     $data['all_description_lists']    =   $this->Leads_Model->find_description();
-		$data['all_extra'] = $this->location_model->get_qualification_tab($en_id);        
+    $data['all_extra'] = $this->location_model->get_qualification_tab($en_id);        
         $data['content'] = $this->load->view('student/profile_wrapper', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -2425,10 +2425,10 @@ $newdt = date('Y-m-d',strtotime($tempdate));
     }
 public function my_applications() {
     if (user_role('400') == true) {}
-	$data['title'] = display('my_applications');
+  $data['title'] = display('my_applications');
     $user_id = $this->session->userdata('user_id');
-	$data['my_app'] = $this->location_model->get_wislist($user_id);
-	$data['my_history'] = $this->location_model->get_history($user_id);
+  $data['my_app'] = $this->location_model->get_wislist($user_id);
+  $data['my_history'] = $this->location_model->get_history($user_id);
     $data['content'] = $this->load->view('student/my_applications', $data, true);
     $this->load->view('layout/main_wrapper', $data);
 }
@@ -2439,13 +2439,13 @@ public function remove_from_wish_list($id){
     $this->session->set_flashdata('message','Successfully Removed from wishlist');
     redirect('dashboard/my_applications');
 }
-public function menu_style() {	
-		if($this->session->menu==1){
+public function menu_style() {  
+    if($this->session->menu==1){
         $this->session->set_userdata('menu',2);
-		}else{
-		 $this->session->set_userdata('menu',1);	
-		}
-		redirect($this->agent->referrer());
+    }else{
+     $this->session->set_userdata('menu',1);  
+    }
+    redirect($this->agent->referrer());
     }
 public function set_layout_to_session() {
         $layout = $this->input->post('layout');
@@ -2454,33 +2454,33 @@ public function set_layout_to_session() {
     public function add_wishlist() {
         $crs=$this->uri->segment(3);
         $ins=$this->uri->segment(4);
-    	$stu=$this->session->userdata('user_id');
-    	$comp=$this->session->userdata('companey_id');
+      $stu=$this->session->userdata('user_id');
+      $comp=$this->session->userdata('companey_id');
         $data = array(
             'comp_id'=>$comp,
             'stu_id'=>$stu,
-    		'uni_id'=>$ins,
+        'uni_id'=>$ins,
             'crs_id'=>$crs
         );
         $this->db->insert('tbl_wishlist',$data);
         $this->session->set_flashdata('message','Successfully added to wish list');
-    	redirect('dashboard/search_programs');
+      redirect('dashboard/search_programs');
     }
-	
-	public function course_details() {
+  
+  public function course_details() {
         if (user_role('350') == true) {}
-		$ins=$this->uri->segment(3);
-		$crs=$this->uri->segment(4);
-		$data['title'] = display('course_details');
-		$data['ins_details'] = $this->location_model->ins_details($ins);
-		$data['crs_details'] = $this->location_model->crs_details($crs);
-		  /* echo '<pre>';
-		print_r($data['ins_details']);
-		echo '</pre>';exit; */ 
-		$data['content'] = $this->load->view('student/detail_page', $data, true);
+    $ins=$this->uri->segment(3);
+    $crs=$this->uri->segment(4);
+    $data['title'] = display('course_details');
+    $data['ins_details'] = $this->location_model->ins_details($ins);
+    $data['crs_details'] = $this->location_model->crs_details($crs);
+      /* echo '<pre>';
+    print_r($data['ins_details']);
+    echo '</pre>';exit; */ 
+    $data['content'] = $this->load->view('student/detail_page', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
-	/********************************************************student panel*******************************************/
+  /********************************************************student panel*******************************************/
  /*public function careerex(){
         $result    =   $this->db->query("select Enquery_id from enquiry where comp_id = 81 AND enquiry_source=209")->result_array();
        
@@ -2721,7 +2721,7 @@ public function set_layout_to_session() {
                     if (user_access(310)) {
                         $data['title'] = 'Sales Dashboard';
                         $data['userId']=$this->session->userdata('user_id');
-    	                $data['compId']=$this->session->userdata('companey_id');
+                      $data['compId']=$this->session->userdata('companey_id');
                         $data['content'] = $this->load->view('msg-log-dashboard-enquiry', $data, true);
                         $this->load->view('layout/main_wrapper', $data);
                     } else {
@@ -2733,9 +2733,9 @@ public function set_layout_to_session() {
                      $userId=$this->session->userdata('user_id');
                      $type=$this->uri->segment('3');
                      $msgType=$this->uri->segment('4');
-	              // $type= 1 =>(ticket), $type =2=>enquiry 
-	            	// $userType=>1 (user wise), 2=>all 
-	            	//$msgType= 0=>mail,1=>sms,2=>whatsapp
+                // $type= 1 =>(ticket), $type =2=>enquiry 
+                // $userType=>1 (user wise), 2=>all 
+                //$msgType= 0=>mail,1=>sms,2=>whatsapp
                     // month start from
                     $userType=1;
                     $get = $this->dashboard_model->getfistMonth($type,$msgType);
@@ -2760,9 +2760,9 @@ public function set_layout_to_session() {
                 public function userWiseSupportData1()
                 {
                     $userId=$this->session->userdata('user_id');
-	                // $type= 1 =>(ticket), $type =2=>enquiry 
-	            	// $userType=>1 (user wise), 2=>all 
-	            	//$msgType= 0=>mail,1=>sms,2=>whatsapp
+                  // $type= 1 =>(ticket), $type =2=>enquiry 
+                // $userType=>1 (user wise), 2=>all 
+                //$msgType= 0=>mail,1=>sms,2=>whatsapp
                     // month start from
                     $type=1;
                     $users = $this->dashboard_model->getMsgLogUsers($type);
@@ -2887,7 +2887,7 @@ public function set_layout_to_session() {
                             <td>".$drow->bbranch."</td>
                             <td>".$drow->dbranch."</td>
                             <td>".$drow->vtype_name."</td>
-                            <td>".$drow->invoice_value."</td>
+                            <td>".$drow->expected_amount."</td>
                           </tr>
                           ";
                       }
@@ -2897,53 +2897,63 @@ public function set_layout_to_session() {
                     }
                     else
                     {
-                      if($deal->btype=='branch')
+                      if($deal->btype=='branch' || $deal->btype=='zone')
                       {
-                          $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id");
+                          if($deal->btype=='branch')
+                          {
+                            $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,branch.branch_name as bname from deal_data deal left join branch on branch.branch_id=deal.booking_branch where deal.deal_id=$info_id");
+                          }
+                          else if($deal->btype=='zone')
+                          {
+                             $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,zones.name as bname from deal_data deal left join zones on zones.zone_id=deal.booking_branch where deal.deal_id=$info_id");
+                          }
+                         
+                          $freight_table ='';
 
                           if(!empty($query))
                           {
-                          $result = $query->result();
+                            $result = $query->result();
 
-                          $book = array_unique(array_column($result, 'bb_name'));
-                          $del =  array_unique(array_column($result, 'db_name'));
-                         $freight_table = '<table border="1">';
+                          foreach ($result as $key => $rows)
+                          {
+                            $freight_table.='
+                            <table border="1">
+                                  <thead>
+                                  <tr>
+                                    <th>To <i class="fa fa-arrow-right"></i><br>
+                                        From <i class="fa fa-arrow-down"></i>
+                                    </th>';
 
-                          foreach ($book as $key => $value1)
+                          if($deal->btype=='branch')
                           {
-                                if($key==0)
-                                {
-                                  $freight_table.='
-                                  <thead><tr>
-                                  <th>To <i class="fa fa-arrow-right"></i><br>
-                                  From <i class="fa fa-arrow-down"></i></th>';
-                                  foreach ($del as $key2 => $value2)
-                                  {
-                                   $freight_table.='<th>'.$value2.'</th>';
-                                  }
-                                  $freight_table.='</tr></thead>
-                                  <tbody>';
-                                }
-                          $freight_table.='<tr>';
-                          
-                          $freight_table.='<th>'.$value1.'</th>';
-                          
-                          foreach ($del as $key2 => $value2)
+                          $cols = $this->db->query("SELECT deal.delivery_branch as did ,branch.branch_name as dname,deal.rate,deal.discount from deal_data deal left join branch on branch.branch_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
+                          }
+                          else if($deal->btype=='zone')
                           {
-                              foreach ($result as $key3 => $value3)
-                              {
-                                if($value1==$value3->bb_name && $value2==$value3->db_name)
-                                { $r = $value3->rate;
-                                  $d = $value3->discount;
-                                  $price = $r*(1-round(($d/100),2));
-                                  $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
-                                }
-                              }
+                          $cols = $this->db->query("SELECT deal.delivery_branch as did ,zones.name as dname,deal.rate,deal.discount from deal_data deal left join zones on zones.zone_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
                           }
 
-                          $freight_table.='</tr>';                   
+                            foreach ($cols as $key2 => $value2)
+                            {
+                                $freight_table.='<th>'.$value2->dname.'</th>';
+                            }
+                            $freight_table.='</tr>
+                            <tr>
+                            <th>'.$rows->bname.'</th>';
+
+                            foreach ($cols as $key2 => $value2)
+                            {
+                                $r = $value2->rate;
+                                $d = $value2->discount;
+                                $price = $r*(1-round(($d/100),2));
+                                $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
+                            }
+
+                          $freight_table.='</tr>
+
+                        </tbody></table>';                   
                           }
-                        $freight_table.= '</tbody></table>'; 
+                  
                         }//ifend
                         else
                         {
@@ -2955,118 +2965,9 @@ public function set_layout_to_session() {
                       else
                       {
 
-                        $qry = "SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id ";
-                    
-                      if($deal->btype=='zone' || $deal->dtype=='zone')
-                      {
-                           $qry.=' group by bzid,dzid';
-                      }
-                           
-                      $query = $this->db->query($qry);
 
-                      if(!empty($query))
-                      {
-                        $result = $query->result();
-                        $tb_key1 = '';
-                        $tb_key2 = '';
-                        if($deal->btype=='zone')
-                        {
-                          $book = array_unique(array_column($result, 'bzone'));
-                          $tb_key1 = 'bzone';
-                        }
-                        else
-                        {
-                          $book = array_unique(array_column($result, 'bb_name'));
-                          $tb_key1 = 'bb_name';
-                        }
 
-                        if($deal->dtype=='zone')
-                        {
-                          $del =  array_unique(array_column($result, 'dzone'));
-                          $tb_key2 = 'dzone';
-                        }
-                        else
-                        {
-                          $del = array_unique(array_column($result, 'db_name'));
-                          $tb_key2 = 'db_name';
-                        }
-                       // echo $tb_key1.'-'.$tb_key2;exit();
-                       $freight_table = '<table border="1">';
 
-                        foreach ($book as $key => $value1)
-                        {
-                                if($key==0)
-                                {
-                                  $freight_table.='
-                                  <thead><tr>
-                                  <th>To <i class="fa fa-arrow-right"></i><br>
-                                  From <i class="fa fa-arrow-down"></i></th>';
-                                  foreach ($del as $key2 => $value2)
-                                  {
-                                   $freight_table.='<th>'.$value2.'</th>';
-                                  }
-                                  $freight_table.='</tr></thead>
-                                  <tbody>';
-                                }
-                          $freight_table.='<tr>';
-                          
-                          $freight_table.='<th>'.$value1.'</th>';
-                          
-                          foreach ($del as $key2 => $value2)
-                          {
-                              foreach ($result as $key3 => $value3)
-                              {
-                                if($value1==$value3->{$tb_key1} && $value2==$value3->{$tb_key2})
-                                { $r = $value3->rate;
-                                  $d = $value3->discount;
-                                  $price = $r*(1-round(($d/100),2));
-                                  $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
-                                }
-                              }
-                          }
-
-                          $freight_table.='</tr>';                   
-                        }
-                        $freight_table.= '</tbody></table>'; 
-
-                        $area_table='';
-                      $mean = array_unique(array_merge(array_unique(array_column($result, 'bzid')),array_unique(array_column($result, 'dzid'))));
-                        
-                        if(!empty($mean))
-                        {
-                        $area_table.="<table border='1px'>
-                        <thead>
-                          <tr>
-                            <th>Region</th>
-                            <th>Area to Area</th>
-                          </tr>
-                        </thead>
-                        <tbody>";
-                        // $branchs = $this->db->query("SELECT CONCAT(GROUP_CONCAT(booking_branch),',',GROUP_CONCAT(delivery_branch)) as blist FROM `deal_data` where deal_id=".$deal->id." GROUP BY deal_id");
-                        // if(!empty($branchs))
-
-                        $zlist = $this->db->select('z.zone_id,z.name zname,GROUP_CONCAT(b.branch_name) as blist')
-                                      ->from('branch b')
-                                      ->join('zones z','b.zone=z.zone_id','left')
-                                      ->where_in('b.zone',$mean)
-                                      ->where('b.type','area')
-                                      ->group_by('b.zone')
-                                      ->get()->result();
-                            //echo $this->db->last_query();exit();
-                            foreach ($zlist as $key5 => $mean)
-                            { 
-                              $area_table.='<tr><th>'.$mean->zname.'</th><td>'.$mean->blist.'</td></tr>';
-                            }
-                             $area_table.="</tbody>
-                            </table>";
-                          }
-
-                        }
-                        else
-                        {
-                          $freight_table ='';
-                          $area_table='';
-                        }
                       }//type-zone/area
                       
                         $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge from oda_matrix GROUP bY dis,we")->result();
@@ -3229,54 +3130,12 @@ public function set_layout_to_session() {
                     {
                     $oc_table.='<tr>
                             <td>Door Collection Charges</td>
-                            <td>
-                            <table border="1" style="max-width:252px!important">
-                            <thead>
-                              <tr>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Charge</th>
-                                <th style="width:100px;">Unit</th>
-                                
-                              </tr>
-                            </thead>
-                            <tbody>';
-                              foreach ($oc[19] as $d => $door)
-                              {
-                                $oc_table.='<tr>
-                                              <td>'.$door->from.'</td>
-                                              <td>'.$door->to.'</td>
-                                              <td>'.$door->charge.' Rs.</td>
-                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
-                                            </tr>';
-                              }
-                        $oc_table.='</tbody></table></td>
+                            <td>'.$oc[19].'</td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
                         <tr>
                             <td>Last Mile  Delivery charges</td>
-                            <td>
-                            <table border="1" style="max-width:252px!important">
-                            <thead>
-                              <tr>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Charge</th>
-                                <th style="width:100px;">Unit</th>
-                                
-                              </tr>
-                            </thead>
-                            <tbody>';
-                              foreach ($oc[20] as $d => $door)
-                              {
-                                $oc_table.='<tr>
-                                              <td>'.$door->from.'</td>
-                                              <td>'.$door->to.'</td>
-                                              <td>'.$door->charge.' Rs.</td>
-                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
-                                            </tr>';
-                              }
-                        $oc_table.='</tbody></table></td>
+                            <td>'.$oc[20].'</td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
                         <tr>
@@ -3397,27 +3256,31 @@ public function set_layout_to_session() {
       else
       {
 
+          if($deal->btype=='branch' || $deal->btype=='zone')
+          {
+              if($deal->btype=='branch')
+              {
+                $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,branch.branch_name as bname from deal_data deal left join branch on branch.branch_id=deal.booking_branch where deal.deal_id=$info_id");
+              }
+              else if($deal->btype=='zone')
+              {
+                 $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,zones.name as bname from deal_data deal left join zones on zones.zone_id=deal.booking_branch where deal.deal_id=$info_id");
+              }
+             
+              $freight_table ='';
 
-        if($deal->btype=='branch')
-        {
-            $query = $this->db->query("SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id");
+              if(!empty($query))
+              {
+                $result = $query->result();
 
-            if(!empty($query))
-            {
-            $result = $query->result();
-
-            $book = array_unique(array_column($result, 'bb_name'));
-            $del =  array_unique(array_column($result, 'db_name'));
-           $freight_table = '<table border="1">';
-
-            foreach ($book as $key => $value1)
-            {
-                  if($key==0)
-                  {
-                    $freight_table.='
-                    <thead><tr>
-                    <th>
-                    <div style="display:inline-block;">
+              foreach ($result as $key => $rows)
+              {
+                $freight_table.='
+                <table border="1">
+                      <thead>
+                      <tr>
+                        <th>
+                        <div style="display:inline-block;">
                       To<br>
                       From 
                     </div>
@@ -3425,153 +3288,53 @@ public function set_layout_to_session() {
                       <i class="fa fa-arrow-right"></i><br>
                       <i class="fa fa-arrow-down"></i>
                     </div>
-                    </th>';
-                    foreach ($del as $key2 => $value2)
-                    {
-                     $freight_table.='<th>'.$value2.'</th>';
-                    }
-                    $freight_table.='</tr></thead>
-                    <tbody>';
-                  }
-            $freight_table.='<tr>';
-            
-            $freight_table.='<th>'.$value1.'</th>';
-            
-            foreach ($del as $key2 => $value2)
-            {
-                foreach ($result as $key3 => $value3)
+                        </th>';
+
+              if($deal->btype=='branch')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,branch.branch_name as dname,deal.rate,deal.discount from deal_data deal left join branch on branch.branch_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+              else if($deal->btype=='zone')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,zones.name as dname,deal.rate,deal.discount from deal_data deal left join zones on zones.zone_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+
+                foreach ($cols as $key2 => $value2)
                 {
-                  if($value1==$value3->bb_name && $value2==$value3->db_name)
-                  { $r = $value3->rate;
-                    $d = $value3->discount;
+                    $freight_table.='<th>'.$value2->dname.'</th>';
+                }
+                $freight_table.='</tr>
+                <tr>
+                <th>'.$rows->bname.'</th>';
+
+                foreach ($cols as $key2 => $value2)
+                {
+                    $r = $value2->rate;
+                    $d = $value2->discount;
                     $price = $r*(1-round(($d/100),2));
                     $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
-                  }
                 }
-            }
 
-            $freight_table.='</tr>';                   
+              $freight_table.='</tr>
+
+            </tbody></table>';                   
+              }
+      
+            }//ifend
+            else
+            {
+              $freight_table='';
             }
-          $freight_table.= '</tbody></table>'; 
-          }//ifend
+            $area_table='';
+
+          }
           else
           {
-            $freight_table='';
-          }
-          $area_table='';
-
-        }
-        else
-        {
-
-        $qry = "SELECT deal.id,deal.deal_id,deal.rate,deal.discount,bb.branch_name as bb_name, db.branch_name as db_name,bz.name bzone,dz.name dzone,bz.zone_id bzid,dz.zone_id dzid FROM `deal_data` deal left join branch bb on bb.branch_id=deal.booking_branch left join branch db on db.branch_id=deal.delivery_branch left join zones bz on bz.zone_id=bb.zone left join zones dz on dz.zone_id=db.zone where deal.deal_id =$info_id";
-
-          if($deal->btype=='zone' || $deal->dtype=='zone')
-          {
-               $qry.=' group by bzid,dzid';
-          }
-               
-          $query = $this->db->query($qry);
-
-          if(!empty($query))
-          {
-            $result = $query->result();
-            $tb_key1 = '';
-            $tb_key2 = '';
-            if($deal->btype=='zone')
-            {
-              $book = array_unique(array_column($result, 'bzone'));
-              $tb_key1 = 'bzone';
-            }
-            else
-            {
-              $book = array_unique(array_column($result, 'bb_name'));
-              $tb_key1 = 'bb_name';
-            }
-
-            if($deal->dtype=='zone')
-            {
-              $del =  array_unique(array_column($result, 'dzone'));
-              $tb_key2 = 'dzone';
-            }
-            else
-            {
-              $del = array_unique(array_column($result, 'db_name'));
-              $tb_key2 = 'db_name';
-            }
-      
-
-         $freight_table = '<table border="1">';
-
-          foreach ($book as $key => $value1)
-          {
-                  if($key==0)
-                  {
-                    $freight_table.='
-                    <thead><tr>
-                    <th>To <i class="fa fa-arrow-right"></i><br>
-                                  From <i class="fa fa-arrow-down"></i></th>';
-                    foreach ($del as $key2 => $value2)
-                    {
-                     $freight_table.='<th>'.$value2.'</th>';
-                    }
-                    $freight_table.='</tr></thead>
-                    <tbody>';
-                  }
-            $freight_table.='<tr>';
-            
-            $freight_table.='<th>'.$value1.'</th>';
-            
-            foreach ($del as $key2 => $value2)
-            {
-                foreach ($result as $key3 => $value3)
-                {
-                  $r = $value3->rate;
-                  $d = $value3->discount;
-                  $price = $r*(1-round(($d/100),2));
-                  if($value1==$value3->{$tb_key1} && $value2==$value3->{$tb_key2})
-                    $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';    
-                }
-            }
-
-            $freight_table.='</tr>';                   
-          }
-          $freight_table.= '</tbody></table>'; 
 
 
-          $area_table='';
-          $mean = array_unique(array_merge(array_unique(array_column($result, 'bzid')),array_unique(array_column($result, 'dzid'))));
-            
-            if(!empty($mean))
-            {
-            $area_table.="<table border='1px'>
-            <thead>
-              <tr>
-                <th>Region</th>
-                <th>Area to Area</th>
-              </tr>
-            </thead>
-            <tbody>";
-            $zlist = $this->db->select('z.zone_id,z.name zname,GROUP_CONCAT(b.branch_name) as blist')
-                          ->from('branch b')
-                          ->join('zones z','b.zone=z.zone_id','left')
-                          ->where_in('b.zone',$mean)
-                          ->group_by('b.zone')
-                          ->get()->result();
-            foreach ($zlist as $key5 => $mean)
-            { 
-              $area_table.='<tr><th>'.$mean->zname.'</th><td>'.$mean->blist.'</td></tr>';
-            }
-           $area_table.="</tbody>
-          </table>";
-            }
 
-          }else
-          {
-            $freight_table ='';
-            $area_table='';
-          }
-        }//else end
+
+          }//type-zone/area
 
           $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge from oda_matrix GROUP bY dis,we")->result();
             if(!empty($oda_query))
@@ -3732,54 +3495,12 @@ public function set_layout_to_session() {
       {
       $oc_table.='<tr>
                             <td>Door Collection Charges</td>
-                            <td>
-                            <table border="1" style="max-width:252px!important">
-                            <thead>
-                              <tr>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Charge</th>
-                                <th style="width:100px;">Unit</th>
-                                
-                              </tr>
-                            </thead>
-                            <tbody>';
-                              foreach ($oc[19] as $d => $door)
-                              {
-                                $oc_table.='<tr>
-                                              <td>'.$door->from.'</td>
-                                              <td>'.$door->to.'</td>
-                                              <td>'.$door->charge.' Rs.</td>
-                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
-                                            </tr>';
-                              }
-                        $oc_table.='</tbody></table></td>
+                            <td>'.$oc[19].'</td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
                         <tr>
                             <td>Last Mile  Delivery charges</td>
-                            <td>
-                            <table border="1" style="max-width:252px!important">
-                            <thead>
-                              <tr>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Charge</th>
-                                <th style="width:100px;">Unit</th>
-                                
-                              </tr>
-                            </thead>
-                            <tbody>';
-                              foreach ($oc[20] as $d => $door)
-                              {
-                                $oc_table.='<tr>
-                                              <td>'.$door->from.'</td>
-                                              <td>'.$door->to.'</td>
-                                              <td>'.$door->charge.' Rs.</td>
-                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
-                                            </tr>';
-                              }
-                        $oc_table.='</tbody></table></td>
+                            <td>'.$oc[20].'</td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
           <tr>
@@ -3901,7 +3622,7 @@ public function feedback()
 {
         $comp_id=$this->session->companey_id;
         $data['feedbacks']=$this->db->where('comp_id',$comp_id)->get('feedback')->result();
-        $data['content'] = $this->load->view('ticket/feedback', $data, true);	     
+        $data['content'] = $this->load->view('ticket/feedback', $data, true);      
         $this->load->view('layout/main_wrapper', $data);
 }
 public function create() 
@@ -3909,7 +3630,7 @@ public function create()
     $this->load->model(array('User_model' ));
         $comp_id=$this->session->companey_id;
         $data['user_list'] = $this->User_model->companey_users();
-        $data['content'] = $this->load->view('ticket/add-feedback', $data, true);	     
+        $data['content'] = $this->load->view('ticket/add-feedback', $data, true);      
         $this->load->view('layout/main_wrapper', $data);
 }
 public function loadFeedback()
@@ -4026,7 +3747,7 @@ public function edit_feedback()
         $data['title']='Edit Feedback';
         $data['user_list'] = $this->User_model->companey_users();
         $data['feedbacks']=$this->db->where(array('comp_id'=>$comp_id,'id'=>$feedback_id))->get('feedback')->result();
-        $data['content'] = $this->load->view('edit-feedback', $data, true);	     
+        $data['content'] = $this->load->view('edit-feedback', $data, true);      
         $this->load->view('layout/main_wrapper', $data);
 }
 public function delete_feedback() 

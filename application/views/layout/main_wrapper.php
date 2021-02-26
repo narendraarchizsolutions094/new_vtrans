@@ -447,9 +447,9 @@ if($root=='https://student.spaceinternationals.com'){  ?>
     ;
     </style>
 
-<div class="screen-cover" align="center">
+<!-- <div class="screen-cover" align="center">
   <img src="https://i.stack.imgur.com/kOnzy.gif" style="width: 100px; margin:15%">
-</div>
+</div> -->
 <style type="text/css">
   .screen-cover
   {
@@ -1294,13 +1294,30 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         ?>
                             <?php  if (user_access('d37')) {  ?>
 
+                             <li class="<?php echo (in_array($segment2,array('sales_region_list')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/sales_region_list">
+                                    Sales Region List
+                                </a>
+                            </li>
+
+                            <li class="<?php echo (in_array($segment2,array('sales_area_list')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/sales_area_list">
+                                    Sales Area List
+                                </a>
+                            </li>
+
+                             <li class="<?php echo (in_array($segment2,array('zone_list')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/zone_list">
+                                    Zone List
+                                </a>
+                            </li>
 
                             <li class="<?php echo (in_array($segment2,array('branchList')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/branchList">
                                     Branch List
                                 </a>
                             </li>
-                            <li class="<?php echo (in_array($segment2,array('branchList')) ?"active":'') ?>">
+                            <li class="<?php echo (in_array($segment2,array('add_vehicle_type')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/add_vehicle_type">
                                     Vehicle List
                                 </a>
@@ -1315,7 +1332,13 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             <li
                                 class="<?php echo (in_array($segment2,array('branch_ratelist','editbranchrate')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/branch_ratelist">
-                                    Branch Rate List
+                                 Branch Rate List
+                                </a>
+                            </li>
+                             <li
+                                class="<?php echo (in_array($segment2,array('zone_ratelist','editbranchrate')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/zone_ratelist">
+                                 Zone Rate List
                                 </a>
                             </li>
                             <li class="<?php echo (in_array($segment2,array('discount_matrix')) ?"active":'') ?>">
@@ -3194,7 +3217,7 @@ jQuery(function($) { //on document.ready
         dateFormat: 'yy-mm-dd'
     });
 });
-$(document).on('ready',function(){
-  $(".screen-cover").hide();
-});
+// $(document).on('ready',function(){
+//   $(".screen-cover").hide();
+// });
 </script>

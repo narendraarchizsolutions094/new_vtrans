@@ -36,8 +36,8 @@
             <tr>
               <th>S No.</th>
               <th>Name</th>
-              <th>Type</th>
-              <th>Zone</th>
+              <th>Area</th>
+              <th>Region</th>
               <th>Status</th>
               <th>Created At</th>
               <th>Action</th>
@@ -45,12 +45,12 @@
           </thead>
           <tbody>
             <?php $sl = 1;
-            foreach ($common_list as $branch) { ?>
+            foreach ($branch_list as $branch) { ?>
               <tr>
                 <td><?php echo $sl; ?></td>
                 <td width=""><?= $branch->branch_name ?></td>
-                <td width=""><?= ucwords($branch->type)??'NA' ?></td>
-                <td><?php if($branch->type=='area')echo$branch->zone_name; else echo'-';?></td>
+                <th><?= $branch->area_name ?></th>
+                <th><?= $branch->region_name ?></th>
                 <td><?php echo (($branch->branch_status == 1) ? display('active') : display('inactive')); ?></td>
                 <td width=""><?= $branch->created_at ?></td>
                 <td class="center">
@@ -100,11 +100,9 @@
       <form action="<?= base_url() . 'setting/addbranch' ?>" enctype="multipart/form-data" method='post'>
         <div class="modal-body">
           <div class="row">
-            <div class="form-group">
-              <label id="label">Branch Name </label>
-              <input type="text" name="branch" class="form-control">
-            </div>
-            <div class="form-group">
+
+
+           <!--  <div class="form-group">
               <label>Type </label>
               <select class="form-control" name="type" onchange="{if(this.value=='area')
               {
@@ -117,24 +115,39 @@
               }
               }">
                 <option value="branch">Branch</option>
-                <!-- <option value="zone">Zone</option> -->
+               <option value="zone">Zone</option>
                 <option value="area">Area</option>
               </select>
-            </div>
-           <div id="zone_box" class="form-group" style="display: none;">
-              <label>Select Zone </label>
-              <select class="form-control" name="zone">
+            </div> -->
+
+             <div class="form-group">
+              <label>Select Region </label>
+              <select class="form-control" name="region" onchange="load_area()">
+                <option value="">Select Region</option>
                 <?php
-                if(!empty($zone_list))
+                if(!empty($region_list))
                 {
-                  foreach ($zone_list as $key => $zone)
+                  foreach ($region_list as $key => $region)
                   {
-                      echo'<option value="'.$zone->zone_id.'">'.$zone->name.'</option>';
+                      echo'<option value="'.$region->region_id.'">'.$region->name.'</option>';
                   }
                 }
                 ?>
               </select>
             </div>
+
+            <div class="form-group">
+              <label>Select Area </label>
+              <select class="form-control" name="area">
+                <option value="">Select Area</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label id="label">Branch Name </label>
+              <input type="text" name="branch" class="form-control">
+            </div>
+          
             <div class="form-group">
               <label>Status </label>
               <div class="form-check" style="width: 100%; padding: 0px 10px;">
@@ -180,11 +193,40 @@
 </div>
 <?php } ?>
 <script>
+
+
+function load_area()
+{
+  var rid = $('select[name=region]').val();
+    $.ajax({
+      url:'<?=base_url('setting/area_by_region')?>',
+      data:{region:rid},
+      type:'post',
+      success:function(q){
+        $("select[name=area]").html(q);
+      }
+    });
+}
+ 
+function edit_load_area()
+{ 
+  var f =  $('#branch_data');
+  var rid = $(f).find('select[name=region]').val();
+    $.ajax({
+      url:'<?=base_url('setting/area_by_region')?>',
+      data:{region:rid},
+      type:'post',
+      success:function(q){
+        $(f).find("select[name=area]").html(q);
+      }
+    });
+} 
   $(document).ready(function() {
     $('#example').DataTable();
   });
   $(document).on('click', '.view_data', function() {
     var branch_id = $(this).attr("id");
+
     if (branch_id != '') {
       $.ajax({
         url: "<?= base_url('setting/editbranch/') ?>",

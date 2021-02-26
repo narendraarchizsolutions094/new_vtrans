@@ -21,7 +21,7 @@
 		<div class="col-lg-3">
 			<div class="form-group"> 
 		        <label>Booking Type</label>
-		        <select class="form-control" name="booking_type" id="booking_type" onchange="generate_table()">
+		        <select class="form-control" name="booking_type" id="booking_type" onchange="set_type(this)">
 		            <option value="sundry">Sundry</option>
 		            <option value="ftl">FTL</option>
 		        </select>
@@ -36,6 +36,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-lg-5">
 		<div class="form-group"> 
@@ -43,49 +44,50 @@
 			<select class="form-control" name="btype" onchange="load_branch(this)" data-type="booking">
 				<option value="branch">Branch</option>
 				<option value="zone">Zone</option>
-				<option value="area">Area</option>
+				<option value="area" disabled>Area</option>
 			</select>
 		</div>
-		<div class="form-group"> 
-	        <label>Booking From <font color="red">*</font></label>
-	        <select id="booking_branch" name="bbranch[]" class="form-control" multiple required onchange="generate_table()" data-close-on-select="false">
-	       <?php  
-          	foreach($branch as $dbranch){ ?>
-              <option value="<?= $dbranch->branch_id ?>"><?= $dbranch->branch_name ?></option>
-             <?php }  ?>
-         	</select>
-	    </div>
 	</div>
-	
 	<div class="col-lg-5">
 		<div class="form-group"> 
 	        <label>Type <font color="red">*</font></label>
-			<select class="form-control" name="dtype" onchange="load_branch(this)" data-type="delivery" >
+			<select class="form-control" name="dtype" data-type="delivery" >
+				<!-- onchange="load_branch(this)"  -->
 				<option value="branch">Branch</option>
 				<option value="zone">Zone</option>
 				<option value="area">Area</option>
 			</select>
 		</div>
-		<div class="form-group">
-		<label>Delivery To<font color="red">*</font></label>
-        <select class="form-control" name="dbranch[]" id="delivery_branch" onchange="generate_table()" multiple required data-close-on-select="false">
-          <?php  
-          foreach($branch as $dbranch){ ?>
-              <option value="<?= $dbranch->branch_id ?>"><?= $dbranch->branch_name ?></option>
-             <?php }  ?>
-        </select>
-		</div>
-	</div>
-	<div class="col-lg-1">
-		<label>&nbsp;</label>
-		<!-- <button class="btn btn-primary" onclick="generate_table()">Go</button> -->
 	</div>
 </div>
+
+<div class="row panel-box">
+</div>
+<div class="row">
+	<div class="col-lg-12" align="right">
+		<button class="btn btn-primary" onclick="make_clone()"><i class="fa fa-plus"></i> Add</button>
+			<!-- <button class="btn btn-primary" onclick="generate_table()">Go</button> -->
+	</div>
+</div>
+
 <div class="row" style="padding: 5px; padding-bottom:40px;">
 		<div class="col-lg-12 tablebox">
 		</div>
 </div>
 <script type="text/javascript">
+
+function set_type(t)
+{
+	if(t.value=='ftl')
+	{
+		$('select[name=btype]').val('branch').select2({disabled:'readonly'}).trigger('change');
+	}
+	else
+	{
+		$('select[name=btype]').val('branch').select2({disabled:false}).trigger('change');
+	}
+}
+
 $(document).on('submit','#data_table',function(e){
 	e.preventDefault();
 	var formdata = $(this).serialize();
@@ -145,30 +147,40 @@ $(document).on('submit','#data_table',function(e){
 	});
 });
 
+
+
 function generate_table()
 {
+	var BList= new Array();
+	var blist = $(".booking_from");
+	var dlist = $(".delivery_to");
+	$(blist).each(function(k,v){
+		var bkey =$(v).val();
+		var dval = $(dlist[k]).val();
+		BList.push({key:bkey,val:dval});	
+	});
+
 	var deal_type = $("select[name=deal_type]").val();
 	var booking_type = $("select[name=booking_type]").val();
 	var business_type = $("select[name=business_type]").val();
-	var bbranch = $("select[name='bbranch[]']").val();
-	var dbranch = $("select[name='dbranch[]']").val();
+
 	var btype = $("select[name=btype]").val();
 	var dtype = $("select[name=dtype]").val();
 	var enq_for = $("input[name=for]").val();
 //alert('d');
-	if(bbranch==null || dbranch==null)
+	if(blist.length==0 || dlist.length==0)
 	{
-		//var msg = 'Fill required fields.';
-		// if(bbranch==null)
-		// 	msg='Booking branch is required.';
-		// if(dbranch==null)
-		// 	msg='Delivery branch is required.';
-		// Swal.fire({
-		// 	title:msg,
-		// 	icon:'error',
-		// 	showConfirmButton:true,
+		var msg = 'Fill required fields.';
+		if(bbranch==null)
+			msg='Booking branch is required.';
+		if(dbranch==null)
+			msg='Delivery branch is required.';
+		Swal.fire({
+			title:msg,
+			icon:'error',
+			showConfirmButton:true,
 
-		// })
+		})
 		$(".tablebox").html('');
 		return;
 	}
@@ -180,8 +192,7 @@ function generate_table()
 				deal_type:deal_type,
 				booking_type:booking_type,
 				business_type:business_type,
-				bbranch:bbranch,
-				dbranch:dbranch,
+				chain:BList,
 				btype:btype,
 				dtype:dtype,
 				enq_for:enq_for
@@ -199,6 +210,80 @@ function generate_table()
 		error:function(u,v,w)
 		{
 			alert(w);
+		}
+	});
+}
+
+function load_areas(t)
+{
+	var type = t.id;
+	var did = $(t).data('did');
+	//alert(type);
+	if(t.value!='')
+	{
+	  	var rid =t.value;
+	  	
+	    $.ajax({
+	      url:'<?=base_url('setting/area_by_region')?>',
+	      data:{region:rid},
+	      type:'post',
+	      success:function(q){
+	      	if(type=='b_reg'+did)
+	     		$('#b_area'+did).html(q);
+	     	else
+	     		$('#d_area'+did).html(q);
+	      }
+	    });
+	}
+	else
+	{
+		if(type=='b_reg'+did)
+	     	$('#b_area'+did).html('');
+	    else
+	     	$('#d_area'+did).html('');
+	}
+}
+
+function load_branch_particular(t)
+{	var type = t.id;
+	var did = $(t).data('did');
+
+	if(t.value!='')
+	{
+		var area = t.value;
+		 $.ajax({
+	      url:'<?=base_url('setting/branch_by_area')?>',
+	      data:{area:area},
+	      type:'post',
+	      success:function(q){
+
+		      	if(type=='b_area'+did)
+		     		$('select[name="bbranch['+did+']"]').html(q);
+		     	else
+	     			$('select[name="dbranch['+did+']"]').html(q);
+	     		$('select[name="bbranch['+did+']"]').trigger('change');
+	      }
+	    });
+	}
+	else
+	{
+		 $(t).parents('.row:first').find('#delivery_branch').html('');
+		 $('select[name="bbranch['+did+']"]').trigger('change');
+	}
+	
+}
+var count = 1;
+//make_clone();
+function make_clone()
+{//alert('ss');
+	var type = $("select[name=btype]").val();
+	$.ajax({
+		url:'<?=base_url('client/branch-panel-clone/')?>'+count+'/'+type,
+		success:function(res)
+		{
+			$('.panel-box').append(res);
+			$('.panel-box').find('select').select2();
+			count++;
 		}
 	});
 }
@@ -234,7 +319,11 @@ return ;
 var max_discount = <?=$max_discount?>;
 $(document).on('change keyup click','#data-box input',function(e){
 	var f = $(".tablebox");
-	
+
+var type = $("select[name=booking_type]").val();
+if(type=='ftl')
+return;	
+
 	var qid = $(this).data('id');
 		if(this.value!='' && (this.value<0 || this.value ===NaN))
 			this.value=0;
@@ -272,21 +361,34 @@ function load_branch(t)
 {
 	var dtype = $(t).data('type');
 	var key = t.value;
-
-	if(dtype=='booking' && key=='branch')
-	{
-		$("select[name=dtype]").val('branch');
-		$("select[name=dtype] option").removeAttr('disabled');
-		$("select[name=dtype] :not(option[value=branch])").attr('disabled','disabled');
-		$("select[name=dtype]").trigger('change');
-	}
-	else if(dtype=='booking' && key!='branch')
+	if(dtype=='booking')
 	{
 		$("select[name=dtype]").val(key);
 		$("select[name=dtype] option").removeAttr('disabled');
-		$("select[name=dtype] option[value=branch]").attr('disabled','disabled');
+		$("select[name=dtype] :not(option[value="+key+"])").attr('disabled','disabled');
 		$("select[name=dtype]").trigger('change');
 	}
+
+$(".panel-box").html('');
+	count=1;
+		make_clone();
+
+	//if(key=='branch')
+		return;
+	// if(dtype=='booking' && key=='branch')
+	// {
+	// 	$("select[name=dtype]").val('branch');
+	// 	$("select[name=dtype] option").removeAttr('disabled');
+	// 	$("select[name=dtype] :not(option[value=branch])").attr('disabled','disabled');
+	// 	$("select[name=dtype]").trigger('change');
+	// }
+	// else if(dtype=='booking' && key=='zone')
+	// {
+	// 	$("select[name=dtype]").val(key);
+	// 	$("select[name=dtype] option").removeAttr('disabled');
+	// 	$("select[name=dtype] option[value=branch]").attr('disabled','disabled');
+	// 	$("select[name=dtype]").trigger('change');
+	// }
 
 	$.ajax({
 		url:'<?=base_url('setting/load_branchs')?>',

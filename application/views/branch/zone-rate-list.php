@@ -14,9 +14,14 @@ a:hover, a:focus {
 }
 </style>
 <div class="row">
-<div class="col-md-12" style="padding: 15px;">
 
-  <?php   if (user_access('d39')) { ?>
+    <!--  table area -->
+
+    <div class="col-sm-12">
+
+        <div  class="panel panel-default thumbnail">
+            <div class="panel-heading no-print">
+            <?php   if (user_access('d39')) { ?>
                 <div class="btn-group"> 
 
                     <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#AddBranch" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add Rate</a>  
@@ -96,19 +101,10 @@ a:hover, a:focus {
 </div>
                 <?php }?>
 
-</div>
-
-    <!--  table area -->
-
-    <div class="col-sm-12">
-
-        <div  class="panel panel-default thumbnail">
-            <div class="panel-heading no-print">
-            Branch Rate List
             </div>
 
             <div class="panel-body">
-              <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                 <tr>
                     <th>S No.</th>
@@ -121,23 +117,23 @@ a:hover, a:focus {
                 </tr>
                 </thead>
                 <tbody>
-                <?php $sl=1; foreach ($branch_rate_list as $branch) {?>
+                <?php $sl=1; foreach ($zone_rate_list as $branch) {?>
                 <tr>
                 <td><?php echo $sl; ?></td>
-							  <td width=""><?= $branch->from?></td>
-							  <td width=""><?= $branch->to?></td>
+							  <td width=""><?= $branch->bbranch?></td>
+							  <td width=""><?= $branch->dbranch?></td>
                 <td width=""><?= $branch->rate?></td>
                 <td><?php echo (($branch->rate_status==0)?display('active'):display('inactive')); ?></td>
 
-                <td width=""><?= $branch->created_at?></td>
-                <td class="center">
-                <?php   if (user_access('e30')) { ?>
-                      <a href="<?= base_url('setting/editbranchrate/' . $branch->id . '/'.$branch->type)?>" class="btn btn-xs  btn-primary view_data"><i class="fa fa-edit"></i></a>
-                <?php    } if (user_access('e31')) { ?>
-                      <a href="<?= base_url('setting/branchrate_delete/' . $branch->id) ?>" onclick="return confirm('Are You Sure ? ')" class="btn btn-xs  btn-danger"><i class="fa fa-trash"></i></a>
-                   <?php } ?>
-                  </td>
-                </tr>
+              <td width=""><?= $branch->created_at?></td>
+              <td class="center">
+            <?php   if (user_access('e30')) { ?>
+                  <a href="<?= base_url('setting/editbranchrate/' . $branch->id . '')?>" class="btn btn-xs  btn-primary view_data"><i class="fa fa-edit"></i></a>
+            <?php    } if (user_access('e31')) { ?>
+                  <a href="<?= base_url('setting/branchrate_delete/' . $branch->id . '') ?>" onclick="return confirm('Are You Sure ? ')" class="btn btn-xs  btn-danger"><i class="fa fa-trash"></i></a>
+               <?php } ?>
+                </td>
+                        </tr>
 
                         <?php $sl++; ?>
 
@@ -161,59 +157,7 @@ a:hover, a:focus {
       </div>
 
 <!-- Course Upload  -->
-<div class="row">
-  <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Zone Rate List
-      </div>
-      <div class="panel-body">
 
-          <table id="example" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                <tr>
-                    <th>S No.</th>
-                    <th>Booking Zone</th>
-                    <th>Delivery Zone</th>
-                    <th>Rate</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php $sl=1; foreach ($zone_rate_list as $branch) {?>
-                <tr>
-                <td><?php echo $sl; ?></td>
-                <td width=""><?= $branch->from?></td>
-                <td width=""><?= $branch->to?></td>
-                <td width=""><?= $branch->rate?></td>
-                <td><?php echo (($branch->rate_status==0)?display('active'):display('inactive')); ?></td>
-
-                <td width=""><?= $branch->created_at?></td>
-                <td class="center">
-                <?php   if (user_access('e30')) { ?>
-                      <a href="<?= base_url('setting/editbranchrate/' . $branch->id . '/'.$branch->type)?>" class="btn btn-xs  btn-primary view_data"><i class="fa fa-edit"></i></a>
-                <?php    } if (user_access('e31')) { ?>
-                      <a href="<?= base_url('setting/branchrate_delete/' . $branch->id ) ?>" onclick="return confirm('Are You Sure ? ')" class="btn btn-xs  btn-danger"><i class="fa fa-trash"></i></a>
-                   <?php } ?>
-                  </td>
-                </tr>
-
-                        <?php $sl++; ?>
-
-                    <?php } ?> 
-
-                </tbody>
-
-              </table>
-
-      </div>
-
-    </div>
-
-  </div>
-</div>
 
 <script>
 

@@ -1759,6 +1759,114 @@ public function view_editable_aggrement()
             
         }
     }
+
+    public function ajax_visit_details($vid=0)
+    {
+        if(empty($vid))
+            $vid = $this->input->post('vid');
+
+        $visittable=$this->db->where(array('visit_id'=>$vid))->get('visit_details')->result();
+
+        if(empty($visittable))
+        {
+            echo'<center>No data to show</center>';exit();
+        }
+        echo'<table class="table table-responseive table-stripped">
+                <thead >
+                <tr>
+                <th>S. No</th>
+                <th>Travel Start </th>
+                <th>Travel End </th>
+                <th>In Hours </th>
+                <th>Meeting Start </th>
+                <th>Meeting End </th>
+                <th>In Hours </th>
+
+                </tr>
+                </thead>
+                <tbody>';
+                $i=1;
+                $waypoints=[];
+                foreach ($visittable as $key => $value) 
+                {
+                    echo'<tr>
+                  <td>'.$i++.'</td>
+                <td>';
+             
+                 if(($value->visit_start)!=NULL)
+                 {
+                  echo date("F jS, Y, g:i a", strtotime($value->visit_start)); 
+                 }
+                echo'</td>
+                <td>';
+                
+                if(($value->visit_end)!=NULL )
+                { 
+                    echo date("F jS, Y, g:i a ", strtotime($value->visit_end)); 
+                }
+                echo'</td>
+                <td>';
+                
+                if(($value->visit_end!=NULL AND $value->visit_start!=NULL))
+                {
+                 $minutes= round(abs(strtotime($value->visit_start) - strtotime($value->visit_end))/60);
+                  echo $hours = floor($minutes / 60).':'.($minutes -   floor($minutes / 60) * 60); }else{
+                    echo'N/A';
+
+                  }
+                echo'</td>
+                <td>';
+                
+                if(($value->start_time)!=NULL)
+                { 
+                    echo date("F jS, Y, g:i a", strtotime($value->start_time));
+                } 
+            
+                echo'</td>
+                <td>';
+                if(($value->end_time)!=NULL)
+                { 
+                    echo date("F jS, Y, g:i a", strtotime($value->end_time)); 
+                }
+                echo'</td>
+                <td>';
+                if(($value->start_time!=NULL AND $value->end_time!=NULL))
+                {
+                 $minutes= round(abs(strtotime($value->start_time) - strtotime($value->end_time))/60);
+                  echo $hours = floor($minutes / 60).':'.($minutes -   floor($minutes / 60) * 60); 
+                }else{
+                    echo'N/A';
+                  }
+                echo'</td>
+                </tr>';
+        
+                //$waypoints[]=$value->way_points;
+                //  array_push(, json_decode($value->way_points));  
+                // print_r($way_points);
+                } 
+                // $arr_m=[];
+                // foreach ($waypoints as $key => $value) {
+                // foreach (json_decode($value) as $key => $values) {
+                //    $arr_m[]=$values;
+                // }
+                // }
+                // print_r($arr_m);
+                // die();
+                //  $totalpoints=count($arr_m);
+                // $newpoints=array();
+                // // print_r($totalpoints);
+                // $cuts=$totalpoints/23;
+                // for ($i=0; $i < $totalpoints; $i+=$cuts) { 
+                //   array_push($newpoints,$arr_m[$i]);
+                // }
+                //  $lastKey = key(array_slice($newpoints, -1, 1, true));
+                // $firstpoint=$newpoints[0];
+                // $secondpoint=$newpoints[$lastKey];
+
+                echo'</tbody>
+                </table>';
+    }
+
     public function report(){
         if(user_role('1020') || user_role('1021') || user_role('1022')){
         }
@@ -2298,7 +2406,7 @@ public function all_update_expense_status()
         $data['title'] = 'Add Deal';
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
         $data['branch'] = $this->Branch_model->branch_list()->result();
-        
+        $data['region_list'] = $this->Branch_model->sales_region_list()->result();
         $dis= $this->db->select('d.discount')
                                         ->from('discount_matrix d')
                                         ->join('tbl_admin a','a.discount_id=d.id','left')
@@ -2313,47 +2421,92 @@ public function all_update_expense_status()
     public function gen_table()
     {
         if(!empty($_POST))
-        {
+        {  
             $this->load->model('Branch_model');
             $deal_type = $this->input->post('deal_type');
+
+            $deal_type = is_array($deal_type)?$deal_type:array();
+
             $booking_type = $this->input->post('booking_type');
             $business_type = $this->input->post('business_type');
-            $bbranch = $this->input->post('bbranch');
-            $dbranch = $this->input->post('dbranch');
+            $chain = $this->input->post('chain');
             $btype = $this->input->post('btype');
             $dtype = $this->input->post('dtype');
             $enquiry_id = $this->input->post('enq_for');
             $deal_id= $this->input->post('deal_id')??0;
             $deal_data = $this->Branch_model->get_deal($deal_id);
 
-            if($btype=='zone')
-            {
-                $x = implode(',',$bbranch);
-                //echo $x;exit();
-                $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) and branch.type='area' ")->result();
+            // if($btype=='zone')
+            // {
+            //     $x = implode(',',$bbranch);
+            //     //echo $x;exit();
+            //     $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) and branch.type='area' ")->result();
 
-                $bbranch = array_column($fetch_list,'branch_id');
-                //print_r($bbranch);exit();
+            //     $bbranch = array_column($fetch_list,'branch_id');
+            //     //print_r($bbranch);exit();
+            // }
+
+            // if($dtype=='zone')
+            // {
+            //     $x = implode(',',$dbranch);
+            //     //echo $x;exit();
+            //     $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) and branch.type='area' ")->result();
+            //    //echo $this->db->last_query();exit();;
+
+            //     $dbranch = array_column($fetch_list,'branch_id');
+            //     //print_r($bbranch);exit();
+            // }
+
+            // if(empty($bbranch))
+            //     $bbranch = array(0);
+            // if(empty($dbranch))
+            //     $dbranch = array(0);  
+
+            $main_array = array();
+
+            if(!empty($chain))
+            {   $i=1;
+                foreach ($chain as $key => $r)
+                {
+                    if(!empty($r['val']))
+                    {
+                        foreach ($r['val'] as $key2 => $value) 
+                        {   //echo $btype;exit();
+                            if($btype=='area' || $booking_type=='ftl')
+                            {
+                            $from_branch =  $this->db->select('branch_name from')->where('branch_id',$r['key'])->get('branch')->row();
+
+                            $to_branch =  $this->db->select('branch_name to')->where('branch_id',$value)->get('branch')->row();
+                                
+                                $main_array[] = (object)array(
+                                                    'id'=>$i++,
+                                                    'booking_branch'=>$r['key'],
+                                                    'from'=>$from_branch->from,
+                                                    'delivery_branch'=>$value,
+                                                    'to'=>$to_branch->to,
+                                                    'rate'=>'',
+                                                    'discount'=>'',
+                                );
+                            }
+                            else
+                            {
+                                $where = array(
+                                'rate.booking_branch' => $r['key'],
+                                'rate.delivery_branch' => $value,
+                                );
+                                $row = $this->Branch_model->rate_list($btype,$where)->row();
+                                if(!empty($row))
+                                    $main_array[] = $row; 
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
             }
-
-            if($dtype=='zone')
-            {
-                $x = implode(',',$dbranch);
-                //echo $x;exit();
-                $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) and branch.type='area' ")->result();
-               //echo $this->db->last_query();exit();;
-
-                $dbranch = array_column($fetch_list,'branch_id');
-                //print_r($bbranch);exit();
-            }
-
-            if(empty($bbranch))
-                $bbranch = array(0);
-            if(empty($dbranch))
-                $dbranch = array(0);  
-
-            $query = $this->Branch_model->from_to_table($bbranch,$dbranch)->result();
-
+            //print_r($main_array);exit();
+            $query = $main_array;
            //echo $this->db->last_query();exit();
             if(!empty($query))
             {
@@ -2381,8 +2534,8 @@ public function all_update_expense_status()
                             '',//21
                             '',//22
                     );
-                    $oc[19] = array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
-                    $oc[20] = array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
+                    $oc[19] =10;//array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
+                    $oc[20] =10; //array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
                     $oc['rate_type'] = 'KG';
                     if(!empty($deal_data))
                     {
@@ -2399,10 +2552,23 @@ public function all_update_expense_status()
                 <input name="booking_type" type="hidden" value="'.$booking_type.'">
                 <input name="business_type" type="hidden" value="'.$business_type.'">
                 <input name="btype" type="hidden" value="'.$btype.'">
-                <input name="dtype" type="hidden" value="'.$dtype.'">
-                <input name="bbranch" type="hidden" value="'.implode($bbranch).'">
-                <input name="dbranch" type="hidden" value="'.implode($dbranch).'">
-                <input name="enquiry_id" type="hidden" value="'.$enquiry_id.'">
+                <input name="dtype" type="hidden" value="'.$dtype.'">';
+                if(!empty($deal_id))
+                {
+                    echo'
+                        <input type="hidden" name="edited" value="1">
+                        <input type="hidden" name="approval" value="0">';
+                }
+
+                foreach ($chain as $ck => $cv)
+                {
+                    $ar = $cv['val'];
+                    if(empty($ar))
+                        $ar = array();
+                    echo'<input type="hidden" name="chain['.$cv['key'].']" value="'.implode(',',$ar).'">';
+                }
+
+                echo'<input name="enquiry_id" type="hidden" value="'.$enquiry_id.'">
                 <input name="info_id" type="hidden" value="'.$deal_id.'">
                 <div id="data-box"  style="max-height: 800px; min-height:45px; overflow:auto; padding:0px 20px;">
                 <div class="toggle-btn" data-view="show"><i class="fa fa-chevron-up"></i></div>
@@ -2418,20 +2584,34 @@ public function all_update_expense_status()
                                     <option '.($oc['rate_type']=='KG'?'selected':'').'>KG</option>
                                     <option '.($oc['rate_type']=='Box'?'selected':'').'>Box</option>
                                 </select></th>
-                        <th style="width:75px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>
-                        <th style="width:130px">Paymode <label class="badge pull-right" onclick="rep_paymode()">R</label></th>
-                        <th style="width:115px">Insurance <label class="badge pull-right" onclick="rep_insurance()">R</label></th>
-                        <th>Expected Tonnage <label class="badge pull-right" onclick="rep_eton()">R</label></th>
-                        <th>Expected Amount</th>
-                        <th>Potential Tonnage <label class="badge pull-right" onclick="rep_pton()">R</label></th>
-                        <th>Potential Amount</th>';
+                        <th style="width:75px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>';
                     }
-                    else
-                    {
-                        echo'<th>Vehicle Type <label class="badge pull-right" onclick="rep_vtype()">R</label></th>
+
+                     if($booking_type=='ftl')
+                     {
+                     echo'<th>Vehicle Type <label class="badge pull-right" onclick="rep_vtype()">R</label></th>
                             <th>Carrying Capacity<label class="badge pull-right" onclick="rep_capacity()">R</label></th>
-                            <th>Invoice Value <label class="badge pull-right" onclick="rep_invoice()">R</label></th>';
-                        $vehicles = $this->Branch_model->get_vehicles()->result();
+                           ';
+                    }
+
+                    $vehicles = $this->Branch_model->get_vehicles()->result();
+
+                    echo'
+                        <th style="width:115px">Insurance <label class="badge pull-right" onclick="rep_insurance()">R</label></th>
+                        <th style="width:130px">Paymode <label class="badge pull-right" onclick="rep_paymode()">R</label></th>
+                        ';
+                 if($booking_type=='sundry')
+                    echo'<th>Expected Tonnage <label class="badge pull-right" onclick="rep_eton()">R</label></th>';
+
+                        echo'<th>Expected Amount</th>';
+                 if($booking_type=='sundry')
+                        echo'<th>Potential Tonnage <label class="badge pull-right" onclick="rep_pton()">R</label></th>';
+                     echo'   <th>Potential Amount</th>';
+                
+
+                if($booking_type=='ftl')
+                    {   
+                        echo' <th>Invoice Value <label class="badge pull-right" onclick="rep_invoice()">R</label></th>';
                     }
                     echo'</thead>
                     <tbody>
@@ -2449,6 +2629,7 @@ public function all_update_expense_status()
                     $pton=0;
                     $pamnt=0;
                     $vid=0;
+                    $invoice=0;
                     $chk = $this->db->where('deal_id',$deal_id)
                                         ->where('booking_branch',$row->booking_branch)
                                         ->where('delivery_branch',$row->delivery_branch)
@@ -2467,53 +2648,61 @@ public function all_update_expense_status()
                         $capacity = $chk->carrying_capacity;
                         $invoice = $chk->invoice_value;   
                     }
+                    //'.($row->btype=='area'?'<br>'.$row->bzname:'').'
 
                     echo'<tr>
                             <td>'.$i++.'</td>
-                            <td><input type="hidden" name="bid['.$row->id.']" value="'.$row->booking_branch.'">'.$row->bbranch.'<br>
-                                <small>('.ucwords($row->btype).') '.($row->btype=='area'?'<br>'.$row->bzname:'').'</small>
-                            </td>
-                            <td><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->dbranch.'<br>
-                                <small>('.ucwords($row->dtype).') '.($row->dtype=='area'?'<br>'.$row->dzname:'').'</small>
-                            </td>';
+                            <td><input type="hidden" name="bid['.$row->id.']" value="'.$row->booking_branch.'">'.$row->from.'</td>
+                            <td><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->to.'</td>';
                     if($booking_type=='sundry')
                     {
                         echo'<td><input type="number" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
-                            <td><input type="number" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'"></td>
+                        <td><input type="number" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'"></td>';
+                    }
+
+                    if($booking_type=='ftl')
+                    {
+                            echo'<td>
+                            <select name="vtype['.$row->id.']" class="vtype_ip">';
+                            foreach($vehicles as $ve => $vehicle)
+                                echo'<option value="'.$vehicle->vehicle_type_id.'" '.($vid==$vehicle->vehicle_type_id?'selected':'').'>'.$vehicle->type_name.'</option>';
+                            echo'
+                            </select></td>
+                            <td><input name="capacity['.$row->id.']" type="number" class="capacity_ip" value="'.$capacity.'"></td>';
+                    }
+                        echo'
+                             <td>
+                             <select name="insurance['.$row->id.']" data-id="'.$row->id.'"  class="insurance_ip">
+                                <option value="carrier" '.($insurance=='carrier'?'selected':'').'>Carrier</option>
+                                <option value="owner" '.($insurance=='owner'?'selected':'').'>Owner risk</option>
+                                </select>
+                            </td>
                             <td><select name="paymode['.$row->id.']" data-id="'.$row->id.'"  class="paymode_ip">
                                 <option value="paid" '.($paymode=='paid'?'selected':'').'>Paid</option>
                                 <option value="topay" '.($paymode=='topay'?'selected':'').'>To-Pay</option>
                                 <option value="tbb" '.($paymode=='tbb'?'selected':'').'>TBB</option>
                                 <option value="tbb_topay" '.($paymode=='tbb_topay'?'selected':'').'>TBB + To-pay</option>
                                 <option value="paid_topay" '.($paymode=='paid_topay'?'selected':'').'>Paid + To-pay</option>
+                                <option value="inward" '.($paymode=='inward'?'selected':'').'>Inward</option>
                                 </select>
-                            </td>
-                            <td><select name="insurance['.$row->id.']" data-id="'.$row->id.'"  class="insurance_ip">
-                                <option value="carrier" '.($insurance=='carrier'?'selected':'').'>Carrier</option>
-                                <option value="owner" '.($insurance=='owner'?'selected':'').'>Owner risk</option>
-                                </select>
-                            </td>
-                            <td><input type="number" name="eton['.$row->id.']" data-id="'.$row->id.'" value="'.$eton.'" class="eton_ip"></td>
-                            <td><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" readonly></td>
-                            <td><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>
-                            <td><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'" readonly></td>';
-                    }
-                    else
-                    {
+                            </td>';
 
-                        echo'<td>
-                        <select name="vtype['.$row->id.']" class="vtype_ip">';
-                        foreach($vehicles as $ve => $vehicle)
-                            echo'<option value="'.$vehicle->vehicle_type_id.'" '.($vid==$vehicle->vehicle_type_id?'selected':'').'>'.$vehicle->type_name.'</option>';
-                        echo'
-                        </select></td>
-                        <td><input name="capacity['.$row->id.']" type="number" class="capacity_ip" value="'.$capacity.'"></td>
-                        <td><input name="invoice['.$row->id.']" type="number" class="invoice_ip" value="'.$invoice.'"></td>
+                if($booking_type=='sundry')
+                    echo'<td>
+                        <input type="number" name="eton['.$row->id.']" data-id="'.$row->id.'" value="'.$eton.'" class="eton_ip"></td>';
+
+                    echo'<td><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" '.($booking_type=='sundry'?'readonly':'').'></td>';
+
+                 if($booking_type=='sundry')
+                    echo' <td><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>';
+
+                    echo'<td><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').'></td>';
+
+                if($booking_type=='ftl')
+                    echo'<td><input name="invoice['.$row->id.']" type="number" class="invoice_ip" value="'.$invoice.'"></td>
                         
                         ';
 
-                    }
-                    
                     echo'</tr>';
                 }
                 echo'</tbody>
@@ -2633,100 +2822,19 @@ public function all_update_expense_status()
                         </tr>';
                     if($booking_type=='sundry')
                     {
-                        $_door = (array)$oc[19];
-                        $_first = (array)$oc[19][0];
-                        
+
                     echo'<tr>
                             <td>Door Collection Charges</td>
                             <td id="door_box">
-                                <button type="button" onclick="add_door()" class="btn btn-xs btn-primary pull-right" style="max-width:8%;display:inline-block">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                <div id="door_sample">
-                                    <input name="oc[19][from][]" style="width:20%" placeholder="From" value="'.$_first['from'].'">
-                                        &#8211;
-                                    <input name="oc[19][to][]" style="width:20%" placeholder="To" value="'.$_first['to'].'">
-                                    <input name="oc[19][charge][]" value="'.$_first['charge'].'" style="width:20%" placeholder="Charge">
-                                    <div class="door_unit_sel" style="width:28%; display:inline-block">
-                                        <select name="oc[19][unit][]">
-                                            <option value="per_kg" '.($_first['unit']=='per_kg'?'selected':'').'>per KG</option>
-                                            <option value="per_gc" '.($_first['unit']=='per_gc'?'selected':'').'>per GC</option>
-                                            <option value="per_trip" '.($_first['unit']=='per_trip'?'selected':'').'>per Trips</option>
-                                        </select>
-                                    </div>
-                                </div>';
-
-                            foreach ($_door as $key =>$door_row)
-                            {
-                                $door_row = (array)$_door[$key];
-                                if($key==0)continue;
-                                echo'<div>
-                                    <input name="oc[19][from][]" style="width:20%" placeholder="From" value="'.$door_row['from'].'">
-                                        &#8211;
-                                    <input name="oc[19][to][]" style="width:20%" placeholder="To" value="'.$door_row['to'].'">
-                                    <input name="oc[19][charge][]" value="'.$door_row['charge'].'" style="width:20%" placeholder="Charge">
-                                    <div style="width:28%; display:inline-block">
-                                        <select name="oc[19][unit][]">
-                                            <option value="per_kg" '.($door_row['unit']=='per_kg'?'selected':'').'>per KG</option>
-                                            <option value="per_gc" '.($door_row['unit']=='per_gc'?'selected':'').'>per GC</option>
-                                            <option value="per_trip" '.($door_row['unit']=='per_trip'?'selected':'').'>per Trips</option>
-                                        </select>
-                                    </div>
-                                    <button type="button" onclick="remove_door(this)" class="btn btn-xs btn-danger pull-right" style="max-width:8%;display:inline-block">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                                </div>';
-                            }
-                    $_door = (array)$oc[20];
-                    $_first = (array)$oc[20][0];
-                    echo'</td>
+                                <input name="oc[19]" value="'.$oc[19].'">
+                            </td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
                         <tr>
                             <td>Last Mile  Delivery charges</td>
                             <td id="mile_box">
-
-                            <button type="button" onclick="add_mile_del()" class="btn btn-xs btn-primary pull-right" style="max-width:8%;display:inline-block">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                <div id="mile_sample">
-                                    <input name="oc[20][from][]" style="width:20%" placeholder="From" value="'.$_first['from'].'">
-                                        &#8211;
-                                    <input name="oc[20][to][]" style="width:20%" placeholder="To" value="'.$_first['to'].'">
-                                    <input name="oc[20][charge][]" value="'.$_first['charge'].'" style="width:20%" placeholder="Charge">
-                                    <div class="mile_unit_sel" style="width:28%; display:inline-block">
-                                        <select name="oc[20][unit][]">
-                                            <option value="per_kg" '.($_first['unit']=='per_kg'?'selected':'').'>per KG</option>
-                                            <option value="per_gc" '.($_first['unit']=='per_gc'?'selected':'').'>per GC</option>
-                                            <option value="per_trip" '.($_first['unit']=='per_trip'?'selected':'').'>per Trips</option>
-                                        </select>
-                                    </div>
-                                </div>';
-
-                            foreach ($_door as $key =>$door_row)
-                            {
-                                $door_row = (array)$_door[$key];
-                                if($key==0)continue;
-                                echo'<div>
-                                    <input name="oc[19][from][]" style="width:20%" placeholder="From" value="'.$door_row['from'].'">
-                                        &#8211;
-                                    <input name="oc[19][to][]" style="width:20%" placeholder="To" value="'.$door_row['to'].'">
-                                    <input name="oc[19][charge][]" value="'.$door_row['charge'].'" style="width:20%" placeholder="Charge">
-                                    <div style="width:28%; display:inline-block">
-                                        <select name="oc[19][unit][]">
-                                            <option value="per_kg" '.($door_row['unit']=='per_kg'?'selected':'').'>per KG</option>
-                                            <option value="per_gc" '.($door_row['unit']=='per_gc'?'selected':'').'>per GC</option>
-                                            <option value="per_trip" '.($door_row['unit']=='per_trip'?'selected':'').'>per Trips</option>
-                                        </select>
-                                    </div>
-                                    <button type="button" onclick="remove_door(this)" class="btn btn-xs btn-danger pull-right" style="max-width:8%;display:inline-block">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                                </div>';
-                            }
-
-
-                echo'</td>
+                             <input name="oc[20]" value="'.$oc[20].'">
+                            </td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
                         <tr>
@@ -2737,11 +2845,11 @@ public function all_update_expense_status()
                             <td>ODA Charges</td>
                             <td colspan="2">
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge">
+                                    <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge" >
                                 </div>
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_distance" type="number" style="width:49%" placeholder="Distance ( In KM )" onkeyup="oda_cal()">
-                                     <input id="oda_weight" type="number" style="width:49%" placeholder="Weight ( In KG )" onkeyup="oda_cal()">
+                                    <input id="oda_distance" type="number" style="width:49%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
+                                     <input id="oda_weight" type="number" style="width:49%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip">
                                 </div>
                             </td>
                         </tr>';
@@ -2750,16 +2858,20 @@ public function all_update_expense_status()
                     </table>';
                 if($booking_type=='sundry')
                 {
-                echo'<p>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" style="width:60px!important;">. per Ltr.
+                echo'<p>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" style="width:60px!important;" class="exip">. per Ltr.
                     </p>';
                 }
             echo'</div>
                 </div>
                 <div style="padding:15px;">
-                <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Save</button>
-                </div>
+                    <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Save</button>';
+                echo'</div>
                 </form>
                 ';
+                if(empty($deal_id))
+                    echo'<script>
+                        $("#oc-box").find("input:not(.exip)").attr("readonly","readonly");
+                        </script>';
             }
             else
             {
@@ -2774,34 +2886,7 @@ public function all_update_expense_status()
     public function save_deal_data()
     {
         $this->load->model('Branch_model');
-
-        if($this->input->post('booking_type')=='sundry')
-        {
-            $data = array();
-            $door = $_POST['oc'][19];
-
-            foreach ($door['from'] as $key => $val)
-            {
-                $data[$key]['from'] = $door['from'][$key];
-                $data[$key]['to'] = $door['to'][$key];
-                $data[$key]['charge'] = $door['charge'][$key];
-                $data[$key]['unit'] = $door['unit'][$key]; 
-            }
-            $_POST['oc'][19] = $data;
-            
-            $data = array();
-            $door = $_POST['oc'][20];
-
-            foreach ($door['from'] as $key => $val)
-            {
-                $data[$key]['from'] = $door['from'][$key];
-                $data[$key]['to'] = $door['to'][$key];
-                $data[$key]['charge'] = $door['charge'][$key];
-                $data[$key]['unit'] = $door['unit'][$key]; 
-            }
-        $_POST['oc'][20] = $data;
-        }
-
+        
         $oc = json_encode($this->input->post('oc'));
         $deal_id = $this->input->post('info_id');
         $deal = array(
@@ -2815,7 +2900,6 @@ public function all_update_expense_status()
                     'comp_id'=>$this->session->companey_id,
                     'other_charges'=>$oc,
                     'status'=>'0',
-
                     );
 
         if(!empty($deal_id))
@@ -2878,6 +2962,102 @@ public function all_update_expense_status()
         $data['max_discount'] = !empty($dis)?$dis->discount:100;
         $data['content'] = $this->load->view('enquiry/edit_deal', $data, true);
         $this->load->view('layout/main_wrapper', $data);
+    }
+
+    public function branch_panel_clone($did,$type='branch')
+    {
+    $this->load->model('Branch_model');
+
+    $region_list = $this->Branch_model->sales_region_list()->result();
+
+    echo'<div class="row" style=" margin-bottom: 20px;
+    border-bottom: 1px solid #d6d6d6; padding-bottom:20px;">
+            <div class="col-lg-6">
+                <div class="form-group">';
+                if($type=='branch')
+                {
+                echo'<div class="col-md-6">
+                            <label>Region</label>
+                            <select data-did="'.$did.'" name="b_region" id="b_reg'.$did.'" class="form-control" onchange="load_areas(this)">
+                                <option value="">Select Region</option>';
+
+                            if(!empty($region_list))
+                            {
+                                foreach ($region_list as $reg)
+                                {
+                                    echo'<option value="'.$reg->region_id.'">'.$reg->name.'</option>';
+                                }
+                                
+                            }
+                        
+                    echo'</select>
+                    </div>
+                     <div class="col-md-6">
+                        <label>Area</label>
+                        <select class="form-control" name="barea" id="b_area'.$did.'" data-did="'.$did.'"  onchange="load_branch_particular(this)">
+                        </select>
+                    </div>';
+                }
+                    echo'<div class="col-md-12">
+                        <label>Booking From <font color="red">*</font></label>
+                        <select id="bbranch'.$did.'" name="bbranch['.$did.']" class="form-control booking_from" required onchange="generate_table()" data-close-on-select="false">';
+                        if($type=='zone')
+                        {
+                            $zones =   $this->Branch_model->zone_list()->result();
+                            
+                            foreach ($zones as $key => $value)
+                            {
+                                echo'<option value="'.$value->zone_id.'">'.$value->name.'</option>';
+                            }
+                        }
+                    echo'</select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">';
+            if($type=='branch')
+            {
+                echo'<div class="col-md-6">
+                        <label>Region</label>
+                        <select name="region" id="d_reg'.$did.'" data-did="'.$did.'" class="form-control" onchange="load_areas(this)">
+                            <option value="">Select Region</option>';
+
+                            if(!empty($region_list))
+                            {
+                                foreach ($region_list as $reg)
+                                {
+                                    echo'<option value="'.$reg->region_id.'">'.$reg->name.'</option>';
+                                }
+                                
+                            }
+                    
+                echo'</select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Area</label>
+                        <select id="d_area'.$did.'" data-did="'.$did.'" class="form-control" name="area"  onchange="load_branch_particular(this)">
+                            
+                        </select>
+                    </div>';
+                }
+                echo'<div class="col-md-12">
+                        <label>Delivery To<font color="red">*</font></label>
+                        <select class="form-control delivery_to" name="dbranch['.$did.']" id="dbranch'.$did.'" onchange="generate_table()" multiple required data-close-on-select="false">';
+                  
+                        if($type=='zone')
+                        {
+                            $zones =   $this->Branch_model->zone_list()->result();
+                            foreach ($zones as $key => $value)
+                            {
+                                echo'<option value="'.$value->zone_id.'">'.$value->name.'</option>';
+                            }
+                        }
+                    echo'</select>
+            </div>
+        </div>
+    </div>
+</div>';
     }
 
     public function create_agreement_pdf()

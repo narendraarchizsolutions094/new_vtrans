@@ -18,6 +18,13 @@
 							this.value=0;
 						}">
 				</div>
+				<div class="form-group">
+					<label>Rate/Km </label>
+					<input type="number" name="rate_km" class="form-control" required onkeyup="{
+						if(this.value <0)
+							this.value=0;
+						}">
+				</div>
 			</div>
 			<div class="panel-footer">
 				<div class="form-group">

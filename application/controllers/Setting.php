@@ -195,7 +195,6 @@ class Setting extends CI_Controller {
 		}
 	}
 
-
     public function languageList()
     { 
         if ($this->db->table_exists("language")) { 
@@ -256,22 +255,31 @@ class Setting extends CI_Controller {
         
     }
 
+
+public function region_list()
+{
+	if($this->input->post())
+	{
+
+	}
+}
+
 public function addbranch()
 {
 	
 $branch=$this->input->post('branch');
 $status=$this->input->post('status');
-$type = $this->input->post('type');
+$region=$this->input->post('region');
+$area = $this->input->post('area');
 
-$zone_id = $this->input->post('zone'); //$type=='zone'?$this->input->post('zone'):0;
 $branch_id=$this->input->post('branch_id');
 
 if (!empty($branch_id)) {
 	if (user_role('d35') == true) {
 	}
-$count=$this->db->where(array('branch_name'=>$branch,'comp_id'=>$this->session->companey_id))->where_not_in('branch_id',$branch_id)->count_all_results('branch');
+$count=$this->db->where(array('branch_name'=>$branch,'region_id'=>$region,'area_id'=>$area,'comp_id'=>$this->session->companey_id))->where_not_in('branch_id',$branch_id)->count_all_results('branch');
     if($count==0){
-		$data=['branch_name'=>$branch,'branch_status'=>$status,'type'=>$type,'zone'=>$zone_id,'updated_at'=>date('Y-m-d H:i:s')];
+		$data=['branch_name'=>$branch,'branch_status'=>$status,'region_id'=>$region,'area_id'=>$area,'updated_at'=>date('Y-m-d H:i:s')];
 		$insert=$this->db->where('branch_id',$branch_id)->update('branch',$data);
 			$this->session->set_flashdata('message','Branch Updated');
 			redirect('setting/branchList');
@@ -282,10 +290,10 @@ $count=$this->db->where(array('branch_name'=>$branch,'comp_id'=>$this->session->
 }else{
 	if (user_role('d36') == true) {
 	}
- $count=$this->db->where(array('branch_name'=>$branch,'comp_id'=>$this->session->companey_id,'type'=>$type,'zone'=>$zone_id))->count_all_results('branch');
+ $count=$this->db->where(array('branch_name'=>$branch,'region_id'=>$region,'area_id'=>$area,'comp_id'=>$this->session->companey_id))->count_all_results('branch');
 if($count==0){
 	
-$data=['branch_name'=>$branch,'type'=>$type,'zone'=>$zone_id,'branch_status'=>$status,'created_by'=>$this->session->user_id,'comp_id'=>$this->session->companey_id];
+$data=['branch_name'=>$branch,'region_id'=>$region,'area_id'=>$area,'branch_status'=>$status,'created_by'=>$this->session->user_id,'comp_id'=>$this->session->companey_id];
 $insert=$this->db->insert('branch',$data);
 	$this->session->set_flashdata('message','Branch Added');
 	redirect('setting/branchList');
@@ -338,11 +346,221 @@ public function branchList()
 	if (user_role('d37') == true) {
 	}
 	$data['page_title'] = 'Branch List';
-	$data['common_list']=$this->Branch_model->common_list()->result();
-	$data['zone_list']=$this->Branch_model->zone_list()->result();
+	$data['region_list'] = $this->Branch_model->sales_region_list()->result();
+	$data['branch_list']=$this->Branch_model->branch_list()->result();
+
 	$data['content'] = $this->load->view('branch/list',$data,true);
 	$this->load->view('layout/main_wrapper',$data);
 }
+
+public function area_by_region()
+{
+	if($this->input->post())
+	{	$rid = $this->input->post('region');
+
+		$this->load->model('Branch_model');
+		$res =	$this->Branch_model->sales_area_list(0,array('sales_area.region_id'=>$rid))->result();
+		if(!empty($res))
+		{	echo'<option value="">Select Area</option>';
+			foreach ($res as $key => $value) {
+				echo'<option value="'.$value->area_id.'">'.$value->area_name.'</option>';
+			}
+		}
+	}
+}
+
+public function branch_by_area()
+{
+	if($this->input->post())
+	{	$rid = $this->input->post('area');
+
+		$this->load->model('Branch_model');
+		$res =	$this->Branch_model->branch_list(0,array('branch.area_id'=>$rid))->result();
+		if(!empty($res))
+		{	
+			foreach ($res as $key => $value) {
+				echo'<option value="'.$value->branch_id.'">'.$value->branch_name.'</option>';
+			}
+		}
+	}
+}
+
+public function sales_area_list()
+{
+	$this->load->model('Branch_model');
+	if($this->input->post())
+	{
+		$data = array('comp_id'=>$this->session->companey_id,
+						'area_name'=>$this->input->post('area_name'),
+						'region_id'=>$this->input->post('region_id'),
+					);
+		$this->Branch_model->save_area($data);
+		$this->session->set_flashdata('message','Area Added Successfully.');
+		redirect(site_url('setting/sales_area_list'));
+	}
+	else
+	{
+		$data['page_title'] = 'Area List';
+		$data['region_list'] = $this->Branch_model->sales_region_list()->result();
+		$data['area_list']=$this->Branch_model->sales_area_list()->result();
+
+		$data['content'] = $this->load->view('branch/area-list',$data,true);
+		$this->load->view('layout/main_wrapper',$data);
+	}
+}
+
+
+
+public function sales_region_list()
+{
+	$this->load->model('Branch_model');
+	if($this->input->post())
+	{
+		$data = array('comp_id'=>$this->session->companey_id,
+						'name'=>$this->input->post('region_name'),
+					);
+		$this->Branch_model->save_region($data);
+		$this->session->set_flashdata('message','Region Added Successfully.');
+		redirect(site_url('setting/sales_region_list'));
+	}
+	else
+	{
+		$data['page_title'] = 'Region List';
+		$data['region_list']=$this->Branch_model->sales_region_list()->result();
+		$data['content'] = $this->load->view('branch/region-list',$data,true);
+		$this->load->view('layout/main_wrapper',$data);
+	}
+}
+
+
+
+public function edit_sales_area()
+{ //sleep(4);
+	$this->load->model('Branch_model');
+	if($this->input->post('task')=='edit')
+	{
+		$id = $this->input->post('vid');
+		$res = $this->Branch_model->sales_area_list($id)->row();
+
+		$region_list = $this->Branch_model->sales_region_list()->result();
+		echo'
+		<div class="row" style="text-align:left">
+		<input type="hidden" name="vid" value="'.$id.'">
+		<input type="hidden" name="task" value="save">
+              	<div class="form-group">
+	              <label>Area Name </label>
+	              <input type="text" name="area_name" value="'.$res->area_name.'" class="form-control">
+	            </div>
+
+	          <div class="form-group">
+              <label>Select Region </label>
+              <select class="form-control" name="region_id">';
+                if(!empty($region_list))
+                {
+                  foreach ($region_list as $key => $zone)
+                  {
+                      echo'<option value="'.$zone->region_id.'" '.($zone->region_id==$res->region_id?'selected':'').'>'.$zone->name.'</option>';
+                  }
+                }
+                
+              echo'</select>
+            </div></div>';
+	}
+	else if($this->input->post('task')=='save')
+	{
+		$id = $this->input->post('vid');
+		$data = array(	'area_name'=>$this->input->post('area_name'),
+						'region_id'=>$this->input->post('region_id'),
+					);
+		$this->Branch_model->save_area($data,$id);
+		$this->session->set_flashdata('message','Saved Successfully');
+		redirect(site_url('setting/sales_area_list'));
+	}
+}
+
+
+public function edit_sales_region()
+{ //sleep(4);
+	$this->load->model('Branch_model');
+	if($this->input->post('task')=='edit')
+	{
+		$id = $this->input->post('vid');
+		$res = $this->Branch_model->sales_region_list($id)->row();
+		echo'
+		<div class="row" style="text-align:left">
+		<input type="hidden" name="vid" value="'.$id.'">
+		<input type="hidden" name="task" value="save">
+              <div class="form-group">
+	              <label>Region Name </label>
+	              <input type="text" name="region_name" value="'.$res->name.'" class="form-control">
+	            </div>
+          </div>';
+	}
+	else if($this->input->post('task')=='save')
+	{
+		$id = $this->input->post('vid');
+		$data = array(	'name'=>$this->input->post('area_name'),
+				
+					);
+		$this->Branch_model->save_region($data,$id);
+		$this->session->set_flashdata('message','Saved Successfully');
+		redirect(site_url('setting/sales_region_list'));
+	}
+}
+
+
+
+public function zone_list()
+{
+	$this->load->model('Branch_model');
+	if($this->input->post())
+	{
+		$data = array('comp_id'=>$this->session->companey_id,
+						'name'=>$this->input->post('zone_name'),
+					);
+		$this->Branch_model->save_zone($data);
+		$this->session->set_flashdata('message','Zone Added Successfully.');
+		redirect(site_url('setting/zone_list'));
+	}
+	else
+	{
+		$data['page_title'] = 'Zone List';
+		$data['zone_list']=$this->Branch_model->zone_list()->result();
+		$data['content'] = $this->load->view('branch/zone-list',$data,true);
+		$this->load->view('layout/main_wrapper',$data);
+	}
+}
+
+
+public function edit_zone()
+{ //sleep(4);
+	$this->load->model('Branch_model');
+	if($this->input->post('task')=='edit')
+	{
+		$id = $this->input->post('vid');
+		$res = $this->Branch_model->zone_list($id)->row();
+		echo'
+		<div class="row" style="text-align:left">
+		<input type="hidden" name="vid" value="'.$id.'">
+		<input type="hidden" name="task" value="save">
+              <div class="form-group">
+	              <label>Zone Name </label>
+	              <input type="text" name="zone_name" value="'.$res->name.'" class="form-control">
+	            </div>
+          </div>';
+	}
+	else if($this->input->post('task')=='save')
+	{
+		$id = $this->input->post('vid');
+		$data = array(	'name'=>$this->input->post('zone_name'),
+				
+					);
+		$this->Branch_model->save_zone($data,$id);
+		$this->session->set_flashdata('message','Saved Successfully');
+		redirect(site_url('setting/zone_list'));
+	}
+}
+
 public function add_vehicle_type()
 {
 	if($this->input->post())
@@ -366,6 +584,25 @@ public function add_vehicle_type()
 		$this->load->view('layout/main_wrapper',$data);
 	}
 }
+
+public function zone_delete($id)
+{
+	$this->load->model('Branch_model');
+	$where = array('zone_id'=>$id);
+	$this->Branch_model->delete_zone($where);
+	$this->session->set_flashdata('message','Zone Deleted Successfully');
+	redirect(site_url('setting/zone-list'));
+}
+
+public function region_delete($id)
+{
+	$this->load->model('Branch_model');
+	$where = array('region_id'=>$id);
+	$this->Branch_model->delete_region($where);
+	$this->session->set_flashdata('message','Region Deleted Successfully');
+	redirect(site_url('setting/sales_region_list'));
+}
+
 public function vehicle_delete($id)
 {
 	$this->load->model('Branch_model');
@@ -389,15 +626,26 @@ public function branch_rateList()
 	$this->load->model('Branch_model');
 
 	$data['page_title'] = 'Branch Rate List';
-	$data['branch'] = $this->Branch_model->common_list()->result();
-	$data['branch_list']=$this->db->select('bb.branch_name as from,bb.type as btype,bs.branch_name as to,bs.type as dtype,branchwise_rate.*,z.name as zone_name')
-	->join('branch bb','bb.branch_id=branchwise_rate.booking_branch')
-	->join('branch bs','bs.branch_id=branchwise_rate.delivery_branch')
-	->join('zones z','bs.zone=z.zone_id','left')
-	->get('branchwise_rate')->result();
+	$data['branch'] = $this->Branch_model->branch_list()->result();
+	$data['branch_rate_list']= $this->Branch_model->rate_list('branch')->result();
+	$data['zone_rate_list']= $this->Branch_model->rate_list('zone')->result();
 	$data['content'] = $this->load->view('branch/rate-list',$data,true);
 	$this->load->view('layout/main_wrapper',$data);
 }
+
+public function zone_ratelist()
+{
+	if (user_role('e30') == true) {
+	}
+	$this->load->model('Branch_model');
+
+	$data['page_title'] = 'Zone Rate List';
+	$data['branch'] = $this->Branch_model->common_list()->result();
+	$data['zone_rate_list']= $this->Branch_model->rate_list('zone')->result();
+	$data['content'] = $this->load->view('branch/zone-rate-list',$data,true);
+	$this->load->view('layout/main_wrapper',$data);
+}
+
 public function addbranch_rate()
 {
 
@@ -406,18 +654,38 @@ $dbranch=$this->input->post('dbranch');
 $rate=$this->input->post('rate');
 $status=$this->input->post('status');
 $id=$this->input->post('rateid');
+$type = $this->input->post('rate_type');
 // if ($dbranch==$bbranch) {
 // 	$this->session->set_flashdata('exception','Select Different Delivery Branch');
 // 	redirect('setting/branch_rateList');
 // }
+
+if($type=='branch')
+{
+	if($bbranch==$dbranch)
+	{
+		$this->session->set_flashdata('exception','Booking Branch and Delivery Branch can not be same');
+		redirect('setting/branch_rateList');
+	}
+}
+
 if(empty($id)){
 	if (user_role('d39') == true) {
 	}
-$count=$this->db->where(array('booking_branch'=>$bbranch,'delivery_branch'=>$dbranch,'comp_id'=>$this->session->companey_id))->count_all_results('branchwise_rate');
-if($count==0){
-    $data=['booking_branch'=>$bbranch,'rate'=>$rate,'delivery_branch'=>$dbranch,'rate_status'=>$status,'created_by'=>$this->session->user_id,'comp_id'=>$this->session->companey_id];
+$count=$this->db->where(array('booking_branch'=>$bbranch,'delivery_branch'=>$dbranch,'comp_id'=>$this->session->companey_id,'type'=>$type))->count_all_results('branchwise_rate');
+
+$chk = 1;
+
+if($type=='branch')
+{
+	if($count>0)
+		$chk=0;
+}
+
+if($chk){
+    $data=['booking_branch'=>$bbranch,'rate'=>$rate,'delivery_branch'=>$dbranch,'rate_status'=>$status,'type'=>$type,'created_by'=>$this->session->user_id,'comp_id'=>$this->session->companey_id];
     $this->db->insert('branchwise_rate',$data);
-	$this->session->set_flashdata('message','Branch rate Added');
+	$this->session->set_flashdata('message','Rate Added Successfully');
 	redirect('setting/branch_rateList');
 }else{
 	$this->session->set_flashdata('exception','Rate Already Added');
@@ -426,51 +694,70 @@ if($count==0){
 }else{
 	if (user_role('e30') == true) {
 	}
-		$data=['booking_branch'=>$bbranch,'rate'=>$rate,'delivery_branch'=>$dbranch,'rate_status'=>$status,'comp_id'=>$this->session->companey_id];
+		$data=['booking_branch'=>$bbranch,'rate'=>$rate,'delivery_branch'=>$dbranch,'rate_status'=>$status,'type'=>$type,'comp_id'=>$this->session->companey_id];
+
     	$this->db->where(array('comp_id'=>$this->session->companey_id,'id'=>$id))->update('branchwise_rate',$data);
-		$this->session->set_flashdata('success','Branch rate updated');
+		$this->session->set_flashdata('success','Rate updated');
 		redirect('setting/branch_rateList');
 }
 }
 public function editbranch()
 {
 	$this->load->model('Branch_model');
-	$branch_id = $this->input->post('branch_id');	
-	$get=$this->Branch_model->common_list(array('branch.branch_id'=>$branch_id));
-	$zone_list = $this->Branch_model->zone_list()->result();
+	$branch_id = $this->input->post('branch_id');
+
+	$get=$this->Branch_model->branch_list($branch_id);
+
+	$region_list = $this->Branch_model->sales_region_list()->result();
+	
+
 	//print_r($zone_list);
 	if($get->num_rows()==1){
 		foreach ($get->result() as $key => $value) 
 		{
+		$area_list = $this->Branch_model->sales_area_list(0,array('sales_area.region_id'=>$value->region_id))->result();
 			$status=$value->branch_status;
 	
 	echo'<div class="row">
+
+			 <div class="form-group">
+              <label>Select Region </label>
+              <select class="form-control" name="region"  onchange="edit_load_area()">
+                <option value="">Select Region</option>';
+
+                if(!empty($region_list))
+                {
+                  foreach ($region_list as $key => $region)
+                  {
+                      echo'<option value="'.$region->region_id.'" '.($region->region_id==$value->region_id?'selected':'').'>'.$region->name.'</option>';
+                  }
+                }
+            
+            echo'  </select>
+            </div>
+
+            <div class="form-group">
+              <label>Select Area </label>
+              <select class="form-control" name="area" >
+                ';
+
+				if(!empty($area_list))
+                {
+                  foreach ($area_list as $key => $area)
+                  {
+                      echo'<option value="'.$area->area_id.'" '.($area->area_id==$value->area_id?'selected':'').'>'.$area->area_name.'</option>';
+                  }
+                }
+                echo'
+              </select>
+            </div>
+
 			<div class="form-group">
 				<label>Branch Name </label>
 				<input type="text" name="branch" class="form-control" value="'.$value->branch_name.'">
 			</div>
 			<input type="hidden" name="branch_id" value="'.$value->branch_id.'">
-			<div class="form-group">
-				<label>Type </label>
-				<select class="form-control" name="type" onchange="{//if(this.value==\'zone\')$(\'#zone_box2\').show(); else $(\'#zone_box2\').hide();}">
-					<option value="branch" '.($value->type=='branch'?'selected':'').'>Branch</option>
-					<!--<option value="zone" '.($value->type=='zone'?'selected':'').'>Zone</option>-->
-					<option value="area" '.($value->type=='area'?'selected':'').'>Area</option>
-				</select>
-			</div>
-			<div id="zone_box2" class="form-group" style="'.($value->type!='zone'?'display: block;':'').'">
-				<label>Select Zone </label>
-				<select class="form-control" name="zone">';
-				if(!empty($zone_list))
-				{
-					foreach ($zone_list as $key => $zone)
-					{
-						echo'<option value="'.$zone->zone_id.'" '.($zone->zone_id==$value->zone?'selected':'').'>'.$zone->name.'</option>';
-					}
-				}
-					
-			echo'</select>
-			</div>
+		
 			<div class="form-group">
 				<label>Status </label>
 				<div class="form-check" style="width: 100%; padding: 0px 10px;">
@@ -494,7 +781,7 @@ public function load_branchs()
 		$type = $this->input->post('dtype');
 		$sel = explode(',', $this->input->post('sel'))??array();
 
-		if($key=='branch' || $key=='area')
+		if($key=='branch')
 		{
 			$res = $this->Branch_model->common_list(array('branch.type'=>$key))->result();
 			foreach($res as $key => $val)
@@ -505,15 +792,16 @@ public function load_branchs()
 		else if($key=='zone')
 		{
 			$res = $this->Branch_model->zone_list()->result();
-			$data=	$this->db->select('zone_id')
-						->from('zones z')
-						->join('branch b ','z.zone_id=b.zone','left')
-						->where_in('b.branch_id',$sel)
-						->get()->result();
-			$sel = array_column($data,'zone_id');
+			// $data=	$this->db->select('zone_id')
+			// 			->from('zones z')
+			// 			->join('branch b ','z.zone_id=b.zone','left')
+			// 			->where_in('b.branch_id',$sel)
+			// 			->get()->result();
+			// $sel = array_column($res,'zone_id');
+			//'.(in_array($val->zone_id,$sel)?'selected':'').'
 			foreach($res as $key => $val)
 			{
-				echo'<option value="'.$val->zone_id.'" '.(in_array($val->zone_id,$sel)?'selected':'').'>'.$val->name.'</option>';
+				echo'<option value="'.$val->zone_id.'" >'.$val->name.'</option>';
 			}
 		}
 
@@ -553,11 +841,13 @@ public function editbranchrate()
 {
 	if (user_role('e30') == true) {
 	}
+	$this->load->model('Branch_model');
 	$id=$this->uri->segment(3);
-	$get=$this->db->where('id',$id)->get('branchwise_rate');
+	$type = $this->uri->segment(4);
+	$get=$this->Branch_model->rate_list($type,array('id'=>$id));
 	if($get->num_rows()==1){
         
-        $data['page_title'] = 'Edit Branch Rate';
+        $data['page_title'] = 'Edit Rate';
         $data['rate'] = $get->result();
 		$data['content'] = $this->load->view('branch/edit-rate',$data,true);
 		$this->load->view('layout/main_wrapper',$data);
@@ -609,9 +899,13 @@ public function discount_matrix()
 	{
 		if($_POST['discount']>100 || $_POST['discount']<0)
 				$_POST['discount'] =0;
+
+		if($_POST['rate_km']<0)
+				$_POST['rate_km'] =0;
 		$data= array(
 				'name'=>$this->input->post('name'),
 				'discount'=>$this->input->post('discount'),
+				'rate_km'=>$this->input->post('rate_km'),
 				'comp_id'=>$this->session->companey_id,
 		);
 		$this->db->insert('discount_matrix',$data);
@@ -720,6 +1014,13 @@ public function edit_discount()
 						if(this.value>100 || this.value <0)
 							this.value=0;
 						}" required>
+				</div>
+				<div class="form-group">
+					<label>Rate/Km </label>
+					<input type="number" name="rate_km" value="'.$res->rate_km.'" class="form-control" required onkeyup="{
+						if(this.value < 0)
+							this.value=0;
+						}">
 				</div>
 			</div>
 			<div class="">
