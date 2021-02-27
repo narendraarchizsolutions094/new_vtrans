@@ -29,6 +29,105 @@ class Dashboard extends REST_Controller {
             'funneldata' => $funneldata
         ], REST_Controller::HTTP_OK);        
     }
+	
+	public function forgot_password_post() {
+             
+            $email = $this->input->post('femail');
+			$ecode = $this->input->post('fecode');
+            $email_row = array();
+			$this->load->model('dashboard_model','Message_models');
+            if(is_numeric($email) == 1)
+            {
+              $data = $this->dashboard_model->getUserDataByPhone($email,$ecode);
+              //$this->load->library('email');
+              if(!empty($data))
+              {
+                $this->db->where('comp_id',$data->companey_id);
+                $this->db->where('api_key','message');
+                $email_row  =   $this->db->get('api_integration')->row_array();
+              }
+              
+            }
+            else
+            {
+              $data = $this->dashboard_model->change_pass($email,$ecode);
+              $this->load->library('email');
+              $this->db->where('comp_id',$data->companey_id);
+              $this->db->where('status',1);
+              $email_row  =   $this->db->get('email_integration')->row_array();
+            }
+            
+            //print_r($data);exit;
+            if(empty($email_row) && $data->companey_id != 81){ 
+                echo "4";die;                
+            }else{
+                if(is_numeric($email) == 1)
+                {
+                  expirePreviousOTP($data->pk_i_admin_id);
+                  $phone= '91'.$this->input->post('femail');
+                  $otp = mt_rand(100000, 999999);
+                  //$otp = 123456;
+                  $otpAry = array(
+                    'otp'     => $otp,
+                    'user_id' => $data->pk_i_admin_id,
+                    'status'  => 1
+                  );
+                  $this->db->insert('tbl_otp',$otpAry);
+                  $message = "Your OTP is $otp";
+                  $this->Message_models->smssend($phone,$message,$data->companey_id,$data->pk_i_admin_id);
+                  echo "99";
+                }
+                else
+                {
+                    $config['smtp_auth']    = true;
+                    $config['protocol']     = $email_row['protocol'];
+                    $config['smtp_host']    = $email_row['smtp_host'];
+                    $config['smtp_port']    = $email_row['smtp_port'];
+                    $config['smtp_timeout'] = '7';
+                    $config['smtp_user']    = $email_row['smtp_user'];
+                    $config['smtp_pass']    = $email_row['smtp_pass'];
+                    $config['charset']      = 'utf-8';
+                    $config['mailtype']     = 'html'; // or html
+                    $config['newline']      = "\r\n";                  
+                    $config['validation']   = TRUE; // bool whether to validate email or not 
+                   $this->email->initialize($config);
+                   $email_data['url'] = $this->config->base_url()."change-password/" . base64_encode($data->pk_i_admin_id);
+                   //$this->load->library('email');
+                   $this->email->from($email_row['smtp_user'], 'thecrm360');
+                   $this->email->to($email);
+                   $this->email->subject('Change password');
+                   $msg = $this->load->view('templates/forgot_password_email',$email_data,true);
+                   $this->email->message($msg);
+                }
+                
+        
+        //var_dump($this->email->send());exit();
+        
+        if ($data->reset_password === 1) {
+            $this->set_response([
+                'status' => TRUE,            
+                'message' => 'Password reset link is already sent to your email id'
+            ], REST_Controller::HTTP_OK);
+        } else {          
+            if(is_numeric($email) != 1)
+            {
+              if ($this->email->send()) {
+                  $this->set_response([
+                'status' => TRUE,            
+                'message' => 'Your password reset link is sent on your email id'
+            ], REST_Controller::HTTP_OK);
+                  //echo $this->email->print_debugger();
+              }else{
+                $this->set_response([
+                'status' => FALSE,            
+                'message' => 'Somthing Went Wrong!'
+            ], REST_Controller::HTTP_OK);
+              }
+            }   
+        }
+      }
+    }
+	
     public function ticket_dashboard_post()
     {
         $user_id = $this->input->post('user_id');
