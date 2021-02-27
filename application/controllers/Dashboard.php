@@ -25,8 +25,6 @@ class Dashboard extends CI_Controller {
 	
 	public function visit_map_only()
     {
-         if(user_role('1020') || user_role('1021') || user_role('1022')){
-        }
         $id=$this->uri->segment('3');
     	$visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
         if($visitdata->num_rows()!=0){
@@ -35,8 +33,8 @@ class Dashboard extends CI_Controller {
             $this->load->model('Enquiry_Model');
             $data['title'] = display('visit_list');
            // print_r($data['contact_list']->result_array()); exit();
-            $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
-            $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+           // $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
+           // $data['company_list'] = $this->Client_Model->getCompanyList()->result();
             $this->load->view('enquiry/visit_details_map_only', $data);
             //$this->load->view('layout/main_wrapper', $data);
         }else{
