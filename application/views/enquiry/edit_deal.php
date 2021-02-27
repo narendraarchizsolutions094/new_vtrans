@@ -84,7 +84,7 @@ $did=1;
 $type=$deal->btype;
 $this->load->model('Branch_model');
 $region_list = $this->Branch_model->sales_region_list()->result();
-$list = $this->db->query("SELECT deal_data.*,GROUP_CONCAT(deal_data.delivery_branch) as dlist,del.branch_name,del.area_id darea,del.region_id dregion , book.area_id barea, book.region_id bregion FROM `deal_data` left join branch del on del.branch_id=deal_data.delivery_branch left join branch book on book.branch_id=deal_data.booking_branch where deal_id=".$deal->id." GROUP by deal_data.booking_branch ,del.area_id")->result();
+$list = $this->db->query("SELECT deal_data.*,GROUP_CONCAT(deal_data.delivery_branch) as dlist, book.area_id barea, book.region_id bregion FROM `deal_data` left join branch book on book.branch_id=deal_data.booking_branch where deal_id=".$deal->id." GROUP by deal_data.booking_branch")->result();
 
 foreach($list as $row)
 {
@@ -164,7 +164,7 @@ foreach($list as $row)
                             {
                                 foreach ($region_list as $reg)
                                 {
-                                    echo'<option value="'.$reg->region_id.'" '.($row->dregion==$reg->region_id?'selected':'').'>'.$reg->name.'</option>';
+                                    echo'<option value="'.$reg->region_id.'">'.$reg->name.'</option>';
                                 }
                                 
                             }
@@ -173,24 +173,20 @@ foreach($list as $row)
                     </div>
                     <div class="col-md-6">
                         <label>Area</label>
-                        <select id="d_area'.$did.'" data-did="'.$did.'" class="form-control" name="area"  onchange="load_branch_particular(this)">';
+                        <select id="d_area'.$did.'" data-did="'.$did.'" class="form-control" name="area"  onchange="load_branch_particular(this)">
                          
-                        $res =	$this->Branch_model->sales_area_list(0,array('sales_area.region_id'=>$row->dregion))->result();
-						if(!empty($res))
-						{	echo'<option value="">Select Area</option>';
-							foreach ($res as $key => $value) {
-								echo'<option value="'.$value->area_id.'" '.($value->area_id==$row->darea?'selected':'').'>'.$value->area_name.'</option>';
-							}
-						}
-
-
-                    echo'</select>
-                    </div>';
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <select id="dbranch_holder'.$did.'" data-did="'.$did.'" onchange="include_branch(this)" multiple data-close-on-select="false">
+                        </select>
+                    </div>
+                    ';
                 }
                 echo'<div class="col-md-12">
                         <label>Delivery To<font color="red">*</font></label>
                         <select class="form-control delivery_to" name="dbranch['.$did.']" id="dbranch'.$did.'" onchange="generate_table()" multiple required data-close-on-select="false">';
-                  	 $dlist = explode(',',$row->dlist);
+                  	 //$dlist = explode(',',$row->dlist);
                         if($type=='zone')
                         {
                             $zones =   $this->Branch_model->zone_list()->result();
@@ -202,11 +198,11 @@ foreach($list as $row)
                         }
                         else
                         {
-                        	$res =	$this->Branch_model->branch_list(0,array('branch.area_id'=>$row->darea))->result();
+                        	$res =	$this->Branch_model->branch_list(0,"branch.branch_id IN (".$row->dlist.")")->result();
 							if(!empty($res))
 							{	
 								foreach ($res as $key => $value) {
-									echo'<option value="'.$value->branch_id.'" '.(in_array($value->branch_id,$dlist)?'selected':'').'>'.$value->branch_name.'</option>';
+									echo'<option value="'.$value->branch_id.'" selected>'.$value->branch_name.'</option>';
 								}
 							}
                         }
@@ -231,6 +227,9 @@ $did++;
 		</div>
 </div>
 <script type="text/javascript">
+$(document).ready(function(){
+	$('.panel-box').find('select').select2();
+});
 
 function set_type(t)
 {
@@ -416,9 +415,11 @@ function load_branch_particular(t)
 
 		      	if(type=='b_area'+did)
 		     		$('select[name="bbranch['+did+']"]').html(q);
-		     	else
-	     			$('select[name="dbranch['+did+']"]').html(q);
-	     		$('select[name="bbranch['+did+']"]').trigger('change');
+		     	else{
+
+	     			$('select[id="dbranch_holder'+did+'"]').html(q);
+		     	}
+	     		//$('select[name="bbranch['+did+']"]').trigger('change');
 	      }
 	    });
 	}
@@ -446,6 +447,30 @@ function make_clone()
 	});
 }
 
+
+function include_branch(t)
+{
+	var holder_list = $(t).find('option:selected');
+	var did = $(t).data('did');
+	//alert(JSON.stringify(holder_list));
+	var avail =$('select[name="dbranch['+did+']"]').val();
+	if(avail==null)
+		avail=[];
+
+	$(holder_list).each(function(k,v){
+		var kv = $(v).attr('value');
+		var vv = $(v).text();
+		if(!avail.includes(kv))
+		{
+			$('select[name="dbranch['+did+']"]').append('<option value="'+kv+'" selected>'+vv+'</option>');
+		}
+		else
+		{
+			$('select[name="dbranch['+did+']"]').find('option[value="'+kv+'"]').attr('selected','selected');
+		}
+	});
+	$('select[name="dbranch['+did+']"]').trigger('change');
+}
 
 var max_discount = <?=$max_discount?>;
 $(document).on('change keyup click','#data-box input',function(e){
@@ -484,8 +509,13 @@ return;
 	var cal_eamnt = cal_rate * eton * 1000; 
 	var cal_pamnt = cal_rate * pton * 1000; 
 	
-	$(f).find("input[name='eamnt["+qid+"]']").val(cal_eamnt.toFixed(2));
-	$(f).find("input[name='pamnt["+qid+"]']").val(cal_pamnt.toFixed(2));
+	var in_lakh_eamnt = (cal_eamnt/100000).toFixed(6);
+	var in_lakh_pamnt = (cal_pamnt/100000).toFixed(6);
+	in_lakh_pamnt = parseFloat(in_lakh_pamnt);
+	in_lakh_eamnt = parseFloat(in_lakh_eamnt);
+	
+	$(f).find("input[name='eamnt["+qid+"]']").val(in_lakh_eamnt);
+	$(f).find("input[name='pamnt["+qid+"]']").val(in_lakh_pamnt);
 });
 
 function load_branch(t)

@@ -3158,6 +3158,22 @@ public function set_layout_to_session() {
                       $content = str_replace('@area_table',$area_table, $content);
                       $content = str_replace('@oda_table',$oda_table, $content);
                       echo $content;
+                      if($deal->edited=='1' && ($deal->approval=='' || $deal->approval=='pending'))
+                      {
+                        echo'
+                          <script>
+                          $(".downlaod-panel").hide();
+                          </script>
+                        ';
+                      }
+                      else
+                      {
+                      echo'
+                          <script>
+                          $(".downlaod-panel").show();
+                          </script>
+                        ';
+                      }
                                                     //  }
                     }
                   
