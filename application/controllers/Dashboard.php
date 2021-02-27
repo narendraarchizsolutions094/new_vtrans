@@ -38,9 +38,7 @@ class Dashboard extends CI_Controller {
             $this->load->view('enquiry/visit_details_map_only', $data);
             //$this->load->view('layout/main_wrapper', $data);
         }else{
-			$this->session->set_flashdata('message', 'Travel History not found');
-
-            redirect('client/visits');
+			echo 'Travel History not found';
         }
        
     }
