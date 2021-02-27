@@ -407,11 +407,11 @@ function refresh_table(){
 
 function refresh_table_ex(){
       var exstatus=$('#expensetype').val();
-      alert(exstatus);
+     // alert(exstatus);
       var tr_list = $("#datatable_wrapper tbody").find('tr');
       $(tr_list).each(function(k,v){
           var diff = $(v).find('td span.expstatus').text();
-          alert(diff);
+         // alert(diff);
           if(diff.trim()==exstatus.trim())
           {
             //alert('1');
