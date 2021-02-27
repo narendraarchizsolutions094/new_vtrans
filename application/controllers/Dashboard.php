@@ -20,6 +20,35 @@ class Dashboard extends CI_Controller {
     public function hello(){
         echo "hwllow worlkd";
     }
+	
+//for santram only map view page start
+	
+	public function visit_map_only()
+    {
+         if(user_role('1020') || user_role('1021') || user_role('1022')){
+        }
+        $id=$this->uri->segment('3');
+    	$visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
+        if($visitdata->num_rows()!=0){
+            $data['details'] =$visitdata->row();
+            $this->load->model('Client_Model');
+            $this->load->model('Enquiry_Model');
+            $data['title'] = display('visit_list');
+           // print_r($data['contact_list']->result_array()); exit();
+            $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
+            $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+            $this->load->view('enquiry/visit_details_map_only', $data);
+            //$this->load->view('layout/main_wrapper', $data);
+        }else{
+			$this->session->set_flashdata('message', 'Travel History not found');
+
+            redirect('client/visits');
+        }
+       
+    }
+	
+//for santram only map view page End
+
          public function fb_token() { 
       $challenge = $_REQUEST['hub_challenge'];
         $verify_token = $_REQUEST['hub_verify_token'];
