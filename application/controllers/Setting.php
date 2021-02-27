@@ -293,7 +293,7 @@ $count=$this->db->where(array('branch_name'=>$branch,'region_id'=>$region,'area_
  $count=$this->db->where(array('branch_name'=>$branch,'region_id'=>$region,'area_id'=>$area,'comp_id'=>$this->session->companey_id))->count_all_results('branch');
 if($count==0){
 	
-$data=['branch_name'=>$branch,'region_id'=>$region,'area_id'=>$area,'branch_status'=>$status,'created_by'=>$this->session->user_id,'comp_id'=>$this->session->companey_id];
+$data=['type'=>'branch','branch_name'=>$branch,'region_id'=>$region,'area_id'=>$area,'branch_status'=>$status,'created_by'=>$this->session->user_id,'comp_id'=>$this->session->companey_id];
 $insert=$this->db->insert('branch',$data);
 	$this->session->set_flashdata('message','Branch Added');
 	redirect('setting/branchList');

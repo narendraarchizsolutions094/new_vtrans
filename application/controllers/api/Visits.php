@@ -60,7 +60,7 @@ $result =array();
  $result[$key]=(array)$value;
  $result[$key]['diff']=$percentChange;
 		}
- //print_r($result);exit;
+ print_r($result);exit;
           if(!empty($result))
           {
             $res= array();
