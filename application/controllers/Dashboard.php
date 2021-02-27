@@ -1414,10 +1414,11 @@ if (!empty($enquiry_separation)) {
      public function forgot_password() {
              
             $email = $this->input->post('femail');
+			$ecode = $this->input->post('fecode');
             $email_row = array();
             if(is_numeric($email) == 1)
             {
-              $data = $this->dashboard_model->getUserDataByPhone($email);
+              $data = $this->dashboard_model->getUserDataByPhone($email,$ecode);
               //$this->load->library('email');
               if(!empty($data))
               {
@@ -1429,7 +1430,7 @@ if (!empty($enquiry_separation)) {
             }
             else
             {
-              $data = $this->dashboard_model->change_pass($email);
+              $data = $this->dashboard_model->change_pass($email,$ecode);
               $this->load->library('email');
               $this->db->where('comp_id',$data->companey_id);
               $this->db->where('status',1);

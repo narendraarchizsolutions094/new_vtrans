@@ -193,9 +193,14 @@ if($root=='https://student.spaceinternationals.com'){	 ?>
                 <div class="panel-body" id="ForgetPasswordDiv" style="display:none">
                     <form id="ForgetPassword">
                         <div class="form-group">
-                            <label class="control-label" for="email"><?php echo "Enter Email Or Phone";?></label>
-                            <input type="text" placeholder="<?php echo "Enter Email Or Phone"; ?>" name="femail"
+                            <label class="control-label" for="email"><?php echo "Enter Email";?></label>
+                            <input type="text" placeholder="<?php echo "Enter Email"; ?>" name="femail"
                                 id="femail" class="form-control">
+                        </div>
+						<div class="form-group">
+                            <label class="control-label" for="email"><?php echo "Employee Code";?></label>
+                            <input type="text" placeholder="<?php echo "Enter Employee Code"; ?>" name="fecode"
+                                id="fecode" class="form-control" required>
                         </div>
                         <div class="form-group">
 

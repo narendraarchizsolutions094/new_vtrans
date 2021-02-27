@@ -236,7 +236,7 @@ class Dashboard_model extends CI_Model {
 
     //change password...
 
-    public function change_pass($email){
+    public function change_pass($email,$ecode){
 
         
 
@@ -249,6 +249,7 @@ class Dashboard_model extends CI_Model {
                         ->from('tbl_admin')
 
                         ->where('s_user_email',$email)
+						->where('employee_id',$ecode)
 
                         ->get()
 
@@ -260,7 +261,7 @@ class Dashboard_model extends CI_Model {
 
                     
 
-                     $this->db->where('s_user_email',$email)->update('tbl_admin',$datas);
+                     $this->db->where('s_user_email',$email)->where('employee_id',$ecode)->update('tbl_admin',$datas);
 
                      
 
@@ -274,11 +275,11 @@ class Dashboard_model extends CI_Model {
 
     }
 
-    public function getUserDataByPhone($mob)
+    public function getUserDataByPhone($mob,$ecode)
     {
     	if(!empty($mob))
     	{
-    		return $this->db->select("*")->from('tbl_admin')->where('s_phoneno',$mob)->get()->row();
+    		return $this->db->select("*")->from('tbl_admin')->where('s_phoneno',$mob)->where('employee_id',$ecode)->get()->row();
     	}
     	else
     	{
