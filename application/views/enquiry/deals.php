@@ -573,8 +573,10 @@ $(window).load(function(){
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="downlaod-panel" style="display: inline-block;">
             <input type="submit" name="submit" class="btn btn-primary" value="Download">
             <input type="submit" onclick="return confirm('Are you sure?')" name="submit" class="btn btn-primary" value="Email">
+          </div>
          </div>
          </form> 
 

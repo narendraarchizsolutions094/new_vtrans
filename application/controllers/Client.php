@@ -2435,7 +2435,7 @@ public function all_update_expense_status()
             $enquiry_id = $this->input->post('enq_for');
             $deal_id= $this->input->post('deal_id')??0;
             $deal_data = $this->Branch_model->get_deal($deal_id);
-
+           
             // if($btype=='zone')
             // {
             //     $x = implode(',',$bbranch);
@@ -2468,8 +2468,14 @@ public function all_update_expense_status()
             {   $i=1;
                 foreach ($chain as $key => $r)
                 {
-                    if(!empty($r['val']))
+                    if(empty($r['key']) || empty($r['val']))
                     {
+                        echo'<div class="alert alert-danger">Booking Branch or Delivery Branch is Empty</div>';
+                        continue;
+                    }
+
+                    if(!empty($r['val']))
+                    {   
                         foreach ($r['val'] as $key2 => $value) 
                         {   //echo $btype;exit();
                             if($btype=='area' || $booking_type=='ftl')
@@ -2553,13 +2559,7 @@ public function all_update_expense_status()
                 <input name="business_type" type="hidden" value="'.$business_type.'">
                 <input name="btype" type="hidden" value="'.$btype.'">
                 <input name="dtype" type="hidden" value="'.$dtype.'">';
-                if(!empty($deal_id))
-                {
-                    echo'
-                        <input type="hidden" name="edited" value="1">
-                        <input type="hidden" name="approval" value="0">';
-                }
-
+               
                 foreach ($chain as $ck => $cv)
                 {
                     $ar = $cv['val'];
@@ -2600,14 +2600,18 @@ public function all_update_expense_status()
                         <th style="width:115px">Insurance <label class="badge pull-right" onclick="rep_insurance()">R</label></th>
                         <th style="width:130px">Paymode <label class="badge pull-right" onclick="rep_paymode()">R</label></th>
                         ';
+
+
+                    if($booking_type=='sundry')
+                        echo'<th>Potential Tonnage <label class="badge pull-right" onclick="rep_pton()">R</label></th>';
+                     echo'   <th>Potential Amount<br>(<small>In Lakhs</small>)</th>';
+                
+
                  if($booking_type=='sundry')
                     echo'<th>Expected Tonnage <label class="badge pull-right" onclick="rep_eton()">R</label></th>';
 
-                        echo'<th>Expected Amount</th>';
-                 if($booking_type=='sundry')
-                        echo'<th>Potential Tonnage <label class="badge pull-right" onclick="rep_pton()">R</label></th>';
-                     echo'   <th>Potential Amount</th>';
-                
+                        echo'<th>Expected Amount<br>(<small>In Lakhs</small>)</th>';
+                 
 
                 if($booking_type=='ftl')
                     {   
@@ -2687,17 +2691,19 @@ public function all_update_expense_status()
                                 </select>
                             </td>';
 
+                 if($booking_type=='sundry')
+                    echo' <td><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>';
+
+                    echo'<td><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').'></td>';
+
+
                 if($booking_type=='sundry')
                     echo'<td>
                         <input type="number" name="eton['.$row->id.']" data-id="'.$row->id.'" value="'.$eton.'" class="eton_ip"></td>';
 
                     echo'<td><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" '.($booking_type=='sundry'?'readonly':'').'></td>';
 
-                 if($booking_type=='sundry')
-                    echo' <td><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>';
-
-                    echo'<td><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').'></td>';
-
+                
                 if($booking_type=='ftl')
                     echo'<td><input name="invoice['.$row->id.']" type="number" class="invoice_ip" value="'.$invoice.'"></td>
                         
@@ -2904,7 +2910,10 @@ public function all_update_expense_status()
 
         if(!empty($deal_id))
         {
-            unset($deal['status']);
+            $deal['edited']=1;
+            $deal['approval']='';
+            $deal['status']=0;
+
             $this->db->where('id',$deal_id);
             $this->db->update('commercial_info',$deal);
             $this->db->where('deal_id',$deal_id)->delete('deal_data');
@@ -2964,6 +2973,60 @@ public function all_update_expense_status()
         $this->load->view('layout/main_wrapper', $data);
     }
 
+    public function ask_deal_approval($deal_id)
+    {
+        $this->load->model(array('User_model','Enquiry_Model','Leads_Model','Branch_model'));
+        if(!empty($deal_id))
+        {
+           $deal = $this->Branch_model->get_deal($deal_id);
+           $enq  = $this->Enquiry_Model->getEnquiry(array('enquiry.enquiry_id'=>$deal->enquiry_id))->row();
+           if($deal->createdby==$this->session->user_id)
+           {
+                $user_id = $deal->createdby;
+                $udata = $this->User_model->read_by_id($user_id);
+                $this->db->set('related_to',$udata->related_to);
+                $this->Leads_Model->add_comment_for_events_popup('Deal needs approval',date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approval',1,0);
+              
+                $this->db->set('approval','pending');
+                $this->db->where('id',$deal->id);
+                $this->db->update('commercial_info');
+                $this->session->set_flashdata('message','Approval Request Send.');
+
+                $this->Leads_Model->add_comment_for_events_stage('Deal approval request send.',$enq->Enquery_id);
+
+                redirect($_SERVER['HTTP_REFERER']);
+           }
+           else
+           {
+            $this->session->set_userdata('exception','Deal not created by you.');
+           }
+        }
+    }
+
+    public function approve_deal($deal_id)
+    {
+        $this->load->model(array('User_model','Enquiry_Model','Leads_Model','Branch_model'));
+        if(!empty($deal_id))
+        {
+           $deal = $this->Branch_model->get_deal($deal_id);
+           $enq  = $this->Enquiry_Model->getEnquiry(array('enquiry.enquiry_id'=>$deal->enquiry_id))->row();
+           if($deal->createdby!=$this->session->user_id)
+           {
+                $udata = $this->User_model->read_by_id($this->session->user_id);
+              $this->Leads_Model->add_comment_for_events_popup('Deal approved By '.$udata->s_display_name.' '.$udata->last_name,date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approved',1,0);
+
+                $this->db->set('approval','done');
+                $this->db->where('id',$deal->id);
+                $this->db->update('commercial_info');
+                $this->session->set_flashdata('message','Deal approved.');
+                redirect($_SERVER['HTTP_REFERER']);
+           }
+           else
+           {
+            $this->session->set_userdata('exception','Deal not created by you.');
+           }
+        }
+    }
     public function branch_panel_clone($did,$type='branch')
     {
     $this->load->model('Branch_model');
@@ -3039,7 +3102,11 @@ public function all_update_expense_status()
                         <select id="d_area'.$did.'" data-did="'.$did.'" class="form-control" name="area"  onchange="load_branch_particular(this)">
                             
                         </select>
-                    </div>';
+                    </div>
+                    <div class="col-md-12">
+                        <select id="dbranch_holder'.$did.'" data-did="'.$did.'" onchange="include_branch(this)" multiple></select>
+                    </div>
+                    ';
                 }
                 echo'<div class="col-md-12">
                         <label>Delivery To<font color="red">*</font></label>

@@ -260,8 +260,8 @@ function load_branch_particular(t)
 		      	if(type=='b_area'+did)
 		     		$('select[name="bbranch['+did+']"]').html(q);
 		     	else
-	     			$('select[name="dbranch['+did+']"]').html(q);
-	     		$('select[name="bbranch['+did+']"]').trigger('change');
+	     			$('select[id="dbranch_holder'+did+'"]').html(q);
+	     		//$('select[name="bbranch['+did+']"]').trigger('change');
 	      }
 	    });
 	}
@@ -286,6 +286,30 @@ function make_clone()
 			count++;
 		}
 	});
+}
+
+function include_branch(t)
+{
+	var holder_list = $(t).find('option:selected');
+	var did = $(t).data('did');
+	//alert(JSON.stringify(holder_list));
+	var avail =$('select[name="dbranch['+did+']"]').val();
+	if(avail==null)
+		avail=[];
+
+	$(holder_list).each(function(k,v){
+		var kv = $(v).attr('value');
+		var vv = $(v).text();
+		if(!avail.includes(kv))
+		{
+			$('select[name="dbranch['+did+']"]').append('<option value="'+kv+'" selected>'+vv+'</option>');
+		}
+		else
+		{
+			$('select[name="dbranch['+did+']"]').find('option[value="'+kv+'"]').attr('selected','selected');
+		}
+	});
+	$('select[name="dbranch['+did+']"]').trigger('change');
 }
 
 $('#booking_branch').on('change', function() {
@@ -352,9 +376,14 @@ return;
 	var cal_rate = rate.toFixed(2) - ((rate*discount)/100).toFixed(2);
 	var cal_eamnt = cal_rate * eton * 1000; 
 	var cal_pamnt = cal_rate * pton * 1000; 
+
+	var in_lakh_eamnt = (cal_eamnt/100000).toFixed(6);
+	var in_lakh_pamnt = (cal_pamnt/100000).toFixed(6);
+	in_lakh_pamnt = parseFloat(in_lakh_pamnt);
+	in_lakh_eamnt = parseFloat(in_lakh_eamnt);
 	
-	$(f).find("input[name='eamnt["+qid+"]']").val(cal_eamnt.toFixed(2));
-	$(f).find("input[name='pamnt["+qid+"]']").val(cal_pamnt.toFixed(2));
+	$(f).find("input[name='eamnt["+qid+"]']").val(in_lakh_eamnt);
+	$(f).find("input[name='pamnt["+qid+"]']").val(in_lakh_pamnt);
 });
 
 function load_branch(t)

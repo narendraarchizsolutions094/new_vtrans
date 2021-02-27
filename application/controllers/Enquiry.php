@@ -3704,11 +3704,45 @@ echo  $details1;
             $stts = $value->status;
 
             if($colsall || in_array(19,$cols))
-            $sub[] = '<select onchange="update_info_status('.$value->id.',this.value)">
+            {
+                if($value->edited=='1' && $value->approval=='')
+                {
+                    if($value->createdby==$this->session->user_id)
+                    {
+                       $sub[]  ='<a href="'.base_url('client/ask_deal_approval/'.$value->id).'" onclick="return confirm(\'Send For Approval\')">
+                            <label class="label label-warning text-black">Send For Approval</label>
+                            </a>';
+                    }
+                    else
+                    {
+                        $sub[] ='<label class="label label-danger">Edited</label>';
+                    }
+                    
+                }
+                else if($value->edited=='1' && $value->approval=='pending')
+                {
+                    if($value->createdby==$this->session->user_id)
+                    {
+                        $sub[] ='<label class="label label-primary">Waiting for approval</label>
+                        ';
+                    }
+                    else
+                    {
+                         $sub[] ='<a href="'.base_url('client/approve_deal/'.$value->id).'">
+                            <label class="label label-success ">Approve</label>
+                            </a>';
+                    }
+                }
+                else
+                {
+                $sub[] = '<select onchange="update_info_status('.$value->id.',this.value)">
                         <option value="0" '.($value->status==0?'selected':'').'>Pending</option>
                         <option value="1" '.($value->status==1?'selected':'').'>Done</option>
                         <option value="2" '.($value->status==2?'selected':'').'>Deferred</option>
                         </select>';
+                }
+            
+            }
             $part2 = "";
             if(user_access('1002'))
             {
