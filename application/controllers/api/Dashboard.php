@@ -59,7 +59,10 @@ class Dashboard extends REST_Controller {
             
             //print_r($data);exit;
             if(empty($email_row) && $data->companey_id != 81){ 
-                echo "4";die;                
+                $this->set_response([
+                'status' => FALSE,            
+                'message' => 'Email is not configured'
+                ], REST_Controller::HTTP_OK);                
             }else{
                 if(is_numeric($email) == 1)
                 {
@@ -75,7 +78,10 @@ class Dashboard extends REST_Controller {
                   $this->db->insert('tbl_otp',$otpAry);
                   $message = "Your OTP is $otp";
                   $this->Message_models->smssend($phone,$message,$data->companey_id,$data->pk_i_admin_id);
-                  echo "99";
+                $this->set_response([
+                'status' => TRUE,            
+                'message' => 'Please Enter otp received on phone'
+                ], REST_Controller::HTTP_OK);
                 }
                 else
                 {
