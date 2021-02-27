@@ -3412,6 +3412,7 @@ echo  $details1;
         $this->load->model(array('Client_Model','Enquiry_model'));
         if($post = $this->input->post())
         {
+			$m_purpose=$this->input->post('m_purpose');
             $visit_type=$this->input->post('type');
             $visit_time=$this->input->post('visit_time');
             $visit_date=$this->input->post('visit_date');
@@ -3423,6 +3424,7 @@ echo  $details1;
             $data = array('enquiry_id'=>$this->input->post('enquiry_id'),
                             'visit_date'=>$visit_date,
                             'visit_time'=>$visit_time,
+							'm_purpose'=>$m_purpose,
                             // 'travelled'=>$this->input->post('travelled'),
                             // 'travelled_type'=>$this->input->post('travelled_type'),
                             // 'rating'=>$this->input->post('rating'),
@@ -3524,6 +3526,7 @@ echo  $details1;
         //print_r($_POST); exit(); 
         $this->load->model('visit_datatable_model');
         $result = $this->visit_datatable_model->getRows($_POST);
+		//print_r($result);exit;
         //echo $this->db->last_query(); exit();
         // print_r($this->db->last_query());
         $colsall  = true;
@@ -3592,6 +3595,9 @@ echo  $details1;
 
             if($colsall || in_array(2,$cols))
                 $sub[] = $time??'NA';
+			
+			if($colsall || in_array(13,$cols))
+                $sub[] = $res->m_purpose??'NA';
 
             if(!empty($_POST['view_all']))
             {

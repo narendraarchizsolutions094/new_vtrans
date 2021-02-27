@@ -95,9 +95,11 @@ $result =array();
        $value_d =     $this->db->order_by('created_at','DESC');
        $value_d =       $this->db->get('tbl_visit')->row();
 
-    	$tvalue = $this->db->where('visit_id',$id)->limit('1')->order_by('id','DESC')->get('visit_details')->row();
+    	//$tvalue = $this->db->where('visit_id',$id)->limit('1')->order_by('id','DESC')->get('visit_details')->row();
+		$tvalue = $this->db->where('visit_id',$id)->order_by('id','DESC')->get('visit_details')->result();
        $expenselist=$this->db->select('tbl_expense.*,tbl_expense.id as expense_id,tbl_expenseMaster.id,tbl_expenseMaster.title')->where(array('tbl_expense.visit_id'=>$id,'tbl_expense.type'=>2))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
        $list=[];
+	  // print_r($tvalue);exit;
         foreach ($expenselist as $key => $value) {
           $file='';
            if($value->file){
@@ -194,6 +196,7 @@ $result =array();
     		$data = array(
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>$this->input->post('visit_time'),
+							'm_purpose'=>$this->input->post('m_purpose'),
                             'travelled'=>$this->input->post('travelled'),
                             'travelled_type'=>$this->input->post('travelled_type'),
                             'rating'=>$this->input->post('rating'),
