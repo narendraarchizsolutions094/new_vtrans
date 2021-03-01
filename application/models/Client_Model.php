@@ -192,46 +192,53 @@ class Client_Model extends CI_Model
         //echo $this->db->last_query(); exit();
     }
 
-    public function getCompanyList($match = '',$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
+    public function getCompanyList($id =0,$where=array(),$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
     {
         $process = $this->session->process??$process;
         $comp_id = $this->session->companey_id??$comp_id;
-        if(empty($user_id))
-            $user_id = $this->session->user_id;
 
-        $where = 'enquiry.comp_id='.$comp_id;
-        
+        $user_id  = empty($user_id)?$this->session->user_id:$user_id;
+
         if(!empty($user_id))
         {
             $all_reporting_ids    =   $this->common_model->get_categories($user_id);
-            $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-            $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
         }
 
+        $this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids');
+        $this->db->from('tbl_company comp')
+                        ->join('enquiry enq','enq.company=comp.id','left')
+                        ->group_by('comp.id');
+        
 
-        if($where)
+        $where="comp.comp_id=".$this->session->companey_id;
+
+        if(!empty($user_id))
+        {
+            $where .= " AND ( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+            $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+        }
+
+        if(!empty($where))
             $this->db->where($where);
 
+
         if(is_array($process))
-            $this->db->where_in('enquiry.product_id',$process);
+            $this->db->where_in('comp.process_id',$process);
         else 
-            $this->db->where(' enquiry.product_id IN ('.$process.') ');
+            $this->db->where(' comp.process_id IN ('.$process.') ');
 
-        $this->db->select('count(enquiry_id) as num, company , GROUP_CONCAT(enquiry_id) as enq_ids,GROUP_CONCAT(status) as enq_status,GROUP_CONCAT(CONCAT(COALESCE(name_prefix,""),\' \',COALESCE(name,""),\' \',COALESCE(lastname,""))) as enq_names ');
-        $this->db->from('enquiry');
-        $this->db->where('enquiry.company IS NOT NULL and CHAR_LENGTH(REPLACE(`enquiry`.company, " ", ""))>0');
-
-        if($match)
-            $this->db->like('REPLACE(`enquiry`.company, " ", "") ',str_replace(' ','',$match));
-        $this->db->group_by('REPLACE(`enquiry`.company, " ", "")');
-
-        if($sort!=-1)
+        if(!empty($id))
         {
-            if($sort=='up')
-                $this->db->order_by('enquiry.company','DESC');
-            else 
-                $this->db->order_by('enquiry.company','ASC');
+            $this->db->where('comp.id',$id);
         }
+
+        // if($sort!=-1)
+        // {
+        //     if($sort=='up')
+        //         $this->db->order_by('comp.company','DESC');
+        //     else 
+        //         $this->db->order_by('comp.company','ASC');
+        // }
 
         if($action=='count')
          return  $this->db->count_all_results();

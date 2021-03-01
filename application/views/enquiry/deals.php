@@ -517,7 +517,7 @@ $(window).load(function(){
                       {
                         foreach ($company_list as $key =>  $row)
                         {
-                          echo '<option value="'.$key.'">'.$row->company.'</option>';
+                          echo '<option value="'.$row->id.'">'.$row->company_name.'</option>';
                         }
                       }
                       ?>
@@ -526,15 +526,15 @@ $(window).load(function(){
                 <div class="form-group col-md-6">
                   <label>Contact <a href="<?= base_url('enquiry/create?status=1') ?>" target="_blank"  style=" float:right;margin-left: 30px;"> <i class="fa fa-plus-square"> </i></a> </label>
                   <select class="form-control" name="enquiry_id" required onchange="match()">
-                    <option value="">Select</option>
+                    <!-- <option value="">Select</option> -->
                     <?php
-                  if(!empty($all_enquiry))
-                  {
-                    foreach ($all_enquiry as $row)
-                    {
-                      echo'<option value="'.$row->enquiry_id.'">'.$row->name.'</option>';
-                    }
-                  }
+                  // if(!empty($all_enquiry))
+                  // {
+                  //   foreach ($all_enquiry as $row)
+                  //   {
+                  //     echo'<option value="'.$row->enquiry_id.'">'.$row->name.'</option>';
+                  //   }
+                  // }
                     ?>
                   </select>
                </div>
@@ -654,30 +654,18 @@ function quotation_pdf(info_id) {
 </script>
 
 <script type="text/javascript">
-  var LIST = <?php echo !empty($company_list)? json_encode($company_list): '{}'?>;
-  var OLD_LIST  = <?=!empty($all_enquiry) ? json_encode($all_enquiry):'{}'?>;
+
   function filter_related_to(v)
   {
-      if(Object.keys(LIST).length>0 && v!='-1')
-      { 
-        var l = '';
-        var y = LIST[v];
-        var ids = y.enq_ids.split(',');
-        var names = y.enq_names.split(',');
-        var types = y.enq_status.split(',');
-        $(ids).each(function(k,id){
-          if(types[k]!='1')
-            l+="<option value='"+id+"'>"+names[k]+"</option>";
-        });
-        $("select[name=enquiry_id]").html(l);
-      }
-      else
-      { var l = '';
-          $(OLD_LIST).each(function(k,v){
-            l+="<option value='"+v.enquiry_id+"'>"+v.name_prefix+" "+v.name+" "+v.lastname+"</option>";
-          });
-          $("select[name=enquiry_id]").html(l);
-      }
+      $.ajax({
+            url:"<?=base_url('client/account_by_company')?>",
+            type:'get',
+            data:{comp_id:v},
+            success:function(q){
+              $("select[name=enquiry_id]").html(q);
+               $("select[name=enquiry_id]").trigger('change');
+            }
+      });
       match();
   }
 

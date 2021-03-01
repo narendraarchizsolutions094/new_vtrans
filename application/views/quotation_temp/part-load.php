@@ -2313,26 +2313,57 @@
 	</ul>
 	<p class="c1 c44"><span class="c42 c25"></span></p>
 	<p class="c21"><span class="c62 c66">Other Terms and Conditions:</span></p>
-	<ol class="c28 lst-kix_list_7-0 start" start="1">
-		<li class="c9 c48 li-bullet-0"><span class="c10">In case of cheque bounce, penalty charges of Rs. 500/- + &ldquo;Taxes&rdquo; will be applicable for each case.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">TDS to be deposited against the PAN no. AAACV1559Q.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">Statutory requirements like eWay bill, Permits and /or any other legal documents shall be handed over by customer to V-Trans at the time of booking as per the norms issued by Government of India or State Government from time to time.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">For Delivery at Jammu &amp; Kashmir Toll tax of Rs 1.00/- Per KG (or prevailing rate) over and above the agreed contracted rates shall be separately charged.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">Demurrage charges shall be applicable beyond maximum of 7 days from the date of arrival at destination. V-Trans shall provide 45 days period to collect the goods , in case of failure V-Trans shall have right to sell the goods by auction, private contract or otherwise or even destroy the consignment as required under any laws applicable from time to time, without prejudice to its other legal remedies to recover its dues. V-Trans shall have the right of reconciliation of customer&rsquo;s ledger and balance/accounts in books at the end of every quarter and customer shall provide all relevant details and documents as and when required by V-Trans.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">Customer shall defend, indemnify, and hold V-Trans and its employees and agents harmless from and against all claims, liabilities, losses, damages, fines, penalties, payments, costs, and expenses, including, but not limited to attorney fees and costs of suit caused by and resulting from the violations of the terms of this contract or negligence on the part of customer.</span></li>
+	<style type="text/css">
+		.lst-kix_list_7-0 li{
+			font-family: arial!important;
+			font-size: 14px;
+		}
+		/*.lst-kix_list_7-0 li span {
+		  position: relative;
+		  left: -10px;
+		}*/
+	</style>
+	<ol class="c28 lst-kix_list_7-0 start" start="1" style="text-align: justify;
+    font-size: 12px;
+    color: black;">
+
+<li><span>In case of cheque bounce, penalty charges of Rs. 500/- + “Taxes” will be applicable for each case.</span>
+<li><span>Loading, Unloading Hamali, Warai, Thappi would be excluding if applicable.</span></li>
+<li><span>Above Rates for one point Pickup & one point Delivery Only.</span></li>
+<li><span>Vehicle Detention charges:  Rs. 700/-.<span></li>
+<li><span>Rate would be revised; in case of hike in diesel price or change in any Govt; policy.</span></li>
+<li><span>TDS to be deposited against the PAN no. AAACV1559Q.</span></li>
+<li><span>Transit insured by Consignor or Consignee and All material booked under “Owner Risk”, In case of any claim against damage/shortage, theft etc. of consignments, our liability is subject to issue of “Certificate of Facts” after receipt of Survey Report & other required documents from Customer.</span></li>
+
+<li><span>Statutory requirements like eWay bill, Permits and /or any other legal documents shall be handed over by customer to V-Trans at the time of booking as per the norms issued by Government of India or State Government from time to time.</span></li>
+
+<li><span>For Delivery at Jammu & Kashmir Toll tax of Rs 1.00/- Per KG (or prevailing rate) over and above the agreed contracted rates shall be separately charged.</span></li>
+<li><span>Demurrage charges shall be applicable beyond maximum of 7 days from the date of arrival at destination. V-Trans shall provide 45 days period to collect the goods , in case of failure V-Trans shall have right to sell the goods by auction, private contract or otherwise or even destroy the consignment as required under any laws applicable from time to time, without prejudice to its other legal remedies to recover its dues. V-Trans shall have the right of reconciliation of customer’s ledger and balance/accounts in books at the end of every quarter and customer shall provide all relevant details and documents as and when required by V-Trans.</span>
+</li>
+<li><span>Customer shall defend, indemnify, and hold V-Trans and its employees and agents harmless from and against all claims, liabilities, losses, damages, fines, penalties, payments, costs, and expenses, including, but not limited to attorney fees and costs of suit caused by and resulting from the violations of the terms of this contract or negligence on the part of customer.</span>
+</li>
+
+<li><span>The consignment shall not contain any items or materials which are classified as prohibited or restricted or hazardous or dangerous by any Authority or regulations or provisions of any Indian Law or by Laws of public authority. In the event of any consignment being found containing any of the aforesaid items or materials, the customers agrees and undertakes to indemnify V-Trans and its officers in respect of all claims and losses that may arise consequent thereto. Further, the customer will be solely responsible for all cost and consequences for booking any such items or materials through V-Trans.</span>
+</li>
+<li><span>The customer shall ensure that the packaging of the shipments is adequate to carry the shipment, carriage worthy, so as to withstand the normal rigors, jerks and jolts of transportation hazards. V-Trans reserve its right to reject any shipment, if the packing is not transit worthy.</span></li>
+
+<li><span>The Customer agrees to pay and/or reimburse V-Trans on demand the service charge, penalties or all other levy in respect of any consignment booked by the customer.</span></li>
+<li><span>V-Trans shall not be responsible for any delay in delivery, loss or damage of the consignment caused due to any act of God, force majeure including accidents, natural calamities, riots, commotion, strikes or any other cause whatsoever beyond the control of V-Trans or due to inherent defect in the contents or due to criminal acts of third parties. No claim for loss or/and damage will be entertained by V-Trans in such event.</span> </li>
+
+<li><span>In the event of non-payment of any of the dues or payment, charges, levies or any other amount as payable by customer to      V-Trans, then V-Trans shall have lien on the goods of customer and V-Trans reserve the right to liquidate the goods in lien to recover the amount payable from customer.</span></li>
+
+
+<li><span>The terms and conditions printed on overleaf of the goods consignment note shall be considered as part of this contract and in event of any conflict, the consignment note term shall prevail. </span>
+</li>
+<li><span>Customer shall indemnify V-Trans, its employees, directors & Officers etc. against any losses, claims, expenses, liabilities and damages incurred, due to any misrepresentation, act, negligence, omission or commission caused by the employees, servants, of customer including breach of terms of this Contract.</span></li>
+	<li><span>It is expressly understood and agreed by and between the parties that all shipments entrusted by Customer and booked by V-Trans shall be on “SAID TO CONTAIN BASIS” i.e. V-Trans shall be under no obligation to verify the description and physical contents of the shipments declared by the customer on the consignment note, customer shall undertake and ensure to make correct and factual declaration on the consignment note. However, V-Trans reserves right to inspect and/or refuse booking of shipments not conforming to these terms and conditions, without assigning any reasons whatsoever. In case of imported shipment, the customer has to inform the booking office of the V-Trans to get a pre inspection survey done before the pickup of consignment. It is agreed between the parties that if V-Trans incurred any loss or damage due to any misrepresentation made by the customers on consignment note then customer shall indemnify such loss and damages. </span>
+	</li>
+	<li><span>In case of any dispute between the parties Mumbai courts shall have exclusive jurisdiction in the matter. </span></li>
+<li><span>GST shall be levied at the prevailing rate @ 12% of invoice amount.</span></li>
+
+
 	</ol>
-	<ol class="c28 lst-kix_list_7-0" start="7">
-		<li class="c9 c48 li-bullet-0"><span class="c10">The consignment shall not contain any items or materials which are classified as prohibited or restricted or hazardous or dangerous by any Authority or regulations or provisions of any Indian Law or by Laws of public authority. In the event of any consignment being found containing any of the aforesaid items or materials, the customers agrees and undertakes to indemnify V-Trans and its officers in respect of all claims and losses that may arise consequent thereto. Further, the customer will be solely responsible for all cost and consequences for booking any such items or materials through V-Trans.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">The customer shall ensure that the packaging of the shipments is adequate to carry the shipment, carriage worthy, so as to withstand the normal rigors, jerks and jolts of transportation hazards. V-Trans reserve its right to reject any shipment, if the packing is not transit worthy.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">The Customer agrees to pay and/or reimburse V-Trans on demand the service charge, penalties or all other levy in respect of any consignment booked by the customer.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">V-Trans shall not be responsible for any delay in delivery, loss or damage of the consignment caused due to any act of God, force majeure including accidents, natural calamities, riots, commotion, strikes or any other cause whatsoever beyond the control of V-Trans or due to inherent defect in the contents or due to criminal acts of third parties. No claim for loss or/and damage will be entertained by V-Trans in such event. </span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">In the event of non-payment of any of the dues or payment, charges, levies or any other amount as payable by customer to &nbsp; &nbsp; &nbsp;V-Trans, then V-Trans shall have lien on the goods of customer and V-Trans reserve the right to liquidate the goods in lien to recover the amount payable from customer.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">The terms and conditions printed on overleaf of the goods consignment note shall be considered as part of this contract and in event of any conflict, the consignment note term shall prevail. </span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">Customer shall indemnify V-Trans, its employees, directors &amp; Officers etc. against any losses, claims, expenses, liabilities and damages incurred, due to any misrepresentation, act, negligence, omission or commission caused by the employees, servants, of customer including breach of terms of this Contract.</span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">It is expressly understood and agreed by and between the parties that all shipments entrusted by Customer and booked by V-Trans shall be on &ldquo;SAID TO CONTAIN BASIS&rdquo; i.e. V-Trans shall be under no obligation to verify the description and physical contents of the shipments declared by the customer on the consignment note, customer shall undertake and ensure to make correct and factual declaration on the consignment note. However, V-Trans reserves right to inspect and/or refuse booking of shipments not conforming to these terms and conditions, without assigning any reasons whatsoever. In case of imported shipment, the customer has to inform the booking office of the V-Trans to get a pre inspection survey done before the pickup of consignment. It is agreed between the parties that if V-Trans incurred any loss or damage due to any misrepresentation made by the customers on consignment note then customer shall indemnify such loss and damages. </span></li>
-		<li class="c9 c48 li-bullet-0"><span class="c10">In case of any dispute between the parties Mumbai courts shall have exclusive jurisdiction in the matter. </span></li>
-		<li class="c21 c48 li-bullet-0"><span class="c10">Government taxes and levies are applicable as per the prevailing Act and Rules Defined.</span></li>
-	</ol>
+
 	<p class="c1 c44"><span class="c42 c25"></span></p>
 	<p class="c1 c44"><span class="c42 c25"></span></p>
 	<p class="c21"><span class="c66 c75">For V-Trans (India) Ltd.</span></p>

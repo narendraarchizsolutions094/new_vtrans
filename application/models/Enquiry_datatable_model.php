@@ -67,7 +67,7 @@ class Enquiry_datatable_model extends CI_Model {
         $probability            =   !empty($enquiry_filters_sess['probability'])?$enquiry_filters_sess['probability']:'';
         $aging_rule = !empty($enquiry_filters_sess['aging_rule'])?$enquiry_filters_sess['aging_rule']:'';
 
-        $select = "enquiry.status,enquiry.name_prefix,enquiry.enquiry_id,tbl_subsource.subsource_name,enquiry.created_by,enquiry.aasign_to,enquiry.Enquery_id,enquiry.score,enquiry.enquiry,enquiry.company,tbl_product_country.country_name,enquiry.org_name,enquiry.name,enquiry.lastname,enquiry.email,enquiry.phone,enquiry.address,enquiry.reference_name,enquiry.created_date,enquiry.enquiry_source,lead_source.icon_url,lead_source.lsid,lead_source.score_count,lead_source.lead_name,lead_stage.lead_stage_name,tbl_datasource.datasource_name,tbl_product.product_name as product_name,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name,lead_score.score_name,lead_score.probability";
+        $select = "enquiry.status,enquiry.name_prefix,enquiry.enquiry_id,tbl_subsource.subsource_name,enquiry.created_by,enquiry.aasign_to,enquiry.Enquery_id,enquiry.score,enquiry.enquiry,enquiry.company,tbl_product_country.country_name,enquiry.org_name,enquiry.name,enquiry.lastname,enquiry.email,enquiry.phone,enquiry.address,enquiry.reference_name,enquiry.created_date,enquiry.enquiry_source,lead_source.icon_url,lead_source.lsid,lead_source.score_count,lead_source.lead_name,lead_stage.lead_stage_name,tbl_datasource.datasource_name,tbl_product.product_name as product_name,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name,lead_score.score_name,lead_score.probability,tbl_company.company_name";
 
         if ($this->session->companey_id != 57) {
             /*$select .= " ,GROUP_CONCAT(concat(tbl_enqstatus1.user_id,'#',tbl_enqstatus1.status) SEPARATOR '_') AS t";        
@@ -80,6 +80,7 @@ class Enquiry_datatable_model extends CI_Model {
             $this->db->join('tbl_bank ', 'tbl_bank.id = tbl_newdeal.bank', 'left');
         }
         $data_type = $_POST['data_type'];    
+       
         $this->db->select($select);                
         $this->db->join('lead_source','enquiry.enquiry_source = lead_source.lsid','left');
         $this->db->join('tbl_product','enquiry.product_id = tbl_product.sb_id','left');
@@ -89,55 +90,57 @@ class Enquiry_datatable_model extends CI_Model {
         $this->db->join('tbl_subsource','tbl_subsource.subsource_id = enquiry.sub_source','left');        
         $this->db->join('tbl_datasource','enquiry.datasource_id = tbl_datasource.datasource_id','left');
         $this->db->join('tbl_admin as tbl_admin', 'tbl_admin.pk_i_admin_id = enquiry.created_by', 'left');
-        $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left');        
+        $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left'); 
+        $this->db->join('tbl_company','tbl_company.id=enquiry.company','left');       
         
     // echo $top_filter; exit();
 
         if($top_filter=='all')
         {
-            $where.="  enquiry.status=$data_type ";
+            $where.="  enquiry.status IN ($data_type) ";
         }
         else if($top_filter=='droped')
         {            
-            $where.="  enquiry.status=$data_type";
+            $where.="  enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status>0";
         }else if($top_filter=='created_today'){
            // $date=date('Y-m-d');
             //  $where.="enquiry.created_date LIKE '%$date%'";
-            $where.=" enquiry.status=$data_type";
+            $where.=" enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status=0";
         }else if($top_filter=='updated_today'){
             // $date=date('Y-m-d');
             // $where.="enquiry.update_date LIKE '%$date%'";        
-            $where.=" enquiry.status=$data_type";
+            $where.=" enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status=0 and enquiry.update_date is not NULL";
 
             //this->db->where('');
 
         }else if($top_filter=='active'){            
-            $where.="  enquiry.status=$data_type";
+            $where.="  enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status=0";
         }
         else if($top_filter == 'assigned')
         {   
-            $where.=" enquiry.status=$data_type";
+            $where.=" enquiry.status IN ($data_type)";
             $where.=" AND enquiry.aasign_to is not NULL AND enquiry.drop_status=0" ;
 
         }
         else if($top_filter == 'unassigned')
         {
-            $where.="enquiry.status=$data_type";
+            $where.="enquiry.status IN ($data_type)";
             $where.=" AND enquiry.aasign_to is NULL AND enquiry.drop_status=0";
         }
         else if($top_filter == 'pending')
         {
-            $where.="  enquiry.status=$data_type";
+            $where.="  enquiry.status IN ($data_type)";
             $where.=" AND enquiry.lead_stage=0 AND enquiry.drop_status=0";
         }
         else{                        
-            $where.="  enquiry.status=$data_type";
+            $where.="  enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status=0";
-        }                   
+        }
+
         if(isset($enquiry_filters_sess['lead_stages']) && $enquiry_filters_sess['lead_stages'] !=-1){
             $stage  =   $enquiry_filters_sess['lead_stages'];
             $where .= " AND enquiry.lead_stage=$stage";
@@ -357,7 +360,7 @@ class Enquiry_datatable_model extends CI_Model {
         $datatype = $_POST['data_type'];
         
         $compid = $this->session->companey_id;
-        $where .= " enquiry.status=$datatype AND comp_id=$compid";
+        $where .= " enquiry.status IN ($datatype) AND comp_id=$compid";
 
         if(!empty($_POST['specific_list']))
         { 

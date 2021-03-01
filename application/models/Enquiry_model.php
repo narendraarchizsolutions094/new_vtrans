@@ -8,6 +8,25 @@ class Enquiry_model extends CI_Model {
 
     public function create($data = [],$comp_id =0) {
 		
+    if(!empty($data['company']))
+    {
+      $company = $this->db->where('company_name',$data['company'])->get('tbl_company')->row();
+      if(!empty($company))
+      {
+        $data['company'] = $company->id;
+      }
+      else
+      {
+        $new_company = array(
+                              'company_name'=>$data['company'],
+                              'comp_id'=>empty($comp_id)?$this->session->companey_id:$comp_id,
+                              'process_id'=>$data['product_id'], 
+                        );
+        $this->db->insert('tbl_company',$new_company);
+        $data['company'] = $this->db->insert_id();
+      }
+    }
+
     $this->db->insert($this->table, $data);
 	
 		$insid = $this->db->insert_id();
@@ -47,7 +66,7 @@ class Enquiry_model extends CI_Model {
 								  "input"   => $val,
 								  "parent"  => $insid, 
 								  "fvalue"  => (!empty($enqinfo[$ind])) ? $enqinfo[$ind] : "",
-								  "cmp_no"  => $comp_id??$this->session->companey_id,
+								  "cmp_no"  => empty($comp_id)?$this->session->companey_id:$comp_id,
 								 ); 	
 			}
 		

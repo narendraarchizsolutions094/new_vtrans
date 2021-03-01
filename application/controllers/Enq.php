@@ -76,7 +76,7 @@ class Enq extends CI_Controller
 
 	public function enq_load_data()
 	{
-		
+		//print_r($_POST);exit();	
 		$this->load->model('enquiry_datatable_model');
 		$list = $this->enquiry_datatable_model->get_datatables();
 
@@ -122,8 +122,37 @@ class Enq extends CI_Controller
 				$row[] = (!empty($each->subsource_name)) ? ucwords($each->subsource_name) : "NA";
 			}
 			if ($showall == true or in_array(2, $acolarr)) {
-				$row[] = (!empty(trim($each->company))) ? ucwords($each->company) : "NA";
+				$row[] = (!empty(trim($each->company_name))) ? ucwords($each->company_name) : "NA";
+
+				if(!empty($_POST['data_type']) && count(explode(',',$_POST['data_type']))>1)
+				{
+					$sname ='';
+					if($each->status>3)
+					{
+						$enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
+			            if (!empty($enquiry_separation)) {
+			                $enquiry_separation = json_decode($enquiry_separation, true);
+			                $stage    =   $each->status;
+			                $sname = $enquiry_separation[$stage]['title'];
+			                // $url = 'client/view/' . $enquiryid . '?stage=' . $stage;
+			                // $comment = $title . ' Activated';
+			            }
+
+					}
+					else
+					{
+						$st = array('1'=>display('enquiry'),
+								'2'=>display('lead'),
+								'3'=>display('client'),
+								);
+						$sname = $st[$each->status];
+					
+					}
+
+					$row[] = $sname;
+				}
 			}
+
 			if ($showall == true or in_array(3, $acolarr)) {
 				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname . '</a>';
 			}

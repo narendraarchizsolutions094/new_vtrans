@@ -5,18 +5,18 @@ class Company_datatable_model extends CI_Model{
     
     function __construct() {
   
-        $this->table = 'enquiry';
+        $this->table = 'tbl_company';
         // Set orderable column fields
-        $this->column_order = array('','enq.company');
+        $this->column_order = array('','comp.id');
 
         // Set searchable column fields
 
-        $this->column_search = array('enq.company');
+        $this->column_search = array('comp.company_name');
 
         // $this->column_search = array('tck.ticketno','tck.id','tck.category','tck.name','tck.email','tck.product','tck.message','tck.issue','tck.solution','tck.sourse','tck.ticket_stage','tck.review','tck.status','tck.priority','tck.complaint_type','tck.coml_date','tck.last_update','tck.send_date','tck.client','tck.assign_to','tck.company','tck.added_by','enq.phone','enq.gender','prd.country_name');
         
         // Set default order
-        $this->order = array('enq.company' => 'desc');
+        $this->order = array('comp.id' => 'desc');
 
         $this->load->model('common_model');
     }
@@ -40,8 +40,11 @@ class Company_datatable_model extends CI_Model{
      */
     public function countAll(){
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-        $this->db->from($this->table.' enq');
-        $this->db->where("enq.comp_id",$this->session->companey_id);
+        $this->db->select('comp.*,enq.enquiry_id');
+        $this->db->from($this->table.' comp')
+                    ->join('enquiry enq','enq.company=comp.id','left')
+                    ->group_by('comp.id');
+        $this->db->where("comp.comp_id",$this->session->companey_id);
         $where="";
         $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
@@ -69,15 +72,17 @@ class Company_datatable_model extends CI_Model{
 
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
-        $this->db->select('DISTINCT(company),GROUP_CONCAT(enquiry_id,",") as enq_ids,(SELECT count(*) from tbl_client_contacts where client_id IN (enq_ids) ) as contacts_num');
-        $this->db->from($this->table);
-        $this->db->where('enquiry.company IS NOT NULL and CHAR_LENGTH(REPLACE(`enquiry`.company, " ", ""))>0');
 
-        $where="";
-        $where .= "( created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR aasign_to IN (".implode(',', $all_reporting_ids).'))';   
-        $and =1;
+        $this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids');
+        $this->db->from($this->table.' as comp')
+                    ->join('enquiry enq','enq.company=comp.id','left')
+                    ->where('comp.process_id',$this->session->process[0])
+                    ->group_by('comp.id');
 
+        $where="comp.comp_id=".$this->session->companey_id;
+        $where .= " AND ( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
+     
         //echo $where; exit();
         if($where!='')
         $this->db->where($where);
