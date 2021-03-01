@@ -41,6 +41,13 @@ class User extends CI_Controller
        // echo $diesc;
     }
 	
+	public function select_pkm_by_grade() {
+        $desc_id = $this->input->post('desc_id');
+        echo json_encode($this->User_model->all_pkr_list($desc_id));
+
+       // echo $diesc;
+    }
+	
     public function index()
     {
         if (!empty($_GET['user_role'])) {
@@ -491,6 +498,7 @@ class User extends CI_Controller
 			'sales_region' => $this->input->post('sales_region', true),
             'sales_area' => $this->input->post('sales_area', true),
 			'sales_branch' => $this->input->post('sales_branch', true),
+			'dept_name' => $this->input->post('dept_name', true),
            
             'picture' => (!empty($img) ? $img : $this->input->post('new_file')),
             'report_to' => $this->input->post('report_to', true),
@@ -569,7 +577,8 @@ class User extends CI_Controller
             $data['enq_id'] = 'VT/IN/EI/' . str_pad($this->User_model->get_empid(), 2, '0', STR_PAD_LEFT);
 
              $this->load->model('Branch_model');
-			 $data['region_list']=$this->Branch_model->all_sales_region();
+			 $data['region_lists']=$this->Branch_model->all_sales_region();
+			 $data['dept_lists']=$this->User_model->all_sales_dept();
              $data['discount_list']= $this->Branch_model->discount_list();
              //print_r($data['discount_list']);exit();
 
@@ -762,6 +771,10 @@ class User extends CI_Controller
             $data['reporting_locations'] = $this->User_model->get_report_locations();
         }
 
+        $data['region_lists']=$this->Branch_model->all_sales_region();
+		$data['area_lists']=$this->Branch_model->all_sales_area();
+		$data['branch_lists']=$this->Branch_model->all_sales_branch();
+		$data['dept_lists']=$this->User_model->all_sales_dept();
         // print_r($data['user_meta']->api_name);
         // die();
         $data['content'] = $this->load->view('user_from', $data, true);

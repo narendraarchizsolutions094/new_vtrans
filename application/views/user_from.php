@@ -177,7 +177,8 @@
                                      </select>                                    
                                 </div>       
                                 <div class="form-group col-md-4">                                    
-                                    <label><?php echo display('state_name')?> </label>                                <select class="form-control state_id" name="state_id" id="state_id"> 
+                                    <label><?php echo display('state_name')?> </label> 
+									<select class="form-control state_id" name="state_id" id="state_id"> 
                                           <option value="" >---Select state---</option>
                                        <?php foreach($state_list as $state){?>                                       
                                             <option value="<?= $state->id?>" <?php if($state->id==$department->state_id){echo 'selected';} ?>><?=$state->state ?></option>                                       
@@ -229,7 +230,7 @@
                                     
                                 </div>
                                 
-                                 <div class="form-group col-md-4">
+                                <div class="form-group col-md-4">
                                      <label><?php echo display('user_function') ?><i class="text-danger">*</i></label>
                                      <select name='user_type' class="form-control" required>
                 						<option value='' style="display:none;">---Select User Type----</option>
@@ -237,6 +238,18 @@
                 						 <option value="<?php echo $r->use_id; ?>" <?php if($department->user_type==$r->use_id){echo "selected";}?>><?php echo $r->user_role; ?></option>
                                        <?php } ?>
             						</select>
+                                </div>
+								<div class="form-group col-md-4">
+                                    <label class="control-label" for="dept_name"><?=display('department')?></label> 									
+                                    <select class="form-control" name="dept_name" id="dept_name">
+									<option value=''>---Select Department----</option>
+                                        <?php  if (!empty($dept_lists)) {
+                                            foreach ($dept_lists as $key => $value) { ?>
+                                                <option value="<?= $value->id;?>" <?php if($value->id == $department->dept_name){ echo "selected";} ?>><?= $value->dept_name;?></option>
+                                            <?php
+                                            }
+                                        } ?>
+                                    </select>
                                 </div>
                                   <?php
                                   if (user_access(220)) { ?>
@@ -321,9 +334,9 @@
 									<option value="">---Select Region---</option>
                                         <?php
                                        // $sales_reg = $this->user_model->get_user_meta($department->pk_i_admin_id,array('reporting_location'));;
-                                        if (!empty($region_list)) {
-                                            foreach ($region_list as $key => $value) { ?>
-                                                <option value="<?= $value->region_id;?>"><?= $value->name;?></option>
+                                        if (!empty($region_lists)) {
+                                            foreach ($region_lists as $key => $value) { ?>
+                                                <option value="<?= $value->region_id;?>" <?php if($value->region_id == $department->sales_region){ echo "selected";} ?>><?= $value->name;?></option>
                                             <?php
                                             }
                                         }
@@ -334,20 +347,31 @@
 								<div class="form-group col-md-4">
                                     <label class="control-label" for="sales_area"><?=display('sales_area')?></label> 									
                                     <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();">
-
+                                        <?php  if (!empty($area_lists)) {
+                                            foreach ($area_lists as $key => $value) { ?>
+                                                <option value="<?= $value->area_id;?>" <?php if($value->area_id == $department->sales_area){ echo "selected";} ?>><?= $value->area_name;?></option>
+                                            <?php
+                                            }
+                                        } ?>
                                     </select>
                                 </div>
 								
 								<div class="form-group col-md-4">
                                     <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
                                     <select class="form-control" name="sales_branch" id="filtered_branch">
-   
+                                        <?php  if (!empty($branch_lists)) {
+                                            foreach ($branch_lists as $key => $value) { ?>
+                                                <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $department->sales_branch){ echo "selected";} ?>><?= $value->branch_name;?></option>
+                                            <?php
+                                            }
+                                        } ?>
                                     </select>
                                 </div>
 								
                                 <div class="form-group col-md-4">
-                                    <label class="control-label">Discount Allowed</label>                  
-                                    <select class="form-control" name="discount_id">
+                                    <label class="control-label">Grade</label>                  
+                                    <select class="form-control" name="discount_id" onchange="find_pkr();">
+									<option value="">---Select Grade---</option>
                                       <?php
                                       if(!empty($discount_list))
                                       {
@@ -358,7 +382,7 @@
                                       ?>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-4" style="visibility: hidden;">
                                     <label class="control-label">Per Km Rate </label>   
                                     <?php
                                      $km_rate = $this->user_model->get_user_meta($department->pk_i_admin_id,array('km_rate'));
@@ -525,6 +549,25 @@
     </div>
 </div>
 <script type="text/javascript">
+
+ function find_pkr() { 
+
+            var discount_id = $("select[name='discount_id']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_pkm_by_grade',
+            data: {desc_id:discount_id},
+            
+            success:function(data){
+               res = JSON.parse(data);
+              if(res){              
+                pkmr_rate  = res.rate_km;             
+                $("input[name='km_rate']").val(pkmr_rate);              
+              }
+                
+            }           
+            });
+}
 
  function find_area() { 
 
