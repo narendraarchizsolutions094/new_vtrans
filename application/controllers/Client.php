@@ -2461,7 +2461,7 @@ public function all_update_expense_status()
             //     $bbranch = array(0);
             // if(empty($dbranch))
             //     $dbranch = array(0);  
-
+        
             $main_array = array();
 
             if(!empty($chain))
@@ -2515,7 +2515,8 @@ public function all_update_expense_status()
             $query = $main_array;
            //echo $this->db->last_query();exit();
             if(!empty($query))
-            {
+            {   
+                $edit_remark = '';
                 $oc = array('',//0
                             '100',//1
                             '100',//2
@@ -2548,6 +2549,7 @@ public function all_update_expense_status()
                         $oc =(array)json_decode($deal_data->other_charges);
                         if(empty($oc[22]))
                             $oc[22]='';
+                        $edit_remark = $deal_data->edit_remark;
                     }
                     
                     
@@ -2558,7 +2560,9 @@ public function all_update_expense_status()
                 <input name="booking_type" type="hidden" value="'.$booking_type.'">
                 <input name="business_type" type="hidden" value="'.$business_type.'">
                 <input name="btype" type="hidden" value="'.$btype.'">
-                <input name="dtype" type="hidden" value="'.$dtype.'">';
+                <input name="dtype" type="hidden" value="'.$dtype.'">
+                <input name="edited" type="hidden" value="0">
+                ';
                
                 foreach ($chain as $ck => $cv)
                 {
@@ -2717,8 +2721,16 @@ public function all_update_expense_status()
                 </div>
                 <div id="oc-box" style="padding:0px 10px;">
                  <div class="toggle-btn"  data-view="show"><i class="fa fa-chevron-up"></i></div>
-                 <label>Other Charges:</label>
-                 <div class="t_box">
+                 <label>Other Charges: &nbsp; </label>';
+                 if(!empty($deal_id))
+                 { 
+                    echo'<span id="edit_charge" style="float:right;">
+                    <i class="fa fa-edit"></i> Edit
+                 </span>';
+
+                 }
+                
+                echo' <div class="t_box">
                     <table class="table table-bordered table-dark">
                     <thead>
                         <tr>
@@ -2867,14 +2879,24 @@ public function all_update_expense_status()
                 echo'<p>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" style="width:60px!important;" class="exip">. per Ltr.
                     </p>';
                 }
+                $d_edited = 0;
+                if(!empty($deal_data->edited) && $deal_data->edited=='1')
+                    $d_edited= 1;
             echo'</div>
+
+                <div class="edit_remark" style="'.($d_edited==1?'':'display:none;').'" >
+                    <div class="form-group">
+                        <label>Edit Remark</label>
+                        <textarea name="edit_remark" class="form-control">'.$edit_remark.'</textarea>
+                    </div>
+                </div>
                 </div>
                 <div style="padding:15px;">
                     <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Save</button>';
                 echo'</div>
                 </form>
                 ';
-                if(empty($deal_id))
+                //if(empty($deal_id))
                     echo'<script>
                         $("#oc-box").find("input:not(.exip)").attr("readonly","readonly");
                         </script>';
@@ -2891,10 +2913,11 @@ public function all_update_expense_status()
     }
     public function save_deal_data()
     {
-        $this->load->model('Branch_model');
+        $this->load->model(array('Branch_model','Enquiry_model','Leads_Model'));
         
         $oc = json_encode($this->input->post('oc'));
         $deal_id = $this->input->post('info_id');
+        $enq_id = $this->input->post('enquiry_id');
         $deal = array(
                     'enquiry_id'=>$this->input->post('enquiry_id'),
                     'deal_type'=>$this->input->post('deal_type'),
@@ -2908,19 +2931,48 @@ public function all_update_expense_status()
                     'status'=>'0',
                     );
 
-        if(!empty($deal_id))
-        {
-            $deal['edited']=1;
-            $deal['approval']='';
-            $deal['status']=0;
+        $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
 
-            $this->db->where('id',$deal_id);
-            $this->db->update('commercial_info',$deal);
-            $this->db->where('deal_id',$deal_id)->delete('deal_data');
+        if(!empty($deal_id))
+        {   
+            $edit = $this->input->post('edited');
+            $remark='';
+            if($edit==1)
+            {   
+                $ddata = $this->Branch_model->get_deal($deal_id);
+                $edit_remark = $this->input->post('edit_remark');
+                $remark ='Approval Required<br>'.$edit_remark;
+                $deal['edit_remark'] = $edit_remark;
+                $deal['copy_id'] = $deal_id;
+                $deal['edited']=1;
+                $deal['approval']='';
+                $deal['status']=0;
+                $this->db->where('id',$deal_id);
+                if(empty($ddata->copy_id))
+                {
+                    $this->db->update('commercial_info',array('original'=>0)); 
+                }
+                else
+                {
+                    $deal['copy_id'] = $ddata->copy_id;
+                    $this->db->delete('commercial_info');
+                }
+                $deal_id = $this->Branch_model->add_deal($deal);
+                $this->Leads_Model->add_comment_for_events_stage('Deal Updated.',$enq->Enquery_id,0,0,$remark,0);
+            }
+            else
+            {
+                $this->db->where('id',$deal_id);
+                $this->db->update('commercial_info',$deal);
+                $this->db->where('deal_id',$deal_id)->delete('deal_data');
+                $this->Leads_Model->add_comment_for_events_stage('Deal Updated.',$enq->Enquery_id,0,0,$remark,0);
+            }
+
         }
         else
         {
             $deal_id = $this->Branch_model->add_deal($deal);
+            $this->Leads_Model->add_comment_for_events_stage('Deal Added.',$enq->Enquery_id,0,0,'',0);
         }
         
         if($deal['booking_type']=='sundry')
@@ -2984,15 +3036,17 @@ public function all_update_expense_status()
            {
                 $user_id = $deal->createdby;
                 $udata = $this->User_model->read_by_id($user_id);
-                $this->db->set('related_to',$udata->related_to);
-                $this->Leads_Model->add_comment_for_events_popup('Deal needs approval',date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approval',1,0);
+                $current_user = $this->User_model->read_by_id($this->session->user_id);
+                
+                $this->db->set('related_to',$current_user->report_to);
+                $this->Leads_Model->add_comment_for_events_popup('Deal needs approval, edited by '.$udata->s_display_name.' '.$udata->last_name,date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approval',1,0);
               
                 $this->db->set('approval','pending');
                 $this->db->where('id',$deal->id);
                 $this->db->update('commercial_info');
                 $this->session->set_flashdata('message','Approval Request Send.');
 
-                $this->Leads_Model->add_comment_for_events_stage('Deal approval request send.',$enq->Enquery_id);
+                $this->Leads_Model->add_comment_for_events_stage('Deal approval request send.',$enq->Enquery_id,0,0,'',0);
 
                 redirect($_SERVER['HTTP_REFERER']);
            }
@@ -3003,30 +3057,79 @@ public function all_update_expense_status()
         }
     }
 
-    public function approve_deal($deal_id)
+    public function deal_action($deal_id,$action)
     {
+        $action = strtolower($action);
         $this->load->model(array('User_model','Enquiry_Model','Leads_Model','Branch_model'));
-        if(!empty($deal_id))
+        if(!empty($deal_id) && !empty($action))
         {
+
            $deal = $this->Branch_model->get_deal($deal_id);
            $enq  = $this->Enquiry_Model->getEnquiry(array('enquiry.enquiry_id'=>$deal->enquiry_id))->row();
-           if($deal->createdby!=$this->session->user_id)
+           $udata = $this->User_model->read_by_id($deal->createdby);
+
+           $cdata = $this->User_model->read_by_id($this->session->user_id);
+
+           if($action=='approve' && $deal->createdby!=$this->session->user_id)
            {
-                $udata = $this->User_model->read_by_id($this->session->user_id);
-              $this->Leads_Model->add_comment_for_events_popup('Deal approved By '.$udata->s_display_name.' '.$udata->last_name,date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approved',1,0);
+                
+              $this->Leads_Model->add_comment_for_events_popup('Deal approved By '.$cdata->s_display_name.' '.$cdata->last_name,date('d-m-Y'),$cdata->s_display_name.' '.$cdata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approved',1,0);
+
+              $this->Leads_Model->add_comment_for_events_stage('Deal approved ',$enq->Enquery_id,0,0,'',0);
+
+                $this->db->where('id',$deal->copy_id)->delete('commercial_info');
 
                 $this->db->set('approval','done');
+                $this->db->set('edited',0);
+                $this->db->set('copy_id',NULL);
                 $this->db->where('id',$deal->id);
                 $this->db->update('commercial_info');
+
                 $this->session->set_flashdata('message','Deal approved.');
                 redirect($_SERVER['HTTP_REFERER']);
            }
-           else
+           else if($action=='reject' && $deal->createdby!=$this->session->user_id)
            {
-            $this->session->set_userdata('exception','Deal not created by you.');
+                
+              $this->Leads_Model->add_comment_for_events_popup('Deal Rejected By '.$cdata->s_display_name.' '.$cdata->last_name,date('d-m-Y'),$cdata->s_display_name.' '.$cdata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal Rejected',1,0);
+
+              $this->Leads_Model->add_comment_for_events_stage('Deal Rejected ',$enq->Enquery_id,0,0,'',0);
+                $this->db->set('original','1');
+                $this->db->where('id',$deal->copy_id);
+                $this->db->update('commercial_info');
+
+                $this->db->where('id',$deal->id);
+                $this->db->delete('commercial_info');
+
+                $this->session->set_flashdata('message','Deal Rejected.');
+                redirect($_SERVER['HTTP_REFERER']);
+           }
+           else if($action=='resend' && $deal->createdby!=$this->session->user_id)
+           {
+             
+                $upper = $this->User_model->read_by_id($cdata->report_to);
+                $this->db->set('related_to',$cdata->report_to);
+              $this->Leads_Model->add_comment_for_events_popup('Deal Request passed to '.$upper->s_display_name.' '.$upper->last_name,date('d-m-Y'),$cdata->s_display_name.' '.$cdata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Send for Approval ',1,0);
+
+              $this->Leads_Model->add_comment_for_events_stage('Deal Request Passed to '.$upper->s_display_name.' '.$upper->last_name,$enq->Enquery_id,0,0,'',0);
+                // $this->db->set('original','1');
+                // $this->db->where('id',$deal->copy_id);
+                // $this->db->update('commercial_info');
+
+                // $this->db->where('id',$deal->id);
+                // $this->db->delete('commercial_info');
+
+                $this->session->set_flashdata('message','Send for Approval.');
+                redirect($_SERVER['HTTP_REFERER']);
+           }
+           else
+           {echo'ss';
+            $this->session->set_userdata('exception','Deal created by you.');
            }
         }
     }
+
+
     public function branch_panel_clone($did,$type='branch')
     {
     $this->load->model('Branch_model');

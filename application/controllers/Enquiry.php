@@ -3728,9 +3728,14 @@ echo  $details1;
                     }
                     else
                     {
-                         $sub[] ='<a href="'.base_url('client/approve_deal/'.$value->id).'">
-                            <label class="label label-success ">Approve</label>
-                            </a>';
+                        $opt  ='<select onchange="location.href=\''.base_url('client/deal_action/'.$value->id.'/').'\'+this.value">';
+                            $opt.='<option value="">Action</option>
+                                    <option value="approve">Approve</option>
+                                    <option value"reject">Reject</option>
+                                    <option value="resend">Send for Approval</option>
+                                ';
+                        $opt.='</select>';
+                         $sub[] = $opt;
                     }
                 }
                 else

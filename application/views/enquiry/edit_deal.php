@@ -494,7 +494,7 @@ return;
 	pton = parseInt(pton);
 
 
-	if(discount>max_discount)
+	if(discount > max_discount)
 	{
 		Swal.fire({
 			title:'You are allowed to give discount upto '+max_discount+'% only.',
@@ -534,6 +534,20 @@ function load_branch(t)
 // 	count=1;
 // 		make_clone();
 }
+
+$(document).on('click','#edit_charge',function(){
+	$(this).hide();
+	Swal.fire({
+			title:'Now deal will be required to be approved.',
+			icon:'info',
+			type:'info',
+			showConfirmButton:false,
+		});
+	$('#data_table').find("input[name=edited]").val('1');
+	$('#oc-box').find('input').removeAttr('readonly');
+	$('#oc-box').find('input:first').focus();
+	$(".edit_remark").show();
+});
 
 function rep_discount()
 {

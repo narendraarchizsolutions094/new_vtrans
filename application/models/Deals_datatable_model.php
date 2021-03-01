@@ -43,7 +43,7 @@ class Deals_datatable_model extends CI_Model{
         $this->db->from($this->table.' info');
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
         $this->db->where("enq.comp_id",$this->session->companey_id);
-        $where="";
+        $where="info.original=1 AND ";
         $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
 
@@ -81,7 +81,7 @@ class Deals_datatable_model extends CI_Model{
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
         $this->db->where("info.comp_id",$this->session->companey_id);
 
-        $where="";
+        $where="info.original=1 AND";
         $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
         $and =1;

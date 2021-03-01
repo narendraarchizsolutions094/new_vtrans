@@ -223,7 +223,8 @@ class Branch_model extends CI_model
 		$this->db->insert('commercial_info',$data);
 		return $this->db->insert_id();
 	}
-	
+
+
 	function add_deal_data($data)
 	{
 		$this->db->insert('deal_data',$data);
