@@ -115,6 +115,24 @@ class Branch_model extends CI_model
 		$this->db->where('comp_id',$comp_id);
 		return $this->db->get()->result();
 	}
+	
+	public function all_sales_area()
+	{
+		$comp_id= $this->session->companey_id;
+		$this->db->select('*');
+		$this->db->from('sales_area');
+		$this->db->where('comp_id',$comp_id);
+		return $this->db->get()->result();
+	}
+	
+	public function all_sales_branch()
+	{
+		$comp_id= $this->session->companey_id;
+		$this->db->select('*');
+		$this->db->from('branch');
+		$this->db->where('comp_id',$comp_id);
+		return $this->db->get()->result();
+	}
 
 	public function sales_area_list($id=0,$where=array(),$comp_id=0)
 	{

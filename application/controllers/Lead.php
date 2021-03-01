@@ -14,6 +14,109 @@ class Lead extends CI_Controller
             redirect('login');
         }
     }
+	
+	///////////////// Department SECTION START////////////////////
+    public function department() {
+        $data['nav1'] = 'nav2';
+        if (!empty($_POST)) {
+
+            $dept_name = $this->input->post('dept_name');
+
+            $data = array(
+                'dept_name'   => $dept_name,
+                'comp_id' => $this->session->userdata('companey_id'),
+                'created_by' => $this->session->userdata('user_id'),
+                'status' => '1'
+            );
+
+            $insert_id = $this->Leads_Model->dept_add($data);
+            $this->session->set_flashdata('SUCCESSMSG', 'Department Add Successfully');
+            redirect('lead/department');
+        }
+
+
+        $data['all_department'] = $this->Leads_Model->dept_select();
+        $data['title'] = 'Department master';
+        $data['content'] = $this->load->view('setting/department_list', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+
+    public function update_dept() {
+        if (!empty($_POST)) {
+            $dept_name = $this->input->post('dept_name');
+            $dept_id = $this->input->post('dept_id');            
+            $this->db->set('dept_name', $dept_name);
+            $this->db->where('id', $dept_id);
+            $this->db->update('tbl_department');
+            $this->session->set_flashdata('SUCCESSMSG', 'Update Successfully');
+            redirect('lead/department');
+        }
+    }
+
+    public function delete_department($dept_id = null) {
+        if ($this->Leads_Model->delete_dept($dept_id)) {
+            #set success message
+            $this->session->set_flashdata('message', display('delete_successfully'));
+        } else {
+            #set exception message
+            $this->session->set_flashdata('exception', display('please_try_again'));
+        }
+        redirect('lead/department');
+    }
+
+    ///////////////// Department SECTION END////////////////////
+	
+	///////////////// Designation SECTION START////////////////////
+    public function designation() {
+        $data['nav1'] = 'nav2';
+        if (!empty($_POST)) {
+
+            $desi_name = $this->input->post('desi_name');
+
+            $data = array(
+                'desi_name'   => $desi_name,
+                'comp_id' => $this->session->userdata('companey_id'),
+                'created_by' => $this->session->userdata('user_id'),
+                'status' => '1'
+            );
+
+            $insert_id = $this->Leads_Model->desi_add($data);
+            $this->session->set_flashdata('SUCCESSMSG', 'Designation Add Successfully');
+            redirect('lead/designation');
+        }
+
+
+        $data['all_designation'] = $this->Leads_Model->desi_select();
+        $data['title'] = 'Designation master';
+        $data['content'] = $this->load->view('setting/designation_list', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+
+    public function update_desi() {
+        if (!empty($_POST)) {
+            $desi_name = $this->input->post('desi_name');
+            $desi_id = $this->input->post('desi_id');            
+            $this->db->set('desi_name', $desi_name);
+            $this->db->where('id', $desi_id);
+            $this->db->update('tbl_designation');
+            $this->session->set_flashdata('SUCCESSMSG', 'Update Successfully');
+            redirect('lead/designation');
+        }
+    }
+
+    public function delete_designation($desi_id = null) {
+        if ($this->Leads_Model->delete_desi($desi_id)) {
+            #set success message
+            $this->session->set_flashdata('message', display('delete_successfully'));
+        } else {
+            #set exception message
+            $this->session->set_flashdata('exception', display('please_try_again'));
+        }
+        redirect('lead/designation');
+    }
+
+    ///////////////// Designation SECTION END////////////////////
+	
     public function view_datasource_data($did)
     {
         

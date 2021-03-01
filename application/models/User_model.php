@@ -43,6 +43,24 @@ class User_model extends CI_Model {
         return $query->result();
     }
 	
+	public function all_pkr_list($desc_id) {
+
+        $this->db->select("rate_km");
+        $this->db->from('discount_matrix');
+		$this->db->where('id', $desc_id);
+        $query = $this->db->get();
+        return $query->row();
+    }
+	
+	public function all_sales_dept()
+	{
+		$comp_id= $this->session->companey_id;
+		$this->db->select('*');
+		$this->db->from('tbl_department');
+		$this->db->where('comp_id',$comp_id);
+		return $this->db->get()->result();
+	}
+	
     public function add_login_history(){
         $arr    =   array( 
                     "uid"   => $this->session->user_id,                    

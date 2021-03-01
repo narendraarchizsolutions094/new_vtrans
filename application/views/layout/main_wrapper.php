@@ -1377,7 +1377,18 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                 </a>
                             </li>
                             <?php }  ?>
-
+                             
+							 <li class="<?php echo (in_array($segment2,array('department','add_department','edit_department')) ?"active":'') ?>" style="">
+                               <a href="<?php echo base_url() ?>lead/department">
+                               <?php echo 'Department Master';?>                             
+                               </a>
+                             </li>
+							 
+							 <li class="<?php echo (in_array($segment2,array('designation','add_designation','edit_designation')) ?"active":'') ?>" style="">
+                               <a href="<?php echo base_url() ?>lead/designation">
+                               <?php echo 'Designation Master';?>                             
+                               </a>
+                             </li>
 
                             </ul>
                     </li>

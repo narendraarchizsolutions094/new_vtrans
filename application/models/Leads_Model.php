@@ -14,6 +14,53 @@ class Leads_Model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+	
+    /***************************************************Department Master section start************************************/
+    public function dept_add($data) {
+        $this->db->insert('tbl_department', $data);
+    }
+
+    public function dept_select() {
+        $this->db->select("*");
+        $this->db->from('tbl_department');
+        $this->db->where('comp_id', $this->session->userdata('companey_id'));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function delete_dept($dept_id = null) {
+        $this->db->where('id', $dept_id)->delete('tbl_department');
+        if ($this->db->affected_rows()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /***************************************************Department section End************************************/
+	
+	/***************************************************Designation Master section start************************************/
+    public function desi_add($data) {
+        $this->db->insert('tbl_designation', $data);
+    }
+
+    public function desi_select() {
+        $this->db->select("*");
+        $this->db->from('tbl_designation');
+        $this->db->where('comp_id', $this->session->userdata('companey_id'));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function delete_desi($desi_id = null) {
+        $this->db->where('id', $desi_id)->delete('tbl_designation');
+        if ($this->db->affected_rows()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /***************************************************Designation section End************************************/
+	
 public function all_course($course,$lvl,$length,$disc) {
 
         $this->db->select("tbl_course.*,tbl_crsmaster.course_name as course_name_str");
