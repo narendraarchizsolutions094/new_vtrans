@@ -54,31 +54,31 @@
          <a class="nav-link" data-toggle="tab" href="#contacts">Contacts</a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(1)"><?=display('enquiry')?></a>
+         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(1)">Accounts</a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
          <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(2)"><?=display('lead')?></a>
       </li>
       <li class="nav-item">
          <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(3)"><?=display('client')?></a>
-      </li>
+      </li> -->
 
       <?php
-      $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
-      if (!empty($enquiry_separation)) 
-      { 
-          $enquiry_separation = json_decode($enquiry_separation,true);
-          foreach ($enquiry_separation as $key => $value)
-          { 
-          // echo'<li class="nav-item">
-          //        <a class="nav-link" data-toggle="tab" href="#'.strtolower(str_replace(' ','_',$value['title'])).'" onclick="load_account('.$key.')">'.$value['title'].'</a>
-          //     </li>';
+      // $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
+      // if (!empty($enquiry_separation)) 
+      // { 
+      //     $enquiry_separation = json_decode($enquiry_separation,true);
+      //     foreach ($enquiry_separation as $key => $value)
+      //     { 
+      //     // echo'<li class="nav-item">
+      //     //        <a class="nav-link" data-toggle="tab" href="#'.strtolower(str_replace(' ','_',$value['title'])).'" onclick="load_account('.$key.')">'.$value['title'].'</a>
+      //     //     </li>';
 
-            echo'<li class="nav-item">
-                 <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account('.$key.')">'.$value['title'].'</a>
-              </li>';
-          }
-      }
+      //       echo'<li class="nav-item">
+      //            <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account('.$key.')">'.$value['title'].'</a>
+      //         </li>';
+      //     }
+      // }
       ?>
 
       <li class="nav-item">
@@ -246,6 +246,7 @@
             <?php } ?>
               <?php if ($showall == true or in_array(2, $acolarr)) {  ?>
                   <th><?php echo display("company_name"); ?></th>
+                  <th>Account Status</th>
                    <?php } ?>
               <?php if ($showall == true or in_array(3, $acolarr)) {  ?>
             <th>Name</th>
@@ -609,7 +610,7 @@ var DataType = 0;
 try{
 function load_account(data_type)
 {
-  DataType = data_type;
+  DataType = '1,2,3,4,5,6';
 
   var specific_list = "<?=!empty($specific_accounts)?$specific_accounts:''?>";
 

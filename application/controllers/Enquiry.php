@@ -3853,10 +3853,10 @@ echo  $details1;
         $company_id = $this->session->companey_id;
         $user_id = 0; //$this->session->user_id;
         $process = $this->session->process;
-        $res = $this->Client_Model->getCompanyList($key,$company_id,$user_id,$process,'data',10,0)->result_array();
-        
-        $abc = array_column($res,'company');
-
+        $where = 'tbl_company.company_name LIKE "%'.$key.'%" ';
+        $res = $this->Client_Model->getCompanyList(0,$where,$company_id,$user_id,$process,'data',10,0)->result_array();
+       // echo $this->db->last_query();exit();
+        $abc = array_column($res,'company_name');
         echo json_encode($abc);
     }
 }

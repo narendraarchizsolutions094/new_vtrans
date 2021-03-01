@@ -252,8 +252,28 @@ $type="text";
       ?>
    <div class="form-group col-sm-6 col-md-6 enq-company">
       <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
-      <input class="form-control" name="company" type="company" value="<?php echo $details->company; ?>">
+      <input class="form-control" name="company" type="company" value="<?php echo $details->company_name; ?>">
    </div>
+   <script type="text/javascript">
+   $(function() {
+   
+          $("input[name=company]").autocomplete({
+            source: function( request, response ) {
+                 $.ajax({
+                  url: "<?=base_url('enquiry/suggest_company')?>",
+                  type: 'post',
+                  dataType: "json",
+                  data: {
+                   search: request.term
+                  },
+                  success: function( data ) {
+                   response(data);
+                  }
+                 });
+              },
+          });
+        });
+   </script>
    <?php }
       if(is_active_field(REMARK_FIELD,$process_id)){
       ?>  

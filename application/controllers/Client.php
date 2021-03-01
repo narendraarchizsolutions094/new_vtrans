@@ -406,36 +406,26 @@ class Client extends CI_Controller {
         $this->load->view('layout/main_wrapper', $data);
     }
 
-    public function company_list($limit=30,$offset=0,$search=0,$sort='up')
+    public function company_list()
     {
         if(user_role('1060')){}
 
-            $search = empty($search)?'':$search;
-
         $this->load->model(array('Client_Model','Enquiry_Model'));
         $data['title'] = display('company_list');
-       // $data['company_list'] = $this->Client_Model->getCompanyList()->result();
-        $data['company_count'] = $this->Client_Model->getCompanyList($search,$this->session->companey_id,$this->session->user_id,$this->session->process,'count');
-
-        $c =$data['company_list'] = $this->Client_Model->getCompanyList($search,$this->session->companey_id,$this->session->user_id,$this->session->process,'data',$limit,$offset,$sort)->result();
-        //print_r($c);
-        $data['limit'] =$limit;
-        $data['offset'] = $offset;
-        $data['search'] = $search;
-        $data['sort']  =$sort;;
-       //  $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
         $data['content'] = $this->load->view('enquiry/company_list', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
 
-    public function company_details($company_name)
+    public function company_details($id)
     {
         $this->load->model(array('Client_Model','enquiry_model'));
-        $company = base64_decode($company_name);
+
+        $company =  $this->Client_Model->getCompanyList($id)->row();
+
         $data['title'] = 'Company Details';
-
-    $c =$data['comp'] = $this->Client_Model->getCompanyList($company)->row();
-
+        
+    $c =$company;
+    
     $deals =   $this->Client_Model->getCompanyData(explode(',',$c->enq_ids),'deals')->result();
    // print_r($c->enq_ids); exit();
     $deals = array_column((array)$deals, 'id');
@@ -460,7 +450,7 @@ class Client extends CI_Controller {
     $tickets =   $this->Client_Model->getCompanyData(explode(',',$c->enq_ids),'tickets')->result();
     $tickets = array_column((array)$tickets, 'id');
     $data['specific_tickets'] = count($tickets)? implode(',', $tickets):'-1';
-    $data['company_name'] = $company;
+    $data['company_name'] = $company->company_name;
 
     $data['content'] = $this->load->view('enquiry/company_details', $data, true);
     $this->load->view('layout/main_wrapper', $data);
@@ -747,8 +737,9 @@ class Client extends CI_Controller {
             
             $address = $this->input->post('address');
             $pin_code = $this->input->post('pin_code');
-            $company = $this->input->post('company');
-            
+            $comp = $this->input->post('company');
+
+
             if($this->input->post('country_id')){
                  $country_id = implode(',',$this->input->post('country_id'));
             }else{
@@ -766,6 +757,24 @@ class Client extends CI_Controller {
             }else{
                 $process_id    =   $this->input->post('product_id');
             }
+
+
+            $company = $this->db->where('company_name',$comp)->get('tbl_company')->row();
+              if(!empty($company))
+              {
+                $company = $company->id;
+              }
+              else
+              {
+                $new_company = array(
+                                      'company_name'=>$comp,
+                                      'comp_id'=>$this->session->companey_id,
+                                      'process_id'=>$process_id, 
+                                );
+                $this->db->insert('tbl_company',$new_company);
+                $company = $this->db->insert_id();
+              }
+
 
             if($exp_date = $this->input->post('expected_closure_date'))
                 $this->db->set('lead_expected_date', $exp_date);
@@ -2016,16 +2025,11 @@ public function all_update_expense_status()
         $this->load->model('Enquiry_Model');
         $data['title'] = 'Deals'; //display('deal_list');
        
-        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('2,3');
+        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('2,3,4,5,6,7,8');
 
         $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
 
         $data['company_list'] = $this->Client_Model->getCompanyList()->result();
-        //fetch last entry
-        $comm_data=$this->db->where(array('comp_id'=>$this->session->companey_id))->order_by('id',"desc")
-        ->limit(1)->get('commercial_info');
-        $data['commInfoCount']=$comm_data->num_rows();
-        $data['commInfoData']=$comm_data->row();
 
         $data['content'] = $this->load->view('enquiry/deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
@@ -2331,45 +2335,73 @@ public function all_update_expense_status()
 
 
     public function company_load_data()
-    {   //not in used
-        
-        //print_r($_POST); exit(); 
-        // $this->load->model('company_datatable_model');
-        // $result = $this->company_datatable_model->getRows($_POST);
-        // //echo $this->db->last_query(); exit();
-        // //print_r($result); exit();
-        // $colsall  = true;
-        // $cols = array();
-        // // if(!empty($_POST['allow_cols']))
-        // // {
-        // //     $cols  = explode(',',$_POST['allow_cols']);
-        // //     $colsall = false;
-        // // }
-        // //print_r($cols); exit();
-        // $data = array();
-        // $i=1;
-        // foreach ($result as $res)
+    {   
+
+        $this->load->model('company_datatable_model');
+        $result = $this->company_datatable_model->getRows($_POST);
+   
+        $colsall  = true;
+        $cols = array();
+        // if(!empty($_POST['allow_cols']))
         // {
-        //     $sub = array();
-
-        //     $sub[] = $i++;
-           
-        //     if($colsall || in_array(2,$cols))
-        //         $sub[] = trim($res->company)??'NA';
-
-        //     if($colsall || in_array(2,$cols))
-        //         $sub[] = trim($res->contacts_num)??'NA';
-
-        //     $data[] =$sub;
+        //     $cols  = explode(',',$_POST['allow_cols']);
+        //     $colsall = false;
         // }
+        //print_r($cols); exit();
+        $data = array();
+        $i=1;
+        foreach ($result as $res)
+        {
+            $sub = array();
 
-        // $output = array(
-        //     "draw" => $_POST['draw'],
-        //     "recordsTotal" =>$this->company_datatable_model->countAll(),
-        //     "recordsFiltered" => $this->company_datatable_model->countFiltered($_POST),
-        //     "data" => $data,
-        // );
-        // echo json_encode($output);
+            $sub[] = $i++;
+           
+            if($colsall || in_array(2,$cols))
+            {
+
+                $sub[] = '<a href="'.(base_url('client/company_details/'.$res->id)).'">'.$res->company_name.'</a>'??'NA';
+            }
+
+            if($colsall || in_array(2,$cols))//contacts
+            {
+                $contacts = $this->db->where('client_id IN ('.$res->enq_ids.')')->count_all_results('tbl_client_contacts');
+                $sub[] = $contacts??'NA';
+            }
+
+            if($colsall || in_array(2,$cols))//deals
+            {
+                $deals = $this->db->where('enquiry_id IN ('.$res->enq_ids.')')->count_all_results('commercial_info');
+                $sub[] = $deals??'NA';
+            }
+
+            if($colsall || in_array(2,$cols))//contacts
+            {
+                $visits = $this->db->where('enquiry_id IN ('.$res->enq_ids.')')->count_all_results('tbl_visit');
+                $sub[] = $visits??'NA';
+            }
+
+            if($colsall || in_array(2,$cols))//contacts
+            {
+                $tickets = $this->db->where('client IN ('.$res->enq_ids.')')->count_all_results('tbl_ticket');
+                $sub[] = $tickets??'NA';
+            }
+
+            if($colsall || in_array(2,$cols))//contacts
+            {
+                $accounts = count(explode(',', $res->enq_ids));
+                $sub[] = $accounts??'NA';
+            }
+
+            $data[] =$sub;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" =>$this->company_datatable_model->countAll(),
+            "recordsFiltered" => $this->company_datatable_model->countFiltered($_POST),
+            "data" => $data,
+        );
+        echo json_encode($output);
     }
 
 
@@ -3202,6 +3234,17 @@ public function all_update_expense_status()
         </div>
     </div>
 </div>';
+    }
+
+    public function account_by_company()
+    {
+        $this->load->model(array('Enquiry_Model'));
+        $comp_id  = $this->input->get('comp_id');
+        $res=   $this->Enquiry_Model->getEnquiry('enquiry.company='.$comp_id);
+        foreach ($res->result() as $key => $value) 
+        {
+            echo'<option value="'.$value->enquiry_id.'">'.$value->name_prefix.' '.$value->name.' '.$value->lastname.'</option>';
+        }
     }
 
     public function create_agreement_pdf()
