@@ -1199,7 +1199,8 @@ class Enquiry extends CI_Controller
 			$data['created_bylist'] = $this->User_model->read(147,false);
 		}else{
 			$data['created_bylist'] = $this->User_model->read();
-		}              
+		} 
+        $data['all_designation'] = $this->Leads_Model->desi_select();		
         $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
         //echo"<pre>";print_r($data);die;
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
