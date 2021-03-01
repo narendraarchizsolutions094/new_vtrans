@@ -106,6 +106,15 @@ class Branch_model extends CI_model
 		$this->db->where('comp_id',$comp_id);
 		return $this->db->get('sales_region');
 	}
+	
+	public function all_sales_region()
+	{
+		$comp_id= $this->session->companey_id;
+		$this->db->select('*');
+		$this->db->from('sales_region');
+		$this->db->where('comp_id',$comp_id);
+		return $this->db->get()->result();
+	}
 
 	public function sales_area_list($id=0,$where=array(),$comp_id=0)
 	{

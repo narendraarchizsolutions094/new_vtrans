@@ -23,7 +23,7 @@ class Login extends REST_Controller {
     }
     public function login_post()
 	{
-	    $this->form_validation->set_rules('email', display('email'),'required|max_length[50]|valid_email');
+	    $this->form_validation->set_rules('email', display('email'),'required|max_length[50]|trim');
         $this->form_validation->set_rules('password', display('password'),'required|max_length[32]|md5');
         $process    =   $this->input->post('process');
         
@@ -37,14 +37,14 @@ class Login extends REST_Controller {
             'email' => $this->input->post('email', true),
             'password' => md5($this->input->post('password', true)),
         ];
+		//print_r($postData);exit;
         $this->load->model('dash_model');
          
         $data['products'] = $this->dash_model->product_list();
         #-------------------------------#
         if ($this->form_validation->run() === true) {
             //check user data
-            $check_user = $this->dashboard_model->check_user($postData); 
-            
+            $check_user = $this->dashboard_model->check_user($postData);  
             $active = 1;
             if(!empty($check_user->row()))
             {

@@ -25,6 +25,22 @@ class User extends CI_Controller
         if (empty($this->session->userdata('isLogIn')))
             redirect('login');
     }
+	
+	public function select_area_by_region() {
+        $region = $this->input->post('region');
+        echo json_encode($this->User_model->all_area_list($region));
+
+       // echo $diesc;
+    }
+	
+	public function select_branch_by_arearegion() {
+        $region = $this->input->post('region');
+		$area = $this->input->post('area');
+        echo json_encode($this->User_model->all_branch_list($region,$area));
+
+       // echo $diesc;
+    }
+	
     public function index()
     {
         if (!empty($_GET['user_role'])) {
@@ -471,6 +487,10 @@ class User extends CI_Controller
             'contact_semail' => $this->input->post('csemail', true),
             'contact_phone' => $this->input->post('cphone', true),
             'contact_sphone' => $this->input->post('csphone', true),
+			
+			'sales_region' => $this->input->post('sales_region', true),
+            'sales_area' => $this->input->post('sales_area', true),
+			'sales_branch' => $this->input->post('sales_branch', true),
            
             'picture' => (!empty($img) ? $img : $this->input->post('new_file')),
             'report_to' => $this->input->post('report_to', true),
@@ -545,10 +565,11 @@ class User extends CI_Controller
             $this->load->model('dash_model');
             $data['products'] = $this->dash_model->all_process_list();
             $data['products_list'] = $this->dash_model->all_product_list();
-          
-            $data['enq_id'] = 'LT/IN/EI/' . str_pad($this->User_model->get_empid(), 2, '0', STR_PAD_LEFT);
+		  
+            $data['enq_id'] = 'VT/IN/EI/' . str_pad($this->User_model->get_empid(), 2, '0', STR_PAD_LEFT);
 
              $this->load->model('Branch_model');
+			 $data['region_list']=$this->Branch_model->all_sales_region();
              $data['discount_list']= $this->Branch_model->discount_list();
              //print_r($data['discount_list']);exit();
 
@@ -733,7 +754,7 @@ class User extends CI_Controller
         $data['products_list'] = $this->dash_model->all_product_list();
         $data['products'] = $this->dash_model->all_process_list();
          $this->load->model('Branch_model');
-        
+        $data['region_list'] = $this->Branch_model->all_sales_region();
         $data['user_meta'] = $this->user_model->get_user_meta($id,array('api_name','api_url'));
         $data['discount_list']= $this->Branch_model->discount_list();
         if($this->session->companey_id == 65){

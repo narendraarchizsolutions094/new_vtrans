@@ -23,6 +23,26 @@ class User_model extends CI_Model {
         }
         return $insert_id;
     }
+	
+	public function all_area_list($region) {
+
+        $this->db->select("*");
+        $this->db->from('sales_area');
+		$this->db->where('region_id', $region);
+        $query = $this->db->get();
+        return $query->result();
+    }
+	
+	public function all_branch_list($region,$area) {
+
+        $this->db->select("*");
+        $this->db->from('branch');
+		$this->db->where('region_id', $region);
+		$this->db->where('area_id', $area);
+        $query = $this->db->get();
+        return $query->result();
+    }
+	
     public function add_login_history(){
         $arr    =   array( 
                     "uid"   => $this->session->user_id,                    

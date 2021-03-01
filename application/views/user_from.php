@@ -314,6 +314,37 @@
                                         ?>
                                     </select>
                                 </div>
+								
+								<div class="form-group col-md-4">
+                                    <label class="control-label" for="sales_resion"><?=display('sales_resion')?></label> 									
+                                    <select class="form-control" name="sales_region" onchange="find_area();">
+									<option value="">---Select Region---</option>
+                                        <?php
+                                       // $sales_reg = $this->user_model->get_user_meta($department->pk_i_admin_id,array('reporting_location'));;
+                                        if (!empty($region_list)) {
+                                            foreach ($region_list as $key => $value) { ?>
+                                                <option value="<?= $value->region_id;?>"><?= $value->name;?></option>
+                                            <?php
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+								
+								<div class="form-group col-md-4">
+                                    <label class="control-label" for="sales_area"><?=display('sales_area')?></label> 									
+                                    <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();">
+
+                                    </select>
+                                </div>
+								
+								<div class="form-group col-md-4">
+                                    <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
+                                    <select class="form-control" name="sales_branch" id="filtered_branch">
+   
+                                    </select>
+                                </div>
+								
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Discount Allowed</label>                  
                                     <select class="form-control" name="discount_id">
@@ -494,6 +525,58 @@
     </div>
 </div>
 <script type="text/javascript">
+
+ function find_area() { 
+
+            var reg_id = $("select[name='sales_region']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_area_by_region',
+            data: {region:reg_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].area_id)+'">'+(obj[i].area_name)+'</option>';
+                }
+                
+                $("#filtered_area").html(html);
+                
+            }           
+            });
+}
+
+ function find_branch() { 
+
+            var reg_id = $("select[name='sales_region']").val();
+			var area_id = $("select[name='sales_area']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_branch_by_arearegion',
+            data: {region:reg_id,area:area_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].branch_id)+'">'+(obj[i].branch_name)+'</option>';
+                }
+                
+                $("#filtered_branch").html(html);
+                
+            }           
+            });
+}
+
 $('#new_pass, #c_pass').on('keyup', function() {
     if ($('#new_pass').val() == $('#c_pass').val()) {
         $('#password_error').html('Matching').css('color', 'green');
