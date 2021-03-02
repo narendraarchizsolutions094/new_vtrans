@@ -106,12 +106,12 @@
                     ?>
                      <div class="form-group col-sm-4 col-md-4">
                         <label><?php echo display('company_name') ?> <i class="text-danger"></i></label>
-                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company" type="text"  placeholder="Enter Company"> 
+                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company"> 
                      </div>
 					 
 					 <div class="form-group col-md-4">
                             <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
-                            <select class="form-control" name="sales_branch" id="filtered_branch">
+                            <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()">
                                     <?php  if (!empty($branch_lists)) {
                                         foreach ($branch_lists as $key => $value) { ?>
                                             <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $this->session->branch_name){ echo "selected";} ?>><?= $value->branch_name;?></option>
@@ -123,7 +123,7 @@
 					  
 					  <div class="form-group col-sm-4 col-md-4">
                         <label><?php echo 'Client Name'; ?> <i class="text-danger"></i></label>
-                        <input class="form-control" value="<?php  echo set_value('company');?> " name="client_name" type="text"  placeholder="Enter Client Name"> 
+                        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name"  placeholder="Enter Client Name"> 
                      </div>
                    
                      <?php
@@ -238,6 +238,7 @@
   ?>
 
 <script type="text/javascript">
+
     function hide_all_dependent_field(){
       $(".service_related_issue_type").hide();                       
       $(".service_related_issue_sub_type").hide();                       
@@ -406,7 +407,26 @@
 <?php
 }
 ?>
+<script>
+function clientname() {
+      var company = $('#company_list').val();
+	  var branch_id = $('#sales_branch').val();
+//alert(company);
 
+        $.ajax({
+        type: 'POST',
+        url: '<?php echo base_url();?>lead/get_compname_by_id',
+        data: {sales_branch:branch_id},
+
+        success:function(data){
+       // alert(data);
+		c_name = company+data;
+		  $("#client_name").val(c_name); 
+          //$("#client_name").value = data;
+        }    
+    });
+	  }
+</script>
 <script>
   
   function find_sub(){
