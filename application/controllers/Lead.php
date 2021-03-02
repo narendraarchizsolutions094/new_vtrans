@@ -2268,6 +2268,14 @@ class Lead extends CI_Controller
         }
         echo $opt;
     }
+	
+	public function get_compname_by_id()
+    {
+        $id = $this->input->post('sales_branch');
+        $res = $this->SubSource_model->get_company_name($id);       
+        echo $res->branch_name;
+    }
+	
     public function description()
     {
         if (user_role('35') == true) {

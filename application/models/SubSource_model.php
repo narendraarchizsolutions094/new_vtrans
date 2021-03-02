@@ -56,6 +56,13 @@ class SubSource_model extends CI_Model {
       $this->db->where('comp_id',$company);
       return $this->db->get()->result_array();
     }
+	
+	public function get_company_name($id){
+      $this->db->select('branch_name');
+      $this->db->from('branch');
+      $this->db->where('branch_id',$id);
+      return $this->db->get()->row();
+    }
     
     public function descriptionlist() {
 		$company=$this->session->userdata('companey_id');
