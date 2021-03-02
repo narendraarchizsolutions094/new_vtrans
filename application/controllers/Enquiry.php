@@ -3421,7 +3421,8 @@ echo  $details1;
                $visit_date=date('Y-m-d');
             }
             //print_r($_POST); exit();
-            $data = array('enquiry_id'=>$this->input->post('enquiry_id'),
+            $data = array('enquiry_id'=>$this->input->post('enq_id'),
+                            'contact_id'=>$this->input->post('contact_id'),
                             'visit_date'=>$visit_date,
                             'visit_time'=>$visit_time,
 							'm_purpose'=>$m_purpose,
@@ -3612,7 +3613,7 @@ echo  $details1;
                     $sub[] = '<a href="'.$url.'">'.$res->name.'</a>'??'NA';
             }
             if($colsall || in_array(10,$cols))
-            $sub[] = $res->company??'NA';
+            $sub[] = $res->company_name??'NA';
             if($colsall || in_array(4,$cols))
             $sub[] =$res->idealDistance.' Km';
         if($colsall || in_array(5,$cols))

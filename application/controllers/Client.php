@@ -3247,6 +3247,19 @@ public function all_update_expense_status()
         }
     }
 
+    public function contact_by_account()
+    {
+
+        $account_id  = $this->input->get('account_id');
+        
+    $res =  $this->db->where('client_id',$account_id)->where('comp_id',$this->session->companey_id)->get('tbl_client_contacts');
+
+        foreach ($res->result() as $key => $value) 
+        {
+            echo'<option value="'.$value->cc_id.'">'.$value->c_name.'</option>';
+        }
+    }
+
     public function create_agreement_pdf()
     {   
         $this->load->model(array('Branch_model','Leads_Model'));
