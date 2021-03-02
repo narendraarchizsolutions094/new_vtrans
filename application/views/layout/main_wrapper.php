@@ -1361,6 +1361,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     Expense Master
                                 </a>
                             </li>
+                             <li class="<?php echo (in_array($segment2,array('fuel_surcharge')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/fuel_surcharge">
+                                    Fuel Surcharge
+                                </a>
+                            </li>
                             <?php }  if (user_access('e34')) {  ?>
 
                             <li

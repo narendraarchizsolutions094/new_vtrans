@@ -100,14 +100,14 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         	<select class="v_filter form-control" name="enquiry_id" >
         		<option value="">Select</option>
         		<?php
-        		if(!empty($all_enquiry))
-        		{
-        			foreach ($all_enquiry as $row) 
-        			{  
-                $row  = (array)$row;
-        				echo'<option value="'.$row['enquiry_id'].'">'.$row['name_prefix'].' '.$row['name'].' '.$row['lastname'].'</option>';
-        			}
-        		}
+        		// if(!empty($all_enquiry))
+        		// {
+        		// 	foreach ($all_enquiry as $row) 
+        		// 	{  
+          //       $row  = (array)$row;
+        		// 		echo'<option value="'.$row['enquiry_id'].'">'.$row['name_prefix'].' '.$row['name'].' '.$row['lastname'].'</option>';
+        		// 	}
+        		// }
         		?>
         	</select>
         </div>
@@ -443,11 +443,6 @@ var c = getCookie('visit_allowcols');
 var Data = {"from_data":"","to_date":"","from_time":"","to_time":""};
 $(".v_filter").change(function(){
 
-  // var obj = $(".v_filter:input").serializeArray();
-  // Data["from_date"]= obj[0]["value"];
-  // Data["to_date"] = obj[1]["value"];
-  // Data["from_time"] = obj[2]["value"];
-  // Data["to_time"] = obj[3]["value"];
  $("#datatable").DataTable().ajax.reload(); 
 });
 $(document).ready(function(){
@@ -617,7 +612,7 @@ $("select").select2();
                       {
                         foreach ($company_list as $key =>  $row)
                         {
-                          echo '<option value="'.$key.'">'.$row->company.'</option>';
+                          echo '<option value="'.$row->id.'">'.$row->company_name.'</option>';
                         }
                       }
                       ?>
@@ -625,18 +620,25 @@ $("select").select2();
                 </div>
 
                <div class="form-group col-md-6">
-                  <label>Contact Name</label>
-                  <select class="form-control" name="enquiry_id" required>
+                  <label>Account Name</label>
+                  <select class="form-control" name="enq_id" onchange="filter_contact(this.value)" required>
                     <option value="">Select</option>
                     <?php
-                  if(!empty($all_enquiry))
-                  {
-                    foreach ($all_enquiry as $row)
-                    {
-                      echo'<option value="'.$row->enquiry_id.'" >'.$row->name_prefix.' '.$row->name.' '.$row->lastname.'</option>';
-                    }
-                  }
+                  // if(!empty($all_enquiry))
+                  // {
+                  //   foreach ($all_enquiry as $row)
+                  //   {
+                  //     echo'<option value="'.$row->enquiry_id.'" >'.$row->name_prefix.' '.$row->name.' '.$row->lastname.'</option>';
+                  //   }
+                  // }
                     ?>
+                  </select>
+               </div>
+
+                <div class="form-group col-md-6">
+                  <label>Contact Name</label>
+                  <select class="form-control" name="contact_id" required>
+                    <option value="">Select</option>
                   </select>
                </div>
 
@@ -835,31 +837,33 @@ $(function() {
     });
 
 
-  var LIST = <?php echo !empty($company_list)? json_encode($company_list): '{}'?>;
-  var OLD_LIST  = <?=!empty($all_enquiry) ? json_encode($all_enquiry):'{}'?>;
-  function filter_related_to(v)
-  {
-      if(Object.keys(LIST).length>0 && v!='-1')
-      { 
-        var l = '';
-        var y = LIST[v];
-        var ids = y.enq_ids.split(',');
-        var names = y.enq_names.split(',');
-        $(ids).each(function(k,id){
-            l+="<option value='"+id+"'>"+names[k]+"</option>";
-        });
-        //alert(l);
-        $("select[name=enquiry_id]").html(l);
-      }
-      else
-      { var l = '';
-          $(OLD_LIST).each(function(k,v){
-            l+="<option value='"+v.enquiry_id+"'>"+v.name_prefix+" "+v.name+" "+v.lastname+"</option>";
-          });
-          $("select[name=enquiry_id]").html(l);
-      }
+function filter_related_to(v)
+{
+      $.ajax({
+            url:"<?=base_url('client/account_by_company')?>",
+            type:'get',
+            data:{comp_id:v},
+            success:function(q){
+              $("select[name=enq_id]").html(q);
+               $("select[name=enq_id]").trigger('change');
+            }
+      });
+   
   }
 
+function filter_contact(v)
+{
+      $.ajax({
+            url:"<?=base_url('client/contact_by_account')?>",
+            type:'get',
+            data:{account_id:v},
+            success:function(q){
+              $("select[name=contact_id]").html(q);
+               $("select[name=contact_id]").trigger('change');
+            }
+      });
+   
+  }
 
 function save_table_conf()
 {

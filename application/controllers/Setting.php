@@ -922,6 +922,30 @@ public function discount_matrix()
 	}
 }
 
+public function fuel_surcharge()
+{
+	if($this->input->post())
+	{
+		$data= array(
+				'greater_than'=>$this->input->post('greater_than'),
+				'less_than'=>$this->input->post('less_than'),
+				'fsc'=>$this->input->post('fsc'),
+				'comp_id'=>$this->session->companey_id,
+		);
+		$this->db->insert('fuel_surcharge',$data);
+		$this->session->set_flashdata('message','Saved! ');
+		redirect(base_url('setting/fuel_surcharge'));
+	}
+	else
+	{
+
+		$data['title']= 'Fuel Surcharge';
+		$data['list'] = $this->db->where('comp_id',$this->session->companey_id)->get('fuel_surcharge')->result();
+		$data['content'] = $this->load->view('fuel_surcharge',$data,true);
+		$this->load->view('layout/main_wrapper',$data);
+	}
+}
+
 public function oda_matrix()
 {
 	$this->load->model('Branch_model');
@@ -989,38 +1013,32 @@ public function bank_details()
 	}
 }
 
-public function edit_discount()
+
+public function edit_surcharge()
 {
 	if($this->input->post())
 	{
 		if($this->input->post('task')=='view')
 		{
 			$this->load->model('Branch_model');
-			$list = $this->Branch_model->discount_list($this->input->post('id'));
-			$res = $list[0];
+			$list =$this->db->where('comp_id',$this->session->companey_id)->where('id',$this->input->post('id'))->get('fuel_surcharge')->row();
 
 			echo'
-			<form action="'.base_url('setting/edit_discount').'" method="post">
+			<form action="'.base_url('setting/edit_surcharge').'" method="post">
 			<div class="panel-body" style="text-align:left">
 				<input type="hidden" name="task" value="save">
 				<input type="hidden" name="id" value="'.$this->input->post('id').'">
 				<div class="form-group">
-					<label>Name</label>
-					<input type="text" name="name" class="form-control" value="'.$res->name.'" required>
+					<label>Greater Than or Equal To (Rs.)</label>
+					<input type="number" name="greater_than" value="'.$list->greater_than.'" class="form-control" required>
 				</div>
 				<div class="form-group">
-					<label>Allowed Discount (%)</label>
-					<input type="number" name="discount" class="form-control" value="'.$res->discount.'" onkeyup="{
-						if(this.value>100 || this.value <0)
-							this.value=0;
-						}" required>
+					<label>Less Than Rs.</label>
+					<input type="number" name="less_than" value="'.$list->less_than.'" class="form-control" required>
 				</div>
 				<div class="form-group">
-					<label>Rate/Km </label>
-					<input type="number" name="rate_km" value="'.$res->rate_km.'" class="form-control" required onkeyup="{
-						if(this.value < 0)
-							this.value=0;
-						}">
+					<label>FSC Applicable (%)</label>
+					<input type="number" name="fsc" class="form-control" value="'.$list->fsc.'" required>
 				</div>
 			</div>
 			<div class="">
@@ -1035,18 +1053,15 @@ public function edit_discount()
 		else if($this->input->post('task')=='save')
 		{
 			unset($_POST['task']);
-			if($_POST['discount']>100 || $_POST['discount']<0)
-				$_POST['discount'] =0;
-
+	
 			$this->db->where('id',$this->input->post('id'))
 						->where('comp_id',$this->session->companey_id)
-					->update('discount_matrix',$_POST);
+					->update('fuel_surcharge',$_POST);
 		$this->session->set_flashdata('message','Saved');
-			redirect(base_url('setting/discount_matrix'));
+			redirect(base_url('setting/fuel_surcharge'));
 		}
 	}
 }
-
 public function edit_bank()
 {
 	if($this->input->post())
