@@ -456,7 +456,7 @@ class Dashboard extends CI_Controller {
         }
     }
 
-   public function backupDatabase(){  
+public function backupDatabase(){  
   if ($this->session->user_right == 1) {    
    $this->load->dbutil();
   $prefs = array(
@@ -2839,7 +2839,8 @@ public function set_layout_to_session() {
                     $this->load->view('graph',$data);
                     }
 
-      function printPdf_gen(){
+      function printPdf_gen()
+      {
                       $this->load->model('Branch_model');
                       $info_id=$this->input->post('info_id');
 
@@ -2924,6 +2925,7 @@ public function set_layout_to_session() {
                       $freight_table.="</tbody></table>";
                       $area_table = '';
                       $oda_table='';
+                      $fuel_surcharge = '';
                     }
                     else
                     {
@@ -3046,6 +3048,33 @@ public function set_layout_to_session() {
                           $oda_table  = '';
                         }
 
+                    $fuel_data = $this->db->where('comp_id',$this->session->companey_id)->get('fuel_surcharge')->result();
+                    $fuel_surcharge='';
+                    if(!empty($fuel_data))
+                    {
+                         $fuel_surcharge .="<table border='1px' style='width:400px'>
+                         <thead>
+                                <tr>
+                                  <th>Greater Than or<br> Equal To (Rs.)</th>
+                                  <th>Less Than Rs.</th>
+                                  <th>FSC Applicable (%)</th>
+                                 
+                                </tr>
+                              </thead>
+                              <tbody>
+                              ";
+                              foreach ($fuel_data as $fkey => $frow)
+                              {
+                                  $fuel_surcharge.="
+                                  <tr>
+                                    <td>".$frow->greater_than."</td>
+                                    <td>".$frow->less_than."</td>
+                                    <td>".$frow->fsc."</td>
+                                  </tr>
+                                  ";
+                              }
+                              $fuel_surcharge.="</tbody></table>";
+                      }
                     }
                       
                       $booking_type = $deal->booking_type;
@@ -3179,11 +3208,13 @@ public function set_layout_to_session() {
                     }
                 $oc_table.='</tbody>
                     </table>';
+
                       //echo $freight_table;
                       $content = str_replace('@freight_table', $freight_table,$content);
                       $content = str_replace('@oc_table', $oc_table,$content);
                       $content = str_replace('@area_table',$area_table, $content);
                       $content = str_replace('@oda_table',$oda_table, $content);
+                      $content = str_replace('@fuel_surcharge',$fuel_surcharge, $content);
                       echo $content;
                       if($deal->edited=='1' && ($deal->approval=='' || $deal->approval=='pending'))
                       {
@@ -3298,6 +3329,7 @@ public function set_layout_to_session() {
             ";
         }
         $freight_table.="</tbody></table>";
+        $fuel_surcharge='';
       }
       else
       {
@@ -3427,6 +3459,35 @@ public function set_layout_to_session() {
             {
               $oda_table  = '';
             }
+
+            $fuel_data = $this->db->where('comp_id',$this->session->companey_id)->get('fuel_surcharge')->result();
+                    $fuel_surcharge='';
+                    if(!empty($fuel_data))
+                    {
+                         $fuel_surcharge .="<table border='1px' style='width:400px'>
+                         <thead>
+                                <tr>
+                                  <th>Greater Than or<br> Equal To (Rs.)</th>
+                                  <th>Less Than Rs.</th>
+                                  <th>FSC Applicable (%)</th>
+                                 
+                                </tr>
+                              </thead>
+                              <tbody>
+                              ";
+                              foreach ($fuel_data as $fkey => $frow)
+                              {
+                                  $fuel_surcharge.="
+                                  <tr>
+                                    <td>".$frow->greater_than."</td>
+                                    <td>".$frow->less_than."</td>
+                                    <td>".$frow->fsc."</td>
+                                  </tr>
+                                  ";
+                              }
+                              $fuel_surcharge.="</tbody></table>";
+                      }
+
       }
         
         $booking_type = $deal->booking_type;
@@ -3565,6 +3626,7 @@ public function set_layout_to_session() {
         $content = str_replace('@oc_table', $oc_table,$content);
         $content = str_replace('@area_table', $area_table,$content);
         $content = str_replace('@oda_table',$oda_table, $content);
+        $content = str_replace('@fuel_surcharge',$fuel_surcharge, $content);
         $submitemail=$evalue->email;
         $this->load->library('pdf');
         // $download=$this->input->post('download');
