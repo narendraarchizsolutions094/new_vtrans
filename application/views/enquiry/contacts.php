@@ -1,5 +1,3 @@
-
-
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
 	<div class="col-md-4 col-sm-4 col-xs-4"> 
           <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>   
@@ -168,7 +166,15 @@ function deleteContact(t)
 
                <div class="form-group col-md-6">
                   <label>Designation</label>
-                  <input class="form-control" name="designation" placeholder="Designation"  type="text" required>
+				  <select class="form-control" name="designation" id="designation">
+						<option value=''>---Select Department----</option>
+                        <?php  if (!empty($all_designation)) {
+                        foreach ($all_designation as $key => $value) { ?>
+                        <option value="<?= $value->id;?>"><?= $value->desi_name;?></option>
+                        <?php
+                        }
+                        } ?>
+                    </select>
                </div>
                <div class="form-group col-md-6">
                   <label>Name</label>

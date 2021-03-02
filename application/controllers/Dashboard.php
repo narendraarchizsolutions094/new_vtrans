@@ -652,6 +652,7 @@ $this->load->library('zip');
                             'availability'          => $user_data->availability,
                             'validity_status'       => $validity_status,
                             'validity_msg'          => $validity_msg,
+							'branch_name'          => $user_data->sales_branch,
                             'login_token'=>$login_token,
                         ]);
                             // check device login right

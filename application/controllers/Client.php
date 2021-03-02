@@ -293,6 +293,8 @@ class Client extends CI_Controller {
         if(user_role('1012')==true){
             
         }
+		$data['all_designation'] = $this->Leads_Model->desi_select();
+		//print_r($data['all_designation']);exit;
         if($this->input->post('task')=='view')
         {
             $cc_id = $this->input->post('cc_id');
@@ -331,7 +333,12 @@ class Client extends CI_Controller {
            }
                echo'<div class="form-group col-md-6">
                   <label>Designation</label>
-                  <input class="form-control" name="designation" placeholder="Designation"  type="text" value="'.$row->designation.'" required>
+				  <select class="form-control" name="designation" id="designation">
+						<option value="">---Select Department----</option>';
+                        foreach ($data['all_designation'] as $key => $value) {
+                        echo'<option value="'.$value->id.'" '.(($value->id==$row->designation)?"selected":"").'>'.$value->desi_name.'</option>';
+                        }
+                    echo '</select>
                </div>
                <div class="form-group col-md-6">
                   <label>Name</label>
@@ -402,6 +409,7 @@ class Client extends CI_Controller {
         $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
         // print_r($data['enquiry_list']);
         // die();
+		$data['all_designation'] = $this->Leads_Model->desi_select();
         $data['content'] = $this->load->view('enquiry/contacts', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }

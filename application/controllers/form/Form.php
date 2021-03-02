@@ -223,6 +223,8 @@ class Form extends CI_Controller {
 	        $data['city_list'] = $this->location_model->ecity_list();
 	        $data['country_list'] = $this->location_model->ecountry_list();
 	    	$data['company_list'] = $this->location_model->get_company_list1($process_id);
+			$this->load->model('Branch_model');
+			$data['branch_lists']=$this->Branch_model->all_sales_branch();
 	    	echo $this->load->view('forms/basic_form_fields',$data,true);
 	    }
 		

@@ -3441,7 +3441,15 @@ if (document.getElementById('agg_same').checked)
                <input type="hidden" name="enquiry_code" value="<?=$details->Enquery_id?>">
                <div class="form-group col-md-6">
                   <label>Designation</label>
-                  <input class="form-control" name="designation" placeholder="Designation"  type="text" required>
+				    <select class="form-control" name="designation" id="designation">
+						<option value=''>---Select Department----</option>
+                        <?php  if (!empty($all_designation)) {
+                        foreach ($all_designation as $key => $value) { ?>
+                        <option value="<?= $value->id;?>"><?= $value->desi_name;?></option>
+                        <?php
+                        }
+                        } ?>
+                    </select>
                </div>
                <div class="form-group col-md-6">
                   <label>Name</label>
