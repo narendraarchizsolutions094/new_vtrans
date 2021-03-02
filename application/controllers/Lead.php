@@ -346,6 +346,9 @@ class Lead extends CI_Controller
 
         $data['course_list'] = $this->Leads_Model->get_course_list();
         $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
+		$this->load->model('Branch_model');
+		$data['branch_lists']=$this->Branch_model->all_sales_branch();
+		$data['region_lists']=$this->Branch_model->all_sales_region();
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);

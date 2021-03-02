@@ -408,6 +408,7 @@
 }
 ?>
 <script>
+$("#sales_branch").trigger("change");
 function clientname() {
       var company = $('#company_list').val();
 	  var branch_id = $('#sales_branch').val();

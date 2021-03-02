@@ -250,10 +250,139 @@ $type="text";
    }   
       if(is_active_field(COMPANY,$process_id)){
       ?>
+	  <div class="form-group col-md-6">
+            <label class="control-label" for="sales_resion"><?=display('sales_resion')?></label> 									
+            <select class="form-control" name="sales_region" id="sales_region" onchange="find_area();">
+				<option value="">---Select Region---</option>
+                <?php
+                    if (!empty($region_lists)) {
+                                            foreach ($region_lists as $key => $value) { ?>
+                                                <option value="<?= $value->region_id;?>" <?php if($value->region_id == $details->enq_saleregi){ echo "selected";} ?>><?= $value->name;?></option>
+                                            <?php
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+								
+		<div class="form-group col-md-6">
+            <label class="control-label" for="sales_area"><?=display('sales_area')?></label> 									
+            <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();">
+                <?php  if (!empty($area_lists)) {
+                foreach ($area_lists as $key => $value) { ?>
+            <option value="<?= $value->area_id;?>" <?php if($value->area_id == $details->enq_salearea){ echo "selected";} ?>><?= $value->area_name;?></option>
+                <?php
+                }
+                } ?>
+            </select>
+        </div>
    <div class="form-group col-sm-6 col-md-6 enq-company">
       <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
-      <input class="form-control" name="company" type="company" value="<?php echo $details->company_name; ?>">
+      <input class="form-control" name="company" id="company_list" type="company" value="<?php echo $details->company_name; ?>">
    </div>
+   
+    <div class="form-group col-md-6">
+            <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
+        <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()">
+                <?php  if (!empty($branch_lists)) {
+                foreach ($branch_lists as $key => $value) { ?>
+                <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $details->enq_salebrach){ echo "selected";} ?>><?= $value->branch_name;?></option>
+                <?php
+                 }
+             } ?>
+        </select>
+    </div>
+					  
+	<div class="form-group col-sm-6 col-md-6">
+        <label><?php echo 'Client Name'; ?> <i class="text-danger"></i></label>
+        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name"> 
+    </div>
+	
+	<div class="form-group col-md-6">
+            <label class="control-label" for="client_type"><?php echo  'Client Type';?></label> 									
+        <select class="form-control" name="client_type" id="client_type">
+                <option value="">--Select Client Type--</option>
+				<option value="MSME" <?php if($details->client_type=='MSME'){ echo "selected";} ?>>MSME</option>
+                <option value="Pvt. Ltd." <?php if($details->client_type=='Pvt. Ltd.'){ echo "selected";} ?>> Pvt. Ltd.</option>
+                <option value="Public Ltd" <?php if($details->client_type=='Public Ltd'){ echo "selected";} ?>> Public Ltd</option>
+                <option value="Partnership" <?php if($details->client_type=='Partnership'){ echo "selected";} ?>> Partnership</option>
+                <option value="Multinational" <?php if($details->client_type=='Multinational'){ echo "selected";} ?>> Multinational</option>
+                <option value="Proprietorship" <?php if($details->client_type=='Proprietorship'){ echo "selected";} ?>>  Proprietorship</option>
+        </select>
+    </div>
+	
+	<div class="form-group col-md-6">
+            <label class="control-label" for="business_load"><?php echo 'Type Of Load / Business';?></label> 									
+        <select class="form-control" name="business_load" id="business_load">
+                <option value="">--Select Load/Business--</option>
+				<option value="FTL" <?php if($details->business_load=='FTL'){ echo "selected";} ?>>FTL</option>
+                <option value="LTL/Sundry" <?php if($details->business_load=='LTL/Sundry'){ echo "selected";} ?>> LTL / Sundry</option>
+        </select>
+    </div>
+	
+	<div class="form-group col-md-6">
+            <label class="control-label" for="industries"><?php echo 'Industries';?></label> 									
+        <select class="form-control" name="industries" id="industries">
+                <option value="">--Select industries--</option>
+				<option value="FMCG" <?php if($details->industries=='FMCG'){ echo "selected";} ?>>FMCG</option>
+                <option value="Auto &amp; Auto Ancillaries" <?php if($details->industries=='Auto & Auto Ancillaries'){ echo "selected";} ?>> Auto &amp; Auto Ancillaries</option>
+                <option value="Heavy Engineering" <?php if($details->industries=='Heavy Engineering'){ echo "selected";} ?>> Heavy Engineering</option>
+                <option value="Retail" <?php if($details->industries=='Retail'){ echo "selected";} ?>> Retail</option>
+                <option value="E-Commerce" <?php if($details->industries=='E-Commerce'){ echo "selected";} ?>> E-Commerce</option>
+                <option value="Telecom &amp; IT" <?php if($details->industries=='Telecom &amp; IT'){ echo "selected";} ?>> Telecom &amp; IT</option>
+                <option value="Clothing" <?php if($details->industries=='Clothing'){ echo "selected";} ?>> Clothing</option>
+                <option value="Chemicals" <?php if($details->industries=='Chemicals'){ echo "selected";} ?>> Chemicals</option>
+                <option value="Pharmaceuticals" <?php if($details->industries=='Pharmaceuticals'){ echo "selected";} ?>> Pharmaceuticals</option>
+                <option value="Others" <?php if($details->industries=='Others'){ echo "selected";} ?>> Others</option>
+        </select>
+    </div>
+   
+<script>
+$("#sales_branch").trigger("change");
+$("#sales_region").trigger("change");
+function clientname() {
+      var company = $('#company_list').val();
+	  var branch_id = $('#sales_branch').val();
+//alert(company);
+
+        $.ajax({
+        type: 'POST',
+        url: '<?php echo base_url();?>lead/get_compname_by_id',
+        data: {sales_branch:branch_id},
+
+        success:function(data){
+       // alert(data);
+		c_name = company+data;
+		  $("#client_name").val(c_name); 
+          //$("#client_name").value = data;
+        }    
+    });
+	  }
+	  
+ function find_area() { 
+
+            var reg_id = $("select[name='sales_region']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_area_by_region',
+            data: {region:reg_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].area_id)+'">'+(obj[i].area_name)+'</option>';
+                }
+                
+                $("#filtered_area").html(html);
+                
+            }           
+            });
+}
+</script>
    <script type="text/javascript">
    $(function() {
    

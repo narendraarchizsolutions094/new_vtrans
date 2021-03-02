@@ -64,8 +64,10 @@ class Enq extends CI_Controller
        //$list = array_column($list, 'input_id');
 
        //$data['table_config_list'] = $list;
-
-
+        $this->load->model('Branch_model');
+        $data['branch_lists']=$this->Branch_model->all_sales_branch();
+		$data['region_lists']=$this->Branch_model->all_sales_region();
+		$data['area_lists']=$this->Branch_model->all_sales_area();
 		$data['content'] = $this->load->view('enquiry_n', $data, true);
 		$this->load->view('layout/main_wrapper', $data);
 	}	

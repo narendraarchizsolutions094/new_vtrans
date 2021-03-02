@@ -202,7 +202,11 @@ class Client extends CI_Controller {
 			$data['created_bylist'] = $this->User_model->read(147,false);
 		}else{
 			$data['created_bylist'] = $this->User_model->read();
-		}  
+		} 
+        $this->load->model('Branch_model');
+		$data['branch_lists']=$this->Branch_model->all_sales_branch();
+        $data['region_lists']=$this->Branch_model->all_sales_region();
+        //$data['dept_lists']=$this->User_model->all_sales_dept();		
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);
@@ -746,6 +750,15 @@ class Client extends CI_Controller {
             $address = $this->input->post('address');
             $pin_code = $this->input->post('pin_code');
             $comp = $this->input->post('company');
+			
+			$sales_branch = $this->input->post('sales_branch');
+			$client_name = $this->input->post('client_name');
+			
+			$sales_region = $this->input->post('sales_region');
+			$sales_area = $this->input->post('sales_area');
+			$client_type = $this->input->post('client_type');
+			$business_load = $this->input->post('business_load');
+			$industries = $this->input->post('industries');
 
 
             if($this->input->post('country_id')){
@@ -799,6 +812,13 @@ class Client extends CI_Controller {
             $this->db->set('address', $address);
             $this->db->set('pin_code', $pin_code);
             $this->db->set('company', $company);
+			$this->db->set('sales_branch', $sales_branch);
+			$this->db->set('client_name', $client_name);
+			$this->db->set('sales_region', $sales_region);
+			$this->db->set('sales_area', $sales_area);
+			$this->db->set('client_type', $client_type);
+			$this->db->set('business_load', $business_load);
+			$this->db->set('industries', $industries);
             $this->db->set('enquiry', $enquiry);
             $this->db->set('lastname', $lastname);
             $this->db->set('state_id', $state_id);

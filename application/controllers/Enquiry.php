@@ -1089,6 +1089,8 @@ class Enquiry extends CI_Controller
             $this->db->set('enquiry_subsource', $this->input->post('sub_source'));
             $this->db->set('email', $email);
             $this->db->set('company', $company);
+			$this->db->set('sales_branch', $sales_branch);
+			$this->db->set('client_name', $client_name);
             $this->db->set('address', $address);
             $this->db->set('pin_code', $pin_code);
             $this->db->set('name_prefix', $name_prefix);
@@ -1105,6 +1107,7 @@ class Enquiry extends CI_Controller
         }
         
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
+		//print_r($data['details']);exit;
         $data['data_type']  = $data['details']->status;
        $data['region_name'] = 0; 
        if(!empty($data['details']))
@@ -1205,6 +1208,9 @@ class Enquiry extends CI_Controller
         $data['all_designation'] = $this->Leads_Model->desi_select();		
         $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
         //echo"<pre>";print_r($data);die;
+		$this->load->model('Branch_model');
+		$data['branch_lists']=$this->Branch_model->all_sales_branch();
+		$data['region_lists']=$this->Branch_model->all_sales_region();
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);
