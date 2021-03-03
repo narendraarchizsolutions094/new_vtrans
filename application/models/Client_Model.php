@@ -194,8 +194,9 @@ class Client_Model extends CI_Model
 
     public function getCompanyList($id =0,$where=array(),$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
     {
-        $process = $this->session->process??$process;
-        $comp_id = $this->session->companey_id??$comp_id;
+
+        $process = !empty($process)?$process:$this->session->process;
+        $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
 
         $user_id  = empty($user_id)?$this->session->user_id:$user_id;
 
@@ -210,7 +211,7 @@ class Client_Model extends CI_Model
                         ->group_by('comp.id');
         
 
-        $where="comp.comp_id=".$this->session->companey_id;
+        $where="comp.comp_id=".$comp_id;
 
         if(!empty($user_id))
         {

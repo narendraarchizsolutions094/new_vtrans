@@ -27,21 +27,20 @@
 		<div class="panel panel-success">
 			<div class="panel-body">
 				<table id="contactTable" class="table table-bordered table-response">
-					<thead>
-	                             
-				         <tr>
-			                      <th>&nbsp; # &nbsp;</th>
-			                      <th id="th-1">Name</th>
-			                      <th id="th-2" style="width: 20%;">Company</th>
-			                      <th id="th-3" style="width: 20%;">Designation</th>
-			                      <th id="th-4" style="width: 20%;">Contact Name</th>
-			                      <th id="th-5" style="width: 20%;">Contact Number</th>
-			                      <th id="th-6" style="width: 20%;">Email ID</th>
-                            <th id="th-7" style="width: 20%;">Decision Maker</th>
-			                      <th id="th-8" style="width: 20%;">Other Detail</th>
-			                      <th id="th-9" style="width: 20%;">Created At</th>
-			                      <th id="th-10" style="width: 50px;">Action</th>
-				         </tr>
+					<thead>               
+  	         <tr>
+                <th>&nbsp; # &nbsp;</th>
+                <th id="th-1">Name</th>
+                <th id="th-2" style="width: 20%;">Company</th>
+                <th id="th-3" style="width: 20%;">Designation</th>
+                <th id="th-4" style="width: 20%;">Contact Name</th>
+                <th id="th-5" style="width: 20%;">Contact Number</th>
+                <th id="th-6" style="width: 20%;">Email ID</th>
+                <th id="th-7" style="width: 20%;">Decision Maker</th>
+                <th id="th-8" style="width: 20%;">Other Detail</th>
+                <th id="th-9" style="width: 20%;">Created At</th>
+                <th id="th-10" style="width: 50px;">Action</th>
+  	         </tr>
 					</thead>
 					<tbody>
 					</tbody>
@@ -138,7 +137,7 @@ function deleteContact(t)
                       {
                         foreach ($company_list as $key =>  $row)
                         {
-                          echo '<option value="'.$key.'">'.$row->company.'</option>';
+                          echo '<option value="'.$row->id.'">'.$row->company_name.'</option>';
                         }
                       }
                       ?>

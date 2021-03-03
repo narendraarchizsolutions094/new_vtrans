@@ -35,7 +35,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                     </li>  
                     <li>
                       <label>
-                      <input type="checkbox" value="for" id="forcheckbox" name="filter_checkbox" <?php if(in_array('for',$variable)){echo'checked';} ?>> For</label>
+                      <input type="checkbox" value="for" id="forcheckbox" name="filter_checkbox" <?php if(in_array('for',$variable)){echo'checked';} ?>> Client Name</label>
                     </li> 
                     <li>
                       <label>
@@ -51,8 +51,12 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                     </li>   
                     <li>
                       <label>
-                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>>Company</label>
+                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>> Company</label>
                     </li>  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="contact" id="contactcheckbox" name="filter_checkbox" <?php if(in_array('contact',$variable)){echo'checked';} ?>> Contact</label>
+                    </li> 
                     <li>
                       <label>
                       <input type="checkbox" value="expensetype" id="expensetypecheckbox" name="filter_checkbox" <?php if(in_array('expensetype',$variable)){echo'checked';} ?>> Expense Type</label>
@@ -94,24 +98,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         </div>
       </div>
 </div>
-    <div class="col-lg-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
-        <div class="form-group">
-        	<label>For</label>
-        	<select class="v_filter form-control" name="enquiry_id" >
-        		<option value="">Select</option>
-        		<?php
-        		// if(!empty($all_enquiry))
-        		// {
-        		// 	foreach ($all_enquiry as $row) 
-        		// 	{  
-          //       $row  = (array)$row;
-        		// 		echo'<option value="'.$row['enquiry_id'].'">'.$row['name_prefix'].' '.$row['name'].' '.$row['lastname'].'</option>';
-        		// 	}
-        		// }
-        		?>
-        	</select>
-        </div>
-    </div>
+    
      <div class="col-lg-3" id="ratingfilter" style="<?php if(!in_array('rating',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Rating</label>
@@ -153,13 +140,54 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         			foreach ($company_list as $row) 
         			{  
                 $row  = (array)$row;
-        				echo'<option value="'.$row['company'].'">'.$row['company'].'</option>';
+        				echo'<option value="'.$row['id'].'">'.$row['company_name'].'</option>';
         			}
         		}
         		?>
         	</select>
         </div>
     </div>
+
+    <div class="col-lg-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Client Name</label>
+          <select class="v_filter form-control" name="enquiry_id" >
+            <option value="">Select</option>
+            <?php
+            if(!empty($all_enquiry))
+            {
+              foreach ($all_enquiry as $row) 
+              {  
+                $row  = (array)$row;
+                echo'<option value="'.$row['enquiry_id'].'">'.$row['client_name'].'</option>';
+              }
+            }
+            ?>
+          </select>
+        </div>
+    </div>
+
+
+    <div class="col-lg-3" id="contactfilter" style="<?php if(!in_array('contact',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Contact Person</label>
+          <select class="v_filter form-control" name="contact" >
+            <option value="">Select</option>
+            <?php
+          $all_contact=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_client_contacts')->result();
+            if(!empty($all_contact))
+            {
+              foreach ($all_contact as $row) 
+              {  
+                $row  = (array)$row;
+                echo'<option value="'.$row['cc_id'].'">'.$row['c_name'].'</option>';
+              }
+            }
+            ?>
+          </select>
+        </div>
+    </div>
+
     <div class="form-group col-md-3" id="createdbyfilter" style="<?php if(!in_array('createdby',$variable)){echo'display:none';} ?>">
                           <label for="">Created By</label>
                          <select name="createdby" class="v_filter form-control"> 
@@ -254,6 +282,12 @@ $('input[name="filter_checkbox"]').click(function(){
             }
         else{
           $('#expensetypefilter').hide();
+    }
+    if($('#contactcheckbox').is(":checked")){
+        $('#contactfilter').show();
+            }
+        else{
+          $('#contactfilter').hide();
     }
 });
 
@@ -457,13 +491,15 @@ var table2  =$('#datatable').DataTable({
               "type": "POST",
               "data":function(d){
                       var obj = $(".v_filter:input").serializeArray();
+                      console.log(obj);
                      d.from_date = obj[0]['value'];
                      d.from_time = '';//obj[1]["value"];
                      d.enquiry_id =obj[2]["value"];
                      d.rating = obj[3]["value"];
                      d.to_date = obj[1]['value'];
                      d.company = obj[4]['value'];
-                     d.createdby = obj[5]['value'];
+                     d.contact = obj[5]['value'];
+                     d.createdby = obj[6]['value'];
                     //  d.expensetype = obj[6]['value'];
                      d.to_time = '';//obj[5]['value'];
                      d.view_all=true;
@@ -621,7 +657,7 @@ $("select").select2();
 
                <div class="form-group col-md-6">
                   <label>Account Name</label>
-                  <select class="form-control" name="enq_id" onchange="filter_contact(this.value)" required>
+                  <select class="form-control" name="enq_id" required>
                     <option value="">Select</option>
                     <?php
                   // if(!empty($all_enquiry))
@@ -848,22 +884,18 @@ function filter_related_to(v)
                $("select[name=enq_id]").trigger('change');
             }
       });
-   
-  }
-
-function filter_contact(v)
-{
-      $.ajax({
-            url:"<?=base_url('client/contact_by_account')?>",
+    
+       $.ajax({
+            url:"<?=base_url('client/contact_by')?>",
             type:'get',
-            data:{account_id:v},
+            data:{key:v,by:'company'},
             success:function(q){
               $("select[name=contact_id]").html(q);
                $("select[name=contact_id]").trigger('change');
             }
       });
-   
   }
+
 
 function save_table_conf()
 {

@@ -11,6 +11,56 @@ class Contacts extends REST_Controller {
 	  $this->load->model(array('Common_model','Client_Model'));
   }
 
+  public function contact_by_post()
+  {
+      $this->form_validation->set_rules('by','by','required');
+      $this->form_validation->set_rules('key','key','required');
+      $this->form_validation->set_rules('comp_id','comp_id','required');
+     
+
+      if($this->form_validation->run())
+      {
+        $by = $this->input->post('by');
+        $key  = $this->input->post('key');
+        $comp_id = $this->input->post('comp_id');
+        // $enquiry_id = $this->input->post('enquiry_id');
+        if($by=='account')
+        {
+            $res =  $this->db->where('client_id',$key)->where('comp_id',$comp_id)->get('tbl_client_contacts');
+        }
+        else if($by=='company')
+        {
+            $res =  $this->db->select('con.*')
+                                ->from('tbl_client_contacts con')
+                            ->join('enquiry','enquiry.enquiry_id=con.client_id','left')
+                            ->where('enquiry.company='.$key)
+                            ->where('con.comp_id',$comp_id)->get();
+        }
+        $res = $res->result();
+        if(!empty($res))
+        {
+            $this->set_response([
+            'status' => true,
+            'data' =>$res,
+            ], REST_Controller::HTTP_OK);
+        }
+        else
+        {
+          $this->set_response([
+            'status' => false,
+            'msg' =>'No Data',
+            ], REST_Controller::HTTP_OK);
+        }
+      }
+      else
+      {
+         $this->set_response([
+            'status' => false,
+            'msg' =>'Key or By is Empty',
+            ], REST_Controller::HTTP_OK);
+      }
+  }
+
   	public function contacts_list_page_post()
     {
       $user_id= $this->input->post('user_id');

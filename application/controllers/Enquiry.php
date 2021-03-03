@@ -3429,12 +3429,6 @@ echo  $details1;
                             'visit_date'=>$visit_date,
                             'visit_time'=>$visit_time,
 							'm_purpose'=>$m_purpose,
-                            // 'travelled'=>$this->input->post('travelled'),
-                            // 'travelled_type'=>$this->input->post('travelled_type'),
-                            // 'rating'=>$this->input->post('rating'),
-                            // 'next_date'=>$this->input->post('next_visit_date'),
-                            // 'next_time'=>$this->input->post('next_visit_time'),
-                            // 'next_location'=>$this->input->post('next_location'),
                             'comp_id'=>$this->session->companey_id,
                             'user_id'=>$this->session->user_id,
                         );
@@ -3452,10 +3446,15 @@ echo  $details1;
                 $notification_id = $this->input->post('dis_notification_id');
             }
           
-
             $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $stage_time, $enq_code, $notification_id, 'Visit',1,3);
 
             $this->Client_Model->add_visit($data);
+         $contact=  $this->db->where('cc_id',$data['contact_id'])->get('tbl_client_contacts')->row();
+         $cname ='';
+         if(!empty($contact))
+            $cname = $contact->c_name;
+            $this->db->set('remark','Visit Created for '.$cname);
+
             $this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id);
 
             $this->session->set_flashdata('SUCCESSMSG','Visit Saved Successfully');            

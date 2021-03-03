@@ -149,6 +149,14 @@ class Visit_datatable_model extends CI_Model{
             $where.=" enquiry.company = '".$_POST['company']."'";
             $and =1;
         }
+        if(!empty($_POST['contact']))
+        {   
+            if($and)
+                $where.=" and ";
+
+            $where.=" tbl_visit.contact_id = '".$_POST['contact']."'";
+            $and =1;
+        }
         if(!empty($_POST['rating']))
         {   
             if($and)

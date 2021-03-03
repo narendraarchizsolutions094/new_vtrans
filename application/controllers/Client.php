@@ -3251,21 +3251,35 @@ public function all_update_expense_status()
         $res=   $this->Enquiry_Model->getEnquiry('enquiry.company='.$comp_id);
         foreach ($res->result() as $key => $value) 
         {
-            echo'<option value="'.$value->enquiry_id.'">'.$value->name_prefix.' '.$value->name.' '.$value->lastname.'</option>';
+            echo'<option value="'.$value->enquiry_id.'">'.$value->client_name.'</option>';
         }
     }
 
-    public function contact_by_account()
+    public function contact_by()
     {
-
-        $account_id  = $this->input->get('account_id');
+        $by = $this->input->get('by');
+        $key  = $this->input->get('key');
         
-    $res =  $this->db->where('client_id',$account_id)->where('comp_id',$this->session->companey_id)->get('tbl_client_contacts');
-
-        foreach ($res->result() as $key => $value) 
+        if($by=='account')
         {
-            echo'<option value="'.$value->cc_id.'">'.$value->c_name.'</option>';
+            $res =  $this->db->where('client_id',$key)->where('comp_id',$this->session->companey_id)->get('tbl_client_contacts');
         }
+        else if($by=='company')
+        {
+            $res =  $this->db->select('con.*')
+                                ->from('tbl_client_contacts con')
+                            ->join('enquiry','enquiry.enquiry_id=con.client_id','left')
+                            ->where('enquiry.company='.$key)
+                            ->where('con.comp_id',$this->session->companey_id)->get();
+        }
+        if(!empty($res))
+        {
+             foreach ($res->result() as $key => $value) 
+            {
+                echo'<option value="'.$value->cc_id.'">'.$value->c_name.'</option>';
+            }
+        }
+       
     }
 
     public function create_agreement_pdf()
