@@ -4772,7 +4772,7 @@ public function insertComInfo($data)
               $this->db->group_start();
               foreach ($_POST['filters'] as $key => $value)
               {
-                if(in_array($key,$match_list) || $this->db->field_exists($key, 'tbl_visit'))
+                if(in_array($key,$match_list) || $this->db->field_exists($key, 'tbl_visit') || $this->db->field_exists($key, 'enquiry'))
                 {
                     if(in_array($key, $match_list))
                     {
