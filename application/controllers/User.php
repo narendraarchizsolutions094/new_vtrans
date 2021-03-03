@@ -33,6 +33,16 @@ class User extends CI_Controller
        // echo $diesc;
     }
 	
+	public function select_employee_by_rab() {
+		$dept = $this->input->post('dept');
+        $branch = $this->input->post('branch');
+		$region = $this->input->post('region');
+		$area = $this->input->post('area');
+        echo json_encode($this->User_model->all_emp_list($dept,$branch,$region,$area));
+
+       // echo $diesc;
+    }
+	
 	public function select_branch_by_arearegion() {
         $region = $this->input->post('region');
 		$area = $this->input->post('area');

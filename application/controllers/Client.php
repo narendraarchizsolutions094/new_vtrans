@@ -50,7 +50,12 @@ class Client extends CI_Controller {
         }
         $data['all_stage_lists'] = $this->Leads_Model->get_leadstage_list_byprocess1($this->session->process,array(1,2,3));
         $data['filterData'] = $this->Ticket_Model->get_filterData(1); 
-        $data['aging_rule'] = $this->rule_model->get_rules(array(11));		       
+        $data['aging_rule'] = $this->rule_model->get_rules(array(11));
+        $this->load->model('Branch_model');
+        $data['branch_lists']=$this->Branch_model->all_sales_branch();
+		$data['region_lists']=$this->Branch_model->all_sales_region();
+		$data['area_lists']=$this->Branch_model->all_sales_area();
+		$data['dept_lists']=$this->User_model->all_sales_dept();		
         $data['content'] = $this->load->view('enquiry_n', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }

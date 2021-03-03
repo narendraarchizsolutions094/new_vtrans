@@ -43,6 +43,18 @@ class User_model extends CI_Model {
         return $query->result();
     }
 	
+	public function all_emp_list($dept,$branch,$region,$area) {
+
+        $this->db->select("pk_i_admin_id,s_display_name,last_name,s_user_email");
+        $this->db->from('tbl_admin');
+		$this->db->where('sales_region', $region);
+		$this->db->where('sales_area', $area);
+		$this->db->where('sales_branch', $branch);
+		$this->db->where('dept_name', $dept);
+        $query = $this->db->get();
+        return $query->result();
+    }
+	
 	public function all_pkr_list($desc_id) {
 
         $this->db->select("rate_km");

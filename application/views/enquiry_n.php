@@ -1139,12 +1139,62 @@ display: block;
       <div class="modal-body">
       
                 <div class="row">
-                  
+            <div class="form-group col-md-6">
+                <label class="control-label" for="dept_name"><?=display('department')?></label> 									
+                <select class="form-control" name="dept_name" id="dept_name">
+					<option value=''>---Select Department----</option>
+                        <?php  if (!empty($dept_lists)) {
+                        foreach ($dept_lists as $key => $value) { ?>
+                    <option value="<?= $value->id;?>" <?php if($value->id == $this->session->dept_name){ echo "selected";} ?>><?= $value->dept_name;?></option>
+                        <?php
+                            }
+                            } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="control-label" for="sale_resions"><?=display('sales_resion')?></label> 									
+                <select class="form-control" name="sale_region" onchange="find_area();">
+					<option value="">---Select Region---</option>
+                    <?php
+                        if (!empty($region_lists)) {
+                        foreach ($region_lists as $key => $value) { ?>
+                    <option value="<?= $value->region_id;?>" <?php if($value->region_id == $this->session->sales_region){ echo "selected";} ?>><?= $value->name;?></option>
+                    <?php
+                        }
+                        }
+                    ?>
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="control-label" for="sale_area"><?=display('sales_area')?></label> 									
+                <select class="form-control" name="sale_area" id="filtered_area" onchange="find_branch();">
+                    <?php  if (!empty($area_lists)) {
+                    foreach ($area_lists as $key => $value) { ?>
+                <option value="<?= $value->area_id;?>" <?php if($value->area_id == $this->session->sales_area){ echo "selected";} ?>><?= $value->area_name;?></option>
+                    <?php
+                    }
+                    } ?>
+                </select>
+            </div>
+								
+			<div class="form-group col-md-6">
+                <label class="control-label" for="sale_branch"><?=display('sales_branch')?></label> 									
+                <select class="form-control" name="sale_branch" id="filtered_branch" onchange="find_employee();">
+                    <?php  if (!empty($branch_lists)) {
+                    foreach ($branch_lists as $key => $value) { ?>
+                <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $this->session->branch_name){ echo "selected";} ?>><?= $value->branch_name;?></option>
+                    <?php
+                    }
+                    } ?>
+                </select>
+            </div>			
             
             <div class="form-group col-md-12">  
             <label>Select Employee</label> 
             <div id="imgBack"></div>
-            <select class="form-control"  name="assign_employee">                    
+            <select class="form-control"  name="assign_employee" id="assign_employee">                    
             <?php foreach ($created_bylist as $user) { 
                             
                           if (!empty($user->user_permissions)) {
@@ -2560,7 +2610,86 @@ success: function(responseData){
   }
   
 </script>
+<script>
+$("#filtered_branch").trigger("change");
+ function find_area() { 
 
+            var reg_id = $("select[name='sale_region']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_area_by_region',
+            data: {region:reg_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].area_id)+'">'+(obj[i].area_name)+'</option>';
+                }
+                
+                $("#filtered_area").html(html);
+                
+            }           
+            });
+}
+
+ function find_branch() { 
+
+            var reg_id = $("select[name='sale_region']").val();
+			var area_id = $("select[name='sale_area']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_branch_by_arearegion',
+            data: {region:reg_id,area:area_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].branch_id)+'">'+(obj[i].branch_name)+'</option>';
+                }
+                
+                $("#filtered_branch").html(html);
+                
+            }           
+            });
+}
+
+ function find_employee() { 
+            var dept_id = $("select[name='dept_name']").val();
+            var reg_id = $("select[name='sale_region']").val();
+			var area_id = $("select[name='sale_area']").val();
+			var branch_id = $("select[name='sale_branch']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_employee_by_rab',
+            data: {dept:dept_id,branch:branch_id,region:reg_id,area:area_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].pk_i_admin_id)+'">'+(obj[i].s_display_name)+' '+(obj[i].last_name)+'-'+(obj[i].s_user_email)+'</option>';
+                }
+                
+                $("#assign_employee").html(html);
+                
+            }           
+            });
+}
+</script>
 
 
 <div id="create_task" class="modal fade" role="dialog">
