@@ -65,7 +65,16 @@ class Enquiry_datatable_model extends CI_Model {
         $state                  =   !empty($enquiry_filters_sess['state'])?$enquiry_filters_sess['state']:'';
         $city                   =   !empty($enquiry_filters_sess['city'])?$enquiry_filters_sess['city']:'';
         $probability            =   !empty($enquiry_filters_sess['probability'])?$enquiry_filters_sess['probability']:'';
-        $aging_rule = !empty($enquiry_filters_sess['aging_rule'])?$enquiry_filters_sess['aging_rule']:'';
+        $aging_rule             =   !empty($enquiry_filters_sess['aging_rule'])?$enquiry_filters_sess['aging_rule']:'';
+		
+		$sales_region = !empty($enquiry_filters_sess['sales_region'])?$enquiry_filters_sess['sales_region']:'';
+		$sales_area = !empty($enquiry_filters_sess['sales_area'])?$enquiry_filters_sess['sales_area']:'';
+		$sales_branch = !empty($enquiry_filters_sess['sales_branch'])?$enquiry_filters_sess['sales_branch']:'';
+		$client_type = !empty($enquiry_filters_sess['client_type'])?$enquiry_filters_sess['client_type']:'';
+		$business_load = !empty($enquiry_filters_sess['business_load'])?$enquiry_filters_sess['business_load']:'';
+		$industries = !empty($enquiry_filters_sess['industries'])?$enquiry_filters_sess['industries']:'';
+		
+		//print_r($client_type);exit;
 
         $select = "enquiry.status,enquiry.name_prefix,enquiry.enquiry_id,tbl_subsource.subsource_name,enquiry.created_by,enquiry.aasign_to,enquiry.Enquery_id,enquiry.score,enquiry.enquiry,enquiry.company,tbl_product_country.country_name,enquiry.org_name,enquiry.name,enquiry.lastname,enquiry.email,enquiry.phone,enquiry.address,enquiry.reference_name,enquiry.created_date,enquiry.enquiry_source,lead_source.icon_url,lead_source.lsid,lead_source.score_count,lead_source.lead_name,lead_stage.lead_stage_name,tbl_datasource.datasource_name,tbl_product.product_name as product_name,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name,lead_score.score_name,lead_score.probability,tbl_company.company_name";
 
@@ -183,6 +192,31 @@ class Enquiry_datatable_model extends CI_Model {
         if(!empty($aging_rule)){
             $where .= " AND $aging_rule ";                                                
         }
+		
+		if(!empty($sales_region)){
+            $where .= " AND enquiry.sales_region =  '".$sales_region."'";                                                
+        }
+		
+		if(!empty($sales_area)){
+            $where .= " AND enquiry.sales_area =  '".$sales_area."'";                                                
+        }
+		
+		if(!empty($sales_branch)){
+            $where .= " AND enquiry.sales_branch =  '".$sales_branch."'";                                                
+        }
+		
+		if(!empty($client_type)){
+            $where .= " AND enquiry.client_type LIKE  '%$client_type%'";                                                
+        }
+		
+		if(!empty($business_load)){
+            $where .= " AND enquiry.business_load LIKE  '%$business_load%'";                                                
+        }
+		
+		if(!empty($industries)){
+            $where .= " AND enquiry.industries LIKE  '%$industries%'";                                                
+        }
+		
         if(!empty($company)){                    
             $where .= " AND enquiry.company =  '".$company."'";                                    
         }

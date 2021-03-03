@@ -249,6 +249,30 @@ input[name=lead_stages]{
                     <?php
                     }
                     ?>
+					<li>
+                      <label>
+                      <input type="checkbox" value="sales_region" id="regioncheckbox" name="filter_checkbox"> Sales Region</label>
+                    </li>
+					<li>
+                      <label>
+                      <input type="checkbox" value="sales_area" id="areacheckbox" name="filter_checkbox"> Sales Area</label>
+                    </li>
+					<li>
+                      <label>
+                      <input type="checkbox" value="sales_branch" id="branchcheckbox" name="filter_checkbox"> Sales Branch</label>
+                    </li>
+					<li>
+                      <label>
+                      <input type="checkbox" value="client_type" id="ctypecheckbox" name="filter_checkbox"> Client Type</label>
+                    </li>
+					<li>
+                      <label>
+                      <input type="checkbox" value="business_load" id="loadcheckbox" name="filter_checkbox"> Load/Business</label>
+                    </li>
+					<li>
+                      <label>
+                      <input type="checkbox" value="industries" id="industriescheckbox" name="filter_checkbox"> Industries</label>
+                    </li>
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
@@ -639,7 +663,81 @@ display: block;
                       <?php
                       }
                       ?>
-
+                      
+					  <div class="form-group col-md-3" id="regionfilter">
+                        <label for="">Sales Region</label> 
+                        <select name="sales_region" class="form-control">
+                          <option value="">Select</option>
+                          <?php
+                            foreach ($region_lists as $k=>$v) {  ?>
+                              <option value="<?=$v->region_id;?>" <?php if(!empty($filterData['sales_region']) && $v->region_id==$filterData['sales_region']) {echo 'selected';}?>><?php echo $v->name; ?></option>
+                              <?php }                             
+                              ?>
+                        </select>
+                      </div>
+					  
+					  <div class="form-group col-md-3" id="areafilter">
+                        <label for="">Sales Area</label> 
+                        <select name="sales_area" class="form-control">
+                          <option value="">Select</option>
+                          <?php
+                            foreach ($area_lists as $k=>$v) {  ?>
+                              <option value="<?=$v->area_id;?>" <?php if(!empty($filterData['sales_area']) && $v->area_id==$filterData['sales_area']) {echo 'selected';}?>><?php echo $v->area_name; ?></option>
+                              <?php }                             
+                              ?>
+                        </select>
+                      </div>
+					  
+					  <div class="form-group col-md-3" id="branchfilter">
+                        <label for="">Sales Branch</label> 
+                        <select name="sales_branch" class="form-control">
+                          <option value="">Select</option>
+                          <?php
+                            foreach ($branch_lists as $k=>$v) {  ?>
+                              <option value="<?=$v->branch_id;?>" <?php if(!empty($filterData['sales_branch']) && $v->branch_id==$filterData['sales_branch']) {echo 'selected';}?>><?php echo $v->branch_name; ?></option>
+                              <?php }                             
+                              ?>
+                        </select>
+                      </div>
+					  
+					  <div class="form-group col-md-3" id="ctypefilter">
+ 						<label for="">Client Type</label>
+                        <select class="form-control" name="client_type">
+                            <option value="">--Select Client Type--</option>
+				            <option value="MSME" <?php if(!empty($filterData['client_type']) && $filterData['client_type']=='MSME') {echo 'selected';}?>>MSME</option>
+                            <option value="Pvt. Ltd." <?php if(!empty($filterData['client_type']) && $filterData['client_type']=='Pvt. Ltd.'){ echo "selected";} ?>> Pvt. Ltd.</option>
+                            <option value="Public Ltd" <?php if(!empty($filterData['client_type']) && $filterData['client_type']=='Public Ltd'){ echo "selected";} ?>> Public Ltd</option>
+                            <option value="Partnership" <?php if(!empty($filterData['client_type']) && $filterData['client_type']=='Partnership'){ echo "selected";} ?>> Partnership</option>
+                            <option value="Multinational" <?php if(!empty($filterData['client_type']) && $filterData['client_type']=='Multinational'){ echo "selected";} ?>> Multinational</option>
+                            <option value="Proprietorship" <?php if(!empty($filterData['client_type']) && $filterData['client_type']=='Proprietorship'){ echo "selected";} ?>>  Proprietorship</option>
+                        </select>
+                      </div>
+					  
+					  <div class="form-group col-md-3" id="loadfilter">
+ 						<label for="">Load/Business</label>
+                        <select class="form-control" name="business_load">
+                            <option value="">--Select business_load--</option>
+				            <option value="FTL" <?php if(!empty($filterData['business_load']) && $filterData['business_load']=='FTL') {echo 'selected';}?>>FTL</option>
+                            <option value="LTL/Sundry" <?php if(!empty($filterData['business_load']) && $filterData['business_load']=='LTL/Sundry'){ echo "selected";} ?>> LTL/Sundry</option>
+                        </select>
+                      </div>
+					  
+					  <div class="form-group col-md-3" id="Industriesfilter">
+ 						<label for="">Industries</label>
+                        <select class="form-control" name="industries">
+                            <option value="">--Select Industries--</option>
+				            <option value="FMCG" <?php if(!empty($filterData['industries']) && $filterData['industries']=='FMCG') {echo 'selected';}?>>FMCG</option>
+                            <option value="Auto &amp; Auto Ancillaries" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Auto & Auto Ancillaries') {echo 'selected';}?>> Auto &amp; Auto Ancillaries</option>
+                            <option value="Heavy Engineering" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Heavy Engineering') {echo 'selected';}?>> Heavy Engineering</option>
+                            <option value="Retail" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Retail') {echo 'selected';}?>> Retail</option>
+                            <option value="E-Commerce" <?php if(!empty($filterData['industries']) && $filterData['industries']=='E-Commerce') {echo 'selected';}?>> E-Commerce</option>
+                            <option value="Telecom &amp; IT" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Telecom & IT') {echo 'selected';}?>> Telecom &amp; IT</option>
+                            <option value="Clothing" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Clothing') {echo 'selected';}?>> Clothing</option>
+                            <option value="Chemicals" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Chemicals') {echo 'selected';}?>> Chemicals</option>
+                            <option value="Pharmaceuticals" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Pharmaceuticals') {echo 'selected';}?>> Pharmaceuticals</option>
+                            <option value="Others" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Others') {echo 'selected';}?>> Others</option>
+                        </select>
+                      </div>
                       
                       <div class="form-group col-md-3">
                     <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
@@ -2092,13 +2190,63 @@ if (!enq_filters.includes('aging_rule')) {
   $("input[value='aging_rule']").prop('checked', true);
 }
 
+if (!enq_filters.includes('sales_region')) {
+  $('#regionfilter').hide();
+}else{
+  $('#regionfilter').show();
+
+  $("input[value='sales_region']").prop('checked', true);
+}
+
+if (!enq_filters.includes('sales_area')) {
+  $('#areafilter').hide();
+}else{
+  $('#areafilter').show();
+
+  $("input[value='sales_area']").prop('checked', true);
+}
+
+if (!enq_filters.includes('sales_branch')) {
+  $('#branchfilter').hide();
+}else{
+  $('#branchfilter').show();
+
+  $("input[value='sales_branch']").prop('checked', true);
+}
+
+if (!enq_filters.includes('client_type')) {
+  $('#ctypefilter').hide();
+}else{
+  $('#ctypefilter').show();
+
+  $("input[value='client_type']").prop('checked', true);
+}
+
+if (!enq_filters.includes('business_load')) {
+  $('#loadfilter').hide();
+}else{
+  $('#loadfilter').show();
+
+  $("input[value='business_load']").prop('checked', true);
+}
+
+if (!enq_filters.includes('industries')) {
+  $('#industriesfilter').hide();
+}else{
+  $('#industriesfilter').show();
+
+  $("input[value='industries']").prop('checked', true);
+}
+
 $('input[name="filter_checkbox"]').click(function(){  
   if($('#datecheckbox').is(":checked")||$('#empcheckbox').is(":checked")||$('#sourcecheckbox').is(":checked")||
   $('#subsourcecheckbox').is(":checked")||$('#emailcheckbox').is(":checked")||$('#companycheckbox').is(":checked")||
   $('#phonecheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||$('#addcheckbox').is(":checked")||
   $('#stageheckbox').is(":checked")||$('#prodcheckbox').is(":checked")||$('#statecheckbox').is(":checked")||
   $('#citycheckbox').is(":checked")||$('#datasrccheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||
-  $('#proccheckbox').is(":checked") ||
+  $('#proccheckbox').is(":checked") || $('#regioncheckbox').is(":checked") || $('#areacheckbox').is(":checked") ||
+  $('#branchcheckbox').is(":checked") || $('#ctypecheckbox').is(":checked") || $('#loadcheckbox').is(":checked") ||
+  $('#industriescheckbox').is(":checked") ||
   $('#agingRulecheckbox').is(":checked")){ 
     $('#save_filterbutton').show();
     $('#filter_pannel').show();          
@@ -2241,7 +2389,49 @@ $('#buttongroup').hide();
       }
       else{
        $('#agingRulefilter').hide();
-      } 
+      }
+
+if($('#regioncheckbox').is(":checked")){
+        $('#regionfilter').show();
+      }
+      else{
+       $('#regionfilter').hide();
+      }	
+
+if($('#areacheckbox').is(":checked")){
+        $('#areafilter').show();
+      }
+      else{
+       $('#areafilter').hide();
+      }
+
+if($('#branchcheckbox').is(":checked")){
+        $('#branchfilter').show();
+      }
+      else{
+       $('#branchfilter').hide();
+      }
+
+if($('#ctypecheckbox').is(":checked")){
+        $('#ctypefilter').show();
+      }
+      else{
+       $('#ctypefilter').hide();
+      }
+
+if($('#loadcheckbox').is(":checked")){
+        $('#loadfilter').show();
+      }
+      else{
+       $('#loadfilter').hide();
+      }	
+
+if($('#industriescheckbox').is(":checked")){
+        $('#industriesfilter').show();
+      }
+      else{
+       $('#industriesfilter').hide();
+      }	  
 
             
     });
