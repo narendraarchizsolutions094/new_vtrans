@@ -364,7 +364,7 @@ class Dashboard extends REST_Controller {
                 unset($value->enq_ids);
                 unset($value->created_at);
                 unset($value->updated_at);
-                unset($value->comp_id); 
+                unset($value->comp_id);
                 $ary[] = $value;
             }
             $res = $ary;
@@ -381,45 +381,8 @@ class Dashboard extends REST_Controller {
                 'message' => strip_tags(validation_errors()),
             ], REST_Controller::HTTP_OK); 
         }
+
     }   
-
-    public function account_by_vcompany_post()
-    {
-        $comp_id = $this->input->post('vcompany_id');
-        $user_id = $this->input->post('user_id');
-        $this->form_validation->set_rules('vcompany_id','vcompany_id','required|trim');
-        $this->form_validation->set_rules('user_id','user_id','required|trim');
-        if($this->form_validation->run()==true)
-        {
-            $all_reporting_ids  = $this->common_model->get_categories($user_id);
-
-            $this->db->select('enquiry.enquiry_id,enquiry.client_name');
-            $this->db->from('enquiry');
-            $this->db->where("enquiry.company",$comp_id);
-
-            $where="";
-            $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-            $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
-            $this->db->where($where);
-            $res = $this->db->get()->result();
-
-            if(!empty($res))
-            {
-                
-                $this->set_response([
-                  'status' => true,
-                  'data' =>$res,
-               ], REST_Controller::HTTP_OK);
-            }
-            else
-            {
-                $this->set_response([
-                  'status' => FALSE,
-                  'message' =>'No data.',
-               ], REST_Controller::HTTP_OK);
-            }
-        }
-    }
 
     public function unique_company_list_page_post()
     {

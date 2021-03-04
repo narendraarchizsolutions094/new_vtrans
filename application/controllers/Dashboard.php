@@ -38,7 +38,7 @@ class Dashboard extends CI_Controller {
             $this->load->view('enquiry/visit_details_map_only', $data);
             //$this->load->view('layout/main_wrapper', $data);
         }else{
-			echo 'Travel History not found';
+			$this->load->view('enquiry/visit_details_map_not_found');
         }
        
     }
@@ -652,6 +652,9 @@ $this->load->library('zip');
                             'availability'          => $user_data->availability,
                             'validity_status'       => $validity_status,
                             'validity_msg'          => $validity_msg,
+							'dept_name'            => $user_data->dept_name,
+							'sales_region'         => $user_data->sales_region,
+							'sales_area'           => $user_data->sales_area,
 							'branch_name'          => $user_data->sales_branch,
                             'login_token'=>$login_token,
                         ]);

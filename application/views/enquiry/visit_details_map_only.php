@@ -31,10 +31,10 @@ $firstpoint=$newpoints[0];
 $secondpoint=$newpoints[$lastKey];
 
 ?>
-<hr>
 <style>
 body{
 	overflow: hidden;
+    margin: 0px;
 }
 </style>
 
