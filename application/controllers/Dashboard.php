@@ -2844,8 +2844,8 @@ public function set_layout_to_session() {
 
       function printPdf_gen()
       {
-                      $this->load->model('Branch_model');
-                      $info_id=$this->input->post('info_id');
+                    $this->load->model('Branch_model');
+                    $info_id=$this->input->post('info_id');
 
                     $deal= $this->Branch_model->get_deal($info_id);
 
@@ -3798,6 +3798,10 @@ $data=array();
  echo json_encode(array('data'=>$data)); 
 }
 
+public function quotation_preview($info_id)
+{   
+    echo'<style>body{margin:0px;}</style><embed src="'.base_url('dashboard/pdf_gen/').$info_id.'#toolbar=0&navpanes=0&scrollbar=0" style="width:100%; height:100%; left:0;right:0;"></embed>';
+}
 public function insert() 
 {
      $feedback=[

@@ -463,10 +463,10 @@ class Enquiry extends CI_Controller
         if($this->session->companey_id == 90){
             $this->form_validation->set_rules('mobileno', display('mobileno'), 'max_length[20]|callback_phone_check');
         }else{
-            $this->form_validation->set_rules('mobileno', display('mobileno'), 'required|max_length[20]|callback_phone_check', array('phone_check' => 'Duplicate Entry for phone'));
+            $this->form_validation->set_rules('mobileno', display('mobileno'), 'required|max_length[20]');
         }
         if (!empty($this->input->post('email'))) {
-            $this->form_validation->set_rules('email', display('email'), 'callback_email_check', array('email_check' => 'The Email you entered is already exist'));
+            $this->form_validation->set_rules('email', display('email'), 'trim');
         }
         $enquiry_date = $this->input->post('enquiry_date');
         if ($enquiry_date != '') {
@@ -480,6 +480,7 @@ class Enquiry extends CI_Controller
             ->get();
         $other_phone = $this->input->post('other_no[]');
         if ($this->form_validation->run() === true) {
+           
             if (empty($this->input->post('product_id'))) {
                 $process_id    =   $this->session->process[0];
             } else {
@@ -3774,7 +3775,7 @@ echo  $details1;
             $part2.="<a class='btn btn-xs btn-danger' onclick='return confirm(\"Are you sure ?\")' href='".base_url('enquiry/deleteInfo/' . $value->id . '/'.$value->enquiry_id.'/')."'><i class='fa fa-trash'></i></a>";
             }
 
-            $part2.="<a class='btn btn-primary btn-xs' onclick='quotation_pdf(".$value->id.")' style='cursor: pointer;' data-toggle='modal'  data-target='#downloadQuatation'><i class='fa fa-download'></i></a>
+            $part2.="<a class='btn btn-primary btn-xs' onclick='quotation_pdf(".$value->id.")' style='cursor: pointer;'><i class='fa fa-download'></i></a>
 
            
             ";

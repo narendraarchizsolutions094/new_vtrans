@@ -3334,6 +3334,36 @@ public function all_update_expense_status()
        
     }
 
+    public function company_by_name()
+    {
+        $key = $this->input->get('key');
+
+        $comp_id = $this->session->companey_id;
+     $res=   $this->db->where('company_name',$key)->where('comp_id',$comp_id)->get('tbl_company')->row();
+    
+         if(!empty($res))
+         {
+          echo $res->id;
+         }
+         else
+            echo 0;
+    }
+
+    public function get_contact_by_id()
+    {
+        $key = $this->input->get('id');
+
+        $comp_id = $this->session->companey_id;
+     $res=   $this->db->where('cc_id',$key)->where('comp_id',$comp_id)->get('tbl_client_contacts')->row();
+    
+         if(!empty($res))
+         {
+            echo json_encode(array('status'=>1,'data'=>$res));
+         }
+         else
+           echo json_encode(array('status'=>0));
+    }
+
     public function create_agreement_pdf()
     {   
         $this->load->model(array('Branch_model','Leads_Model'));

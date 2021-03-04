@@ -1,6 +1,6 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js" integrity="sha512-Z8CqofpIcnJN80feS2uccz+pXWgZzeKxDsDNMD/dJ6997/LSRY+W4NmEt9acwR+Gt9OHN0kkI1CTianCwoqcjQ==" crossorigin="anonymous"></script>
 
 <style type="text/css">
   .wd-14{
@@ -566,10 +566,10 @@ $(window).load(function(){
          </div>
          <form action="<?= base_url('dashboard/pdf_gen/') ?>" method="POST">
 
-         <div class="modal-body">
+         <div class="modal-body" style="padding: 0px;">
             <!-- <input name="idType" hidden class="idType" id="idType"> -->
             <input id="enq_id_for_download" name="enquiry_id" type="hidden" value="">
-             <div id="data_value" class="data_value" style="padding:10px;"></div>
+             <div id="data_value" class="data_value" style="padding:0px;"></div>
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -640,16 +640,19 @@ function match()
      $('#red').attr('href','<?=base_url('client/commercial_info/')?>'+x+'/by_deals');
 }
 function quotation_pdf(info_id) {
-    $(".data_value").html('<center><i class="fa fa-spinner fa-spin" style="font-size:34px;"></i></center>');
+
+    // $(".data_value").html('<center><i class="fa fa-spinner fa-spin" style="font-size:34px;"></i></center>');
+    // $(".data_value").html('<embed src="<?=base_url();?>dashboard/pdf_gen/'+info_id+'" type="application/pdf">');
    // var elem = document.getElementById('view_sdatas');
-    $.ajax({
-            type: 'POST',
-            url: '<?php echo base_url();?>dashboard/printPdf_gen',
-            data: {info_id:info_id},
-            success:function(res){
-                $(".data_value").html(res);
-            }
-      });
+   window.open('<?=base_url();?>dashboard/quotation_preview/'+info_id,'Quotation','fullscreen=yes');
+    // $.ajax({
+    //         type: 'POST',
+    //         url: '<?php echo base_url();?>dashboard/printPdf_gen',
+    //         data: {info_id:info_id},
+    //         success:function(res){
+    //             $(".data_value").html(res);
+    //         }
+    //   });
 }
 </script>
 
