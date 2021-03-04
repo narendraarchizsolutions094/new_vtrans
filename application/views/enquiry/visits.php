@@ -779,6 +779,9 @@ $("select").select2();
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="10"> Company Name</label>
             </div>
+             <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="14"> Client Name</label>
+            </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="4"> Actual Distance</label>
             </div>
@@ -971,8 +974,6 @@ if(c && c!='')
 
     $("th[id*=th-").addClass('rmv');
     $(z).each(function(k,v){
-      if(v==10)
-           $('#th-'+v).removeClass('rmv');
         $('.choose-col[value='+v+']').prop('checked',true);
         $('#th-'+v).removeClass('rmv');
 
