@@ -307,6 +307,7 @@ $('input[name="filter_checkbox"]').click(function(){
 						  <th id="th-13" width="15%">Purpose of meeting</th>
 				          <th id="th-3" >Name</th>
 				          <th id="th-10">Company Name</th>
+                  <th id="th-12">Client Name</th>
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
@@ -970,8 +971,11 @@ if(c && c!='')
 
     $("th[id*=th-").addClass('rmv');
     $(z).each(function(k,v){
+      if(v==10)
+           $('#th-'+v).removeClass('rmv');
         $('.choose-col[value='+v+']').prop('checked',true);
         $('#th-'+v).removeClass('rmv');
+
      });
     $('.rmv').remove();
 }
