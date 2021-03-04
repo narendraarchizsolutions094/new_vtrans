@@ -524,7 +524,7 @@ $(window).load(function(){
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                  <label>Contact <a href="<?= base_url('enquiry/create?status=1') ?>" target="_blank"  style=" float:right;margin-left: 30px;"> <i class="fa fa-plus-square"> </i></a> </label>
+                  <label>Client Name <a href="<?= base_url('enquiry/create?status=1') ?>" target="_blank"  style=" float:right;margin-left: 30px;"> <i class="fa fa-plus-square"> </i></a> </label>
                   <select class="form-control" name="enquiry_id" required onchange="match()">
                     <!-- <option value="">Select</option> -->
                     <?php

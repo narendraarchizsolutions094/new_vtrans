@@ -109,7 +109,7 @@
                         <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company"> 
                      </div>
 					 
-					 <div class="form-group col-md-4">
+					           <div class="form-group col-md-4">
                             <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
                             <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()">
                                     <?php  if (!empty($branch_lists)) {
@@ -121,10 +121,22 @@
                             </select>
                       </div>
 					  
-					  <div class="form-group col-sm-4 col-md-4">
+					           <div class="form-group col-sm-4 col-md-4">
                         <label><?php echo 'Client Name'; ?> <i class="text-danger"></i></label>
                         <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name"  placeholder="Enter Client Name"> 
                      </div>
+
+                     <div class="form-group col-md-4">
+                            <label class="control-label">Contact Name</label>                  
+                            <select class="form-control" name="contact_id" id="sales_branch" onchange="clientname()">
+                                    <?php  if (!empty($branch_lists)) {
+                                        foreach ($branch_lists as $key => $value) { ?>
+                                            <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $this->session->branch_name){ echo "selected";} ?>><?= $value->branch_name;?></option>
+                                    <?php
+                                        }
+                                        } ?>
+                            </select>
+                      </div>
                    
                      <?php
                    }

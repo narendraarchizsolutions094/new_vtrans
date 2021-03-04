@@ -37,6 +37,7 @@ class Visits extends REST_Controller {
        $res= array();
     
         $total = $this->enquiry_model->visit_list_api($company_id,$user_id,$process)->num_rows();
+        $minus=0;
 $result =array();
         $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$limit,$offset);
 		foreach($data['result']->result() as $key=> $value){
@@ -45,7 +46,7 @@ $result =array();
 		
 		//print_r($data['result']->result());exit;
 //add code for color coding in table		
-		$percentChange=0;
+		        $percentChange=0;
             $km_rate = $this->user_model->get_user_meta($user_id,array('km_rate'));
             if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
               $rate=10;
@@ -57,17 +58,41 @@ $result =array();
              $percentChange = (($totalpay - $idealamt) / $idealamt)*100;
                 }
  //add code for color coding in table
+                //checing for min max difference filter
+
+if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']))
+{
+    if(!empty($_POST['filters']['min_diff']))
+    {
+        $min = $_POST['filters']['min_diff'];
+        if($percentChange < $min)
+        {
+          $minus++;
+          continue;
+        }
+    }
+    
+    if(!empty($_POST['filters']['max_diff']))
+    {
+        $max = $_POST['filters']['max_diff'];
+        if($max>$percentChange)
+          { $minus++;
+          continue;
+        }
+    }
+}
+
  $result[$key]=(array)$value;
  $result[$key]['diff']=$percentChange;
 		}
- print_r($result);exit;
+
           if(!empty($result))
           {
             $res= array();
             
             $res['offset'] = $offset;
             $res['limit'] = $limit;
-            $res['total'] = $total;
+            $res['total'] = $total-$minus;
             $res['list'] = $result;
 
             $this->set_response([
@@ -426,7 +451,7 @@ $result =array();
                   'status' => true,
                   'data' =>$res,
                ], REST_Controller::HTTP_OK);
-			}
+			       }
             else
             {
 				$this->set_response([

@@ -206,7 +206,11 @@ class Client extends CI_Controller {
         $this->load->model('Branch_model');
 		$data['branch_lists']=$this->Branch_model->all_sales_branch();
         $data['region_lists']=$this->Branch_model->all_sales_region();
-        //$data['dept_lists']=$this->User_model->all_sales_dept();		
+        //$data['dept_lists']=$this->User_model->all_sales_dept();	
+        $enq['enquiry_id'] = $enquiry_id;
+
+        $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
+        	
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);
@@ -251,7 +255,7 @@ class Client extends CI_Controller {
         if(user_role('1010')==true){
 
         }
-
+        
         $this->load->model(array('Enquiry_Model','Client_Model'));
         $clientid = $this->input->post('enquiry_id');
         if (!empty($_POST)) {
@@ -414,6 +418,7 @@ class Client extends CI_Controller {
         // print_r($data['enquiry_list']);
         // die();
 		$data['all_designation'] = $this->Leads_Model->desi_select();
+        $data['contact_create_form'] = $this->load->view('contacts/create_contact_form',array(),true);
         $data['content'] = $this->load->view('enquiry/contacts', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -2284,13 +2289,14 @@ public function all_update_expense_status()
         }
         //print_r($cols); exit();
         $data = array();
+        $header = array();
         $i=1;
-        foreach ($result as $res)
+        foreach ($result as $key => $res)
         {
             $sub = array();
 
             $sub[] = $i++;
-
+            $header[0] = '#';
             if(!empty($_POST['view_all']))
             {
                 if($res->status=='1')
@@ -2304,31 +2310,51 @@ public function all_update_expense_status()
 
                 if($colsall || in_array(1,$cols))
                     $sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
+                $header[1] = 'Name';
             }
            
-            if($colsall || in_array(2,$cols))
-                $sub[] = trim($res->company)??'NA';
+            if($colsall || in_array(2,$cols)){
+                $sub[] = trim($res->company_name)??'NA';
+                $header[2] = 'Company Name';
+            }
 
-            if($colsall || in_array(3,$cols))
-                $sub[] = trim($res->designation)??'NA';
+            if($colsall || in_array(3,$cols)){
+                $sub[] = trim($res->desi_name)??'NA';
+                $header[3] = 'Designation';
+            }
             
-            if($colsall || in_array(4,$cols))
+            if($colsall || in_array(4,$cols)){
                 $sub[] = trim($res->c_name)??'NA';
+                $header[4] = 'Contact Name';
+            }
 
-            if($colsall || in_array(5,$cols))
+            if($colsall || in_array(5,$cols)){
                 $sub[] = trim($res->contact_number)?$res->contact_number:'NA';
+                $header[5] = 'Contact Number';
+            }
 
-            if($colsall || in_array(6,$cols))
+            if($colsall || in_array(6,$cols)){
                 $sub[] = $res->emailid??'NA';
+                $header[6] = 'Email ID';
+            }
 
             if($colsall || in_array(7,$cols))
+            {
                 $sub[] = $res->decision_maker?'Yes':'No';
+                $header[7] = 'Decision Maker';
+            }
 
             if($colsall || in_array(8,$cols))
-            $sub[] = trim($res->other_detail)?$res->other_detail:'NA';
+            {
+                $sub[] = trim($res->other_detail)?$res->other_detail:'NA';
+                $header[8] = 'Other Details';
+            }
+            
 
-            if($colsall || in_array(9,$cols))
+            if($colsall || in_array(9,$cols)){
                 $sub[] = $res->created_at??'NA';
+                $header[9] = 'Created At';
+            }
 
             if($colsall || in_array(10,$cols))
             {
@@ -2348,6 +2374,7 @@ public function all_update_expense_status()
                     </button>';
                   }
                 $sub[]=$html;
+                $header[10] = 'Action';
             }
             $data[] =$sub;
         }
@@ -2357,14 +2384,14 @@ public function all_update_expense_status()
             "recordsTotal" =>$this->contacts_datatable_model->countAll(),
             "recordsFiltered" => $this->contacts_datatable_model->countFiltered($_POST),
             "data" => $data,
+            "headings"=>$header,
         );
         echo json_encode($output);
     }
 
-
+ 
     public function company_load_data()
     {   
-
         $this->load->model('company_datatable_model');
         $result = $this->company_datatable_model->getRows($_POST);
    

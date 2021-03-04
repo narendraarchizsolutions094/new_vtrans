@@ -71,7 +71,7 @@ function edit_contact(t)
                 cancelButtonText:'Close',
                 cancelButtonColor:'#E5343D',
                 onOpen: () => {
-				   $('.select2').select2();
+				   //$('.select2').select2();
 				   //alert("Dk");
 				},
               });
@@ -124,81 +124,14 @@ function deleteContact(t)
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Contacts</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('client/create_newcontact/','class="form-inner"') ?> 
-                <div class="form-group col-md-6">
-                    <label>Company</label>
-                    <select class="form-control" name="company" onchange="filter_related_to(this.value)">
-                      <option value="-1">Select</option>
-                      <?php
-                      if(!empty($company_list))
-                      {
-                        foreach ($company_list as $key =>  $row)
-                        {
-                          echo '<option value="'.$row->id.'">'.$row->company_name.'</option>';
-                        }
-                      }
-                      ?>
-                    </select>
-                </div>
-
-               <div class="form-group col-md-6">
-                  <label>Related To (Primary Contact)</label>
-                  <select class="form-control" name="enquiry_id">
-                  <option value="0">Select </option>
-
-                    <?php
-                    //print_r($enquiry_list);
-                 	if(!empty($enquiry_list))
-                 	{
-                 		foreach ($enquiry_list as $row)
-                 		{
-                 			echo'<option value="'.$row->enquiry_id.'">'.$row->name.'</option>';
-                 		}
-                 	}
-                  	?>
-                  </select>
-                  
-               </div>
-
-               <div class="form-group col-md-6">
-                  <label>Designation</label>
-				  <select class="form-control" name="designation" id="designation">
-						<option value=''>---Select Department----</option>
-                        <?php  if (!empty($all_designation)) {
-                        foreach ($all_designation as $key => $value) { ?>
-                        <option value="<?= $value->id;?>"><?= $value->desi_name;?></option>
-                        <?php
-                        }
-                        } ?>
-                    </select>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Name</label>
-                  <input class="form-control" name="name" placeholder="Contact Name"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Contact No.</label>
-                  <input class="form-control" name="mobileno" placeholder="Mobile No." maxlength="10"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Email</label>
-                  <input class="form-control" name="email" placeholder="Email"  type="email"  required>
-               </div>
-               <div class="form-group col-md-12">
-                  <label>Other Details</label>
-                  <textarea class="form-control" name="otherdetails" rows="8"></textarea>
-               </div>
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Add Contact" class="btn btn-primary"  name="Add Contact">
-                  </div>
-               </div>
-               <?php echo form_close()?>
-            </div>
-         </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <?php
+            if(!empty($contact_create_form))
+                echo $contact_create_form;
+            ?>
+          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
          </div>
@@ -207,32 +140,6 @@ function deleteContact(t)
 </div>   
 <script type="text/javascript">
 var c = getCookie('contact_allowcols');
-
-  var LIST = <?php echo !empty($company_list)? json_encode($company_list): '{}'?>;
-  var OLD_LIST  = <?=!empty($enquiry_list) ? json_encode($enquiry_list):'{}'?>;
-  function filter_related_to(v)
-  {
-      if(Object.keys(LIST).length>0 && v!='-1' )
-      { 
-        var l = '';
-        var y = LIST[v];
-        var ids = y.enq_ids.split(',');
-        var names = y.enq_names.split(',');
-
-        $(ids).each(function(k,id){
-            l+="<option value='"+id+"'>"+names[k]+"</option>";
-        });
-        //alert(l);
-        $("select[name=enquiry_id]").html(l);
-      }
-      else
-      { var l = '';
-          $(OLD_LIST).each(function(k,v){
-            l+="<option value='"+v.enquiry_id+"'>"+v.name_prefix+" "+v.name+" "+v.lastname+"</option>";
-          });
-          $("select[name=enquiry_id]").html(l);
-      }
-  }
 </script>
 
 <script type="text/javascript">
@@ -259,33 +166,16 @@ $(document).ready(function(){
               "url": "<?=base_url().'client/contacts_load_data'?>",
               "type": "POST",
               "data":function(d){
-                     //  var obj = $(".v_filter:input").serializeArray();
-
-                     // d.top_filter = $("input[name=top_filter]:checked").val();
-                     // d.date_from = $("input[name=d_from_date]").val();
-                     // d.date_to = $("input[name=d_to_date]").val();
-                     // d.enq_for = $("select[name=d_enquiry_id]").val();
-                     // d.from_date = obj[0]['value'];
-                     // d.from_time = '';//obj[1]["value"];
-                     // d.enquiry_id =obj[2]["value"];
-                     // d.rating = obj[3]["value"];
-                     // d.to_date = obj[1]['value'];
-                     // d.to_time = '';//obj[5]['value'];
                      d.view_all=true;
                      d.specific_list = specific_list;
-                     //TempData = d;
-
-                      if(c && c!='')
+                       if(c && c!='')
                       d.allow_cols = c;
 
                      console.log(JSON.stringify(d));
                     return d;
               }
           },
-          "drawCallback":function(settings ){
-            //update_top_filter();
-          },
-          columnDefs: [
+         columnDefs: [
                        { orderable: false, targets: -1 }
                     ]
   });

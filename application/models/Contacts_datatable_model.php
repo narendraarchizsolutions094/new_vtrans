@@ -91,9 +91,11 @@ class Contacts_datatable_model extends CI_Model{
         // if($where)
         //     $this->db->where($where);
 
-        $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.status');
+        $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.status,comp.company_name,desg.desi_name');
         $this->db->from('tbl_client_contacts contacts');
         $this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
+        $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
+        $this->db->join('tbl_designation desg','desg.id=contacts.designation','left');
         // $this->db->order_by('contacts.cc_id desc');
         // return $this->db->get();
 
@@ -133,14 +135,14 @@ class Contacts_datatable_model extends CI_Model{
         // }
 
 
-        // if(!empty($_POST['enquiry_id']))
-        // {   
-        //     if($and)
-        //         $where.=" and ";
+        if(!empty($_POST['enquiry_id']))
+        {   
+            if($and)
+                $where.=" and ";
 
-        //     $where.=" tbl_visit.enquiry_id = '".$_POST['enquiry_id']."'";
-        //     $and =1;
-        // }
+            $where.=" contacts.client_id = '".$_POST['enquiry_id']."'";
+            $and =1;
+        }
 
         // if(!empty($_POST['rating']))
         // {   

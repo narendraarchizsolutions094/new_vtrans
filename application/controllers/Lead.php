@@ -349,6 +349,10 @@ class Lead extends CI_Controller
 		$this->load->model('Branch_model');
 		$data['branch_lists']=$this->Branch_model->all_sales_branch();
 		$data['region_lists']=$this->Branch_model->all_sales_region();
+        $enq['enquiry_id'] = $enquiry_id;
+
+        $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
+        
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);

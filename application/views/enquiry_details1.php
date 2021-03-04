@@ -2873,58 +2873,59 @@ if (document.getElementById('agg_same').checked)
                {?>          
                <div class="tab-pane" id="company_contacts">
                   <hr>
-                  <div class="row" style="overflow-x: auto;">
-                     <table id="dataTable" class="table table-bordered table-striped table-responsive-sm" style="background: #fff;">
-                        <thead class="thead-light">
-                           <tr>
-                              <th>&nbsp; # &nbsp;</th>
-                              <th style="width: 20%;">Designation</th>
-                              <th style="width: 20%;">Name</th>
-                              <th style="width: 20%;">Contact Number</th>
-                              <th style="width: 20%;">Email ID</th>
-                              <th style="width: 20%">Decision Maker</th>
-                              <th style="width: 20%;">Other Detail</th>
-                              <th>Action</th>
-                           </tr>
-                        </thead>
-                        <tbody id="tblDataContact">
-                           <?php $sl = 1;
-                              if(!empty($all_contact_list)){
-                              foreach ($all_contact_list as $contact) { 
-                              ?>
-                           <tr>
-                              <td><?=$sl?></td>
-                              <td ><?php echo $contact->designation; ?></td>
-                              <td ><?php echo $contact->c_name; ?></td>
-                              <td ><?php echo $contact->contact_number; ?></td>
-                              <td ><?php echo $contact->emailid; ?></td>
-                              <td ><?php echo $contact->decision_maker?'Yes':'No'; ?></td>
-                              <td ><?php echo $contact->other_detail; ?></td>
-                              <td style="width:50px;">
-                                 <?php
-                                if(user_access('1012'))
-                                {
-                                  ?>
-                                <button class="btn btn-warning btn-xs" data-cc-id="<?=$contact->cc_id?>" onclick="edit_contact(this)">
-                                  <i class="fa fa-edit"></i>
-                                </button>
-                                <?php
-                                }
-                                
-                                if(user_access('1011'))
-                                {
-                                  ?>
-                                <button class="btn btn-danger btn-xs" data-cc-id="<?=$contact->cc_id?>" onclick="deleteContact(this)">
-                                  <i class="fa fa-trash"></i>
-                                </button>
-                                <?php
-                                } ?>
-                              </td>
-                           </tr>
-                           <?php $sl++; }} ?>
+                  <div class="row" style="overflow-x: hidden;">
+                     <table id="dataTableContact" class="table table-bordered table-striped table-responsive-sm" style="background: #fff;">
+                        <thead>               
+                         <tr>
+                            <th>&nbsp; # &nbsp;</th>
+                            <th id="th-2" style="width: 20%;">Company</th>
+                            <th id="th-3" style="width: 20%;">Designation</th>
+                            <th id="th-4" style="width: 20%;">Contact Name</th>
+                            <th id="th-5" style="width: 20%;">Contact Number</th>
+                            <th id="th-6" style="width: 20%;">Email ID</th>
+                            <th id="th-7" style="width: 20%;">Decision Maker</th>
+                            <th id="th-8" style="width: 20%;">Other Detail</th>
+                            <th id="th-9" style="width: 20%;">Created At</th>
+                            <th id="th-10" style="width: 50px;">Action</th>
+                         </tr>
+                      </thead>
+                        <tbody>
+                           
                         </tbody>
                      </table>
                      <br>
+                     <script type="text/javascript">
+                       
+                       $(document).ready(function(){
+                        var c = getCookie('contact_allowcols');
+                        $('#dataTableContact').DataTable({ 
+
+                                "processing": true,
+                                "scrollX": true,
+                                "serverSide": true,          
+                                "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
+                                "ajax": {
+                                    "url": "<?=base_url().'client/contacts_load_data'?>",
+                                    "type": "POST",
+                                    "data":function(d){
+                                         
+                                           d.enquiry_id="<?=$details->enquiry_id?>";
+                                           d.specific_list = '';
+                                             if(c && c!='')
+                                            d.allow_cols = c;
+
+                                           console.log(JSON.stringify(d));
+                                          return d;
+                                    }
+                                },
+                                columnDefs: [
+                                             { orderable: false, targets: -1 }
+                                          ]
+                        });
+
+                      });
+
+                     </script>
                      <center>
                       <?php
                       if(user_access('1010'))
@@ -3435,48 +3436,11 @@ if (document.getElementById('agg_same').checked)
             <h4 class="modal-title">Contacts</h4>
          </div>
          <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('client/create_newcontact/','class="form-inner"') ?> 
-               <input type="hidden" name="enquiry_id" value="<?=$details->enquiry_id?>">
-               <input type="hidden" name="enquiry_code" value="<?=$details->Enquery_id?>">
-               <div class="form-group col-md-6">
-                  <label>Designation</label>
-				    <select class="form-control" name="designation" id="designation">
-						<option value=''>---Select Department----</option>
-                        <?php  if (!empty($all_designation)) {
-                        foreach ($all_designation as $key => $value) { ?>
-                        <option value="<?= $value->id;?>"><?= $value->desi_name;?></option>
-                        <?php
-                        }
-                        } ?>
-                    </select>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Name</label>
-                  <input class="form-control" name="name" placeholder="Contact Name"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Contact No.</label>
-                  <input class="form-control" name="mobileno" placeholder="Mobile No." maxlength="10"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Email</label>
-                  <input class="form-control" name="email" placeholder="Email"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Decision Maker</label> &nbsp;
-                  <input name="decision_maker" type="checkbox" value="1">
-               </div>
-               <div class="form-group col-md-12">
-                  <label>Other Details</label>
-                  <textarea class="form-control" name="otherdetails" rows="8"></textarea>
-               </div>
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Add Contact" class="btn btn-primary"  name="Add Contact">
-                  </div>
-               </div>
-               <?php echo form_close()?>
+              <div class="row">
+                 <?php
+                  if(!empty($create_contact_form))
+                      echo $create_contact_form;
+                  ?>
             </div>
          </div>
          <div class="modal-footer">

@@ -132,7 +132,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class="col-lg-3" id="companyfilter" style="<?php if(!in_array('company',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Company</label>
-        	<select class="v_filter form-control" name="company" >
+        	<select class="v_filter form-control" name="company" onchange="load_filter_account(this.value)">
         		<option value="">Select</option>
         		<?php
         		if(!empty($company_list))
@@ -151,7 +151,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class="col-lg-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Client Name</label>
-          <select class="v_filter form-control" name="enquiry_id" >
+          <select class="v_filter form-control" name="enquiry_id" onchange="load_filter_contact(this.value)">
             <option value="">Select</option>
             <?php
             if(!empty($all_enquiry))
@@ -481,7 +481,7 @@ $(".v_filter").change(function(){
 });
 $(document).ready(function(){
 
-var table2  =$('#datatable').DataTable({ 
+var table2  = $('#datatable').DataTable({ 
           "processing": false,
           "scrollX": true,
           "serverSide": true,          
@@ -494,10 +494,10 @@ var table2  =$('#datatable').DataTable({
                       console.log(obj);
                      d.from_date = obj[0]['value'];
                      d.from_time = '';//obj[1]["value"];
-                     d.enquiry_id =obj[2]["value"];
-                     d.rating = obj[3]["value"];
+                     d.enquiry_id = obj[4]["value"];
+                     d.rating = obj[2]["value"];
                      d.to_date = obj[1]['value'];
-                     d.company = obj[4]['value'];
+                     d.company = obj[3]['value'];
                      d.contact = obj[5]['value'];
                      d.createdby = obj[6]['value'];
                     //  d.expensetype = obj[6]['value'];
@@ -640,7 +640,11 @@ $("select").select2();
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label style="width:100%;">Company <a style="float: right;" href="<?= base_url('enquiry/create?status=1&red=visits') ?>" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a></label>
+                    <label style="width:100%;">Company 
+                      <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
+                        <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
+                      </a>
+                    </label>
                     <select class="form-control" name="company" onchange="filter_related_to(this.value)" required>
                       <option value="-1">Select</option>
                       <?php
@@ -656,7 +660,11 @@ $("select").select2();
                 </div>
 
                <div class="form-group col-md-6">
-                  <label>Account Name</label>
+                  <label style="width: 100%">Account Name 
+                     <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
+                        <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
+                      </a>
+                    </label>
                   <select class="form-control" name="enq_id" required>
                     <option value="">Select</option>
                     <?php
@@ -672,7 +680,7 @@ $("select").select2();
                </div>
 
                 <div class="form-group col-md-6">
-                  <label>Contact Name</label>
+                  <label style="width: 100%">Contact Name <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span></label>
                   <select class="form-control" name="contact_id" required>
                     <option value="">Select</option>
                   </select>
@@ -892,6 +900,44 @@ function filter_related_to(v)
             success:function(q){
               $("select[name=contact_id]").html(q);
                $("select[name=contact_id]").trigger('change');
+            }
+      });
+  }
+
+
+function load_filter_account(v)
+{
+      $.ajax({
+            url:"<?=base_url('client/account_by_company')?>",
+            type:'get',
+            data:{comp_id:v},
+            success:function(q){
+              $("select[name=enquiry_id]").html('<option value="" selected>Select</option>'+q);
+               //$("select[name=enquiry_id]").trigger('change');
+            }
+      });
+    
+       $.ajax({
+            url:"<?=base_url('client/contact_by')?>",
+            type:'get',
+            data:{key:v,by:'company'},
+            success:function(q){
+              $("select[name=contact]").html('<option value="" selected>Select</option>'+q);
+              //$("select[name=contact_id]").trigger('change');
+            }
+      });
+  }
+
+
+function load_filter_contact(v)
+{
+       $.ajax({
+            url:"<?=base_url('client/contact_by')?>",
+            type:'get',
+            data:{key:v,by:'account'},
+            success:function(q){
+              $("select[name=contact]").html('<option value="" selected>Select</option>'+q);
+              // $("select[name=contact_id]").trigger('change');
             }
       });
   }

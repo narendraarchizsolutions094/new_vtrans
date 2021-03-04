@@ -345,7 +345,7 @@ class Dashboard extends REST_Controller {
                 unset($value->enq_ids);
                 unset($value->created_at);
                 unset($value->updated_at);
-                unset($value->comp_id);
+                unset($value->comp_id); 
                 $ary[] = $value;
             }
             $res = $ary;
@@ -362,7 +362,6 @@ class Dashboard extends REST_Controller {
                 'message' => strip_tags(validation_errors()),
             ], REST_Controller::HTTP_OK); 
         }
-
     }   
 
     public function account_by_vcompany_post()
