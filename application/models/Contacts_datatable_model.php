@@ -83,13 +83,22 @@ class Contacts_datatable_model extends CI_Model{
         // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
 
 
-
+$where1='';
         $where = 'enquiry.comp_id='.$this->session->companey_id;
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-        $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
+        $where1 .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where1 .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
         // if($where)
         //     $this->db->where($where);
+
+		$this->db->select('company');
+		$this->db->from('enquiry');
+		$this->db->where($where1);
+		$res = $this->db->get()->result();
+$id_array=array();
+foreach($res as $val){
+	$id_array[] = $val->company;
+}
 
         $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.status,comp.company_name,desg.desi_name');
         $this->db->from('tbl_client_contacts contacts');
@@ -98,7 +107,7 @@ class Contacts_datatable_model extends CI_Model{
         $this->db->join('tbl_designation desg','desg.id=contacts.designation','left');
         // $this->db->order_by('contacts.cc_id desc');
         // return $this->db->get();
-
+        $this->db->where_in('enquiry.company',array_unique($id_array));
 
         $and =1;
         // if(!empty($_POST['from_date']))

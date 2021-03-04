@@ -318,7 +318,7 @@ class Client extends CI_Controller {
                 echo'NO Result';exit();
             }
         $row = $res->row();
-        echo'<hr><div class="row" align="left" >
+        echo'<div class="row" align="left" >
         <form method="post" action="'.base_url('client/edit_contact/').'" class="form-inner">
         <input type="hidden" name="cc_id" value="'.$row->cc_id.'">
         <input type="hidden" name="client_id" value="'.$row->client_id.'">
@@ -347,7 +347,7 @@ class Client extends CI_Controller {
                echo'<div class="form-group col-md-6">
                   <label>Designation</label>
 				  <select class="form-control" name="designation" id="designation">
-						<option value="">---Select Department----</option>';
+						<option value="">---Select Designation----</option>';
                         foreach ($data['all_designation'] as $key => $value) {
                         echo'<option value="'.$value->id.'" '.(($value->id==$row->designation)?"selected":"").'>'.$value->desi_name.'</option>';
                         }

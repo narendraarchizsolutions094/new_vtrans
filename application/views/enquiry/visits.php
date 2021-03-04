@@ -660,7 +660,7 @@ $("select").select2();
                 </div>
 
                <div class="form-group col-md-6">
-                  <label style="width: 100%">Account Name 
+                  <label style="width: 100%">Client Name 
                      <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
                         <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
                       </a>
