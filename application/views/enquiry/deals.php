@@ -328,6 +328,8 @@ function manage_filters()
                <tr>                              
                   <th>S.N.</th>
                   <th id="th-1">Name</th>
+                  <th id="th-21">Company</th>
+                  <th id="th-22">Client Name</th>
               <!--     <th id="th-2">Branch Type</th> -->
                   <th id="th-3">Business Type</th>
                   <th id="th-4">Booking Type</th>
@@ -604,6 +606,13 @@ $(window).load(function(){
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="1"> Name</label>
             </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="21"> Company name</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="22"> Client Name</label>
+            </div>
+
            
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="3"> Business Type</label>

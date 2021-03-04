@@ -3626,10 +3626,15 @@ echo  $details1;
                     if($colsall || in_array(3,$cols))
                     $sub[] = '<a href="'.$url.'">'.$res->name.'</a>'??'NA';
             }
-            if($colsall || in_array(10,$cols))
-            $sub[] = $res->company_name??'NA';
+            if($colsall || in_array(10,$cols)){
+                $sub[] = $res->company_name??'NA';            
+            }
+            if($colsall || in_array(14,$cols)){
+                $sub[] = $res->client_name??'NA';            
+            }
             if($colsall || in_array(4,$cols))
             $sub[] =$res->idealDistance.' Km';
+        
         if($colsall || in_array(5,$cols))
             $sub[] =$res->actualDistance.' Km';
             if($colsall || in_array(6,$cols))
@@ -3708,7 +3713,13 @@ echo  $details1;
                 if($colsall || in_array(1,$cols))
                     $sub[] = '<a href="'.$url.'">'.$value->name.'</a>'??'NA';
             }
-           
+
+            if($colsall || in_array(21,$cols))
+            $sub[] =$value->company_name??'NA';  
+
+            if($colsall || in_array(22,$cols))
+            $sub[] =$value->client_name??'NA';            
+
             if($colsall || in_array(3,$cols))
             $sub[] =strtoupper(($value->booking_type))??'NA';
             if($colsall || in_array(4,$cols))

@@ -167,7 +167,7 @@ foreach($res as $val){
             if($and)
                 $where.=" and ";
 
-            $where.=" ( contact.cc_id IN (".$_POST['specific_list'].") ) ";
+            $where.=" ( contacts.cc_id IN (".$_POST['specific_list'].") ) ";
             $and =1;
         }
 

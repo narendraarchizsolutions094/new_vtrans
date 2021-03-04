@@ -137,18 +137,21 @@
       <div id="visits" class="container tab-pane fade"><br>
         <table id="visit_table" class="table table-bordered table-hover " >
               <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Visit Date</th>
-                  <th>Visit Time</th>
-                  <th>Name</th>
-                  <th>Distance Travelled</th>
-                  <th>Travelled Type</th>
-                  <th>Rating</th>
-                  <th>Next Visit Date</th>
-                  <th>Next Visit Location</th>
-                  <th>Action</th>
-                </tr>
+                <th width="7%">S. No.</th>
+                  <th id="th-1" width="15%">Visit Date</th>
+                  <th id="th-2" width="15%">Visit Time</th>
+              <th id="th-13" width="15%">Purpose of meeting</th>
+                  <th id="th-3" >Name</th>
+                  <th id="th-10">Company Name</th>
+                  <th id="th-4">Shortest Distance</th>
+                  <th id="th-5">Actual Distancee</th>
+                  <th id="th-6">Rating</th>
+                  <th id="th-11" >Difference (%)</th>
+                  <th >Travel Expense</th>
+                  <th>Other Expense</th>
+                  <th>Total Expense</th>
+                  <th>Expense Sttaus</th>
+                  <th id="th-9">Action</th>
               </thead>
               <tbody>
              </tbody>
@@ -156,59 +159,23 @@
       </div>
 
       <div id="contacts" class="container tab-pane fade"><br>
-        <table id="contactTable" class="datatable1 table table-bordered table-response">
-          <thead>
-                               
+        <table id="contactTable" class="table table-bordered table-response">
+          <thead>                 
                  <tr>
-                            <th>&nbsp; # &nbsp;</th>
-                            <th><?=display('enquiry')?></th>
-                            <th style="width: 20%;">Company</th>
-                            <th style="width: 20%;">Designation</th>
-                            <th style="width: 20%;">Name</th>
-                            <th style="width: 20%;">Contact Number</th>
-                            <th style="width: 20%;">Email ID</th>
-                            <th style="width: 20%;">Other Detail</th>
-                            <th style="width: 20%;">Created At</th>
-                            <th>Action</th>
+                    <th>&nbsp; # &nbsp;</th>
+                    <th id="th-1">Name</th>
+                    <th id="th-2" style="width: 20%;">Company</th>
+                    <th id="th-3" style="width: 20%;">Designation</th>
+                    <th id="th-4" style="width: 20%;">Contact Name</th>
+                    <th id="th-5" style="width: 20%;">Contact Number</th>
+                    <th id="th-6" style="width: 20%;">Email ID</th>
+                    <th id="th-7" style="width: 20%;">Decision Maker</th>
+                    <th id="th-8" style="width: 20%;">Other Detail</th>
+                    <th id="th-9" style="width: 20%;">Created At</th>
+                    <th id="th-10" style="width: 50px;">Action</th>
                  </tr>
           </thead>
           <tbody>
-            <?php
-              if(!empty($contact_list))
-              {$i=1;
-                foreach ($contact_list->result_array() as $row)
-                {
-                  echo'<tr>
-                      <td>'.$i++.'. </td>
-                      <td><a href="'.base_url('enquiry/view/').$row['enquiry_id'].'">'.$row['enq_name'].'</a></td>
-                      <td>'.$row['company'].'</td>
-                      <td>'.$row['designation'].'</td>
-                      <td>'.$row['c_name'].'</td>
-                      <td>'.$row['contact_number'].'</td>
-                      <td>'.$row['emailid'].'</td>
-                      <td>'.$row['other_detail'].'</td>
-                      <td>'.$row['created_at'].'</td>
-                      <td style="width:50px;">
-                      <div class="btn-group">';
-                      if(user_access('1012'))
-                      {
-                        echo'<button class="btn btn-warning btn-xs" data-cc-id="'.$row['cc_id'].'" onclick="edit_contact(this)">
-                          <i class="fa fa-edit"></i>
-                        </button>';
-                      }
-                      if(user_access('1011'))
-                      {
-                        echo'<button class="btn btn-danger btn-xs"  data-cc-id="'.$row['cc_id'].'" onclick="deleteContact(this)">
-                          <i class="fa fa-trash"></i>
-                        </button>';
-                      }
-
-                     echo' </div>
-                     </td>
-                  </tr>';
-                }
-              }
-            ?>
           </tbody>
         </table>
       </div>
@@ -652,5 +619,79 @@ function load_account(data_type)
 }
 }catch(e){alert(e);}
 
+</script>
+<a class="dropdown-toggle" data-toggle="modal" data-target="#updt_Contact" id="open" title="Add Contact" style="display:none;"></a> 
+<script type="text/javascript">
+function edit_contact(t)
+{
+  var contact_id = $(t).data('cc-id');
+
+  $.ajax({
+        url:"<?=base_url('client/edit_contact/')?>",
+        type:"post",
+        data:{cc_id:contact_id,task:'view',direct_create:1},
+        success:function(res)
+        {
+              if(res){
+
+                var cls = document.getElementById("open");
+                        cls.click();
+                $("#update_content").html(res);
+                $("#update_content select").select2();
+              }
+        },
+        error:function(u,v,w)
+        {
+          alert(w);
+        }
+  });
+}
+
+$(document).ready(function(){
+var c='';
+var specific_list = "<?=!empty($specific_contacts)?$specific_contacts:''?>";; 
+  $('#contactTable').DataTable({ 
+
+          "processing": true,
+          "scrollX": true,
+          "serverSide": true,          
+          "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
+          "ajax": {
+              "url": "<?=base_url().'client/contacts_load_data'?>",
+              "type": "POST",
+              "data":function(d){
+                     d.view_all=true;
+                     d.specific_list = specific_list;
+                       if(c && c!='')
+                      d.allow_cols = c;
+
+                     console.log(JSON.stringify(d));
+                    return d;
+              }
+          },
+         columnDefs: [
+                       { orderable: false, targets: -1 }
+                    ]
+  });
+
+});
 
 </script>
+<div id="updt_Contact" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Contacts</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row" id="update_content">
+            
+          </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div> 

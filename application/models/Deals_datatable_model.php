@@ -76,9 +76,10 @@ class Deals_datatable_model extends CI_Model{
 
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
-        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type');
+        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type,enq.client_name,comp.company_name');
         $this->db->from($this->table.' info');
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
+        $this->db->join('tbl_company comp','enq.company=comp.id','left');
         $this->db->where("info.comp_id",$this->session->companey_id);
 
         $where="info.original=1 AND";

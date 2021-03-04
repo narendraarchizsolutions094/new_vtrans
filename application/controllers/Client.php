@@ -461,10 +461,10 @@ class Client extends CI_Controller {
 
     $contacts = array_column((array)$contacts, 'cc_id');
 
-    $contacts = count($contacts)?$contacts:array('-1');
-
-    $data['contact_list'] = $this->Client_Model->getContactList($contacts);
-
+    $contacts = count($contacts)?implode(',',$contacts):array('-1');
+    $data['specific_contacts'] = $contacts;
+    // $x =$data['contact_list'] = $this->Client_Model->getContactList($contacts);
+    // print_r($x);exit;
     $data['specific_accounts'] = $c->enq_ids;
     $data['dfields']  = $this->enquiry_model->getformfield();
     $data['ticket_dfields'] = $this->enquiry_model->getformfield(2);

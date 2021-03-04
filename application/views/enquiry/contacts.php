@@ -80,25 +80,12 @@ function edit_contact(t)
         data:{cc_id:contact_id,task:'view',direct_create:1},
         success:function(res)
         {
-			if(res){
-				var cls = document.getElementById("open");
-                cls.click();
-				$("#update_content").html(res);
-				$("#update_content select").select2();
-			}
-          /* Swal.fire({
-                title:'Edit Contact',
-                html:res,
-                with:'100%',
-                showConfirmButton:false,
-                showCancelButton:true,
-                cancelButtonText:'Close',
-                cancelButtonColor:'#E5343D',
-                onOpen: () => {
-				   //$('.select2').select2();
-				   //alert("Dk");
-				},
-              }); */
+        			if(res){
+        				var cls = document.getElementById("open");
+                        cls.click();
+        				$("#update_content").html(res);
+        				$("#update_content select").select2();
+        			}
         },
         error:function(u,v,w)
         {
