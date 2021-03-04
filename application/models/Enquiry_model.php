@@ -7,7 +7,8 @@ class Enquiry_model extends CI_Model {
     private $table = "enquiry";
 
     public function create($data = [],$comp_id =0) {
-		
+		$data['company'] = trim($data['company']);
+
     if(!empty($data['company']))
     {
       $company = $this->db->where('company_name',$data['company'])->get('tbl_company')->row();
@@ -33,7 +34,7 @@ class Enquiry_model extends CI_Model {
 	//echo $insid;exit();
 
     //=====Create default Contact for Enquiry
-   if(!empty($data['name'])){
+   if(empty($_POST['contact_id']) && !empty($data['name'])){
            $name = $data['name'];
           $mobile = $data['phone'];
           $email = $data['email'];

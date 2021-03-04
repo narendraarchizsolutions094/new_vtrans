@@ -106,7 +106,7 @@
                     ?>
                      <div class="form-group col-sm-4 col-md-4">
                         <label><?php echo display('company_name') ?> <i class="text-danger"></i></label>
-                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company"> 
+                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)"> 
                      </div>
 					 
 					           <div class="form-group col-md-4">
@@ -127,14 +127,8 @@
                      </div>
 
                      <div class="form-group col-md-4">
-                            <label class="control-label">Contact Name</label>                  
-                            <select class="form-control" name="contact_id" id="sales_branch" onchange="clientname()">
-                                    <?php  if (!empty($branch_lists)) {
-                                        foreach ($branch_lists as $key => $value) { ?>
-                                            <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $this->session->branch_name){ echo "selected";} ?>><?= $value->branch_name;?></option>
-                                    <?php
-                                        }
-                                        } ?>
+                            <label class="control-label">Contact</label>                  
+                            <select class="form-control" id="contact_id" name="contact_id" onchange="set_contact(this.value)">
                             </select>
                       </div>
                    
@@ -420,6 +414,56 @@
 }
 ?>
 <script>
+function find_company_id(key)
+{
+    $.ajax({
+            url:"<?=base_url('client/company_by_name')?>",
+            type:'get',
+            data:{key:key},
+            success:function(q){
+              q = q.trim();
+              if(q)
+              {
+                load_contacts(q);
+              }
+
+            }
+  });
+}
+function load_contacts(v)
+{ 
+
+  $.ajax({
+            url:"<?=base_url('client/contact_by')?>",
+            type:'get',
+            data:{key:v,by:'company'},
+            success:function(q){
+              $("#contact_id").html('<option value="">Select Contact</option>'+q);
+            }
+  });
+}
+
+function set_contact(v)
+{
+    $.ajax({
+            url:"<?=base_url('client/get_contact_by_id')?>",
+            type:'get',
+            data:{id:v},
+            success:function(q){
+                q = q.trim();
+                q = JSON.parse(q);
+                console.log(q);
+                if(q.status==1)
+                {   q=q.data;
+                    $("input[name=enquirername]").val(q.c_name);
+                    $("#designation").val(q.designation);
+                    $("input[name=mobileno]").val(q.contact_number);
+                    $("input[name=email]").val(q.emailid);
+                }
+            }
+  });
+}
+
 $("#sales_branch").trigger("change");
 function clientname() {
       var company = $('#company_list').val();

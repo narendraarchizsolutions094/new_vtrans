@@ -247,6 +247,7 @@
               <?php if ($showall == true or in_array(2, $acolarr)) {  ?>
                   <th><?php echo display("company_name"); ?></th>
                   <th>Account Status</th>
+                  <th>Client Name</th>
                    <?php } ?>
               <?php if ($showall == true or in_array(3, $acolarr)) {  ?>
             <th>Name</th>
