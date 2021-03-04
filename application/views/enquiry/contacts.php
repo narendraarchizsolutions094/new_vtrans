@@ -49,9 +49,27 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-	
+<a class="dropdown-toggle" data-toggle="modal" data-target="#updt_Contact" id="open" title="Add Contact" style="display:none;"></a> 
+<div id="updt_Contact" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Contacts</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row" id="update_content">
+            
+          </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div> 
+</div>
+<script type="text/javascript">	
 function edit_contact(t)
 {
   var contact_id = $(t).data('cc-id');
@@ -62,7 +80,13 @@ function edit_contact(t)
         data:{cc_id:contact_id,task:'view',direct_create:1},
         success:function(res)
         {
-          Swal.fire({
+			if(res){
+				var cls = document.getElementById("open");
+                cls.click();
+				$("#update_content").html(res);
+				$("#update_content select").select2();
+			}
+          /* Swal.fire({
                 title:'Edit Contact',
                 html:res,
                 with:'100%',
@@ -74,7 +98,7 @@ function edit_contact(t)
 				   //$('.select2').select2();
 				   //alert("Dk");
 				},
-              });
+              }); */
         },
         error:function(u,v,w)
         {

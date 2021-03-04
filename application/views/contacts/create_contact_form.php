@@ -55,7 +55,7 @@ else
      <div class="form-group col-md-6">
         <label>Designation</label>
 			  <select class="form-control" name="designation" id="designation">
-					<option value=''>---Select Department----</option>
+					<option value=''>---Select Designation----</option>
               <?php 
               if (!empty($all_designation)) 
               {
@@ -83,6 +83,10 @@ else
                <div class="form-group col-md-12">
                   <label>Other Details</label>
                   <textarea class="form-control" name="otherdetails" rows="8"></textarea>
+               </div>
+			   <div class="form-group col-md-6">
+                  <label>Decision Maker</label>
+                  &nbsp;&nbsp;<input name="decision_maker" value="1" type="checkbox">
                </div>
                <div class="sgnbtnmn form-group col-md-12">
                   <div class="sgnbtn">
