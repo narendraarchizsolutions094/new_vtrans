@@ -181,7 +181,8 @@ class Contacts extends REST_Controller {
       $mobile = $this->input->post('mobileno')??'';
       $email = $this->input->post('email')??'';
       $otherdetails = $this->input->post('otherdetails')??'';
-
+      $designation = $this->input->post('designation')??'';
+      $decision_maker =$this->input->post('decision_maker')??0;
     	$this->form_validation->set_rules('company_id','company_id','required|trim');
     	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
     	$this->form_validation->set_rules('user_id','user_id','required|trim');
@@ -194,9 +195,9 @@ class Contacts extends REST_Controller {
                 'c_name' => $name,
                 'emailid' => $email,
                 'contact_number' => $mobile,
-                'designation' => $this->input->post('designation')??'',
+                'designation' => $designation,
                 'other_detail' => $otherdetails,
-                'decision_maker' => $this->input->post('decision_maker')??0,
+                'decision_maker' => $decision_maker,
             );
     		$done = 0;
             $res = $this->db->where(array('enquiry_id'=>$enquiry_id))->get('enquiry')->row();

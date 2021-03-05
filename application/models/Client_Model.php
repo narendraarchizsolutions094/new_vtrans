@@ -219,6 +219,9 @@ class Client_Model extends CI_Model
             $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
         }
 
+        // if($id)
+        //     $where.= "AND comp.id =".$id;
+
         if(!empty($where))
             $this->db->where($where);
 
