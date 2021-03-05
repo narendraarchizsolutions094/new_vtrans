@@ -27,7 +27,7 @@
 									<div class="card-body">
 										<div class="row">
 											<div class="col-md-6 col-sm-12 col-xs-12">
-												<img id="Lalantop_logo" style="width: 26%;" src="https://thecrm360.com/new_crm/assets/images/Lalantop_logo.jpg" class="m-r-sm">
+												<img id="Lalantop_logo" style="width: 26%;" src="https://v-trans.thecrm360.com/assets/images/Lalantop_logo.jpg" class="m-r-sm">
 											</div>
 
 											<div class="text-right ml-auto col-md-6">

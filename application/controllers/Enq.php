@@ -154,12 +154,12 @@ class Enq extends CI_Controller
 
 					$row[] = $sname;
 				}
-				$row[] = $each->client_name;
+				
 			}
 
-			// if ($showall == true or in_array(20, $acolarr)) {
-				
-			// }
+			if ($showall == true or in_array(21, $acolarr)) {
+				$row[] = $each->client_name;
+			}
 
 			if ($showall == true or in_array(3, $acolarr)) {
 				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname . '</a>';

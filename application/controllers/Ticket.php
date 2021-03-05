@@ -723,7 +723,7 @@ class Ticket extends CI_Controller
 			<?php
 		}else{
 			if ($post = $this->input->post()) {
-				$url = "https://thecrm360.com/new_crm/ticket/gc_vtrans_api/" . $post['trackingno'];
+				$url = "https://v-trans.thecrm360.com/ticket/gc_vtrans_api/" . $post['trackingno'];
 				
 				if ($post['trackingno']) {
 					$ch = curl_init();

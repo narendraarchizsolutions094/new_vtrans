@@ -2286,7 +2286,7 @@ public function get_enq_list_post(){
 			$process_id = 149;
 		}
 		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://thecrm360.com/new_crm/api/enquiry/create",
+		  CURLOPT_URL => "https://v-trans.thecrm360.com/api/enquiry/create",
 		  CURLOPT_RETURNTRANSFER => true,
 		  CURLOPT_ENCODING => "",
 		  CURLOPT_MAXREDIRS => 10,
@@ -2328,7 +2328,7 @@ public function get_enq_list_post(){
 		if ($this->form_validation->run() == true) {	
 			$curl = curl_init();
 			curl_setopt_array($curl, array(
-			  	CURLOPT_URL => "https://thecrm360.com/new_crm/api/enquiry/create",
+			  	CURLOPT_URL => "https://v-trans.thecrm360.com/api/enquiry/create",
 			  	CURLOPT_RETURNTRANSFER => true,
 			  	CURLOPT_ENCODING => "",
 			  	CURLOPT_MAXREDIRS => 10,
@@ -2623,7 +2623,7 @@ public function get_enq_list_post(){
                   foreach($data['active_enquiry']->result() as $value)
                   {
                     $customer='';
-                    array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->company,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
+                    array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->company_name,'client_name'=>$value->client_name,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
                   } 
 
                    $this->set_response([

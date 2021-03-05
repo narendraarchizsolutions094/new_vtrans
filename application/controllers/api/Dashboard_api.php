@@ -423,7 +423,7 @@ class Dashboard extends REST_Controller {
     }   
     public function other_stages_post()
     {
-        $base_url='https://thecrm360.com/new_crm/assets/images/icons/';
+        $base_url='https://v-trans.thecrm360.com/assets/images/icons/';
         $user_id = $this->input->post('user_id');
         $company_id = $this->input->post('company_id');
         $this->form_validation->set_rules('user_id','user_id', 'trim|required');

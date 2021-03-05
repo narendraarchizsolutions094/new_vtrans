@@ -51,12 +51,12 @@ class Contacts extends REST_Controller {
             'msg' =>'No Data',
             ], REST_Controller::HTTP_OK);
         }
-      }
+      }   
       else
       {
          $this->set_response([
             'status' => false,
-            'msg' =>'Key or By is Empty',
+            'msg' =>strip_tags(validation_errors()),
             ], REST_Controller::HTTP_OK);
       }
   }
