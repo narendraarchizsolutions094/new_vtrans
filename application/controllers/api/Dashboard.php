@@ -497,5 +497,26 @@ class Dashboard extends REST_Controller {
             ], REST_Controller::HTTP_OK); 
         }
 
-    }  
+    }
+
+public function getbranch_get()
+    {       
+            $res = $this->db->get('branch')->result();
+
+           if(!empty($res))
+           {
+             $this->set_response([
+                'status' => TRUE,            
+                'data' => $res
+            ], REST_Controller::HTTP_OK); 
+           }
+           else
+           {
+             $this->set_response([
+                'status' => FALSE,            
+                'message' => 'Not Data'
+            ], REST_Controller::HTTP_OK); 
+           }
+    }
+	
 }
