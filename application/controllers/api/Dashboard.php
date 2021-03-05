@@ -499,10 +499,16 @@ class Dashboard extends REST_Controller {
 
     }
 
-public function getbranch_get()
+public function getbranch_post()
     {       
-            $res = $this->db->get('branch')->result();
-
+	        $user_id = $this->input->post('user_id');
+            $company_id = $this->input->post('company_id');
+			if(!empty($user_id && $company_id)){
+				$this->db->select('*');
+				$this->db->from('branch');
+				$this->db->where('comp_id',$company_id);
+			$res =	$this->db->get()->result();
+            }
            if(!empty($res))
            {
              $this->set_response([
