@@ -74,7 +74,7 @@ require_once "constants.php";
     var key_id = "<?php echo RAZOR_KEY_ID; ?>";
     var store_name = 'God Speed';
     var store_description = 'Payment';
-    var store_logo = 'https://thecrm360.com/new_crm/assets/images/new_logo.png';
+    var store_logo = 'https://v-trans.thecrm360.com/assets/images/new_logo.png';
     var email = jQuery('form#razorpay-frm-payment').find('input#billing-email').val();
     var phone = jQuery('form#razorpay-frm-payment').find('input#billing-phone').val();
     

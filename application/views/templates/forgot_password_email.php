@@ -125,7 +125,7 @@
           <tr>
             <td align="center" valign="top" style="padding: 36px 24px;">
               <a href="https://sendgrid.com" target="_blank" style="display: inline-block;">
-                <img src="https://thecrm360.com/new_crm/assets/images/new_logo.png" alt="Logo" border="0" width="150" style="display: block; width: 150px; max-width: 150px; min-width: 150px;">
+                <img src="https://v-trans.thecrm360.com/assets/images/new_logo.png" alt="Logo" border="0" width="150" style="display: block; width: 150px; max-width: 150px; min-width: 150px;">
               </a>
             </td>
           </tr>

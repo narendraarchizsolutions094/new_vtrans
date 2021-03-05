@@ -5,6 +5,4 @@
   RewriteRule ^ index.php [QSA,L]
   RewriteCond %{HTTPS} off
   RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-  RewriteCond %{HTTP_HOST} ^159.65.14.105
-  RewriteRule (.*) https://thecrm360.com%{REQUEST_URI} [R=302,L]
 </IfModule>
