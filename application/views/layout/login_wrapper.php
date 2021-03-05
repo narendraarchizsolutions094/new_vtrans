@@ -195,7 +195,7 @@ if($root=='https://student.spaceinternationals.com'){	 ?>
                         <div class="form-group">
                             <label class="control-label" for="email"><?php echo "Enter Email";?></label>
                             <input type="text" placeholder="<?php echo "Enter Email"; ?>" name="femail"
-                                id="femail" class="form-control">
+                                id="femail" class="form-control" required>
                         </div>
 						<div class="form-group">
                             <label class="control-label" for="email"><?php echo "Employee Code";?></label>
@@ -348,6 +348,8 @@ if($root=='https://student.spaceinternationals.com'){	 ?>
                         Swal.fire("Warning!", "This email doesn't exist", "warning");
                     } else if (data == 4) {
                         Swal.fire("Warning!", "Email is not configured", "warning");
+                    } else if (data == 5) {
+                        Swal.fire("Warning!", "Please Check Employee Code And Email Id Are Not Associated With Same Account!", "warning");
                     } else if (data == 99) {
                         Swal.fire({
                             title: "Congratulation",

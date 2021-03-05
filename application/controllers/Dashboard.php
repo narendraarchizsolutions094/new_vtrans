@@ -1448,25 +1448,34 @@ if (!empty($enquiry_separation)) {
             if(is_numeric($email) == 1)
             {
               $data = $this->dashboard_model->getUserDataByPhone($email,$ecode);
+			  print_r($data);exit;
               //$this->load->library('email');
               if(!empty($data))
               {
                 $this->db->where('comp_id',$data->companey_id);
                 $this->db->where('api_key','message');
                 $email_row  =   $this->db->get('api_integration')->row_array();
-              }
+              }else{
+				  echo "5";die;
+			  }
               
             }
             else
             {
               $data = $this->dashboard_model->change_pass($email,$ecode);
+			  if(!empty($data))
+              {
               $this->load->library('email');
               $this->db->where('comp_id',$data->companey_id);
               $this->db->where('status',1);
               $email_row  =   $this->db->get('email_integration')->row_array();
+			  }else{
+				echo "5";die;  
+			  }
             }
             
-            
+            if(!empty($data))
+              {
             if(empty($email_row) && $data->companey_id != 81){ 
                 echo "4";die;                
             }else{
@@ -1531,6 +1540,9 @@ if (!empty($enquiry_separation)) {
             }
         }
       }
+			  }else{
+				echo "5";die;  
+			  }
     }
     public function verifyOTP()
     {
