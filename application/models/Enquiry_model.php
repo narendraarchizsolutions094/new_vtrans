@@ -1859,7 +1859,9 @@ class Enquiry_model extends CI_Model {
     public function active_enqueries_api($id,$type,$user_role,$process='',$offset=-1,$limit=-1) 
     { 
         $all_reporting_ids    =   $this->common_model->get_categories($id,$type);
-        $this->db->from($this->table);        
+        $this->db->select('enquiry.*,comp.company_name');
+        $this->db->from($this->table);    
+        $this->db->join('tbl_company comp','comp.id=enquiry.company','left');    
         $where  = "";
         $datatype = $type;
         $where .= " enquiry.status=$datatype ";
@@ -4745,7 +4747,7 @@ public function insertComInfo($data)
         // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
         $where=" enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
 
-        $this->db->select('tbl_visit.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name');
+        $this->db->select('tbl_visit.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name');
         $this->db->from('tbl_visit');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');

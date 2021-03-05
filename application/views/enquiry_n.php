@@ -865,6 +865,9 @@ display: block;
               <?php if ($showall == true or in_array(2, $acolarr)) {  ?>
                   <th><?php echo display("company_name"); ?></th>
                    <?php } ?>
+            <?php if ($showall == true or in_array(21, $acolarr)) {  ?>
+                  <th><?php echo display("client_name"); ?></th>
+                   <?php } ?>
               <?php if ($showall == true or in_array(3, $acolarr)) {  ?>
             <th>Name</th>
                    <?php } ?>
@@ -1256,6 +1259,9 @@ display: block;
           </div>
           <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>>  Company</label> 
+          </div>
+          <div class = "col-md-4">  
+          <label class=""><input type="checkbox" class="choose-col"  value = "21"  <?php echo ($showall == true or in_array(21, $acolarr)) ? "checked" : ""; ?>>  Client Name</label> 
           </div>
           <div class = "col-md-4">  
           <label  class=""><input type="checkbox" class="choose-col"  value = "3"  <?php echo ($showall == true or in_array(3, $acolarr)) ? "checked" : ""; ?>> Name</label>
