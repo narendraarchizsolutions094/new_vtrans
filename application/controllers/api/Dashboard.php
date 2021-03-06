@@ -460,7 +460,7 @@ class Dashboard extends REST_Controller {
     }   
     public function other_stages_post()
     {
-        $base_url='https://thecrm360.com/new_crm/assets/images/icons/';
+        $base_url='https://v-trans.thecrm360.com/assets/images/icons/';
         $user_id = $this->input->post('user_id');
         $company_id = $this->input->post('company_id');
         $this->form_validation->set_rules('user_id','user_id', 'trim|required');
@@ -497,5 +497,32 @@ class Dashboard extends REST_Controller {
             ], REST_Controller::HTTP_OK); 
         }
 
-    }  
+    }
+
+public function getbranch_post()
+    {       
+	        $user_id = $this->input->post('user_id');
+            $company_id = $this->input->post('company_id');
+			if(!empty($user_id && $company_id)){
+				$this->db->select('*');
+				$this->db->from('branch');
+				$this->db->where('comp_id',$company_id);
+			$res =	$this->db->get()->result();
+            }
+           if(!empty($res))
+           {
+             $this->set_response([
+                'status' => TRUE,            
+                'data' => $res
+            ], REST_Controller::HTTP_OK); 
+           }
+           else
+           {
+             $this->set_response([
+                'status' => FALSE,            
+                'message' => 'Not Data'
+            ], REST_Controller::HTTP_OK); 
+           }
+    }
+	
 }

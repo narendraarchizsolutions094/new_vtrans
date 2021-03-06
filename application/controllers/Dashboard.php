@@ -129,7 +129,7 @@ class Dashboard extends CI_Controller {
              } 
          $curl = curl_init();
           curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://thecrm360.com/new_crm/api/enquiry/create",
+          CURLOPT_URL => "https://v-trans.thecrm360.com/api/enquiry/create",
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => "",
           CURLOPT_MAXREDIRS => 10,
@@ -253,7 +253,7 @@ class Dashboard extends CI_Controller {
              } 
           $curl = curl_init();
           curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://thecrm360.com/new_crm/api/enquiry/create",
+          CURLOPT_URL => "https://v-trans.thecrm360.com/api/enquiry/create",
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => "",
           CURLOPT_MAXREDIRS => 10,
@@ -4085,7 +4085,7 @@ public function fb_token_new() {
 
      $curl = curl_init();
       curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://thecrm360.com/new_crm/api/enquiry/create",
+      CURLOPT_URL => "https://v-trans.thecrm360.com/api/enquiry/create",
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,

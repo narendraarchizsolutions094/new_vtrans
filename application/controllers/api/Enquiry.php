@@ -2367,7 +2367,7 @@ public function get_enq_list_post(){
 			$process_id = 149;
 		}
 		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://thecrm360.com/new_crm/api/enquiry/create",
+		  CURLOPT_URL => "https://v-trans.thecrm360.com/api/enquiry/create",
 		  CURLOPT_RETURNTRANSFER => true,
 		  CURLOPT_ENCODING => "",
 		  CURLOPT_MAXREDIRS => 10,
@@ -2409,7 +2409,7 @@ public function get_enq_list_post(){
 		if ($this->form_validation->run() == true) {	
 			$curl = curl_init();
 			curl_setopt_array($curl, array(
-			  	CURLOPT_URL => "https://thecrm360.com/new_crm/api/enquiry/create",
+			  	CURLOPT_URL => "https://v-trans.thecrm360.com/api/enquiry/create",
 			  	CURLOPT_RETURNTRANSFER => true,
 			  	CURLOPT_ENCODING => "",
 			  	CURLOPT_MAXREDIRS => 10,
