@@ -128,75 +128,9 @@ function deleteContact(t)
 }
 </script>
 
-<div id="Save_Contact" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Contacts</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <?php
-            if(!empty($contact_create_form))
-                echo $contact_create_form;
-            ?>
-          </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         </div>
-      </div>
-   </div>
-</div>   
-<script type="text/javascript">
-var c = getCookie('contact_allowcols');
-</script>
 
-<script type="text/javascript">
-
-var specific_list = "<?=!empty($this->uri->segment(3))?$this->uri->segment(3):''?>";
-
-specific_list = atob(specific_list);
-
-var TempData = {};
-$(".d_filter").on('change',function(){
-
-  $('#deals_table').DataTable().ajax.reload();
- 
-});
-$(document).ready(function(){
-
-  $('#contactTable').DataTable({ 
-
-          "processing": true,
-          "scrollX": true,
-          "serverSide": true,          
-          "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
-          "ajax": {
-              "url": "<?=base_url().'client/contacts_load_data'?>",
-              "type": "POST",
-              "data":function(d){
-                     d.view_all=true;
-                     d.specific_list = specific_list;
-                       if(c && c!='')
-                      d.allow_cols = c;
-
-                     console.log(JSON.stringify(d));
-                    return d;
-              }
-          },
-         columnDefs: [
-                       { orderable: false, targets: -1 }
-                    ]
-  });
-
-});
-
-</script>
 <div id="table-col-conf" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg" style="width: 96%;">
- 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
@@ -248,6 +182,32 @@ $(document).ready(function(){
     </div>
   </div>
 </div>
+
+<div id="Save_Contact" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Contacts</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <?php
+            if(!empty($contact_create_form))
+                echo $contact_create_form;
+            ?>
+          </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>   
+
+<script type="text/javascript">
+var c = getCookie('contact_allowcols');
+</script>
 
 <script type="text/javascript">
   
@@ -308,6 +268,49 @@ $('.choose-col').change(function(){
         $('#selectall').prop('checked',true);
     else
       $('#selectall').prop('checked',false);
+});
+
+</script>
+
+
+<script type="text/javascript">
+
+var specific_list = "<?=!empty($this->uri->segment(3))?$this->uri->segment(3):''?>";
+
+specific_list = atob(specific_list);
+
+var TempData = {};
+$(".d_filter").on('change',function(){
+
+  $('#deals_table').DataTable().ajax.reload();
+ 
+});
+$(document).ready(function(){
+
+  $('#contactTable').DataTable({ 
+
+          "processing": true,
+          "scrollX": true,
+          "serverSide": true,          
+          "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
+          "ajax": {
+              "url": "<?=base_url().'client/contacts_load_data'?>",
+              "type": "POST",
+              "data":function(d){
+                     d.view_all=true;
+                     d.specific_list = specific_list;
+                       if(c && c!='')
+                      d.allow_cols = c;
+
+                     console.log(JSON.stringify(d));
+                    return d;
+              }
+          },
+         columnDefs: [
+                       { orderable: false, targets: -1 }
+                    ]
+  });
+
 });
 
 </script>

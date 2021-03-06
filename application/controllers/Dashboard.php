@@ -3728,9 +3728,13 @@ public function set_layout_to_session() {
     {       
         // echo $content;
         // exit();
-      
-        $this->pdf->create($content,0);
-      
+        
+        $task = 0;
+        if(!empty($this->input->post('task')))
+          $task = $this->input->post('task');
+
+        $this->pdf->create($content,$task);
+
         if($this->input->post('redirect_url')){
             redirect($this->input->post('redirect_url')); //updateclient                
         }else{
@@ -3811,8 +3815,41 @@ $data=array();
 }
 
 public function quotation_preview($info_id)
-{   
-    echo'<style>body{margin:0px;}</style><embed src="'.base_url('dashboard/pdf_gen/').$info_id.'#toolbar=0&navpanes=0&scrollbar=0" style="width:100%; height:100%; left:0;right:0;"></embed>';
+{   $info =  $this->db->where('id',$info_id)->get('commercial_info')->row();
+    if(empty($info))
+    {
+      echo'No Data';
+      exit();
+    } 
+    echo'<style>body{margin:0px;}
+        .btn{
+          padding:15px 20px;
+          border:1px solid black;
+          background:white;
+          color:black;
+          font-weight:bold;
+        }
+        form{
+          display:inline-block;
+        }
+    </style>
+          <embed src="'.base_url('dashboard/pdf_gen/').$info_id.'#toolbar=0&navpanes=0&scrollbar=0" style="width:100%; height:100%; left:0;right:0;">
+          </embed>';
+
+    if($info->edited==0)
+    {
+        echo'<div style="position:fixed; bottom:10px; right:30px;">
+              <form action="'.base_url('dashboard/pdf_gen/').$info_id.'" method="post">
+
+                <input type="hidden" name="task" value="1">
+                <button type="submit" class="btn">Download</button>
+              </form>
+              <form action="'.base_url('dashboard/pdf_gen/').$info_id.'" method="post">
+                <input type="hidden" name="submit" value="Email">
+                <button type="submit" class="btn">Email</button>
+              </form>
+        </div>';
+    }
 }
 public function insert() 
 {

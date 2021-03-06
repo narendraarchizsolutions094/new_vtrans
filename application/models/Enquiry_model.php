@@ -63,7 +63,7 @@ class Enquiry_model extends CI_Model {
 				
 				$biarr[] = array( 
 
-								"enq_no"  => $data["Enquery_id"],
+								  "enq_no"  => $data["Enquery_id"],
 								  "input"   => $val,
 								  "parent"  => $insid, 
 								  "fvalue"  => (!empty($enqinfo[$ind])) ? $enqinfo[$ind] : "",
@@ -4662,9 +4662,10 @@ public function insertComInfo($data)
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
         $where.=" AND enq.drop_status=0 and enq.product_id IN (".$process.")";
 
-        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type,enq.company');
+        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type,enq.company,enq.client_name,comp.company_name');
         $this->db->from ('commercial_info info');
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
+        $this->db->join('tbl_company comp','comp.id=enq.company','left');
         $this->db->where("info.comp_id",$company_id);
         $this->db->where($where);
 

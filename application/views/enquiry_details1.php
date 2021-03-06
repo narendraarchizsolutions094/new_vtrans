@@ -2082,8 +2082,8 @@ if(user_access('1020'))
                           </div>
                         </div>
                         </div>
-<input type="hidden" name="enquiry_id" value="<?=$details->enquiry_id?>">
-  <input type="hidden" name="enq_code" value="<?=$details->Enquery_id?>">
+    <input type="hidden" name="enquiry_id" value="<?=$details->enquiry_id?>">
+    <input type="hidden" name="enq_code" value="<?=$details->Enquery_id?>">
                         
                 <div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>

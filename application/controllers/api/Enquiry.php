@@ -109,6 +109,7 @@ class Enquiry extends REST_Controller {
                 'region_id'  =>!empty($city_id->row())?$city_id->row()->region_id:'',
                 'territory_id'  =>!empty($city_id->row())?$city_id->row()->territory_id:'',
                 'pin_code' => $this->input->post('pin_code')??'',
+                'designation'=>$this->input->post('designation')??'',
                 //'created_date' =>$enquiry_date, 
                 //'status' => $this->input->post('status'),
               ];
@@ -263,7 +264,8 @@ class Enquiry extends REST_Controller {
     if($this->form_validation->run() == true)
     {
       $primary_tab= $this->Enquiry_model->getPrimaryTab()->id;
-     
+      $company_key = -1;
+      $last_name_key = -1;
       $basic= $this->location_model->get_company_list1($process_id);
       foreach ($basic as $key => $input)
       {
@@ -289,6 +291,7 @@ class Enquiry extends REST_Controller {
             break;
             case 2:
             $basic[$key]['parameter_name'] = 'lastname';
+            $last_name_key = $key;
             break;
             case 3:
             $values = array(
@@ -311,8 +314,8 @@ class Enquiry extends REST_Controller {
             break;
             case 6:
             $basic[$key]['parameter_name'] = 'org_name';
+            $company_key = $key;
             break;
-            
             case 7:
             $leadsource = $this->Leads_Model->get_leadsource_list();
             $values = array();
@@ -379,6 +382,84 @@ class Enquiry extends REST_Controller {
             // break;
           }
       }
+
+      if($company_key!=-1)
+      {
+          $self_created1 = array(
+                        array(
+                              "id"=> -1,
+                              "comp_id"=> 65,
+                              "field_id"=>-1,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Sales Branch",
+                              "type"=> "Dropdown",
+                              "parameter_name"=> "sales_branch",
+                              "input_values"=>array(),
+                        ),
+                         array(
+                              "id"=> -2,
+                              "comp_id"=> 65,
+                              "field_id"=>-2,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Client Name",
+                              "type"=> "Text",
+                              "parameter_name"=> "client_name"
+                        ),
+                          array(
+                              "id"=> -3,
+                              "comp_id"=> 65,
+                              "field_id"=>-3,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Contact",
+                              "type"=> "Dropdown",
+                              "input_values"=>array(),
+                              "parameter_name"=> "contact_id"
+                        ),
+                        
+
+          );
+        
+          array_splice($basic, $company_key+1,0,$self_created1);
+      }
+
+     
+
+      if($last_name_key!=-1)
+      {
+         foreach ($basic as $key=> $find) 
+          {
+              if($find['field_id']==2)
+                $last_name_key = $key;
+          }
+
+        $self_created2 = array(
+                             array(
+                                  "id"=> -4,
+                                  "comp_id"=> 65,
+                                  "field_id"=>-4,
+                                  "form_id"=> "0",
+                                  "process_id"=> "141",
+                                  "status" =>"1",
+                                  "fld_order"=>"0",
+                                  "title"=> "Designation",
+                                  "type"=> "Dropdown",
+                                  "input_values"=>array(),
+                                  "parameter_name"=> "designation"
+                                ),
+                           );
+        array_splice($basic, $last_name_key+1,0,$self_created2);
+      }
+       
+
       $dynamic = $this->location_model->get_company_list($process_id,$primary_tab);
       $i=0;
       foreach ($dynamic as $key => $value)

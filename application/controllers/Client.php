@@ -221,6 +221,16 @@ class Client extends CI_Controller {
         $this->load->view('layout/main_wrapper', $data);
     }
 
+    public function contact_form_ajax()
+    {   
+        $x = array();
+        if(!empty($_POST['enq_id']))
+        {
+            $x['enquiry_id'] = $_POST['enq_id'];
+        }
+      echo  $this->load->view('contacts/create_contact_form',$x,true);
+    }
+
     public function views() {
         $leadid = $this->uri->segment(3);
         $data['details'] = $this->Client_Model->get_clientid_bycustomerCODE($leadid);

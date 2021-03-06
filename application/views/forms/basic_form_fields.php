@@ -43,6 +43,23 @@
                         <label><?php echo display("last_name"); ?> <i class="text-danger"></i></label>
                         <input class="form-control" value="<?php  echo set_value('lastname');?>" name="lastname" type="text" placeholder="Last Name">  
                      </div>
+
+                     <div class="form-group col-sm-4 col-md-4 "> 
+                        <label><?php echo display("designation"); ?> <i class="text-danger"></i></label>
+                        <select class="form-control" name="designation">
+                          <?php
+                          $desg=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_designation')->result();
+                            if(!empty($desg))
+                            {
+                              foreach ($desg as $key => $value)
+                              {
+                                echo'<option value="'.$value->id.'">'.$value->desi_name.'</option>';
+                              }
+                            }
+                          ?>
+                        </select>
+                     </div>
+
                      <?php
                    }
                    ?>

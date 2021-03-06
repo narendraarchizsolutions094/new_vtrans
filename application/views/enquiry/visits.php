@@ -293,7 +293,7 @@ $('input[name="filter_checkbox"]').click(function(){
 
 </script>
 <br>
-
+<a class="dropdown-toggle" data-toggle="modal" data-target="#Add_Contact" id="open_contact_form" title="Add Contact" style=""></a>
 	<div class="row" >
  
 	<div class="col-lg-12" >
@@ -611,6 +611,27 @@ $("select").select2();
    </div>
 </div>
 
+
+ 
+
+
+<div id="Add_Contact" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add Contact</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row" id="contact_form">
+            </div>
+          </div>
+      </div>
+    </div>
+</div>
+
+
 <div id="Save_Visit" class="modal fade" role="dialog">
    <div class="modal-dialog">
       <!-- Modal content-->
@@ -624,18 +645,18 @@ $("select").select2();
 
 <form id="visit_create_form" action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
           <div class="row">
-                        <div class="form-group col-md-12">
-                        <label>Select Visit Type</label>
-                        <div class="form-check">
-                              <label class="radio-inline">
-                              <input name="type"  name="type" value="1" type="radio" checked onclick="handleClick(this);">Current Visit</label>
-                              <label class="radio-inline">
-                              <input type="radio" name="type" value="2" onclick="handleClick(this);">Future Visit</label>
-                          </div>
-                        </div>
-                        </div>
+                <div class="form-group col-md-12">
+                    <label>Select Visit Type</label>
+                    <div class="form-check">
+                        <label class="radio-inline">
+                        <input name="type"  name="type" value="1" type="radio" checked onclick="handleClick(this);">Current Visit</label>
+                        <label class="radio-inline">
+                        <input type="radio" name="type" value="2" onclick="handleClick(this);">Future Visit</label>
+                    </div>
+                  </div>
+                </div>
 						
-				<div class="form-group col-md-6 visit-time col-md-6">     
+				        <div class="form-group col-md-6 visit-time col-md-6">     
                     <label>Purpose of meeting</label>
                     <input type="text" name="m_purpose" id="m_purpose" class="form-control" required>
                 </div>
@@ -668,20 +689,15 @@ $("select").select2();
                     </label>
                   <select class="form-control" name="enq_id" required>
                     <option value="">Select</option>
-                    <?php
-                  // if(!empty($all_enquiry))
-                  // {
-                  //   foreach ($all_enquiry as $row)
-                  //   {
-                  //     echo'<option value="'.$row->enquiry_id.'" >'.$row->name_prefix.' '.$row->name.' '.$row->lastname.'</option>';
-                  //   }
-                  // }
-                    ?>
                   </select>
                </div>
 
                 <div class="form-group col-md-6">
-                  <label style="width: 100%">Contact Name <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span></label>
+                  <label style="width: 100%">Contact Name 
+                    <span style="float: right; color:gray;" onclick="add_contact()">
+                    <i class="fa fa-plus"></i>
+                    </span>
+                  </label>
                   <select class="form-control" name="contact_id" required>
                     <option value="">Select</option>
                   </select>
@@ -696,39 +712,6 @@ $("select").select2();
           <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>" required>
         </div>
      
-        <!-- <div class="form-group col-md-6 distance-travelled-type col-md-6">      
-        <label>DISTANCE TRAVELLED TYPE</label>
-           <input type="text" name="travelled_type" class="form-control">
-        </div> -->
-    
-        <!-- <div class="form-group col-md-6 customer-rating col-md-6">      
-        <label>Customer Rating</label>
-          <select class="form-control" name="rating">
-              <option value="">Select</option>
-              <option value="1 star">1 star</option>
-              <option value="2 star"> 2 star</option>
-              <option value="3 star"> 3 star</option>
-              <option value="4 star"> 4 star</option>
-              <option value="5 star"> 5 star</option>
-            </select>
-        </div> -->
-        
-<!--          
-      <div class="col-md-12">
-      <label style="color:#283593;">Next Visit Information<i class="text-danger"></i></label>
-       <hr>
-      </div>
-        
-          <div class="form-group col-md-6 next-visit-date col-md-6">      
-            <label>Next Visit Date</label>
-             <input type="date" name="next_visit_date" class="form-control">
-          </div>
-      
-          <div class="form-group col-md-6 next-visit-location col-md-6">      
-           <label>Next Visit Location</label>
-             <input type="text" name="next_location" class="form-control">
-          </div>
-                   -->
         <input type="hidden" name="dis_notification_id" value="">
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
@@ -740,7 +723,7 @@ $("select").select2();
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" id="close_visit" class="btn btn-default" data-dismiss="modal">Close</button>
          </div>
       </div>
    </div>
@@ -810,7 +793,39 @@ $("select").select2();
   </div>
 </div>
 
+
 <script type="text/javascript">
+function add_contact()
+{
+  var enq = $("select[name=enq_id]").val();
+  if(enq!='')
+  {
+    $("#close_visit").click(); 
+    $.ajax({
+        url:"<?=base_url('client/contact_form_ajax/')?>",
+        type:"post",
+        data:{enq_id:enq},
+        success:function(res)
+        {
+              if(res){
+                $("#open_contact_form").click();
+                $("#contact_form").html(res);
+                $("#contact_form select").select2();
+              }
+        },
+        error:function(u,v,w)
+        {
+          alert(w);
+        }
+    });
+  }
+  else
+  { 
+    alert('Please Select Client Name First.');  
+  }
+
+}
+
 function checkvisit(visitid){
 document.getElementById("visit_id").value =visitid;
 }

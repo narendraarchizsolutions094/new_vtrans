@@ -542,6 +542,7 @@ class Enquiry extends CI_Controller
                 'company' => $this->input->post('company'),
 				'sales_branch' => $this->input->post('sales_branch'),
 				'client_name' => $this->input->post('client_name'),
+                'designation' => $this->input->post('designation')??'',
                 'address' => $this->input->post('address'),
                 'pin_code' => $this->input->post('pin_code'),
                 'checked' => 0,
