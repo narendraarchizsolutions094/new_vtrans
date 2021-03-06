@@ -2913,16 +2913,18 @@ if($root=='https://student.spaceinternationals.com'){  ?>
         var vform = $("#visit_create_form");
         var vtype =  $(vform).find('input[name=type]:checked').val();
         
-        var _contact = $(vform).find("select[name='enquiry_id'] option:selected"); 
+        var _contact = $(vform).find("select[name='contact_id'] option:selected"); 
         var cname =  $(_contact).html();
-        enq_id = $(_contact).val();
-       
+        var enquiry = $(vform).find("select[name='enq_id'] option:selected"); 
+      
+       var enq_id = $(enquiry).val();
+       var m_purpose = $(vform).find('input[name=m_purpose]').val();
         time = $(vform).find("#vtime").val();
         task_date = $(vform).find("#vdate").val();
         subject = 'Visit : '+cname;
         var uid = "<?=$this->session->user_id?>";
 
-        if(cname=='' || enq_id=='' || time=='' || task_date=='' || subject=='' || uid=='')
+        if(cname=='' || enq_id=='' || time=='' || task_date=='' || subject=='' || uid=='' || m_purpose=='')
         {
             alert('Fill all the fields.');
             return;
@@ -2940,7 +2942,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     id = writeUserData(uid, subject, res.trim(), task_date, time);
                     //console.log(id);
 
-                    $(vform).find("input[name='dis_notification_id']").val(id);
+                    $(vform).find("input[name='visit_notification_id']").val(id);
                     $("#visit_create_form").submit();
                 }
             });

@@ -712,7 +712,7 @@ $("select").select2();
           <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>" required>
         </div>
      
-        <input type="hidden" name="dis_notification_id" value="">
+        <input type="hidden" name="visit_notification_id" value="">
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
                <input id="visit_create_btn" type="submit" name="submit_only" class="btn btn-primary" value="Save">

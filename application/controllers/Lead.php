@@ -233,6 +233,7 @@ class Lead extends CI_Controller
     }
     public function lead_details($enquiry_id = null)
     {
+        $this->load->model('Client_Model');
         $data['title'] = display('Lead Details');
         $compid = $this->session->userdata('companey_id');
         //$enquiry_id = $this->uri->segment(3);
@@ -350,7 +351,7 @@ class Lead extends CI_Controller
 		$data['branch_lists']=$this->Branch_model->all_sales_branch();
 		$data['region_lists']=$this->Branch_model->all_sales_region();
         $enq['enquiry_id'] = $enquiry_id;
-
+        $data['all_contact']= $this->Client_Model->getContactList()->result();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
         
         $data['content'] = $this->load->view('enquiry_details1', $data, true);

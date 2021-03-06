@@ -2082,9 +2082,30 @@ if(user_access('1020'))
                           </div>
                         </div>
                         </div>
-    <input type="hidden" name="enquiry_id" value="<?=$details->enquiry_id?>">
+    <select style="display: none;" name="enq_id">
+      <option value="<?=$details->enquiry_id?>" selected></option>
+    </select>
     <input type="hidden" name="enq_code" value="<?=$details->Enquery_id?>">
                         
+
+                <div class="form-group col-md-6 visit-time col-md-6">     
+                    <label>Purpose of meeting</label>
+                    <input type="text" name="m_purpose" id="m_purpose" class="form-control" required>
+                </div>
+                <div class="form-group col-md-6 visit-time col-md-6">     
+                    <label>Contact</label>
+                    <select class="form-control" name="contact_id">
+                      <?php
+                      if(!empty($all_contact))
+                      {
+                        foreach ($all_contact as $key => $value) {
+                          echo'<option value="'.$value->cc_id.'">'.$value->c_name.'</option>';
+                        }
+                        
+                      }
+                      ?>
+                    </select>
+                </div>
                 <div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
           <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>">
@@ -2093,10 +2114,10 @@ if(user_access('1020'))
          <label>Visit Time</label>
           <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>">
         </div>
-
+        <input type="hidden" name="visit_notification_id" value="">
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
-               <input type="submit" name="submit_only" class="btn btn-primary" value="Save">
+               <input id="visit_create_btn" type="submit" name="submit_only" class="btn btn-primary" value="Save">
             </div>
          </div>
 
@@ -5857,7 +5878,7 @@ jQuery(document).ready(function(){
 });
 
 if("<?=$this->session->companey_id?>"==65){
-   $(".designation").insertAfter(".enq-last-name");
+   //$(".designation").insertAfter(".enq-last-name");
    $(".enq-remark").insertAfter(".website");
 }
 

@@ -105,6 +105,7 @@ class Client extends CI_Controller {
         
     }
     public function view($enquiry_id) {
+        $this->load->model('Client_Model');
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);   
         //$data['state_city_list'] = $this->location_model->get_city_by_state_id($data['details']->enquiry_state_id);
         //$data['state_city_list'] = $this->location_model->ecity_list();
@@ -213,7 +214,7 @@ class Client extends CI_Controller {
         $data['region_lists']=$this->Branch_model->all_sales_region();
         //$data['dept_lists']=$this->User_model->all_sales_dept();	
         $enq['enquiry_id'] = $enquiry_id;
-
+        $data['all_contact']= $this->Client_Model->getContactList()->result();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
         	
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
@@ -779,7 +780,7 @@ class Client extends CI_Controller {
 			$client_type = $this->input->post('client_type');
 			$business_load = $this->input->post('business_load');
 			$industries = $this->input->post('industries');
-
+            $designation = $this->input->post("designation");
 
             if($this->input->post('country_id')){
                  $country_id = implode(',',$this->input->post('country_id'));
@@ -839,6 +840,7 @@ class Client extends CI_Controller {
 			$this->db->set('client_type', $client_type);
 			$this->db->set('business_load', $business_load);
 			$this->db->set('industries', $industries);
+            $this->db->set('designation',$designation);
             $this->db->set('enquiry', $enquiry);
             $this->db->set('lastname', $lastname);
             $this->db->set('state_id', $state_id);

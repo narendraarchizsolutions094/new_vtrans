@@ -109,12 +109,25 @@ class Client_Model extends CI_Model
         $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
         $user_id = !empty($user_id)?$user_id:$this->session->user_id;
         
-        $where = 'enquiry.comp_id='.$comp_id;
+        $where1 = 'enquiry.comp_id='.$comp_id;
+
         $all_reporting_ids    =   $this->common_model->get_categories($user_id);
-        $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
-        if($where)
-            $this->db->where($where);
+        $where1 .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where1 .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
+
+
+        $this->db->select('company');
+        $this->db->from('enquiry');
+        $this->db->where($where1);
+        $res = $this->db->get()->result();
+        $id_array=array();
+        foreach($res as $val){
+            $id_array[] = $val->company;
+        }
+
+
+        // if($where)
+        //     $this->db->where($where);
        
         if(!empty($specific))
             $this->db->where_in('cc_id',$specific);
@@ -122,6 +135,8 @@ class Client_Model extends CI_Model
         $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name');
         $this->db->from('tbl_client_contacts contacts');
         $this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
+        $this->db->where_in('enquiry.company',array_unique($id_array));
+
         $this->db->order_by('contacts.cc_id desc');
 
         if(!empty($_POST['filters']))

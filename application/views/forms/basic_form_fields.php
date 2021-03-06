@@ -140,7 +140,7 @@
 					  
 					           <div class="form-group col-sm-4 col-md-4">
                         <label><?php echo 'Client Name'; ?> <i class="text-danger"></i></label>
-                        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name"  placeholder="Enter Client Name"> 
+                        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name"  placeholder="Enter Client Name" readonly>  
                      </div>
 
                      <div class="form-group col-md-4">
@@ -458,6 +458,7 @@ function load_contacts(v)
               $("#contact_id").html('<option value="">Select Contact</option>'+q);
             }
   });
+  $("#sales_branch").trigger("change");
 }
 
 function set_contact(v)
@@ -472,8 +473,9 @@ function set_contact(v)
                 console.log(q);
                 if(q.status==1)
                 {   q=q.data;
+                  
                     $("input[name=enquirername]").val(q.c_name);
-                    $("#designation").val(q.designation);
+                    $("select[name=designation]").val(q.designation).trigger('change');
                     $("input[name=mobileno]").val(q.contact_number);
                     $("input[name=email]").val(q.emailid);
                 }

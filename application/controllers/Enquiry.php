@@ -1210,6 +1210,9 @@ class Enquiry extends CI_Controller
 		} 
         $data['all_designation'] = $this->Leads_Model->desi_select();		
         $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
+
+        $data['all_contact']= $this->Client_Model->getContactList()->result();
+
         //echo"<pre>";print_r($data);die;
 		$this->load->model('Branch_model');
 		$data['branch_lists']=$this->Branch_model->all_sales_branch();

@@ -400,6 +400,7 @@ class Enquiry extends REST_Controller {
                               "type"=> "Dropdown",
                               "parameter_name"=> "sales_branch",
                               "input_values"=>array(),
+                              "is_required"=>1,
                         ),
                          array(
                               "id"=> -2,
@@ -411,7 +412,8 @@ class Enquiry extends REST_Controller {
                               "fld_order"=>"0",
                               "title"=> "Client Name",
                               "type"=> "Text",
-                              "parameter_name"=> "client_name"
+                              "parameter_name"=> "client_name",
+                              "is_required"=>1,
                         ),
                           array(
                               "id"=> -3,

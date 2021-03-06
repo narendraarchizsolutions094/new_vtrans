@@ -357,7 +357,7 @@ function relocate_mobile()
 <script>
   $(document).ajaxComplete(function(){ 
     if("<?=$this->session->companey_id?>"==65){
-      $(".designation").insertAfter(".enq-last-name");
+      //$(".designation").insertAfter(".enq-last-name");
       $(".enq-remark").insertAfter(".website");
     }
   });

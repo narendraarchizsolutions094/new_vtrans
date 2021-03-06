@@ -65,6 +65,23 @@ $type="text";
       <label><?=display('last_name')?> <!-- <i class="text-danger">*</i> --></label>
       <input class="form-control" value="<?php echo $details->lastname ?>" name="lastname" type="text" placeholder="Last Name" >  
    </div>
+
+    <div class="form-group col-sm-6 col-md-6 "> 
+      <label><?php  echo display("designation");  ?> <i class="text-danger"></i></label>
+      <select class="form-control" name="designation">
+        <?php
+        $desg=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_designation')->result();
+          if(!empty($desg))
+          {
+            foreach ($desg as $key => $value)
+            {
+              echo'<option value="'.$value->id.'" '.($details->designation==$value->id?'selected':'').'>'.$value->desi_name.'</option>';
+            }
+          }
+        ?>
+      </select>
+   </div>
+
    <?php }?>
    <?php  if(is_active_field(MOBILE,$process_id)){  ?>
    <div class="form-group col-sm-6 col-md-6 enq-mobile"> 
@@ -295,7 +312,7 @@ $type="text";
 					  
 	<div class="form-group col-sm-6 col-md-6">
         <label><?php echo 'Client Name'; ?> <i class="text-danger"></i></label>
-        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name"> 
+        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name" readonly> 
     </div>
 	
 	<div class="form-group col-md-6">
