@@ -109,7 +109,9 @@ class Enquiry extends REST_Controller {
                 'region_id'  =>!empty($city_id->row())?$city_id->row()->region_id:'',
                 'territory_id'  =>!empty($city_id->row())?$city_id->row()->territory_id:'',
                 'pin_code' => $this->input->post('pin_code')??'',
-                'designation'=>$this->input->post('designation')??'',
+                'sales_branch' => $this->input->post('sales_branch')??'',
+                'client_name' => $this->input->post('client_name')??'',
+                'designation' => $this->input->post('designation')??'',
                 //'created_date' =>$enquiry_date, 
                 //'status' => $this->input->post('status'),
               ];

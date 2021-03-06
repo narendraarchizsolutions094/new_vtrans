@@ -47,7 +47,7 @@ class Lead extends REST_Controller {
                   foreach($data['active_enquiry']->result() as $value){
                       $customer='';
                       
-                    array_push($res,array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->org_name,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
+                    array_push($res,array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->org_name,'client_name'=>$value->client_name,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
                  } 
                }
 			}
@@ -802,7 +802,7 @@ $compid = $this->input->post('comp_id');
                   foreach($data['active_enquiry']->result() as $value){
                       $customer='';
                       
-                    array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->org_name,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
+                    array_push($res['list'],array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->company_name,'client_name'=>$value->client_name,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
                  } 
                }
       }

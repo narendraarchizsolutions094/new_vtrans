@@ -1785,8 +1785,8 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                      <thead class="thead-light">
                        <tr>                              
                           <th>S.N.</th>
-                        <!--   <th id="th-1">Name</th> -->
-                      <!--     <th id="th-2">Branch Type</th> -->
+                          <th id="th-21">Company</th>
+                          <th id="th-22">Client Name</th>
                           <th id="th-3">Business Type</th>
                           <th id="th-4">Booking Type</th>
         <!--                   <th id="th-5">Booking Branch</th>
@@ -1917,8 +1917,8 @@ $(document).ready(function(){
                      d.specific_list = specific_list;
                      TempData = d;
 
-                      if(c && c!='')
-                      d.allow_cols = c;
+                      // if(c && c!='')
+                      // d.allow_cols = ;
 
                      console.log(JSON.stringify(d));
                     return d;
@@ -2070,7 +2070,7 @@ if(user_access('1020'))
          <div class="modal-body">
             <div class="row" >
 
-<form action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
+<form  id="visit_create_form" action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
           <div class="row">
                         <div class="form-group col-md-12">
                         <label>Select Visit Type</label>

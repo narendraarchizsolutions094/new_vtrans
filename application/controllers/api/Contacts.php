@@ -61,6 +61,37 @@ class Contacts extends REST_Controller {
       }
   }
 
+  public function designation_list_post()
+  {
+    $this->form_validation->set_rules('comp_id','comp_id','required|trim');
+    if($this->form_validation->run()==true)
+    {
+        $comp_id = $this->input->post('comp_id');
+        $res =  $this->db->where('comp_id',$comp_id)->get('tbl_designation')->result();
+        if(!empty($res))
+        {
+             $this->set_response([
+            'status' => true,
+            'data' =>$res,
+            ], REST_Controller::HTTP_OK);
+        }
+        else
+        {
+             $this->set_response([
+            'status' => false,
+            'msg' =>'No Data',
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+    else
+    {
+        $this->set_response([
+              'status' => false,
+              'msg' =>strip_tags(validation_errors()),
+            ], REST_Controller::HTTP_OK);
+    }
+  }
+
   	public function contacts_list_page_post()
     {
       $user_id= $this->input->post('user_id');
