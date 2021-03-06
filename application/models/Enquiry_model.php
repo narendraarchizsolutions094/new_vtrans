@@ -104,6 +104,9 @@ class Enquiry_model extends CI_Model {
         if($primary)
             $primary_tab = $primary->id;
 
+        $company_key = -1;
+        $last_name_key = -1;
+
        	$basic= $this->location_model->get_company_list1($process_id);
 
       foreach ($basic as $key => $input)
@@ -131,6 +134,7 @@ class Enquiry_model extends CI_Model {
             case 2:
             $basic[$key]['parameter_name'] = 'lastname';
             $basic[$key]['current_value'] = $enquiry->lastname;
+            $last_name_key = $key;
             break;
 
             case 3:
@@ -159,7 +163,8 @@ class Enquiry_model extends CI_Model {
             break;
             case 6:
             $basic[$key]['parameter_name'] = 'org_name';
-            $basic[$key]['current_value'] = $enquiry->company;
+            $basic[$key]['current_value'] = $enquiry->company_name;
+            $company_key = $key;
             break;
             case 7:
             $leadsource = $this->Leads_Model->get_leadsource_list();
@@ -244,6 +249,87 @@ class Enquiry_model extends CI_Model {
           }
 
       }
+
+
+      if($company_key!=-1)
+      {
+          $self_created1 = array(
+                        array(
+                              "id"=> -1,
+                              "comp_id"=> 65,
+                              "field_id"=>-1,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Sales Branch",
+                              "type"=> "Dropdown",
+                              "parameter_name"=> "sales_branch",
+                              "input_values"=>array(),
+                              "current_value"=>$enquiry->sales_branch,
+                        ),
+                         array(
+                              "id"=> -2,
+                              "comp_id"=> 65,
+                              "field_id"=>-2,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Client Name",
+                              "type"=> "Text",
+                              "parameter_name"=> "client_name",
+                              "current_value"=>$enquiry->client_name,
+                        ),
+                        //   array(
+                        //       "id"=> -3,
+                        //       "comp_id"=> 65,
+                        //       "field_id"=>-3,
+                        //       "form_id"=> "0",
+                        //       "process_id"=> "141",
+                        //       "status" =>"1",
+                        //       "fld_order"=>"0",
+                        //       "title"=> "Contact",
+                        //       "type"=> "Dropdown",
+                        //       "input_values"=>array(),
+                        //       "parameter_name"=> "contact_id"
+                        // ),
+                        
+
+          );
+        
+          array_splice($basic, $company_key+1,0,$self_created1);
+      }
+
+     
+
+      if($last_name_key!=-1)
+      {
+         foreach ($basic as $key=> $find) 
+          {
+              if($find['field_id']==2)
+                $last_name_key = $key;
+          }
+
+        $self_created2 = array(
+                             array(
+                                  "id"=> -4,
+                                  "comp_id"=> 65,
+                                  "field_id"=>-4,
+                                  "form_id"=> "0",
+                                  "process_id"=> "141",
+                                  "status" =>"1",
+                                  "fld_order"=>"0",
+                                  "title"=> "Designation",
+                                  "type"=> "Dropdown",
+                                  "input_values"=>array(),
+                                  "parameter_name"=> "designation",
+                                  "current_value"=> $enquiry->designation,
+                                ),
+                           );
+        array_splice($basic, $last_name_key+1,0,$self_created2);
+      }
+
 
       $dynamic = $this->Enquiry_model->get_dyn_fld($enquiry_id,$primary_tab,0);
       $i=0;
@@ -649,15 +735,17 @@ class Enquiry_model extends CI_Model {
     {
       
       $process = $this->session->userdata('process');
-      
+        $this->db->select('enquiry.*,comp.company_name');
+        $this->db->from('enquiry');
+        $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
         $this->db->where_in('product_id',$process);
 
     	if($where)
             $this->db->where($where);
             
 
-    	$this->db->where('comp_id',$this->session->companey_id);
-    	return $this->db->get('enquiry');
+    	$this->db->where('enquiry.comp_id',$this->session->companey_id);
+    	return $this->db->get();
     }
 
 	public function get_user_productcntry_list(){
