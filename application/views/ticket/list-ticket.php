@@ -162,7 +162,7 @@ input[name=lead_stages]{
                         <?php
                         if(user_access('310'))
                           { ?>
-				                <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" href="<?=base_url().'ticket/add'?>" title="New Ticket"></a>  
+				                <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" href="<?=base_url().'ticket/add'?>" title="New "></a>  
                         <?php } ?>
 				            </div>
 							<div class="col-md-4 col-sm-4 col-xs-4 pull-right" >  
@@ -438,7 +438,7 @@ input[name=lead_stages]{
                     </div> 
                    
                    <div class="form-group col-md-3" id="statusfilter">
-                    <label for="">Ticket Status</label>  
+                    <label for=""><?=display('ticket')?> Status</label>  
                     <select name="ticket_status" class="form-control"> 
                           <option value="0">Select</option>
                          <?php 
@@ -560,7 +560,7 @@ input[name=lead_stages]{
                     <input type='checkbox' class="checked_all1" value="check all" >
                      </th>
 											<th>S.No.</th>
-                      <?=($showall or in_array(1,$acolarr))?'<th>Ticket</th>':''?>
+                      <?=($showall or in_array(1,$acolarr))?'<th>'.display('ticket').'</th>':''?>
 
                       <?php
                       if($this->session->companey_id==65)
@@ -622,7 +622,7 @@ input[name=lead_stages]{
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Ticket Assignment</h4>
+        <h4 class="modal-title"><?=display('ticket')?> Assignment</h4>
       </div>
       <div class="modal-body">
       
@@ -673,7 +673,7 @@ input[name=lead_stages]{
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Ticket Assignment</h4>
+        <h4 class="modal-title"><?=display('ticket')?> Assignment</h4>
       </div>
       <div class="modal-body">
           <i class="fa fa-question-circle" style="font-size:100px;"></i><br><h1>Are you sure, you want to permanently delete selected record?</h1>
@@ -1244,7 +1244,7 @@ function delete_recorde(){
         <hr>
           <div class="row">
           <div class = "col-md-4">             
-          <label class=""><input type="checkbox" class="choose-col" id="choose-col" value = "1" <?php echo ($showall == true or in_array(1, $acolarr)) ? "checked" : ""; ?>> Ticket</label>
+          <label class=""><input type="checkbox" class="choose-col" id="choose-col" value = "1" <?php echo ($showall == true or in_array(1, $acolarr)) ? "checked" : ""; ?>> <?=display('ticket')?></label>
           </div>
           <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>>  <?=display('problem_for')?></label> 
@@ -1321,7 +1321,7 @@ function delete_recorde(){
         }
         ?>
          <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "16"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>>Ticket Status</label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "16"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>><?=display('ticket')?> Status</label>  &nbsp;
           </div>
            
         <?php   
