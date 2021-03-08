@@ -270,7 +270,7 @@ class Client_Model extends CI_Model
         //echo $this->db->last_query(); exit();
     }
 
-    public function getCompanyData($enquires=array(),$datatype)
+    public function getCompanyData($enquires=array(),$datatype=0)
     {
         if(!is_array($enquires))
             $enquires=array($enquires);

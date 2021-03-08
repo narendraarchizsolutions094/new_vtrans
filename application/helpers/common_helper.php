@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         return $data->paid;
     }
 
-    function is_active_field_api($id,$process=0,$comp_id){       
+    function is_active_field_api($id,$process=0,$comp_id=0){       
         $ci =& get_instance();
         $comp_id    =   $comp_id;
         $where = "field_id=$id ";       
