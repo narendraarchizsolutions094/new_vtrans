@@ -4887,7 +4887,7 @@ public function insertComInfo($data)
                           $this->db->where('enquiry.company = '.$value);
 
                         if($key=='enquiry_id')
-                          $this->db->where('enquiry.enquiry_id = '.$value);
+                          $this->db->where('tbl_visit.enquiry_id = '.$value);
 
                         // if($key=='phone')
                         //   $this->db->where('phone LIKE "%'.$value.'%" OR other_phone LIKE "%'.$value.'%"');
