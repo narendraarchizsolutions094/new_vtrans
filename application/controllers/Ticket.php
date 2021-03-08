@@ -77,9 +77,17 @@ class Ticket extends CI_Controller
 		$this->session->set_flashdata('message', 'Deleted successfully');
 		redirect('ticket/natureOfComplaintList');
 	}
-	public function index()
+	public function index($proc=0)
 	{
-	
+		if($_COOKIE['selected_process']==199){
+			$this->session->set_userdata('process',array(199));
+		}else if($proc!=0){
+			//$this->session->set_userdata('process',array($proc));
+		}
+		//  echo '<pre>';
+		//  print_r($_SESSION);
+		//  echo '</pre>';
+
 		$this->load->model('Datasource_model');
 		$this->load->model('dash_model');
 		$this->load->model('enquiry_model');

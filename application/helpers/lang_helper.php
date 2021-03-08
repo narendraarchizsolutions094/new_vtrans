@@ -38,8 +38,14 @@ if (!function_exists('display')) {
 						}else{
 							$ordby = "asc";
 						}
-						$qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (comp_id = '0' OR comp_id = '$cmpno') ORDER BY comp_id $ordby";
+                        $process_id = $ci->session->process[0];
+                       // echo $process_id;
+						$qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (FIND_IN_SET('$process_id',process_id))";
                   		$row = $ci->db->query($qry)->row();	  
+                        if(empty($row)){
+                            $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (comp_id = '0' OR comp_id = '$cmpno') ORDER BY comp_id $ordby";
+                              $row = $ci->db->query($qry)->row();	  
+                        }  
                         if (!empty($row->$language)) {
                             return $row->$language;
                         } else {

@@ -156,6 +156,12 @@ $(document).on("click", ".nxt-tab-btn", function(e){
       var expires = "expires="+d.toUTCString();
       document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
+    function setCookie_new(cname, cvalue, exdays){
+        var old = getCookie('selected_process');
+        setCookie('prev_selected_process',old,365);
+        setCookie(cname,cvalue,exdays);
+        
+    }
 
     function getCookie(cname) {
       var name = cname + "=";
