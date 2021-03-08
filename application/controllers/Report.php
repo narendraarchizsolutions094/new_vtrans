@@ -290,7 +290,7 @@ class Report extends CI_Controller
       $data['todate'] = $cdate;
       $from = $this->session->set_userdata('fromdt', $cdate);
       $to =  $this->session->set_userdata('todt', $cdate);
-      $data['title'] = 'View Ticket Report';      
+      $data['title'] = 'View '.display('ticket').' Report';      
       $this->session->set_userdata('ticket_filters_sess', $data['filters']);
       
       $this->load->view('reports/send_ticket_views', $data);
