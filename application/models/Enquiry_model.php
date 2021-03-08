@@ -4836,10 +4836,12 @@ public function insertComInfo($data)
         // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
         $where=" enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
 
-        $this->db->select('tbl_visit.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name');
+        $this->db->select('tbl_visit.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
         $this->db->from('tbl_visit');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
+        $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id','left');
+
         // $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$company_id);
         $this->db->where("tbl_visit.user_id",$user_id);

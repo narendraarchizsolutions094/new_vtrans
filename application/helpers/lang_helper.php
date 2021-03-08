@@ -38,13 +38,13 @@ if (!function_exists('display')) {
 						}else{
 							$ordby = "asc";
 						}
+                        
                         if(!empty($ci->session->process[0]))
                         {
                             $process_id = $ci->session->process[0];
                             $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (FIND_IN_SET('$process_id',process_id))";
-                            $row = $ci->db->query($qry)->row(); 
+                            $row = $ci->db->query($qry)->row();   
                         }
-                       // echo $process_id;
                         
                         if(empty($row)){
                             $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (comp_id = '0' OR comp_id = '$cmpno') ORDER BY comp_id $ordby";
