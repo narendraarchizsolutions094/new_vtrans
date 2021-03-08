@@ -971,7 +971,7 @@ class Ticket extends CI_Controller
 		$data['process_id'] =$process_id;
 		// $chk_access = $this->db->where('comp_id',$this->session->companey_id)->count_all_results('email_integration');
 		// $data['mail_alert_access']= $chk_access;
-
+		$data['title'] = display('ticket');
 		$content	 =	$this->load->view('ticket/ticket_disposition', $data, true);
 		$content    .=  $this->load->view('ticket/ticket_details', $data, true);
 		$content    .=  $this->load->view('ticket/timeline', $data, true);
