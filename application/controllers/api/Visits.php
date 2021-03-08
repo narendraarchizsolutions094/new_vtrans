@@ -120,8 +120,8 @@ if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']
        $value_d =     $this->db->order_by('created_at','DESC');
        $value_d =       $this->db->get('tbl_visit')->row();
 
-    	//$tvalue = $this->db->where('visit_id',$id)->limit('1')->order_by('id','DESC')->get('visit_details')->row();
-		$tvalue = $this->db->where('visit_id',$id)->order_by('id','DESC')->get('visit_details')->result();
+    	$tvalue = $this->db->where('visit_id',$id)->limit('1')->order_by('id','DESC')->get('visit_details')->row();
+		//$tvalue = $this->db->where('visit_id',$id)->order_by('id','DESC')->get('visit_details')->result();
        $expenselist=$this->db->select('tbl_expense.*,tbl_expense.id as expense_id,tbl_expenseMaster.id,tbl_expenseMaster.title')->where(array('tbl_expense.visit_id'=>$id,'tbl_expense.type'=>2))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense')->get('tbl_expense')->result();
        $list=[];
 	  // print_r($tvalue);exit;
@@ -339,6 +339,39 @@ if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']
 
                    $data=['visit_status'=>$status,'visit_end'=>date('Y-m-d H:i:s'),'way_points'=>json_encode($waypoints)];
                   $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
+
+                  //finalizeing start and end location
+
+                $start = $this->db->where(array('visit_id'=>$visit_id,'status'=>1))->get('visit_details')->order_by('id','ASC')->limit(1)->row();
+
+                $end = $this->db->where(array('visit_id'=>$visit_id,'status'=>2))->get('visit_details')->order_by('id','DESC')->limit(1)->row();
+
+                if(!empty($start) && !empty($end))
+                { $sname='NA';$ename='NA';
+
+                      if(!empty($start->way_points))
+                      {
+                          $sjson = (array)json_decode($start->way_points);
+                          $s_latlong = $sjson[0];
+                      }
+                      if(!empty($end->way_points))
+                      {
+                          $ejson = (array)json_decode($end->way_points);
+                          $e_latlong = end($ejson);
+                      }
+                      if(!empty($s_latlong) && !empty($e_latlong))
+                      {
+                          $start_name = location_name_by_longlat($s_latlong[1],$s_latlong[0]);
+                          $end_name = location_name_by_longlat($e_latlong[1],$e_latlong[0]);
+
+                          $loc = array(
+                                'start_location'=>$start_name,
+                                'end_location'=>$end_name,
+                          );
+                          $this->db->where('id',$visit_id)->update('tbl_visit',$loc);
+                      }
+                }
+
                   $res=['message'=>'Travel Stoped'];
                   $this->set_response([
                      'status' => true,
