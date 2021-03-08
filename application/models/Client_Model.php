@@ -132,9 +132,10 @@ class Client_Model extends CI_Model
         if(!empty($specific))
             $this->db->where_in('cc_id',$specific);
 
-        $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name');
+        $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,comp.company_name');
         $this->db->from('tbl_client_contacts contacts');
         $this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
+        $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
         $this->db->where_in('enquiry.company',array_unique($id_array));
 
         $this->db->order_by('contacts.cc_id desc');

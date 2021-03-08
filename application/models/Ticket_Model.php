@@ -446,7 +446,7 @@ class Ticket_Model extends CI_Model
 		//echo $this->db->last_query(); exit();
 	}
 
-	public function getTicketListByCompnyID($action='data',$companyid,$userid,$process,$offset=-1,$limit=-1)
+	public function getTicketListByCompnyID($action='data',$companyid=0,$userid=0,$process=0,$offset=-1,$limit=-1)
 	{
 		$all_reporting_ids    =   $this->common_model->get_categories($userid);
 		$where = '';
