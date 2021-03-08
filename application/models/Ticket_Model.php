@@ -230,7 +230,7 @@ class Ticket_Model extends CI_Model
 			$this->db->where("id", $this->input->post("ticketno", true));
 			$this->db->update("tbl_ticket", $arr);
 			if ($this->db->affected_rows()) {
-				$this->saveconv($_POST["ticketno"],'Ticket Updated', '',$arr["client"],$user_id);
+				$this->saveconv($_POST["ticketno"],display('ticket').' Updated', '',$arr["client"],$user_id);
 				return $_POST["ticketno"];
 			} else {
 				return false;
@@ -262,7 +262,7 @@ class Ticket_Model extends CI_Model
 					"tck_id" 	=> $insid,
 					"parent" 	=> 0,
 					'comp_id'	=> ($this->session->companey_id != '') ? $this->session->companey_id : $companey_id,
-					"subj"   	=> "Ticked Created",
+					"subj"   	=> display('ticket')." Created",
 					"msg"    	=> ($this->input->post("remark", true)) ? $this->input->post("remark", true) : '',
 					"attacment" => "",
 					"status"  	=> 0,

@@ -77,9 +77,17 @@ class Ticket extends CI_Controller
 		$this->session->set_flashdata('message', 'Deleted successfully');
 		redirect('ticket/natureOfComplaintList');
 	}
-	public function index()
+	public function index($proc=0)
 	{
-	
+		if($_COOKIE['selected_process']==199){
+			$this->session->set_userdata('process',array(199));
+		}else if($proc!=0){
+			//$this->session->set_userdata('process',array($proc));
+		}
+		//  echo '<pre>';
+		//  print_r($_SESSION);
+		//  echo '</pre>';
+
 		$this->load->model('Datasource_model');
 		$this->load->model('dash_model');
 		$this->load->model('enquiry_model');
@@ -88,7 +96,7 @@ class Ticket extends CI_Controller
 		if (isset($_SESSION['ticket_filters_sess']))
 			unset($_SESSION['ticket_filters_sess']);
 		$data['sourse'] = $this->report_model->all_source();
-		$data['title'] = "All Ticket";
+		$data['title'] = display('all_ticket');
 		//$data["tickets"] = $this->Ticket_Model->getall();
 		//print_r($data['tickets']); exit();
 		$data['created_bylist'] = $this->User_model->read();
@@ -963,7 +971,7 @@ class Ticket extends CI_Controller
 		$data['process_id'] =$process_id;
 		// $chk_access = $this->db->where('comp_id',$this->session->companey_id)->count_all_results('email_integration');
 		// $data['mail_alert_access']= $chk_access;
-
+		$data['title'] = display('ticket');
 		$content	 =	$this->load->view('ticket/ticket_disposition', $data, true);
 		$content    .=  $this->load->view('ticket/ticket_details', $data, true);
 		$content    .=  $this->load->view('ticket/timeline', $data, true);
@@ -991,7 +999,7 @@ class Ticket extends CI_Controller
         $en_comments = $enqarr->ticketno;
         $type = $enqarr->status;
       
-       $comment_id = $this->Ticket_Model->saveconv($tck_id,'Ticket Updated','', $enqarr->client,$this->session->user_id);
+       $comment_id = $this->Ticket_Model->saveconv($tck_id,display('ticket').' Updated','', $enqarr->client,$this->session->user_id);
        //echo $comment_id; exit();
         if(!empty($enqarr)){        
             if(isset($_POST['inputfieldno'])) {                    
@@ -1416,7 +1424,7 @@ class Ticket extends CI_Controller
 		
 	
 		if ($res) {
-			$this->session->set_flashdata('message', 'Successfully Updated ticket');
+			$this->session->set_flashdata('message', 'Successfully Updated '.display('ticket'));
 			redirect(base_url('ticket/view/' . $tckt), "refresh");
 			//echo'in';
 		}
@@ -1714,7 +1722,7 @@ class Ticket extends CI_Controller
             }    
 				$this->load->model('rule_model');
 				$this->rule_model->execute_rules($res, array(3,9));
-				$response="Ticket Added Successfully";
+				$response=display('ticket')." Added Successfully";
 				if(user_access('319'))
 				{
 				$mail_config = $this->Ticket_Model->get_auto_mail_config();
@@ -1782,7 +1790,7 @@ class Ticket extends CI_Controller
             } else {
                 $data['invalid_process'] = 1;
             }
-		$data['title'] = "Add Ticket";
+		$data['title'] = "Add ".display('ticket');
 		$primary_tab=0;
 		$tabs = $this->db->select('id')
 						->where(array('form_for'=>2,'primary_tab'=>1))
@@ -1807,9 +1815,9 @@ class Ticket extends CI_Controller
 				echo '<table class="table table-bordered">
 				<tr>
 				' . ($this->session->companey_id == 65 ? '<th>'.display('tracking_no').'</th>' : '') . '
-				<th>Ticket Number</th>
+				<th>'.display("ticket").' Number</th>
 				<th>Name</th>
-				<th>Ticket Stage</th>
+				<th> Stage</th>
 				<th>Status</th>
 				<th>Created At</th>
 				<th>Action</th>
@@ -3022,7 +3030,7 @@ class Ticket extends CI_Controller
 				$this->db->where('company',$comp_id);
 				$this->db->set('ticket_status',$status);
 				if($this->db->update('tbl_ticket')){
-					$comment_id = $this->Ticket_Model->saveconv($tid,'Ticket Status Changed','', $this->input->post('client'),$this->session->user_id,0,0,$status,$comp_id);
+					$comment_id = $this->Ticket_Model->saveconv($tid,display('ticket').' Status Changed','', $this->input->post('client'),$this->session->user_id,0,0,$status,$comp_id);
 					$ticketno = $this->input->post('ticketno');
 					$this->load->model('rule_model');
 					$this->rule_model->execute_rules($ticketno, array(3,6,7));

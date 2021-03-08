@@ -21,7 +21,9 @@
 				<div class="panel-heading no-print" style ="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
 							<div class="row">
 					<div class="col-md-12">
-						<a href="<?=base_url('ticket/index')?>" class="btn btn-success"> <i class="fa fa-list"></i> Ticket List 
+						<a href="<?=base_url('ticket/index')?>" class="btn btn-success"> <i class="fa fa-list"></i> <?php
+						echo display('all_ticket');
+						?>
 						</a>
 					</div>
 				</div>

@@ -918,6 +918,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             if(!empty($user_process_list)){   
                               $this->load->helper('cookie');                        
                               $process_filter = get_cookie('selected_process');
+                             // print_r($process_filter);
                               if (!empty($process_filter)) {
                                 $process_filter = explode(',', $process_filter);
                               }else{
@@ -925,17 +926,20 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                               }
                               //var_dump($process_filter);
                               if(user_access(270)){
-                                  foreach ($user_process_list as $product) { ?>
+                                  foreach ($user_process_list as $product) { 
+                                      if($product->sb_id !=199 ){?>
                                     <li>
                                         <label>
                                             <input type="checkbox" name='product_filter[]' value="<?=$product->sb_id ?>" <?php if (empty($process_filter) || in_array($product->sb_id, $process_filter)) { echo "checked";                         
                                         }?>> <?=$product->product_name ?>
                                         </label>
                                     </li>
-                                    <?php                             
+                                    <?php                
+                                      }             
                                   }
                                 }else{
-                            foreach ($user_process_list as $product) { ?>
+                            foreach ($user_process_list as $product) { 
+                                if($product->sb_id !=199 ){?>
                                     <li>
                                         <label>
                                             <input type="radio" name='product_filter[]' value="<?=$product->sb_id ?>" <?php if (empty($process_filter) || in_array($product->sb_id, $process_filter)) { echo "checked";                         
@@ -944,6 +948,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     </li>
                                     <?php                             
                                   } 
+                                }
                             }
                           }
                             ?>
@@ -1886,7 +1891,16 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                 ?>
 
-
+                <li class="<?php echo ($segment1 == "ticket" && $_COOKIE['selected_process'] == 199) ? "active" : null ?>">
+                    <a href="<?php echo base_url("ticket/index/199") ?>" onclick="setCookie_new('selected_process',[199],365);  ">
+                        <i class="fa fa-line-chart icon-class"></i>
+                        &nbsp;<?php echo 'FTL Feedback' ?>
+                        <?php  if($this->session->menu==1){ ?></br>
+                        <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
+                            <?php echo 'FTL Feedback' ?></p> <?php } ?>
+                    </a>
+                </li>
+                    
                     <li class="<?php echo (($segment1 == "task") ? "active" : null) ?>"
                         style="<?php if(in_array(90,$module) || in_array(91,$module) || in_array(92,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("task/index") ?>">
@@ -2103,9 +2117,9 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <?php if($this->session->userdata('user_right')==214)
                     { 
                     ?>
-                    <li class="treeview <?php echo (($segment1 == "ticket") ? "active" : null) ?>"
+                    <li class="treeview <?php echo (($segment1 == "ticket" && $_COOKIE['selected_process'] != 199) ? "active" : null) ?>"
                         style="<?php if(in_array(310,$module) || in_array(311,$module) || in_array(312,$module) || in_array(313,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                        <a href="<?php echo base_url("ticket/index") ?>"><i class="fa fa-tasks icon-class"></i>
+                        <a href="<?php echo base_url("ticket/index/141") ?>"><i class="fa fa-tasks icon-class"></i>
                             &nbsp;<?php echo display('ticketing') ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
@@ -2136,7 +2150,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     ?>
 
                     <?php }else{ ?>
-                    <li class="treeview <?php echo (($segment1 == "ticket") ? "active" : null) ?>"
+                    <li class="treeview <?php echo (($segment1 == "ticket" && $_COOKIE['selected_process'] != 199) ? "active" : null) ?>"
                         style="<?php if(in_array(310,$module) || in_array(311,$module) || in_array(312,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="#">
                             <i class="fa fa-tasks icon-class" "></i>
@@ -2164,8 +2178,8 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                          {
                          ?>
                             <li
-                                class="<?php echo (($segment1 == "ticket" && $segment2 == "index") ? "active" : null) ?>">
-                                <a href="<?php echo base_url("ticket/index") ?>"><?php echo display('ticketing') ?></a>
+                                class="<?php echo (($segment1 == "ticket" && $segment2 == "index" && $_COOKIE['selected_process'] != 199) ? "active" : null) ?>">
+                                <a href="<?php echo base_url("ticket/index/") ?>"><?php echo 'Ticket' ?></a>
                             </li>
                             <?php
                         }
