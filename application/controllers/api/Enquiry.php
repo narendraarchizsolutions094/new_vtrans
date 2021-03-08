@@ -119,6 +119,26 @@ class Enquiry extends REST_Controller {
             if(!empty($upd))
             {																
             	$this->db->where('Enquery_id',$this->input->post('update'));
+
+                if(!empty($postData['company']))
+                {
+                  $company = $this->db->where('company_name',$postData['company'])->get('tbl_company')->row();
+                  if(!empty($company))
+                  {
+                    $postData['company'] = $company->id;
+                  }
+                  else
+                  {
+                    $new_company = array(
+                                          'company_name'=>$postData['company'],
+                                          'comp_id'=>$comp_id,
+                                          'process_id'=>$postData['product_id'], 
+                                    );
+                    $this->db->insert('tbl_company',$new_company);
+                    $postData['company'] = $this->db->insert_id();
+                  }
+                }
+
             	$insert_id = $this->db->update('enquiry',$postData);
             	$this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');
     			    $this->db->where('Enquery_id',$this->input->post('update'));

@@ -359,7 +359,7 @@ function generate_table()
 		},
 		success:function(res){
 			$(".tablebox").html(res);
-			$(".tablebox select").not('.exclude_select2').select2();
+			$(".tablebox").find('select:not(.exclude_select2)').select2();
 			// $("#delivery_branch").select2({ closeOnSelect: false});
 			// $("#booking_branch").select2({ closeOnSelect: false});
 		},

@@ -2138,18 +2138,21 @@ if(user_access('1020'))
       <thead>
       <tr>
 				          <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
-				          <th width="15%">Visit Date</th>
-				          <th width="15%">Visit Time</th>
-				          <th>Name</th>
-				          <th>Shortest Distance</th>
-				          <th>Actual Distancee</th>
-				          <th>Rating</th>
-				          <th>Difference</th>
-				          <th>Travel Expense</th>
-				          <th>Other Expense</th>
-				          <th>Total Expense</th>
-				          <th>Expense Status</th>
-                      <th>Action</th>
+				          <th id="th-1" width="15%">Visit Date</th>
+                  <th id="th-2" width="15%">Visit Time</th>
+                  <th id="th-13" width="15%">Purpose of meeting</th>
+                  <th id="th-10">Company Name</th>
+                  <th id="th-14">Client Name</th>
+                  <th id="th-15">Contact Person</th>
+                  <th id="th-4">Shortest Distance</th>
+                  <th id="th-5">Actual Distancee</th>
+                  <th id="th-6">Rating</th>
+                  <th id="th-11" >Difference (%)</th>
+                  <th >Travel Expense</th>
+                  <th>Other Expense</th>
+                  <th>Total Expense</th>
+                  <th>Expense Sttaus</th>
+                  <th id="th-9">Action</th>
 				        </tr>
       </thead>
       <thead>

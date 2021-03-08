@@ -294,7 +294,7 @@ class Client extends CI_Controller {
             $enquiry_code = $enq->row()->Enquery_id;
             $this->Leads_Model->add_comment_for_events(display("new_contact_detail_added") , $enquiry_code);
             $insert_id = $this->Client_Model->clientContact($data);
-            $this->session->set_flashdata('message', display('client').' Contact Add Successfully');
+            $this->session->set_flashdata('message','Contact Added Successfully');
         }
 
         if($this->input->post('redirect_url')){

@@ -3636,6 +3636,9 @@ echo  $details1;
             if($colsall || in_array(14,$cols)){
                 $sub[] = $res->client_name??'NA';            
             }
+             if($colsall || in_array(15,$cols)){
+                $sub[] = $res->contact_person??'NA';            
+            }
             if($colsall || in_array(4,$cols))
             $sub[] =$res->idealDistance.' Km';
         

@@ -80,14 +80,15 @@ else
                   <label>Email</label>
                   <input class="form-control" name="email" placeholder="Email"  type="email"  required>
                </div>
+                <div class="form-group col-md-12">
+                  <label>Decision Maker</label>
+                  &nbsp;&nbsp;<input name="decision_maker" value="1" type="checkbox">
+               </div>
                <div class="form-group col-md-12">
                   <label>Other Details</label>
                   <textarea class="form-control" name="otherdetails" rows="8"></textarea>
                </div>
-			   <div class="form-group col-md-6">
-                  <label>Decision Maker</label>
-                  &nbsp;&nbsp;<input name="decision_maker" value="1" type="checkbox">
-               </div>
+			        
                <div class="sgnbtnmn form-group col-md-12">
                   <div class="sgnbtn">
                      <input id="signupbtn" type="submit" value="Add Contact" class="btn btn-primary"  name="Add Contact">

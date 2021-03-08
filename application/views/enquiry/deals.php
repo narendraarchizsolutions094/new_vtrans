@@ -96,10 +96,10 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                     <li>
                       <label>
                       <input type="checkbox" value="potential_amount_filter" id="pamountbox" name="filter_checkbox" <?php if(in_array('potential_amount_filter',$variable)){echo'checked';} ?>> Potential Amount</label>
-                    </li>         
+                    </li>  -->        
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
-                    </li>              -->      
+                    </li>                   
                 </ul>                
             </div>
            <div class="btn-group" role="group" aria-label="Button group">
@@ -133,7 +133,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
  </div>
     <div class="col-lg-3"  id="for" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-        	<label>For</label>
+        	<label>Client Name</label>
         	<select class="d_filter form-control" name="d_enquiry_id">
         		<option value="">Select</option>
         		<?php
@@ -142,7 +142,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         			foreach ($all_enquiry as $row) 
         			{  
                 $row  = (array)$row;
-        				echo'<option value="'.$row['enquiry_id'].'">'.$row['name_prefix'].' '.$row['name'].' '.$row['lastname'].'</option>';
+        				echo'<option value="'.$row['enquiry_id'].'">'.$row['client_name'].'</option>';
         			}
         		}
         		?>
@@ -162,8 +162,8 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
           <label>Booking Type</label>
            <select class="d_filter form-control" name="d_booking_type">
                     <option value="">-Select-</option>
-                    <option value="0" selected>Sundry</option>
-                    <option value="1" >FTL</option>
+                    <option value="sundry" selected>Sundry</option>
+                    <option value="ftl" >FTL</option>
                 </select>
         </div>
     </div>

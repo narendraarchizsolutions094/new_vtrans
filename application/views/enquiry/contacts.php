@@ -5,23 +5,24 @@
           if(user_access('1010'))
           {
           ?>     
-          <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" data-toggle="modal" data-target="#Save_Contact" title="Add Contact"></a> 
+          <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" data-toggle="modal" data-target="#save_contact" title="Add Contact"></a> 
           <?php
           }
           ?>        
   </div>
+
   <div class="col-md-4 pull-right" align="right">
       <div class="btn-group" role="group" aria-label="Button group">
               <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Actions">
                 <i class="fa fa-sliders"></i>
               </a>  
             <div class="dropdown-menu dropdown_css" style="max-height: 400px;overflow: auto; left: -136px;">
-               <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;">Table Config</a>                        
+               <a class="btn" data-toggle="modal" data-target="#table_col_conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;">Table Config</a>                        
             </div>                                         
-          </div>
+      </div>
   </div>
 </div>
-
+<a class="dropdown-toggle" data-toggle="modal" data-target="#updt_contact" id="open" title="Add Contact" style="display: none;">UPDATE</a> 
 <div class="row p-5" style="margin-top: 20px;">
 	<div class="col-lg-12">
 		<div class="panel panel-success">
@@ -49,25 +50,27 @@
 		</div>
 	</div>
 </div>
-<a class="dropdown-toggle" data-toggle="modal" data-target="#updt_Contact" id="open" title="Add Contact" style="display:none;"></a> 
-<div id="updt_Contact" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
+
+
+
+<div id="updt_contact" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+        <!-- Modal content-->
       <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Contacts</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row" id="update_content">
-            
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Contacts</h4>
           </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         </div>
+          <div class="modal-body">
+            <div class="row" id="update_content">
+                
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
       </div>
-   </div>
-</div> 
+  </div> 
 </div>
 <script type="text/javascript">	
 function edit_contact(t)
@@ -129,15 +132,15 @@ function deleteContact(t)
 </script>
 
 
-<div id="table-col-conf" class="modal fade" role="dialog">
+<div id="table_col_conf" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg" style="width: 96%;">
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Table Column Configuration</h4>
-      </div>
-       <div class="modal-body">         
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Table Column Configuration</h4>
+        </div>
+        <div class="modal-body">         
            <div class="row">
              <div class="col-md-3">
                 <label class=""><input type="checkbox" id="selectall" onclick="select_all()">&nbsp;Select All</label>
@@ -175,35 +178,14 @@ function deleteContact(t)
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="10"> Action</label>
             </div>
+          </div>
         </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-success" onclick="save_table_conf()"><i class="fa fa-save"></i> Save</button>
+        <div class="modal-footer">
+          <button class="btn btn-success" onclick="save_table_conf()"><i class="fa fa-save"></i> Save</button>
+        </div>
     </div>
   </div>
 </div>
-
-<div id="Save_Contact" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Contacts</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <?php
-            if(!empty($contact_create_form))
-                echo $contact_create_form;
-            ?>
-          </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         </div>
-      </div>
-   </div>
-</div>   
 
 <script type="text/javascript">
 var c = getCookie('contact_allowcols');
@@ -274,7 +256,6 @@ $('.choose-col').change(function(){
 
 
 <script type="text/javascript">
-
 var specific_list = "<?=!empty($this->uri->segment(3))?$this->uri->segment(3):''?>";
 
 specific_list = atob(specific_list);
@@ -314,3 +295,26 @@ $(document).ready(function(){
 });
 
 </script>
+
+<div id="save_contact" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Contacts</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                <?php
+                if(!empty($contact_create_form))
+                    echo $contact_create_form;
+                ?>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>

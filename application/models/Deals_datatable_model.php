@@ -16,7 +16,7 @@ class Deals_datatable_model extends CI_Model{
         // $this->column_search = array('tck.ticketno','tck.id','tck.category','tck.name','tck.email','tck.product','tck.message','tck.issue','tck.solution','tck.sourse','tck.ticket_stage','tck.review','tck.status','tck.priority','tck.complaint_type','tck.coml_date','tck.last_update','tck.send_date','tck.client','tck.assign_to','tck.company','tck.added_by','enq.phone','enq.gender','prd.country_name');
         
         // Set default order
-        $this->order = array('info.id' => 'desc');
+        $this->order = array('info.id' => 'DESC');
 
         $this->load->model('common_model');
     }

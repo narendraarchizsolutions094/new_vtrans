@@ -150,7 +150,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 
     <div class="col-lg-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-          <label>Client Name</label>
+          <label>Client Name </label>
           <select class="v_filter form-control" name="enquiry_id" onchange="load_filter_contact(this.value)">
             <option value="">Select</option>
             <?php
@@ -307,7 +307,8 @@ $('input[name="filter_checkbox"]').click(function(){
 						  <th id="th-13" width="15%">Purpose of meeting</th>
 				          <th id="th-3" >Name</th>
 				          <th id="th-10">Company Name</th>
-                  <th id="th-12">Client Name</th>
+                  <th id="th-14">Client Name</th>
+                  <th id="th-15">Contact Person</th>
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distancee</th>
 				          <th id="th-6">Rating</th>
@@ -657,12 +658,12 @@ $("select").select2();
                 </div>
 						
 				        <div class="form-group col-md-6 visit-time col-md-6">     
-                    <label>Purpose of meeting</label>
+                    <label>Purpose of meeting <span class="text-danger">*</span></label>
                     <input type="text" name="m_purpose" id="m_purpose" class="form-control" required>
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label style="width:100%;">Company 
+                    <label style="width:100%;">Company <span class="text-danger">*</span>
                       <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
                         <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
                       </a>
@@ -682,7 +683,7 @@ $("select").select2();
                 </div>
 
                <div class="form-group col-md-6">
-                  <label style="width: 100%">Client Name 
+                  <label style="width: 100%">Client Name <span class="text-danger">*</span>
                      <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
                         <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
                       </a>
@@ -693,7 +694,7 @@ $("select").select2();
                </div>
 
                 <div class="form-group col-md-6">
-                  <label style="width: 100%">Contact Name 
+                  <label style="width: 100%">Contact Name <span class="text-danger">*</span>
                     <span style="float: right; color:gray;" onclick="add_contact()">
                     <i class="fa fa-plus"></i>
                     </span>
@@ -764,6 +765,9 @@ $("select").select2();
             </div>
              <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="14"> Client Name</label>
+            </div>
+             <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="15"> Contact Person</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="4"> Actual Distance</label>
