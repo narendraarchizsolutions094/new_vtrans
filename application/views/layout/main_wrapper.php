@@ -2179,7 +2179,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                          ?>
                             <li
                                 class="<?php echo (($segment1 == "ticket" && $segment2 == "index" && $_COOKIE['selected_process'] != 199) ? "active" : null) ?>">
-                                <a href="<?php echo base_url("ticket/index/".$_COOKIE['prev_selected_process']) ?>"><?php echo display('ticketing') ?></a>
+                                <a href="<?php echo base_url("ticket/index/") ?>"><?php echo display('ticketing') ?></a>
                             </li>
                             <?php
                         }
