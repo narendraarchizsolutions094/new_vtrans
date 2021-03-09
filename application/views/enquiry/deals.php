@@ -526,7 +526,7 @@ $(window).load(function(){
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                  <label>Client Name <a href="<?= base_url('enquiry/create?status=1') ?>" target="_blank"  style=" float:right;margin-left: 30px;"> <i class="fa fa-plus-square"> </i></a> </label>
+                  <label>Client Name <span style="color:red;">*</span> <a href="<?= base_url('enquiry/create?status=1') ?>" target="_blank"  style=" float:right;margin-left: 30px;"> <i class="fa fa-plus-square"> </i></a> </label>
                   <select class="form-control" name="enquiry_id" required onchange="match()">
                     <!-- <option value="">Select</option> -->
                     <?php
@@ -546,7 +546,7 @@ $(window).load(function(){
            <a id="red" href="" onclick="{
                 if($('select[name=enquiry_id]').val()=='' || $('select[name=enquiry_id]').val()==null)
                 {
-                  alert('Contact not selected')
+                  alert('Client Name Must Be selected.')
                   return false;
                 }
                 
