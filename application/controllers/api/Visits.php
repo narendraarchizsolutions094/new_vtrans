@@ -342,9 +342,9 @@ if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']
 
                   //finalizeing start and end location
 
-                $start = $this->db->where(array('visit_id'=>$visit_id,'visit_status'=>1))->get('visit_details')->order_by('id','ASC')->limit(1)->row();
+                $start = $this->db->where(array('visit_id'=>$visit_id,'visit_status'=>1))->order_by('id','ASC')->limit(1)->get('visit_details')->row();
 
-                $end = $this->db->where(array('visit_id'=>$visit_id,'visit_status'=>2))->get('visit_details')->order_by('id','DESC')->limit(1)->row();
+                $end = $this->db->where(array('visit_id'=>$visit_id,'visit_status'=>2))->order_by('id','DESC')->limit(1)->get('visit_details')->row();
 
                 if(!empty($start) && !empty($end))
                 { $sname='NA';$ename='NA';

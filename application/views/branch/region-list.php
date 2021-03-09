@@ -158,7 +158,7 @@
   });
   $(document).on('click', '.view_data', function() {
     var vid = $(this).attr("id");
-    //alert(branch_id);
+    
     if (vid != '') {
       $.ajax({
         url: "<?= base_url('setting/edit_sales_region') ?>",

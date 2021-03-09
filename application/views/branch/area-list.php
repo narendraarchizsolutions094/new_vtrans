@@ -58,7 +58,7 @@
                   <a data-toggle="modal" data-target="#editBranch" id="<?php echo $zone->area_id ?>" href="javascript:void(0)" class="btn btn-xs  btn-primary view_data"><i class="fa fa-edit"></i></a>
 <?php // }  if (user_access('d38')) { ?>
                 
-                  <a href="<?= base_url('setting/region_delete/' . $zone->area_id . '') ?>" onclick="return confirm('Are You Sure ? ')" class="btn btn-xs  btn-danger"><i class="fa fa-trash"></i></a>
+                  <a href="<?= base_url('setting/area_delete/' . $zone->area_id . '') ?>" onclick="return confirm('Are You Sure ? ')" class="btn btn-xs  btn-danger"><i class="fa fa-trash"></i></a>
                <?php// } ?>
                 </td>
 

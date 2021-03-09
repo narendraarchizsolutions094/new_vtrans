@@ -3639,6 +3639,12 @@ echo  $details1;
              if($colsall || in_array(15,$cols)){
                 $sub[] = $res->contact_person??'NA';            
             }
+            if($colsall || in_array(16,$cols)){
+                $sub[] = empty($res->start_location)?'NA':$res->start_location;            
+            }
+             if($colsall || in_array(17,$cols)){
+                $sub[] = empty($res->end_location)?'NA':$res->end_location;            
+            }
             if($colsall || in_array(4,$cols))
             $sub[] =$res->idealDistance.' Km';
         
@@ -3884,7 +3890,7 @@ echo  $details1;
         $key = $this->input->post('search');
         $this->load->model('Client_Model');
         $company_id = $this->session->companey_id;
-        $user_id = 0; //$this->session->user_id;
+        $user_id = -1; //$this->session->user_id;
         $process = $this->session->process;
         $where = 'tbl_company.company_name LIKE "%'.$key.'%" ';
         $res = $this->Client_Model->getCompanyList(0,$where,$company_id,$user_id,$process,'data',10,0)->result_array();

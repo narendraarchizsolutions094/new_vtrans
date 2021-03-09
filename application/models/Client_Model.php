@@ -216,9 +216,12 @@ class Client_Model extends CI_Model
 
         $user_id  = empty($user_id)?$this->session->user_id:$user_id;
 
-        if(!empty($user_id))
+        if($user_id!=-1)
         {
-            $all_reporting_ids    =   $this->common_model->get_categories($user_id);
+            if(!empty($user_id))
+            {
+                $all_reporting_ids    =   $this->common_model->get_categories($user_id);
+            }
         }
 
         $this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids');
@@ -228,11 +231,13 @@ class Client_Model extends CI_Model
         
 
         $where="comp.comp_id=".$comp_id;
-
-        if(!empty($user_id))
+        if($user_id!=-1)
         {
-            $where .= " AND ( enq.created_by IN (".implode(',', $all_reporting_ids).')';
-            $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+            if(!empty($user_id))
+            {
+                $where .= " AND ( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+                $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+            }
         }
 
         // if($id)

@@ -1858,18 +1858,20 @@ function update_info_status(id,status)
 </div>
 <script>
 
-function quotation_pdf(info_id) 
-{
-    $(".data_value").html('<center><i class="fa fa-spinner fa-spin" style="font-size:34px;"></i></center>');
+function quotation_pdf(info_id) {
+
+    // $(".data_value").html('<center><i class="fa fa-spinner fa-spin" style="font-size:34px;"></i></center>');
+    // $(".data_value").html('<embed src="<?=base_url();?>dashboard/pdf_gen/'+info_id+'" type="application/pdf">');
    // var elem = document.getElementById('view_sdatas');
-    $.ajax({
-            type: 'POST',
-            url: '<?php echo base_url();?>dashboard/printPdf_gen',
-            data: {info_id:info_id},
-            success:function(res){
-                $(".data_value").html(res);
-            }
-      });
+   window.open('<?=base_url();?>dashboard/quotation_preview/'+info_id,'Quotation','fullscreen=yes');
+    // $.ajax({
+    //         type: 'POST',
+    //         url: '<?php echo base_url();?>dashboard/printPdf_gen',
+    //         data: {info_id:info_id},
+    //         success:function(res){
+    //             $(".data_value").html(res);
+    //         }
+    //   });
 }
 
 var c = getCookie('deals_allowcols');

@@ -479,6 +479,7 @@ public function edit_sales_area()
 }
 
 
+
 public function edit_sales_region()
 { //sleep(4);
 	$this->load->model('Branch_model');
@@ -499,8 +500,7 @@ public function edit_sales_region()
 	else if($this->input->post('task')=='save')
 	{
 		$id = $this->input->post('vid');
-		$data = array(	'name'=>$this->input->post('area_name'),
-				
+		$data = array(	'name'=>$this->input->post('region_name'),
 					);
 		$this->Branch_model->save_region($data,$id);
 		$this->session->set_flashdata('message','Saved Successfully');
@@ -584,6 +584,28 @@ public function add_vehicle_type()
 		$this->load->view('layout/main_wrapper',$data);
 	}
 }
+public function other_charges()
+{
+	if($this->input->post())
+	{
+		$this->load->model('Branch_model');
+
+		$data = $_POST;
+		if($this->db->get('other_charges')->num_rows())
+			$this->db->update('other_charges',$_POST);
+		else
+			$this->db->insert('other_charges',$_POST);
+		$this->session->set_flashdata('message','Saved Successfully.');
+		redirect(site_url('setting/other_charges'));
+	}
+	else
+	{
+		$data['page_title'] = 'Manage Other Charges';
+		$data['oc'] = $this->db->get('other_charges')->row();
+		$data['content'] = $this->load->view('branch/other_charges',$data,true);
+		$this->load->view('layout/main_wrapper',$data);
+	}
+}
 
 public function zone_delete($id)
 {
@@ -601,6 +623,15 @@ public function region_delete($id)
 	$this->Branch_model->delete_region($where);
 	$this->session->set_flashdata('message','Region Deleted Successfully');
 	redirect(site_url('setting/sales_region_list'));
+}
+public function area_delete($id)
+{
+	$this->load->model('Branch_model');
+	$where = array('area_id'=>$id);
+	$this->db->where($where)->delete('sales_area');
+	// $this->db->where($where)->delete('branch');
+	$this->session->set_flashdata('message','Area Deleted Successfully');
+	redirect(site_url('setting/sales_area_list'));
 }
 
 public function vehicle_delete($id)

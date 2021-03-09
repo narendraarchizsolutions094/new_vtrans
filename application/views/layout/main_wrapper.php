@@ -1298,7 +1298,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         //if ($this->session->companey_id == 65) {
                         ?>
                             <?php  if (user_access('d37')) {  ?>
-
+                            <li class="<?php echo (in_array($segment2,array('other_charges')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/other_charges">
+                                    Other Charges
+                                </a>
+                            </li>
                              <li class="<?php echo (in_array($segment2,array('sales_region_list')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/sales_region_list">
                                     Sales Region List
@@ -1337,15 +1341,10 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             <li
                                 class="<?php echo (in_array($segment2,array('branch_ratelist','editbranchrate')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/branch_ratelist">
-                                 Branch Rate List
+                                 Rate List
                                 </a>
                             </li>
-                             <li
-                                class="<?php echo (in_array($segment2,array('zone_ratelist','editbranchrate')) ?"active":'') ?>">
-                                <a href="<?php echo base_url() ?>setting/zone_ratelist">
-                                 Zone Rate List
-                                </a>
-                            </li>
+                            
                             <li class="<?php echo (in_array($segment2,array('discount_matrix')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/discount_matrix">
                                     Grade Master
