@@ -3542,10 +3542,9 @@ echo  $details1;
     
     public function visit_load_data()
     {
-        //print_r($_POST); exit(); 
+         
         $this->load->model('visit_datatable_model');
         $result = $this->visit_datatable_model->getRows($_POST);
-        
 		//print_r($result);exit;
         //echo $this->db->last_query(); exit();
         // print_r($this->db->last_query());
@@ -3557,6 +3556,7 @@ echo  $details1;
             $colsall = false;
         }
         //print_r($cols); exit();
+        $count_minus=0;
         $data = array();
         $ix=1;
         $visit_expSum_s =0;
@@ -3569,25 +3569,45 @@ echo  $details1;
             $visit_approve= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 2))->count_all_results('tbl_expense');
             $visit_pending= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 0))->count_all_results('tbl_expense');
             $expstatus='N/A';
-            if($visit_totalexp!=0){
-            if($visit_reject==$visit_totalexp){
-                $expstatus='Rejected ';
-            }elseif($visit_approve==$visit_totalexp){
-                $expstatus='Approved';
-            }elseif($visit_pending==$visit_totalexp){
-                // $expstatus='Pending';
-                $expstatus='Pending';
-            }elseif($visit_reject!=0 AND $visit_approve!=0 OR $visit_pending!=0){
-                $expstatus='Partially Approved';
-            }
-         
-            // if($res->visit_approve!=$totalexpstatus){
-            //     $expstatus='Partially Approved';
-            // }
-            // if($res->visit_reject!=$totalexpstatus){
-            //     $expstatus='Partially Rejected';
-            // }
+            if($visit_totalexp!=0)
+            {
+                    if($visit_reject==$visit_totalexp){
+                        $expstatus='Rejected ';
+                    }elseif($visit_approve==$visit_totalexp){
+                        $expstatus='Approved';
+                    }elseif($visit_pending==$visit_totalexp){
+                        // $expstatus='Pending';
+                        $expstatus='Pending';
+                    }elseif($visit_reject!=0 AND $visit_approve!=0 OR $visit_pending!=0){
+                        $expstatus='Partial';
+                    }         
              }
+
+            if(!empty($_POST['expensetype']))
+            {
+                        $type = $_POST['expensetype'];
+                        if($type=='1' && $expstatus!='Approved')
+                        {
+                            $count_minus++;
+                                continue;
+                        }
+                        if($type=='2' and $expstatus!='Pending')
+                        {
+                            $count_minus++;
+                                continue;
+                        }
+                        if($type=='3' and $expstatus!='Rejected')
+                        {
+                          $count_minus++;
+                                continue;
+                        }
+                        if($type=='4' and $expstatus!='Partial')
+                        {
+                           $count_minus++;
+                                continue;
+                        }
+            }
+
              $visit_expSum=round(abs($res->visit_expSum));
              $visit_otexpSum=round(abs($res->visit_otexpSum));
              $total_expSum=round(abs($res->visit_expSum+$res->visit_otexpSum));
@@ -3682,7 +3702,7 @@ echo  $details1;
         $output = array(
             "draw" => $_POST['draw'],
             "recordsTotal" =>$this->visit_datatable_model->countAll(),
-            "recordsFiltered" => $this->visit_datatable_model->countFiltered($_POST),
+            "recordsFiltered" => $this->visit_datatable_model->countFiltered($_POST)-$count_minus,
             "data" => $data,
             "totalotherExpense" => $visit_otexpSum_s,
             "totaltravelExp" =>$visit_expSum_s,

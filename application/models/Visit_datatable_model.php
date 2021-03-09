@@ -83,7 +83,7 @@ class Visit_datatable_model extends CI_Model{
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         $this->db->join('tbl_company','tbl_company.id=enquiry.company','left');
         $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id','left');
-        
+
         // $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$this->session->companey_id);
         $this->db->order_by("tbl_visit.created_at",'DESC');
@@ -176,10 +176,7 @@ class Visit_datatable_model extends CI_Model{
             $where.=" ( tbl_visit.id IN (".$_POST['specific_list'].") ) ";
             $and =1;
         }
-        if(!empty($_POST['expensetype'])){
-                $type=$_POST['expensetype'];
-               
-        }
+      
 
         if($where!='')
         $this->db->where($where);
@@ -207,12 +204,13 @@ class Visit_datatable_model extends CI_Model{
             $i++;
         }
         
-        if(isset($postData['order'])){
-            $this->db->order_by($this->column_order[$postData['order']['0']['column']], $postData['order']['0']['dir']);
-        }else if(isset($this->order)){
-            $order = $this->order;
-            $this->db->order_by(key($order), $order[key($order)]);
-        }
+            if(isset($postData['order'])){
+                $this->db->order_by($this->column_order[$postData['order']['0']['column']], $postData['order']['0']['dir']);
+            }else if(isset($this->order)){
+                $order = $this->order;
+                $this->db->order_by(key($order), $order[key($order)]);
+            }
+    
     }
 
 }

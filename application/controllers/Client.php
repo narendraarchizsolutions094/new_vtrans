@@ -1016,6 +1016,7 @@ class Client extends CI_Controller {
                     
                 }
         }
+        
         if(!empty($enqarr)){        
             if(isset($_POST['inputfieldno'])) {                    
                 $inputno   = $this->input->post("inputfieldno", true);
@@ -2625,9 +2626,20 @@ public function all_update_expense_status()
                             '',//21
                             '',//22
                     );
+
                     $oc[19] =10;//array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
                     $oc[20] =10; //array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
                     $oc['rate_type'] = 'KG';
+
+                    $oc_data = $this->db->get('other_charges')->row();
+
+                    if(!empty($oc_data))
+                    {
+                        $extract = array_values($oc_data);
+                        unset($extract[0]);
+                        $oc = $extract;
+                    }
+
                     if(!empty($deal_data))
                     {
                         $oc =(array)json_decode($deal_data->other_charges);
