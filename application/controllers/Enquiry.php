@@ -3545,6 +3545,7 @@ echo  $details1;
         //print_r($_POST); exit(); 
         $this->load->model('visit_datatable_model');
         $result = $this->visit_datatable_model->getRows($_POST);
+        
 		//print_r($result);exit;
         //echo $this->db->last_query(); exit();
         // print_r($this->db->last_query());

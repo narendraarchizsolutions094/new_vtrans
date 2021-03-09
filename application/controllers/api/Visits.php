@@ -114,9 +114,11 @@ if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']
     public function visit_details_post()
     {
     	$id = $this->input->post('visit_id');
-       $value_d = $this->db->select('enquiry.company,enquiry.address,tbl_visit.*  ,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
-       $value_d =     $this->db->where('id',$id);
+       $value_d = $this->db->select('enquiry.company,comp.company_name,enquiry.address,tbl_visit.*  ,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
+       $value_d =     $this->db->where('tbl_visit.id',$id);
        $value_d =      $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
+                       $this->db->join('tbl_company comp','enquiry.company=comp.id','left');
+
        $value_d =     $this->db->order_by('created_at','DESC');
        $value_d =       $this->db->get('tbl_visit')->row();
 
@@ -342,7 +344,7 @@ if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']
 
                   //finalizeing start and end location
 
-                $start = $this->db->where(array('visit_id'=>$visit_id,'visit_status'=>1))->order_by('id','ASC')->limit(1)->get('visit_details')->row();
+                $start = $this->db->where(array('visit_id'=>$visit_id,'visit_status'=>2))->order_by('id','ASC')->limit(1)->get('visit_details')->row();
 
                 $end = $this->db->where(array('visit_id'=>$visit_id,'visit_status'=>2))->order_by('id','DESC')->limit(1)->get('visit_details')->row();
 

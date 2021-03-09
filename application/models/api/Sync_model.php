@@ -172,7 +172,7 @@ class Sync_model extends CI_Model {
         
     }
 
-        public function getfieldvalue($enqnos = '',$compid){   
+        public function getfieldvalue($enqnos = '',$compid=0){   
     
         $this->db->select('*');
         $this->db->where(array("cmp_no"=> $compid));                

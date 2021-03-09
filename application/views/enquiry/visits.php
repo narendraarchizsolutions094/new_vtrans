@@ -202,13 +202,13 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                         </div>
                         <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-        	<label>Expense </label>
-       	<select class="form-control" id="expensetype" name="expensetype" onchange="refresh_table_ex();">
+        <label>Expense </label>
+       	<select class="form-control v_filter" id="expensetype" name="expensetype">
               <option value="">Select</option>
-              <option >Fully Approved</option>
-              <option >Partially Approved</option>
-              <option >Rejected</option>
-              <option >Pending</option>
+              <option value="1">Approved</option>
+              <option value="2">Pending</option>
+              <option value="3">Rejected</option>
+              <option value="4">Partial</option>
             </select>
         </div>
     </div>
@@ -365,7 +365,6 @@ $('input[name="filter_checkbox"]').click(function(){
              </select>
             </div>
             </div>
-            <input id="visit_id" class="form-control visit_id" name="visit_id"  value="0" hidden>
 
             <div class="col-md-12">
             <div class="form-group">
@@ -504,12 +503,12 @@ var table2  = $('#datatable').DataTable({
                      d.company = obj[3]['value'];
                      d.contact = obj[5]['value'];
                      d.createdby = obj[6]['value'];
-                    //  d.expensetype = obj[6]['value'];
+                     d.expensetype = obj[7]['value'];
                      d.to_time = '';//obj[5]['value'];
                      d.view_all=true;
                     if(c && c!='')
                       d.allow_cols = c;
-                    //  console.log(JSON.stringify(d));
+                     console.log(JSON.stringify(d));
                     return d;
 // alert(d.totaltravelExp);
 
@@ -563,7 +562,7 @@ $("select").select2();
          <div class="modal-body">
             <form  action="<?php echo base_url(); ?>client/add_expense" method="POST" enctype='multipart/form-data'>  
             <div class="row">
-          <input id="visit_id" class="form-control visit_id" name="visit_id"  value="0" hidden>
+          <input id="visit_id" class="form-control visit_id" name="visit_id"  value="0" type="hidden">
 
             <table class="table table-responsive">
                   <thead>
@@ -839,7 +838,7 @@ function add_contact()
 }
 
 function checkvisit(visitid){
-document.getElementById("visit_id").value =visitid;
+  $("#add_expense").find('input[name=visit_id]').val(visitid);
 }
 
 

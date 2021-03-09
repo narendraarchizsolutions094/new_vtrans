@@ -118,7 +118,7 @@ class Enquiry extends REST_Controller {
                
             if(!empty($upd))
             {																
-            	$this->db->where('Enquery_id',$this->input->post('update'));
+            	
 
                 if(!empty($postData['company']))
                 {
@@ -138,8 +138,9 @@ class Enquiry extends REST_Controller {
                     $postData['company'] = $this->db->insert_id();
                   }
                 }
-
+              $this->db->where('Enquery_id',$this->input->post('update'));
             	$insert_id = $this->db->update('enquiry',$postData);
+        
             	$this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');
     			    $this->db->where('Enquery_id',$this->input->post('update'));
     			    $e_row	=	$this->db->get('enquiry')->row_array();
