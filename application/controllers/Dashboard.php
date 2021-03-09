@@ -3505,7 +3505,7 @@ public function set_layout_to_session() {
 
       }
         
-        $booking_type = $deal->booking_type;
+        $booking_type = $deal->booking_type;       
         $oc_table ='<table border="1px" style="width:500px">
       <thead>
           <tr>

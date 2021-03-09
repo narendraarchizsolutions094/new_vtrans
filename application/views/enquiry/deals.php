@@ -686,7 +686,7 @@ function quotation_pdf(info_id) {
       $.ajax({
             url:"<?=base_url('client/account_by_company')?>",
             type:'get',
-            data:{comp_id:v},
+            data:{comp_id:v,escape_lead:1},
             success:function(q){
               $("select[name=enquiry_id]").html(q);
                $("select[name=enquiry_id]").trigger('change');

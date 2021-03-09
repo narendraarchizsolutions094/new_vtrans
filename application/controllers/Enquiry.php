@@ -3738,11 +3738,11 @@ echo  $details1;
                 if($value->enq_type=='1')
                     $url = base_url('enquiry/view/').$value->enquiry_id;
                 else if($value->enq_type=='2')
-                    $url = base_url('lead/lead_details/').$value->enquiry_id;
+                    $url = base_url('lead/lead_details/').$value->enquiry_id.'#COMMERCIAL_INFORMATION';
                 else if($value->enq_type=='3')
-                    $url = base_url('client/view/').$value->enquiry_id;
+                    $url = base_url('client/view/').$value->enquiry_id.'#COMMERCIAL_INFORMATION';
                 else
-                    $url = base_url('client/view/').$value->enquiry_id;
+                    $url = base_url('client/view/').$value->enquiry_id.'#COMMERCIAL_INFORMATION';
 
                 if($colsall || in_array(1,$cols))
                     $sub[] = '<a href="'.$url.'">'.$value->name.'</a>'??'NA';

@@ -49,16 +49,19 @@
 					<input type="text" name="other" class="form-control" value="<?=$oc->other?>">
 				</div>
 				<div class="form-group">
-					<label>CR Charges to be Paid By</label>
-					<input type="text" name="cr" class="form-control" value="<?=$oc->cr?>">
+					<label>CR Charges to be Paid By</label><br>
+					<input type="radio" name="cr" value="Consignor" <?=$oc->cr=='Consignor'?'checked':''?>> Consignor &nbsp; &nbsp; 
+					<input type="radio" name="cr" value="Consignee" <?=$oc->cr=='Consignee'?'checked':''?>> Consignee
 				</div>
 				<div class="form-group">
 					<label>Demurrage charges </label>
 					<input type="text" name="dccharge" class="form-control" value="<?=$oc->dccharge?>">
 				</div>
 				<div class="form-group">
-					<label>Demurrage Charges to be Paid By </label>
-					<input type="text" name="dcby" class="form-control" value="<?=$oc->dcby?>">
+					<label>Demurrage Charges to be Paid By </label><br>
+					<input type="radio" name="dcby" value="Consignor" <?=$oc->dcby=='Consignor'?'checked':''?>> Consignor &nbsp; &nbsp; 
+					<input type="radio" name="dcby" value="Consignee" <?=$oc->dcby=='Consignee'?'checked':''?>> Consignee
+					
 				</div>
 				<div class="form-group">
 					<label>Loading/Unloading Charges/Union Charges </label>
@@ -85,8 +88,8 @@
 					<input type="text" name="lmdc" class="form-control"  value="<?=$oc->lmdc?>">
 				</div>
 				<div class="form-group">
-					<label>Re Delivery charges</label>
-					<input type="text" name="rdc" class="form-control" value="<?=$oc->rdc?>">
+					<label>Average fuel price at the time of signing the contract</label>
+					<input type="text" name="avg_fuel" class="form-control" value="<?=$oc->avg_fuel?>">
 				</div>
 			</div>
 			<div class="panel-footer">

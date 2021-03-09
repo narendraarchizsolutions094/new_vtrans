@@ -2627,19 +2627,18 @@ public function all_update_expense_status()
                             '',//22
                     );
 
-                    $oc[19] =10;//array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
-                    $oc[20] =10; //array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
-                    $oc['rate_type'] = 'KG';
-
-                    $oc_data = $this->db->get('other_charges')->row();
+                    // $oc[19] =10;//array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
+                    // $oc[20] =10; //array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
+                    $oc_data = $this->db->get('other_charges')->row_array();               
 
                     if(!empty($oc_data))
-                    {
-                        $extract = array_values($oc_data);
+                    {   
+                        $extract=  array_values($oc_data);
                         unset($extract[0]);
                         $oc = $extract;
+                        $oc[21] = $oc[22];
                     }
-
+                    $oc['rate_type'] = 'KG';
                     if(!empty($deal_data))
                     {
                         $oc =(array)json_decode($deal_data->other_charges);
@@ -2959,7 +2958,7 @@ public function all_update_expense_status()
                             <td>ODA Charges</td>
                             <td colspan="2">
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge" >
+                                    <input id="oda_value" name="oc[22]" value="" placeholder="Charge" >
                                 </div>
                                 <div style="width:49%; display:inline-block;">
                                     <input id="oda_distance" type="number" style="width:49%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
@@ -3336,6 +3335,9 @@ public function all_update_expense_status()
             $this->db->select('enquiry.enquiry_id,enquiry.client_name');
             $this->db->from('enquiry');
             $this->db->where("enquiry.company",$comp_id);
+
+            if(!empty($this->input->get('escape_lead')))
+                $this->db->where('enquiry.status!=1');
 
             $where="";
             $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
