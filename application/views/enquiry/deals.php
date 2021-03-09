@@ -68,18 +68,19 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                       <label>
                       <input type="checkbox" value="datefilter" id="datecheckbox" name="filter_checkbox" <?php if(in_array('datefilter',$variable)){echo'checked';} ?>> Date </label>
                     </li>  
+                     <li>
+                      <label>
+                      <input type="checkbox" value="companyfilter" id="companycheckbox" name="filter_checkbox" <?php if(in_array('companyfilter',$variable)){echo'checked';} ?>> Company</label>
+                    </li>   
                     <li>
                       <label>
-                      <input type="checkbox" value="for" id="forcheckbox" name="filter_checkbox" <?php if(in_array('for',$variable)){echo'checked';} ?>> For</label>
+                      <input type="checkbox" value="for" id="forcheckbox" name="filter_checkbox" <?php if(in_array('for',$variable)){echo'checked';} ?>> Client Name</label>
                     </li> 
                     <li>
                       <label>
                       <input type="checkbox" value="booking_type_filter" id="branchcheckbox" name="filter_checkbox" <?php if(in_array('booking_type_filter',$variable)){echo'checked';} ?>> Booking Type</label>
                     </li>
-                  <!--   <li>
-                      <label>
-                      <input type="checkbox" value="business_type" id="forcheckbox" name="filter_checkbox" <?php if(in_array('business_type',$variable)){echo'checked';} ?>> Business Type</label>
-                    </li>    -->
+                   
                     <!--  <li>
                       <label>
                       <input type="checkbox" value="booking_branch_filter" id="bookingbox" name="filter_checkbox" <?php if(in_array('booking_branch_filter',$variable)){echo'checked';} ?>> Booking Branch</label>
@@ -131,6 +132,24 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         </div>
       </div>
  </div>
+ <div class="col-lg-3"  id="companyfilter" style="<?php if(!in_array('companyfilter',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Company</label>
+          <select class="d_filter form-control" name="d_company">
+            <option value="">Select</option>
+            <?php
+            if(!empty($company_list))
+            {
+              foreach ($company_list as $row) 
+              {  
+                $row  = (array)$row;
+                echo'<option value="'.$row['id'].'">'.$row['company_name'].'</option>';
+              }
+            }
+            ?>
+          </select>
+        </div>
+    </div>
     <div class="col-lg-3"  id="for" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Client Name</label>
@@ -405,12 +424,7 @@ $(document).ready(function(){
                      d.date_to = $("input[name=d_to_date]").val();
                      d.enq_for = $("select[name=d_enquiry_id]").val();
                      d.booking_type = $("select[name=d_booking_type]").val();
-                     d.booking_branch  =  $("select[name=d_booking_branch]").val();
-                     d.delivery_branch  =  $("select[name=d_delivery_branch]").val();
-                     d.paymode  =  $("select[name=d_paymode]").val();
-                     d.p_amnt_from  =  $("input[name=d_p_amnt_from]").val();
-                     d.p_amnt_to =  $("input[name=d_p_amnt_to]").val();
-                     
+                     d.company = $("select[name=d_company]").val();
                      // d.from_date = obj[0]['value'];
                      // d.from_time = '';//obj[1]["value"];
                      // d.enquiry_id =obj[2]["value"];

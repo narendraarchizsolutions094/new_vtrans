@@ -1016,6 +1016,7 @@ class Client extends CI_Controller {
                     
                 }
         }
+        
         if(!empty($enqarr)){        
             if(isset($_POST['inputfieldno'])) {                    
                 $inputno   = $this->input->post("inputfieldno", true);
@@ -1964,9 +1965,15 @@ public function view_editable_aggrement()
                 $comp_id=$this->session->companey_id;
                 // fetch enquiry sing visit id
                 $visit=$this->db->where('id',$visit_id)->get('tbl_visit');
+               
                 if($visit->num_rows()!=0){
                    $vdata= $visit->row(); 
                    $enq_id=$vdata->enquiry_id; 
+                }
+                else
+                {
+                    $this->session->set_flashdata('exception','Invalid Visit');
+                    redirect($_SERVER['HTTP_REFERER']);
                 }
 				foreach ($_POST['expense'] as $key =>$value ) {
                         $expense = $_POST['expense'][$key];
@@ -2641,9 +2648,19 @@ public function all_update_expense_status()
                             '',//21
                             '',//22
                     );
+
                     $oc[19] =10;//array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
                     $oc[20] =10; //array(array('from'=>'','to'=>'','charge'=>'','unit'=>'per_kg'));
                     $oc['rate_type'] = 'KG';
+
+                    $oc_data = $this->db->get('other_charges')->row();
+
+                    if(!empty($oc_data))
+                    {   $extract=  array_values($oc_data)
+                        unset($extract[0]);
+                        $oc = $extract;
+                    }
+
                     if(!empty($deal_data))
                     {
                         $oc =(array)json_decode($deal_data->other_charges);
@@ -3334,7 +3351,19 @@ public function all_update_expense_status()
     {
         $this->load->model(array('Enquiry_Model'));
         $comp_id  = $this->input->get('comp_id');
-        $res=   $this->Enquiry_Model->getEnquiry('enquiry.company='.$comp_id);
+
+            $all_reporting_ids  = $this->common_model->get_categories($this->session->user_id);
+
+            $this->db->select('enquiry.enquiry_id,enquiry.client_name');
+            $this->db->from('enquiry');
+            $this->db->where("enquiry.company",$comp_id);
+
+            $where="";
+            $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+            $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+            $this->db->where($where);
+            $res = $this->db->get();
+
         foreach ($res->result() as $key => $value) 
         {
             echo'<option value="'.$value->enquiry_id.'">'.$value->client_name.'</option>';

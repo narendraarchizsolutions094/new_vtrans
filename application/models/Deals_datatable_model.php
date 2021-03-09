@@ -121,6 +121,15 @@ class Deals_datatable_model extends CI_Model{
             $and =1;
         }
 
+        if(!empty($_POST['company']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (enq.company ='".$_POST['company']."' ) ";
+            $and =1;
+        }
+
         if(!empty($_POST['booking_type']))
         {
               if($and)
