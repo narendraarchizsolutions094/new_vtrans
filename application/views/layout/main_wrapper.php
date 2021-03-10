@@ -2986,11 +2986,15 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
     });
 
+
+
+
     function count_bell_notification() {
         $.ajax({
             type: "POST",
             url: "<?php echo base_url();?>notification/web/count_bell_notification",
             success: function(data) {
+            
                 $("#bell_notifications_count").html(data);
             }
         });
@@ -3197,6 +3201,14 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
 
 <script>
+
+//========== Count bell notification ===========
+try{
+    setInterval(count_bell_notification,10000);
+}catch(e){alert(e);}
+
+//==============================
+
 var content = document.getElementById("main");
 var btn = document.getElementById("btn");
 $(document).ready(function() {
