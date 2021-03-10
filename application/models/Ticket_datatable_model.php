@@ -145,7 +145,7 @@ class Ticket_datatable_model extends CI_Model{
     /*
      * Perform the SQL queries needed for an server-side processing requested
      * @param $_POST filter data based on the posted parameters
-     
+     */
     public function _get_datatables_query($postData){
         $this->load->model('common_model');
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
