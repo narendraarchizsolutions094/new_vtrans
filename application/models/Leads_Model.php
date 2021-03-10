@@ -107,7 +107,7 @@ public function all_course($course,$lvl,$length,$disc) {
                         ->join('tbl_center', 'tbl_center.center_id=enquiry.center_id', 'left')
                         ->join('tbl_datasource', 'tbl_datasource.datasource_id=enquiry.datasource_id', 'left')
                         ->join('tbl_newdeal','tbl_newdeal.enq_id=enquiry.Enquery_id','left')
-                        ->join('tbl_company','tbl_company.id=enquiry.company')
+                        ->join('tbl_company','tbl_company.id=enquiry.company','left')
                         ->where('enquiry.enquiry_id', $leadid)
                         ->where('enquiry.is_delete', '1')
                         ->get()
