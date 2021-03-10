@@ -3430,101 +3430,24 @@ public function all_update_expense_status()
            echo json_encode(array('status'=>0));
     }
 
-    public function create_agreement_pdf()
-    {   
-        $this->load->model(array('Branch_model','Leads_Model'));
-        $user = $this->db->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row();
-        $deal_id = $this->input->post('deal_id');
-        $zone = $this->input->post('zone_id');
-
-
-        $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_aggriment')->row();
-        $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
-
-    $_POST[1] = $_POST[0] = $ref_no;
-        $_POST['edit'] = 1;
-        $_POST['checkss'] = array();
-        $deal   =    $this->Branch_model->get_deal($deal_id);
-        $oc =(array) json_decode($deal->other_charges);
-
-        $deal_data = $this->Branch_model->get_deal_data($deal_id);
-        $bank = $this->Branch_model->bank_by_zone($zone);
-
-        $enq = $this->db->select('e.*,r.region_name')
-                        ->from('enquiry e')
-                        ->join('tbl_region r','r.region_id=e.region_id','left')
-                        ->where('e.enquiry_id',$deal->enquiry_id)
-                        ->get()->row();
-
-        $city = $this->db->where('id',$enq->city_id)->get('city')->row();
-
-        $dynamic = $this->db->select('fvalue')
-                                ->from('extra_enquery')
-                                ->where('parent',$deal->enquiry_id)
-                                ->where('input','4482')//id of dynaic field of dynamic field in v-trans 
-                                ->get()->row();
-
-$enq_designation = !empty($dynamic)?$dynamic->fvalue:'';
-
-        $_POST[1] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
-        $_POST[2] = $enq->region_name;
-        $_POST[3] = '';
-
-$_POST['ip'][46] =  $_POST['ms'] = $enq->company;
-$_POST['ip'][47] = $_POST['reg_add'] = $enq->address;
-        $_POST['account_number1'] = $bank->account_no;
-        $_POST['ifsc1'] = $bank->ifsc;
-        $_POST['branch1'] = $bank->bank_branch;
-
- $_POST['ip'][88] = $_POST['ip'][40] =   $_POST['ip'][10] = $_POST['name1'] = $user->s_display_name.' '.$user->last_name;
-$_POST['ip'][90] =    $_POST['ip'][42] =   $_POST['ip'][12] = $_POST['designation1'] = $user->designation;
-
-
-$_POST['ip'][89] =$_POST['ip'][51] =  $_POST['ip'][41] = $_POST['ip'][11] = $_POST['name2'] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
-$_POST['ip'][91] =    $_POST['ip'][43] = $_POST['ip'][13] = $_POST['designation2'] = $enq_designation;
-
-        $_POST['ip'][15] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
-        $_POST['ip'][14] = $deal->booking_type;
-
-        $_POST['ip'][16] = $oc['1'];
-        $_POST['ip'][17] = $oc['2'];
-        $_POST['ip'][18] = $oc['3'];
-        $_POST['ip'][19] = $oc['4'];
-        $_POST['ip'][20] = $oc['5'];
-        $_POST['ip'][21] = $oc['6'];
-        $_POST['ip'][22] = $oc['7'];
-        $_POST['ip'][23] = $oc['8'];
-        $_POST['ip'][24] = $oc['9'];
-        $_POST['ip'][25] = $oc['17'];
-        $_POST['ip'][26] = $oc['10'];
-        $_POST['ip'][27] = $oc['18'];
-        // $_POST['ip'][28] = $oc['13'];
-        // $_POST['ip'][29] = $oc['14'];
-        $_POST['ip'][30] = !empty($oc['11'])?$oc['11']:' ';
-        $_POST['ip'][31] = $oc[14];
-        $_POST['ip'][36] = $oc[12];
-        $_POST['ip'][39] = $oc[16];
-        
-        $_POST['ip'][45] = $oc[21];
-
-        $_POST['ip'][50] = $enq->email;
-
-        
-
-        echo $this->load->view('aggrement/new-input-vtrans',$_POST,TRUE);
-        
-    }
-
-    function prepare_vtrans()
+    function prepare_vtrans($enq_code)
     {
+        $ag_data = array('name'=>$this->input->post("agg_user", true),
+                            'mobile'=>$this->input->post("agg_mobile", true),
+                            'email'=>$this->input->post("agg_email", true),
+                            'address'=>$this->input->post("agg_adrs", true),
+                            'date'=>$this->input->post("agg_date", true),
+                            );
+        $ag_encode = base64_encode(json_encode($ag_data));
+
         $this->load->model(array('Branch_model','Leads_Model','Location_model'));
 
         $user = $this->db->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row();
 
         $deal_id = $this->input->post('deal_id');
 
-        $zone = $this->input->post('zone_id');
-        $bank = $this->Branch_model->bank_by_zone($zone);
+        // $zone = $this->input->post('zone_id');
+        // $bank = $this->Branch_model->bank_by_zone($zone);
 
         $agr =  $this->db->select('id as ref_no')->limit(1)->get('tbl_aggriment')->row();
         $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
@@ -3608,7 +3531,6 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $raw['ip'] = $input['ip'];
         $raw['email_list'] = $email_list;
         $raw['charges'] = $oc;
-
         // Industries list
 
     $this->db->select("tbl_input.*,input_types.title as type");
@@ -3648,6 +3570,8 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         <body align="center" style="background:black;">  
         <div style="width:100%;" align="center">
             <form action="'.base_url('client/attach_agreement_data').'" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="ag_data" value="'.$ag_encode.'">
+            <input type="hidden" name="enq_code" value="'.$enq_code.'">
             <div style="width:735px; min-height:100%; padding:40px; margin:15px; background:white;">
             '.$data.'
             </div>
@@ -3702,7 +3626,7 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
 
     function print_new($data)
     {   
-        
+        echo'<center><h2>Please Wait..</h2></center>';
         $input['ip'] = $data['ip'];
         // $input['ip'][24]= ' designation';
         // $input['ip'][87]='dsf';
@@ -3712,7 +3636,27 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $this->load->library('pdf');
 
         $res =   $this->load->view('aggrement/print_vtrans',$input,true);
-        //echo $res;
-        $this->pdf->create($res,0);
+        
+        $json = base64_decode($data['ag_data']);
+        $ag_data = json_decode($json,true);
+        print_r($ag_data);
+        $enq_code = $data['enq_code'];
+        $ag_path = 'assets/agreements/Agreement-'.time().rand(1111,9999).'.pdf';
+        $this->pdf->create($res,0,$ag_path);
+        
+        $ary = array(
+                    'enq_id'=>$enq_code,
+                    'comp_id'=>$this->session->companey_id,
+                    'agg_name'=>$ag_data['name'],
+                    'agg_phone'=>$ag_data['mobile'],
+                    'agg_email'=>$ag_data['email'],
+                    'agg_adrs'=>$ag_data['address'],
+                    'file'=>$ag_path,
+                    'agg_date'=>$ag_data['date'],
+                    'created_by'=>$this->session->user_id,
+                    'created_date'=>date('d/m/Y'),
+                );
+        $this->db->insert('tbl_aggriment',$ary);
+        redirect(base_url($ag_path));
     }
 }

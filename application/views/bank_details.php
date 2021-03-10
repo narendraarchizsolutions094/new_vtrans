@@ -71,7 +71,7 @@
 								<div class="btn btn-group">
 								<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#edit_modal" onclick="update_d('.$res->id.')">Edit</a>
 
-								<a class="btn btn-xs btn-danger">Delete</a>
+								<a href="'.base_url('setting/delete_bank_details/'.$res->id).'" onclick="return confirm(\'Are you sure?\')" class="btn btn-xs btn-danger">Delete</a>
 								
 								</div>
 							</td>

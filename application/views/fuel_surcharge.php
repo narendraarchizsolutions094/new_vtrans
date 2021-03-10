@@ -53,7 +53,7 @@
 						<td><div class="btn btn-group">
 						<a class="btn btn-xs btn-primary" onclick="update_d('.$value->id.')">Edit</a>
 
-						<a class="btn btn-xs btn-danger">Delete</a>
+						<a href="'.base_url('setting/delete_fuel/'.$value->id).'" onclick="return confirm(\'Are you sure?\')" class="btn btn-xs btn-danger">Delete</a>
 						
 						</div></td>
 					</tr>';

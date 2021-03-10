@@ -41,6 +41,7 @@
 					<th>#</th>
 					<th>Name</th>
 					<th>Discount(%)</th>
+					<th>Rate/Km</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -54,10 +55,11 @@
 						<td>'.$i++.'</td>
 						<td>'.$value->name.'</td>
 						<td>'.$value->discount.'</td>
+						<td>'.$value->rate_km.'</td>
 						<td><div class="btn btn-group">
 						<a class="btn btn-xs btn-primary" onclick="update_d('.$value->id.')">Edit</a>
 
-						<a class="btn btn-xs btn-danger">Delete</a>
+						<a href="'.base_url('setting/delete_grade/'.$value->id).'" onclick="return confirm(\'Are you sure?\')" class="btn btn-xs btn-danger">Delete</a>
 						
 						</div></td>
 					</tr>';

@@ -1361,7 +1361,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     Bank Details
                                 </a>
                             </li>
-                            <li class="<?php echo (in_array($segment2,array('expense_master')) ?"active":'') ?>">
+                            <li class="<?php echo (in_array($segment2,array('expensemaster')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/expensemaster">
                                     Expense Master
                                 </a>

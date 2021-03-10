@@ -2363,7 +2363,7 @@ if(user_access('1004'))
       <th class="th-sm">Email</th>
       <th class="th-sm">Address</th>
       <th class="th-sm">Agreement Date</th>
-    <th class="th-sm">After sign</th>
+    <th class="th-sm">Agreement</th>
     </tr>
   </thead>
   <tbody>
@@ -2376,8 +2376,11 @@ if(user_access('1004'))
       <td><?php echo $val->agg_adrs; ?></td>
     <td><?php echo $val->agg_date; ?></td>
       <td>
-<?php if(!empty($val->file)){ ?>
-<a href="<?php   echo base_url($val->file); ?>"  target="_blank"><i class="fa fa-file" aria-hidden="true" style="font-size:20px;margin-top:-30px;color:#10A3FF;"></i></a>
+<?php if(!empty($val->file)){ 
+  $fname= explode('/', $val->file);
+  $fname = end($fname);
+  ?>
+<a href="<?php   echo base_url($val->file); ?>"  target="_blank"><?=$fname?></a>
 <?php }else{
   ?>
    <div class="form-group col-sm-2"><a href="#modalagg" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="set_agreement_id(<?=$val->id?>)"><i class="fa fa-upload" aria-hidden="true"></i></a></div>
@@ -2401,95 +2404,85 @@ function set_agreement_id(ag_id)
   $("input[name=ide]").val(ag_id);
 }
 </script> 
-
-<div class="row" style="padding: 16px 0px;">
-<form target="_blank" action="<?=base_url('client/prepare_vtrans')?>" method="post">
-
-<div class="col-md-8">
-  <div class="form-group">
-  <label>Genereate Agreement</label>
-  <select class="form-control"  name="deal_id" required> 
-    <option value="">Select Deal</option>
-   <?php
-   $ci = &get_instance();
-   $ci->load->model('Branch_model');
-   $deal_list = $ci->Branch_model->deal_list(array('status'=>1,'enquiry_id'=>$details->enquiry_id));
-    if(!empty($deal_list))
-    {
-      foreach ($deal_list as $key => $drow) {
-        echo'<option value="'.$drow->id.'">#'.$drow->id.' | '.ucwords($drow->booking_type).' | '.ucwords($drow->business_type).'ward </option>';
-      }
-     
-    }
-   ?>
-  </select>           
-  </div>
-</div>
-<div class="col-md-4">
-  <label>Zone</label>
-  <select name="zone_id" class="form-control">
-  <?php
-  $zones = $ci->Branch_model->zone_list()->result();
-  if(!empty($zones))
-  {
-      foreach ($zones as $key => $z) 
-      {
-        echo'<option value="'.$z->zone_id.'">'.$z->name.'</option>';
-      }
-  }
-  ?>
-  </select>
-</div>
-<div class="col-md-12">
-  <div class="form-group">                              
-  <input class="btn btn-primary" type="submit" value="Genereate pdf" name="submit">    
-  </div>       
-</div>
-</form>
-</div>
-
- <form class="" action="<?php echo base_url()?>client/create_aggrement/<?php echo $this->uri->segment(3); ?>" id="" method="post" enctype="multipart/form-data">
- 
-            <div class="col-md-12 col-sm-12">        
-                  <div class="row">                      
-                    <div class="form-group col-sm-10">
-                          <label>If Details Are Same As Privious Data (Click Checkbox) <i class="text-danger"></i></label>
-                        <input type="checkbox" name="agg_same" id="agg_same" value="<?php echo $this->uri->segment(3); ?>" onclick="myaggrement()" class="form-control">
-                    </div>  
-                    <div class="form-group col-sm-6">
-                          <label>Name <i class="text-danger"></i></label>
-                        <input type="text" id="agg_user" name="agg_user" value="" class="form-control">
-                     </div>
-                     
-                     <div class="form-group col-sm-6">
-                        <label>Mobile <i class="text-danger"></i></label>
-                        <input type="text" id="agg_mobile" name="agg_mobile" value="" class="form-control"> 
-                     </div>
+<hr>
+<form target="_blank" action="<?=base_url('client/prepare_vtrans/'.$details->Enquery_id)?>" method="post">
+    <div class="row">
+        <div class="form-group col-sm-10">
+            <label>
+              <input type="checkbox" name="agg_same" id="agg_same" value="<?php echo $this->uri->segment(3); ?>" onclick="myaggrement()"> If Details Are Same As Privious Data.
+            </label>
+            
+        </div>  
+        <div class="form-group col-sm-6">
+              <label>Name <i class="text-danger"></i></label>
+            <input type="text" id="agg_user" name="agg_user" value="" class="form-control" required>
+        </div>
+         
+        <div class="form-group col-sm-6">
+            <label>Mobile <i class="text-danger"></i></label>
+            <input type="text" id="agg_mobile" name="agg_mobile" value="" class="form-control" required> 
+        </div>
                                                   
-                     <div class="form-group col-sm-6">
-                        <label>Email <i class="text-danger"></i></label>
-                        <input type="text" id="agg_email" name="agg_email" value="" class="form-control"> 
-                     </div>
-                     
-                     <div class="form-group col-sm-6">
-                        <label>Address <i class="text-danger"></i></label>
-                        <input type="text" id="agg_adrs" name="agg_adrs" value="" class="form-control"> 
-                     </div>
-           
-           <div class="form-group col-sm-6">
-                        <label>Agreement Date <i class="text-danger"></i></label>
-                        <input  id="agg_date" name="agg_date" value="" class="form-control form-date"> 
-                     </div>
-
-<div class="col-md-12" style="padding:20px;">                                                
-                              <input class="btn btn-success" type="submit" value="Submit" name="submit" >           
-                           </div>
-
-</div>
-
-</div>
+        <div class="form-group col-sm-6">
+            <label>Email <i class="text-danger"></i></label>
+            <input type="text" id="agg_email" name="agg_email" value="" class="form-control" required> 
+        </div>
+         
+        <div class="form-group col-sm-6">
+            <label>Address <i class="text-danger"></i></label>
+            <input type="text" id="agg_adrs" name="agg_adrs" value="" class="form-control" required> 
+        </div>
+              
+        <div class="form-group col-sm-6">
+            <label>Agreement Date <i class="text-danger"></i></label>
+            <input  id="agg_date" name="agg_date" value="" class="form-control form-date" required> 
+        </div>
+<!--     </div>
+    <div class="row" style="padding: 16px 0px;"> -->
+      <div class="col-md-6">
+          <div class="form-group">
+              <label>Deal</label>
+              <select class="form-control"  name="deal_id" required> 
+                <option value="">Select Deal</option>
+               <?php
+               $ci = &get_instance();
+               $ci->load->model('Branch_model');
+               $deal_list = $ci->Branch_model->deal_list(array('status'=>1,'enquiry_id'=>$details->enquiry_id));
+                if(!empty($deal_list))
+                {
+                  foreach ($deal_list as $key => $drow) {
+                    echo'<option value="'.$drow->id.'">#'.$drow->id.' | '.ucwords($drow->booking_type).' | '.ucwords($drow->business_type).'ward </option>';
+                  }
+                 
+                }
+               ?>
+              </select>           
+          </div>
+      </div>
+      <!-- <div class="col-md-4">
+          <label>Zone</label>
+          <select name="zone_id" class="form-control">
+          <?php
+          // $zones = $ci->Branch_model->zone_list()->result();
+          // if(!empty($zones))
+          // {
+          //     foreach ($zones as $key => $z) 
+          //     {
+          //       echo'<option value="'.$z->zone_id.'">'.$z->name.'</option>';
+          //     }
+          // }
+          ?>
+          </select>
+      </div> -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">                              
+            <button class="btn btn-primary" type="submit">Genereate Agreement</button>    
+          </div>       
+        </div>
+    </div>
 </form>
-
 <!--------------------------------Modal Popup for Aggrement----------------------------------------------------------------------------->
                       
 <div class="modal fade" id="modalagg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel6" aria-hidden="true">

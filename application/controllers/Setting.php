@@ -953,6 +953,34 @@ public function discount_matrix()
 	}
 }
 
+public function delete_grade($id)
+{
+	$this->db->where('id',$id)->delete('discount_matrix');
+	$this->session->set_flashdata('message','Grade Deleted.');
+	redirect(base_url('setting/discount_matrix'));
+}
+
+public function delete_oda($id)
+{
+	$this->db->where('id',$id)->delete('oda_matrix');
+	$this->session->set_flashdata('message','ODA Entry Deleted.');
+	redirect(base_url('setting/oda_matrix'));
+}
+
+public function delete_bank_details($id)
+{
+	$this->db->where('id',$id)->delete('bank_details');
+	$this->session->set_flashdata('message','Bank Details Deleted.');
+	redirect(base_url('setting/bank_details'));
+}
+
+public function delete_fuel($id)
+{
+	$this->db->where('id',$id)->delete('fuel_surcharge');
+	$this->session->set_flashdata('message','Fuel Surcharge Deleted.');
+	redirect(base_url('setting/fuel_surcharge'));
+}
+
 public function fuel_surcharge()
 {
 	if($this->input->post())
@@ -1093,6 +1121,66 @@ public function edit_surcharge()
 		}
 	}
 }
+
+
+public function edit_discount()
+{
+	if($this->input->post())
+	{
+		if($this->input->post('task')=='view')
+		{
+			
+			$list =$this->db->where('comp_id',$this->session->companey_id)->where('id',$this->input->post('id'))->get('discount_matrix')->row();
+
+			echo'
+			<form action="'.base_url('setting/edit_discount').'" method="post">
+			<div class="panel-body" style="text-align:left">
+				<input type="hidden" name="task" value="save">
+				<input type="hidden" name="id" value="'.$this->input->post('id').'">
+				<div class="form-group">
+					<label>Name</label>
+					<input type="text" name="name" class="form-control" value="'.$list->name.'" required>
+				</div>
+				<div class="form-group">
+					<label>Allowed Discount (%)</label>
+					<input type="number" name="discount" value="'.$list->discount.'" class="form-control" required onkeyup="{
+						if(this.value>100 || this.value <0)
+							this.value=0;
+						}">
+				</div>
+				<div class="form-group">
+					<label>Rate/Km </label>
+					<input type="number" name="rate_km" value="'.$list->rate_km.'" class="form-control" required onkeyup="{
+						if(this.value <0)
+							this.value=0;
+						}">
+				</div>
+			</div>
+			<div class="">
+				<div class="form-group">
+						<button type="submit" class="btn btn-primary">Save</button>
+						<button type="button" class="btn btn-danger" onclick="Swal.close()">Cancel</button>
+					</div>
+			</div>
+			</form>
+			';
+		}
+		else if($this->input->post('task')=='save')
+		{
+			unset($_POST['task']);
+	
+			$data= array(
+				'name'=>$this->input->post('name'),
+				'discount'=>$this->input->post('discount'),
+				'rate_km'=>$this->input->post('rate_km'),
+			);
+		$this->db->where('id',$this->input->post('id'))->update('discount_matrix',$data);
+		$this->session->set_flashdata('message','Saved! ');
+		redirect(base_url('setting/discount_matrix'));
+		}
+	}
+}
+
 public function edit_bank()
 {
 	if($this->input->post())
