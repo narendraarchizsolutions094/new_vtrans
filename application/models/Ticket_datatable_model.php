@@ -145,7 +145,7 @@ class Ticket_datatable_model extends CI_Model{
     /*
      * Perform the SQL queries needed for an server-side processing requested
      * @param $_POST filter data based on the posted parameters
-     */
+     
     public function _get_datatables_query($postData){
         $this->load->model('common_model');
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
@@ -394,7 +394,7 @@ $CHK = 0;
 
         if(!empty($ticket_type)){
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
             $where .= " tck.complaint_type=".$ticket_type;
             $CHK = 1;          
         }
@@ -404,7 +404,7 @@ $CHK = 0;
 
         if(!empty($updated_from_created) && !empty($updated_to_created)){
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
             $updated_from_created = date("Y-m-d",strtotime($updated_from_created));
             $updated_to_created = date("Y-m-d",strtotime($updated_to_created));
             $where .= " (DATE(tck_conv.send_date) >= '".$updated_from_created."' AND DATE(tck_conv.send_date) <= '".$updated_to_created."') ";
@@ -415,7 +415,7 @@ $CHK = 0;
 
         if(!empty($updated_from_created) && empty($updated_to_created)){
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
             $updated_from_created = date("Y-m-d",strtotime($updated_from_created));
             $where .= " DATE(tck_conv.send_date) >=  '".$updated_from_created."'"; 
             $this->db->join("(select * from tbl_ticket_conv where comp_id=$comp_id AND subj!='Ticked Created') as tck_conv","tck_conv.tck_id=tck.id","LEFT");
@@ -424,7 +424,7 @@ $CHK = 0;
         }
         if(empty($updated_from_created) && !empty($updated_to_created)){            
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
             $updated_to_created = date("Y-m-d",strtotime($updated_to_created));
             $where .= " DATE(tck_conv.send_date) <=  '".$updated_to_created."'"; 
             $this->db->join("(select * from tbl_ticket_conv where comp_id=$comp_id AND subj!='Ticked Created') as tck_conv","tck_conv.tck_id=tck.id","LEFT");
@@ -438,7 +438,7 @@ $CHK = 0;
         if(!empty($productcntry)){            
            // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.product =  '".$productcntry."'"; 
             $CHK =1;                             
@@ -447,7 +447,7 @@ $CHK = 0;
         if(!empty($createdby)){            
            // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.added_by =  '".$createdby."'"; 
             $CHK =1;                             
@@ -456,7 +456,7 @@ $CHK = 0;
         if(!empty($assign)){            
                    // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.assign_to =  '".$assign."'"; 
             $CHK =1;                             
@@ -465,7 +465,7 @@ $CHK = 0;
         if(!empty($assign_by)){            
                    // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.assigned_by =  '".$assign_by."'"; 
             $CHK =1;                             
@@ -474,7 +474,7 @@ $CHK = 0;
         if(!empty($source)){            
                    // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.sourse =  '".$source."'"; 
             $CHK =1;                             
@@ -483,7 +483,7 @@ $CHK = 0;
         if(!empty($problem)){            
                    // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.category =  '".$problem."'"; 
             $CHK =1;                             
@@ -492,7 +492,7 @@ $CHK = 0;
         if(!empty($priority)){            
                    // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.priority =  '".$priority."'"; 
             $CHK =1;                             
@@ -501,7 +501,7 @@ $CHK = 0;
          if(!empty($issue)){            
                    // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.issue =  '".$issue."'"; 
             $CHK =1;                             
@@ -511,7 +511,7 @@ $CHK = 0;
         if(!empty($stage)){            
                    // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.ticket_stage =  '".$stage."'"; 
             $CHK =1;                             
@@ -521,7 +521,7 @@ $CHK = 0;
         if(!empty($sub_stage)){            
                    // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.ticket_substage =  '".$sub_stage."'"; 
             $CHK =1;                             
@@ -530,7 +530,7 @@ $CHK = 0;
         if(!empty($ticket_status)){            
                            // $to_created = date("Y-m-d",strtotime($to_created));
             if($CHK)
-                $where .= 'AND';
+                $where .= ' AND ';
 
             $where .= " tck.ticket_status =  '".$ticket_status."'"; 
             $CHK =1;                              
@@ -590,7 +590,7 @@ $CHK = 0;
         if(!empty($_POST['specific_list']))
         {//echo 'infolist'.$_POST['specific_list']; exit();
            
-            $where.="AND ( tck.id IN (".$_POST['specific_list'].") ) ";
+            $where.=" AND ( tck.id IN (".$_POST['specific_list'].") ) ";
             $and =1;
         }
 
