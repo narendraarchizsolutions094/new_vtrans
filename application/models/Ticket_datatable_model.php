@@ -533,7 +533,7 @@ $CHK = 0;
                 $where .= 'AND';
 
             $where .= " tck.ticket_status =  '".$ticket_status."'"; 
-            $CHK =1;                             
+            $CHK =1;                              
         }
         $uid    =   $this->session->user_id;
         if($top_filter=='total'){            

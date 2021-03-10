@@ -1296,6 +1296,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                             <?php
                         //if ($this->session->companey_id == 65) {
+                             $segment2 = str_replace('-', '_',$segment2);
                         ?>
                             <?php  if (user_access('d37')) {  ?>
                             <li class="<?php echo (in_array($segment2,array('other_charges')) ?"active":'') ?>">
