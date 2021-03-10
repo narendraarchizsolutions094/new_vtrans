@@ -3387,7 +3387,7 @@ public function all_update_expense_status()
             $res =  $this->db->select('con.*')
                                 ->from('tbl_client_contacts con')
                             ->join('enquiry','enquiry.enquiry_id=con.client_id','left')
-                            ->where('enquiry.company='.$key)
+                            ->where('enquiry.company="'.$key.'"')
                             ->where('con.comp_id',$this->session->companey_id)->get();
         }
         if(!empty($res))

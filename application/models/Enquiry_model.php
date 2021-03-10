@@ -4775,7 +4775,7 @@ public function insertComInfo($data)
         if(!empty($_POST['filters']))
           {
 
-              $match_list = array('date_from','date_to','phone');
+              $match_list = array('date_from','date_to','phone','enquiry_id');
 
               $this->db->group_start();
               foreach ($_POST['filters'] as $key => $value)
@@ -4796,6 +4796,8 @@ public function insertComInfo($data)
                         if($key=='date_to')
                           $this->db->where($fld.'<=',$value);
 
+                        if($key=='enquiry_id')
+                          $this->db->where('info.enquiry_id',$value);
                         // if($key=='phone')
                         //   $this->db->where('phone LIKE "%'.$value.'%" OR other_phone LIKE "%'.$value.'%"');
                     }
