@@ -4835,7 +4835,7 @@ public function insertComInfo($data)
        $where = '';
         $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
-        $where=" enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
+        $where .=" enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
 
         $this->db->select('tbl_visit.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
         $this->db->from('tbl_visit');
