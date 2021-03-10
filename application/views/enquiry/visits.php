@@ -318,7 +318,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th >Travel Expense</th>
 				          <th>Other Expense</th>
 				          <th>Total Expense</th>
-				          <th>Expense Sttaus</th>
+				          <th>Expense Staus</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
@@ -376,7 +376,7 @@ $('input[name="filter_checkbox"]').click(function(){
             </div>
                <br>
                <button class="btn btn-sm btn-success" type="submit" onclick="expense_status();">
-              Update Expense</button>                    
+              Submit</button>                    
                <br>
          </div>
          <div class="modal-footer">

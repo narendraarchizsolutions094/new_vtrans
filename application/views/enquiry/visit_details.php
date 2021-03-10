@@ -208,14 +208,17 @@ $secondpoint=$newpoints[$lastKey];
     $comp_id=$this->session->companey_id;
 $i=2;
 $totalexp=0;
-$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense','left')->get('tbl_expense')->result();
+//$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense','left')->get('tbl_expense')->result();
+$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.created_by as ct_id,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense','left')->get('tbl_expense')->result();
 foreach ($expense as $key => $value) { 
  $tamount= $value->amount
   ?>
 <tr>
 <td>
   <?php
+  if($value->ct_id!=$user_id){
     echo'<input  type="checkbox" name="approve[]" class="checkbox1" value="<?= $value->ids ?>">';
+  }
   ?> 
   <?= $i++; ?>
 </td>
@@ -486,7 +489,7 @@ function checkAll(ele) {
             <div class="col-md-12">
             <div class="form-group">
             <label>Remarks</label>
-            <input class="form-control" name="remarks" type="text" >
+            <textarea class="form-control" name="remarks" type="text" ></textarea>
             </div>
             </div>
           
@@ -531,7 +534,7 @@ function checkAll(ele) {
             <div class="form-group">
             <label>Remarks</label>
 
-            <input class="form-control" name="remarks" type="text" value="<?= $details->remarks ?>">
+            <textarea class="form-control" name="remarks" type="text" value="<?= $details->remarks ?>"><?= $details->remarks ?> </textarea>
             </div>
             </div>
             <div class="col-md-12">
@@ -585,7 +588,7 @@ function checkAll(ele) {
             </div>
                <br>
                <button class="btn btn-sm btn-success" type="submit" onclick="expense_status();">
-              Update Expense</button>                    
+              Submit</button>                    
                <br>
          </div>
          <div class="modal-footer">

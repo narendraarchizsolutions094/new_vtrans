@@ -313,7 +313,7 @@
                             if($this->session->companey_id == 65 or 1){    
                             ?>
                              <div class="form-row">
-                                <div class="form-group col-md-4">
+                                <!--<div class="form-group col-md-4">
                                     <label class="control-label" for="reporting_location"><?=display('reporting_location')?></label> 									
                                     <select class="form-control" name="reporting_location">
                                         <?php
@@ -326,7 +326,7 @@
                                         }
                                         ?>
                                     </select>
-                                </div>
+                                </div>-->
 								
 								<div class="form-group col-md-4">
                                     <label class="control-label" for="sales_resion"><?=display('sales_resion')?></label> 									
