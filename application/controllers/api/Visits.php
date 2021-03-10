@@ -929,4 +929,64 @@ return $sum;
                ], REST_Controller::HTTP_OK);
       }
    }
+
+   public function visit_action_post()
+   {
+      $this->form_validation->set_rules('visit_list','visit_list (comma seperated)','required|trim');
+      $this->form_validation->set_rules('remarks','remarks','required|trim');
+      $this->form_validation->set_rules('status','status [1-Reject,2-Approve]','required|trim');
+      $this->form_validation->set_rules('user_id','user_id','required|trim');
+      $this->form_validation->set_rules('comp_id','comp_id','required|trim');
+      if($this->form_validation->run()==true)
+      {
+        $this->load->model('Leads_Model');
+        $comp_id=$this->input->post('comp_id');
+        $user_id=$this->input->post('user_id');
+        $status = $this->input->post('status');
+        $remarks = $this->input->post('remarks');
+       // print_r($_POST);exit;
+        $list = explode(',', $this->input->post('visit_list'));
+        foreach ($list as $key => $value) 
+        {
+        $visit_row = $this->db->select("enquiry.Enquery_id as comment_id")
+                            ->from("tbl_visit")
+                ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left')
+                            ->where('tbl_visit.id', $value)
+                            ->get();
+          $comment_id = $visit_row->row()->comment_id;
+            if($status=='1'){
+                  $subject = 'Visit Reject'; 
+            }else{
+            $subject = 'Visit Approve'; 
+            }       
+
+            $data=['uid'=>$user_id,'remarks'=>$remarks,'approve_status'=>$status];
+            $this->db->where(array('comp_id'=>$comp_id,'visit_id'=>$value))->update('tbl_expense',$data);
+        //timeline code here
+            $this->db->set('remark',$remarks);
+        $this->Leads_Model->add_comment_for_events($subject,$comment_id,0,$user_id);
+        //Bell botification code here
+        $assign_data_noti[]=array('create_by'=> $user_id,
+                            'subject'=>$subject,
+                            'task_remark'=>$remarks,
+                            'query_id'=>$comment_id,
+                            'task_date'=>date('d-m-Y'),
+                            'task_time'=>date('H:i:s')
+                            );
+        }
+        $this->db->insert_batch('query_response',$assign_data_noti);
+
+           $this->set_response([
+                  'status' => true,
+                  'message' =>'Visit Updated.',
+               ], REST_Controller::HTTP_OK);
+      }
+      else
+      {
+           $this->set_response([
+                  'status' => false,
+                  'message' =>strip_tags(validation_errors())
+               ], REST_Controller::HTTP_OK);
+      }
+   }
 }

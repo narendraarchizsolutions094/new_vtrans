@@ -4829,13 +4829,12 @@ public function insertComInfo($data)
 
   }
 
-
   public function visit_list_api($company_id,$user_id,$process,$limit=-1,$offset=-1)
   {
        $all_reporting_ids    =   $this->common_model->get_categories($user_id);
        $where = '';
-        // $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
+        $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
         $where=" enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
 
         $this->db->select('tbl_visit.*,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
@@ -4846,7 +4845,7 @@ public function insertComInfo($data)
 
         // $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$company_id);
-        $this->db->where("tbl_visit.user_id",$user_id);
+        // $this->db->where("tbl_visit.user_id",$user_id);
         $this->db->order_by("tbl_visit.created_at",'DESC');
         $this->db->where($where);
         if(!empty($_POST['filters']))
