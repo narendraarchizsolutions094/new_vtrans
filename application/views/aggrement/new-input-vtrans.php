@@ -1150,68 +1150,12 @@ information:</span></h1>
 	</tr>
 	<tr>
 		<td class="bg-d">Door Collection Charges</td>
-		<td>
-			
-			<?php
-			if(!empty($charges[19]))
-			{
-				echo'<table border="1" style="max-width:252px!important">
-                            <thead>
-                              <tr>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Charge</th>
-                                <th style="width:100px;">Unit</th>
-                                
-                              </tr>
-                            </thead>
-                            <tbody>';
-                              foreach ($charges[19] as $d => $door)
-                              {
-                                echo'<tr>
-                                              <td>'.$door->from.'</td>
-                                              <td>'.$door->to.'</td>
-                                              <td>'.$door->charge.' Rs.</td>
-                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
-                                            </tr>';
-                              }
-                        echo'</tbody></table>';
-			}
-			?>
-
-		</td>
+		<td><?=$charges[19]?></td>
 		<td colspan="2">Upto 3 MT Per GC</td>
 	</tr>
 	<tr>
 		<td class="bg-l">Last Mile Delivery Charges</td>
-		<td>
-			<?php
-			if(!empty($charges[20]))
-			{
-				echo'<table border="1" style="max-width:252px!important">
-                            <thead>
-                              <tr>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Charge</th>
-                                <th style="width:100px;">Unit</th>
-                                
-                              </tr>
-                            </thead>
-                            <tbody>';
-                              foreach ($charges[20] as $d => $door)
-                              {
-                                echo'<tr>
-                                              <td>'.$door->from.'</td>
-                                              <td>'.$door->to.'</td>
-                                              <td>'.$door->charge.' Rs.</td>
-                                              <td>'.ucwords(str_replace('_', ' ', $door->unit)).'</td>
-                                            </tr>';
-                              }
-                        echo'</tbody></table>';
-			}
-			?>
-		</td>
+		<td><?=$charges[20]?></td>
 		<td colspan="2">Upto 3 MT Per GC</td>
 	</tr>
 	<tr>

@@ -3558,9 +3558,9 @@ $input['ip'][50] = $input['ip'][38] = $input['ip'][1] = $enq->name_prefix.' '.$e
 
         //Acount details -
 
-        $input['ip'][20]= $bank->account_no;
-        $input['ip'][21] = $bank->ifsc;
-        $input['ip'][22] = $bank->bank_branch;
+        $input['ip'][20]= '';//$bank->account_no;
+        $input['ip'][21] = '';//$bank->ifsc;
+        $input['ip'][22] = '';//$bank->bank_branch;
 
         //user Details 
 
