@@ -40,7 +40,8 @@ class Visits extends REST_Controller {
         $minus=0;
 $result =array();
         $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$limit,$offset);
-		foreach($data['result']->result() as $key=> $value){
+		foreach($data['result']->result() as $key=> $value)
+    {
 			$ades = $value->actualDistance;
 			$ides = $value->idealDistance;
 		
@@ -60,31 +61,51 @@ $result =array();
  //add code for color coding in table
                 //checing for min max difference filter
 
-if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']))
-{
-    if(!empty($_POST['filters']['min_diff']))
-    {
-        $min = $_POST['filters']['min_diff'];
-        if($percentChange < $min)
+        if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']))
         {
-          $minus++;
-          continue;
+            if(!empty($_POST['filters']['min_diff']))
+            {
+                $min = $_POST['filters']['min_diff'];
+                if($percentChange < $min)
+                {
+                  $minus++;
+                  continue;
+                }
+            }
+            
+            if(!empty($_POST['filters']['max_diff']))
+            {
+                $max = $_POST['filters']['max_diff'];
+                if($max>$percentChange)
+                  { $minus++;
+                  continue;
+                }
+            }
         }
-    }
-    
-    if(!empty($_POST['filters']['max_diff']))
-    {
-        $max = $_POST['filters']['max_diff'];
-        if($max>$percentChange)
-          { $minus++;
-          continue;
-        }
-    }
-}
 
- $result[$key]=(array)$value;
- $result[$key]['diff']=$percentChange;
-		}
+       $result[$key]=(array)$value;
+       $result[$key]['diff']=$percentChange;
+
+        $visit_totalexp= $this->db->where(array('tbl_expense.visit_id'=> $value->id))->count_all_results('tbl_expense');
+        $visit_reject= $this->db->where(array('tbl_expense.visit_id'=> $value->id,'approve_status' => 1))->count_all_results('tbl_expense');
+        $visit_approve= $this->db->where(array('tbl_expense.visit_id'=> $value->id,'approve_status' => 2))->count_all_results('tbl_expense');
+        $visit_pending= $this->db->where(array('tbl_expense.visit_id'=> $value->id,'approve_status' => 0))->count_all_results('tbl_expense');
+        $expstatus='N/A';
+        if($visit_totalexp!=0)
+        {
+                if($visit_reject==$visit_totalexp){
+                    $expstatus='Rejected ';
+                }elseif($visit_approve==$visit_totalexp){
+                    $expstatus='Approved';
+                }elseif($visit_pending==$visit_totalexp){
+                    // $expstatus='Pending';
+                    $expstatus='Pending';
+                }elseif($visit_reject!=0 AND $visit_approve!=0 OR $visit_pending!=0){
+                    $expstatus='Partial';
+                }         
+         }
+      $result[$key]['status'] = $expstatus;
+		} 
 
           if(!empty($result))
           {
@@ -100,7 +121,7 @@ if(!empty($_POST['filters']['min_diff']) || !empty($_POST['filters']['max_diff']
                 'data' =>$res
                  ], REST_Controller::HTTP_OK);
           }   
-		else
+		    else
          {
 	    
 	        $this->set_response([

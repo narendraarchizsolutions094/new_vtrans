@@ -2014,13 +2014,13 @@ public function update_expense_status()
     {
         $comp_id=$this->session->companey_id;
         $user_id=$this->session->user_id;
-    foreach ($_POST['exp_ids'] as $key => $value) {
+        foreach ($_POST['exp_ids'] as $key => $value) {
         // echo $value;
         $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
         print_r($value);
         $this->db->where(array('comp_id'=>$comp_id,'id'=>$value))->update('tbl_expense',$data);
-    }
             }
+    }
 }
 public function visit_expense_status()
 {

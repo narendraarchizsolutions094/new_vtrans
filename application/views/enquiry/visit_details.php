@@ -217,7 +217,7 @@ foreach ($expense as $key => $value) {
 <td>
   <?php
   if($value->ct_id!=$user_id){
-    echo'<input  type="checkbox" name="approve[]" class="checkbox1" value="<?= $value->ids ?>">';
+    echo'<input  type="checkbox" name="approve[]" class="checkbox1" value="'.$value->ids.'">';
   }
   ?> 
   <?= $i++; ?>
@@ -746,7 +746,7 @@ $(function() {
       $($(".checkbox1:checked")).each(function(k,v){
         x.push($(v).val());
       });
-      // alert(x.toString());
+      //alert(x.toString()); return;
        approve_status = document.getElementById("approve_status").value;
        remarks = document.getElementById("remarks").value;
       $.ajax({
