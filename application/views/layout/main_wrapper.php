@@ -3204,7 +3204,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
 //========== Count bell notification ===========
 try{
-    setInterval(count_bell_notification,10000);
+   // setInterval(count_bell_notification,10000);
 }catch(e){alert(e);}
 
 //==============================
