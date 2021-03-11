@@ -987,15 +987,15 @@ return $sum;
             $this->db->set('remark',$remarks);
         $this->Leads_Model->add_comment_for_events($subject,$comment_id,0,$user_id);
         //Bell botification code here
-        $assign_data_noti[]=array('create_by'=> $user_id,
-                            'subject'=>$subject,
-                            'task_remark'=>$remarks,
-                            'query_id'=>$comment_id,
-                            'task_date'=>date('d-m-Y'),
-                            'task_time'=>date('H:i:s')
-                            );
+        // $assign_data_noti[]=array('create_by'=> $user_id,
+        //                     'subject'=>$subject,
+        //                     'task_remark'=>$remarks,
+        //                     'query_id'=>$comment_id,
+        //                     'task_date'=>date('d-m-Y'),
+        //                     'task_time'=>date('H:i:s')
+        //                     );
         }
-        $this->db->insert_batch('query_response',$assign_data_noti);
+        //$this->db->insert_batch('query_response',$assign_data_noti);
 
            $this->set_response([
                   'status' => true,

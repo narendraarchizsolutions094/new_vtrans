@@ -547,7 +547,6 @@ class Lead extends REST_Controller {
         $this->form_validation->set_rules('user_id','User Id' ,'required');
         $this->form_validation->set_rules('status','Status');
 
-          //
         if($this->form_validation->run() == true){
             $move_enquiry=$this->input->post('enquiry_code[]');
             $status=$this->input->post('status');
@@ -570,12 +569,43 @@ class Lead extends REST_Controller {
               $assigner_user_id =  $this->input->post('user_id');
               $assigner_user = $this->User_model->read_by_id($this->input->post('user_id'));          
               $convertor_phone = '91'.$assigner_user->s_phoneno;
-              
+              $comp_id = $assigner_user->companey_id;
+
+              $enquiry_separation = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING',$comp_id);
+              $other = array();
+              if(!empty($enquiry_separation))
+              {
+                $enquiry_separation = json_decode($enquiry_separation, true);
+
+                foreach ($enquiry_separation as $key => $value) 
+                {
+                    $other[$key] = $value['title'];
+                }
+              }
+                
               foreach($move_enquiry as $key){
                 $enq = $this->enquiry_model->enquiry_by_code($key);
                 $this->db->set('status',$status);
                 $this->db->where('Enquery_id',$key);
                 $this->db->update('enquiry');
+
+                $msg = '';
+                if($status=='1')
+                {
+                  $msg = 'Moved to '.display('enquiry',$comp_id);
+                }
+                else if($status =='2')
+                  $msg = 'Moved to '.display('lead',$comp_id);
+                else if($status == '3')
+                  $msg = 'Moved to '.display('client',$comp_id);
+                else
+                {
+                    if(!empty($other[$status]))
+                      $msg = 'Moved to '.$other[$status];
+                }
+
+                $this->Leads_Model->add_comment_for_events_stage_api($msg,$enq->Enquery_id,'','','',$assigner_user_id);
+
                  /*
 
               $created_by_user_id =   $enq->created_by;
@@ -590,7 +620,7 @@ class Lead extends REST_Controller {
         
               $this->Message_models->sendwhatsapp($convertor_phone,$notification_msg);
               
-              $this->Message_models->sendwhatsapp($creator_phone,$notification_msg);              
+              $this->Message_models->sendwhatsapp($creator_phone,$notification_msg); /*             
               $this->Leads_Model->add_comment_for_events_api($notification_msg,$enq->Enquery_id,$assigner_user_id);             
               
               $insert_id = $this->Leads_Model->LeadAdd($data);

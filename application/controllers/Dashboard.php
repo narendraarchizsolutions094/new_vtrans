@@ -3676,7 +3676,7 @@ public function set_layout_to_session() {
         $this->db->where('status',1);
         $email_row = $this->db->get('email_integration')->row_array();                        
         if(empty($email_row)){
-                echo "Email is not configured";
+                echo'<script>alert("Email Integration Missing."); window.close();</script>';
                 die();
         }else{            
             $config['smtp_auth']    = true;
@@ -3711,7 +3711,7 @@ public function set_layout_to_session() {
             echo json_encode(array('status'=>true,'message'=>'Mail Send'));
             exit();
           }
-            $this->session->set_flashdata('message','Email Send');
+          echo'<script>alert("Email Send successfully."); window.close();</script>';
         }
         else
         {
@@ -3720,9 +3720,9 @@ public function set_layout_to_session() {
             echo json_encode(array('status'=>false,'message'=>'Unable to Send Mail'));
             exit();
           }
-             $this->session->set_flashdata('exception','Something went wrong');                     
+             echo'<script>alert("Unable to send."); window.close();</script>';                    
         }
-        redirect('enquiry/view/'.$enquiry_id.'/');  
+        exit(); 
     }
     else
     {       

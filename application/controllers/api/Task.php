@@ -254,6 +254,9 @@ public function create_post(){
         if(!empty($update_task)){
           $this->db->where('resp_id',$update_task);
           $this->db->update('query_response');
+
+          $this->Leads_Model->add_comment_for_events_stage_api('Task Updated',$lead_id,'','','',$ld_updt_by);
+
           $this->db->select('notification_id');
           $this->db->where('resp_id',$update_task);          
           $r  = $this->db->get('query_response')->row_array();
@@ -264,10 +267,14 @@ public function create_post(){
             $res  = $this->Notification_model->add_task_reminder($ld_updt_by,$lead_id,$rem_date,$rem_time,$subject);            
           }
         }else{
+
           $this->db->set('create_by',$ld_updt_by);
           $this->db->insert('query_response');  
           $tid = $this->db->insert_id();
           $res  = $this->Notification_model->add_task_reminder($ld_updt_by,$lead_id,$rem_date,$rem_time,$subject);
+
+          $this->Leads_Model->add_comment_for_events_stage_api('Task Created',$lead_id,'','','',$ld_updt_by);
+
           //print_r($res);
           $res = json_decode($res,true);
           $nid = $res['name']; // notification id

@@ -7,11 +7,11 @@ class Contacts_datatable_model extends CI_Model{
   
         $this->table = 'tbl_client_contacts';
         // Set orderable column fields
-        $this->column_order = array('','enquiry.name','enquiry.company','contacts.designation','contacts.c_name','contacts.contact_number','contacts.emailid','contacts.decision_maker','contacts.other_details','contacts.created_at');
+        $this->column_order = array('','enquiry.name','enquiry.company','contacts.designation','contacts.c_name','contacts.contact_number','contacts.emailid','contacts.decision_maker','contacts.other_detail','contacts.created_at');
 
         // Set searchable column fields
 
-        $this->column_search = array('enquiry.name','enquiry.company','contacts.designation','contacts.c_name','contacts.contact_number','contacts.emailid','contacts.other_details');
+        $this->column_search = array('enquiry.name','enquiry.company','contacts.designation','contacts.c_name','contacts.contact_number','contacts.emailid','contacts.other_detail');
 
         // $this->column_search = array('tck.ticketno','tck.id','tck.category','tck.name','tck.email','tck.product','tck.message','tck.issue','tck.solution','tck.sourse','tck.ticket_stage','tck.review','tck.status','tck.priority','tck.complaint_type','tck.coml_date','tck.last_update','tck.send_date','tck.client','tck.assign_to','tck.company','tck.added_by','enq.phone','enq.gender','prd.country_name');
         
