@@ -117,16 +117,17 @@ class Web extends CI_Controller{
         $this->db->update('query_response');
     }
     public function count_bell_notification(){
-        $this->db->from('query_response');              
-        $user_id = $this->session->user_id;              
-        $this->db->select("query_response.related_to,query_response.resp_id,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,tbl_admin.s_display_name as user_name,");      
-        $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=query_response.create_by', 'left');
-        $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
-        $this->db->join('tbl_visit visit', 'visit.id=query_response.query_id', 'left');
+        echo 0;
+//         $this->db->from('query_response');              
+//         $user_id = $this->session->user_id;              
+//         $this->db->select("query_response.related_to,query_response.resp_id,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,tbl_admin.s_display_name as user_name,");      
+//         $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=query_response.create_by', 'left');
+//         $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
+//         $this->db->join('tbl_visit visit', 'visit.id=query_response.query_id', 'left');
 
-        $where = " ((enquiry.created_by=$user_id OR enquiry.aasign_to=$user_id OR visit.user_id=$user_id) OR query_response.create_by=$user_id OR query_response.related_to=$user_id)  AND query_response.noti_read=0 AND CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) <= NOW() ORDER BY CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) DESC";
-        $this->db->where($where);
-        echo $this->db->get()->num_rows();
+//         $where = " ((enquiry.created_by=$user_id OR enquiry.aasign_to=$user_id OR visit.user_id=$user_id) OR query_response.create_by=$user_id OR query_response.related_to=$user_id)  AND query_response.noti_read=0 AND CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) <= NOW() ORDER BY CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) DESC";
+//         $this->db->where($where);
+//         echo $this->db->get()->num_rows();
     }
 }
 
