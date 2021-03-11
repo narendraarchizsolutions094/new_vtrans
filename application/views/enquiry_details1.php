@@ -1942,7 +1942,7 @@ if(user_access('1020'))
 <div class="tab-pane" id="vtran_visit">
    <div class="row">
    <div class="col-md-12">
-<?php if(user_access('1023'))  {  ?>
+<?php if(user_access('1024'))  {  ?>
 
 <a class="btn btn-primary" data-toggle="modal"  data-target="#approve_expense" style="color:white;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff; float:right;" onclick="">Approve</a>                        
 <?php } ?>
@@ -2146,6 +2146,8 @@ if(user_access('1020'))
                   <th id="th-10">Company Name</th>
                   <th id="th-14">Client Name</th>
                   <th id="th-15">Contact Person</th>
+                  <th id="th-16">Start Location</th>
+                  <th id="th-17">End Location</th>
                   <th id="th-4">Shortest Distance</th>
                   <th id="th-5">Actual Distancee</th>
                   <th id="th-6">Rating</th>
@@ -2153,7 +2155,7 @@ if(user_access('1020'))
                   <th >Travel Expense</th>
                   <th>Other Expense</th>
                   <th>Total Expense</th>
-                  <th>Expense Sttaus</th>
+                  <th>Expense Staus</th>
                   <th id="th-9">Action</th>
 				        </tr>
       </thead>
@@ -2239,6 +2241,7 @@ $(document).ready(function(){
               "type": "POST",
               "data":function(d){
                   d.enquiry_id ="<?=$details->enquiry_id?>";
+                  d.allow_cols = '';
                   return d;
               }
           },

@@ -629,14 +629,15 @@ $result =array();
             $res = $this->db->where(array('enquiry_id'=>$enquiry_id))->get('enquiry')->row();
             $done = 1;
 
-            if(!empty($res) AND !empty($this->input->post('visit_date')) AND !empty($this->input->post('visit_time')))
+            if(!empty($res) AND !empty($this->input->post('visit_date')) AND !empty($this->input->post('visit_time')) AND !empty($this->input->post('m_purpose')))
             {	
                  	$data = array(
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>$this->input->post('visit_time'),
+                            'm_purpose'=>$this->input->post('m_purpose'),
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,   
-                            'enquiry_id'=>$enquiry_id
+                            'enquiry_id'=>$enquiry_id,
                         );
 
 	            	if(!empty($enquiry_id)){
