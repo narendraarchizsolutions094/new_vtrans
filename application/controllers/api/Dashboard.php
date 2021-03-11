@@ -393,7 +393,7 @@ class Dashboard extends REST_Controller {
         {
             $all_reporting_ids  = $this->common_model->get_categories($user_id);
 
-            $this->db->select('enquiry.enquiry_id,enquiry.client_name');
+            $this->db->select('enquiry.enquiry_id,enquiry.Enquery_id as enq_code,enquiry.client_name');
             $this->db->from('enquiry');
             $this->db->where("enquiry.company",$comp_id);
 

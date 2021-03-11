@@ -188,6 +188,7 @@ class Task extends CI_Controller {
     public function create_task_form(){        
         $data['related_to']    =   $this->enquiry_model->all_enqueries();
         $data['taskstatus_list'] = $this->Taskstatus_model->taskstatuslist(); 
+        $data['company_list'] = $this->Client_Model->getCompanyList()->result();
         $this->load->view('task/create_task_form',$data);
     }
     public function search_comment_and_task($date = '') {

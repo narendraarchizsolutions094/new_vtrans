@@ -22,42 +22,17 @@
             </select>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-sm-4">
             <label>Task Date <i class="text-danger">*</i></label>
             <input class="form-control form-date" type='text' name="task_date">
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-sm-4">
             <label>Task Time<i class="text-danger">*</i></label>
             <input type="time" class="form-control" name="task_time">
         </div>
-        <div class="form-group col-sm-6">
-            <label>Related To<i class="text-danger">*</i></label>
-            <select class="form-control" name="related_to" id='task_related_to'>
-            <?php
-                if(!empty($related_to)){
-                    foreach($related_to as $key=>$value){
-                        ?>
-                        <option value="<?=$value->Enquery_id?>">
-                            <?php
-                            if($value->name){
-                                echo $value->name_prefix.' '.$value->name.' '.$value->lastname.(empty($value->email)?'':'( '.$value->email.') ');
-                            }else{
-                                if(empty($value->email)){
-                                    echo $value->phone;
-                                }else{
-                                    echo $value->email;
-                                }
-                            }
-                            ?>
-                        </option>
-                        <?php
-                    }
-                }
-            ?>
-            </select>
-        </div>
-        <div class="form-group col-sm-6">
+
+        <div class="form-group col-sm-4">
             <label>Status<i class="text-danger">*</i></label>
             <select class="form-control" name="task_status">
             <?php
@@ -73,6 +48,54 @@
             ?>
             </select>
         </div>
+
+        <div class="form-group col-md-6">
+            <label style="width:100%;">Company <span class="text-danger">*</span>
+              <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
+                <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
+              </a>
+            </label>
+            <select class="form-control" name="company" onchange="filter_related_to(this.value)" required>
+              <option value="-1">Select</option>
+              <?php
+              if(!empty($company_list))
+              {
+                foreach ($company_list as $key =>  $row)
+                {
+                  echo '<option value="'.$row->id.'">'.$row->company_name.'</option>';
+                }
+              }
+              ?>
+            </select>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label>Client Name <i class="text-danger">*</i></label>
+            <select class="form-control" name="related_to" id='task_related_to'>
+            <?php
+                // if(!empty($related_to)){
+                //     foreach($related_to as $key=>$value){
+                //         ?>
+                      <!--  <option value="<?=$value->Enquery_id?>"> -->
+                //             <?php
+                //             if($value->name){
+                //                 echo $value->name_prefix.' '.$value->name.' '.$value->lastname.(empty($value->email)?'':'( '.$value->email.') ');
+                //             }else{
+                //                 if(empty($value->email)){
+                //                     echo $value->phone;
+                //                 }else{
+                //                     echo $value->email;
+                //                 }
+                //             }
+                //             ?>
+                        <!-- </option> -->
+                //         <?php
+                //     }
+                // }
+            ?>
+            </select>
+        </div>
+        
         <div class="form-group col-sm-12">
             <label>Description<i class="text-danger">*</i></label>
             <textarea id='task_description' rows="6" class="form-control" name="task_remark"
@@ -107,4 +130,18 @@
         //alert(id);
         $("#set_reminder").submit();
     });
+
+
+function filter_related_to(v)
+{
+      $.ajax({
+            url:"<?=base_url('client/account_by_company')?>",
+            type:'get',
+            data:{comp_id:v},
+            success:function(q){
+              $("select[name=related_to]").html(q);
+               $("select[name=related_to]").trigger('change');
+            }
+      });
+}
 </script>

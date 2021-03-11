@@ -18,13 +18,25 @@ class Task extends REST_Controller {
     $this->form_validation->set_rules('user_id','User Id','required');
     
     $this->form_validation->set_message('required', 'Invalid %s');
+      $offset = $this->input->post('offset')??0;
+      $limit = $this->input->post('limit')??10;
+
     if ($this->form_validation->run() == true) {
-    $user_id  = $this->input->post('user_id');   
-    $task_list = $this->Task_Model->get_tasks_by_user_id($user_id);
-    $this->set_response([
-                'status' => true,
-                'tasks' =>$task_list
+        $user_id  = $this->input->post('user_id');  
+
+          $total = $this->Task_Model->get_tasks_by_user_id($user_id,'count');
+          $data = $this->Task_Model->get_tasks_by_user_id($user_id,'data',$limit,$offset);
+            $res= array();    
+            $res['offset'] = $offset;
+            $res['limit'] = $limit;
+            $res['total'] = $total;
+            $res['list'] = $data;
+
+          $this->set_response([
+                'status' => TRUE,
+                'data' =>$res
                  ], REST_Controller::HTTP_OK);
+
     }else{
         $this->set_response([
             'status' => false,

@@ -304,7 +304,7 @@ $('input[name="filter_checkbox"]').click(function(){
                 <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
 				          <th id="th-1" width="15%">Visit Date</th>
 				          <th id="th-2" width="15%">Visit Time</th>
-						  <th id="th-13" width="15%">Purpose of meeting</th>
+						      <th id="th-13" width="15%">Purpose of meeting</th>
 				          <th id="th-3" >Name</th>
 				          <th id="th-10">Company Name</th>
                   <th id="th-14">Client Name</th>
