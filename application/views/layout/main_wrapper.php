@@ -1889,6 +1889,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         </li>';
                 }
 
+                if(in_array(199, array_column($user_process_list, 'sb_id'))){
                 ?>
 
                 <li class="<?php echo ($segment1 == "ticket" && $_COOKIE['selected_process'] == 199) ? "active" : null ?>">
@@ -1900,7 +1901,9 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             <?php echo 'FTL Feedback' ?></p> <?php } ?>
                     </a>
                 </li>
-                    
+                <?php
+                    }
+                ?>
                     <li class="<?php echo (($segment1 == "task") ? "active" : null) ?>"
                         style="<?php if(in_array(90,$module) || in_array(91,$module) || in_array(92,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("task/index") ?>">
