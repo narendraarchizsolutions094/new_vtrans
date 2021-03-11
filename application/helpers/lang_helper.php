@@ -46,7 +46,7 @@ if (!function_exists('display')) {
                             $row = $ci->db->query($qry)->row();  
                         }
                         if(empty($row)){
-                            $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (comp_id = '0' OR comp_id = '$cmpno') and process_id is null ORDER BY comp_id $ordby";
+                            $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (comp_id = '0' OR comp_id = '$cmpno') AND (process_id='' OR process_id IS NULL OR process_id = 0) ORDER BY comp_id $ordby";
                             $row = $ci->db->query($qry)->row();	  
                         }
                         //echo $ci->db->last_query();                        
