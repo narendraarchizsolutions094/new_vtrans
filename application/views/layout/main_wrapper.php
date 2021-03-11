@@ -2123,10 +2123,10 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="treeview <?php echo (($segment1 == "ticket" && $_COOKIE['selected_process'] != 199) ? "active" : null) ?>"
                         style="<?php if(in_array(310,$module) || in_array(311,$module) || in_array(312,$module) || in_array(313,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("ticket/index/141") ?>"><i class="fa fa-tasks icon-class"></i>
-                            &nbsp;<?php echo display('ticketing') ?>
+                            &nbsp;<?php echo 'Ticket' ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
-                                <?php echo display('ticketing') ?></p> <?php } ?>
+                                <?php echo 'Ticket' ?></p> <?php } ?>
                         </a>
                     </li>
 
@@ -2157,13 +2157,13 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         style="<?php if(in_array(310,$module) || in_array(311,$module) || in_array(312,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="#">
                             <i class="fa fa-tasks icon-class" "></i>
-                            &nbsp;<?php echo display('ticketing') ?>
+                            &nbsp;<?php echo 'Ticket' ?>
                             <span class=" pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                                 <?php  if($this->session->menu==1){ ?></br>
                                 <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
-                                    <?php echo display('ticketing') ?></p> <?php } ?>
+                                    <?php echo 'Ticket' ?></p> <?php } ?>
                         </a>
 
                         <ul class="treeview-menu">

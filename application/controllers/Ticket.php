@@ -901,13 +901,15 @@ class Ticket extends CI_Controller
 		$this->load->view('layout/main_wrapper', $data);
 	}
 	function view($tckt = "")
-	{
-		$process_id = 0;
-		
+	{		
+		$process_id = 0;		
 		$this->load->model('enquiry_model');
 		$this->load->model('form_model');
 		$data = array();
 		$data["ticket"] = $this->Ticket_Model->get($tckt);
+		if(empty($this->session->process[0]) || $data['ticket']->process_id != $this->session->process[0]){
+			redirect('ticket/index');
+		}
 		//print_r($data['ticket']); exit();
     
 		if (empty($data['ticket'])) {
@@ -948,6 +950,7 @@ class Ticket extends CI_Controller
 		$this->load->helper('custom_form_helper');
 		$process_id = 0;
 		if($data['ticket']->process_id!=0)
+
 			$process_id = $data['ticket']->process_id;
 		else
 		{
