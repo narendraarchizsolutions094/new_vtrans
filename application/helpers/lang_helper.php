@@ -39,17 +39,18 @@ if (!function_exists('display')) {
 							$ordby = "asc";
 						}
                         
-                        if(!empty($ci->session->process[0]))
+                        if(!empty($ci->session->process[0]) && $ci->session->process[0] == 199)
                         {
                             $process_id = $ci->session->process[0];
-                            $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (FIND_IN_SET('$process_id',process_id))";
-                            $row = $ci->db->query($qry)->row();   
+                            $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (FIND_IN_SET('$process_id',process_id)) > 0";
+                            $row = $ci->db->query($qry)->row();  
                         }
-                        
                         if(empty($row)){
-                            $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (comp_id = '0' OR comp_id = '$cmpno') ORDER BY comp_id $ordby";
-                              $row = $ci->db->query($qry)->row();	  
-                        }  
+                            $qry = "SELECT $language FROM $table WHERE $phrase = '$text' AND (comp_id = '0' OR comp_id = '$cmpno') and process_id is null ORDER BY comp_id $ordby";
+                            $row = $ci->db->query($qry)->row();	  
+                        }
+                        //echo $ci->db->last_query();                        
+
                         if (!empty($row->$language)) {
                             return $row->$language;
                         } else {
