@@ -106,6 +106,7 @@ class Enquiry_model extends CI_Model {
 
         $company_key = -1;
         $last_name_key = -1;
+        $address_key = -1;
 
        	$basic= $this->location_model->get_company_list1($process_id);  
 
@@ -225,6 +226,7 @@ class Enquiry_model extends CI_Model {
             case 11:
             $basic[$key]['parameter_name'] = 'address';
             $basic[$key]['current_value'] = $enquiry->address;
+            $address_key = $key;
             break;
 
             case 12:
@@ -253,7 +255,38 @@ class Enquiry_model extends CI_Model {
 
       if($company_key!=-1)
       {
+          $sa = $this->db->where('area_id',$enquiry->sales_area)->get('sales_area')->row();
+          $sr = $this->db->where('region_id',$enquiry->sales_region)->get('sales_region')->row();
+          $sb = $this->db->where('branch_id',$enquiry->sales_branch)->get('branch')->row();
           $self_created1 = array(
+                        array(
+                              "id"=> -8,
+                              "comp_id"=> 65,
+                              "field_id"=>-8,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Sales Region",
+                              "type"=> "Dropdown",
+                              "parameter_name"=> "sales_region",
+                              "input_values"=>array(),
+                              "current_value"=>!empty($sr)?$sr->name:'',
+                        ),
+                        array(
+                              "id"=> -9,
+                              "comp_id"=> 65,
+                              "field_id"=>-9,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Sales Area",
+                              "type"=> "Dropdown",
+                              "parameter_name"=> "sales_area",
+                              "input_values"=>array(),
+                              "current_value"=>!empty($sa)?$sa->area_name:'',
+                        ),
                         array(
                               "id"=> -1,
                               "comp_id"=> 65,
@@ -266,7 +299,7 @@ class Enquiry_model extends CI_Model {
                               "type"=> "Dropdown",
                               "parameter_name"=> "sales_branch",
                               "input_values"=>array(),
-                              "current_value"=>$enquiry->sales_branch,
+                              "current_value"=>!empty($sb)?$sb->branch_name:'',
                         ),
                          array(
                               "id"=> -2,
@@ -328,6 +361,138 @@ class Enquiry_model extends CI_Model {
                                 ),
                            );
         array_splice($basic, $last_name_key+1,0,$self_created2);
+      }
+
+
+      if($address_key!=-1)
+      {
+         foreach ($basic as $key=> $find) 
+          {
+              if($find['field_id']==11)
+                $address_key = $key;
+          }
+
+        $self_created3 = array(
+                             array(
+                                  "id"=> -5,
+                                  "comp_id"=> 65,
+                                  "field_id"=>-5,
+                                  "form_id"=> "0",
+                                  "process_id"=> "141",
+                                  "status" =>"1",
+                                  "fld_order"=>"0",
+                                  "title"=> "Client Type",
+                                  "type"=> "Dropdown",
+                                  "input_values"=>array(
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"MSME"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Pvt. Ltd."
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Public Ltd"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Partnership"
+                                                                ),  
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>" Multinational"
+                                                                ), 
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>" Proprietorship"
+                                                                ),
+                                                      ),
+                                  "parameter_name"=> "client_type",
+                                  "current_value"=> $enquiry->client_type,
+                                ),
+                                array(
+                                  "id"=> -6,
+                                  "comp_id"=> 65,
+                                  "field_id"=>-6,
+                                  "form_id"=> "0",
+                                  "process_id"=> "141",
+                                  "status" =>"1",
+                                  "fld_order"=>"0",
+                                  "title"=> "Type Of Load / Business",
+                                  "type"=> "Dropdown",
+                                  "input_values"=>array(
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"FTL"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"LTL/Sundry"
+                                                                ),
+                                                     ),
+                                  "parameter_name"=> "business_load",
+                                  "current_value"=> $enquiry->business_load,
+                                ),
+                                array(
+                                  "id"=> -7,
+                                  "comp_id"=> 65,
+                                  "field_id"=>-7,
+                                  "form_id"=> "0",
+                                  "process_id"=> "141",
+                                  "status" =>"1",
+                                  "fld_order"=>"0",
+                                  "title"=> "Industries",
+                                  "type"=> "Dropdown",
+                                  "input_values"=>array(
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"FMCG"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Auto & Auto Ancillaries"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Heavy Engineering"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Retail"
+                                                                ),  
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"E-Commerce"
+                                                                ), 
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Telecom & IT"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Clothing"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Chemicals"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Pharmaceuticals"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Others"
+                                                                ),
+                                                      ),
+                                  "parameter_name"=> "industries",
+                                  "current_value"=> $enquiry->industries,
+                                ),
+
+                           );
+        array_splice($basic, $address_key+1,0,$self_created3);
       }
 
 
