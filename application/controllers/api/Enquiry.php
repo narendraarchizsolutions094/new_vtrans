@@ -79,6 +79,21 @@ class Enquiry extends REST_Controller {
 			
       		if($this->form_validation->run() === true) 
           {
+
+             //===Sales region/area
+            $sales_area= '';
+            $sales_region = '';
+            $sales_branch = $this->input->post('sales_branch')??'';
+            if(!empty($sales_branch))
+            {
+                $d = $this->db->where('branch_id',$sales_branch)->get('branch')->row();
+                if(!empty($d))
+                {
+                    $sales_area = $d->area_id;
+                    $sales_region = $d->region_id;
+                }
+            }
+
             $encode = $this->get_enquery_code();
       			$crtdby = $this->input->post('user_id');
       			$user =$this->User_model->read_by_id($crtdby);
@@ -109,9 +124,12 @@ class Enquiry extends REST_Controller {
                 'region_id'  =>!empty($city_id->row())?$city_id->row()->region_id:'',
                 'territory_id'  =>!empty($city_id->row())?$city_id->row()->territory_id:'',
                 'pin_code' => $this->input->post('pin_code')??'',
-                'sales_branch' => $this->input->post('sales_branch')??'',
+                'client_type'=>$this->input->post('client_type')??'',
+                'business_load'=>$this->input->post('business_load')??'',
+                'industries'=>$this->input->post('industries')??'',
                 'client_name' => $this->input->post('client_name')??'',
                 'designation' => $this->input->post('designation')??'',
+
                 //'created_date' =>$enquiry_date, 
                 //'status' => $this->input->post('status'),
               ];
@@ -149,6 +167,10 @@ class Enquiry extends REST_Controller {
             }
             else
             {
+                $postData['sales_branch'] = $this->input->post('sales_branch')??'';
+                $postData['sales_region'] = $sales_region;
+                $postData['sales_area'] = $sales_area;
+
               $postData['comp_id'] = $comp_id;
               $postData['created_by'] =$user_id;
               $postData['product_id'] =$process_id;

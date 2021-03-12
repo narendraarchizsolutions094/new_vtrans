@@ -227,11 +227,11 @@ foreach($basic_fields as $row)
     if($row['id']== ADDRESS_FIELD && is_active_field(ADDRESS_FIELD,$process_id)){
     ?>  
    <div class="form-group col-sm-6 col-md-6 enq-address">
-      <label><?php echo display('address') ?> <i class="text-danger">*</i></label>
+      <label><?php echo display('address') ?></label>
       <textarea class="form-control" name="address"><?php echo $details->address; ?></textarea>
    </div>
 
-   
+
   <div class="form-group col-md-6">
             <label class="control-label" for="client_type"><?php echo  'Client Type';?></label>                   
         <select class="form-control" name="client_type" id="client_type">

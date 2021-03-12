@@ -86,6 +86,7 @@ function set_type(t)
 	{
 		$('select[name=btype]').val('branch').select2({disabled:false}).trigger('change');
 	}
+$(".tablebox").html('');	
 }
 
 $(document).on('submit','#data_table',function(e){

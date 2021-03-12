@@ -2438,7 +2438,7 @@ function set_agreement_id(ag_id)
               
         <div class="form-group col-sm-6">
             <label>Agreement Date <i class="text-danger"></i></label>
-            <input  id="agg_date" name="agg_date" value="" class="form-control form-date" required> 
+            <input  id="agg_date" name="agg_date" value="<?=date('Y-m-d')?>" class="form-control form-date" required> 
         </div>
 <!--     </div>
     <div class="row" style="padding: 16px 0px;"> -->

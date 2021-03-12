@@ -69,7 +69,7 @@ class Web extends CI_Controller{
           $url  = base_url().'enquiry/view/'.$enq_res['enquiry_id'];
         }else if($enq_res['status'] == 2) {
           $url  = base_url().'lead/lead_details/'.$enq_res['enquiry_id'];
-        }else if($enq_res['status'] == 3) {
+        }else if($enq_res['status'] >= 3) {
           $url  = base_url().'client/view/'.$enq_res['enquiry_id'];
         }else{
           $url  = 'javascript:void(0)';
