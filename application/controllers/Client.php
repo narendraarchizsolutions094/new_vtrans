@@ -3458,10 +3458,11 @@ public function all_update_expense_status()
         $deal_data = $this->Branch_model->get_deal_data($deal_id);
       
 
-        $enq = $this->db->select('e.*,r.region_name,desg.desi_name')
+        $enq = $this->db->select('e.*,r.region_name,desg.desi_name,tbl_company.company_name')
                         ->from('enquiry e')
                         ->join('tbl_region r','r.region_id=e.region_id','left')
                         ->join('tbl_designation desg','desg.id=e.designation','left')
+                        ->join('tbl_company','tbl_company.id=e.company','left')
                         ->where('e.enquiry_id',$deal->enquiry_id)
                         ->get()->row();
 
@@ -3489,7 +3490,7 @@ $input['ip'][50] = $input['ip'][38] = $input['ip'][1] = $enq->name_prefix.' '.$e
             $city_name = $city->city;
         $input['ip'][9] =  $city_name; //$enq->city_id;
 
-    $input['ip'][52] = $input['ip'][47] = $input['ip'][10] = $enq->company;
+    $input['ip'][52] = $input['ip'][47] = $input['ip'][10] = $enq->company_name;
     
         $input['ip'][48]= $input['ip'][11] = $enq->address;
         $input['ip'][12] = date('Y-m-d');

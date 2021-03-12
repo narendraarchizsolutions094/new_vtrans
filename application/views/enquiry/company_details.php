@@ -122,11 +122,13 @@
                <tr>                              
                   <th>S.N.</th>
                   <th id="th-1">Name</th>
+                  <th id="th-21">Company</th>
+                  <th id="th-22">Client Name</th>
                   <th id="th-3">Business Type</th>
                   <th id="th-4">Booking Type</th>
                   <th id="th-18">Create Date</th>
                   <th id="th-19">Status</th>
-                  <th id="th-20">Action</th>
+                  <th id="th-20" style="width: 100px;">Action</th>
                </tr>
             </thead>
               <tbody>
@@ -137,12 +139,17 @@
       <div id="visits" class="container tab-pane fade"><br>
         <table id="visit_table" class="table table-bordered table-hover " >
               <thead>
-                <th width="7%">S. No.</th>
+                <tr>
+                  <th width="7%">S. No.</th>
                   <th id="th-1" width="15%">Visit Date</th>
                   <th id="th-2" width="15%">Visit Time</th>
-              <th id="th-13" width="15%">Purpose of meeting</th>
+                  <th id="th-13" width="15%">Purpose of meeting</th>
                   <th id="th-3" >Name</th>
                   <th id="th-10">Company Name</th>
+                  <th id="th-14">Client Name</th>
+                  <th id="th-15">Contact Person</th>
+                  <th id="th-16">Start Location</th>
+                  <th id="th-17">End Location</th>
                   <th id="th-4">Shortest Distance</th>
                   <th id="th-5">Actual Distancee</th>
                   <th id="th-6">Rating</th>
@@ -150,8 +157,9 @@
                   <th >Travel Expense</th>
                   <th>Other Expense</th>
                   <th>Total Expense</th>
-                  <th>Expense Sttaus</th>
+                  <th>Expense Staus</th>
                   <th id="th-9">Action</th>
+                </tr>
               </thead>
               <tbody>
              </tbody>
@@ -204,8 +212,10 @@
                <!--  <th class="noExport">
                   <input type='checkbox' class="checked_all1" value="check all" >
                 </th> -->
-                <th>S.N</th>
-               <?php if ($showall == true or in_array(1, $acolarr)) {  ?>
+
+                  <th></th>
+                  <th>S.N</th>
+             <?php if ($showall == true or in_array(1, $acolarr)) {  ?>
                   <th><?php echo display("source"); ?></th>
              <?php } ?>
               <?php if ($showall == true or in_array(16, $acolarr)) {  ?>
@@ -214,7 +224,9 @@
               <?php if ($showall == true or in_array(2, $acolarr)) {  ?>
                   <th><?php echo display("company_name"); ?></th>
                   <th>Account Status</th>
-                  <th>Client Name</th>
+                   <?php } ?>
+            <?php if ($showall == true or in_array(21, $acolarr)) {  ?>
+                  <th><?php echo display("client_name"); ?></th>
                    <?php } ?>
               <?php if ($showall == true or in_array(3, $acolarr)) {  ?>
             <th>Name</th>
@@ -403,15 +415,7 @@ table th
 {
   width: auto!important;
 }
-#enq_table tbody tr td:nth-child(1)
-{
-  display: none;
-}
 
-#ticket_table tbody tr td:nth-child(1)
-{
-  display: none;
-}
 
 </style>
 
@@ -450,10 +454,10 @@ var specific_list = "<?=!empty($specific_deals)?$specific_deals:''?>";
               "data":function(d){
                      //  var obj = $(".v_filter:input").serializeArray();
 
-                     d.top_filter = $("input[name=top_filter]:checked").val();
-                     d.date_from = $("input[name=d_from_date]").val();
-                     d.date_to = $("input[name=d_to_date]").val();
-                     d.enq_for = $("select[name=d_enquiry_id]").val();
+                     // d.top_filter = $("input[name=top_filter]:checked").val();
+                     // d.date_from = $("input[name=d_from_date]").val();
+                     // d.date_to = $("input[name=d_to_date]").val();
+                     // d.enq_for = $("select[name=d_enquiry_id]").val();
                      // d.from_date = obj[0]['value'];
                      // d.from_time = '';//obj[1]["value"];
                      // d.enquiry_id =obj[2]["value"];
@@ -695,3 +699,10 @@ var specific_list = "<?=!empty($specific_contacts)?$specific_contacts:''?>";;
       </div>
    </div>
 </div> 
+
+<script type="text/javascript">
+  $(".nav-tabs li").on('click',function(){
+  $(window).trigger('resize');
+  $(window).trigger('resize');
+});
+</script>

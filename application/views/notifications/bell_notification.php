@@ -20,7 +20,7 @@
                     $url  = base_url().'enquiry/view/'.$value['enquiry_id'];
                   }else if($value['enq_status'] == 2) {
                     $url  = base_url().'lead/lead_details/'.$value['enquiry_id'];
-                  }else if($value['enq_status'] == 3) {
+                  }else if($value['enq_status'] >= 3) {
                     $url  = base_url().'client/view/'.$value['enquiry_id'];
                   }elseif($value['task_type'] == '18'){
                     $url  = base_url().'visits/visit_details/'.$value['query_id'];
@@ -92,7 +92,7 @@
                 $url  = base_url().'enquiry/view/'.$value['enquiry_id'];
               }else if($value['enq_status'] == 2) {
                 $url  = base_url().'lead/lead_details/'.$value['enquiry_id'];
-              }else if($value['enq_status'] == 3) {
+              }else if($value['enq_status'] >= 3) {
                 $url  = base_url().'client/view/'.$value['enquiry_id'];
               }elseif($value['task_type'] == '18'){
                 $url  = base_url().'visits/visit_details/'.$value['query_id'];
@@ -134,7 +134,7 @@
                 $url  = base_url().'enquiry/view/'.$value['enquiry_id'];
               }else if($value['enq_status'] == 2) {
                 $url  = base_url().'lead/lead_details/'.$value['enquiry_id'];
-              }else if($value['enq_status'] == 3) {
+              }else if($value['enq_status'] >= 3) {
                 $url  = base_url().'client/view/'.$value['enquiry_id'];
               }elseif($value['task_type'] == '18'){
                 $url  = base_url().'visits/visit_details/'.$value['query_id'];
@@ -178,7 +178,7 @@
                 $url  = base_url().'enquiry/view/'.$value['enquiry_id'];
               }else if($value['enq_status'] == 2) {
                 $url  = base_url().'lead/lead_details/'.$value['enquiry_id'];
-              }else if($value['enq_status'] == 3) {
+              }else if($value['enq_status'] >= 3) {
                 $url  = base_url().'client/view/'.$value['enquiry_id'];
               }else{
                 $url  = 'javascript:void(0)';

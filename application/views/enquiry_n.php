@@ -308,7 +308,7 @@ input[name=lead_stages]{
                  if (user_access(67)==true) { ?>
                   <a class="btn" data-toggle="modal" data-target="#AssignSelected" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #fff;"><?php echo display('assign_selected'); ?></a>
                   <?php }   if (user_access(77)==true) {  ?>
-                  <a class="btn" data-toggle="modal" data-target="#genclient" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #fff;">Move To <?=display('Client')?> </a>
+                  <!-- <a class="btn" data-toggle="modal" data-target="#genclient" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #fff;">Move To <?=display('Client')?> </a> -->
                   <?php } ?>
 
                   <a class="btn" data-toggle="modal" data-target="#dropEnquiry" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo display('drop_lead'); ?></a>
@@ -1044,14 +1044,13 @@ display: block;
           <div class="row">
             <div class="form-group col-sm-6">  
             <label>Expected Closer Date</label>                  
-            <input class="form-control date2"  name="expected_date" type="text" readonly>                
+            <input class="form-control date2"  name="expected_date" type="date">                
             </div>
             
             <div class="form-group col-sm-6">
             <label class="col-form-label">Conversion Probability</label>
             
-            <select class="form-control" id="LeadScore" name="lead_score">
-            <option></option>                                               
+            <select class="form-control" id="LeadScore2" name="lead_score">                                              
             <?php foreach ($lead_score as $score) {  ?>
                 <option value="<?= $score->sc_id?>"><?= $score->score_name?>&nbsp;<?= $score->probability?></option>
                 <?php } ?>                       
@@ -1090,10 +1089,10 @@ display: block;
 </div>
 
 
-
+<!-- 
 <div id="genclient" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <!-- Modal content-->
+
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1107,7 +1106,7 @@ display: block;
             </div>            
             <div class="form-group col-sm-6">
               <label class="col-form-label">Conversion Probability</label>            
-              <select class="form-control" id="LeadScore" name="lead_score">
+              <select class="form-control" id="LeadScore1" name="lead_score">
               <option></option>                                               
               <?php foreach ($lead_score as $score) {  ?>
                   <option value="<?= $score->sc_id?>"><?= $score->score_name?>&nbsp;<?= $score->probability?></option>
@@ -1126,7 +1125,7 @@ display: block;
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 
@@ -1375,6 +1374,11 @@ display: block;
 </div>
 
 <script>
+$(document).ready(function(){
+$("select").select2(); 
+});
+
+
   function select_all(){
 
 var select_all = document.getElementById("selectall"); //select all checkbox
@@ -1905,13 +1909,25 @@ function assign_enquiry(){
 
 
 function moveto_lead(){
+
+  var expected_date = $("input[name=expected_date]").val();
+  var lead_score = $("select[name=lead_score]").val();
+  var comment = $("input[name=comment]").val();
+
   if($('.checkbox1:checked').size() > 1000){
     alert('You can not move more than 1000 <?=display('enquiry')?> at once');
-  }else{
+  }
+  else if(expected_date=='' || lead_score=='' || comment=='')
+  {
+    alert('Fill all the fields.');
+  }
+  else{
+    var DataString = $('#enquery_assing_from').serialize()+'&expected_date='+expected_date+'&lead_score'+lead_score+'&comment='+comment;
+  
   $.ajax({
   type: 'POST',
   url: '<?php echo base_url();?>enquiry/move_to_lead',
-  data: $('#enquery_assing_from').serialize(),
+  data: DataString,
   success:function(data){
       if(data.trim()==1){
            alert('Successfully Moved in <?=display('lead')?>s'); 

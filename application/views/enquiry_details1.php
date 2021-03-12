@@ -2438,7 +2438,7 @@ function set_agreement_id(ag_id)
               
         <div class="form-group col-sm-6">
             <label>Agreement Date <i class="text-danger"></i></label>
-            <input  id="agg_date" name="agg_date" value="" class="form-control form-date" required> 
+            <input  id="agg_date" name="agg_date" value="<?=date('Y-m-d')?>" class="form-control form-date" required> 
         </div>
 <!--     </div>
     <div class="row" style="padding: 16px 0px;"> -->
@@ -2919,7 +2919,7 @@ if (document.getElementById('agg_same').checked)
                      <script type="text/javascript">
                        
                        $(document).ready(function(){
-                        var c = getCookie('contact_allowcols');
+                        //var c =   ('contact_allowcols');
                         $('#dataTableContact').DataTable({ 
 
                                 "processing": true,
@@ -2933,8 +2933,8 @@ if (document.getElementById('agg_same').checked)
                                          
                                            d.enquiry_id="<?=$details->enquiry_id?>";
                                            d.specific_list = '';
-                                             if(c && c!='')
-                                            d.allow_cols = c;
+                                            
+                                          d.allow_cols = '';
 
                                            console.log(JSON.stringify(d));
                                           return d;
