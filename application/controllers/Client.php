@@ -3458,21 +3458,16 @@ public function all_update_expense_status()
         $deal_data = $this->Branch_model->get_deal_data($deal_id);
       
 
-        $enq = $this->db->select('e.*,r.region_name')
+        $enq = $this->db->select('e.*,r.region_name,desg.desi_name')
                         ->from('enquiry e')
                         ->join('tbl_region r','r.region_id=e.region_id','left')
+                        ->join('tbl_designation desg','desg.id=e.designation','left')
                         ->where('e.enquiry_id',$deal->enquiry_id)
                         ->get()->row();
 
         $city = $this->db->where('id',$enq->city_id)->get('city')->row();
 
-        $dynamic = $this->db->select('fvalue')
-                                ->from('extra_enquery')
-                                ->where('parent',$deal->enquiry_id)
-                                ->where('input','4482')//id of dynaic field of dynamic field in v-trans 
-                                ->get()->row();
-
-        $enq_designation = !empty($dynamic)?$dynamic->fvalue:'';
+        $enq_designation = !empty($enq->desi_name)?$enq->desi_name:'';
         
         for($i=1; $i<150;$i++)
         {

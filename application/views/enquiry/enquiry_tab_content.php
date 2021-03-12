@@ -41,8 +41,11 @@ $type="text";
 <input name="en_comments" type="hidden" value="<?=$details->Enquery_id?>" >    
 <div class="row">
    <?php                    
-   $process_id = $details->product_id;    
-      if(is_active_field(FIRST_NAME,$process_id)){
+   $process_id = $details->product_id; 
+///for matching order 
+foreach($basic_fields as $row)  
+{   
+      if($row['id']== FIRST_NAME && is_active_field(FIRST_NAME,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6 enq-first-name">
       <label><?=display('first_name')?> <i class="text-danger">*</i> </label>
@@ -59,7 +62,7 @@ $type="text";
    </div>
    <?php }?>
    <?php
-      if(is_active_field(LAST_NAME,$process_id)){
+      if($row['id']== LAST_NAME && is_active_field(LAST_NAME,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6 enq-last-name"> 
       <label><?=display('last_name')?> <!-- <i class="text-danger">*</i> --></label>
@@ -83,7 +86,7 @@ $type="text";
    </div>
 
    <?php }?>
-   <?php  if(is_active_field(MOBILE,$process_id)){  ?>
+   <?php  if($row['id']== MOBILE && is_active_field(MOBILE,$process_id)){  ?>
    <div class="form-group col-sm-6 col-md-6 enq-mobile"> 
       <label><?php echo display('mobile') ?></label>
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
@@ -108,7 +111,7 @@ $type="text";
    </div>
    <?php }?>
    <?php
-      if(is_active_field(MOBILE,$process_id)){
+      if($row['id']== MOBILE && is_active_field(MOBILE,$process_id)){
       ?>
    <div id="add_more_phone">
       <?php
@@ -126,7 +129,7 @@ $type="text";
    </div>
    <?php }?>                     
    <?php
-      if(is_active_field(EMAIL,$process_id)){
+      if($row['id']== EMAIL && is_active_field(EMAIL,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6 enq-email"> 
       <label><?php echo display('email') ?></label>
@@ -150,7 +153,7 @@ $type="text";
    </div>
    <?php }?>
    <?php
-      if(is_active_field(EMAIL,$process_id)){
+      if($row['id']== EMAIL && is_active_field(EMAIL,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6 enq-process">
       <label>Process <i class="text-danger"></i></label>
@@ -172,7 +175,7 @@ $type="text";
    </div>
    <?php
       }
-     if(is_active_field(GENDER,$process_id)){
+     if($row['id']== GENDER && is_active_field(GENDER,$process_id)){
      ?>
       <div class="form-group col-sm-6 col-md-6 enq-gender"> 
          <label><?php echo display("gender"); ?><i class="text-danger"></i></label>
@@ -187,7 +190,7 @@ $type="text";
    <?php
     }
                   
-        if(is_active_field(PRODUCT_FIELD,$process_id)){
+        if($row['id']== PRODUCT_FIELD && is_active_field(PRODUCT_FIELD,$process_id)){
         ?>
    <div class="form-group col-sm-6 col-md-6 enq-product">
       <label>Product</label>
@@ -200,7 +203,7 @@ $type="text";
    </div>
    <?php }?>
    <?php
-      if(is_active_field(LEAD_SOURCE,$process_id)){
+      if($row['id']== LEAD_SOURCE && is_active_field(LEAD_SOURCE,$process_id)){
       ?> 
    <div class="form-group   col-sm-4 col-md-6 enq-source">
       <label><?php echo display('lead_source') ?></label>
@@ -213,7 +216,7 @@ $type="text";
       </select>
    </div>
      <?php }
-      if(is_active_field(SUB_SOURCE,$process_id)){
+      if($row['id']== SUB_SOURCE && is_active_field(SUB_SOURCE,$process_id)){
       ?> 
    <div class="form-group   col-sm-4 col-md-6 enq-subsource">
       <label><?php echo display('sub_source') ?></label>
@@ -221,14 +224,55 @@ $type="text";
       </select>
    </div>
    <?php }  
-    if(is_active_field(ADDRESS_FIELD,$process_id)){
+    if($row['id']== ADDRESS_FIELD && is_active_field(ADDRESS_FIELD,$process_id)){
     ?>  
    <div class="form-group col-sm-6 col-md-6 enq-address">
       <label><?php echo display('address') ?> <i class="text-danger">*</i></label>
       <textarea class="form-control" name="address"><?php echo $details->address; ?></textarea>
    </div>
+
+   
+  <div class="form-group col-md-6">
+            <label class="control-label" for="client_type"><?php echo  'Client Type';?></label>                   
+        <select class="form-control" name="client_type" id="client_type">
+                <option value="">--Select Client Type--</option>
+        <option value="MSME" <?php if($details->client_type=='MSME'){ echo "selected";} ?>>MSME</option>
+                <option value="Pvt. Ltd." <?php if($details->client_type=='Pvt. Ltd.'){ echo "selected";} ?>> Pvt. Ltd.</option>
+                <option value="Public Ltd" <?php if($details->client_type=='Public Ltd'){ echo "selected";} ?>> Public Ltd</option>
+                <option value="Partnership" <?php if($details->client_type=='Partnership'){ echo "selected";} ?>> Partnership</option>
+                <option value="Multinational" <?php if($details->client_type=='Multinational'){ echo "selected";} ?>> Multinational</option>
+                <option value="Proprietorship" <?php if($details->client_type=='Proprietorship'){ echo "selected";} ?>>  Proprietorship</option>
+        </select>
+    </div>
+  
+  <div class="form-group col-md-6">
+            <label class="control-label" for="business_load"><?php echo 'Type Of Load / Business';?></label>                  
+        <select class="form-control" name="business_load" id="business_load">
+                <option value="">--Select Load/Business--</option>
+        <option value="FTL" <?php if($details->business_load=='FTL'){ echo "selected";} ?>>FTL</option>
+                <option value="LTL/Sundry" <?php if($details->business_load=='LTL/Sundry'){ echo "selected";} ?>> LTL / Sundry</option>
+        </select>
+    </div>
+  
+  <div class="form-group col-md-6">
+            <label class="control-label" for="industries"><?php echo 'Industries';?></label>                  
+        <select class="form-control" name="industries" id="industries">
+                <option value="">--Select industries--</option>
+        <option value="FMCG" <?php if($details->industries=='FMCG'){ echo "selected";} ?>>FMCG</option>
+                <option value="Auto &amp; Auto Ancillaries" <?php if($details->industries=='Auto & Auto Ancillaries'){ echo "selected";} ?>> Auto &amp; Auto Ancillaries</option>
+                <option value="Heavy Engineering" <?php if($details->industries=='Heavy Engineering'){ echo "selected";} ?>> Heavy Engineering</option>
+                <option value="Retail" <?php if($details->industries=='Retail'){ echo "selected";} ?>> Retail</option>
+                <option value="E-Commerce" <?php if($details->industries=='E-Commerce'){ echo "selected";} ?>> E-Commerce</option>
+                <option value="Telecom &amp; IT" <?php if($details->industries=='Telecom &amp; IT'){ echo "selected";} ?>> Telecom &amp; IT</option>
+                <option value="Clothing" <?php if($details->industries=='Clothing'){ echo "selected";} ?>> Clothing</option>
+                <option value="Chemicals" <?php if($details->industries=='Chemicals'){ echo "selected";} ?>> Chemicals</option>
+                <option value="Pharmaceuticals" <?php if($details->industries=='Pharmaceuticals'){ echo "selected";} ?>> Pharmaceuticals</option>
+                <option value="Others" <?php if($details->industries=='Others'){ echo "selected";} ?>> Others</option>
+        </select>
+    </div>
+
    <?php }   
-      if(is_active_field(STATE_FIELD,$process_id)){
+      if($row['id']== STATE_FIELD && is_active_field(STATE_FIELD,$process_id)){
       ?>  
    <div class="form-group col-sm-6 col-md-6 enq-state">
       <label>State <i class="text-danger"></i></label>                        
@@ -243,7 +287,7 @@ $type="text";
    </div>
    <?php }?>
    <?php
-      if(is_active_field(CITY_FIELD,$process_id)){
+      if($row['id']== CITY_FIELD && is_active_field(CITY_FIELD,$process_id)){
       ?>                   
    <div class="form-group col-sm-6 col-md-6 enq-city">
       <label>City <i class="text-danger"></i></label>
@@ -258,49 +302,48 @@ $type="text";
       </select>
    </div>
    <?php }
-   if(is_active_field(PIN_CODE,$process_id)){    ?> 
+   if($row['id']== PIN_CODE && is_active_field(PIN_CODE,$process_id)){    ?> 
      <div class="form-group col-sm-6 col-md-6 enq-pincode">
         <label><?php echo display('pin_code') ?> <i class="text-danger"></i></label>
         <input class="form-control" value="<?php  echo $details->pin_code;?> " name="pin_code" type="text"  placeholder="Pin Code"> 
      </div>   
      <?php
    }   
-      if(is_active_field(COMPANY,$process_id)){
+      if($row['id']== COMPANY && is_active_field(COMPANY,$process_id)){
       ?>
+      <div class="form-group col-sm-6 col-md-6 enq-company">
+      <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
+      <input class="form-control" name="company" id="company_list" type="company" value="<?php echo $details->company_name; ?>" readonly>
+   </div>
 	  <div class="form-group col-md-6">
             <label class="control-label" for="sales_resion"><?=display('sales_resion')?></label> 									
-            <select class="form-control" name="sales_region" id="sales_region" onchange="find_area();">
-				<option value="">---Select Region---</option>
+            <select class="form-control" name="sales_region" id="sales_region" onchange="find_area();" disabled>
                 <?php
                     if (!empty($region_lists)) {
-                                            foreach ($region_lists as $key => $value) { ?>
-                                                <option value="<?= $value->region_id;?>" <?php if($value->region_id == $details->enq_saleregi){ echo "selected";} ?>><?= $value->name;?></option>
-                                            <?php
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
+                        foreach ($region_lists as $key => $value) { ?>
+                            <option value="<?= $value->region_id;?>" <?php if($value->region_id == $details->sales_region){ echo "selected";} ?>><?= $value->name;?></option>
+                        <?php
+                        }
+                    }
+                 ?>
+            </select>
+      </div>
 								
 		<div class="form-group col-md-6">
             <label class="control-label" for="sales_area"><?=display('sales_area')?></label> 									
-            <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();">
+            <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();" disabled>
                 <?php  if (!empty($area_lists)) {
                 foreach ($area_lists as $key => $value) { ?>
-            <option value="<?= $value->area_id;?>" <?php if($value->area_id == $details->enq_salearea){ echo "selected";} ?>><?= $value->area_name;?></option>
+            <option value="<?= $value->area_id;?>" <?php if($value->area_id == $details->sales_area){ echo "selected";} ?>><?= $value->area_name;?></option>
                 <?php
                 }
                 } ?>
             </select>
         </div>
-   <div class="form-group col-sm-6 col-md-6 enq-company">
-      <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
-      <input class="form-control" name="company" id="company_list" type="company" value="<?php echo $details->company_name; ?>">
-   </div>
    
     <div class="form-group col-md-6">
             <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
-        <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()">
+        <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()" disabled>
                 <?php  if (!empty($branch_lists)) {
                 foreach ($branch_lists as $key => $value) { ?>
                 <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $details->enq_salebrach){ echo "selected";} ?>><?= $value->branch_name;?></option>
@@ -312,47 +355,9 @@ $type="text";
 					  
 	<div class="form-group col-sm-6 col-md-6">
         <label><?php echo 'Client Name'; ?> <i class="text-danger"></i></label>
-        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name" readonly> 
+        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name" disabled> 
     </div>
 	
-	<div class="form-group col-md-6">
-            <label class="control-label" for="client_type"><?php echo  'Client Type';?></label> 									
-        <select class="form-control" name="client_type" id="client_type">
-                <option value="">--Select Client Type--</option>
-				<option value="MSME" <?php if($details->client_type=='MSME'){ echo "selected";} ?>>MSME</option>
-                <option value="Pvt. Ltd." <?php if($details->client_type=='Pvt. Ltd.'){ echo "selected";} ?>> Pvt. Ltd.</option>
-                <option value="Public Ltd" <?php if($details->client_type=='Public Ltd'){ echo "selected";} ?>> Public Ltd</option>
-                <option value="Partnership" <?php if($details->client_type=='Partnership'){ echo "selected";} ?>> Partnership</option>
-                <option value="Multinational" <?php if($details->client_type=='Multinational'){ echo "selected";} ?>> Multinational</option>
-                <option value="Proprietorship" <?php if($details->client_type=='Proprietorship'){ echo "selected";} ?>>  Proprietorship</option>
-        </select>
-    </div>
-	
-	<div class="form-group col-md-6">
-            <label class="control-label" for="business_load"><?php echo 'Type Of Load / Business';?></label> 									
-        <select class="form-control" name="business_load" id="business_load">
-                <option value="">--Select Load/Business--</option>
-				<option value="FTL" <?php if($details->business_load=='FTL'){ echo "selected";} ?>>FTL</option>
-                <option value="LTL/Sundry" <?php if($details->business_load=='LTL/Sundry'){ echo "selected";} ?>> LTL / Sundry</option>
-        </select>
-    </div>
-	
-	<div class="form-group col-md-6">
-            <label class="control-label" for="industries"><?php echo 'Industries';?></label> 									
-        <select class="form-control" name="industries" id="industries">
-                <option value="">--Select industries--</option>
-				<option value="FMCG" <?php if($details->industries=='FMCG'){ echo "selected";} ?>>FMCG</option>
-                <option value="Auto &amp; Auto Ancillaries" <?php if($details->industries=='Auto & Auto Ancillaries'){ echo "selected";} ?>> Auto &amp; Auto Ancillaries</option>
-                <option value="Heavy Engineering" <?php if($details->industries=='Heavy Engineering'){ echo "selected";} ?>> Heavy Engineering</option>
-                <option value="Retail" <?php if($details->industries=='Retail'){ echo "selected";} ?>> Retail</option>
-                <option value="E-Commerce" <?php if($details->industries=='E-Commerce'){ echo "selected";} ?>> E-Commerce</option>
-                <option value="Telecom &amp; IT" <?php if($details->industries=='Telecom &amp; IT'){ echo "selected";} ?>> Telecom &amp; IT</option>
-                <option value="Clothing" <?php if($details->industries=='Clothing'){ echo "selected";} ?>> Clothing</option>
-                <option value="Chemicals" <?php if($details->industries=='Chemicals'){ echo "selected";} ?>> Chemicals</option>
-                <option value="Pharmaceuticals" <?php if($details->industries=='Pharmaceuticals'){ echo "selected";} ?>> Pharmaceuticals</option>
-                <option value="Others" <?php if($details->industries=='Others'){ echo "selected";} ?>> Others</option>
-        </select>
-    </div>
    
 <script>
 $("#sales_branch").trigger("change");
@@ -421,14 +426,14 @@ function clientname() {
         });
    </script>
    <?php }
-      if(is_active_field(REMARK_FIELD,$process_id)){
+      if($row['id']== REMARK_FIELD && is_active_field(REMARK_FIELD,$process_id)){
       ?>  
    <div class="form-group col-sm-6 col-md-6 enq-remark"> 
       <label><?=display('remark')?></label>
       <textarea class="form-control" name="enquiry"><?php echo $details->enquiry; ?></textarea>
    </div>
    <?php } 
-   if(is_active_field(PREFERRED_COUNTRY_FIELD,$process_id)){
+   if($row['id']== PREFERRED_COUNTRY_FIELD && is_active_field(PREFERRED_COUNTRY_FIELD,$process_id)){
    ?>
    <div class="form-group col-sm-6 col-md-6 enq-preferred-country">
       <label>Preferred Country <i class="text-danger">*</i></label>
@@ -450,6 +455,7 @@ function clientname() {
       <input type="text" id="bankname" name="bankname" class="form-control" value="<?=$details->bank?>">
     </div>
   <?php }  
+}
       if(!empty($dynamic_field)) {       
           foreach($dynamic_field as $ind => $fld){
             ?>
@@ -566,9 +572,9 @@ function clientname() {
                <input type="hidden" name= "inputfieldno[]" value = "<?=$fld['input_id']; ?>">
                <input type="hidden" name= "inputtype[]" value = "<?=$fld['input_type']?>">
             </div>
-<?php } ?>
-   <?php  }   
-  }
+<?php }
+   }   
+}
   ?>
 </div>
 <?php if($details->status==2 OR $details->status==3 ){ ?>

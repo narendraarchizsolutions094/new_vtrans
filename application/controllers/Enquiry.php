@@ -521,6 +521,20 @@ class Enquiry extends CI_Controller
             }else{
                  $status=1;
             }
+
+            //===Sales region/area
+            $sales_area= '';
+            $sales_region = '';
+            $sales_branch = $this->input->post('sales_branch')??'';
+            if(!empty($sales_branch))
+            {
+                $d = $this->db->where('branch_id',$sales_branch)->get('branch')->row();
+                if(!empty($d))
+                {
+                    $sales_area = $d->area_id;
+                    $sales_region = $d->region_id;
+                }
+            }
            
             $postData = [
                 'Enquery_id' => $encode,
@@ -557,7 +571,11 @@ class Enquiry extends CI_Controller
                 'country_id'  => !empty($city_id->row()->country_id) ? $city_id->row()->country_id : '',
                 'region_id'  => !empty($city_id->row()->region_id) ? $city_id->row()->region_id : '',
                 'territory_id'  => !empty($city_id->row()->territory_id) ? $city_id->row()->territory_id : '',
-                
+                'sales_region' => $sales_region,
+                'sales_area' => $sales_area,
+                'client_type'=>$this->input->post('client_type'),
+                'business_load'=>$this->input->post('business_load'),
+                'industries'=>$this->input->post('industries'),
                 'status' => $status
             ];
             

@@ -202,6 +202,46 @@
                         <textarea class="form-control" name="address" placeholder="Enter Address"><?php  echo set_value('address');?></textarea> 
                      </div>
                    
+
+                    <div class="form-group col-md-4">
+                              <label class="control-label" for="client_type"><?php echo  'Client Type';?></label>                   
+                          <select class="form-control" name="client_type" id="client_type">
+                                  <option value="">--Select Client Type--</option>
+                          <option value="MSME">MSME</option>
+                                  <option value="Pvt. Ltd."> Pvt. Ltd.</option>
+                                  <option value="Public Ltd"> Public Ltd</option>
+                                  <option value="Partnership" > Partnership</option>
+                                  <option value="Multinational"> Multinational</option>
+                                  <option value="Proprietorship">  Proprietorship</option>
+                          </select>
+                      </div>
+                    
+                    <div class="form-group col-md-4">
+                              <label class="control-label" for="business_load"><?php echo 'Type Of Load / Business';?></label>                  
+                          <select class="form-control" name="business_load" id="business_load">
+                                  <option value="">--Select Load/Business--</option>
+                          <option value="FTL" >FTL</option>
+                                  <option value="LTL/Sundry"> LTL / Sundry</option>
+                          </select>
+                      </div>
+                    
+                    <div class="form-group col-md-4">
+                              <label class="control-label" for="industries"><?php echo 'Industries';?></label>                  
+                          <select class="form-control" name="industries" id="industries">
+                                  <option value="">--Select industries--</option>
+                          <option value="FMCG">FMCG</option>
+                                  <option value="Auto &amp; Auto Ancillaries" > Auto &amp; Auto Ancillaries</option>
+                                  <option value="Heavy Engineering"> Heavy Engineering</option>
+                                  <option value="Retail"> Retail</option>
+                                  <option value="E-Commerce"> E-Commerce</option>
+                                  <option value="Telecom &amp; IT"> Telecom &amp; IT</option>
+                                  <option value="Clothing"> Clothing</option>
+                                  <option value="Chemicals"> Chemicals</option>
+                                  <option value="Pharmaceuticals"> Pharmaceuticals</option>
+                                  <option value="Others"> Others</option>
+                          </select>
+                      </div>
+
                      <?php 
                    }                    
                     if($companylist['field_id']==STATE_FIELD){

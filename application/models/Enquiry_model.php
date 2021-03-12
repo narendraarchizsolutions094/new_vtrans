@@ -107,7 +107,7 @@ class Enquiry_model extends CI_Model {
         $company_key = -1;
         $last_name_key = -1;
 
-       	$basic= $this->location_model->get_company_list1($process_id);
+       	$basic= $this->location_model->get_company_list1($process_id);  
 
       foreach ($basic as $key => $input)
       {

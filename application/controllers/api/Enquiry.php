@@ -289,6 +289,7 @@ class Enquiry extends REST_Controller {
       $primary_tab= $this->Enquiry_model->getPrimaryTab()->id;
       $company_key = -1;
       $last_name_key = -1;
+      $address_key = -1;
       $basic= $this->location_model->get_company_list1($process_id);
       foreach ($basic as $key => $input)
       {
@@ -390,6 +391,7 @@ class Enquiry extends REST_Controller {
             break;
             case 11:
             $basic[$key]['parameter_name'] = 'address';
+            $address_key = $key;
             break;
             case 12:
             $basic[$key]['parameter_name'] = 'enquiry';
@@ -483,7 +485,134 @@ class Enquiry extends REST_Controller {
                            );
         array_splice($basic, $last_name_key+1,0,$self_created2);
       }
-       
+
+      if($address_key!=-1)
+      {
+         foreach ($basic as $key=> $find) 
+          {
+              if($find['field_id']==11)
+                $address_key = $key;
+          }
+
+        $self_created3 = array(
+                             array(
+                                  "id"=> -5,
+                                  "comp_id"=> 65,
+                                  "field_id"=>-5,
+                                  "form_id"=> "0",
+                                  "process_id"=> "141",
+                                  "status" =>"1",
+                                  "fld_order"=>"0",
+                                  "title"=> "Client Type",
+                                  "type"=> "Dropdown",
+                                  "input_values"=>array(
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"MSME"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Pvt. Ltd."
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Public Ltd"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Partnership"
+                                                                ),  
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>" Multinational"
+                                                                ), 
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>" Proprietorship"
+                                                                ),
+                                                      ),
+                                  "parameter_name"=> "client_type"
+                                ),
+                                array(
+                                  "id"=> -6,
+                                  "comp_id"=> 65,
+                                  "field_id"=>-6,
+                                  "form_id"=> "0",
+                                  "process_id"=> "141",
+                                  "status" =>"1",
+                                  "fld_order"=>"0",
+                                  "title"=> "Type Of Load / Business",
+                                  "type"=> "Dropdown",
+                                  "input_values"=>array(
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"FTL"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"LTL/Sundry"
+                                                                ),
+                                                     ),
+                                  "parameter_name"=> "business_load"
+                                ),
+                                array(
+                                  "id"=> -7,
+                                  "comp_id"=> 65,
+                                  "field_id"=>-7,
+                                  "form_id"=> "0",
+                                  "process_id"=> "141",
+                                  "status" =>"1",
+                                  "fld_order"=>"0",
+                                  "title"=> "Industries",
+                                  "type"=> "Dropdown",
+                                  "input_values"=>array(
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"FMCG"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Auto & Auto Ancillaries"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Heavy Engineering"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Retail"
+                                                                ),  
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"E-Commerce"
+                                                                ), 
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Telecom & IT"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Clothing"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Chemicals"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Pharmaceuticals"
+                                                                ),
+                                                          array(
+                                                                  "key"=>"",
+                                                                  "value"=>"Others"
+                                                                ),
+                                                      ),
+                                  "parameter_name"=> "industries"
+                                ),
+
+                           );
+        array_splice($basic, $address_key+1,0,$self_created3);
+      }
 
       $dynamic = $this->location_model->get_company_list($process_id,$primary_tab);
       $i=0;

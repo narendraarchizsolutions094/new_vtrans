@@ -2412,7 +2412,7 @@ function set_agreement_id(ag_id)
     <div class="row">
         <div class="form-group col-sm-10">
             <label>
-              <input type="checkbox" name="agg_same" id="agg_same" value="<?php echo $this->uri->segment(3); ?>" onclick="myaggrement()"> If Details Are Same As Privious Data.
+              <input type="checkbox" name="agg_same" id="agg_same" value="<?php echo $this->uri->segment(3); ?>" onclick="myaggrement()"> If Details Are Same As Previous Data.
             </label>
             
         </div>  

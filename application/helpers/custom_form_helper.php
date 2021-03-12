@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
         else
         {
-            $data['basic_fields']  = $ci->User_model->get_input_basic_fields($comp_id);
+           $data['basic_fields']  = $ci->User_model->get_input_basic_fields($comp_id);
             $data['details']= $ci->Leads_Model->get_leadListDetailsby_id($enquiry_id);
             //print_r($data['details']); exit();
             $data['dynamic_field']  = $ci->enquiry_model->get_dyn_fld($enquiry_id,$tid);
