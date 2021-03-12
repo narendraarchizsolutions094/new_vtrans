@@ -1674,6 +1674,7 @@ Array
             
             $lead_score = $this->input->post('lead_score');
             $lead_stage = $this->input->post('lead_stage');
+            $expected_date = $this->input->post('expected_date');
             $comment = $this->input->post('comment');
             $assign_to = $this->session->user_id;
             if (!empty($lead_score)) {
@@ -1691,6 +1692,12 @@ Array
                 $comment = $this->input->post('comment');
             } else {
                 $comment = '';
+            }
+
+            if (!empty($expected_date)) {
+                $expected_date = $this->input->post('expected_date');
+            } else {
+                $expected_date = '';
             }
             
             if (!empty($move_enquiry)) {
@@ -1717,6 +1724,7 @@ Array
                     );
                     $this->db->set('status', 2);
                     $this->db->set('lead_created_date',date('Y-m-d H:i:s'));
+                    $this->db->set('lead_expected_date',$expected_date);
                     $this->db->where('enquiry_id', $key);
                     $this->db->update('enquiry');
                     
