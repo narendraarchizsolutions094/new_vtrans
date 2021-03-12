@@ -180,8 +180,8 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         <div class="form-group">
           <label>Booking Type</label>
            <select class="d_filter form-control" name="d_booking_type">
-                    <option value="">-Select-</option>
-                    <option value="sundry" selected>Sundry</option>
+                    <option value="" selected>-Select-</option>
+                    <option value="sundry">Sundry</option>
                     <option value="ftl" >FTL</option>
                 </select>
         </div>

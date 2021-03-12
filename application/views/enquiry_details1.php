@@ -2919,7 +2919,7 @@ if (document.getElementById('agg_same').checked)
                      <script type="text/javascript">
                        
                        $(document).ready(function(){
-                        var c = getCookie('contact_allowcols');
+                        //var c =   ('contact_allowcols');
                         $('#dataTableContact').DataTable({ 
 
                                 "processing": true,
@@ -2933,8 +2933,8 @@ if (document.getElementById('agg_same').checked)
                                          
                                            d.enquiry_id="<?=$details->enquiry_id?>";
                                            d.specific_list = '';
-                                             if(c && c!='')
-                                            d.allow_cols = c;
+                                            
+                                          d.allow_cols = '';
 
                                            console.log(JSON.stringify(d));
                                           return d;
