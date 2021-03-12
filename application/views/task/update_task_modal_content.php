@@ -27,6 +27,15 @@
          <label>Contact Person Email</label>
          <input type="text" class="form-control" name="email" value="<?= $task->email?>">
       </div>
+	  
+	  <div class="form-group col-sm-6">
+          <label>Status</label>
+          <select class="form-control" name="task_status">
+             <?php foreach($taskstatus_list as $val){ ?>
+             <option value="<?php echo $val->taskstatus_id; ?>" <?php if(($task->task_status == $val->taskstatus_id) || (empty($task->task_status) && $val->taskstatus_name == 'Pending')){echo 'selected';}?>><?php echo $val->taskstatus_name; ?></option>
+             <?php } ?>
+          </select>
+       </div>
       
       <div class="form-group col-sm-6" style="">
          <label>Task Date</label>
@@ -36,14 +45,7 @@
          <label>Task Time</label>
          <input type="time" class="form-control" name="task_time" value="<?=$task->task_time?>" id='task_update_task_time'>
       </div>
-        <div class="form-group col-sm-6">
-          <label>Status</label>
-          <select class="form-control" name="task_status">
-             <?php foreach($taskstatus_list as $val){ ?>
-             <option value="<?php echo $val->taskstatus_id; ?>" <?php if(($task->task_status == $val->taskstatus_id) || (empty($task->task_status) && $val->taskstatus_name == 'Pending')){echo 'selected';}?>><?php echo $val->taskstatus_name; ?></option>
-             <?php } ?>
-          </select>
-       </div>
+        
       <div class="form-group col-sm-12" style="">
          <label>Task Remark</label>
          <textarea class="form-control" name="task_remark"><?=$task->task_remark?></textarea>

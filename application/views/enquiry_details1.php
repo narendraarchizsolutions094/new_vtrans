@@ -3528,8 +3528,7 @@ if (document.getElementById('agg_same').checked)
 
                <div class="form-group col-sm-12">
                   <label>Remark Details</label>
-                  <textarea class="form-control"   name="task_remark" placeholder="Conversaion Details"> 
-                  </textarea>
+                  <textarea class="form-control"   name="task_remark" placeholder="Remark here..."></textarea>
                </div>               
                <div class="form-group text-center">
                   <input type="hidden" name="enq_code"  value="<?php echo  $details->Enquery_id; ?>" >
@@ -3587,7 +3586,7 @@ if (document.getElementById('agg_same').checked)
                      <div class="form-group col-md-6">
                         <label><?php echo display('lead_description') ?></label>                  
                         <select class="form-control" name="lead_description" id="lead_description1">
-                           <option value=""><?=display('lead')?> Description</option>
+                           <option value="">Select Description</option>
                                                                    
                         </select>
                      </div>
