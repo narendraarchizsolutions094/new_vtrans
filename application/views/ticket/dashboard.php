@@ -310,6 +310,7 @@ $(document).ready(function() {
                 var series = chart.series.push(new am4charts.ColumnSeries());
                 series.dataFields.valueX = "sales";
                 series.dataFields.categoryY = "state";
+                series.columns.template.showTooltipOn = "always";
                 series.columns.template.tooltipText =
                     "{categoryY}: [bold]{valueX}[/]";
                 series.columns.template.strokeWidth = 0;
