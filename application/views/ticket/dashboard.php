@@ -736,7 +736,7 @@ $(document).ready(function() {
                     series.yAxis = valueAxis;
                     series.name = name;
                     series.tooltipText = "{name}: [bold]{valueY}[/]";
-                    series.columns.template.showTooltipOn = "always";
+                    //series.columns.template.showTooltipOn = "always";
                     series.tensionX = 0.8;
                     series.showOnInit = true;
                     var interfaceColors = new am4core.InterfaceColorSet();
