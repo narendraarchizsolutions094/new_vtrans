@@ -748,6 +748,7 @@ $(document).ready(function() {
                             bullet.height = 12;
                             bullet.horizontalCenter = "middle";
                             bullet.verticalCenter = "middle";
+                            bullet.showTooltipOn = "always";
                             var triangle = bullet.createChild(am4core.Triangle);
                             triangle.stroke = interfaceColors.getFor("background");
                             triangle.strokeWidth = 2;
@@ -762,6 +763,7 @@ $(document).ready(function() {
                             bullet.height = 10;
                             bullet.horizontalCenter = "middle";
                             bullet.verticalCenter = "middle";
+                            bullet.showTooltipOn = "always";
                             var rectangle = bullet.createChild(am4core.Rectangle);
                             rectangle.stroke = interfaceColors.getFor("background");
                             rectangle.strokeWidth = 2;
@@ -774,6 +776,7 @@ $(document).ready(function() {
                             bullet.circle.stroke = interfaceColors.getFor(
                                 "background");
                             bullet.circle.strokeWidth = 2;
+                            bullet.showTooltipOn = "always";
                             break;
                     }
                     valueAxis.renderer.line.strokeOpacity = 1;
