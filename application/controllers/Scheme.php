@@ -9,7 +9,7 @@ public function __construct() {
         $this->load->helper("url");
       //  $this->load->library("pagination");
       //  $this->load->library('cart');
-      
+        
     }
     public function index(){
         $data['pscheme_list'] = $this->scheme_model->get_pro_scheme();
