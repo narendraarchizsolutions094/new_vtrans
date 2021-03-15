@@ -289,6 +289,9 @@ class Task extends CI_Controller {
     public function delete_task_row(){
         if (user_access('92') == true) {            
             $id    =   $this->input->post('id');
+			$cmt_enq_id = $this->db->select('query_id')->where('resp_id',$id)->get('query_response')->row();
+			$subject='Task is deleted';
+			$this->Leads_Model->add_comment_for_events($subject, $cmt_enq_id->query_id);
             $this->db->where('resp_id',$id);
             if($this->db->delete('query_response')){
                 echo json_encode(array('status'=>true,'msg'=>display('task_delete_msg')));

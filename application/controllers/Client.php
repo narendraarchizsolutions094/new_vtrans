@@ -410,8 +410,12 @@ class Client extends CI_Controller {
                 'decision_maker'=>$this->input->post('decision_maker')??0,
                 'other_detail' => $otherdetails
             );
+			$enq_no = $this->input->post('client_id');
             $this->db->where(array('cc_id'=>$cc_id,'comp_id'=>$this->session->companey_id,'client_id'=>$this->input->post('client_id')));
             $this->db->update('tbl_client_contacts',$data);
+			$cmt_enq_id = $this->db->select('Enquery_id')->where('enquiry_id',$enq_no)->get('enquiry')->row();
+			$subject='Contact is update';
+			$this->Leads_Model->add_comment_for_events($subject, $cmt_enq_id->Enquery_id);
             if($this->input->post('redirect_url')){
                 redirect($this->input->post('redirect_url')); //updateclient                
             }else{
@@ -996,14 +1000,24 @@ class Client extends CI_Controller {
         $form_type    =   $this->input->post('form_type');
         $enqarr = $this->db->select('*')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();
         $en_comments = $enqarr->Enquery_id;
-        $type = $enqarr->status;                
+        $type = $enqarr->status;
+		//For Comment Insert Code here
+        $inputnos   = $this->input->post("inputfieldno", true);
+        $cmt_text = $this->db->select('forms.title as title')->where('input_id',$inputnos[0])->join('forms','forms.id=tbl_input.form_id')->get('tbl_input')->row();
+        		
         if($type == 1){                 
-            $comment_id = $this->Leads_Model->add_comment_for_events(display('enquery_updated'), $en_comments);                    
+           // $comment_id = $this->Leads_Model->add_comment_for_events(display('enquery_updated'), $en_comments);
+              $subject=$cmt_text->title.' '.'is update at'.' '.display('enquery'). ' '.'stage';		   
+              $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);		   
         }else if($type == 2){                   
-             $comment_id = $this->Leads_Model->add_comment_for_events(display('lead_updated'), $en_comments);                   
+             //$comment_id = $this->Leads_Model->add_comment_for_events(display('lead_updated'), $en_comments); 
+			 $subject=$cmt_text->title.' '.'is update at'.' '.display('lead'). ' '.'stage';
+             $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);			 
         }else if($type == 3){
-             $comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
-        }
+             //$comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
+			 $subject=$cmt_text->title.' '.'is update at'.' '.display('client'). ' '.'stage';
+			 $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);
+        } 
         else
         {
              $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');
@@ -1131,11 +1145,76 @@ class Client extends CI_Controller {
         return $data;
     }
 
-    public function update_dynamic_query()
+    public function update_dynamic_query( $user_id=0,$comp_id=0)
     {
         $this->load->model('Enquiry_model');
+		
+		$this->load->library('user_agent');
+   
+    $enq_id = $this->input->post('enquiry_id');
+    $cmnt_id = $this->input->post('cmnt_id');
+    $tid    =   $this->input->post('tid');
+    $form_type    =   $this->input->post('form_type');
+    $enqarr = $this->db->select('*')->where('enquiry_id',$enq_id)->get('enquiry')->row();
+    $en_comments = $enqarr->Enquery_id;
+    
+    $type = $enqarr->status;
 
-         $res = $this->Enquiry_model->update_dynamic_query();
+    $user_id = $this->session->user_id??$user_id;
+    $comp_id  = $this->input->post('comp_id')??$comp_id; 
+
+    $inputnos   = $this->input->post("inputfieldno", true);
+    $cmt_text = $this->db->select('input_label,forms.title as title')->where('input_id',$inputnos[0])->join('forms','forms.id=tbl_input.form_id')->get('tbl_input')->row();	
+    $subject=$cmt_text->title.' '.'Updated';
+	//$stage_desc=$cmt_text->input_label.' '.'is Update';
+
+          $this->Leads_Model->add_comment_for_events($subject,$en_comments,'',$user_id);
+
+        if(!empty($enqarr)){        
+            if(isset($_POST['inputfieldno'])) {                    
+                $inputno   = $this->input->post("inputfieldno", true);
+                $enqinfo   = $this->input->post("enqueryfield", true);
+                $inputtype = $this->input->post("inputtype", true);                
+                $file_count = 0;                
+                $file = !empty($_FILES['enqueryfiles'])?$_FILES['enqueryfiles']:'';                
+                foreach($inputno as $ind => $val){
+  
+
+                 if ($inputtype[$ind] == 8) {  			 
+                        $file_data    =   $this->doupload($file,$file_count,$comp_id);
+
+                        if (!empty($file_data['imageDetailArray']['file_name'])) {
+                           // $file_path = base_url().'uploads/ticket_documents/'.$this->session->companey_id.'/'.$file_data['imageDetailArray']['file_name'];
+                            $file_path = base_url().'uploads/enq_documents/'.$this->session->companey_id.'/'.$file_data['imageDetailArray']['file_name'];                    
+                                    $this->db->where('enq_no',$en_comments);    
+                                    $this->db->where('comment_id',$cmnt_id);    
+                                    $this->db->where('input',$val);        
+                                    $this->db->where('parent',$enq_id);
+                                    $this->db->set('fvalue',$file_path);
+                                    $this->db->update('extra_enquery');
+                             
+                        }
+                        $file_count++;          
+                    }
+                    else
+                    {
+                        
+                                $this->db->where('enq_no',$en_comments);        
+                                $this->db->where('input',$val);        
+                                $this->db->where('parent',$enq_id);
+                                $this->db->where('comment_id',$cmnt_id); 
+                                $this->db->set('fvalue',$enqinfo[$val]);
+                                $this->db->update('extra_enquery');
+                          
+                    }                                      
+                } //foreach loop end               
+            }            
+             
+        }
+        
+        // $this->db->affected_rows();
+
+         //$res = $this->Enquiry_model->update_dynamic_query();
          $this->session->set_flashdata('message', 'Save successfully');
 
          redirect($_SERVER['HTTP_REFERER']);

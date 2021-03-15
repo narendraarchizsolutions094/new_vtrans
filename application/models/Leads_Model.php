@@ -1111,7 +1111,7 @@ public function all_description($diesc) {
         return $this->db->get();
     }
 
-    public function add_comment_for_events($conversation, $lead_id,$stage_code=0,$user_id=0) {
+    public function add_comment_for_events($conversation,$lead_id,$stage_code=0,$user_id=0) {
         $assign_employee = $this->input->post('assign_employee');
 
          if(!empty($this->session->userdata('userno'))){

@@ -5867,14 +5867,14 @@ jQuery(document).ready(function(){
    }else{
       $('li[href="' + hash + '"]').click();
    } 
-   $('form').submit(function(e){
+   /* $('form').submit(function(e){
       if(!$(this).find("input[name='redirect_url']").val()){
          e.preventDefault();
          var l = window.location;   
          $(this).append('<input type="hidden" name="redirect_url" value="'+l+'" />');
          $(this).submit();
       }
-   })
+   }) */
 });
 
 if("<?=$this->session->companey_id?>"==65){

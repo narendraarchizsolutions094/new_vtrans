@@ -702,12 +702,13 @@ class Enquiry_model extends CI_Model {
                 foreach($inputno as $ind => $val){
   
 
-                 if ($inputtype[$ind] == 8) {                                                
+                 if ($inputtype[$ind] == 8) {  
+                        $this->load->library('upload');				 
                         $file_data    =   $this->doupload($file,$file_count,$comp_id);
 
                         if (!empty($file_data['imageDetailArray']['file_name'])) {
-                            $file_path = base_url().'uploads/ticket_documents/'.$this->session->companey_id.'/'.$file_data['imageDetailArray']['file_name'];
-                                                
+                           // $file_path = base_url().'uploads/ticket_documents/'.$this->session->companey_id.'/'.$file_data['imageDetailArray']['file_name'];
+                            $file_path = base_url().'uploads/enq_documents/'.$this->session->companey_id.'/'.$file_data['imageDetailArray']['file_name'];                    
                                     $this->db->where('enq_no',$en_comments);    
                                     $this->db->where('comment_id',$cmnt_id);    
                                     $this->db->where('input',$val);        
