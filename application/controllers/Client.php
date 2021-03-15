@@ -2737,14 +2737,14 @@ public function all_update_expense_status()
                         $extract=  array_values($oc_data);
                         unset($extract[0]);
                         $oc = $extract;
-                        $oc[21] = $oc[22];
+                        $oc[22] = $oc[23];
                     }
                     $oc['rate_type'] = 'KG';
                     if(!empty($deal_data))
                     {
                         $oc =(array)json_decode($deal_data->other_charges);
-                        if(empty($oc[22]))
-                            $oc[22]='';
+                        if(empty($oc[23]))
+                            $oc[23]='';
                         $edit_remark = $deal_data->edit_remark;
                     }
                     
@@ -3027,11 +3027,16 @@ public function all_update_expense_status()
                             <td>Dynamic Fuel Surcharge in %</td>
                             <td><input name="oc[17]" value="'.$oc[17].'"></td>
                             <td>% of basic freight</td>
+                        </tr>
+						<tr>
+                            <td>Levy- in %</td>
+                            <td><input name="oc[18]" value="'.$oc[18].'"></td>
+                            <td>% of basic freight</td>
                         </tr>';
                     }
                     echo'<tr>
                             <td>E-way bill charge</td>
-                            <td><input name="oc[18]" value="'.$oc[18].'"></td>
+                            <td><input name="oc[19]" value="'.$oc[19].'"></td>
                             <td>In Rs. Per GC</td>
                         </tr>';
                     if($booking_type=='sundry')
@@ -3040,14 +3045,14 @@ public function all_update_expense_status()
                     echo'<tr>
                             <td>Door Collection Charges</td>
                             <td id="door_box">
-                                <input name="oc[19]" value="'.$oc[19].'">
+                                <input name="oc[20]" value="'.$oc[20].'">
                             </td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
                         <tr>
                             <td>Last Mile  Delivery charges</td>
                             <td id="mile_box">
-                             <input name="oc[20]" value="'.$oc[20].'">
+                             <input name="oc[21]" value="'.$oc[21].'">
                             </td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
