@@ -236,6 +236,7 @@ class Contacts extends REST_Controller {
             {	
             	if(!empty($cc_id))
 	            {
+                $data['client_id'] = $enquiry_id;
 	            	$this->db->where('cc_id',$cc_id)->update('tbl_client_contacts',$data);
 	            	$this->Leads_Model->add_comment_for_events('Contact Updated',$res->Enquery_id,0,$user_id);
 	            }
