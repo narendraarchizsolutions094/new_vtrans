@@ -3606,8 +3606,12 @@ public function set_layout_to_session() {
               <td>Dynamic Fuel Surcharge in %</td>
               <td>'.$oc[17].'</td>
               <td>% of basic freight</td>
+          </tr>
+		  <tr>
+              <td>Levy- in %</td>
+              <td>'.$oc[18].'</td>
+              <td>% of basic freight</td>
           </tr>';
-
       }
       $oc_table.='<tr>
               <td>E-way bill charge</td>
@@ -3653,7 +3657,10 @@ public function set_layout_to_session() {
 
 
         $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/".$folder."/uploads/quotations/quotations-".time().".pdf";
-        $pdf=   $this->pdf->create($content,0,$pdfFilePath1);
+		echo $content;
+		echo '</br>'.$pdfFilePath1;
+		
+        //$pdf=   $this->pdf->create($content,0,$pdfFilePath1);
 
         //get template of caf
 
