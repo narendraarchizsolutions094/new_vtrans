@@ -3606,12 +3606,8 @@ public function set_layout_to_session() {
               <td>Dynamic Fuel Surcharge in %</td>
               <td>'.$oc[17].'</td>
               <td>% of basic freight</td>
-          </tr>
-		  <tr>
-              <td>Levy- in %</td>
-              <td>'.$oc[18].'</td>
-              <td>% of basic freight</td>
           </tr>';
+
       }
       $oc_table.='<tr>
               <td>E-way bill charge</td>
@@ -3820,7 +3816,8 @@ $data=array();
 }
 
 public function quotation_preview($info_id)
-{   $info =  $this->db->where('id',$info_id)->get('commercial_info')->row();
+{   
+    $info =  $this->db->where('id',$info_id)->get('commercial_info')->row();
     if(empty($info))
     {
       echo'No Data';
