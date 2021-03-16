@@ -3657,9 +3657,6 @@ public function set_layout_to_session() {
 
 
         $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/".$folder."/uploads/quotations/quotations-".time().".pdf";
-		echo $content;
-		echo '</br>'.$pdfFilePath1;
-		
         //$pdf=   $this->pdf->create($content,0,$pdfFilePath1);
 
         //get template of caf

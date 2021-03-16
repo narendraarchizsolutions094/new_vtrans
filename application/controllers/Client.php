@@ -2620,6 +2620,7 @@ public function all_update_expense_status()
             $dtype = $this->input->post('dtype');
             $enquiry_id = $this->input->post('enq_for');
             $deal_id= $this->input->post('deal_id')??0;
+			//print_r($deal_id);exit;
             $deal_data = $this->Branch_model->get_deal($deal_id);
            
             // if($btype=='zone')
@@ -3117,6 +3118,7 @@ public function all_update_expense_status()
         $this->load->model(array('Branch_model','Enquiry_model','Leads_Model'));
         
         $oc = json_encode($this->input->post('oc'));
+		//print_r($oc);exit;
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
         $deal = array(
