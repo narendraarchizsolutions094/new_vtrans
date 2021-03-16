@@ -3298,7 +3298,7 @@ public function set_layout_to_session() {
                   'user_deg'=>$usrarr->designation,
                   'user_mobile'=>$usrarr->s_phoneno,
                   'user_email'=>$usrarr->s_user_email,
-                  'avg_fule_price'=>$oc[21],
+                  'avg_fule_price'=>$oc[22],
           );
           $content=  $this->load->view('quotation_temp/part-load',$note,true);
       }
@@ -3606,23 +3606,28 @@ public function set_layout_to_session() {
               <td>Dynamic Fuel Surcharge in %</td>
               <td>'.$oc[17].'</td>
               <td>% of basic freight</td>
+          </tr>
+		  <tr>
+              <td>Levy- in %</td>
+              <td>'.$oc[18].'</td>
+              <td>% of basic freight</td>
           </tr>';
       }
       $oc_table.='<tr>
               <td>E-way bill charge</td>
-              <td>'.$oc[18].'</td>
+              <td>'.$oc[19].'</td>
               <td>In Rs. Per GC</td>
           </tr>';
       if($booking_type=='sundry')
       {
       $oc_table.='<tr>
                             <td>Door Collection Charges</td>
-                            <td>'.$oc[19].'</td>
+                            <td>'.$oc[20].'</td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
                         <tr>
                             <td>Last Mile  Delivery charges</td>
-                            <td>'.$oc[20].'</td>
+                            <td>'.$oc[21].'</td>
                             <td>Upto 3 MT and above free</td>
                         </tr>
           <tr>
@@ -3631,7 +3636,7 @@ public function set_layout_to_session() {
           </tr>
           <tr>
               <td>ODA Charges</td>
-              <td colspan="2">'.$oc[22].'</td>
+              <td colspan="2">'.$oc[23].'</td>
           </tr>';
       }
   $oc_table.='</tbody>

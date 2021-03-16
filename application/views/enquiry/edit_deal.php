@@ -594,6 +594,26 @@ function rep_pton()
 			$(v).trigger('change');
 		});
 }
+function pot_amt()
+{
+		var ref =	$(".pot_amt");
+		var fixed = $(ref[0]).val();
+
+		$(".pot_amt").each(function(k,v){
+			$(v).val(fixed);
+			$(v).trigger('change');
+		});
+}
+function exp_amt()
+{
+		var ref =	$(".exp_amt");
+		var fixed = $(ref[0]).val();
+
+		$(".exp_amt").each(function(k,v){
+			$(v).val(fixed);
+			$(v).trigger('change');
+		});
+}
 function rep_vtype()
 {
 		var ref =	$(".vtype_ip");
