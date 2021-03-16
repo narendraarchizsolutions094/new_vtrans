@@ -3636,9 +3636,10 @@ public function set_layout_to_session() {
           </tr>
           <tr>
               <td>ODA Charges</td>
-              <td colspan="2">'.$oc[23].'</td>
+              <td colspan="2">'.''.'</td>
           </tr>';
       }
+      //<td colspan="2">'.$oc[23].'</td>
   $oc_table.='</tbody>
       </table>';
         //echo $freight_table;
