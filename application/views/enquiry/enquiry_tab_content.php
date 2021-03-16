@@ -321,7 +321,7 @@ foreach($basic_fields as $row)
                 <?php
                     if (!empty($region_lists)) {
                         foreach ($region_lists as $key => $value) { ?>
-                            <option value="<?= $value->region_id;?>" <?php if($value->region_id == $details->sales_region){ echo "selected";} ?>><?= $value->name;?></option>
+                            <option value="<?= $value->region_id;?>" <?php if($value->region_id == $details->enq_saleregi){ echo "selected";} ?>><?= $value->name;?></option>
                         <?php
                         }
                     }
@@ -334,7 +334,7 @@ foreach($basic_fields as $row)
             <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();" disabled>
                 <?php  if (!empty($area_lists)) {
                 foreach ($area_lists as $key => $value) { ?>
-            <option value="<?= $value->area_id;?>" <?php if($value->area_id == $details->sales_area){ echo "selected";} ?>><?= $value->area_name;?></option>
+            <option value="<?= $value->area_id;?>" <?php if($value->area_id == $details->enq_salearea){ echo "selected";} ?>><?= $value->area_name;?></option>
                 <?php
                 }
                 } ?>
