@@ -100,7 +100,7 @@ foreach($res as $val){
 	$id_array[] = $val->company;
 }
 
-        $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.status,comp.company_name,desg.desi_name');
+        $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.status,comp.company_name,desg.desi_name,enquiry.client_name');
         $this->db->from('tbl_client_contacts contacts');
         $this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
