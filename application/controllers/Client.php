@@ -2434,7 +2434,8 @@ public function all_update_expense_status()
                     $url = base_url('client/view/').$res->enquiry_id;
 
                 if($colsall || in_array(1,$cols))
-                    $sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
+                    //$sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
+			    $sub[] = '<a href="'.$url.'">'.$res->client_name.'</a>'??'NA';
                 $header[1] = 'Name';
             }
            
@@ -2620,6 +2621,7 @@ public function all_update_expense_status()
             $dtype = $this->input->post('dtype');
             $enquiry_id = $this->input->post('enq_for');
             $deal_id= $this->input->post('deal_id')??0;
+			//print_r($deal_id);exit;
             $deal_data = $this->Branch_model->get_deal($deal_id);
            
             // if($btype=='zone')
@@ -2742,7 +2744,8 @@ public function all_update_expense_status()
                     $oc['rate_type'] = 'KG';
                     if(!empty($deal_data))
                     {
-                        $oc =(array)json_decode($deal_data->other_charges);
+						  $oc =json_decode($deal_data->other_charges,true);
+                        //$oc =(array)json_decode($deal_data->other_charges);
                         if(empty($oc[23]))
                             $oc[23]='';
                         $edit_remark = $deal_data->edit_remark;
@@ -3117,6 +3120,7 @@ public function all_update_expense_status()
         $this->load->model(array('Branch_model','Enquiry_model','Leads_Model'));
         
         $oc = json_encode($this->input->post('oc'));
+		//print_r($oc);exit;
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
         $deal = array(
