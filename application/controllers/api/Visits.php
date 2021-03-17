@@ -105,6 +105,8 @@ $result =array();
                 }         
          }
       $result[$key]['status'] = $expstatus;
+      $result[$key]['total_expence'] = 0;//round(abs($value->visit_expSum+$value->visit_otexpSum));
+      $result[$key]['visit_status'] = 1;
 		} 
 
           if(!empty($result))
