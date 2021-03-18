@@ -613,18 +613,18 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="margin-left: -70px;">
                     <?php  if($enquiry->status!=2){
-                    ?>  <li><a title="Move to <?=display('lead')?>"  data-target="#genLead" data-toggle="modal">Move to <?=display('lead')?></a></li>
+                    ?>  <li><a title="Move to <?=display('lead')?>"  data-target="#genLead" data-toggle="modal" style="font-size: 10px;">Move to <?=display('lead')?></a></li>
                      <?php } ?>
                     <?php  if($enquiry->status!=3){ ?>
 
-                     <li><a  title="Move to <?=display('client')?>" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/3'?>" onclick="return confirm('Are you sure you want to move this <?=display('lead')?> to <?=display('client')?> ?')" >Move to <?=display('client')?></a></li>
+                     <li><a  title="Move to <?=display('client')?>" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/3'?>" onclick="return confirm('Are you sure you want to move this <?=display('lead')?> to <?=display('client')?> ?')" style="font-size: 10px;">Move to <?=display('client')?></a></li>
                     <?php }
 
                     if (!empty($enquiry_separation)) {
                      // $enquiry_separation = json_decode($enquiry_separation, true);
                          foreach ($enquiry_separation as $key => $value) {
                         if($enquiry->status!=$key){ ?>                   
-                       <li><a  title="" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/'.$key?>" onclick="return confirm('Are you sure you want to Move this <?=display('client')?> to <?=$enquiry_separation[$key]['title']?> ?')" > Move to <?=$enquiry_separation[$key]['title']?></i>
+                       <li><a  title="" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/'.$key?>" onclick="return confirm('Are you sure you want to Move this <?=display('client')?> to <?=$enquiry_separation[$key]['title']?> ?')" style="font-size: 10px;"> Move to <?=$enquiry_separation[$key]['title']?></i>
                         </a></li>
                     <?php     } 
                     }

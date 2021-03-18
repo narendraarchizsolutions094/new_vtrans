@@ -11,7 +11,7 @@ class Contacts_datatable_model extends CI_Model{
 
         // Set searchable column fields
 
-        $this->column_search = array('enquiry.name','enquiry.company','contacts.designation','contacts.c_name','contacts.contact_number','contacts.emailid','contacts.other_detail');
+        $this->column_search = array('enquiry.name','comp.company_name','contacts.designation','contacts.c_name','contacts.contact_number','contacts.emailid','contacts.other_detail');
 
         // $this->column_search = array('tck.ticketno','tck.id','tck.category','tck.name','tck.email','tck.product','tck.message','tck.issue','tck.solution','tck.sourse','tck.ticket_stage','tck.review','tck.status','tck.priority','tck.complaint_type','tck.coml_date','tck.last_update','tck.send_date','tck.client','tck.assign_to','tck.company','tck.added_by','enq.phone','enq.gender','prd.country_name');
         
@@ -100,7 +100,7 @@ foreach($res as $val){
 	$id_array[] = $val->company;
 }
 
-        $this->db->select('contacts.*,enquiry.company,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.status,comp.company_name,desg.desi_name');
+        $this->db->select('contacts.*,enquiry.company,comp.company_name,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.status,comp.company_name,desg.desi_name,enquiry.client_name');
         $this->db->from('tbl_client_contacts contacts');
         $this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
