@@ -2399,8 +2399,7 @@ public function all_update_expense_status()
     }
 
     public function contacts_load_data()
-    {
-        //print_r($_POST); exit(); 
+    { 
         $this->load->model('contacts_datatable_model');
         $result = $this->contacts_datatable_model->getRows($_POST);
         //echo $this->db->last_query(); exit();
@@ -2807,13 +2806,13 @@ public function all_update_expense_status()
 
                     if($booking_type=='sundry')
                         echo'<th>Potential Tonnage <label class="badge pull-right" onclick="rep_pton()">R</label></th>';
-                     echo'   <th>Potential Amount<br>(<small>In Lakhs</small>)<label class="badge pull-right" onclick="pot_amt()">R</label></th>';
+                     echo'   <th>Potential Amount<br>(<small>In Lakhs</small>)</th>';
                 
 
                  if($booking_type=='sundry')
                     echo'<th>Expected Tonnage <label class="badge pull-right" onclick="rep_eton()">R</label></th>';
 
-                        echo'<th>Expected Amount<br>(<small>In Lakhs</small>) <label class="badge pull-right" onclick="exp_amt()">R</label></th>';
+                        echo'<th>Expected Amount<br>(<small>In Lakhs</small>)</th>';
                  
 
                 if($booking_type=='ftl')
@@ -2897,14 +2896,14 @@ public function all_update_expense_status()
                  if($booking_type=='sundry')
                     echo' <td><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>';
 
-                    echo'<td><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').' class="pot_amt"></td>';
+                    echo'<td><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').'></td>';
 
 
                 if($booking_type=='sundry')
                     echo'<td>
                         <input type="number" name="eton['.$row->id.']" data-id="'.$row->id.'" value="'.$eton.'" class="eton_ip"></td>';
 
-                    echo'<td><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" '.($booking_type=='sundry'?'readonly':'').' class="exp_amt"></td>';
+                    echo'<td><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" '.($booking_type=='sundry'?'readonly':'').'></td>';
 
                 
                 if($booking_type=='ftl')

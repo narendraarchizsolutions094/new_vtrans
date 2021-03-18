@@ -85,7 +85,6 @@ $type=$deal->btype;
 $this->load->model('Branch_model');
 $region_list = $this->Branch_model->sales_region_list()->result();
 $list = $this->db->query("SELECT deal_data.*,GROUP_CONCAT(deal_data.delivery_branch) as dlist, book.area_id barea, book.region_id bregion FROM `deal_data` left join branch book on book.branch_id=deal_data.booking_branch where deal_id=".$deal->id." GROUP by deal_data.booking_branch")->result();
-
 foreach($list as $row)
 {
     echo'<div class="row" style=" margin-bottom: 20px;
@@ -130,8 +129,8 @@ foreach($list as $row)
                         <select id="bbranch'.$did.'" name="bbranch['.$did.']" class="form-control booking_from" required onchange="generate_table()" data-close-on-select="false">';
                         if($type=='zone')
                         {
-                            $zones =   $this->Branch_model->zone_list()->result();
-                            
+                            //$zones =   $this->Branch_model->zone_list()->result();
+                            $zones =	$this->Branch_model->zone_list(0,"zones.zone_id IN (".$row->booking_branch.")")->result();
                             foreach ($zones as $key => $value)
                             {
                                 echo'<option value="'.$value->zone_id.'" '.($value->zone_id==$row->booking_branch).'>'.$value->name.'</option>';
@@ -189,11 +188,12 @@ foreach($list as $row)
                   	 //$dlist = explode(',',$row->dlist);
                         if($type=='zone')
                         {
-                            $zones =   $this->Branch_model->zone_list()->result();
+                            //$zones =   $this->Branch_model->zone_list()->result();
+							$zones =	$this->Branch_model->zone_list(0,"zones.zone_id IN (".$row->dlist.")")->result();
                            
                             foreach ($zones as $key => $value)
                             {
-                                echo'<option value="'.$value->zone_id.'" '.(in_array($value->zone_id,$dlist)?'selected':'').'>'.$value->name.'</option>';
+                                echo'<option value="'.$value->zone_id.'" selected>'.$value->name.'</option>';
                             }
                         }
                         else
@@ -594,26 +594,7 @@ function rep_pton()
 			$(v).trigger('change');
 		});
 }
-function pot_amt()
-{
-		var ref =	$(".pot_amt");
-		var fixed = $(ref[0]).val();
 
-		$(".pot_amt").each(function(k,v){
-			$(v).val(fixed);
-			$(v).trigger('change');
-		});
-}
-function exp_amt()
-{
-		var ref =	$(".exp_amt");
-		var fixed = $(ref[0]).val();
-
-		$(".exp_amt").each(function(k,v){
-			$(v).val(fixed);
-			$(v).trigger('change');
-		});
-}
 function rep_vtype()
 {
 		var ref =	$(".vtype_ip");
