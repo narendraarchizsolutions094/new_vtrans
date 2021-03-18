@@ -3464,8 +3464,11 @@ echo  $details1;
             if($visit_type==1){
                $visit_time=date('H:i');
                $visit_date=date('Y-m-d');
+            }else{
+                $visit_date    =   $this->input->post('visit_date');
+                $visit_date = date("d-m-Y",strtotime($visit_date));
             }
-            //print_r($_POST); exit();
+            //print_r($_POST); 
             $data = array('enquiry_id'=>$this->input->post('enq_id'),
                             'contact_id'=>$this->input->post('contact_id'),
                             'visit_date'=>$visit_date,
@@ -3475,8 +3478,6 @@ echo  $details1;
                             'user_id'=>$this->session->user_id,
                         );
             $res = $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$data['enquiry_id']))->row();
-            $visit_date    =   $this->input->post('next_visit_date');
-            $visit_date = date("d-m-Y", strtotime($visit_date));
             $mobileno = $res->phone;
             $email = $res->email;
             $stage_time = $this->input->post('next_visit_time');
@@ -3485,10 +3486,11 @@ echo  $details1;
             $notification_id = '';
             if($visit_type==2)
             {
-                $notification_id = $this->input->post('dis_notification_id');
+                $notification_id = $this->input->post('visit_notification_id');
             }
-          
-            $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $stage_time, $enq_code, $notification_id, 'Visit',1,3);
+        //   print_r($_POST);
+        //   echo $visit_date;
+            $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $stage_time, $enq_code, $notification_id, 'Visit -'.$m_purpose,1,3);
 
             $this->Client_Model->add_visit($data);
          $contact=  $this->db->where('cc_id',$data['contact_id'])->get('tbl_client_contacts')->row();
@@ -3499,7 +3501,7 @@ echo  $details1;
 
             $this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id);
 
-            $this->session->set_flashdata('SUCCESSMSG','Visit Saved Successfully');            
+            $this->session->set_flashdata('message','Visit Saved Successfully');            
             if($this->input->post('redirect_url')){
                 redirect($this->input->post('redirect_url')); //updateclient                
             }else{

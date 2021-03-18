@@ -149,7 +149,7 @@ public function __construct()
         
         return $query->result();
     }
-    public function get_task_calandar_feed($start,$end,$user_id=0,$enq_id=0){
+    public function get_task_calandar_feed($start,$end,$user_id=0,$enq_id=0,$filter=array()){
         if (!$user_id) {
 		    $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);              
             $user_id = $this->session->user_id;      
@@ -164,7 +164,9 @@ public function __construct()
         
 		$this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
         $where = '';
-     
+        if(!empty($filter)){
+            $this->db->where_in('task_type',$filter);
+        }
 		if(empty($enq_id)){
         if($where){
             $where .= " AND (STR_TO_DATE(query_response.task_date,'%d-%m-%Y') BETWEEN STR_TO_DATE('".$start."','%d-%m-%Y') AND  STR_TO_DATE('".$end."','%d-%m-%Y'))";            

@@ -1,6 +1,6 @@
 <form id='set_reminder' action="<?=base_url().'task/save_task'?>" class="form-inner" enctype="multipart/form-data" method="post">
     <input name='task_notification_id' type='hidden'/>
-    <div class="">
+    <div class="row">
         <div class="form-group col-sm-6">
             <label>Subject <i class="text-danger ">*</i></label>
             <input type="text" class="form-control" id='task_subject' name="subject" placeholder="Subject">
@@ -22,17 +22,17 @@
             </select>
         </div>
 
-        <div class="form-group col-sm-4">
+        <div class="form-group col-sm-6">
             <label>Task Date <i class="text-danger">*</i></label>
             <input class="form-control form-date" type='text' name="task_date">
         </div>
 
-        <div class="form-group col-sm-4">
+        <div class="form-group col-md-6">
             <label>Task Time<i class="text-danger">*</i></label>
             <input type="time" class="form-control" name="task_time">
         </div>
 
-        <div class="form-group col-sm-4">
+        <div class="form-group col-md-6">
             <label>Status<i class="text-danger">*</i></label>
             <select class="form-control" name="task_status">
             <?php
@@ -101,10 +101,10 @@
             <textarea id='task_description' rows="6" class="form-control" name="task_remark"
                 placeholder='Start typing the details about the task...'></textarea>
         </div>
+    </div>
         <div class="form-group text-center">
             <input type="submit" name="create" class="btn btn-primary" id='set_reminder_btn' value="Create">
         </div>
-    </div>
 </form>
 <script>
     $('.form-date').datepicker({ dateFormat: 'yy-mm-dd' });

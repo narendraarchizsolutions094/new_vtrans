@@ -450,6 +450,7 @@ class Lead extends CI_Controller
             $this->db->set('task_status', $task_status);
             $this->db->set('task_date', $task_date);
             $this->db->set('task_time', $task_time);
+            $this->db->set('comp_id', $this->session->companey_id);
             $this->db->set('task_remark', $task_remark);
             $this->db->set('notification_id', $this->input->post('notification_id'));
             $this->db->set('create_by', $this->session->user_id);

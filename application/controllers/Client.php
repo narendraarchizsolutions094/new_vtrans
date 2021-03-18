@@ -3441,7 +3441,7 @@ public function all_update_expense_status()
 
             $all_reporting_ids  = $this->common_model->get_categories($this->session->user_id);
 
-            $this->db->select('enquiry.enquiry_id,enquiry.client_name');
+            $this->db->select('enquiry.enquiry_id,enquiry.Enquery_id,enquiry.client_name');
             $this->db->from('enquiry');
             $this->db->where("enquiry.company",$comp_id);
 
@@ -3456,7 +3456,7 @@ public function all_update_expense_status()
 
         foreach ($res->result() as $key => $value) 
         {
-            echo'<option value="'.$value->enquiry_id.'">'.$value->client_name.'</option>';
+            echo'<option value="'.$value->Enquery_id.'">'.$value->client_name.'</option>';
         }
     }
 
