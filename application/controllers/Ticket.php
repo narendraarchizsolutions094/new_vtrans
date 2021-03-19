@@ -3062,7 +3062,7 @@ class Ticket extends CI_Controller
 				'upload_path' => $_SERVER["DOCUMENT_ROOT"] . "/assets/ticket",
 				'allowed_types' => "text/plain|text/csv|csv",
 				'remove_spaces' => TRUE,
-				'file_name' => $filename
+				'file_name' => $filename 
 			);
 			$this->load->library('upload', $config);
 			$this->upload->initialize($config);			
@@ -3154,7 +3154,7 @@ class Ticket extends CI_Controller
 				$this->session->set_flashdata('message', "File Uploaded successfully." . $res);
 				redirect(base_url() . 'ticket/upload_tickets');
 			} else {
-				$this->session->set_flashdata('exception', $this->upload->display_errors());
+				$this->session->set_flashdata('exception', $this->upload->display_errors().$config['upload_path']);
 				redirect(base_url() . 'ticket/upload_tickets');
 			}
 		}
