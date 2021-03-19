@@ -454,6 +454,34 @@ if (!empty($enquiry_separation)) {
                             color: black;
                         }
                         </style>
+                        <div class='pull-right' style="float: right;margin-right: 78px;margin-left: 5px;">
+                            <div class="btn-group dropdown-filter">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class='fa fa-cogs'></i><span class="caret"></span>
+                                </button>              
+                                <ul class="filter-dropdown-menu dropdown-menu">   
+                                    <li>
+                                        <label>
+                                            <input type="checkbox" value="1" name="task_filter" checked> 
+                                            Task <i style='background:#0073b7;color:#0073b7;' class="fa fa-square"></i>
+                                        </label>
+                                    </li>  
+                                    <li>
+                                        <label>
+                                            <input type="checkbox" value="2" name="task_filter" checked> 
+                                            Follow Up <i style='background:#ff0000;color:#ff0000;' class="fa fa-square"></i>
+                                        </label>
+                                    </li>  
+                                    <li>
+                                        <label>
+                                            <input type="checkbox" value="3" name="task_filter" checked> 
+                                            Visits <i style='background:#0073b7;color:0073b7;' class="fa fa-square"></i>
+                                        </label>
+                                    </li>  
+                                </ul>                
+                                
+                            </div>
+                        </div>
                         <div id="calendar" ></div>
 
                     </div>
@@ -1492,31 +1520,29 @@ if(user_access('260') || user_access('261') || user_access('250'))
             <script type="text/javascript">
             // sample calendar events data
             $(document).ready(function() {
-
-
                 var curYear = moment().format('YYYY');
                 var curMonth = moment().format('MM');
-
-
                 // Calendar Event Source
                 var calendarEvents = {
                     backgroundColor: 'rgba(1,104,250, .15)',
                     borderColor: '#0168fa',
                     events: [
-                        <?php $cnt=1; foreach($taskdata as $task){
-$t_date = $task->task_date;
-if(!empty($task->subject)){
-$ttl = $task->subject;  
-}else{
-$ttl = 'None';  
-}
-if(!empty($task->task_remark)){
-$remrk = $task->task_remark;  
-}else{
-$remrk = 'None';  
-} 
-$newDate = date("Y-m-d", strtotime($t_date));
-?> {
+                        <?php
+                        $cnt=1; 
+                        foreach($taskdata as $task){
+                            $t_date = $task->task_date;
+                        if(!empty($task->subject)){
+                            $ttl = $task->subject;  
+                        }else{
+                            $ttl = 'None';  
+                        }
+                        if(!empty($task->task_remark)){
+                            $remrk = $task->task_remark;  
+                        }else{
+                            $remrk = 'None';  
+                        } 
+                        $newDate = date("Y-m-d", strtotime($t_date));
+                        ?> {
                             id: <?= $cnt;?>,
                             start: '<?php echo $newDate; ?>',
                             end: '<?php echo $newDate; ?>',
@@ -1526,6 +1552,27 @@ $newDate = date("Y-m-d", strtotime($t_date));
                         <?php  $cnt++; } ?>
                     ]
                 };
+                $("input[name='task_filter']").on('change',function(){
+                    id = $(this).val();                
+                    var events = {
+                        url: "<?php echo base_url().'task/get_calandar_feed?for=1'?>",
+                        type: 'POST',
+                        data: {
+                            start: $('#calendar').fullCalendar('getView').start,
+                            end: $('#calendar').fullCalendar('getView').end,
+                            user_id:"<?=$this->session->user_id?>",
+                            filter: $('input[name=task_filter]:checked').map(function(){
+                                return this.value;
+                                }).get()
+                        }
+                    }
+                    //remove old data
+                    $('#calendar').fullCalendar('removeEvents');       
+                    //Getting new event json data
+                    $("#calendar").fullCalendar('addEventSource', events);
+                    //Updating new events
+                    $('#calendar').fullCalendar('rerenderEvents');                          
+                });
                 var pendingEvents = {
                     backgroundColor: 'rgba(16,183,89, .25)',
                     borderColor: '#10b759',
@@ -1583,7 +1630,6 @@ $newDate = date("Y-m-d", strtotime($t_date));
                     defaultView: 'listMonth',
                     eventLimit: 2,
                     views: {
-
                         agenda: {
                             columnHeaderHtml: function(mom) {
                                 return '<span>' + mom.format('ddd') + '</span>' +
@@ -1610,7 +1656,42 @@ $newDate = date("Y-m-d", strtotime($t_date));
                         }
                     },
 
-                    eventSources: [calendarEvents, pendingEvents, waitEvents, notapprovedEvents],
+                    // eventSources: [
+                    //     {
+                    //         url: "<?php echo base_url().'task/get_calandar_feed?for=1'?>",
+                    //         type: 'POST',
+                    //         data: {
+                    //             start: $('#calendar').fullCalendar('getView').start,
+                    //             end: $('#calendar').fullCalendar('getView').end,
+                    //             user_id:"<?=$this->session->user_id?>",
+                    //             filter: $('input[name=task_filter]:checked').map(function(){
+                    //                 return this.value;
+                    //             }).get()
+                    //         }
+                    //     }, 
+                    //     pendingEvents, 
+                    //     waitEvents, 
+                    //     notapprovedEvents
+                    // ],
+                    events    : function(start, end, timezone, callback) {                        
+                        jQuery.ajax({
+                            url: "<?php echo base_url().'task/get_calandar_feed?for=1'?>",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                start: start.format(),
+                                end: end.format(),
+                                user_id:"<?=$this->session->user_id?>",
+                                filter: $('input[name=task_filter]:checked').map(function(){
+                                    return this.value;
+                                }).get()
+                            },
+                            success: function(doc) { 
+                                var events = doc;                
+                                callback(events);
+                            }
+                        });
+                    },
                     eventAfterAllRender: function(view) {
                         if (view.name === 'listMonth' || view.name === 'listWeek') {
                             var dates = view.el.find('.fc-list-heading-main');
@@ -1628,7 +1709,7 @@ $newDate = date("Y-m-d", strtotime($t_date));
                         console.log(view.el);
                     },
                     eventRender: function(event, element) {
-
+                        
                         if (event.description) {
                             element.find('.fc-list-item-title').append('<span class="fc-desc">' +
                                 event.description + '</span>');

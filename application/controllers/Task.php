@@ -41,7 +41,8 @@ class Task extends CI_Controller {
         if($for == 2){
             $cal_feed    =   $this->Task_Model->get_task_calandar_feed_ticket($start,$end,$user_id,$enq_id);                
         }else{
-            $cal_feed    =   $this->Task_Model->get_task_calandar_feed($start,$end,$user_id,$enq_id);                            
+            $filter = $this->input->post('filter');
+            $cal_feed    =   $this->Task_Model->get_task_calandar_feed($start,$end,$user_id,$enq_id,$filter);                            
         }
         $feed = array();        
         foreach ($cal_feed as $task){
@@ -60,6 +61,7 @@ class Task extends CI_Controller {
             }
 
             if(!empty($task_date1)){
+                $title = $task->subject;
                 if($task->task_for == 1 || $task->task_for == 0){
                 $this->db->where('Enquery_id',$task->query_id);
                 $enquiry_row   =    $this->db->get('enquiry')->row_array();            
@@ -77,7 +79,7 @@ class Task extends CI_Controller {
                 }
                $dt = date_format($task_date1,'Y-m-d'); 
                $feed[] = array(
-                   'title' =>   $name,
+                   'title' =>   $title??$name,
                    'start' =>   $dt,
                    'backgroundColor' =>$color,
                    'url'    =>  '',
