@@ -112,7 +112,7 @@ $result =array();
 	//End
 	
       $result[$key]['status'] = $expstatus;
-      //$result[$key]['total_expence'] = $value->amount;//round(abs($value->visit_expSum+$value->visit_otexpSum));
+      //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
       $result[$key]['visit_status'] = $value->visit_status;
 		} 
 
