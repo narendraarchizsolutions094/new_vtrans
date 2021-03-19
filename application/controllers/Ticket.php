@@ -3154,7 +3154,7 @@ class Ticket extends CI_Controller
 				$this->session->set_flashdata('message', "File Uploaded successfully." . $res);
 				redirect(base_url() . 'ticket/upload_tickets');
 			} else {
-				$this->session->set_flashdata('exception', $this->upload->display_errors().$config['upload_path']);
+				$this->session->set_flashdata('exception', $this->upload->display_errors());
 				redirect(base_url() . 'ticket/upload_tickets');
 			}
 		}
