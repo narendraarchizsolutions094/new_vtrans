@@ -104,9 +104,16 @@ $result =array();
                     $expstatus='Partial';
                 }         
          }
+	//For total_expence And	visit_status  
+	//$visit_status= $this->db->select('visit_status')->where('visit_id', $value->id)->get('visit_details')->row();
+	//$total_expence= $this->db->select('amount')->where('visit_id', $value->id)->get('tbl_expense')->row();
+	//$ttl_exp = $total_expence->amount;
+	//$vst_sts = $visit_status->visit_status;
+	//End
+	
       $result[$key]['status'] = $expstatus;
-      $result[$key]['total_expence'] = 0;//round(abs($value->visit_expSum+$value->visit_otexpSum));
-      $result[$key]['visit_status'] = 1;
+      //$result[$key]['total_expence'] = $value->amount;//round(abs($value->visit_expSum+$value->visit_otexpSum));
+      $result[$key]['visit_status'] = $value->visit_status;
 		} 
 
           if(!empty($result))
