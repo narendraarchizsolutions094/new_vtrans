@@ -312,7 +312,7 @@ $('input[name="filter_checkbox"]').click(function(){
                   <th id="th-16">Start Location</th>
                   <th id="th-17">End Location</th>
 				          <th id="th-4">Shortest Distance</th>
-				          <th id="th-5">Actual Distancee</th>
+				          <th id="th-5">Actual Distance</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-11" >Difference (%)</th>
 				          <th >Travel Expense</th>
