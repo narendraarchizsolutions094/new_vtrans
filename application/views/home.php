@@ -1630,7 +1630,6 @@ if(user_access('260') || user_access('261') || user_access('250'))
                     defaultView: 'listMonth',
                     eventLimit: 2,
                     views: {
-
                         agenda: {
                             columnHeaderHtml: function(mom) {
                                 return '<span>' + mom.format('ddd') + '</span>' +
@@ -1657,23 +1656,42 @@ if(user_access('260') || user_access('261') || user_access('250'))
                         }
                     },
 
-                    eventSources: [
-                        {
+                    // eventSources: [
+                    //     {
+                    //         url: "<?php echo base_url().'task/get_calandar_feed?for=1'?>",
+                    //         type: 'POST',
+                    //         data: {
+                    //             start: $('#calendar').fullCalendar('getView').start,
+                    //             end: $('#calendar').fullCalendar('getView').end,
+                    //             user_id:"<?=$this->session->user_id?>",
+                    //             filter: $('input[name=task_filter]:checked').map(function(){
+                    //                 return this.value;
+                    //             }).get()
+                    //         }
+                    //     }, 
+                    //     pendingEvents, 
+                    //     waitEvents, 
+                    //     notapprovedEvents
+                    // ],
+                    events    : function(start, end, timezone, callback) {                        
+                        jQuery.ajax({
                             url: "<?php echo base_url().'task/get_calandar_feed?for=1'?>",
                             type: 'POST',
+                            dataType: 'json',
                             data: {
-                                start: $('#calendar').fullCalendar('getView').start,
-                                end: $('#calendar').fullCalendar('getView').end,
+                                start: start.format(),
+                                end: end.format(),
                                 user_id:"<?=$this->session->user_id?>",
                                 filter: $('input[name=task_filter]:checked').map(function(){
                                     return this.value;
                                 }).get()
+                            },
+                            success: function(doc) { 
+                                var events = doc;                
+                                callback(events);
                             }
-                        }, 
-                        pendingEvents, 
-                        waitEvents, 
-                        notapprovedEvents
-                    ],
+                        });
+                    },
                     eventAfterAllRender: function(view) {
                         if (view.name === 'listMonth' || view.name === 'listWeek') {
                             var dates = view.el.find('.fc-list-heading-main');
@@ -1691,7 +1709,7 @@ if(user_access('260') || user_access('261') || user_access('250'))
                         console.log(view.el);
                     },
                     eventRender: function(event, element) {
-
+                        
                         if (event.description) {
                             element.find('.fc-list-item-title').append('<span class="fc-desc">' +
                                 event.description + '</span>');
