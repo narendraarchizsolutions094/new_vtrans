@@ -5,8 +5,7 @@
 		<span class="scrollTab" style="position: absolute; left: 0; font-size: 22px; line-height: 40px; z-index: 999"><i class="fa fa-caret-left" onclick="tabScroll('left')"></i></span>    
 
 		<li class="active"><a  href="#basic" data-toggle="tab" style="padding: 10px 10px; ">Basic</a></li> 
-		<li class=""><a  href="#related_tickets" data-toggle="tab" style="padding: 10px 10px; ">Related <?=display('ticket')?></a></li>   
-
+		
 		 <?php
 		 //print_r($tab_list);
             if(!empty($tab_list)){
@@ -22,6 +21,8 @@
             }
 
           ?>
+		  <li class=""><a  href="#related_tickets" data-toggle="tab" style="padding: 10px 10px; ">Related <?=display('ticket')?></a></li>   
+
 
            <span class="scrollTab" style="position: absolute; right: 0; font-size: 22px; line-height: 40px; z-index: 999"><i class="fa fa-caret-right"  onclick="tabScroll('right')"></i></span>
 
