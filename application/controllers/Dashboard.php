@@ -3270,7 +3270,8 @@ public function set_layout_to_session() {
         $user_id = $deal->createdby;
 
         $d_data =  $this->Branch_model->get_deal_data($info_id);
-        $oc = (array)json_decode($deal->other_charges);
+       // $oc = (array)json_decode($deal->other_charges);
+	      $oc = json_decode($deal->other_charges,true);
         
         $enquiry_id = $deal->enquiry_id;
         $booking_type = $deal->booking_type;

@@ -2738,7 +2738,7 @@ public function all_update_expense_status()
                         $extract=  array_values($oc_data);
                         unset($extract[0]);
                         $oc = $extract;
-                        $oc[22] = $oc[23];
+                        $oc[22] = $oc[23] = '';
                     }
                     $oc['rate_type'] = 'KG';
                     if(!empty($deal_data))
@@ -3066,11 +3066,11 @@ public function all_update_expense_status()
                             <td>ODA Charges</td>
                             <td colspan="2">
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_value" name="oc[22]" value="" placeholder="Charge" >
+                                    <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge" >
                                 </div>
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_distance" type="number" style="width:49%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
-                                     <input id="oda_weight" type="number" style="width:49%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip">
+                                    <input id="oda_distance" name="oc[23]" value="'.$oc[23].'" type="number" style="width:49%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
+                                     <input id="oda_weight" name="oc[24]" value="'.$oc[24].'" type="number" style="width:49%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip">
                                 </div>
                             </td>
                         </tr>';
