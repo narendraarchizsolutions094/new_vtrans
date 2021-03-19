@@ -2735,7 +2735,7 @@ class Lead extends CI_Controller
     
             if (!empty($filter)) {
     
-                $qpart = " (enq.Enquery_id LIKE '%{$filter}%' OR enq.email LIKE '%{$filter}%' OR enq.phone LIKE '%{$filter}%' OR enq.name LIKE '%{$filter}%' OR enq.lastname LIKE '%{$filter}%' OR CONCAT(enq.name,' ',enq.lastname) LIKE '%{$filter}%' OR CONCAT(enq.name_prefix,' ',enq.name,' ',enq.lastname) LIKE '%{$filter}%' OR usr.s_display_name LiKE '%{$filter}%' OR usr.last_name LiKE '%{$filter}%' OR asgn.s_display_name LiKE '%{$filter}%' OR asgn.last_name LiKE '%{$filter}%') AND";
+                $qpart = " (enq.Enquery_id LIKE '%{$filter}%' OR enq.email LIKE '%{$filter}%' OR enq.phone LIKE '%{$filter}%' OR enq.name LIKE '%{$filter}%' OR enq.lastname LIKE '%{$filter}%' OR CONCAT(enq.name,' ',enq.lastname) LIKE '%{$filter}%' OR CONCAT(enq.name_prefix,' ',enq.name,' ',enq.lastname) LIKE '%{$filter}%' OR usr.s_display_name LiKE '%{$filter}%' OR usr.last_name LiKE '%{$filter}%' OR asgn.s_display_name LiKE '%{$filter}%' OR asgn.last_name LiKE '%{$filter}% OR tbl_client_contacts.c_name LiKE '%{$filter}% OR  tbl_client_contacts.contact_number LiKE '%{$filter}%') AND";
             } else {
                 $qpart = "";
             }
@@ -2745,13 +2745,14 @@ class Lead extends CI_Controller
     
             $qry    = "SELECT  enq.*, concat(usr.s_display_name,' ' , usr.last_name) as username,  concat(asgn.s_display_name,' ' , asgn.last_name) as asignuser  FROM enquiry enq
                                                 LEFT JOIN tbl_admin usr ON usr.pk_i_admin_id = enq.created_by 
+                                                LEFT JOIN tbl_client_contacts ON tbl_client_contacts.client_id = enq.enquiry_id 
                                                 LEFT JOIN tbl_admin asgn ON asgn.pk_i_admin_id = enq.aasign_to 
                                                 WHERE $qpart  ";
             if ($global_search) {
                 $qry .= "enq.comp_id=$comp_id";
             } else {
                 $qry .= "(enq.created_by  IN ($impuser) OR enq.aasign_to  IN ($impuser))";
-                  }
+            }
         $data["result"] = $this->db->query($qry)->result();
         $data["filter"]  = $filter;
         $data['title']   = "Lead Search";
