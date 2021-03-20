@@ -2110,7 +2110,7 @@ V-Trans House, Unit No.06, Corporate Park, V. N. Purav Marg, Chembur, Mumbai –
   left:0px;
 }
 body{
-	padding: 20px;
+	padding: 20px 50px;
 	padding-top: 40px;
 	margin-top: 100px;
 	width:100%;
@@ -2147,10 +2147,10 @@ body{
 	<p class="c21 c44"><span class="c36"></span></p>
 	<p class="c21"><span class="c75 c66">For V-Trans (India) Ltd.</span></p>
 	<p class="c21 c44"><span class="c36"></span></p>
-	<p class="c9"><span class="c22">Name: </span><span class="c52"><?=$user?></span></p>
-	<p class="c5"><span class="c17">Designation: </span><span class="c52"><?=$user_deg?></span></p>
-	<p class="c5"><span class="c17">Mobile No.:</span><span class="c52"> <?=$user_mobile?></span></p>
-	<p class="c5"><span class="c17">Email ID:</span><span class="c52"> <?=$user_email?></span></p>
+	<p class="c9" style="padding-top:5px;"><span class="c22">Name: </span><span class="c52"><?=$user?></span></p>
+	<p class="c5" style="padding-top:5px;"><span class="c17">Designation: </span><span class="c52"><?=$user_deg?></span></p>
+	<p class="c5" style="padding-top:5px;"><span class="c17">Mobile No.:</span><span class="c52"> <?=$user_mobile?></span></p>
+	<p class="c5" style="padding-top:5px;"><span class="c17">Email ID:</span><span class="c52"> <?=$user_email?></span></p>
 	<p class="c5"><span class="c36">&nbsp;</span></p>
 	<p class="c21"><span class="c66">Encl:</span><span class="c64">&nbsp;As Stated above.</span><span class="c65">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
 	<p class="c21 c44"><span class="c23"></span></p>
@@ -2168,13 +2168,13 @@ body{
 	<p class="c29"><span class="c23">V-Trans market leadership is further validated by numerous awards and recognitions from customers. The company has won numerous awards including &lsquo;Best Road Transport Company in India&rsquo; for 2018, at ICC - Supply Chain Logistics Summit &amp; Excellence Award; ICC Supply Chain &amp; Logistics Excellence Award &ndash; Road Transporter of the Year &ndash; 2016; Transport Excellence for Outperformance in Safety Award - 2015 to name a few. </span></p>
 	<p class="c29"><span class="c23">V-Trans accept its social responsibility and believes in always giving back to the society. They have CSR programs in the field of health, education and community upliftment. V-Trans also conducts regular training programs for drivers of their owned and attached vehicles in association with WIAA &amp; Castrol Institute to hone their driving techniques and apprise them on changing trends.</span></p>
 	<p class="c21 c44"><span class="c23"></span></p>
+	<!--<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>
-	<p class="c9 c18"><span class="c19"></span></p>
-	<p class="c9 c18"><span class="c19"></span></p>
-	<p class="c9 c58" style="text-align: center"><span class="c32 c25">Annexure II - Commercial&rsquo;s.</span></p>
+	<p class="c9 c18"><span class="c19"></span></p>-->
+	<p class="c9 c58" style="text-align: center;"><span class="c32 c25">Annexure II - Commercial&rsquo;s.</span></p>
 	<p class="c9 c44"><span class="c36"></span></p>
 	<p class="c9"><span class="c22 c79">Freight Charges (IN INR):</span><span class="c66 c79">- &nbsp;</span></p>
 	<a id="t.b882eaace525279cc79cc0cb72fa0b52ebb13879"></a>

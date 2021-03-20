@@ -13,14 +13,14 @@
 				</div>
 				<div class="form-group">
 					<label>Allowed Discount (%)</label>
-					<input type="number" name="discount" class="form-control" required onkeyup="{
+					<input type="text" name="discount" class="form-control" required onkeyup="{
 						if(this.value>100 || this.value <0)
 							this.value=0;
 						}">
 				</div>
 				<div class="form-group">
 					<label>Rate/Km </label>
-					<input type="number" name="rate_km" class="form-control" required onkeyup="{
+					<input type="text" name="rate_km" class="form-control" required onkeyup="{
 						if(this.value <0)
 							this.value=0;
 						}">

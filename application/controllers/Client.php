@@ -3079,7 +3079,7 @@ public function all_update_expense_status()
                     </table>';
                 if($booking_type=='sundry')
                 {
-                echo'<p>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" style="width:60px!important;" class="exip">. per Ltr.
+                echo'<p>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" class="exip" style="width: 100px !important;">. per Ltr.
                     </p>';
                 }
                 $d_edited = 0;
@@ -3087,13 +3087,36 @@ public function all_update_expense_status()
                     $d_edited= 1;
             echo'</div>
 
-                <div class="edit_remark" style="'.($d_edited==1?'':'display:none;').'" >
+                <div class="edit_remark col-md-12" style="'.($d_edited==1?'':'display:none;').'" >
                     <div class="form-group">
                         <label>Edit Remark</label>
                         <textarea name="edit_remark" class="form-control">'.$edit_remark.'</textarea>
                     </div>
-                </div>
-                </div>
+                </div>';
+//$deal_status= $this->db->select('edited,approval,id,createdby,status')->where('id', $deal_id)->get('commercial_info')->row();
+ $deal_status = '0';
+            if($deal_status!='0'){
+				if($deal_status->edited=='1' && $deal_status->approval=='pending')
+                {
+                    if($deal_status->createdby==$this->session->user_id)
+                    {
+                       echo '<label class="label label-primary">Waiting for approval</label>';
+                    }
+                    else
+                    {
+                       echo '<div class="col-md-6"><label>Select Status Here</label>
+					          <select name="edit_status">';
+                         echo   '<option value="">Action</option>
+                                    <option value="approve">Approve</option>
+                                    <option value"reject">Reject</option>
+                                    <option value="resend">Send for Approval</option>
+                                ';
+                        echo'</select></div>';
+                    }
+                }				
+			}	
+				
+                echo'</div>
                 <div style="padding:15px;">
                     <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Save</button>';
                 echo'</div>

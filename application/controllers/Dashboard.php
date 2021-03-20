@@ -3325,10 +3325,10 @@ public function set_layout_to_session() {
         $freight_table .="<table border='1px' style='width:400px'>
         <thead>
           <tr>
-            <th>From</th>
-            <th>To</th>
-            <th>Vehicle Type</th>
-            <th>Freight</th>
+            <th style='background:#00b0f0;'>From</th>
+            <th style='background:#00b0f0;'>To</th>
+            <th style='background:#00b0f0;'>Vehicle Type</th>
+            <th style='background:#00b0f0;'>Freight</th>
           </tr>
         </thead>
         <tbody>
@@ -3373,7 +3373,7 @@ public function set_layout_to_session() {
                 <table border="1">
                       <thead>
                       <tr>
-                        <th>
+                        <th style="background:#00b0f0;">
                         <div style="display:inline-block;">
                       To<br>
                       From 
@@ -3395,11 +3395,11 @@ public function set_layout_to_session() {
 
                 foreach ($cols as $key2 => $value2)
                 {
-                    $freight_table.='<th>'.$value2->dname.'</th>';
+                    $freight_table.='<th style="background:#00b0f0;">'.$value2->dname.'</th>';
                 }
                 $freight_table.='</tr>
                 <tr>
-                <th>'.$rows->bname.'</th>';
+                <th style="background:#00b0f0;">'.$rows->bname.'</th>';
 
                 foreach ($cols as $key2 => $value2)
                 {
@@ -3444,18 +3444,18 @@ public function set_layout_to_session() {
                         {
                           $oda_table.='
                           <thead><tr>
-                          <th class="text-center">Distance Range</th>';
+                          <th class="text-center" style="background:#00b0f0;">Distance Range</th>';
                           foreach ($oda_col as $key2 => $value2)
                           {
                             $col = explode('-',$value2);
-                           $oda_table.='<th class="text-center">'.$col[0].' To '.$col[1].'<br> KGS</th>';
+                           $oda_table.='<th class="text-center" style="background:#00b0f0;">'.$col[0].' To '.$col[1].'<br> KGS</th>';
                           }
                           $oda_table.='</tr></thead>
                           <tbody>';
                         }
                   $oda_table.='<tr>';
                   $row = explode('-',$value1);
-                  $oda_table.='<th>'.$row[0].' To '.$row[1].' KMS</th>';
+                  $oda_table.='<th style="background:#00b0f0;">'.$row[0].' To '.$row[1].' KMS</th>';
                   
                   foreach ($oda_col as $key2 => $value2)
                   {
@@ -3483,9 +3483,9 @@ public function set_layout_to_session() {
                          $fuel_surcharge .="<table border='1px' style='width:400px'>
                          <thead>
                                 <tr>
-                                  <th>Greater Than or<br> Equal To (Rs.)</th>
-                                  <th>Less Than Rs.</th>
-                                  <th>FSC Applicable (%)</th>
+                                  <th style='background:#00b0f0;'>Greater Than or<br> Equal To (Rs.)</th>
+                                  <th style='background:#00b0f0;'>Less Than Rs.</th>
+                                  <th style='background:#00b0f0;'>FSC Applicable (%)</th>
                                  
                                 </tr>
                               </thead>
@@ -3510,9 +3510,9 @@ public function set_layout_to_session() {
         $oc_table ='<table border="1px" style="width:500px">
       <thead>
           <tr>
-              <th align="center">Name of Charges</th>
-              <th align="center">Amount (Rs.)</th>
-              <th align="center">Units</th>
+              <th align="center" style="background:#00b0f0;">Name of Charges</th>
+              <th align="center" style="background:#00b0f0;">Amount (Rs.)</th>
+              <th align="center" style="background:#00b0f0;">Units</th>
           </tr>
       </thead>
       <tbody>
