@@ -45,6 +45,11 @@
                         style="margin-left: 5 px !important ;"> <i class="fa fa-list"></i>
                         <?php echo 'Ticket Report' ?> </a>
                     <?php }?>
+                    <?php if(user_access(1025)) { ?>
+                    <a class="btn btn-primary" href="<?php echo base_url("client/user_wise_visit") ?>"
+                        style="margin-left: 5 px !important ;"> <i class="fa fa-list"></i>
+                        <?php echo 'User Wise Visit Report' ?> </a>
+                    <?php }?>                    
                 </div> 
             </div>
             <div class="panel-body">
