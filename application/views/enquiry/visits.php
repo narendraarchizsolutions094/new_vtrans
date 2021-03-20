@@ -314,11 +314,19 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distance</th>
 				          <th id="th-6">Rating</th>
+				          <th id="th-6">Employee</th>
 				          <th id="th-11" >Difference (%)</th>
 				          <th >Travel Expense</th>
 				          <th>Other Expense</th>
 				          <th>Total Expense</th>
 				          <th>Expense Staus</th>
+				          <th>Region</th>
+				          <th>Branch</th>
+				          <th>Area</th>
+				          <th>Stage Of Call</th>
+				          <th>Time Spend</th>
+				          <th>City</th>
+				          <th>Rate</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
