@@ -220,7 +220,7 @@ class Visit_datatable_model extends CI_Model{
     }
     public function userwisevisits($filter=array()){
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);       
-        $this->db->select('count(tbl_visit.user_id) as c,tbl_admin.s_display_name as employee,sales_region.name as region_name,branch.branch_name as branch_name,sales_area.area_name as area_name');
+        $this->db->select('count(tbl_visit.user_id) as c,tbl_admin.s_display_name as employee,sales_region.name as region_name,branch.branch_name as branch_name,sales_area.area_name as area_name,tbl_admin.s_user_email as email,tbl_admin.s_phoneno as mobile');
         $this->db->from('tbl_visit');
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id');        
         $this->db->join('branch','branch.branch_id=tbl_admin.sales_branch','left');

@@ -51,6 +51,12 @@
                             Region
                             </th>
                             <th>
+                            Email
+                            </th>
+                            <th>
+                            Mobile
+                            </th>
+                            <th>
                             No of visit
                             </th>
                         </tr>
@@ -65,6 +71,8 @@
                                     <td><?=$value['branch_name']??'NA'?></td>
                                     <td><?=$value['area_name']??'NA'?></td>
                                     <td><?=$value['region_name']??'NA'?></td>
+                                    <td><?=$value['email']??'NA'?></td>
+                                    <td><?=$value['mobile']??'NA'?></td>
                                     <td><?=$value['c']?></td>
                                 </tr>
                                 <?php
