@@ -343,10 +343,14 @@ function manage_filters()
     </div>
 
 </div>
-
+  <?php
+  if(user_access(1006)){ ?>  
    <div  class='row' style="float:right;">
       <a class="btn btn-xs  btn-primary" href="javascript:void(0)" id="show_analytics" title="Show report analytics"><i class="fa fa-bar-chart"></i></a>
    </div>
+   <?php
+  }
+  ?>
    <br>
 
 <div class="row" style="margin-top: 10px;">
