@@ -3703,23 +3703,42 @@ echo  $details1;
                 $sub[] = $res->rating!=''?$res->rating:'NA';
 
 
+        if($colsall || in_array(7,$cols)){
             $sub[] = $res->employee;
+        }
             
 
                 
                 if($colsall || in_array(11,$cols))
                 $sub[] = '<span class="diff">'.round(abs($percentChange)).'</span>';
-                $sub[] = round(abs($res->visit_expSum));
-                $sub[] = round(abs($res->visit_otexpSum));
-                $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
-                $sub[] = '<span class="expstatus">'.$expstatus.'<span>';
+
+        if($colsall || in_array(8,$cols)){
+            $sub[] = round(abs($res->visit_expSum));
+        }
+        if($colsall || in_array(18,$cols)){         
+            $sub[] = round(abs($res->visit_otexpSum));
+        }
+        if($colsall || in_array(19,$cols)){         
+            $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
+        }
+        if($colsall || in_array(20,$cols)){         
+            $sub[] = '<span class="expstatus">'.$expstatus.'<span>';
+        }
+
                 
-            
+        if($colsall || in_array(21,$cols)){  
             $sub[] = $res->region_name??'NA';                
+        }
+        if($colsall || in_array(22,$cols)){  
             $sub[] = $res->branch_name??'NA';                
-            $sub[] = $res->area_name??'NA';                
+        }
+        if($colsall || in_array(23,$cols)){  
+            $sub[] = $res->area_name??'NA'; 
+        }
+        if($colsall || in_array(24,$cols)){                 
             $sub[] = $res->enquiry_status_title??'NA';                
-            
+        }
+        if($colsall || in_array(25,$cols)){                         
             if(!empty($res->start_time) && !empty($res->end_time)){
                 $datetime1 = new DateTime($res->start_time);
                 $datetime2 = new DateTime($res->end_time);
@@ -3728,10 +3747,14 @@ echo  $details1;
             }else{
                 $sub[] = 'NA';    
             }
+        }
 
-
+        if($colsall || in_array(26,$cols)){                 
             $sub[] = $res->city_name??'NA';    
-            $sub[] = $rate??'NA';    
+        }
+        if($colsall || in_array(27,$cols)){                 
+            $sub[] = $rate??'NA'; 
+        }   
 
             if($colsall || in_array(9,$cols))
             {

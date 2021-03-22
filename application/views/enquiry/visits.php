@@ -316,19 +316,19 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distance</th>
 				          <th id="th-6">Rating</th>
-				          <th id="th-6">Employee</th>
+				          <th id="th-7">Employee</th>
 				          <th id="th-11" >Difference (%)</th>
-				          <th >Travel Expense</th>
-				          <th>Other Expense</th>
-				          <th>Total Expense</th>
-				          <th>Expense Staus</th>
-				          <th>Region</th>
-				          <th>Branch</th>
-				          <th>Area</th>
-				          <th>Stage Of Call</th>
-				          <th>Time Spend</th>
-				          <th>City</th>
-				          <th>Rate</th>
+				          <th  id="th-8">Travel Expense</th>
+				          <th id="th-18">Other Expense</th>
+				          <th id="th-19">Total Expense</th>
+				          <th id="th-20">Expense Staus</th>
+				          <th id="th-21">Region</th>
+				          <th id="th-22">Branch</th>
+				          <th id="th-23">Area</th>
+				          <th id="th-24">Stage Of Call</th>
+				          <th id="th-25">Time Spend</th>
+				          <th id="th-26">City</th>
+				          <th id="th-27">Rate</th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
@@ -795,12 +795,50 @@ $("select").select2();
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="6">  Rating</label>
             </div>
+
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="7">  Employee</label>
+            </div>
           
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="11"> Diffrence</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="12"> Expense</label>
+            </div>
+
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="18"> Other Expense</label>
+            </div>
+
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="19"> Total Expense</label>
+            </div>
+
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="20"> Expense Staus</label>
+            </div>
+
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="21"> Region</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="22"> Branch</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="23"> Area</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="24"> Stage Of Call</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="25"> Time Spend</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="26"> City</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="27"> Rate</label>
             </div>
 
             <div class="col-md-4">
