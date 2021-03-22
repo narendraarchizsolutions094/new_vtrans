@@ -59,6 +59,9 @@
         <iframe src="<?=$urls['branch_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
     </div>
     <div class="col-md-4">
+        <iframe src="<?=$urls['area_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
+    </div>
+    <div class="col-md-4">
         <iframe src="<?=$urls['waight_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
     </div>
     <div class="col-md-4">
