@@ -273,6 +273,13 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="industries" id="industriescheckbox" name="filter_checkbox"> Industries</label>
                     </li>
+                    
+                    <li>
+                      <label>                    
+                        <input type="checkbox" value="visit_wise" id="visit_wisecheckbox" name="filter_checkbox"> Visit Wise
+                      </label>
+                    </li>
+                    
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
@@ -738,7 +745,15 @@ display: block;
                             <option value="Others" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Others') {echo 'selected';}?>> Others</option>
                         </select>
                       </div>
-                      
+                      <div class="form-group col-md-3" id="visit_wisefilter">
+ 						            <label for="">Visit Wise</label>
+                        <select class="form-control" name="visit_wise">
+                            <option value="">--Select --</option>
+                            <option value="1"> Visited </option>
+                            <option value="2"> Non Visited </option>
+                        </select>
+                      </div>
+
                       <div class="form-group col-md-3">
                     <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
                         </div>  
@@ -917,6 +932,9 @@ display: block;
 
                <?php if ($showall == true or in_array(19, $acolarr)) {  ?>
                   <th>Remark</th>
+             <?php } ?> 
+             <?php if ($showall == true or in_array(20, $acolarr)) {  ?>
+                  <th>No Of Visit</th>
              <?php } ?> 
               
             <?php if($this->session->userdata('companey_id')==29) { ?>
@@ -1323,6 +1341,9 @@ display: block;
 
           <div class = "col-md-4">  
             <label class=""><input type="checkbox" class="choose-col"  value = "19"  <?php echo ($showall == true or in_array(19, $acolarr)) ? "checked" : ""; ?>>  Remark</label>  &nbsp;
+          </div>
+          <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "20"  <?php echo ($showall == true or in_array(20, $acolarr)) ? "checked" : ""; ?>>  No Of Visit</label>  &nbsp;
           </div>
           <div class = "col-md-4">  
             <label class=""><input type="checkbox" class="choose-col"  value = "17"  <?php echo ($showall == true or in_array(17, $acolarr)) ? "checked" : ""; ?>>EnquiryId</label>  &nbsp;
@@ -2263,6 +2284,13 @@ if (!enq_filters.includes('aging_rule')) {
   $("input[value='aging_rule']").prop('checked', true);
 }
 
+if (!enq_filters.includes('visit_wise')) {
+  $('#visit_wisefilter').hide();
+}else{
+  $('#visit_wisefilter').show();
+  $("input[value='visit_wise']").prop('checked', true);
+}
+
 if (!enq_filters.includes('sales_region')) {
   $('#regionfilter').hide();
 }else{
@@ -2319,7 +2347,7 @@ $('input[name="filter_checkbox"]').click(function(){
   $('#citycheckbox').is(":checked")||$('#datasrccheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||
   $('#proccheckbox').is(":checked") || $('#regioncheckbox').is(":checked") || $('#areacheckbox').is(":checked") ||
   $('#branchcheckbox').is(":checked") || $('#ctypecheckbox').is(":checked") || $('#loadcheckbox').is(":checked") ||
-  $('#industriescheckbox').is(":checked") ||
+  $('#industriescheckbox').is(":checked") || $('#vist_wisecheckbox').is(":checked") ||
   $('#agingRulecheckbox').is(":checked")){ 
     $('#save_filterbutton').show();
     $('#filter_pannel').show();          
@@ -2504,6 +2532,11 @@ if($('#industriescheckbox').is(":checked")){
       }
       else{
        $('#Industriesfilter').hide();
+if($('#visit_wisecheckbox').is(":checked")){
+        $('#visit_wisefilter').show();
+      }
+      else{
+       $('#vist_wisefilter').hide();
       }	  
 
             

@@ -167,7 +167,7 @@ class Enq extends CI_Controller
 			}
 
 			if ($showall == true or in_array(3, $acolarr)) {
-				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname . '</a>';
+				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname. '</a>';
 			}
 			if ($showall == true or in_array(4, $acolarr)) {
 				$row[] = (!empty($each->email)) ? $each->email : "NA";
@@ -281,6 +281,9 @@ class Enq extends CI_Controller
 			}
 			if ($showall == true or in_array(19, $acolarr)) {
 				$row[] = (!empty($each->enquiry)) ? $each->enquiry : "NA";
+			}
+			if ($showall == true or in_array(20, $acolarr)) {
+				$row[] = (!empty($each->visit_count)) ? $each->visit_count : "NA";
 			}
 			$enqid = $each->enquiry_id;
 			if (!empty($dacolarr) and !empty($dfields)) {

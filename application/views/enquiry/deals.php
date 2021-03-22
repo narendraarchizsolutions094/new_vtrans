@@ -239,6 +239,9 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 </div>
 <script>
   $(document).ready(function(){
+    $("#show_analytics").on("click", function(){
+      $("#graphs").load("<?=base_url('deal_dashboard/index')?>");
+    });
 	 $("#save_advance_filters").on('click',function(e){
 	  e.preventDefault();
 	  var arr = Array();  
@@ -340,8 +343,22 @@ function manage_filters()
     </div>
 
 </div>
+  <?php
+  if(user_access(1006)){ ?>  
+   <div  class='row' style="float:right;">
+      <a class="btn btn-xs  btn-primary" href="javascript:void(0)" id="show_analytics" title="Show report analytics"><i class="fa fa-bar-chart"></i></a>
+   </div>
+   <?php
+  }
+  ?>
+   <br>
 
 <div class="row" style="margin-top: 10px;">
+  
+  
+  <div id='graphs'>
+  </div>
+
 				<table id="deals_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
 				     <thead class="thead-light">
                <tr>                              

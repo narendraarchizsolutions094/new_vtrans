@@ -1829,7 +1829,13 @@ public function view_editable_aggrement()
         $data['content'] = $this->load->view('enquiry/visits', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
-
+    public function user_wise_visit(){
+        $data['title'] = "User Wise Visits";
+        $this->load->model('visit_datatable_model');
+        $data['visits'] = $this->visit_datatable_model->userwisevisits($_GET);
+        $data['content'] = $this->load->view('enquiry/userwisevisits', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
     public function visit_details()
     {
          if(user_role('1020') || user_role('1021') || user_role('1022')){

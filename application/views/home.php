@@ -96,15 +96,26 @@
 </head>
 
 <body class="page-profile" style="background-color:#fff;">
-    <?php if(user_access(541)) { ?>
-
+    
     <div class="row">
+    <?php
+        if(user_access(541)) { ?>
         <a href="<?= base_url('ticket/dashboard') ?>"><button style=" float:right" class="btn btn-primary">
                 Ticket Dashboard
             </button></a>
+            <?php
+        }
+        if(user_access(1006)) { ?>
+        ?>
+        <a href="<?= base_url('deal_dashboard/dashboard') ?>"><button style=" float:right;margin-right:2px;" class="btn btn-primary">
+            Deal Dashboard
+        </button></a>
+        <?php
+        }
+        ?>
     </div>
 
-    <?php } if($this->session->userdata('user_right')==151) { ?>
+    <?php  if($this->session->userdata('user_right')==151) { ?>
     <?php //include('student/course_wrapper.php'); ?>
     <?php }else{ ?>
 

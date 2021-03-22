@@ -334,6 +334,11 @@ $result =array();
                   $data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'visit_status'=>1,'visit_start'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>json_encode(array($new_waypoint))];
                   $this->db->insert('visit_details',$data);
                   $insertid=$this->db->insert_id();
+
+                  $this->db->where('id',$visit_id);
+                  $this->db->set('start_time',date('Y-m-d H:i:s'));
+                  $this->db->update('tbl_visit');
+
                   $res=['message'=>'Travel Started','vd_id'=>$insertid];
                   $this->set_response([
                      'status' => true,
@@ -431,6 +436,12 @@ $result =array();
                $data=['meeting_status'=>2,'end_time'=>date('Y-m-d H:i:s')];
                $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
                $res=['message'=>'Meeting Ended'];
+
+               
+               $this->db->where('id',$visit_id);
+               $this->db->set('end_time',date('Y-m-d H:i:s'));
+               $this->db->update('tbl_visit');
+
                $this->set_response([
                   'status' => true,
                   'data' =>$res,
@@ -486,6 +497,7 @@ $result =array();
             ], REST_Controller::HTTP_OK);
            }   
    }
+
 
   
 

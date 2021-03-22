@@ -3642,7 +3642,7 @@ echo  $details1;
              $percentChange=0;
             $km_rate = $this->user_model->get_user_meta($res->user_id,array('km_rate'));
             if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
-              $rate=10;;
+              $rate=0;;
               }
             $totalpay=($res->actualDistance)*$rate;
             $idealamt=($res->idealDistance)*$rate;
@@ -3701,6 +3701,12 @@ echo  $details1;
             $sub[] =$res->actualDistance.' Km';
             if($colsall || in_array(6,$cols))
                 $sub[] = $res->rating!=''?$res->rating:'NA';
+
+
+            $sub[] = $res->employee;
+            
+
+                
                 if($colsall || in_array(11,$cols))
                 $sub[] = '<span class="diff">'.round(abs($percentChange)).'</span>';
                 $sub[] = round(abs($res->visit_expSum));
@@ -3708,6 +3714,24 @@ echo  $details1;
                 $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
                 $sub[] = '<span class="expstatus">'.$expstatus.'<span>';
                 
+            
+            $sub[] = $res->region_name??'NA';                
+            $sub[] = $res->branch_name??'NA';                
+            $sub[] = $res->area_name??'NA';                
+            $sub[] = $res->enquiry_status_title??'NA';                
+            
+            if(!empty($res->start_time) && !empty($res->end_time)){
+                $datetime1 = new DateTime($res->start_time);
+                $datetime2 = new DateTime($res->end_time);
+                $interval = $datetime1->diff($datetime2);
+                $sub[] =  $interval->format('%Y-%m-%d %H:%i:%s');
+            }else{
+                $sub[] = 'NA';    
+            }
+
+
+            $sub[] = $res->city_name??'NA';    
+            $sub[] = $rate??'NA';    
 
             if($colsall || in_array(9,$cols))
             {
