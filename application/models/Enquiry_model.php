@@ -5003,7 +5003,7 @@ public function insertComInfo($data)
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
         $where .=" AND enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
 
-        $this->db->select('tbl_visit.*,tbl_admin.s_display_name,tbl_admin.last_name,visit_details.visit_status,tbl_expense.amount as total_expence,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
+        $this->db->select('tbl_visit.*,CONCAT(tbl_admin.s_display_name, '.', tbl_admin.last_name) as created_by,visit_details.visit_status,tbl_expense.amount as total_expence,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
         $this->db->from('tbl_visit');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');

@@ -112,7 +112,6 @@ $result =array();
 	//End
 	
       $result[$key]['status'] = $expstatus;
-	  $result[$key]['created_by'] = $value->s_display_name.' '.$value->last_name;
       //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
       $result[$key]['visit_status'] = $value->visit_status;
 		} 
