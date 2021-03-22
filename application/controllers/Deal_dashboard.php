@@ -37,8 +37,10 @@ class Deal_dashboard extends CI_Controller {
             'waight_wise' => base_url().'deal_dashboard/waight_wise_feed',
             'freight_wise' => base_url().'deal_dashboard/freight_wise_feed'
         );
+        $this->load->model('User_model');
+        $data['user_list'] = $this->User_model->companey_users();
         // $data['content'] = 
-        $data['content'] = $this->load->view('graphs/deal/index',$data,true);
+        $data['content'] = $this->load->view('graphs/deal/dashboard',$data,true);
         $this->load->view('layout/main_wrapper',$data);
     }
 
