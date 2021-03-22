@@ -258,7 +258,7 @@ $result =array();
                             'enquiry_id'=>$enquiry_id,
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>$this->input->post('visit_time'),
-							              'm_purpose'=>$this->input->post('m_purpose'),
+							'm_purpose'=>$this->input->post('m_purpose'),
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,
                         );

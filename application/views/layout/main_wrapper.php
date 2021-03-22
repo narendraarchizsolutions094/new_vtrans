@@ -1749,7 +1749,17 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         if($menu_count==1)
                         {
                     ?>
-                    <li class="treeview <?php echo (($segment1 == "enq" || ($segment1 == "enquiry" && $segment2 == "view")) ? "active" : null) ?>"
+					<li class="treeview <?php echo (($segment3 == "All" || ($segment1 == "enquiry" && $segment2 == "view")) ? "active" : null) ?>"
+                        style="<?php if(in_array(60,$module) || in_array(61,$module) || in_array(62,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
+                        <a href="<?php echo base_url("enq/index/All") ?>">
+                            <i class="fa fa-question-circle-o icon-class"></i>
+                            &nbsp;<?php echo 'All Client' ?>
+                            <?php  if($this->session->menu==1){ ?></br>
+                            <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
+                                <?php echo 'All Client' ?></p> <?php } ?>
+                        </a>
+                    </li>
+                    <li class="treeview <?php echo (($segment3 != "All" && $segment1 == "enq" || ($segment1 == "enquiry" && $segment2 == "view")) ? "active" : null) ?>"
                         style="<?php if(in_array(60,$module) || in_array(61,$module) || in_array(62,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("enq/index") ?>">
                             <i class="fa fa-question-circle-o icon-class"></i>

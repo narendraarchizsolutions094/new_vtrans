@@ -157,9 +157,11 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
             if(!empty($all_enquiry))
             {
               foreach ($all_enquiry as $row) 
-              {  
+              { 
+                if($row->client_name!=''){			  
                 $row  = (array)$row;
                 echo'<option value="'.$row['enquiry_id'].'">'.$row['client_name'].'</option>';
+				}
               }
             }
             ?>
