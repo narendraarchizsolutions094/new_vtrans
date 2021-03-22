@@ -868,7 +868,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             <li href="#vtran_visit" data-toggle="tab" >Visit Details</li>
             <?php
             }
-            if(user_access('1004') && $details->status!='1')
+            if(user_access('1004') && $details->status!='1' && $details->status!='2' && $details->status!='3')
             {
             ?>
             <li href="#vtransaggrement" data-toggle="tab" >Agreement</li>

@@ -1058,6 +1058,21 @@ class Lead extends CI_Controller
         $Enquery_id = $lead->Enquery_id;
         //   $stage = $lead->status;
         // $next_stage = $stage + 1;
+		if($next_stage == '3'){
+		$this->db->where('enquiry_id', $enquiry_id);
+        $query = $this->db->get('commercial_info');
+        $all_row = $query->num_rows();	
+        }
+		if ($leadSataus  > 3) {
+			$url = 'client/index/?stage=' . $next_stage;
+		}else{
+			$url = 'led/index';
+		}
+        if(empty($all_row)){
+        	$msg = 'Before The Moving In Negotiation Stage Need To Create The A Deal First!';
+		    $this->session->set_flashdata('exception', $msg);	
+            redirect($url);			
+		}else{
         if ($next_stage > 2) {
             //$this->Leads_Model->ClientMove($data);
             $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
@@ -1111,6 +1126,7 @@ class Lead extends CI_Controller
         }else{
             redirect();
         }
+		}
     }
     public function add_drop()
     {
