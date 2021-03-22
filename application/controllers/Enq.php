@@ -22,6 +22,7 @@ class Enq extends CI_Controller
 	// }
 	public function index($all = '')
 	{
+		//print_r($all);exit;
 		if (user_role('60') == true) {
 		}
 		$this->load->model('Datasource_model');
@@ -30,7 +31,11 @@ class Enq extends CI_Controller
 		$data['lead_score'] = $this->enquiry_model->get_leadscore_list();
 		$data['dfields']  = $this->enquiry_model->getformfield();
 		//echo $this->db->last_query();exit();
-		$data['data_type'] = 1;
+		if($all=='All'){
+		$data['data_type'] = '1,2,3,4,5,6,7';
+		}else{
+		$data['data_type'] = 1;	
+		}
 		$this->session->unset_userdata('enquiry_filters_sess');
 		if (!empty($this->session->enq_type)) {
 			$this->session->unset_userdata('enq_type', $this->session->enq_type);
@@ -79,7 +84,7 @@ class Enq extends CI_Controller
 
 	public function enq_load_data()
 	{
-		//print_r($_POST);exit();	
+		//print_r($key);exit();	
 		$this->load->model('enquiry_datatable_model');
 		$list = $this->enquiry_datatable_model->get_datatables();
 

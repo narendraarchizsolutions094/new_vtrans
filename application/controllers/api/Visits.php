@@ -112,6 +112,7 @@ $result =array();
 	//End
 	
       $result[$key]['status'] = $expstatus;
+	  $result[$key]['created_by'] = $value->s_display_name.' '.$value->last_name;
       //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
       $result[$key]['visit_status'] = $value->visit_status;
 		} 
@@ -258,7 +259,7 @@ $result =array();
                             'enquiry_id'=>$enquiry_id,
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>$this->input->post('visit_time'),
-							              'm_purpose'=>$this->input->post('m_purpose'),
+							'm_purpose'=>$this->input->post('m_purpose'),
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,
                         );

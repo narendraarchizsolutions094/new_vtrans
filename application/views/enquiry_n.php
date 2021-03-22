@@ -1488,6 +1488,7 @@ if(!empty($_GET['desposition']))
           "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
           "ajax": {
               "url": "<?=base_url().'Enq/enq_load_data'?>",
+			  //"url": "<?=base_url().'Enq/enq_load_data'?>",
               "type": "POST",
               "data":function(d){
                 d.data_type = "<?=$data_type?>";               
@@ -2303,9 +2304,9 @@ if (!enq_filters.includes('business_load')) {
 }
 
 if (!enq_filters.includes('industries')) {
-  $('#industriesfilter').hide();
+  $('#Industriesfilter').hide();
 }else{
-  $('#industriesfilter').show();
+  $('#Industriesfilter').show();
 
   $("input[value='industries']").prop('checked', true);
 }
@@ -2499,10 +2500,10 @@ if($('#loadcheckbox').is(":checked")){
       }	
 
 if($('#industriescheckbox').is(":checked")){
-        $('#industriesfilter').show();
+        $('#Industriesfilter').show();
       }
       else{
-       $('#industriesfilter').hide();
+       $('#Industriesfilter').hide();
       }	  
 
             
