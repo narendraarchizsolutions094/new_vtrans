@@ -79,10 +79,75 @@ class Deal_model extends CI_Model {
     }
     public function region_wise_feed(){
         $res = array();
+        $this->db->select('count(enquiry.sales_region) as c,sales_region.name');
+        $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
+        $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region');
+        $this->db->group_by('enquiry.sales_region');
+        $result = $this->db->get('enquiry')->result_array();
+        if(!empty($result)){
+            foreach($result as $key=>$value){                
+                $res[] = array($value['name'],(int)$value['c']);                
+            }
+        }
         return $res;
     }
     public function branch_wise_feed(){
         $res = array();
+        $this->db->select('count(enquiry.sales_branch) as c,branch.branch_name as name');
+        $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
+        $this->db->join('branch','branch.branch_id=enquiry.sales_branch');
+        $this->db->group_by('enquiry.sales_branch');
+        $result = $this->db->get('enquiry')->result_array();
+        if(!empty($result)){
+            foreach($result as $key=>$value){                
+                $res[] = array($value['name'],(int)$value['c']);                
+            }
+        }
+        return $res;
+    }
+    
+    public function area_wise_feed(){
+        $res = array();
+        $this->db->select('count(enquiry.sales_area) as c,sales_area.area_name as name');
+        $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
+        $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area');
+        $this->db->group_by('enquiry.sales_area');
+        $result = $this->db->get('enquiry')->result_array();
+        if(!empty($result)){
+            foreach($result as $key=>$value){                
+                $res[] = array($value['name'],(int)$value['c']);                
+            }
+        }
+        return $res;
+    }
+
+    public function weight_wise_feed(){
+        $res = array();
+        $this->db->select('sum(deal_data.expected_tonnage) as c,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee');
+        $this->db->join('deal_data','deal_data.deal_id=commercial_info.id');
+        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+        $this->db->group_by('commercial_info.createdby');
+        $result = $this->db->get('commercial_info')->result_array();
+        if (!empty($result)){
+            foreach($result as $key=>$value){
+                $res[] = array($value['employee'],(int)$value['c']);                
+            }
+        }
+        return $res;
+    }
+
+    public function freight_wise_feed(){
+        $res = array();
+        $this->db->select('sum(deal_data.expected_amount) as c,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee');
+        $this->db->join('deal_data','deal_data.deal_id=commercial_info.id');
+        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+        $this->db->group_by('commercial_info.createdby');
+        $result = $this->db->get('commercial_info')->result_array();
+        if (!empty($result)){
+            foreach($result as $key=>$value){
+                $res[] = array($value['employee'],(int)$value['c']);                
+            }
+        }
         return $res;
     }
     //  Functions for deal graphs end

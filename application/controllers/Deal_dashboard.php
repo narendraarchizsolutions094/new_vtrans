@@ -16,6 +16,7 @@ class Deal_dashboard extends CI_Controller {
             'country_wise' => base_url().'deal_dashboard/country_wise_feed',
             'region_wise' => base_url().'deal_dashboard/region_wise_feed',
             'branch_wise' => base_url().'deal_dashboard/branch_wise_feed',
+            'area_wise' => base_url().'deal_dashboard/area_wise_feed',
             'waight_wise' => base_url().'deal_dashboard/waight_wise_feed',
             'freight_wise' => base_url().'deal_dashboard/freight_wise_feed'
         );
@@ -34,6 +35,7 @@ class Deal_dashboard extends CI_Controller {
             'country_wise' => base_url().'deal_dashboard/country_wise_feed',
             'region_wise' => base_url().'deal_dashboard/region_wise_feed',
             'branch_wise' => base_url().'deal_dashboard/branch_wise_feed',
+            'area_wise' => base_url().'deal_dashboard/area_wise_feed',
             'waight_wise' => base_url().'deal_dashboard/waight_wise_feed',
             'freight_wise' => base_url().'deal_dashboard/freight_wise_feed'
         );
@@ -69,22 +71,25 @@ class Deal_dashboard extends CI_Controller {
     }
 
     public function region_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->deal_status_feed());       
+        $data['feed'] = json_encode($this->deal_model->region_wise_feed());       
         $this->load->view('graphs/deal/region_wise',$data);
     }
     
 
     public function branch_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->deal_status_feed());       
+        $data['feed'] = json_encode($this->deal_model->branch_wise_feed());       
         $this->load->view('graphs/deal/branch_wise',$data);
     }
-
+    public function area_wise_feed($filter=array()){
+        $data['feed'] = json_encode($this->deal_model->area_wise_feed());       
+        $this->load->view('graphs/deal/area_wise',$data);
+    }
     public function waight_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->deal_status_feed());       
+        $data['feed'] = json_encode($this->deal_model->weight_wise_feed());               
         $this->load->view('graphs/deal/waight_wise',$data);
     }
     public function freight_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->deal_status_feed());       
+        $data['feed'] = json_encode($this->deal_model->freight_wise_feed());       
         $this->load->view('graphs/deal/freight_wise',$data);
     }
 }
