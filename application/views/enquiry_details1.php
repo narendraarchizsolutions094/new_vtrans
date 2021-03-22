@@ -2367,6 +2367,10 @@ if(user_access('1004'))
       <th class="th-sm">Address</th>
       <th class="th-sm">Agreement Date</th>
     <th class="th-sm">Agreement</th>
+<?php if($details->status=='5'){ ?>
+    <th class="th-sm">PO File</th>
+	<th class="th-sm">Attach PO</th>
+<?php } ?>
     </tr>
   </thead>
   <tbody>
@@ -2389,7 +2393,17 @@ if(user_access('1004'))
    <div class="form-group col-sm-2"><a href="#modalagg" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="set_agreement_id(<?=$val->id?>)"><i class="fa fa-upload" aria-hidden="true"></i></a></div>
 <?php } ?>
       </td>
-  
+<?php if($details->status=='5'){ ?>
+<?php if(!empty($val->po_file)){
+$poname= explode('/', $val->po_file);
+$poname = end($poname);
+  ?>
+<td><a href="<?php   echo base_url($val->po_file); ?>"  target="_blank"><?=$poname?></a></td>
+<?php } ?>
+  <td>
+  <div class="form-group col-sm-2"><a href="#modalagg" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="set_agreement_id(<?=$val->id?>)"><i class="fa fa-upload" aria-hidden="true"></i></a></div>
+  </td>
+<?php } ?>
     </tr>
 
     <?php $i++;} ?>
@@ -2494,7 +2508,7 @@ function set_agreement_id(ag_id)
 <form method="post" action="<?php echo base_url(); ?>client/upload_aggrement_team" enctype="multipart/form-data">
         <div class="modal-content tx-14">
           <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel6">Upload Aggrement Here</h6>
+            <h6 class="modal-title" id="exampleModalLabel6">Upload PO Here</h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

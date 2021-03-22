@@ -1058,20 +1058,43 @@ class Lead extends CI_Controller
         $Enquery_id = $lead->Enquery_id;
         //   $stage = $lead->status;
         // $next_stage = $stage + 1;
-		if($next_stage == '3'){
+    if($next_stage == '3'){
 		$this->db->where('enquiry_id', $enquiry_id);
+		$this->db->where('status', '0');
         $query = $this->db->get('commercial_info');
-        $all_row = $query->num_rows();	
-        }
-		if ($leadSataus  > 3) {
-			$url = 'client/index/?stage=' . $next_stage;
+        $all_row = $query->num_rows();
+		
+        if(!empty($all_row)){
+			$all_row = $all_row;
 		}else{
-			$url = 'led/index';
+			$all_row = '';
 		}
-        if(empty($all_row)){
+	}else if($next_stage == '4'){
+		$this->db->where('enquiry_id', $enquiry_id);
+		$this->db->where('status', '1');
+        $query = $this->db->get('commercial_info');
+        $all_row_done = $query->num_rows();
+		
+		if(!empty($all_row_done)){
+			$all_row_done = $all_row_done;
+		}else{
+			$all_row_done = '';
+		}
+	}else{
+		$all_row = '1';
+		$all_row_done = '1';
+	}
+
+        if(empty($all_row) && $next_stage == '3'){
         	$msg = 'Before The Moving In Negotiation Stage Need To Create The A Deal First!';
-		    $this->session->set_flashdata('exception', $msg);	
+		    $this->session->set_flashdata('exception', $msg);
+            $url = 'led/index';			
             redirect($url);			
+		}else if(empty($all_row_done) && $next_stage == '4'){
+			$msg = 'Before The Moving In Closure Stage Need To Deal Done First!';
+		    $this->session->set_flashdata('exception', $msg);
+            $url = 'client/index';			
+            redirect($url);
 		}else{
         if ($next_stage > 2) {
             //$this->Leads_Model->ClientMove($data);

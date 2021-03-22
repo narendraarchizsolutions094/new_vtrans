@@ -1630,14 +1630,14 @@ if(!empty($_FILES['file']['name']))
 			if($ret){
                 $this->aws->upload("",$path);	
                 								}
-                $this->db->set('file',$path);
+                $this->db->set('po_file',$path);
                 $this->db->where('id', $ag_id);
                 $this->db->update('tbl_aggriment');	
                
 			}
             
 			$assign_data_noti[]=array('create_by'=> $noti_id,
-                        'subject'=>'Agrrement Uploded',
+                        'subject'=>'PO Uploded',
                         'query_id'=>$enq_id,
                         'task_date'=>date('d-m-Y'),
                         'task_time'=>date('H:i:s')
@@ -3205,10 +3205,10 @@ public function all_update_expense_status()
         else
         {
             $deal_id = $this->Branch_model->add_deal($deal);
-			$this->db->set('status','3');
-			$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
-            $this->db->update('enquiry');
-			$this->Leads_Model->add_comment_for_events_stage('Deal Moved To Negotiation Successfully.',$enq->Enquery_id,0,0,'',0);
+			//$this->db->set('status','3');
+			//$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
+            //$this->db->update('enquiry');
+			//$this->Leads_Model->add_comment_for_events_stage('Deal Moved To Negotiation Successfully.',$enq->Enquery_id,0,0,'',0);
             $this->Leads_Model->add_comment_for_events_stage('Deal Added.',$enq->Enquery_id,0,0,'',0);
         }
         
