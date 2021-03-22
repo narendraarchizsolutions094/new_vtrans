@@ -110,8 +110,8 @@ $result =array();
 	//$ttl_exp = $total_expence->amount;
 	//$vst_sts = $visit_status->visit_status;
 	//End
-	
       $result[$key]['status'] = $expstatus;
+	 // $result[$key]['meeting_status'] = $meeting_status;
       //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
       $result[$key]['visit_status'] = $value->visit_status;
 		} 
