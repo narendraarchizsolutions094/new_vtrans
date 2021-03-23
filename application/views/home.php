@@ -105,8 +105,7 @@
             </button></a>
             <?php
         }
-        if(user_access(1006)) { ?>
-        ?>
+        if(user_access(1006)) { ?>        
         <a href="<?= base_url('deal_dashboard/dashboard') ?>"><button style=" float:right;margin-right:2px;" class="btn btn-primary">
             Deal Dashboard
         </button></a>
