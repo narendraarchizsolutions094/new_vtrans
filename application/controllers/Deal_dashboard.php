@@ -60,49 +60,49 @@ class Deal_dashboard extends CI_Controller {
     }
 
     public function deal_status_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->deal_status_feed());       
+        $data['feed'] = json_encode($this->deal_model->deal_status_feed($_GET));       
         $this->load->view('graphs/deal/deal_status',$data);
     }
 
     public function booking_type_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->booking_type_feed());       
+        $data['feed'] = json_encode($this->deal_model->booking_type_feed($_GET));       
         $this->load->view('graphs/deal/booking_type',$data);
     }
 
     public function product_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->product_feed());       
+        $data['feed'] = json_encode($this->deal_model->product_feed($_GET));       
         $this->load->view('graphs/deal/product_deal',$data);
     }
 
     public function approaval_status_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->deal_status_feed());       
+        $data['feed'] = json_encode($this->deal_model->deal_status_feed($_GET));       
         $this->load->view('graphs/deal/approaval_status',$data);
     }
     public function country_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->country_wise_feed());       
+        $data['feed'] = json_encode($this->deal_model->country_wise_feed($_GET));       
         $this->load->view('graphs/deal/country_wise',$data);
     }
 
     public function region_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->region_wise_feed());       
+        $data['feed'] = json_encode($this->deal_model->region_wise_feed($_GET));       
         $this->load->view('graphs/deal/region_wise',$data);
     }
     
 
     public function branch_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->branch_wise_feed());       
+        $data['feed'] = json_encode($this->deal_model->branch_wise_feed($_GET));       
         $this->load->view('graphs/deal/branch_wise',$data);
     }
     public function area_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->area_wise_feed());       
+        $data['feed'] = json_encode($this->deal_model->area_wise_feed($_GET));       
         $this->load->view('graphs/deal/area_wise',$data);
     }
     public function waight_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->weight_wise_feed());               
+        $data['feed'] = json_encode($this->deal_model->weight_wise_feed($_GET));               
         $this->load->view('graphs/deal/waight_wise',$data);
     }
     public function freight_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->freight_wise_feed());       
+        $data['feed'] = json_encode($this->deal_model->freight_wise_feed($_GET));       
         $this->load->view('graphs/deal/freight_wise',$data);
     }
 }

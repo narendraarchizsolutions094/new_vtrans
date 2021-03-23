@@ -2,9 +2,29 @@
 class Deal_model extends CI_Model {
 
     //  Functions for deal graphs start
-    public function deal_status_feed(){
+    public function deal_status_feed($filter=array()) {
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
         $res = array();
-        $this->db->select('count(status) as c,status');
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
+        $this->db->select('count(status) as c,status');        
+        $this->db->where($where);
         $this->db->group_by('status');
         $result = $this->db->get('commercial_info')->result_array();
         if(!empty($result)){
@@ -20,9 +40,29 @@ class Deal_model extends CI_Model {
         }
         return $res;
     }
-    public function booking_type_feed(){
+    public function booking_type_feed($filter=array()){
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
         $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
         $this->db->select('count(business_type) as c,business_type');
+        $this->db->where($where);
         $this->db->group_by('business_type');
         $result = $this->db->get('commercial_info')->result_array();
         if(!empty($result)){
@@ -36,9 +76,29 @@ class Deal_model extends CI_Model {
         }
         return $res;
     }
-    public function product_feed(){        
+    public function product_feed($filter=array()){        
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
         $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
         $this->db->select('count(booking_type) as c,booking_type');
+        $this->db->where($where);
         $this->db->group_by('booking_type');
         $result = $this->db->get('commercial_info')->result_array();
         if(!empty($result)){
@@ -57,17 +117,61 @@ class Deal_model extends CI_Model {
         return $res;
     }
 
-    public function country_wise_feed(){
+    public function country_wise_feed($filter=array()){
         $res = array(array('Domestic',0),array('SAARC',0));
+
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
+
+
         $this->db->select('count(booking_type) as c');        
+        $this->db->where($where);
         $this->db->where('FIND_IN_SET("domestic",deal_type)>',0);
         $result1 = $this->db->get('commercial_info')->row_array();
         
         if(!empty($result1['c'])){
             $res[0][1] = (int)$result1['c'];
         }
-        
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
         $this->db->select('count(booking_type) as c');        
+        $this->db->where($where);
         $this->db->where('FIND_IN_SET("saarc",deal_type)>',0);
         $result2 = $this->db->get('commercial_info')->row_array();
         
@@ -77,9 +181,30 @@ class Deal_model extends CI_Model {
 
         return $res;
     }
-    public function region_wise_feed(){
+    public function region_wise_feed($filter=array()){
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
         $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
+
         $this->db->select('count(enquiry.sales_region) as c,sales_region.name');
+        $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
         $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region');
         $this->db->group_by('enquiry.sales_region');
@@ -91,9 +216,30 @@ class Deal_model extends CI_Model {
         }
         return $res;
     }
-    public function branch_wise_feed(){
+    public function branch_wise_feed($filter=array()){
         $res = array();
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
         $this->db->select('count(enquiry.sales_branch) as c,branch.branch_name as name');
+        $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
         $this->db->join('branch','branch.branch_id=enquiry.sales_branch');
         $this->db->group_by('enquiry.sales_branch');
@@ -106,9 +252,29 @@ class Deal_model extends CI_Model {
         return $res;
     }
     
-    public function area_wise_feed(){
+    public function area_wise_feed($filter=array()){        
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
         $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
         $this->db->select('count(enquiry.sales_area) as c,sales_area.area_name as name');
+        $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
         $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area');
         $this->db->group_by('enquiry.sales_area');
@@ -121,9 +287,31 @@ class Deal_model extends CI_Model {
         return $res;
     }
 
-    public function weight_wise_feed(){
+    public function weight_wise_feed($filter=array()){        
+                
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
         $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
+
         $this->db->select('sum(deal_data.expected_tonnage) as c,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee');
+        $this->db->where($where);
         $this->db->join('deal_data','deal_data.deal_id=commercial_info.id');
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
         $this->db->group_by('commercial_info.createdby');
@@ -136,9 +324,31 @@ class Deal_model extends CI_Model {
         return $res;
     }
 
-    public function freight_wise_feed(){
+    public function freight_wise_feed($filter=array()){
+                
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
         $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }
+
         $this->db->select('sum(deal_data.expected_amount) as c,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee');
+        $this->db->where($where);
         $this->db->join('deal_data','deal_data.deal_id=commercial_info.id');
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
         $this->db->group_by('commercial_info.createdby');

@@ -19,7 +19,7 @@
         if(!empty($user_list)){
             foreach($user_list as $key=>$value){
                 ?>
-                <option value="<?=$value->pk_i_admin_id?>">
+                <option value="<?=$value->pk_i_admin_id?>" <?php if(!empty($_GET['employee']) && $_GET['employee']==$value->pk_i_admin_id){ echo 'selected'; } ?>>
                 <?=$value->s_display_name.' '.$value->last_name?>
                 </option>
                 <?php
@@ -31,6 +31,7 @@
     <div class="col-md-2">
     <br>    
     <button type="submit" class='btn btn-primary btn-sm'>Filter</button>
+    <a href="<?=base_url('deal_dashboard/dashboard')?>" class='btn btn-default btn-sm'>Reset</a>
     </div>
 </div>
 <br>
