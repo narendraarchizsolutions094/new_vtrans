@@ -3477,11 +3477,13 @@ echo  $details1;
                             'comp_id'=>$this->session->companey_id,
                             'user_id'=>$this->session->user_id,
                         );
-            $res = $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$data['enquiry_id']))->row();
+            $res = $this->Enquiry_model->getEnquiry(array('Enquery_id'=>$data['enquiry_id']))->row();
+            
             $mobileno = $res->phone;
             $email = $res->email;
             $stage_time = $this->input->post('next_visit_time');
             $enq_code  = $res->Enquery_id;
+            $data['enquiry_id'] = $res->enquiry_id;
             
             $notification_id = '';
             if($visit_type==2)
