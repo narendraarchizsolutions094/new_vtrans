@@ -2532,6 +2532,7 @@ if($('#industriescheckbox').is(":checked")){
       }
       else{
        $('#Industriesfilter').hide();
+      }
 if($('#visit_wisecheckbox').is(":checked")){
         $('#visit_wisefilter').show();
       }
