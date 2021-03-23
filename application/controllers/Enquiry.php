@@ -556,7 +556,7 @@ class Enquiry extends CI_Controller
                 'company' => $this->input->post('company'),
 				'sales_branch' => $this->input->post('sales_branch'),
 				'client_name' => $this->input->post('client_name'),
-                'designation' => $this->input->post('designation')??'',
+                'designation' => $this->input->post('designation'),
                 'address' => $this->input->post('address'),
                 'pin_code' => $this->input->post('pin_code'),
                 'checked' => 0,
@@ -3888,8 +3888,10 @@ echo  $details1;
             $part2 = "";
             if(user_access('1002'))
             {
+				if($value->status!='1' && $value->approval!='approve'){
                 $part2.= "
                 <a  class='btn btn-xs  btn-primary' href='".base_url('client/edit_commercial_info/').$value->id."' ><i class='fa fa-edit'></i></a>";
+				}
             }
             
             if(user_access('1001'))

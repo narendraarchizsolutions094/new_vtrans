@@ -55,7 +55,9 @@ class Client extends CI_Controller {
         $data['branch_lists']=$this->Branch_model->all_sales_branch();
 		$data['region_lists']=$this->Branch_model->all_sales_region();
 		$data['area_lists']=$this->Branch_model->all_sales_area();
-		$data['dept_lists']=$this->User_model->all_sales_dept();		
+		$data['dept_lists']=$this->User_model->all_sales_dept();
+        $data['state_list'] = $this->enquiry_model->get_user_state_list();
+        $data['city_list'] = $this->enquiry_model->get_user_city_list();		
         $data['content'] = $this->load->view('enquiry_n', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -106,6 +108,7 @@ class Client extends CI_Controller {
     }
     public function view($enquiry_id) {
         $this->load->model('Client_Model');
+		//print_r($enquiry_id);exit;
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);   
         //$data['state_city_list'] = $this->location_model->get_city_by_state_id($data['details']->enquiry_state_id);
         //$data['state_city_list'] = $this->location_model->ecity_list();
@@ -2593,10 +2596,17 @@ public function all_update_expense_status()
 
     public function commercial_info($enquiry_id,$by=0)
     {
+		$keyword = $this->uri->segment(4);
         $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
 
         $data['title'] = 'Add Deal';
-        $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
+		$en_id = $this->db->select("enquiry_id")->from("enquiry")->where('Enquery_id', $enquiry_id)->get()->row();
+		if(empty($keyword)){
+			$lead_id = $enquiry_id;
+		}else{
+			$lead_id = $en_id->enquiry_id;
+		}
+        $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($lead_id);
         $data['branch'] = $this->Branch_model->branch_list()->result();
         $data['region_list'] = $this->Branch_model->sales_region_list()->result();
         $dis= $this->db->select('d.discount')
@@ -3489,7 +3499,9 @@ public function all_update_expense_status()
 
         foreach ($res->result() as $key => $value) 
         {
+			if($value->client_name!=''){
             echo'<option value="'.$value->Enquery_id.'">'.$value->client_name.'</option>';
+			}
         }
     }
 

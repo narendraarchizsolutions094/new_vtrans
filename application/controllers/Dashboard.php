@@ -483,7 +483,7 @@ $this->load->library('zip');
     public function validate_login() {  
         
   
-        $this->form_validation->set_rules('email', display('email'), 'required|max_length[50]|trim');
+        $this->form_validation->set_rules('email', 'Login id', 'required|max_length[50]|trim');
         $this->form_validation->set_rules('password', display('password'), 'required|max_length[32]|md5');        
         
         $data['user'] = (object) $postData = [
@@ -668,7 +668,7 @@ $this->load->library('zip');
                             $ac_type = $this->input->get('type');
                             if(($user_right==200 && ($ac_type != 'seller' && $ac_type != 'buyer')) || ($user_right==201 && $ac_type != 'buyer') || ($ac_type == 'admin' && ($user_right==200 && $user_right==201))){
                                 $this->session->sess_destroy();
-                                $res = array('status'=>false,'message'=>display('incorrect_email_password'));
+                                $res = array('status'=>false,'message'=>'Incorrect Login id Password');
                             }else{
                                
                                 $this->session->set_userdata('app_type',$ac_type);
@@ -681,7 +681,7 @@ $this->load->library('zip');
                         }
                    }
             } else {
-                $res = array('status'=>false,'message'=>display('incorrect_email_password'));
+                $res = array('status'=>false,'message'=>'Incorrect Login id Password');
             }
         } else {
             $res = array('status'=>false,'message'=>validation_errors());            

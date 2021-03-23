@@ -26,7 +26,8 @@
 <?php   if (user_access('d35')) { ?>
 
         <div class="btn-group">
-          <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#AddBranch" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add Branch</a>
+          <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#AddBranch" href="javascript:void(0)"> <i class="fa fa-plus"></i> Add Branch</a>&nbsp;&nbsp;&nbsp;
+		  <a class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#Addbulk" href="javascript:void(0)"> <i class="fa fa-plus"></i> Upload Data</a>
         </div>
         <?php } ?>
       </div>
@@ -85,6 +86,41 @@
   <!-- /.col -->
 
 </div>
+<!----------------------------------------------------Bulk Upload Start-------------------------------->
+<div class="modal fade" id="Addbulk" role="dialog" aria-labelledby="course_upload_label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="">Upload Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="<?= base_url() . 'location/upload_sales_location' ?>" enctype="multipart/form-data" method='post'>
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="form-group">
+              <label id="label">Choose File </label>
+              <input type="file" name="file" class="form-control">
+            </div>
+			
+			<div class="form-group">                                                               
+				  <div class="col-md-12"><span><a download="<?php echo base_url(); ?>assets/csv/rab.csv" href="<?php echo base_url(); ?>assets/csv/rab.csv">Download sample(.csv only)</a></span></div>
+            </div>
+			
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!----------------------------------------------------bulk Upload End-------------------------------->
 <?php   if (user_access('d35')) { ?>
 
 <!-- Course Upload  -->

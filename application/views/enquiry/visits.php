@@ -204,7 +204,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                         </div>
                         <div class="col-lg-3" id="expensetypefilter" style="<?php if(!in_array('expensetype',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-        <label>Expense </label>
+        <label>Expense Status</label>
        	<select class="form-control v_filter" id="expensetype" name="expensetype">
               <option value="">Select</option>
               <option value="1">Approved</option>

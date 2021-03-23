@@ -720,6 +720,87 @@ class location extends CI_Controller {
             redirect(base_url() . 'location/import');
         }
     }
+//Bulk uplode sales region/area/branch start	
+	function upload_sales_location() {
+        if (!is_dir('assets/csv')) {
+            mkdir('assets/csv', 0777, TRUE);
+        }
+        $filename = "salesrab_" . date('d-m-Y_H_i_s'); //"school_26-07-2018_16_17_51";
+        $config = array(
+            'upload_path' => "assets/csv",
+            'allowed_types' => "text/plain|text/csv|csv",
+            'remove_spaces' => TRUE,
+            'max_size' => "10000",
+            'file_name' => $filename
+        );
+        $this->load->library('upload', $config);
+        // $this->upload->do_upload('file')
+        if ($this->upload->do_upload('file')) {
+            $upload = $this->upload->data();
+            $json['success'] = 1;
+            // $upload['file_name'] = "school_26-07-2018_16_17_51.csv";
+            $filePath = $config['upload_path'] . '/' . $upload['file_name'];
+            $file = $filePath;
+            $handle = fopen($file, "r");
+            $c = 0;
+            while (($filesop = fgetcsv($handle, 1000, ",")) !== false) {
+                if ($c > 0) {
+                    $this->db->where('name', $filesop[0]);
+                    $this->db->where('comp_id', $this->session->companey_id);
+                    $id = $this->db->get('sales_region');
+                    $id1 = $id->num_rows();
+                    if ($id1 > 0) {
+                        $region_id = $id->row()->region_id;
+                    } else {
+                        $this->db->set('name', $filesop[0]);
+						$this->db->set('comp_id', $this->session->userdata('companey_id'));
+                        $this->db->insert('sales_region');
+                        $region_id = $this->db->insert_id();
+                    }
+                    $this->db->where('region_id', $region_id);
+                    $this->db->where('area_name', $filesop[1]);
+                    $id2 = $this->db->get('sales_area');
+                    $id3 = $id2->num_rows();
+                    if ($id3 > 0) {
+                        $area_id = $id2->row()->area_id;
+                    } else {
+                        $this->db->set('region_id', $region_id);
+						$this->db->set('comp_id', $this->session->userdata('companey_id'));
+                        $this->db->set('area_name', $filesop[1]);
+                        $this->db->insert('sales_area');
+                        $area_id = $this->db->insert_id();
+                    }
+                    $this->db->where('region_id', $region_id);
+                    $this->db->where('area_id', $area_id);
+                    $this->db->where('branch_name', $filesop[2]);
+                    $id5 = $this->db->get('branch');
+                    $id6 = $id5->num_rows();
+                    if ($id6 > 0) {
+                        $branch_id = $id5->row()->branch_id;
+                    } else {
+                        $this->db->set('region_id', $region_id);
+                        $this->db->set('area_id', $area_id);
+						$this->db->set('comp_id', $this->session->userdata('companey_id'));
+						$this->db->set('created_by', $this->session->userdata('user_id'));
+						$this->db->set('type', 'branch');
+						$this->db->set('branch_status', '1');
+                        $this->db->set('branch_name', $filesop[2]);
+                        $this->db->insert('branch');
+                        $branch_id = $this->db->insert_id();
+                    }
+                }
+                $c++;
+            }
+            $this->session->set_flashdata('message', "Data successfully added.");
+            redirect(base_url() . 'setting/branchList');
+            // echo '<pre>'; print_r ($discCodeArr); print_r ($stateArr); print_r ($cityArr); print_r ($blockArr); die;
+        } else {
+            $this->session->set_flashdata('error', $this->upload->display_errors());
+            
+            redirect(base_url() . 'setting/branchList');
+        }
+    }
+////////////////////////////Bulk uplode sales region/area/branch////////////////////////////////////////	
     //Find region on the base of country...
     public function find_region() {
         $country = $this->input->post('country');

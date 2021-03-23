@@ -139,8 +139,8 @@ if($root=='https://student.spaceinternationals.com'){	 ?>
                 <div class="panel-body" id="LoginDiv">
                     <?php echo form_open('dashboard/validate_login','id="loginForm" novalidate'); ?>
                     <div class="form-group">
-                        <label class="control-label" for="email"><?= display('email') ?></label>
-                        <input type="text" placeholder="<?= display('email') ?>" name="email" id="email"
+                        <label class="control-label" for="email"><?= 'Enter Login id' ?></label>
+                        <input type="text" placeholder="<?= 'Enter Login id' ?>" name="email" id="email"
                             class="form-control">
                     </div>
                     <div class="form-group">
