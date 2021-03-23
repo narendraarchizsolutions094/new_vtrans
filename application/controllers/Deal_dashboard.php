@@ -26,18 +26,31 @@ class Deal_dashboard extends CI_Controller {
     }
 
     public function dashboard() {
+        $para = '';
+        if(!empty($_GET)){            
+            foreach ($_GET as $key => $value){
+                if(!empty($para)){
+                    $para .= '&'.$key.'='.$value;
+                }else{
+                    $para .= $key.'='.$value;
+                }
+            }
+        }
+        if(!empty($para)){
+            $para = '?'.$para;
+        }
         $data['title'] = 'Deal Dashboard';
         $data['urls'] = array(
-            'deal_status' => base_url().'deal_dashboard/deal_status_feed',
-            'booking_type' => base_url().'deal_dashboard/booking_type_feed',
-            'product_feed' => base_url().'deal_dashboard/product_feed',
+            'deal_status' => base_url().'deal_dashboard/deal_status_feed'.$para,
+            'booking_type' => base_url().'deal_dashboard/booking_type_feed'.$para,
+            'product_feed' => base_url().'deal_dashboard/product_feed'.$para,
             //'approaval_status' => base_url().'deal_dashboard/approaval_status_feed',
-            'country_wise' => base_url().'deal_dashboard/country_wise_feed',
-            'region_wise' => base_url().'deal_dashboard/region_wise_feed',
-            'branch_wise' => base_url().'deal_dashboard/branch_wise_feed',
-            'area_wise' => base_url().'deal_dashboard/area_wise_feed',
-            'waight_wise' => base_url().'deal_dashboard/waight_wise_feed',
-            'freight_wise' => base_url().'deal_dashboard/freight_wise_feed'
+            'country_wise' => base_url().'deal_dashboard/country_wise_feed'.$para,
+            'region_wise' => base_url().'deal_dashboard/region_wise_feed'.$para,
+            'branch_wise' => base_url().'deal_dashboard/branch_wise_feed'.$para,
+            'area_wise' => base_url().'deal_dashboard/area_wise_feed'.$para,
+            'waight_wise' => base_url().'deal_dashboard/waight_wise_feed'.$para,
+            'freight_wise' => base_url().'deal_dashboard/freight_wise_feed'.$para
         );
         $this->load->model('User_model');
         $data['user_list'] = $this->User_model->companey_users();

@@ -5,11 +5,11 @@
     </div>
     <div class="col-md-2">
         <label>From Date</label>
-        <input type="date" name="from_date" class="form-control">
+        <input type="date" name="from_date" class="form-control" value= <?php if(!empty($_GET['from_date'])){ echo $_GET['from_date']; } ?>>
     </div>
     <div class="col-md-2">
         <label>To Date</label>
-        <input type="date" name="to_date" class="form-control">      
+        <input type="date" name="to_date" class="form-control" value= <?php if(!empty($_GET['to_date'])){ echo $_GET['to_date']; } ?>>      
     </div>
     <div class="col-md-2">
         <label>Employee</label>
