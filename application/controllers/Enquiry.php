@@ -3466,7 +3466,7 @@ echo  $details1;
                $visit_date=date('Y-m-d');
             }else{
                 $visit_date    =   $this->input->post('visit_date');
-                $visit_date = date("d-m-Y",strtotime($visit_date));
+                $visit_date = date("Y-m-d",strtotime($visit_date));
             }
             //print_r($_POST); 
             $data = array('enquiry_id'=>$this->input->post('enq_id'),
