@@ -3481,7 +3481,7 @@ echo  $details1;
             
             $mobileno = $res->phone;
             $email = $res->email;
-            $stage_time = $this->input->post('next_visit_time');
+            //$stage_time = $this->input->post('next_visit_time');
             $enq_code  = $res->Enquery_id;
             $data['enquiry_id'] = $res->enquiry_id;
             
@@ -3492,7 +3492,7 @@ echo  $details1;
             }
         //   print_r($_POST);
         //   echo $visit_date;
-            $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $stage_time, $enq_code, $notification_id, 'Visit -'.$m_purpose,1,3);
+            $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $visit_time, $enq_code, $notification_id, 'Visit -'.$m_purpose,1,3);
 
             $this->Client_Model->add_visit($data);
          $contact=  $this->db->where('cc_id',$data['contact_id'])->get('tbl_client_contacts')->row();
