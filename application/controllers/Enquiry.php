@@ -3916,34 +3916,7 @@ echo  $details1;
     }
 
 
-    public function lead_aging_rule_exec($comp_id,$lid){      
-
-        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-		$this->db->insert('cron_log',array('created_at_php'=>date('Y-m-d H:i:s'),'url'=>$actual_link));
- 
-        $this->load->model('rule_model');
-        $this->db->where('id',$lid);
-        $rules = $this->rule_model->get_rules(array(11),$comp_id);
-        $enquries = array();
-       if(!empty($rules)){
-        $i=0;
-        foreach($rules as $k=>$v){
-            $this->db->select('enquiry.enquiry_id,Enquery_id,phone,email,created_by');
-            $this->db->where('comp_id',$comp_id);
-            $this->db->where($v['rule_sql']);
-            $enquries    =   $this->db->get('enquiry')->result_array();            
-            
-            if(!empty($enquries)){
-                $stage_date = date("d-m-Y");
-                $stage_time = date("H:i:s");
-
-                foreach($enquries as $key=>$value){
-                    $this->Leads_Model->add_comment_for_events_popup('Need to work',$stage_date,'',$value['phone'],$value['email'],'',$stage_time,$value['Enquery_id'],$notification_id=0,$dis_subject='Overdue',$task_for='1',$task_type='2',$value['created_by'],$comp_id);
-                }
-            }
-        }
-       }       
-    }
+   
     public function competitor_list(){
         $this->db->where('comp_id',65);
         $this->db->where('status',0);

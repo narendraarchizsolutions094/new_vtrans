@@ -172,7 +172,7 @@ class LeadRules extends CI_Controller {
             $command = $min.' '.$hour.' * * *' ;            
             $cron = Cron\CronExpression::factory($command);                                        
             $running_time= $cron->getNextRunDate()->format('Y-m-d H:i');            
-            $url    =   base_url().'enquiry/lead_aging_rule_exec/'.$this->session->companey_id.'/'.$lid;
+            $url    =   base_url().'api/enquiry/lead_aging_rule_exec/'.$this->session->companey_id.'/'.$lid;
             $data=  [
                         'minute'        =>  $minute,
                         'hour'          =>  $hour,
