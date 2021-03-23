@@ -52,7 +52,7 @@ V-Trans House, Unit No.06, Corporate Park, V. N. Purav Marg, Chembur, Mumbai –
   left:0px;
 }
 body{
-	padding: 20px;
+	padding: 20px 50px;
 	padding-top: 40px;
 	margin-top: 100px;
 	width:100%;
@@ -138,13 +138,13 @@ body{
 <table class="c46" xss=removed border="1px">
 	<tbody>
 		<tr class="c58">
-			<td class="c44" colspan="1" rowspan="1">
+			<td class="c44" colspan="1" rowspan="1" style="background:#00b0f0;">
 				<p class="c28"><span class="c4 c36">Vehicle Type</span></p>
 			</td>
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="background:#00b0f0;">
 				<p class="c28"><span class="c4 c36">Days</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="background:#00b0f0;">
 				<p class="c28"><span class="c4 c36">Charges</span></p>
 			</td>
 		</tr>
