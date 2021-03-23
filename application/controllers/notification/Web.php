@@ -128,7 +128,7 @@ class Web extends CI_Controller{
          $where = " ((enquiry.created_by=$user_id OR enquiry.aasign_to=$user_id OR visit.user_id=$user_id) OR query_response.create_by=$user_id OR query_response.related_to=$user_id)  AND query_response.noti_read=0 AND CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) <= NOW() ORDER BY CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) DESC";
          $this->db->where($where);
          echo $this->db->get()->num_rows();
-         echo $this->db->last_query();
+         //echo $this->db->last_query();
     }
 }
 
