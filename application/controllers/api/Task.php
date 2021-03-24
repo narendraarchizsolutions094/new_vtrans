@@ -113,10 +113,11 @@ class Task extends REST_Controller {
               'conversation'              => $task_row->task_remark,
               'task_date'                 => $task_row->task_date,
               'task_time'                 => $task_row->task_time,
-         		  'task_name'				  => $task_row->subject,
+         		  'task_name'			  => $task_row->subject,
         		  'end_date'				  => $task_row->nxt_date,
         		  'stage_name'				  => $task_row->lead_stage_name,		
-        		  'stage_description'		  => $task_row->description		
+        		  'stage_description'		  => $task_row->description,
+                 'task_type'             => $task_row->task_type				  
                 );
                 if($task_row->enqtype == 1){
                   $task_array['related_to'] = 'Lead';
@@ -140,6 +141,7 @@ class Task extends REST_Controller {
               // }else{
       			// $task_array['task_status'] = 'Pending';
               $task_array['task_status'] = $task_row->taskstatus_name;
+			  $task_array['task_type'] = $task_row->task_type;
         }
         else
         {
