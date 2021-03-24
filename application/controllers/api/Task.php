@@ -119,11 +119,17 @@ class Task extends REST_Controller {
         		  'stage_description'		  => $task_row->description		
                 );
                 if($task_row->enqtype == 1){
-                  $task_array['related_to'] = 'Enquiry';
-                }else if($task_row->enqtype == 2){
                   $task_array['related_to'] = 'Lead';
+                }else if($task_row->enqtype == 2){
+                  $task_array['related_to'] = 'Approach';
                 }else if($task_row->enqtype == 3){
-                  $task_array['related_to'] = 'Client';
+                  $task_array['related_to'] = 'Negotiation';
+                }else if($task_row->enqtype == 4){
+                  $task_array['related_to'] = 'Closure';
+                }else if($task_row->enqtype == 5){
+                  $task_array['related_to'] = 'Order';
+                }else if($task_row->enqtype == 6){
+                  $task_array['related_to'] = 'Future opportunities';
                 }else{
         			$task_array['related_to'] = '';
         		      }

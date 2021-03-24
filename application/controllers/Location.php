@@ -800,7 +800,93 @@ class location extends CI_Controller {
             redirect(base_url() . 'setting/branchList');
         }
     }
-////////////////////////////Bulk uplode sales region/area/branch////////////////////////////////////////	
+////////////////////////////Bulk uplode booking Branch/Delivery branch/Rate list////////////////////////////////////////
+
+//Bulk uplode sales region/area/branch start	
+	function upload_booking_ratelist() {
+        if (!is_dir('assets/csv')) {
+            mkdir('assets/csv', 0777, TRUE);
+        }
+        $filename = "ratebdr_" . date('d-m-Y_H_i_s'); //"school_26-07-2018_16_17_51";
+        $config = array(
+            'upload_path' => "assets/csv",
+            'allowed_types' => "text/plain|text/csv|csv",
+            'remove_spaces' => TRUE,
+            'max_size' => "10000",
+            'file_name' => $filename
+        );
+        $this->load->library('upload', $config);
+        // $this->upload->do_upload('file')
+        if ($this->upload->do_upload('file')) {
+            $upload = $this->upload->data();
+            $json['success'] = 1;
+            // $upload['file_name'] = "school_26-07-2018_16_17_51.csv";
+            $filePath = $config['upload_path'] . '/' . $upload['file_name'];
+            $file = $filePath;
+            $handle = fopen($file, "r");
+            $c = 0;
+            while (($filesop = fgetcsv($handle, 1000, ",")) !== false) {
+                if ($c > 0) {
+                    $this->db->where('branch_name', $filesop[0]);
+                    $this->db->where('comp_id', $this->session->companey_id);
+                    $id = $this->db->get('branch');
+                    $id1 = $id->num_rows();
+                    if ($id1 > 0) {
+                        $b_branch_id = $id->row()->branch_id;
+                    } else {
+                        $this->db->set('branch_name', $filesop[0]);
+						$this->db->set('branch_status', '1');
+						$this->db->set('type', 'branch');
+						$this->db->set('comp_id', $this->session->userdata('companey_id'));
+                        $this->db->insert('branch');
+                        $b_branch_id = $this->db->insert_id();
+                    }
+                    //$this->db->where('branch_id', $b_branch_id);
+                    $this->db->where('branch_name', $filesop[1]);
+                    $id2 = $this->db->get('branch');
+                    $id3 = $id2->num_rows();
+                    if ($id3 > 0) {
+                        $d_branch_id = $id2->row()->branch_id;
+                    } else {
+						$this->db->set('comp_id', $this->session->userdata('companey_id'));
+						$this->db->set('branch_status', '1');
+						$this->db->set('type', 'branch');
+                        $this->db->set('branch_name', $filesop[1]);
+                        $this->db->insert('branch');
+                        $d_branch_id = $this->db->insert_id();
+                    }
+                    $this->db->where('booking_branch', $b_branch_id);
+                    $this->db->where('delivery_branch', $d_branch_id);
+                    $this->db->where('rate', $filesop[2]);
+                    $id5 = $this->db->get('branchwise_rate');
+                    $id6 = $id5->num_rows();
+                    if ($id6 > 0) {
+                        $rate_id = $id5->row()->id;
+                    } else {
+                        $this->db->set('booking_branch', $b_branch_id);
+                        $this->db->set('delivery_branch', $d_branch_id);
+						$this->db->set('comp_id', $this->session->userdata('companey_id'));
+						$this->db->set('created_by', $this->session->userdata('user_id'));
+						$this->db->set('type', 'branch');
+						$this->db->set('rate_status', '0');
+                        $this->db->set('rate', $filesop[2]);
+                        $this->db->insert('branchwise_rate');
+                        $rate_id = $this->db->insert_id();
+                    }
+                }
+                $c++;
+            }
+            $this->session->set_flashdata('message', "Data successfully added.");
+            redirect(base_url() . 'setting/branch_rateList');
+            // echo '<pre>'; print_r ($discCodeArr); print_r ($stateArr); print_r ($cityArr); print_r ($blockArr); die;
+        } else {
+            $this->session->set_flashdata('error', $this->upload->display_errors());
+            
+            redirect(base_url() . 'setting/branch_rateList');
+        }
+    }
+////////////////////////////Bulk uplode booking Branch/Delivery branch/Rate list///////////////////////////////////////
+	
     //Find region on the base of country...
     public function find_region() {
         $country = $this->input->post('country');
