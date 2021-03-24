@@ -266,7 +266,9 @@ public function create_post(){
         $this->db->set('designation',$designation);
         $this->db->set('org_name',$org_name);
         $this->db->set('task_remark',$conversation);
+		if(empty($update_task)){
         $this->db->set('task_type',$task_type);
+		}
 		    $this->db->set('task_date',$task_date);
 		    $this->db->set('task_time',$tsktime);
         //echo $update_task;
