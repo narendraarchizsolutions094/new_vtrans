@@ -2135,6 +2135,18 @@ public function visit_expense_status()
         $this->db->where(array('comp_id'=>$comp_id,'visit_id'=>$value))->update('tbl_expense',$data);
 		//timeline code here
 		$this->Leads_Model->add_comment_for_events_stage($subject,$comment_id,0,0,$_POST['remarks'],0);
+		//Bell botification code here
+		$assign_data_noti[]=array(
+            'create_by'=> $user_id,
+            'related_to'=> $visit_creator,
+            'subject'=>$subject,
+            'task_remark'=>$_POST['remarks'],
+            'query_id'=>$comment_id,
+            'task_date'=>date('d-m-Y'),
+            'comp_id'=>$this->session->companey_id,
+            'task_time'=>date('H:i:s')
+        );
+        $this->db->insert_batch('query_response',$assign_data_noti);
         if(!empty($visit_creator)){        
             $user_row = $this->user_model->read_by_id($visit_creator);
             if(!empty($user_row)){
@@ -2143,18 +2155,6 @@ public function visit_expense_status()
                 $this->message_models->send_email($user_row->s_user_email, 'Visit Notification', $subject);
             }
         }
-		//Bell botification code here
-		$assign_data_noti[]=array(
-                        'create_by'=> $user_id,
-                        'related_to'=> $visit_creator,
-                        'subject'=>$subject,
-						'task_remark'=>$_POST['remarks'],
-                        'query_id'=>$comment_id,
-                        'task_date'=>date('d-m-Y'),
-                        'comp_id'=>$this->session->companey_id,
-                        'task_time'=>date('H:i:s')
-                        );
-        $this->db->insert_batch('query_response',$assign_data_noti);
     }
             }
 }

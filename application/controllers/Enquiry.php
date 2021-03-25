@@ -3348,13 +3348,15 @@ echo  $details1;
             $notimsg = 'Deal Rejected';
         }
         if(!empty($notimsg)){
+            $this->Leads_Model->add_comment_for_events_popup('',date('d-m-Y'),'','','','',date('H:i:s'),$endata->Enquery_id,0,$notimsg,1,'',$en->createdby);
+           
             $user_row = $this->user_model->read_by_id($en->createdby);
             if(!empty($user_row)){
                 $this->message_models->smssend($user_row->s_phoneno, $notimsg);                
                 $this->message_models->sendwhatsapp($user_row->s_phoneno, $notimsg);
                 $this->message_models->send_email($user_row->s_user_email, 'Deal Notification', $notimsg);
             }
-            $this->Leads_Model->add_comment_for_events_popup('',date('d-m-Y'),'','','','',date('H:i:s'),$endata->Enquery_id,0,$notimsg,1,'',$en->createdby);
+            
         }
      }
      echo '1';
