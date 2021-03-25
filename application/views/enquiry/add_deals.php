@@ -121,7 +121,7 @@ $(document).on('submit','#data_table',function(e){
 				if(empty($by))
 				{
 				?>
-					location.href="<?=base_url('enquiry/enq_page/'.$details->enquiry_id)?>#COMMERCIAL_INFORMATION";
+					location.href="<?=base_url('enquiry/enq_page/'.$details->enquiry_id.'/'.base64_encode($data_type))?>#COMMERCIAL_INFORMATION";
 				<?php
 				}
 				else
@@ -168,6 +168,7 @@ function generate_table()
 	var btype = $("select[name=btype]").val();
 	var dtype = $("select[name=dtype]").val();
 	var enq_for = $("input[name=for]").val();
+	var stage_for = "<?=$data_type?>";
 //alert('d');
 	if(blist.length==0 || dlist.length==0)
 	{
@@ -196,7 +197,8 @@ function generate_table()
 				chain:BList,
 				btype:btype,
 				dtype:dtype,
-				enq_for:enq_for
+				enq_for:enq_for,
+				stage_for:stage_for
 			},
 		beforeSend:function()
 		{

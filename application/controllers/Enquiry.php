@@ -1086,6 +1086,7 @@ class Enquiry extends CI_Controller
    
     public function view($enquiry_id = null)
     {
+
         $compid = $this->session->userdata('companey_id');
         $this->load->model('Client_Model');
         if (user_role('61') == true) {
@@ -1237,7 +1238,7 @@ class Enquiry extends CI_Controller
 		$data['region_lists']=$this->Branch_model->all_sales_region();
         $enq['enquiry_id'] = $enquiry_id;
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
-        
+        $data['data_type'] = base64_decode($this->uri->segment(4));
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',array(),true);
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
@@ -3934,8 +3935,9 @@ echo  $details1;
         }
     }
 
-    public function enq_page($enq_id)
+    public function enq_page($enq_id,$datatype='0')
     {
+		if(empty($datatype)){
       $res=  $this->db->select('status')->where('enquiry_id',$enq_id)->get('enquiry')->row_array();
         if($res['status']=='1')
             redirect(base_url('enquiry/view/'.$enq_id));
@@ -3943,7 +3945,15 @@ echo  $details1;
              redirect(base_url('lead/lead_details/'.$enq_id));
          else 
              redirect(base_url('client/view/'.$enq_id));
-    }
+    }else{
+		if($datatype=='1')
+            redirect(base_url('enquiry/view/'.$enq_id.'/'.$datatype));
+        else if($datatype=='2')
+             redirect(base_url('lead/lead_details/'.$enq_id.'/'.$datatype));
+         else 
+             redirect(base_url('client/view/'.$enq_id.'/'.$datatype));		
+	}
+	}
 
     public function enq_code_by_id($enq_code=0)
     {  

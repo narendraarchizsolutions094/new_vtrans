@@ -73,7 +73,12 @@ class Deals_datatable_model extends CI_Model{
      */
     public function _get_datatables_query($postData){
 
-
+          /* $this->db->select('status');
+          $this->db->from('enquiry');
+          $this->db->where('enquiry_id',$_POST['enq_for']);
+		  $this->db->where('stage_id',$_POST['curr_stg']);
+        $current_stage = $this->db->get()->row(); */
+//print_r($_POST['curr_stg']);exit;
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
         $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type,enq.client_name,comp.company_name');
@@ -86,6 +91,15 @@ class Deals_datatable_model extends CI_Model{
         $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
         $and =1;
+		
+		if(!empty($_POST['curr_stg']))
+        {   
+            if($and)
+                $where.=" and ";
+
+            $where.=" (info.stage_id ='".$_POST['curr_stg']."' ) ";
+            $and =1;
+        }
       
         if(!empty($_POST['date_from']) && !empty($_POST['date_to']))
         {   

@@ -40,6 +40,32 @@ class Lead extends CI_Controller
         $data['content'] = $this->load->view('setting/department_list', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
+	
+/////////////////////////////move to stage with deals/////////////////////
+public function get_all_stage_deals() {
+        $details='';
+        $current_stg = $this->input->post('current_stg');
+        $enq_id = $this->input->post('enq_id');
+        $next_stg = $this->input->post('next_stg');		
+
+        $all_deals_lists = $this->Leads_Model->dealstagelist($enq_id,$current_stg); 
+		//print_r($all_deals_lists);exit;
+        $details .= '
+		            <input type="hidden" value="'.$current_stg.'" name="current_stg">
+					<input type="hidden" value="'.$enq_id.'" name="enq_id">
+					<input type="hidden" value="'.$next_stg.'" name="next_stg">
+					 
+		            <div class="form-group col-md-10">                 
+                        <select class="form-control" id="deal_id" name="deal_id[]" multiple required>';                    
+                              foreach ($all_deals_lists as $deals) { 
+                         $details .= '<option value="'.$deals->id.'">'.$deals->client_name.' '.'['.$deals->booking_type.']'.'['.$deals->business_type.']</option>';
+                               }                                         
+                        '</select>
+                    </div>
+                          ';
+        echo $details;
+    }
+/////////////////////////////////move to stage with deals/////////////////////////////////////
 
     public function update_dept() {
         if (!empty($_POST)) {
@@ -353,7 +379,7 @@ class Lead extends CI_Controller
         $enq['enquiry_id'] = $enquiry_id;
         $data['all_contact']= $this->Client_Model->getContactList()->result();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
-        
+        $data['data_type'] = base64_decode($this->uri->segment(4));
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);
@@ -1049,9 +1075,13 @@ class Lead extends CI_Controller
     }
     public function any_convert_to_any()
     {
-        $stage = $this->uri->segment('3');
-        $enquiry_id = $this->uri->segment('4');
-        $next_stage = $this->uri->segment('5');
+        //$stage = $this->uri->segment('3');
+        //$enquiry_id = $this->uri->segment('4');
+        //$next_stage = $this->uri->segment('5');
+		$stage = $this->input->post('current_stg');
+        $enquiry_id = $this->input->post('enq_id');
+        $next_stage = $this->input->post('next_stg');
+		$deal_id = $this->input->post('deal_id');
         $lead = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
          //print_r($lead); exit;
         $leadSataus =$next_stage;
@@ -1100,6 +1130,7 @@ class Lead extends CI_Controller
             //$this->Leads_Model->ClientMove($data);
             $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
             if ($leadSataus  > 3) {
+				
                 $enquiry_separation = json_decode($enquiry_separation, true);
                 if ($leadSataus != 3) {
                     foreach ($enquiry_separation as $key => $value) {
@@ -1120,6 +1151,15 @@ class Lead extends CI_Controller
                     //insert follow up counter 
                     $this->enquiry_model->insetFollowupTime($enquiry_id, $next_stage, $leadCreatedate, date('Y-m-d H:i:s'));
                  }
+				 
+				 //////////////////update stage in deal table Start///////////////////
+				foreach($deal_id as $key=>$value){
+			        $this->db->set('stage_id',$next_stage);
+                    $this->db->where('id', $value);
+                    $this->db->update('commercial_info');
+		        }
+				 //////////////////update stage in deal table End///////////////////
+				 
                 $title = $enquiry_separation[$next_stage]['title'];
                 $url = 'client/index/?stage=' . $next_stage;
                 $comment = 'Converted to ' . $title;
@@ -1129,6 +1169,15 @@ class Lead extends CI_Controller
                 $comment = 'Converted to '.display('Client');
                 //echo $comment ; exit();
                 //insert follow up counter (3 is for client )
+				
+				//////////////////update stage in deal table Start///////////////////
+				foreach($deal_id as $key=>$value){
+			        $this->db->set('stage_id',$next_stage);
+                    $this->db->where('id', $value);
+                    $this->db->update('commercial_info');
+		        }
+				 //////////////////update stage in deal table End///////////////////
+				
                 if(empty($lead->lead_created_date))$lead->lead_created_date=$lead->created_date;
                 $this->enquiry_model->insetFollowupTime($enquiry_id, 3, $lead->lead_created_date, date('Y-m-d H:i:s'));
                 $this->db->set('status', 3);

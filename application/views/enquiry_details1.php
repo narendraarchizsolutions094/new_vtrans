@@ -613,23 +613,81 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="margin-left: -70px;">
                     <?php  if($enquiry->status!=2){
-                    ?>  <li><a title="Move to <?=display('lead')?>"  data-target="#genLead" data-toggle="modal" style="font-size: 10px;">Move to <?=display('lead')?></a></li>
+                    ?>  <li><a title="Move to <?=display('lead')?>"  data-target="#genLead" data-toggle="modal" style="font-size: 14px;">Move to <?=display('lead')?></a></li>
                      <?php } ?>
                     <?php  if($enquiry->status!=3){ ?>
 
-                     <li><a  title="Move to <?=display('client')?>" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/3'?>" onclick="return confirm('Are you sure you want to move this <?=display('lead')?> to <?=display('client')?> ?')" style="font-size: 10px;">Move to <?=display('client')?></a></li>
+                     <!--<li><a  title="Move to <?=display('client')?>" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/3'?>" onclick="return confirm('Are you sure you want to move this <?=display('lead')?> to <?=display('client')?> ?')" style="font-size: 10px;">Move to <?=display('client')?></a></li>-->
+					 <li><a onclick="get_modal_move(<?=$data_type?>,<?= $enquiry->enquiry_id; ?>,'3')">
+                        Move to <?=display('client')?>
+                     </a></li>
                     <?php }
 
                     if (!empty($enquiry_separation)) {
                      // $enquiry_separation = json_decode($enquiry_separation, true);
                          foreach ($enquiry_separation as $key => $value) {
                         if($enquiry->status!=$key){ ?>                   
-                       <li><a  title="" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/'.$key?>" onclick="return confirm('Are you sure you want to Move this <?=display('client')?> to <?=$enquiry_separation[$key]['title']?> ?')" style="font-size: 10px;"> Move to <?=$enquiry_separation[$key]['title']?></i>
+                       <!--<li><a  title="" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/'.$key?>" onclick="return confirm('Are you sure you want to Move this <?=display('client')?> to <?=$enquiry_separation[$key]['title']?> ?')" style="font-size: 10px;"> Move to <?=$enquiry_separation[$key]['title']?></i>
+                        </a></li>-->
+						<li><a onclick="get_modal_move(<?=$data_type?>,<?= $enquiry->enquiry_id; ?>,<?= $key; ?>)">
+                        Move to <?=$enquiry_separation[$key]['title']?>
                         </a></li>
-                    <?php     } 
+                    <?php } 
                     }
                    }  ?>
                   </ul>
+				  
+<!---------------------------------------------Stage move popup Start------------------------------>
+<a title="Mark as <?=display('lead')?>"  data-target="#movelead" data-toggle="modal" id="movepop"></a>
+      <div id="movelead" class="modal fade" role="dialog">
+         <div class="modal-dialog">
+            <?php echo form_open_multipart('lead/any_convert_to_any','class="form-inner"') ?>
+            <!-- Modal content-->
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Select Deals and Move</h4>
+               </div>
+               <div class="modal-body" style="padding-bottom:100px;">
+                  <!--<form method="post" action="">-->
+                  <!--<?php //echo form_open_multipart('enquiry/move_to_lead','class="form-inner"') ?>   -->
+                 <div id="deal-move-content">
+				 
+                 </div>
+				    <div class="col-md-2"  id="save_button">
+                           <div class="col-md-12">                                                
+                              <button class="btn btn-primary" type="submit" >Move</button>            
+                           </div>
+                    </div>
+				
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
+      </div>
+	
+<script>
+    function get_modal_move(current,id,next){ 
+        //alert(next);
+       var cls = document.getElementById("movepop");		
+       $.ajax({
+          url: "<?php echo base_url().'lead/get_all_stage_deals'?>",
+          type: 'POST',
+          data:{current_stg:current,enq_id:id,next_stg:next},          
+          success: function(content) {                       
+            $("#deal-move-content").html(content);
+            cls.click();
+			$("#deal-move-content select").select2();
+          }
+      });
+    
+    }
+</script>
+<!---------------------------------------------stage move popup End------------------------------>
+				  
                   </div>  
                <!-- // multiple move buttons end  -->
                <a class="btn btn-danger btn-sm"  type="button" title="Drop Lead" data-target="#dropEnquiry" data-toggle="modal">
@@ -858,7 +916,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             if(user_access('1000') && $details->status!='1') //
             {  ?>
             <!-- <li href="#COMMERCIAL_INFORMATION" data-toggle="tab" >Commercial Information</li> -->
-            <li href="#COMMERCIAL_INFORMATION" data-toggle="tab">Commercial Information</li>
+            <li href="#COMMERCIAL_INFORMATION" data-toggle="tab">Deals</li>
             <?php
             }
             ?>
@@ -1778,7 +1836,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                { ?>
               <div class="tab-pane" id="COMMERCIAL_INFORMATION" >
               <p align="right">
-                <a target="_blank" href="<?=base_url('client/commercial_info/'.$details->enquiry_id)?>"><button class="btn btn-danger">Add Deal</button></a>
+                <a target="_blank" href="<?=base_url('client/commercial_info/'.$details->enquiry_id.'/'.base64_encode($data_type))?>"><button class="btn btn-danger">Add Deal</button></a>
               </p>
                   
                   <table id="deals_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
@@ -1902,6 +1960,7 @@ $(document).ready(function(){
                      // d.date_from = $("input[name=d_from_date]").val();
                      // d.date_to = $("input[name=d_to_date]").val();
                       d.enq_for = "<?=$details->enquiry_id?>";
+					  d.curr_stg = "<?=$data_type?>";
                      // d.booking_type = $("select[name=d_booking_type]").val();
                      // d.booking_branch  =  $("select[name=d_booking_branch]").val();
                      // d.delivery_branch  =  $("select[name=d_delivery_branch]").val();
