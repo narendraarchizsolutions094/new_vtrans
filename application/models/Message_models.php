@@ -112,7 +112,8 @@ class Message_models extends CI_Model
   public function sendwhatsapp($number, $message, $companey_id = '', $user_id = '')
   {
     $this->load->model('user_model');
-    $usermeta = $this->user_model->get_user_meta($this->session->user_id, array('api_name', 'api_url'));
+    $user_id = ($this->session->user_id != '') ? $this->session->user_id : $user_id;
+    $usermeta = $this->user_model->get_user_meta($user_id, array('api_name', 'api_url'));
     
     if (strlen($number) < 12) {
       $number = '91'.$number;
