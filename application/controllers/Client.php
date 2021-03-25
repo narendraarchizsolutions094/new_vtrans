@@ -8,7 +8,7 @@ class Client extends CI_Controller {
 		$this->load->library('upload');
 		$this->lang->load("activitylogmsg","english");;        
 		$this->load->model(
-                array('Ticket_Model','Leads_Model','common_model','enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models','Institute_model','Datasource_model','Taskstatus_model','dash_model','Center_model','SubSource_model','Kyc_model','Education_model','SocialProfile_model','Closefemily_model','form_model','report_model','Configuration_Model','Doctor_model','rule_model')
+                array('Ticket_Model','Leads_Model','common_model','enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models','Institute_model','Datasource_model','Taskstatus_model','dash_model','Center_model','SubSource_model','Kyc_model','Education_model','SocialProfile_model','Closefemily_model','form_model','report_model','Configuration_Model','Doctor_model','rule_model','message_models')
                 );
         if (empty($this->session->user_id)) {
             redirect('login');
@@ -2118,12 +2118,13 @@ public function visit_expense_status()
         $user_id=$this->session->user_id;
        // print_r($_POST);exit;
     foreach ($_POST['exp_ids'] as $key => $value) {
-		$visit_row = $this->db->select("enquiry.Enquery_id as comment_id")
+		$visit_row = $this->db->select("enquiry.Enquery_id as comment_id,tbl_visit.user_id as visit_creator")
                         ->from("tbl_visit")
 						->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left')
                         ->where('tbl_visit.id', $value)
                         ->get();
 			$comment_id = $visit_row->row()->comment_id;
+			$visit_creator = $visit_row->row()->visit_creator;
 			if($_POST['status']=='1'){
             $subject = 'Visit Reject'; 
 			}else{
@@ -2135,14 +2136,25 @@ public function visit_expense_status()
 		//timeline code here
 		$this->Leads_Model->add_comment_for_events_stage($subject,$comment_id,0,0,$_POST['remarks'],0);
 		//Bell botification code here
-		$assign_data_noti[]=array('create_by'=> $user_id,
-                        'subject'=>$subject,
-						'task_remark'=>$_POST['remarks'],
-                        'query_id'=>$comment_id,
-                        'task_date'=>date('d-m-Y'),
-                        'task_time'=>date('H:i:s')
-                        );
+		$assign_data_noti[]=array(
+            'create_by'=> $user_id,
+            'related_to'=> $visit_creator,
+            'subject'=>$subject,
+            'task_remark'=>$_POST['remarks'],
+            'query_id'=>$comment_id,
+            'task_date'=>date('d-m-Y'),
+            'comp_id'=>$this->session->companey_id,
+            'task_time'=>date('H:i:s')
+        );
         $this->db->insert_batch('query_response',$assign_data_noti);
+        if(!empty($visit_creator)){        
+            $user_row = $this->user_model->read_by_id($visit_creator);
+            if(!empty($user_row)){
+                $this->message_models->smssend($user_row->s_phoneno, $subject);                
+                $this->message_models->sendwhatsapp($user_row->s_phoneno, $subject);
+                $this->message_models->send_email($user_row->s_user_email, 'Visit Notification', $subject);
+            }
+        }
     }
             }
 }

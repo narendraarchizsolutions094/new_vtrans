@@ -6,7 +6,7 @@ class Enquiry extends CI_Controller
     { 
         parent::__construct();
         $this->load->model(
-            array('Leads_Model', 'setting_model', 'website/home_model', 'schedule_model', 'enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models', 'Institute_model', 'Datasource_model', 'Taskstatus_model', 'dash_model', 'Center_model', 'SubSource_model', 'Kyc_model', 'Education_model', 'SocialProfile_model', 'Closefemily_model', 'form_model', 'Doctor_model')
+            array('Leads_Model', 'setting_model', 'website/home_model', 'schedule_model', 'enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models', 'Institute_model', 'Datasource_model', 'Taskstatus_model', 'dash_model', 'Center_model', 'SubSource_model', 'Kyc_model', 'Education_model', 'SocialProfile_model', 'Closefemily_model', 'form_model', 'Doctor_model','message_models')
         );
         $this->load->library('email');
         $this->load->library('user_agent');
@@ -3342,6 +3342,23 @@ echo  $details1;
      {
         $this->load->model('Leads_Model');
         $this->Leads_Model->add_comment_for_events('Commercial Info Status Updated',$endata->Enquery_id);
+        $notimsg = '';
+        if($status == 1){
+            $notimsg = 'Deal Approved';
+        }else if($status == 2){
+            $notimsg = 'Deal Rejected';
+        }
+        if(!empty($notimsg)){
+            $this->Leads_Model->add_comment_for_events_popup('',date('d-m-Y'),'','','','',date('H:i:s'),$endata->Enquery_id,0,$notimsg,1,'',$en->createdby);
+           
+            $user_row = $this->user_model->read_by_id($en->createdby);
+            if(!empty($user_row)){
+                $this->message_models->smssend($user_row->s_phoneno, $notimsg);                
+                $this->message_models->sendwhatsapp($user_row->s_phoneno, $notimsg);
+                $this->message_models->send_email($user_row->s_user_email, 'Deal Notification', $notimsg);
+            }
+            
+        }
      }
      echo '1';
  }

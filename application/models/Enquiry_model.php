@@ -4998,7 +4998,7 @@ public function insertComInfo($data)
   public function visit_list_api($company_id,$user_id,$process,$limit=-1,$offset=-1)
   {
        $all_reporting_ids    =   $this->common_model->get_categories($user_id);
-	   print_r($all_reporting_ids);exit;
+	   //print_r($all_reporting_ids);exit;
        $where = '';
         $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
