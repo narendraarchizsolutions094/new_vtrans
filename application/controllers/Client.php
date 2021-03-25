@@ -2144,7 +2144,9 @@ public function visit_expense_status()
             }
         }
 		//Bell botification code here
-		$assign_data_noti[]=array('create_by'=> $user_id,
+		$assign_data_noti[]=array(
+                        'create_by'=> $user_id,
+                        'related_to'=> $visit_creator,
                         'subject'=>$subject,
 						'task_remark'=>$_POST['remarks'],
                         'query_id'=>$comment_id,
