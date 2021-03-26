@@ -12,12 +12,13 @@
         <?php if(user_access('1020'))  {  ?>
   <div class="col-md-4 col-sm-4 col-xs-4"> 
   </div>
-  <div class="col-md-4 col-sm-4 col-xs-4 "> 
+  <div class="col-md-4 col-sm-4 col-xs-4 ">   
   <button  style="float:right; margin-right:10px;"  data-toggle="modal" data-target="#update_remarks"  class="btn btn-primary">Update  Remarks</button>
   </div>
   <?php } ?>
 </div>
 <br>
+<p class="text-center" style="font-size:24px;">Purpose - <?=ucfirst($details->m_purpose)?></p>
 <script type="text/javascript">
 $("select").select2();
 </script>
@@ -386,35 +387,45 @@ function checkAll(ele) {
    <div class="modal-dialog">
       <!-- Modal content-->
       <div class="modal-content">
-         <div class="modal-header">
+      <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Visits</h4>
          </div>
          <div class="modal-body">
             <div class="row" >
-<form action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
-               <div class="row">
-               <div class="form-group col-md-12">
-               <label>Select Visit Type</label>
-               <div class="form-check">
-                    <label class="radio-inline">
-                    <input name="type"  name="type" value="1" type="radio" checked onclick="handleClick(this);">Current Visit</label>
-                    <label class="radio-inline">
-                    <input type="radio" name="type" value="2" onclick="handleClick(this);">Future Visit</label>
+
+<form id="visit_create_form" action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
+          <div class="row">
+                <div class="form-group col-md-12">
+                    <label>Select Visit Type</label>
+                    <div class="form-check">
+                        <label class="radio-inline">
+                        <input name="type"  name="type" value="1" type="radio" checked onclick="handleClick(this);">Current Visit</label>
+                        <label class="radio-inline">
+                        <input type="radio" name="type" value="2" onclick="handleClick(this);">Future Visit</label>
+                    </div>
+                  </div>
                 </div>
-               </div>
-               </div>
+						
+				        <div class="form-group col-md-6 visit-time col-md-6">     
+                    <label>Purpose of meeting <span class="text-danger">*</span></label>
+                    <input type="text" name="m_purpose" id="m_purpose" class="form-control" required>
+                </div>
 
                 <div class="form-group col-md-6">
-                    <label>Company</label>
-                    <select class="form-control" name="company" onchange="filter_related_to(this.value)">
+                    <label style="width:100%;">Company <span class="text-danger">*</span>
+                      <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
+                        <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
+                      </a>
+                    </label>
+                    <select class="form-control" name="company" onchange="filter_related_to(this.value)" required>
                       <option value="-1">Select</option>
                       <?php
                       if(!empty($company_list))
                       {
                         foreach ($company_list as $key =>  $row)
                         {
-                          echo '<option value="'.$key.'">'.$row->company.'</option>';
+                          echo '<option value="'.$row->id.'">'.$row->company_name.'</option>';
                         }
                       }
                       ?>
@@ -422,55 +433,48 @@ function checkAll(ele) {
                 </div>
 
                <div class="form-group col-md-6">
-                  <label>Contact Name</label>
-                  <select class="form-control" name="enquiry_id">
-                    <!-- <option value="">Select</option> -->
-                    <?php
-                  if(!empty($all_enquiry))
-                  {
-                    foreach ($all_enquiry as $row)
-                    {
-                      
-                        if($row->enquiry_id==$details->enquiry_id){
-                          $selected='selected';
-                        }else{
-                          $selected='';
+                  <label style="width: 100%">Client Name <span class="text-danger">*</span>
+                     <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
+                        <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
+                      </a>
+                    </label>
+                  <select class="form-control" name="enq_id" required>
+                    <option value="">Select</option>
+                  </select>
+               </div>
 
-                        }
-                      echo'<option value="'.$row->enquiry_id.'" '.$selected.' >'.$row->name.'</option>';
-                    }
-                  }
-                    ?>
+                <div class="form-group col-md-6">
+                  <label style="width: 100%">Contact Name <span class="text-danger">*</span>
+                    <span style="float: right; color:gray;" onclick="add_contact()">
+                    <i class="fa fa-plus"></i>
+                    </span>
+                  </label>
+                  <select class="form-control" name="contact_id" required>
+                    <option value="">Select</option>
                   </select>
                </div>
 
                 <div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
-          <input type="date" name="visit_date" id="vdate" class="form-control" value="<?= date('Y-m-d') ?>">
+          <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>" required>
         </div>
-    
         <div class="form-group col-md-6 visit-time col-md-6">     
          <label>Visit Time</label>
-          <input type="time" name="visit_time" id="vtime" class="form-control" value="<?= date('H:i') ?>">
+          <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>" required>
         </div>
-<!--     
-        <div class="form-group col-md-6 distance-travelled col-md-6">     
-        <label>Distance Travelled</label>
-           <input type="text" name="travelled" class="form-control">
-        </div> -->
-    
-      
-                  
+     
+        <input type="hidden" name="visit_notification_id" value="">
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
-               <input type="submit" name="submit_only" class="btn btn-primary" value="Save">
+               <input id="visit_create_btn" type="submit" name="submit_only" class="btn btn-primary" value="Save">
             </div>
          </div>
-          </form>
+
+</form>
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" id="close_visit" class="btn btn-default" data-dismiss="modal">Close</button>
          </div>
       </div>
    </div>
@@ -537,13 +541,13 @@ function checkAll(ele) {
             <textarea class="form-control" name="remarks" type="text" value="<?= $details->remarks ?>"><?= $details->remarks ?> </textarea>
             </div>
             </div>
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
             <div class="form-group">
             <label>Travelled Type</label>
 
             <input class="form-control" name="travelledtype" type="text" value="<?= $details->remarks ?>">
             </div>
-            </div>
+            </div> -->
             </div>
                <br>
                <button class="btn btn-sm btn-success" type="submit" >
@@ -801,5 +805,27 @@ for (var i = 0; i < checkboxes.length; i++) {
 }
 
 }
+function filter_related_to(v)
+{
+      $.ajax({
+            url:"<?=base_url('client/account_by_company')?>",
+            type:'get',
+            data:{comp_id:v},
+            success:function(q){
+              $("select[name=enq_id]").html(q);
+               $("select[name=enq_id]").trigger('change');
+            }
+      });
+    
+       $.ajax({
+            url:"<?=base_url('client/contact_by')?>",
+            type:'get',
+            data:{key:v,by:'company'},
+            success:function(q){
+              $("select[name=contact_id]").html(q);
+               $("select[name=contact_id]").trigger('change');
+            }
+      });
+  }
 
   </script>
