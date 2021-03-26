@@ -84,7 +84,7 @@ class Enq extends CI_Controller
 
 	public function enq_load_data()
 	{
-		//print_r($key);exit();	
+		//print_r($_POST['data_type']);exit();	
 		$this->load->model('enquiry_datatable_model');
 		$list = $this->enquiry_datatable_model->get_datatables();
 
@@ -114,13 +114,13 @@ class Enq extends CI_Controller
 			$row = array();
 			$row[] = "<input onclick='event.stopPropagation();'' type='checkbox' name='enquiry_id[]'' class='checkbox1' value=" . $each->enquiry_id . ">";
 			if ($_POST['data_type'] == 1) {
-				$url = base_url('enquiry/view/') . $each->enquiry_id;
+				$url = base_url('enquiry/view/') . $each->enquiry_id.'/'.base64_encode($_POST['data_type']);
 			} else if ($_POST['data_type'] == 2) {
-				$url = base_url('lead/lead_details/') . $each->enquiry_id;
+				$url = base_url('lead/lead_details/') . $each->enquiry_id.'/'.base64_encode($_POST['data_type']);
 			} else if ($_POST['data_type'] == 3) {
-				$url = base_url('client/view/') . $each->enquiry_id;
+				$url = base_url('client/view/') . $each->enquiry_id.'/'.base64_encode($_POST['data_type']);
 			} else {
-				$url = base_url('client/view/') . $each->enquiry_id . '?stage=' . $_POST['data_type'];
+				$url = base_url('client/view/') . $each->enquiry_id.'/'.base64_encode($_POST['data_type']);
 			}
 			$row[] = '<a href="' . $url . '">' . $no/*$each->enquiry_id*/ . '</a>';
 			if ($showall == true or in_array(1, $acolarr)) {

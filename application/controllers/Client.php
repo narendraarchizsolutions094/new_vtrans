@@ -219,7 +219,7 @@ class Client extends CI_Controller {
         $enq['enquiry_id'] = $enquiry_id;
         $data['all_contact']= $this->Client_Model->getContactList()->result();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
-        	
+        $data['data_type'] = base64_decode($this->uri->segment(4));	
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);
@@ -2613,10 +2613,14 @@ public function all_update_expense_status()
 
         $data['title'] = 'Add Deal';
 		$en_id = $this->db->select("enquiry_id")->from("enquiry")->where('Enquery_id', $enquiry_id)->get()->row();
-		if(empty($keyword)){
+		if($keyword!='by_deals'){
+			$data_type = base64_decode($keyword);
 			$lead_id = $enquiry_id;
+			$by = 0;
 		}else{
 			$lead_id = $en_id->enquiry_id;
+			$data_type = '';
+			$by = $keyword;
 		}
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($lead_id);
         $data['branch'] = $this->Branch_model->branch_list()->result();
@@ -2628,6 +2632,7 @@ public function all_update_expense_status()
                                         ->get()->row();
         $data['max_discount'] = !empty($dis)?$dis->discount:100;
         $data['by'] = $by;
+		$data['data_type'] = $data_type;
         $data['content'] = $this->load->view('enquiry/add_deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -2648,6 +2653,8 @@ public function all_update_expense_status()
             $dtype = $this->input->post('dtype');
             $enquiry_id = $this->input->post('enq_for');
             $deal_id= $this->input->post('deal_id')??0;
+			
+			$stage_for = $this->input->post('stage_for');
 			//print_r($deal_id);exit;
             $deal_data = $this->Branch_model->get_deal($deal_id);
            
@@ -3143,7 +3150,7 @@ public function all_update_expense_status()
                     }
                 }				
 			}	
-				
+				echo'<input name="current_stage" value="'.$stage_for.'" type="hidden">';
                 echo'</div>
                 <div style="padding:15px;">
                     <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Save</button>';
@@ -3173,6 +3180,7 @@ public function all_update_expense_status()
 		//print_r($oc);exit;
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
+		$enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
         $deal = array(
                     'enquiry_id'=>$this->input->post('enquiry_id'),
                     'deal_type'=>$this->input->post('deal_type'),
@@ -3183,11 +3191,10 @@ public function all_update_expense_status()
                     'createdby'=>$this->session->user_id,
                     'comp_id'=>$this->session->companey_id,
                     'other_charges'=>$oc,
+					'stage_id'=>$this->input->post('current_stage'),
                     'status'=>'0',
                     );
-
-        $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
-
+//print_r($enq->status);exit;
         if(!empty($deal_id))
         {   
             $edit = $this->input->post('edited');

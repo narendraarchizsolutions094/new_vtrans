@@ -8,9 +8,41 @@ class Deals extends REST_Controller {
   {
       parent::__construct();
       $this->load->library('form_validation');
-	  $this->load->model(array('enquiry_model','common_model'));
+	  $this->load->model(array('enquiry_model','common_model','Leads_Model'));
   }
 
+  //================= Only for Deal List==================
+   public function stage_deals_list_post()
+    {
+      $current_stg = $this->input->post('current_stg');
+      $enq_id = $this->input->post('enq_id');
+
+      $all_deals_lists = $this->Leads_Model->dealstagelist($enq_id,$current_stg); 
+		//print_r($all_deals_lists);exit;
+
+          if(!empty($all_deals_lists))
+          {
+            $res= array();
+            foreach($all_deals_lists as $deals)
+            {
+			  $deal_name = $deals->client_name.' '.'['.$deals->booking_type.']['.$deals->business_type.']';
+			  array_push($res,array('id'=>$deals->id,'name'=>$deal_name));
+            } 
+            $this->set_response([
+                'status' => TRUE,
+                'data' =>$res
+                 ], REST_Controller::HTTP_OK);
+          }   
+		else
+         {
+	    
+	        $this->set_response([
+	          'status' => false,
+	          'msg' =>'not found'
+	          ], REST_Controller::HTTP_OK);
+	      }
+    }
+  //================= Only for Deal List==================
   //================= Only for V-trans==================
   	public function deals_list_page_post()
     {

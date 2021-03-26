@@ -441,7 +441,7 @@ $(document).ready(function() {
                 am4core.useTheme(am4themes_animated);
                 // Themes end                // Create chart instance
                 var chart = am4core.create("chartdiv1", am4charts.XYChart);
-                chart.scrollbarX = new am4core.Scrollbar(); // Add data
+                //chart.scrollbarX = new am4core.Scrollbar(); // Add data
                 chart.data = response // Create axes
                 var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
                 categoryAxis.dataFields.category = "name";
@@ -450,7 +450,7 @@ $(document).ready(function() {
                 categoryAxis.renderer.labels.template.horizontalCenter = "right";
                 categoryAxis.renderer.labels.template.verticalCenter = "middle";
                 categoryAxis.renderer.labels.template.rotation = 270;
-                categoryAxis.tooltip.disabled = true;
+                //categoryAxis.tooltip.disabled = true;
                 categoryAxis.renderer.minHeight = 110;
                 var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
                 valueAxis.renderer.minWidth = 50; // Create series
@@ -462,16 +462,18 @@ $(document).ready(function() {
                 series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
                 series.columns.template.strokeWidth = 0;
                 series.columns.template.showTooltipOn = "always";
+                series.columns.template.tooltipText =
+                    "{categoryX}: [bold]{valueY}[/]";
                 series.tooltip.pointerOrientation = "vertical";
                 series.columns.template.column.cornerRadiusTopLeft = 10;
                 series.columns.template.column.cornerRadiusTopRight = 10;
                 series.columns.template.column.fillOpacity =
                     0.8; // on hover, make corner radiuses bigger
-                var hoverState = series.columns.template.column.states.create(
-                    "hover");
-                hoverState.properties.cornerRadiusTopLeft = 0;
-                hoverState.properties.cornerRadiusTopRight = 0;
-                hoverState.properties.fillOpacity = 1;
+                // var hoverState = series.columns.template.column.states.create(
+                //     "hover");
+                // hoverState.properties.cornerRadiusTopLeft = 0;
+                // hoverState.properties.cornerRadiusTopRight = 0;
+                // hoverState.properties.fillOpacity = 1;
                 series.columns.template.adapter.add("fill", function(fill, target) {
                     return chart.colors.getIndex(target.dataItem.index);
                 }); // Cursor
@@ -678,7 +680,8 @@ $(document).ready(function() {
                 series.columns.template.column.cornerRadiusTopLeft = 10;
                 series.columns.template.column.cornerRadiusTopRight = 10;
                 series.columns.template.column.fillOpacity = 0.8;
-                series.columns.template.showTooltipOn = "always";
+                //series.columns.template.showTooltipOn = "always";
+                //series.columns.template.tooltipText ="{valueY}[/]";
                 // on hover, make corner radiuses bigger
                 var hoverState = series.columns.template.column.states.create(
                     "hover");
@@ -737,6 +740,7 @@ $(document).ready(function() {
                     series.name = name;
                     series.tooltipText = "{name}: [bold]{valueY}[/]";
                     //series.columns.template.showTooltipOn = "always";
+                    //series.columns.template.tooltipText ="{valueY}[/]";
                     series.tensionX = 0.8;
                     series.showOnInit = true;
                     var interfaceColors = new am4core.InterfaceColorSet();
@@ -748,7 +752,6 @@ $(document).ready(function() {
                             bullet.height = 12;
                             bullet.horizontalCenter = "middle";
                             bullet.verticalCenter = "middle";
-                            bullet.showTooltipOn = "always";
                             var triangle = bullet.createChild(am4core.Triangle);
                             triangle.stroke = interfaceColors.getFor("background");
                             triangle.strokeWidth = 2;
@@ -763,7 +766,6 @@ $(document).ready(function() {
                             bullet.height = 10;
                             bullet.horizontalCenter = "middle";
                             bullet.verticalCenter = "middle";
-                            bullet.showTooltipOn = "always";
                             var rectangle = bullet.createChild(am4core.Rectangle);
                             rectangle.stroke = interfaceColors.getFor("background");
                             rectangle.strokeWidth = 2;
@@ -775,10 +777,11 @@ $(document).ready(function() {
                                 .CircleBullet());
                             bullet.circle.stroke = interfaceColors.getFor(
                                 "background");
-                            bullet.circle.strokeWidth = 2;
-                            bullet.showTooltipOn = "always";
+                            bullet.circle.strokeWidth = 2;                           
                             break;
                     }
+                    //bullet.showTooltipOn = "always";
+                    //bullet.tooltipText = "{valueY}[/]";
                     valueAxis.renderer.line.strokeOpacity = 1;
                     valueAxis.renderer.line.strokeWidth = 2;
                     valueAxis.renderer.line.stroke = series.stroke;
@@ -814,7 +817,7 @@ $(document).ready(function() {
 
                 // Create chart instance
                 var chart = am4core.create("chartdiv5", am4charts.XYChart);
-                chart.scrollbarX = new am4core.Scrollbar();
+                //chart.scrollbarX = new am4core.Scrollbar();
 
                 // Add data
                 chart.data = response;
@@ -827,7 +830,7 @@ $(document).ready(function() {
                 categoryAxis.renderer.labels.template.horizontalCenter = "right";
                 categoryAxis.renderer.labels.template.verticalCenter = "middle";
                 categoryAxis.renderer.labels.template.rotation = 270;
-                categoryAxis.tooltip.disabled = true;
+                //categoryAxis.tooltip.disabled = true;
                 categoryAxis.renderer.minHeight = 110;
 
                 var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
@@ -843,20 +846,25 @@ $(document).ready(function() {
 
                 series.tooltip.pointerOrientation = "vertical";
 
+
+
+                series.columns.template.tooltipText = "{categoryX}\n[bold]{valueY}[/]";
+                series.columns.template.showTooltipOn = "always";
+
                 series.columns.template.column.cornerRadiusTopLeft = 10;
                 series.columns.template.column.cornerRadiusTopRight = 10;
                 series.columns.template.column.fillOpacity = 0.8;
 
                 // on hover, make corner radiuses bigger
-                var hoverState = series.columns.template.column.states.create(
-                    "hover");
-                hoverState.properties.cornerRadiusTopLeft = 0;
-                hoverState.properties.cornerRadiusTopRight = 0;
-                hoverState.properties.fillOpacity = 1;
+                // var hoverState = series.columns.template.column.states.create(
+                //     "hover");
+                // hoverState.properties.cornerRadiusTopLeft = 0;
+                // hoverState.properties.cornerRadiusTopRight = 0;
+                // hoverState.properties.fillOpacity = 1;
 
-                series.columns.template.adapter.add("fill", function(fill, target) {
-                    return chart.colors.getIndex(target.dataItem.index);
-                });
+                // series.columns.template.adapter.add("fill", function(fill, target) {
+                //     return chart.colors.getIndex(target.dataItem.index);
+                // });
 
                 // Cursor
                 chart.cursor = new am4charts.XYCursor();
