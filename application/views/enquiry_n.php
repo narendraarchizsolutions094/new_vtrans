@@ -671,6 +671,7 @@ display: block;
                       </div>                   
                       <?php
                       }
+                      ?>
 
                       <div class="form-group col-md-3" id="probabilityfilter">
                         <label for="">Probability</label> 
