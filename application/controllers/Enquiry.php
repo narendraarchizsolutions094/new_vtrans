@@ -4024,4 +4024,24 @@ echo  $details1;
         }
 
     }
+
+    public function lead_summary_pie($enquiry_code,$enquiry_id){
+        $data = array();
+        $this->db->where('comp_id',$this->session->companey_id);
+        $this->db->where('enquiry_id',$enquiry_id);        
+        $visit_count = $this->db->count_all_results('tbl_visit');
+
+
+        
+        $this->db->where('query_id',$enquiry_code);        
+        $task_count = $this->db->count_all_results('query_response');
+
+        $this->db->where('comp_id',$this->session->companey_id);
+        $this->db->where('enquiry_id',$enquiry_id);        
+        $deals_count = $this->db->count_all_results('commercial_info');
+
+        $data['feed']  = json_encode(array(array('Visit',$visit_count),array('Deals',$deals_count),array('Task',$task_count)));
+
+        $this->load->view('enquiry/lead_summary_pie',$data);
+    }
 }

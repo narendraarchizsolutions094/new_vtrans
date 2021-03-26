@@ -829,6 +829,10 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                  <?php echo form_close()?>
               </div>         
             </div>
+            <div style="margin:-14px;">
+               <iframe src="<?=base_url().'enquiry/lead_summary_pie/'.$details->Enquery_id.'/'.$details->enquiry_id?>" width="100%" height="100%" style="border:none;">
+               </iframe>
+            </div>
       </div>
 
           <style type="text/css">
