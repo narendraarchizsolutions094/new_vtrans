@@ -3998,4 +3998,28 @@ echo  $details1;
         $abc = array_column($res,'company_name');
         echo json_encode($abc);
     }
+    public function mark_tag(){        
+        $this->form_validation->set_rules('enquiry_id[]','Data','required');
+        $this->form_validation->set_rules('tags[]','Tags','required');
+        
+        if($this->form_validation->run() == true){
+            $enq = $this->input->post('enquiry_id[]');
+            $tags = implode(',',$this->input->post('tags[]'));
+
+            foreach ($enq as $key => $value) {
+                if($this->db->where('enq_id',$value)->count_all_results('enquiry_tags')){
+                    $this->db->where('comp_id',$this->session->companey_id);
+                    $this->db->where('enq_id',$value);
+                    $this->db->set('tag_ids',$tags);
+                    $this->db->update('enquiry_tags');
+                }else{
+                    $this->db->insert('enquiry_tags',array('comp_id'=>$this->session->companey_id,'enq_id'=>$value,'tag_ids'=>$tags));
+                }
+            }
+            echo json_encode(array('status'=>true,'msg' =>'Tag marked successfully'));
+        }else{
+            echo json_encode(array('status'=>false,'msg' =>validation_errors()));
+        }
+
+    }
 }

@@ -70,6 +70,7 @@ class Enq extends CI_Controller
 
        //$data['table_config_list'] = $list;
         $this->load->model('Branch_model');
+		$data['tags'] = $this->enquiry_model->get_tags();
         $data['branch_lists']=$this->Branch_model->all_sales_branch();
 		$data['region_lists']=$this->Branch_model->all_sales_region();
 		$data['area_lists']=$this->Branch_model->all_sales_area();
@@ -167,7 +168,18 @@ class Enq extends CI_Controller
 			}
 
 			if ($showall == true or in_array(3, $acolarr)) {
-				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname. '</a>';
+				$thtml = '';
+				if(!empty($each->tag_ids)){
+					$this->db->select('title,color');
+					$this->db->where("id IN(".$each->tag_ids.")");
+					$tags = $this->db->get('tags')->result_array();
+					if(!empty($tags)){
+						foreach ($tags as $key => $value) {
+							$thtml .= '<br><a class="badge" href="javascript:void(0)" style="background:'.$value['color'].';padding:4px;">'.$value['title'].'</a>';
+						}
+					}
+				}
+				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname. '</a>'.$thtml;
 			}
 			if ($showall == true or in_array(4, $acolarr)) {
 				$row[] = (!empty($each->email)) ? $each->email : "NA";

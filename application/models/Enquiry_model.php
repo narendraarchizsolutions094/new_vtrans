@@ -4995,6 +4995,13 @@ public function insertComInfo($data)
 
   }
 
+  public function get_tags(){
+    $this->db->select("tags.*,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name");
+    $this->db->where('comp_id',$this->session->companey_id);
+    $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tags.created_by');
+    return  $this->db->get('tags')->result_array();
+}
+
   public function visit_list_api($company_id,$user_id,$process,$limit=-1,$offset=-1)
   {
        $all_reporting_ids    =   $this->common_model->get_categories($user_id);

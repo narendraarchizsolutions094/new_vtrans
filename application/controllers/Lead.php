@@ -2910,6 +2910,32 @@ public function get_all_stage_deals() {
         echo $opt;
         // exit();
     }
+
+    public function delete_tag($id){
+        $this->db->where('id',$id);
+        $this->db->delete('tags');
+        $this->session->set_flashdata('message', 'Tag Deleted Successfully');
+        redirect('lead/tags');
+    }
+    public function tags(){               
+        if (!empty($_POST)) {            
+            $title = $this->input->post('title');
+            $data = array(
+                'title' => $title,
+                'comp_id' => $this->session->userdata('companey_id'),
+                'color' => $this->input->post('color'),
+                'created_by' => $this->session->user_id,
+            );
+            $insert_id = $this->db->insert('tags',$data);
+            $this->session->set_flashdata('message', 'Tag Added Successfully');
+            redirect('lead/tags');
+        }
+        $data['title'] = 'Tags List';
+        $data['tags'] = $this->enquiry_model->get_tags();
+        $data['content'] = $this->load->view('tags_list', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+
     public function add_course()
     {
         $data['title'] = display('add_course');

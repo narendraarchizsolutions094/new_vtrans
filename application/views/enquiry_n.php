@@ -241,6 +241,16 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="probability" id="probabilitycheckbox" name="filter_checkbox"> Probability</label>
                     </li> 
+                    <?php
+                    if(user_access(1070)){
+                    ?>  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="tag" id="tagcheckbox" name="filter_checkbox"> Tag</label>
+                    </li> 
+                    <?php
+                    }
+                    ?>
                     <?php if(!empty($aging_rule)){ ?>
                     <li>
                       <label>
@@ -348,7 +358,10 @@ input[name=lead_stages]{
                 <a class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;" href="<?=base_url().'lead/datasourcelist'?>"><?php echo display('datasource_management'); ?></a>      
             <?php
               }
-?>           
+              if(user_access(1070)){
+                ?> 
+                  <a class="btn" data-toggle="modal" data-target="#tagas" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo 'Tag AS'; ?></a>   
+                  <?php } ?>   
               <a class="btn" data-toggle="modal" data-target="#deleteselected" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff; display: none;"><?php echo 'Delete Data'; ?></a>                         
             </div>                                         
           </div>  
@@ -639,6 +652,26 @@ display: block;
                               <?php } ?>
                         </select>
                       </div>
+
+
+                      <?php
+                      if(user_access(1070)){
+                      ?>
+                      <div class="form-group col-md-3" id="tagfilter">
+                        <label for="">Tag</label> 
+                        <select name="tag" class="form-control">
+                          <option value="">Select</option>
+                          <?php 
+                          if(!empty($tags)){
+                            foreach ($tags as $t=>$tag) {  ?>
+                              <option value="<?=$tag['id']?>"  <?php if(!empty($filterData['tag']) && $tag['id']==$filterData['tag']) {echo 'selected';}?>><?php echo $tag['title']; ?></option>
+                              <?php } 
+                          } ?>
+                        </select>
+                      </div>                   
+                      <?php
+                      }
+                      ?>
 
                       <div class="form-group col-md-3" id="probabilityfilter">
                         <label for="">Probability</label> 
@@ -957,6 +990,55 @@ display: block;
     </div>
   </div>
 </div>
+
+
+
+<?php
+  if(user_access(1070)){
+  ?>
+
+<div id="tagas" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Mark Tag to selected data</h4>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+               <div class="form-group col-sm-12">
+                  <label>Select Tag</label>                  
+                  <select class="multiple-select"  name="tags[]" multiple>
+                     <?php 
+                     if(!empty($tags)){
+                      foreach ($tags as $tag) {   ?>
+                      <option value="<?php echo $tag['id'];?>">
+                          <?php echo $tag['title']; ?>
+                      </option>
+                      <?php } 
+                     }
+                     ?>                                             
+                  </select>
+               </div>
+            </div>
+            
+            <div class="col-12" style="padding: 0px;">
+               <div class="row">
+                  <div class="col-12" style="text-align:center;">                                                
+                     <button class="btn btn-success" type="button" onclick="mark_tag()">Save</button>            
+                  </div>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+   </div>
+</div>
+
+<?php
+  }
+  ?>
 
 
         
@@ -2284,6 +2366,15 @@ if (!enq_filters.includes('aging_rule')) {
   $("input[value='aging_rule']").prop('checked', true);
 }
 
+
+if (!enq_filters.includes('tag')) {
+  $('#tagfilter').hide();
+}else{
+  $('#tagfilter').show();
+  $("input[value='tag']").prop('checked', true);
+}
+
+
 if (!enq_filters.includes('visit_wise')) {
   $('#visit_wisefilter').hide();
 }else{
@@ -2340,7 +2431,7 @@ if (!enq_filters.includes('industries')) {
 }
 
 $('input[name="filter_checkbox"]').click(function(){  
-  if($('#datecheckbox').is(":checked")||$('#empcheckbox').is(":checked")||$('#sourcecheckbox').is(":checked")||
+  if($('#datecheckbox').is(":checked")||$('#empcheckbox').is(":checked") ||$('#tagcheckbox').is(":checked")|| $('#sourcecheckbox').is(":checked")||
   $('#subsourcecheckbox').is(":checked")||$('#emailcheckbox').is(":checked")||$('#companycheckbox').is(":checked")||
   $('#phonecheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||$('#addcheckbox').is(":checked")||
   $('#stageheckbox').is(":checked")||$('#prodcheckbox').is(":checked")||$('#statecheckbox').is(":checked")||
@@ -2472,6 +2563,16 @@ $('#buttongroup').hide();
        else{
          $('#prodfilter').hide();
        }
+
+       if($('#tagcheckbox').is(":checked")){
+          $('#tagfilter').show();
+       }
+       else{
+         $('#tagfilter').hide();
+       } 
+
+
+
       if($('#statecheckbox').is(":checked")){
         $('#statefilter').show();
       }
@@ -2761,3 +2862,38 @@ $("#filtered_branch").trigger("change");
     </div>
   </div>
 </div>
+<script>
+$('.multiple-select').select2();
+
+function mark_tag(){
+    var form_data = $("#enquery_assing_from").serialize();       
+    console.log(form_data);
+    $.ajax({
+      url: '<?=base_url()?>enquiry/mark_tag',
+      type: 'post',
+      data: form_data,
+      success: function(responseData){
+        res = JSON.parse(responseData);
+        if(res.status){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Tags Marked',
+            showConfirmButton: false,
+            timer: 500
+          });
+          $('#enq_table').DataTable().ajax.reload();   
+        }else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: res.msg,
+            showConfirmButton: true,
+            //timer: 1500
+          });
+        }
+      }
+    });
+  }
+  
+</script>

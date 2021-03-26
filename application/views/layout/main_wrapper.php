@@ -1292,9 +1292,20 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             <?php  
                         } 
                     }
-                        ?>
+                        
 
+                        
+                        if(user_access(1071)){                        
+                        ?>
+                        <li class="<?php echo (in_array($segment2,array('tags')) ?"active":'') ?>">
+                            <a href="<?php echo base_url() ?>lead/tags">
+                                <?php echo 'Tags List';?>
+                            </a>
+                        </li>
                             <?php
+                        }
+
+                        
                         //if ($this->session->companey_id == 65) {
                              $segment2 = str_replace('-', '_',$segment2);
                         ?>
