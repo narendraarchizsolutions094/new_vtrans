@@ -72,6 +72,9 @@ Highcharts.chart('container', {
       innerSize: 25,
       depth: 17,
       size: '28%',
+      dataLabels: {
+        distance: '12%'
+      }
     }
   },
   exporting: {
