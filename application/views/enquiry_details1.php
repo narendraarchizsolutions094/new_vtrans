@@ -829,7 +829,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                  <?php echo form_close()?>
               </div>         
             </div>
-            <div style="margin:-14px;">
+            <div style="margin:-14px;">               
                <iframe src="<?=base_url().'enquiry/lead_summary_pie/'.$details->Enquery_id.'/'.$details->enquiry_id?>" width="100%" height="100%" style="border:none;">
                </iframe>
             </div>
@@ -3072,8 +3072,10 @@ if (document.getElementById('agg_same').checked)
          <span class="toogle-timeline badge badge-danger pull-right" data-vis="1"><i class="fa fa-caret-right"></i></span>
         <div class="col-md-3 col-xs-12 col-sm-12 col-height timeline"> 
 
-           <h3 class="text-center">Activity Timeline</h3>
+           <h3 class="text-center">Activity Timeline
+           </h3>
            <hr>
+           <p  class="text-center" style="font-size: 10px;margin-top:-20px;"><?='Created '.get_time_ago(strtotime($details->enq_created_date))?></p>
            <div class="activitytimelinediv"></div>
             
         </div>
@@ -4147,6 +4149,34 @@ $(function () {
       </div>
    </div>
 </div>
+
+
+<?php
+function get_time_ago( $time )
+{
+    $time_difference = time() - $time;
+
+    if( $time_difference < 1 ) { return 'less than 1 second ago'; }
+    $condition = array( 12 * 30 * 24 * 60 * 60 =>  'year',
+                30 * 24 * 60 * 60       =>  'month',
+                24 * 60 * 60            =>  'day',
+                60 * 60                 =>  'hour',
+                60                      =>  'minute',
+                1                       =>  'second'
+    );
+
+    foreach( $condition as $secs => $str )
+    {
+        $d = $time_difference / $secs;
+
+        if( $d >= 1 )
+        {
+            $t = round( $d );
+            return 'about ' . $t . ' ' . $str . ( $t > 1 ? 's' : '' ) . ' ago';
+        }
+    }
+}
+?>
 <!----------------------------------------------------------chat section ---------------------------------------------------------->
 		 
 		 <!--chat start---->
