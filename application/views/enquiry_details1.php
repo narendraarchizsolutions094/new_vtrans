@@ -3075,7 +3075,7 @@ if (document.getElementById('agg_same').checked)
            <h3 class="text-center">Activity Timeline
            </h3>
            <hr>
-           <p  class="text-center" style="font-size: 10px;margin-top:-20px;"><?='Created '.get_time_ago(strtotime($details->created_date))?></p>
+           <p  class="text-center" style="font-size: 10px;margin-top:-20px;"><?='Created '.get_time_ago(strtotime($details->enq_created_date))?></p>
            <div class="activitytimelinediv"></div>
             
         </div>
