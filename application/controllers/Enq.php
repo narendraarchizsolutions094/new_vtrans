@@ -70,6 +70,7 @@ class Enq extends CI_Controller
 
        //$data['table_config_list'] = $list;
         $this->load->model('Branch_model');
+		$data['tags'] = $this->enquiry_model->get_tags();
         $data['branch_lists']=$this->Branch_model->all_sales_branch();
 		$data['region_lists']=$this->Branch_model->all_sales_region();
 		$data['area_lists']=$this->Branch_model->all_sales_area();

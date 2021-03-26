@@ -48,6 +48,7 @@ class Client extends CI_Controller {
             $data['title'] = display('Client');
             $data['data_type'] = 3;
         }
+        $data['tags'] = $this->enquiry_model->get_tags();
         $data['all_stage_lists'] = $this->Leads_Model->get_leadstage_list_byprocess1($this->session->process,array(1,2,3));
         $data['filterData'] = $this->Ticket_Model->get_filterData(1); 
         $data['aging_rule'] = $this->rule_model->get_rules(array(11));
