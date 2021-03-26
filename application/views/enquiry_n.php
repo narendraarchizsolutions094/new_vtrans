@@ -241,6 +241,16 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="probability" id="probabilitycheckbox" name="filter_checkbox"> Probability</label>
                     </li> 
+                    <?php
+                    if(user_access(1070)){
+                    ?>  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="tag" id="tagcheckbox" name="filter_checkbox"> Tag</label>
+                    </li> 
+                    <?php
+                    }
+                    ?>
                     <?php if(!empty($aging_rule)){ ?>
                     <li>
                       <label>
@@ -2336,6 +2346,15 @@ if (!enq_filters.includes('aging_rule')) {
   $("input[value='aging_rule']").prop('checked', true);
 }
 
+
+if (!enq_filters.includes('tag')) {
+  $('#tagfilter').hide();
+}else{
+  $('#tagfilter').show();
+  $("input[value='tag']").prop('checked', true);
+}
+
+
 if (!enq_filters.includes('visit_wise')) {
   $('#visit_wisefilter').hide();
 }else{
@@ -2392,7 +2411,7 @@ if (!enq_filters.includes('industries')) {
 }
 
 $('input[name="filter_checkbox"]').click(function(){  
-  if($('#datecheckbox').is(":checked")||$('#empcheckbox').is(":checked")||$('#sourcecheckbox').is(":checked")||
+  if($('#datecheckbox').is(":checked")||$('#empcheckbox').is(":checked") ||$('#tagcheckbox').is(":checked")|| $('#sourcecheckbox').is(":checked")||
   $('#subsourcecheckbox').is(":checked")||$('#emailcheckbox').is(":checked")||$('#companycheckbox').is(":checked")||
   $('#phonecheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||$('#addcheckbox').is(":checked")||
   $('#stageheckbox').is(":checked")||$('#prodcheckbox').is(":checked")||$('#statecheckbox').is(":checked")||
@@ -2524,6 +2543,16 @@ $('#buttongroup').hide();
        else{
          $('#prodfilter').hide();
        }
+
+       if($('#tagcheckbox').is(":checked")){
+          $('#tagfilter').show();
+       }
+       else{
+         $('#tagfilter').hide();
+       } 
+
+
+       
       if($('#statecheckbox').is(":checked")){
         $('#statefilter').show();
       }
