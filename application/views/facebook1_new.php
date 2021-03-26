@@ -16,7 +16,7 @@
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 
-  function subscribeApp(page_id, page_access_token) {
+  function subscribeApp(page_id, page_access_token) { 
     console.log('Subscribing page to app! ' + page_id);
        console.log('Subscribing page to app! ' + page_access_token);
     FB.api(
