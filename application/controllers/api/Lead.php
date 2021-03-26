@@ -446,8 +446,11 @@ class Lead extends REST_Controller {
       }
        public function lead_stage_post()
         {
-		 $comp=$this->input->post('company_id');	
-         $data['lead_stages'] = $this->Leads_Model->find_stage_api($comp);
+		 $comp=$this->input->post('company_id');
+		 $pro_id=$this->input->post('process_id');
+		 $stg_id=$this->input->post('stage_id');
+		 
+         $data['lead_stages'] = $this->Leads_Model->find_stage_api($comp,$pro_id,$stg_id);
          $stages=array();
          foreach($data['lead_stages']  as $value){
            array_push($stages,array('stg_id'=>$value->stg_id,'stg_name'=>$value->lead_stage_name));

@@ -322,6 +322,7 @@ function generate_table()
 	var btype = $("select[name=btype]").val();
 	var dtype = $("select[name=dtype]").val();
 	var enq_for = $("input[name=for]").val();
+	var stage_for = "<?=$data_type?>";
 //alert('d');
 	if(blist.length==0 || dlist.length==0)
 	{
@@ -352,6 +353,7 @@ function generate_table()
 				dtype:dtype,
 				enq_for:enq_for,
 				deal_id:deal_id,
+				stage_for:stage_for
 			},
 		beforeSend:function()
 		{

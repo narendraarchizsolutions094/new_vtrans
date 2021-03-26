@@ -3220,6 +3220,7 @@ public function all_update_expense_status()
                     $deal['copy_id'] = $ddata->copy_id;
                     $this->db->delete('commercial_info');
                 }
+				$deal['stage_id']=$this->input->post('current_stage');
                 $deal_id = $this->Branch_model->add_deal($deal);
                 $this->Leads_Model->add_comment_for_events_stage('Deal Updated.',$enq->Enquery_id,0,0,$remark,0);
             }
@@ -3234,7 +3235,7 @@ public function all_update_expense_status()
         }
         else
         {
-			$deal['stage_id']=$this->input->post('current_stage') ;
+			$deal['stage_id']=$this->input->post('current_stage');
             $deal_id = $this->Branch_model->add_deal($deal);
 			//$this->db->set('status','3');
 			//$this->db->where('enquiry_id',$this->input->post('enquiry_id'));

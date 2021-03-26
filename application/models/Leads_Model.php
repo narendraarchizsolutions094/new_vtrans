@@ -1281,10 +1281,12 @@ public function all_description($diesc) {
     /******************************************************alert popup code*****************************************************/
      /******************************************************start api*****************************************************/
 	 
-	function find_stage_api($comp) {
+	function find_stage_api($comp,$pro_id='',$stg_id='') {
         $this->db->select(" * ");
         $this->db->from('lead_stage');
 		$this->db->where('comp_id',$comp);
+		$this->db->where('FIND_IN_SET('.$pro_id.', process_id)');
+		$this->db->where('FIND_IN_SET('.$stg_id.', stage_for)');
         $query = $this->db->get();
         return $query->result();
     }

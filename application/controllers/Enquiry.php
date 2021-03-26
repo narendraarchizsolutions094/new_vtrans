@@ -3907,7 +3907,11 @@ echo  $details1;
             $part2 = "";
             if(user_access('1002'))
             {
+				if(!empty($_POST['curr_stg'])){
 				$current_stg = base64_encode($_POST['curr_stg']);
+				}else{
+					$current_stg ='';
+				}
 				if($value->status!='1' && $value->approval!='approve'){
                 $part2.= "
                 <a  class='btn btn-xs  btn-primary' href='".base_url('client/edit_commercial_info/').$value->id.'/'.$current_stg."' ><i class='fa fa-edit'></i></a>";
