@@ -653,6 +653,25 @@ display: block;
                         </select>
                       </div>
 
+
+                      <?php
+                      if(user_access(1070)){
+                      ?>
+                      <div class="form-group col-md-3" id="tagfilter">
+                        <label for="">Tag</label> 
+                        <select name="tag" class="form-control">
+                          <option value="">Select</option>
+                          <?php 
+                          if(!empty($tags)){
+                            foreach ($tags as $t=>$tag) {  ?>
+                              <option value="<?=$tag['id']?>"  <?php if(!empty($filterData['tag']) && $tag['id']==$filterData['tag']) {echo 'selected';}?>><?php echo $tag['title']; ?></option>
+                              <?php } 
+                          } ?>
+                        </select>
+                      </div>                   
+                      <?php
+                      }
+
                       <div class="form-group col-md-3" id="probabilityfilter">
                         <label for="">Probability</label> 
                         <select name="probability" class="form-control">
@@ -2552,7 +2571,7 @@ $('#buttongroup').hide();
        } 
 
 
-       
+
       if($('#statecheckbox').is(":checked")){
         $('#statefilter').show();
       }
