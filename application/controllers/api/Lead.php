@@ -546,10 +546,11 @@ class Lead extends REST_Controller {
         $this->form_validation->set_rules('enquiry_code[]','Enquery Code' ,'required');
         $this->form_validation->set_rules('user_id','User Id' ,'required');
         $this->form_validation->set_rules('status','Status');
-		$this->form_validation->set_rules('deal_id[]','Deal');
+		$this->form_validation->set_rules('deals_id[]','Deal');
 
         if($this->form_validation->run() == true){
             $move_enquiry=$this->input->post('enquiry_code[]');
+			$move_deals=$this->input->post('deals_id[]');
             $status=$this->input->post('status');
            if($status==''){
              $status=3;
@@ -604,6 +605,12 @@ class Lead extends REST_Controller {
                     if(!empty($other[$status]))
                       $msg = 'Moved to '.$other[$status];
                 }
+				
+				foreach($move_deals as $key=>$val){
+				$this->db->set('stage_id',$status);
+                $this->db->where('id',$val);
+                $this->db->update('commercial_info');
+				}
 
                 $this->Leads_Model->add_comment_for_events_stage_api($msg,$enq->Enquery_id,'','','',$assigner_user_id);
 

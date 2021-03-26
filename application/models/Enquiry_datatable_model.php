@@ -119,63 +119,63 @@ class Enquiry_datatable_model extends CI_Model {
         $this->db->join('tbl_company','tbl_company.id=enquiry.company','left'); 
         $this->db->join('enquiry_tags','enquiry_tags.enq_id=enquiry.enquiry_id','left');        
 
-        $this->db->join('commercial_info','commercial_info.enquiry_id = enquiry.enquiry_id','left');		
+       // $this->db->join('commercial_info','commercial_info.enquiry_id = enquiry.enquiry_id','left');		
         
     // echo $top_filter; exit();
 
         if($top_filter=='all')
         {
             $where.="  enquiry.status IN ($data_type) ";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
         }
         else if($top_filter=='droped')
         {            
             $where.="  enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status>0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
         }else if($top_filter=='created_today'){
            // $date=date('Y-m-d');
             //  $where.="enquiry.created_date LIKE '%$date%'";
             $where.=" enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
         }else if($top_filter=='updated_today'){
             // $date=date('Y-m-d');
             // $where.="enquiry.update_date LIKE '%$date%'";        
             $where.=" enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status=0 and enquiry.update_date is not NULL";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
 
             //this->db->where('');
 
         }else if($top_filter=='active'){            
             $where.="  enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
         }
         else if($top_filter == 'assigned')
         {   
             $where.=" enquiry.status IN ($data_type)";
             $where.=" AND enquiry.aasign_to is not NULL AND enquiry.drop_status=0" ;
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
 
         }
         else if($top_filter == 'unassigned')
         {
             $where.="enquiry.status IN ($data_type)";
             $where.=" AND enquiry.aasign_to is NULL AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
         }
         else if($top_filter == 'pending')
         {
             $where.="  enquiry.status IN ($data_type)";
             $where.=" AND enquiry.lead_stage=0 AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
         }
         else{                        
             $where.="  enquiry.status IN ($data_type)";
             $where.=" AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+			//$where.=" OR commercial_info.stage_id='".$data_type."'";
         }
 
         if(isset($enquiry_filters_sess['lead_stages']) && $enquiry_filters_sess['lead_stages'] !=-1){

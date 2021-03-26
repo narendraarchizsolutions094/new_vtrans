@@ -3808,6 +3808,7 @@ echo  $details1;
 
     public function deals_load_data()
     {
+		//print_r($_POST['curr_stg']);exit;
         $this->load->model('Deals_datatable_model');
         $result = $this->Deals_datatable_model->getRows($_POST);
         //echo count($result); exit();
@@ -3906,9 +3907,10 @@ echo  $details1;
             $part2 = "";
             if(user_access('1002'))
             {
+				$current_stg = base64_encode($_POST['curr_stg']);
 				if($value->status!='1' && $value->approval!='approve'){
                 $part2.= "
-                <a  class='btn btn-xs  btn-primary' href='".base_url('client/edit_commercial_info/').$value->id."' ><i class='fa fa-edit'></i></a>";
+                <a  class='btn btn-xs  btn-primary' href='".base_url('client/edit_commercial_info/').$value->id.'/'.$current_stg."' ><i class='fa fa-edit'></i></a>";
 				}
             }
             

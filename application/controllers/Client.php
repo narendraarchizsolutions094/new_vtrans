@@ -3192,10 +3192,10 @@ public function all_update_expense_status()
                     'createdby'=>$this->session->user_id,
                     'comp_id'=>$this->session->companey_id,
                     'other_charges'=>$oc,
-					'stage_id'=>$this->input->post('current_stage'),
+					//'stage_id'=>$this->input->post('current_stage'),
                     'status'=>'0',
                     );
-//print_r($enq->status);exit;
+//print_r($deal_id);exit;
         if(!empty($deal_id))
         {   
             $edit = $this->input->post('edited');
@@ -3234,6 +3234,7 @@ public function all_update_expense_status()
         }
         else
         {
+			$deal['stage_id']=$this->input->post('current_stage') ;
             $deal_id = $this->Branch_model->add_deal($deal);
 			//$this->db->set('status','3');
 			//$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
@@ -3276,7 +3277,13 @@ public function all_update_expense_status()
     public function edit_commercial_info($deal_id)
     {
          $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
-
+        $keyword = $this->uri->segment(4);
+		if(!empty($keyword)){
+			$data_type = base64_decode($keyword);
+		}else{
+			$data_type = '';
+		}		
+		$data['data_type'] = $data_type;
         $data['title'] = 'Edit Deal';
         $data['deal'] =$deal= $this->Branch_model->get_deal($deal_id);
         $data['deal_data'] = $this->Branch_model->get_deal_data($deal_id);

@@ -2,9 +2,9 @@
 	<div class="col-lg-12" style="padding:10px; border: 1px dashed #cecece; border-radius: 4px;"> 
 		<div class="col-lg-4">
 			<div class="form-group"> 
-		        <label>For</label><br>
+		        <label>Client Name</label><br>
 		        <div class="form-control">
-		        	<?=$details->name_prefix.' '.$details->name.' '.$details->lastname?>
+		        	<?=$details->client_name?>
 		        </div>
 				<input type="hidden" name="for" value="<?=$details->enquiry_id?>">
 		    </div>

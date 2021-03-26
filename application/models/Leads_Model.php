@@ -109,7 +109,7 @@ public function all_course($course,$lvl,$length,$disc) {
     }
 
     public function get_leadListDetailsby_id($leadid) {
-        return $this->db->select("*,enquiry.designation,enquiry.industries,enquiry.business_load,enquiry.client_type,enquiry.sales_area as enq_salearea,enquiry.sales_region as enq_saleregi,enquiry.sales_branch as enq_salebrach,enquiry.created_by as enq_created_by,enquiry.created_date,tbl_newdeal.bank,enquiry.country_id as enq_country,enquiry.state_id as enquiry_state_id,enquiry.city_id as enquiry_city_id,enquiry.address,enquiry.status,tbl_product_country.country_name,tbl_product_country.id as country_id,tbl_product.product_name,tbl_center.center_name,tbl_company.company_name")
+        return $this->db->select("*,enquiry.client_name,enquiry.designation,enquiry.industries,enquiry.business_load,enquiry.client_type,enquiry.sales_area as enq_salearea,enquiry.sales_region as enq_saleregi,enquiry.sales_branch as enq_salebrach,enquiry.created_by as enq_created_by,enquiry.created_date,tbl_newdeal.bank,enquiry.country_id as enq_country,enquiry.state_id as enquiry_state_id,enquiry.city_id as enquiry_city_id,enquiry.address,enquiry.status,tbl_product_country.country_name,tbl_product_country.id as country_id,tbl_product.product_name,tbl_center.center_name,tbl_company.company_name")
                         ->from('enquiry')
                         ->join('tbl_product_country', 'tbl_product_country.id=enquiry.enquiry_subsource', 'left')
                         ->join('tbl_admin', 'tbl_admin.pk_i_admin_id=enquiry.created_by', 'left')

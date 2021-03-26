@@ -275,7 +275,7 @@ $(document).on('submit','#data_table',function(e){
 				if(empty($by))
 				{
 				?>
-					location.href="<?=base_url('enquiry/enq_page/'.$details->enquiry_id)?>#COMMERCIAL_INFORMATION";
+					location.href="<?=base_url('enquiry/enq_page/'.$details->enquiry_id.'/'.base64_encode($data_type))?>#COMMERCIAL_INFORMATION";
 				<?php
 				}
 				else
