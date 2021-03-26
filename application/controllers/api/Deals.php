@@ -16,9 +16,14 @@ class Deals extends REST_Controller {
     {
       $current_stg = $this->input->post('current_stg');
       $enq_id = $this->input->post('enq_id');
-
-      $all_deals_lists = $this->Leads_Model->dealstagelist($enq_id,$current_stg); 
-		//print_r($all_deals_lists);exit;
+	  
+	    $enq = $this->db->select('enquiry_id')
+                        ->from('enquiry')
+                        ->where('Enquery_id',$enq_id)
+                        ->get()->row();
+        //print_r($enq->enquiry_id);exit;
+		$enq_code = $enq->enquiry_id;
+        $all_deals_lists = $this->Leads_Model->dealstagelist($enq_code,$current_stg); 
 
           if(!empty($all_deals_lists))
           {

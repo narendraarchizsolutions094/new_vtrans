@@ -546,6 +546,7 @@ class Lead extends REST_Controller {
         $this->form_validation->set_rules('enquiry_code[]','Enquery Code' ,'required');
         $this->form_validation->set_rules('user_id','User Id' ,'required');
         $this->form_validation->set_rules('status','Status');
+		$this->form_validation->set_rules('deal_id[]','Deal');
 
         if($this->form_validation->run() == true){
             $move_enquiry=$this->input->post('enquiry_code[]');
