@@ -167,7 +167,18 @@ class Enq extends CI_Controller
 			}
 
 			if ($showall == true or in_array(3, $acolarr)) {
-				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname. '</a>';
+				$thtml = '';
+				if(!empty($each->tag_ids)){
+					$this->db->select('title,color');
+					$this->db->where("id IN(".$each->tag_ids.")");
+					$tags = $this->db->get('tags')->result_array();
+					if(!empty($tags)){
+						foreach ($tags as $key => $value) {
+							$thtml .= '<br><a class="badge" href="javascript:void(0)" style="background:'.$value['color'].';padding:4px;">'.$value['title'].'</a>';
+						}
+					}
+				}
+				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname. '</a>'.$thtml;
 			}
 			if ($showall == true or in_array(4, $acolarr)) {
 				$row[] = (!empty($each->email)) ? $each->email : "NA";
