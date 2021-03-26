@@ -429,20 +429,14 @@ if (!empty($enquiry_separation)) {
                     <hr style="border: 1px solid #3a95e4 !important">
                 </div>
                 <div class="row pd-20">
-                <div class="col-md-6 " style="padding:20px;">
+                <!-- <div class="col-md-6 " style="padding:20px;">
                     <div class="card card-graph" style="height:100%;">
                         <figure class="highcharts-figure">
                             <div id="containersss"></div>
                         </figure>
                     </div>
-                </div>
-                <div class="col-md-6 " style="padding:20px;">
-                    <div class="card card-graph" style="height:100%;">
-                        <figure class="highcharts-figure">
-                            <div id="container2"></div>
-                        </figure>
-                    </div>
-                </div>
+                </div> -->
+               
                 </div>
 
                 <!------------------------Process wise charts End------------------------------------------->
@@ -525,22 +519,20 @@ if (!empty($enquiry_separation)) {
 
                 <!------------------------------------------------------------------Disposition/Source START-------------------------------------------->
                 <div class="row pd-20">
-                <div class="col-md-6 pd-20">
-               
-                    <div class="card card-graph" style="height:95%;">
-                        <figure class="highcharts-figure">
-                            <div id="container"></div>
-                        </figure>
-
-                    </div>
-                </div>
-
+          
                 <div class="col-lg-6 pd-20">
                     <div class="card card-graph" style="height:95%;">
                         <figure class="highcharts-figure">
                             <div id="container1"></div>
                         </figure>
 
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="card card-graph" style="height:100%;">
+                        <figure class="highcharts-figure">
+                            <div id="container2"></div>
+                        </figure>
                     </div>
                 </div>
                 <!------------------------------------------------------------------Disposition/Source END-------------------------------------------->
@@ -1458,71 +1450,7 @@ if(user_access('260') || user_access('261') || user_access('250'))
                 var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';
 
 
-                $.ajax({
-                    url: "<?=base_url('Dashboard/processWiseChart')?>",
-                    type: "post",
-                    data:{datas:data_s},
-                    dataType: "json",
-                    success: function(data) {
-                        //response = JSON.parse(data);
-
-                        if (data.status == 'success') {
-                            Highcharts.chart('containersss', {
-                                chart: {
-                                    type: 'column'
-                                },
-                                title: {
-                                    text: 'Process Wise Data'
-                                },
-                                subtitle: {
-                                    text: ''
-                                },
-                                xAxis: {
-                                    categories: [
-                                    <?php if(user_access(60)){ ?> 
-                                        '<?php echo display("enquiry"); ?>',
-                                    <?php } if(user_access(70)){ ?> 
-                                        '<?php echo display("lead"); ?>',
-                                    <?php } if(user_access(80)){ ?>
-                                        '<?php echo display("Client"); ?>',
-                                        <?php } 
-                                         if(user_access(553)){ 
-                                          $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
-                 if (!empty($enquiry_separation)) {
-                  $enquiry_separation = json_decode($enquiry_separation, true);
-                      foreach ($enquiry_separation as $key => $value) {
-                               $ctitle = $enquiry_separation[$key]['title']; 
-                         ?> "<?= $ctitle ?>",
-                                        <?php } } } ?>
-                                    ],
-                                    crosshair: true
-                                },
-                                yAxis: {
-                                    min: 0,
-                                    title: {
-                                        text: 'No of Data'
-                                    }
-                                },
-                                tooltip: {
-                                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
-                                    footerFormat: '</table>',
-                                    shared: true,
-                                    useHTML: true
-                                },
-                                plotOptions: {
-                                    column: {
-                                        pointPadding: 0.2,
-                                        borderWidth: 0
-                                    }
-                                },
-                                series: data.data
-                            });
-
-                        }
-                    }
-                });
+              
             });
             </script>
             <!--------------------------------------------process wise data graph End------------------------------->
@@ -1788,96 +1716,6 @@ if(user_access('260') || user_access('261') || user_access('250'))
                 var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';
 
 
-                $.ajax({
-                    url: "<?=base_url('Dashboard/despositionDataChart')?>",
-                    type: "post",
-                    data:{datas:data_s},
-                    dataType: "json",
-                    success: function(data) {
-                        var data1 = [];
-                        var data2 = [];
-                        var data3 = [];
-                        var data4 = [];
-                        if (data.status == 'success') {                            
-                            for (var i = 0; i < data.enquiryChartData.length; i++) {
-                                <?php if(user_access(60)){ ?> 
-                                data1.push(parseInt(data.enquiryChartData[i]));
-                                <?php } if(user_access(70)){ ?> 
-                                data2.push(parseInt(data.leadChartData[i]));
-                                <?php } if(user_access(80)){ ?> 
-                                data3.push(parseInt(data.clientChartData[i]));
-                                <?php } ?>
-                                data4.push(data.desplst[i]['lead_stage_name']);
-                            }
-                            Highcharts.chart('container', {
-                                chart: {
-                                    type: 'column'
-                                },
-                                title: {
-                                    text: 'Lead Stage'
-                                },
-                                subtitle: {
-                                    //text: 'Source: WorldClimate.com'
-                                },
-                                xAxis: {
-                                    categories: data4,
-                                    crosshair: true
-                                },
-                                yAxis: {
-                                    min: 0,
-                                    title: {
-                                        text: 'Data (No.)'
-                                    }
-                                },
-                                tooltip: {
-                                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                        '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-                                    footerFormat: '</table>',
-                                    shared: true,
-                                    useHTML: true
-                                },
-                                plotOptions: {
-                                    column: {
-                                        pointPadding: 0.2,
-                                        borderWidth: 0
-                                    }
-                                },
-                                series: [
-                                <?php if(user_access(60)){ ?> 
-                                    {
-                                        name: '<?php echo display("enquiry"); ?>',
-                                        data: data1,
-                                    },
-                                <?php } if(user_access(70)){ ?> 
-                                     {
-                                        name: '<?php echo display("lead"); ?>',
-                                        data: data2,
-                                    },
-                                <?php  } if(user_access(80)){ ?> 
-                                     {
-                                        name: '<?php echo display("Client"); ?>',
-                                        data: data3,
-                                    },
-                                    <?php 
-                                }
-                                    if(user_access(553)){ 
-                                    $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
-                 if (!empty($enquiry_separation)) {
-                  $enquiry_separation = json_decode($enquiry_separation, true);
-                      foreach ($enquiry_separation as $key => $value) {
-                               $ctitle = $enquiry_separation[$key]['title']; 
-                               $count = $this->enquiry_model->dy2despositionDataChart($this->session->user_id,$this->session->companey_id,$key);
-                         ?> {
-                                        name: "<?= $ctitle ?>",
-                                        data: [<?= implode(',',$count); ?>]
-                                    },
-                                    <?php } } } ?>
-                                ]
-                            });
-                        }
-                    }
-                })
             })
             </script>
 
