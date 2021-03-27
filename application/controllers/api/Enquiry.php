@@ -48,28 +48,38 @@ class Enquiry extends REST_Controller {
               if(!empty($enquries)){
                   $stage_date = date("d-m-Y");
                   $stage_time = date("H:i:s");
-
+                  $noti_data = array();
                   foreach($enquries as $key=>$value){
-                    $url = base_url().'enquiry/view/'.$value['enquiry_id'];
-                      if($value['status'] == 1){
-                        $url = base_url().'enquiry/view/'.$value['enquiry_id'];
-                      }else if($value['status'] == 2){
-                        $url = base_url().'lead/lead_details/'.$value['enquiry_id'];
-                      }else if($value['status'] == 3 || $value['status'] > 3){
-                        $url = base_url().'client/view/'.$value['enquiry_id'];                        
-                      }
-                      $notimsg = ' Aging Notifications ('.$v["title"].')-  '.$url;
+                    
+                    $enq_creator = $value['created_by'];
+                    $enq_assigned = $value['aasign_to'];
+                    
+                    $noti_data[$enq_creator][] = $value['enquiry_id'];
+                    $noti_data[$enq_assigned][] = $value['enquiry_id'];
+
+                    // $url = base_url().'enquiry/view/'.$value['enquiry_id'];
+                    //   if($value['status'] == 1){
+                    //     $url = base_url().'enquiry/view/'.$value['enquiry_id'];
+                    //   }else if($value['status'] == 2){
+                    //     $url = base_url().'lead/lead_details/'.$value['enquiry_id'];
+                    //   }else if($value['status'] == 3 || $value['status'] > 3){
+                    //     $url = base_url().'client/view/'.$value['enquiry_id'];                        
+                    //   }
+                    //   $notimsg = ' Aging Notifications ('.$v["title"].')-  '.$url;
 
                       
-                      $this->Leads_Model->add_comment_for_events_popup('Need to work',$stage_date,'',$value['phone'],$value['email'],'',$stage_time,$value['Enquery_id'],$notification_id=0,$dis_subject='Overdue',$task_for='1',$task_type='2',$value['created_by'],$comp_id);
+                    //   $this->Leads_Model->add_comment_for_events_popup('Need to work',$stage_date,'',$value['phone'],$value['email'],'',$stage_time,$value['Enquery_id'],$notification_id=0,$dis_subject='Overdue',$task_for='1',$task_type='2',$value['created_by'],$comp_id);
                       
-                      $user_row = $this->user_model->read_by_id($value['created_by']);
-                      if(!empty($user_row)){                        
-                          $this->message_models->smssend($user_row->s_phoneno, $notimsg,$comp_id,$value['created_by']);                
-                          $this->message_models->sendwhatsapp($user_row->s_phoneno, $notimsg,$comp_id,$value['created_by']);
-                          $this->message_models->send_email($user_row->s_user_email, 'Aging Notification', $notimsg,$comp_id);
-                      }
+                    //   $user_row = $this->user_model->read_by_id($value['created_by']);
+                    //   if(!empty($user_row)){                        
+                    //       $this->message_models->smssend($user_row->s_phoneno, $notimsg,$comp_id,$value['created_by']);                
+                    //       $this->message_models->sendwhatsapp($user_row->s_phoneno, $notimsg,$comp_id,$value['created_by']);
+                    //       $this->message_models->send_email($user_row->s_user_email, 'Aging Notification', $notimsg,$comp_id);
+                    //   }
                   }
+                  echo "<pre>";
+                  print_r($noti_data);
+                  echo "</pre>";
               }
              
           }
