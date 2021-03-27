@@ -40,7 +40,7 @@ class Enquiry extends REST_Controller {
         if(!empty($rules)){
           $i=0;
           foreach($rules as $k=>$v){
-            $this->db->select('enquiry.enquiry_id,enquiry.status,Enquery_id,phone,email,created_by,aasign_to');
+            $this->db->select('enquiry.enquiry_id,enquiry.status,Enquery_id,phone,email,created_by,aasign_to,created_date');
             $this->db->where('comp_id',$comp_id);
             $this->db->where($v['rule_sql']);
             $enquries    =   $this->db->get('enquiry')->result_array();            
@@ -54,8 +54,8 @@ class Enquiry extends REST_Controller {
                     $enq_creator = $value['created_by'];
                     $enq_assigned = $value['aasign_to'];
                     
-                    $noti_data[$enq_creator][] = $value['enquiry_id'];
-                    $noti_data[$enq_assigned][] = $value['enquiry_id'];
+                    $noti_data[$enq_creator][] = $value['enquiry_id'].$value['created_date'];
+                    $noti_data[$enq_assigned][] = $value['enquiry_id'].$value['created_date'];
 
                     // $url = base_url().'enquiry/view/'.$value['enquiry_id'];
                     //   if($value['status'] == 1){
