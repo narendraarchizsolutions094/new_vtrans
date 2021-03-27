@@ -70,7 +70,7 @@
                       echo'Go to Visit';
 
                      }else{
-                    echo ucfirst($value['user_name']).'</a> '.$value['company']; }?>
+                    echo ucfirst($value['user_name']).'</a> ('.ucfirst($value['company']).')'; }?>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -112,7 +112,7 @@
                       echo'Go to Visit';
 
                      }else{                    
-                    echo ucfirst($value['user_name']).'</a> '.$value['company']; }?>
+                    echo ucfirst($value['user_name']).'</a> ('.ucfirst($value['company']).')'; }?>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -155,7 +155,7 @@
                       echo'Go to Visit';
 
                      }else{                    
-                    echo ucfirst($value['user_name']).'</a> '.$value['company']; }?>
+                    echo ucfirst($value['user_name']).'</a> ('.ucfirst($value['company']).')'; }?>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -196,7 +196,7 @@
                       echo'Go to Visit';
 
                      }else{                    
-                    echo ucfirst($value['user_name']).'</a> '.$value['company']; }?>
+                    echo ucfirst($value['user_name']).'</a> ('.ucfirst($value['company']).')'; }?>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
