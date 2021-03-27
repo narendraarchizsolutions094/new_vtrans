@@ -2007,7 +2007,7 @@ public function updateEnquiryTab_post()
       public function move_to_lead_post()
       {
         $this->form_validation->set_rules('expected_date','Expected Date');
-        $this->form_validation->set_rules('conversion_probability','Conversion Probability','required');
+       // $this->form_validation->set_rules('conversion_probability','Conversion Probability','required');
         $this->form_validation->set_rules('comment','Comment','required');
         $this->form_validation->set_rules('enquiry_code[]','Enquery Code' ,'required');
         $this->form_validation->set_rules('user_id','User Id' ,'required');
