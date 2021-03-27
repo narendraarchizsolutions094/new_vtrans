@@ -82,7 +82,7 @@ class Web extends CI_Controller{
         $load = $this->input->post('loaddata');
         $this->db->from('query_response');		        
         $user_id = $this->session->user_id;              
-        $this->db->select("query_response.related_to,query_response.notification_id,query_response.resp_id,query_response.task_type,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,CONCAT_WS(' ',enquiry.name_prefix,enquiry.name,enquiry.lastname) as user_name,enquiry.enquiry_id,enquiry.status as enq_status,ticket.assign_to,ticket.assigned_by,ticket.name as ticket_name,tbl_company.company_name as company");      
+        $this->db->select("query_response.related_to,query_response.notification_id,query_response.resp_id,query_response.task_type,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,CONCAT_WS(' ',enquiry.name_prefix,enquiry.name,enquiry.lastname) as user_name,enquiry.enquiry_id,enquiry.status as enq_status,ticket.assign_to,ticket.assigned_by,ticket.name as ticket_name,tbl_company.company_name as company,enquiry.client_name");      
         $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=query_response.create_by', 'left');
         
         $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
@@ -121,7 +121,7 @@ class Web extends CI_Controller{
         //echo 0;
          $this->db->from('query_response');              
          $user_id = $this->session->user_id;              
-         $this->db->select("query_response.related_to,query_response.resp_id,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,tbl_admin.s_display_name as user_name,");      
+         $this->db->select("query_response.related_to,query_response.resp_id,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,tbl_admin.s_display_name as user_name");      
          $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=query_response.create_by', 'left');
          $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
          $this->db->join('tbl_visit visit', 'visit.id=query_response.query_id', 'left');
