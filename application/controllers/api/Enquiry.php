@@ -54,8 +54,10 @@ class Enquiry extends REST_Controller {
                     $enq_creator = $value['created_by'];
                     $enq_assigned = $value['aasign_to'];
                     
-                    $noti_data[$enq_creator][] = $value['enquiry_id'].$value['created_date'];
-                    $noti_data[$enq_assigned][] = $value['enquiry_id'].$value['created_date'];
+                    $noti_data[$enq_creator][] = $value['enquiry_id'];
+                    if(!empty($enq_assigned)){
+                      $noti_data[$enq_assigned][] = $value['enquiry_id'];
+                    }
 
                     // $url = base_url().'enquiry/view/'.$value['enquiry_id'];
                     //   if($value['status'] == 1){
