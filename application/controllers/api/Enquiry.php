@@ -44,7 +44,7 @@ class Enquiry extends REST_Controller {
             $this->db->where('comp_id',$comp_id);
             $this->db->where($v['rule_sql']);
             $enquries    =   $this->db->get('enquiry')->result_array();            
-            
+            echo $this->db->last_query();
               if(!empty($enquries)){
                   $stage_date = date("d-m-Y");
                   $stage_time = date("H:i:s");
