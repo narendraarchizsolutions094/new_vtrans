@@ -44,7 +44,6 @@ class Enquiry extends REST_Controller {
             $this->db->where('comp_id',$comp_id);
             $this->db->where($v['rule_sql']);
             $enquries    =   $this->db->get('enquiry')->result_array();            
-            echo $this->db->last_query();
               if(!empty($enquries)){
                   $stage_date = date("d-m-Y");
                   $stage_time = date("H:i:s");
@@ -67,9 +66,7 @@ class Enquiry extends REST_Controller {
                     //   }else if($value['status'] == 3 || $value['status'] > 3){
                     //     $url = base_url().'client/view/'.$value['enquiry_id'];                        
                     //   }
-                    //   $notimsg = ' Aging Notifications ('.$v["title"].')-  '.$url;
-
-                      
+                    //   $notimsg = ' Aging Notifications ('.$v["title"].')-  '.$url;                      
                     //   $this->Leads_Model->add_comment_for_events_popup('Need to work',$stage_date,'',$value['phone'],$value['email'],'',$stage_time,$value['Enquery_id'],$notification_id=0,$dis_subject='Overdue',$task_for='1',$task_type='2',$value['created_by'],$comp_id);
                       
                     //   $user_row = $this->user_model->read_by_id($value['created_by']);
@@ -78,18 +75,37 @@ class Enquiry extends REST_Controller {
                     //       $this->message_models->sendwhatsapp($user_row->s_phoneno, $notimsg,$comp_id,$value['created_by']);
                     //       $this->message_models->send_email($user_row->s_user_email, 'Aging Notification', $notimsg,$comp_id);
                     //   }
+                  } 
+                  $arr = array();
+                  if(!empty($noti_data)){
+                    foreach($noti_data as $key=>$value){
+                      $unique_count = count(array_unique($value));
+                      $arr[$key]= $unique_count;
+                      $url = "<a href=".base_url().'enq/index?aging_noti='.$lid.">".$unique_count."</a>";
+                      $msg = $url.' Customers are waiting to hear from you';
+                      // $msg = 'Customers are waiting for Quotation';
+                      // $msg = 'You should connect these "5" Customers for closer';
+                      // $msg = 'You can pick the order from "3" customers';
+                      //echo $msg.'<br>';
+
+                      $this->Leads_Model->add_comment_for_events_popup($msg,$stage_date,'','','','',$stage_time,'',0,'Aging Notification',$task_for='1',$task_type='2',$key,$comp_id);                      
+                      $user_row = $this->user_model->read_by_id($key);
+
+                      if(!empty($user_row)){                        
+                          $this->message_models->smssend($user_row->s_phoneno, $msg,$comp_id,$key);                
+                          $this->message_models->sendwhatsapp($user_row->s_phoneno, $msg,$comp_id,$key);
+                          $this->message_models->send_email($user_row->s_user_email, 'Aging Notification', $msg,$comp_id);
+                      }
+                    }
                   }
-                  echo "<pre>";
-                  print_r($noti_data);
-                  echo "</pre>";
               }
              
           }
         }
-      $this->set_response([
-              'status' => TRUE,
-              'message' => 'success'
-          ], REST_Controller::HTTP_OK);       
+      // $this->set_response([
+      //         'status' => TRUE,
+      //         'message' => 'success'
+      //     ], REST_Controller::HTTP_OK);       
     }
     function phone_check($phone){
         $product_id    =   $this->input->post('process_id');

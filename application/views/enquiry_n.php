@@ -695,7 +695,7 @@ display: block;
                           <option value="">Select</option>
                           <?php
                             foreach ($aging_rule as $k=>$v) {  ?>
-                              <option value="<?=$v['rule_sql']?>" <?php if(!empty($filterData['aging_rule']) && $v['id']==$filterData['aging_rule']) {echo 'selected';}?>><?php echo $v['title']; ?></option>
+                              <option value="<?=$v['rule_sql']?>" <?php if((!empty($filterData['aging_rule']) && $v['rule_sql']==$filterData['aging_rule']) || (!empty($_GET['aging_noti']) && $_GET['aging_noti'] == $v['id'])) {echo 'selected';}?>><?php echo $v['title']; ?></option>
                               <?php }                             
                               ?>
                         </select>
@@ -1762,9 +1762,13 @@ $(document).on('click',".top_pill",function(){
     });
       }
 
-
+      set_filter_session();
       $('#enq_filter').change(function() {
-        
+        set_filter_session();
+      });
+
+      function set_filter_session(){
+          
         //update_top_filter_counter(); 
         var form_data = $("#enq_filter").serialize();  
         console.log(form_data);
@@ -1776,18 +1780,18 @@ $(document).on('click',".top_pill",function(){
         ?>
         //alert(form_data);
 
-        $.ajax({
-        url: '<?=base_url()?>enq/enquiry_set_filters_session',
-        type: 'post',
-        data: form_data,
-        success: function(responseData){
-          $('#enq_table').DataTable().ajax.reload();         
-         if(!$("#active_class").hasClass('hide_countings')){
-           update_top_filter_counter();      
-         }
-        }
-      });
-      });
+          $.ajax({
+          url: '<?=base_url()?>enq/enquiry_set_filters_session',
+          type: 'post',
+          data: form_data,
+          success: function(responseData){
+            $('#enq_table').DataTable().ajax.reload();         
+          if(!$("#active_class").hasClass('hide_countings')){
+            update_top_filter_counter();      
+          }
+          }
+        });
+      }
       
 
   } );
