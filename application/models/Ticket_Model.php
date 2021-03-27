@@ -159,7 +159,21 @@ class Ticket_Model extends CI_Model
 		$cid = '';
 		//print_r($_POST); 
 		if (!empty($companey_id) && !empty($user_id) && !empty($_POST['client_new']) && empty($_POST['client'])) {
-			if (isset($_SESSION['process']) && count($_SESSION['process']) == 1) {
+			if (isset($_SESSION['process']) && count($_SESSION['process']) == 1) {				
+				$company = $this->db->where('company_name',$_POST['client_new'])->get('tbl_company')->row();
+				if(!empty($company)){
+					$newcompId = $company->id;
+				}
+				else{
+					$new_company = array(
+									'company_name' => $_POST['client_new'],
+									'comp_id' => $this->session->companey_id,
+									'process_id'=>$_SESSION['process'][0]
+								);
+					$this->db->insert('tbl_company',$new_company);
+					$newcompId = $this->db->insert_id();
+				}
+				
 				$encode = get_enquery_code();
 				$postData = array(
 					'Enquery_id' 	=> $encode,
@@ -167,7 +181,7 @@ class Ticket_Model extends CI_Model
 					'email' 		=> $this->input->post("email", true)??'',
 					'phone' 		=> $this->input->post("phone", true),
 					'name' 			=> $this->input->post("name", true),
-					'company'		=> $this->input->post("client_new", true),
+					'company'		=> $newcompId,
 					'checked' 		=> 0,
 					'product_id' 	=>  $_SESSION['process'][0],
 					'created_date' 	=>  date("Y-m-d H:i:s"),

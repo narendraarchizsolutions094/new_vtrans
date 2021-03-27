@@ -199,7 +199,7 @@ echo'
                             foreach($clients as $ind => $clt)
                             {
                               
-                              $n = $clt->company;
+                              $n = $clt->company_name;
                               if(!empty($n)){
                                 
                                 if($clt->enquiry_id==$ticket->client)

@@ -81,8 +81,24 @@ class Enquiry extends REST_Controller {
                     foreach($noti_data as $key=>$value){
                       $unique_count = count(array_unique($value));
                       $arr[$key]= $unique_count;
+                     
                       $url = "<a href=".base_url().'enq/index?aging_noti='.$lid.">".$unique_count."</a>";
+                      
                       $msg = $url.' Customers are waiting to hear from you';
+                      $msg1 = $unique_count.' Customers are waiting to hear from you';
+                      if($lid == 104){
+                        $msg = $url.' Customers are waiting to hear from you';
+                        $msg1 = $unique_count.' Customers are waiting to hear from you';
+                      }else if($lid == 105){
+                        $msg = $url.' Customers are waiting for Quotation';
+                        $msg1 = $unique_count.' Customers are waiting for Quotation';
+                      }else if($lid == 106){
+                        $msg = 'You should connect these '.$url.' Customers for closer';
+                        $msg1 = 'You should connect these '.$unique_count.' Customers for closer';
+                      }else if($lid == 107){
+                        $msg = 'You can pick the order from '.$url.' customers';
+                        $msg1 = 'You can pick the order from '.$unique_count.' customers';
+                      }
                       // $msg = 'Customers are waiting for Quotation';
                       // $msg = 'You should connect these "5" Customers for closer';
                       // $msg = 'You can pick the order from "3" customers';
@@ -92,9 +108,9 @@ class Enquiry extends REST_Controller {
                       $user_row = $this->user_model->read_by_id($key);
 
                       if(!empty($user_row)){                        
-                          $this->message_models->smssend($user_row->s_phoneno, $msg,$comp_id,$key);                
-                          $this->message_models->sendwhatsapp($user_row->s_phoneno, $msg,$comp_id,$key);
-                          $this->message_models->send_email($user_row->s_user_email, 'Aging Notification', $msg,$comp_id);
+                          $this->message_models->smssend($user_row->s_phoneno, $msg1,$comp_id,$key);                
+                          $this->message_models->sendwhatsapp($user_row->s_phoneno, $msg1,$comp_id,$key);
+                          $this->message_models->send_email($user_row->s_user_email, 'Aging Notification', $msg1,$comp_id);
                       }
                     }
                   }
@@ -131,9 +147,8 @@ class Enquiry extends REST_Controller {
     }
     public function create_post()
     { 	
-    	   $file = @$_FILES; 
-
-        	$upd =$this->input->post('update');		
+    	    $file = @$_FILES;
+        	$upd = $this->input->post('update');		
     		  $comp_id	=	$this->input->post('company_id');		
           $process_id =  $this->input->post('process_id');
           $user_id = $this->input->post('user_id');
@@ -142,7 +157,7 @@ class Enquiry extends REST_Controller {
           if(empty($upd))
           { 
           	$this->form_validation->set_rules('mobileno', 'mobileno', 'required|max_length[20]');
-           $this->form_validation->set_rules('company_id','company_id', 'trim|required');
+            $this->form_validation->set_rules('company_id','company_id', 'trim|required');
             $this->form_validation->set_rules('process_id','process_id', 'trim|required');
           }
           else

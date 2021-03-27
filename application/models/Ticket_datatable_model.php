@@ -173,8 +173,8 @@ class Ticket_datatable_model extends CI_Model{
         //     $sel_string[] = " tck.ticketno ";
         // }
         if($showall or in_array(2,$acolarr))
-        {
-            $sel_string[] = " concat_ws(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname,enq.company as org_name ";
+        {            
+            $sel_string[] = " concat_ws(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname,enq.company as org_name,tbl_company.company_name ";
         }
         // if($showall or in_array(3,$acolarr))
         // {
@@ -248,12 +248,13 @@ class Ticket_datatable_model extends CI_Model{
 
         $this->db->select($select);
         $this->db->from($this->table." tck");
-
+        
         
         //->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT")
+        $this->db->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT");
+        $this->db->join("tbl_company","tbl_company.id=enq.company",'left');
         if($showall or count(array_intersect(array(2,4),$acolarr))>0)
         {
-            $this->db->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT");
         }
         
         if($showall or in_array(5, $acolarr))

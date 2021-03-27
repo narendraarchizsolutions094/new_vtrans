@@ -505,7 +505,11 @@ class Ticket extends CI_Controller
 				$sub[] = $point->last_update ?? 'NA';
 			}
 			if ($showall or in_array(2, $acolarr)) {
-				$sub[] = $point->org_name??($point->clientname ?? "NA");
+				if($point->company_name){
+					$sub[] = $point->company_name??($point->company_name ?? "NA");
+				}else{
+					$sub[] = $point->org_name??($point->org_name ?? "NA");
+				}
 			}
 			if ($showall or in_array(3, $acolarr)) {
 				$sub[] = $point->email ?? "NA";
@@ -1410,7 +1414,6 @@ class Ticket extends CI_Controller
 	public function update_ticket($tckt = "")
 	{
 		if (user_role('311') == true) {}
-		//print_r($_POST); exit();
 		if (isset($_POST["ticketno"])) {
 			//echo $_POST['']
 			//$_POST['relatedto'] = $_POST['issue'];
@@ -1418,6 +1421,8 @@ class Ticket extends CI_Controller
 			//echo $this->session->flashdata('message'); exit();
 			//redirect(base_url("ticket/view/".$tckt), "refresh");
 			$res = $this->Ticket_Model->save($this->session->companey_id, $this->session->user_id);
+			//var_dump($res);
+			//print_r($_POST); exit();
 	
 		if(isset($_POST['inputfieldno']))
 		{	//echo 'text'; exit();
@@ -1432,7 +1437,8 @@ class Ticket extends CI_Controller
 			//echo'in';
 		}
 		}
-		echo 'out';
+		$this->session->set_flashdata('message', 'Successfully Updated '.display('ticket'));
+		redirect(base_url('ticket/view/' . $tckt), "refresh");
 	}
 	public function edit($tckt = "")
 	{
