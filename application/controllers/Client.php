@@ -195,15 +195,16 @@ class Client extends CI_Controller {
         else
         {    $data['CommercialInfo'] =array();
              $data['branch'] =array();
-            $data['commInfoCount']=0;
-            $data['commInfoData']=array();
+             $data['commInfoCount']=0;
+             $data['commInfoData']=array();
         }
-
+        
 		$data['course_list'] = $this->Leads_Model->get_course_list();
+        $data['data_type'] = base64_decode($this->uri->segment(4));	
         $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
-        if (!empty($enquiry_separation) && !empty($_GET['stage'])) {                    
+        if (!empty($enquiry_separation) && !empty($data['data_type'])) {                    
             $enquiry_separation = json_decode($enquiry_separation,true);
-            $stage    =   $_GET['stage'];
+            $stage    =   $data['data_type'];
             $data['title'] = $enquiry_separation[$stage]['title'];            
         }else{
             $data['title'] =display('client');
@@ -220,7 +221,6 @@ class Client extends CI_Controller {
         $enq['enquiry_id'] = $enquiry_id;
         $data['all_contact']= $this->Client_Model->getContactList()->result();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
-        $data['data_type'] = base64_decode($this->uri->segment(4));	
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);
