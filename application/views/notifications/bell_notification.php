@@ -70,7 +70,12 @@
                       echo'Go to Visit';
 
                      }else{
-                    echo ucfirst($value['user_name']).'</a> - '.ucfirst($value['company']).'  '.ucfirst($value['client_name']); }?>
+                    echo ucfirst($value['user_name']).'</a>  '; 
+                    echo '<br>'.ucfirst($value['company']);
+                    echo ' <br> '.ucfirst($value['client_name']);
+                  }
+                    
+                    ?>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -112,7 +117,11 @@
                       echo'Go to Visit';
 
                      }else{                    
-                    echo ucfirst($value['user_name']).'</a> - '.ucfirst($value['company']).'  '.ucfirst($value['client_name']); }?>
+                    echo ucfirst($value['user_name']).'</a>  '; 
+                    echo '<br>'.ucfirst($value['company']);
+                    echo ' <br> '.ucfirst($value['client_name']);  
+                  }
+                    ?>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -155,7 +164,10 @@
                       echo'Go to Visit';
 
                      }else{                    
-                    echo ucfirst($value['user_name']).'</a> - '.ucfirst($value['company']).'  '.ucfirst($value['client_name']); }?>
+                    echo ucfirst($value['user_name']).'</a>  ';
+                    echo '<br>'.ucfirst($value['company']);
+                    echo ' <br> '.ucfirst($value['client_name']);
+                    }?>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>
@@ -196,7 +208,10 @@
                       echo'Go to Visit';
 
                      }else{                    
-                    echo ucfirst($value['user_name']).'</a> - '.ucfirst($value['company']).'  '.ucfirst($value['client_name']); }?>
+                    echo ucfirst($value['user_name']).'</a> '; 
+                    echo '<br>'.ucfirst($value['company']);
+                    echo ' <br> '.ucfirst($value['client_name']);
+                    }?>
                     <div class="text-muted font-size-sm" style="float: right;"><?=$value['task_date'].' '.$value['task_time']?></div>
                 </div>
               </li>

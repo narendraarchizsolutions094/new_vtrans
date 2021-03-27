@@ -830,21 +830,21 @@ class Client extends CI_Controller {
                 $this->db->set('lead_expected_date', $exp_date);
 
 
-            $this->db->set('phone', $mobile);
+            //$this->db->set('phone', $mobile);
             $this->db->set('other_phone', $other_phone);
             $this->db->set('country_id', $country_id);            
-            $this->db->set('email', $email);
+            //$this->db->set('email', $email);
             $this->db->set('name_prefix', $name_prefix);
             $this->db->set('name', $firstname);
             $this->db->set('enquiry_source', $lead_source);
             $this->db->set('sub_source', $subsource);
             $this->db->set('address', $address);
             $this->db->set('pin_code', $pin_code);
-            $this->db->set('company', $company);
-			$this->db->set('sales_branch', $sales_branch);
-			$this->db->set('client_name', $client_name);
-			$this->db->set('sales_region', $sales_region);
-			$this->db->set('sales_area', $sales_area);
+            //$this->db->set('company', $company);
+			//$this->db->set('sales_branch', $sales_branch);
+			//$this->db->set('client_name', $client_name);
+			//$this->db->set('sales_region', $sales_region);
+			//$this->db->set('sales_area', $sales_area);
 			$this->db->set('client_type', $client_type);
 			$this->db->set('business_load', $business_load);
 			$this->db->set('industries', $industries);
@@ -854,7 +854,7 @@ class Client extends CI_Controller {
             $this->db->set('state_id', $state_id);
             $this->db->set('city_id', $city_id);
 			$this->db->set('enquiry_subsource',$this->input->post('sub_source'));
-            $this->db->set('product_id', $process_id);			
+            //$this->db->set('product_id', $process_id);			
             $this->db->where('enquiry_id', $enquiry_id);            
             $this->db->update('enquiry');  
             $this->load->model('rule_model');
