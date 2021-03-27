@@ -40,7 +40,7 @@ class Enquiry extends REST_Controller {
         if(!empty($rules)){
           $i=0;
           foreach($rules as $k=>$v){
-            $this->db->select('enquiry.enquiry_id,enquiry.status,Enquery_id,phone,email,created_by');
+            $this->db->select('enquiry.enquiry_id,enquiry.status,Enquery_id,phone,email,created_by,aasign_to');
             $this->db->where('comp_id',$comp_id);
             $this->db->where($v['rule_sql']);
             $enquries    =   $this->db->get('enquiry')->result_array();            
