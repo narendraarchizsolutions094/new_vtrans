@@ -1,5 +1,6 @@
 <?php
    defined('BASEPATH') OR exit('No direct script access allowed');   
+   $user_process_list = $this->common_model->get_user_product_list();
    if(user_access('133')){
     $token=$this->session->userdata('login_token');
     $user_id=$this->session->user_id;
@@ -913,7 +914,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                 </button>
                                 <ul class="filter-dropdown-menu dropdown-menu">
                                     <?php
-                            $user_process_list = $this->common_model->get_user_product_list();
+                            
 
                             if(!empty($user_process_list)){   
                               $this->load->helper('cookie');                        

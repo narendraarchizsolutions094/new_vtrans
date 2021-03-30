@@ -383,6 +383,7 @@ function manage_filters()
                   <th id="th-16">Vehicle Carrying Capacity</th>
                   <th id="th-17">Invoice Value</th> -->
                   <th id="th-18">Create Date</th>
+                  <th id="th-18">No Action From</th>
                   <th id="th-19">Status</th>
                   <th id="th-20">Action</th>
                </tr>

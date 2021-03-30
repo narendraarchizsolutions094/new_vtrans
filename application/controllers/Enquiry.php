@@ -3856,6 +3856,7 @@ echo  $details1;
             $sub[] = ucwords($value->business_type).'ward'??'NA';
 
             $sub[] = !empty($value->creation_date)?date('d-M-Y H:i:s A',strtotime($value->creation_date)):'NA';
+            $sub[] = !empty($value->creation_date)?get_time_ago(strtotime($value->creation_date)):'NA';
 
             $stts = $value->status;
 
