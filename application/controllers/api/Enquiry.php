@@ -3109,10 +3109,21 @@ public function get_enq_list_post(){
   }
 
   public function remove_tag_post(){
+    $id[] = $this->input->post('id');
+    $enq_id = $this->input->post('enq');
+    $this->db->select('tag_ids');
+    $this->db->from('enquiry_tags');
+    $this->db->where('enq_id', $enq_id);
+    $res = $this->db->get()->row()->tag_ids;
+    $abc = explode(',', $res);
+    $result = array_diff($abc, $id);
+    $data = implode(",", $result);
+    $this->db->where('enq_id', $enq_id);
+    $this->db->set('tag_ids', $data);
+    $this->db->update('enquiry_tags');
     $this->set_response([
       'status' => TRUE,
       'msg' =>'Success'
        ], REST_Controller::HTTP_OK);
   }
-
 }
