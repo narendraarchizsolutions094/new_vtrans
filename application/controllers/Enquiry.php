@@ -3333,6 +3333,7 @@ echo  $details1;
      $this->db->where('id',$commerical_id);
      $this->db->where('comp_id',$this->session->companey_id);
      $this->db->set('status',$status);
+     $this->db->set('updation_date',date('Y-m-d H:i:s'));
      $res = $this->db->update('commercial_info');
 
     $en =  $this->db->where('id',$commerical_id)->get('commercial_info')->row();
@@ -3854,9 +3855,27 @@ echo  $details1;
             $sub[] =strtoupper(($value->booking_type))??'NA';
             if($colsall || in_array(4,$cols))
             $sub[] = ucwords($value->business_type).'ward'??'NA';
-
-            $sub[] = !empty($value->creation_date)?date('d-M-Y H:i:s A',strtotime($value->creation_date)):'NA';
-            $sub[] = !empty($value->creation_date)?get_time_ago(strtotime($value->creation_date)):'NA';
+            
+            if($colsall || in_array(18,$cols)){    
+                $creation_ago = !empty($value->creation_date)?'<span class="badge">'.get_time_ago(strtotime($value->creation_date)).'</span>':'';
+                $created_column = !empty($value->creation_date)?date('d-M-Y H:i:s A',strtotime($value->creation_date)):'NA';                
+                $sub[]= $created_column.' '.$creation_ago;
+            }
+            if($colsall || in_array(23,$cols)){    
+                $pending = '';
+                if(!empty($value->updation_date)){
+                    $date1 = new DateTime(date('Y-m-d', strtotime($value->updation_date)));
+                    $date2 = new DateTime(date('Y-m-d'));
+                    $diff = $date1->diff($date2)->days;
+                // echo $diff;
+                    if((int)$diff>=5){
+                        $pending = '<span class="badge badge-danger">Pending</span>';
+                    }
+                }
+                //echo $pending;
+                $updated_column = !empty($value->updation_date)?get_time_ago(strtotime($value->updation_date)):'NA';
+                $sub[] = $updated_column.' '.$pending;
+            }
 
             $stts = $value->status;
 

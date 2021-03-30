@@ -3192,6 +3192,7 @@ public function all_update_expense_status()
                     'createdby'=>$this->session->user_id,
                     'comp_id'=>$this->session->companey_id,
                     'other_charges'=>$oc,
+                    'updation_date'=>date('Y-m-d H:i:s'),
 					//'stage_id'=>$this->input->post('current_stage'),
                     'status'=>'0',
                     );

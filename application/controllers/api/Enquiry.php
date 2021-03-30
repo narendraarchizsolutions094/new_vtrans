@@ -3047,7 +3047,7 @@ public function get_enq_list_post(){
       }
         
       
-  public function remove_file_post(){ 
+    public function remove_file_post(){ 
         $token=$this->input->post('token');
       $file=$this->input->post('file');
         $file1=str_replace(base_url(),'',$file);
@@ -3056,5 +3056,63 @@ public function get_enq_list_post(){
         unlink($file1);
       }
     }
+
+
+
+    public function tag_list_post(){
+      $this->input->post('comp_id');
+      $this->db->where('comp_id',$comp_id);
+      $res = $this->db->get('tags')->result_array();
+      if(!empty($res)){
+        $this->set_response([
+          'status' => TRUE,
+          'enquiry' =>$res
+           ], REST_Controller::HTTP_OK);
+      }else{
+        $this->set_response([
+          'status' => false,
+          'enquiry' =>$res
+           ], REST_Controller::HTTP_OK);
+      }
+    }
+    public function mark_tag_post(){        
+      $this->form_validation->set_rules('enquiry_id[]','Data','required');
+      $this->form_validation->set_rules('tags[]','Tags','required');
+      $this->form_validation->set_rules('company_id','Company Id','required');
+      
+      if($this->form_validation->run() == true){
+          $enq = $this->input->post('enquiry_id[]');
+          $comp_id = $this->input->post('company_id');
+          $tags = implode(',',$this->input->post('tags[]'));
+
+          foreach ($enq as $key => $value) {
+              if($this->db->where('enq_id',$value)->count_all_results('enquiry_tags')){
+                  $this->db->where('comp_id',$comp_id);
+                  $this->db->where('enq_id',$value);
+                  $this->db->set('tag_ids',$tags);
+                  $this->db->update('enquiry_tags');
+              }else{
+                  $this->db->insert('enquiry_tags',array('comp_id'=>$comp_id,'enq_id'=>$value,'tag_ids'=>$tags));
+              }
+          }
+          $this->set_response([
+            'status' => TRUE,
+            'msg' =>'Tag marked successfully'
+             ], REST_Controller::HTTP_OK);
+      }else{
+        $this->set_response([
+          'status' => false,
+          'msg' =>strip_tags(validation_errors())
+           ], REST_Controller::HTTP_OK);
+      }
+
+  }
+
+  public function remove_tag_post(){
+    $this->set_response([
+      'status' => TRUE,
+      'msg' =>'Success'
+       ], REST_Controller::HTTP_OK);
+  }
 
 }

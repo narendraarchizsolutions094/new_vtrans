@@ -5024,6 +5024,7 @@ public function insertComInfo($data)
         $this->db->where("tbl_visit.comp_id",$company_id);
         // $this->db->where("tbl_visit.user_id",$user_id);
         $this->db->order_by("tbl_visit.created_at",'DESC');
+        $this->db->group_by("tbl_visit.id");
         $this->db->where($where);
         if(!empty($_POST['filters']))
         {

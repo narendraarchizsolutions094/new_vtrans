@@ -4174,9 +4174,7 @@ pre .arg {
     border-radius: 5px;
     padding: 6px 7px;
 }
-.active .badge {
-    color: #9875ab !important;
-}
+
 /*--- Alerts ---*/
 .alert {
     border: 2px solid transparent;

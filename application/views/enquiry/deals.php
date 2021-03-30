@@ -383,7 +383,7 @@ function manage_filters()
                   <th id="th-16">Vehicle Carrying Capacity</th>
                   <th id="th-17">Invoice Value</th> -->
                   <th id="th-18">Create Date</th>
-                  <th id="th-18">No Action From</th>
+                  <th id="th-23">No Action</th>
                   <th id="th-19">Status</th>
                   <th id="th-20">Action</th>
                </tr>
@@ -656,6 +656,9 @@ $(window).load(function(){
 
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="18"> Create Date</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="23"> No Action</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="19"> Status</label>
