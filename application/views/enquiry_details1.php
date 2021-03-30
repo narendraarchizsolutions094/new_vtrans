@@ -5992,4 +5992,54 @@ $(".nav-tabs li").on('click',function(){
   $(window).trigger('resize');
 });
 
+   $(document).on("click", "#tagDrop", function (e) {
+        let id = $(this).attr('data-id');
+        let enqId = $(this).attr('data-enq');
+        // alert(enqId);
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to Delete This Tag',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+
+            if (result.value) {
+                $.ajax({
+                    url: "<?= base_url('enq/drop_tag/')?>",
+                    type: "POST",
+                    data: {
+                        tag_delete: true,
+                        id: id,
+                        enq: enqId
+                    },
+                    success: function (data) {
+                        // console.log(data);
+                        Swal.fire(
+                            'Deleted!',
+                            'Your Tag deleted.',
+                            'success',
+                            5000
+                        );
+                        location.reload();
+                    },
+                    error: function (err) {
+                        // console.log('err');
+                        Swal.fire(
+                            'Error!',
+                            'Something Was Worng!',
+                            'error',
+                            5000
+                        );
+                    }
+                });
+
+            }
+        })
+
+        // alert("asdfghj");
+    });
 </script>
