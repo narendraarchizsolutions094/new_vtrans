@@ -740,36 +740,4 @@ class Enq extends CI_Controller
             $this->db->order_by(key($order), $order[key($order)]);
         }
 	}
-
-	function drop_tag()
-	{
-	//        if (!empty($_POST)) {
-
-		$id[] = $this->input->post('id');
-		$enq_id = $this->input->post('enq');
-
-		$this->db->select('tag_ids');
-		$this->db->from('enquiry_tags');
-		$this->db->where('enq_id', $enq_id);
-		$res = $this->db->get()->row()->tag_ids;
-		$abc = explode(',', $res);
-		$result = array_diff($abc, $id);
-
-		$data = implode(",", $result);
-	//        print_r();
-	//        exit();
-
-
-		$this->db->where('enq_id', $enq_id);
-		$this->db->set('tag_ids', $data);
-		$this->db->update('enquiry_tags');
-
-
-
-		print_r($this->db->last_query());
-		exit();
-	//        }
-
-
-	}
 }
