@@ -91,6 +91,9 @@ public function create($html,$action=0,$pdfFilePath1='',$size=0){
     if(!empty($pdfFilePath1)){
         $file_location = $pdfFilePath1;
         file_put_contents($file_location,$pdf); 
+        $title = explode('/',$file_location);
+        $title = end($title);
+        $dompdf->stream($title, array('Attachment'=>$action));
     }
     else
     {

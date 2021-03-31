@@ -40,7 +40,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
     if($c == 0){ ?>
       a[href$="amount"],[href$="Payout_Preference"]{
         display: none !important;
-    	}
+      }
     <?php
     }          
 
@@ -552,7 +552,37 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             ?>
             
             <a href='javascript:void(0)' onclick='send_parameters("<?php echo $enquiry->phone ?>")'><?php echo $p ?></a>
-            <br><?php if(!empty($enquiry->email)) { echo $enquiry->email; } ?>            
+            <br><?php if(!empty($enquiry->email)) { echo $enquiry->email; } 
+            
+            
+            
+            
+            if (!empty($enquiry->tag_ids)) {
+
+               $this->db->select('title,color,id,created_by');
+               $this->db->where("id IN(" . $enquiry->tag_ids . ")");
+               $tags = $this->db->get('tags')->result_array();
+
+               if (!empty($tags)) {
+                   foreach ($tags as $key => $value) { ?>
+                       <div>
+                           <a class="badge" href="javascript:void(0)"
+                              style="background:<?php echo $value['color'] ?> ;padding:4px;"><?php echo $value['title'] ?>
+                           </a>
+                           <a href="<?= base_url('enq/drop_tag/') . $value['id'] ?>"
+                              id="tagDrop" data-id="<?= $value['id'] ?>" data-enq="<?= $enquiry->enq_id; ?>"
+                              class="text-danger" title="Drop Tag"><i
+                                       class="fa fa-close"></i></a>
+                       </div>
+                   <?php }
+               }
+           }
+            
+            ?>  
+
+
+            
+                      
             <br><?php if(!empty($enquiry->reference_name)) {               
               $this->db->where('TRIM(partner_id)',trim($enquiry->reference_name));
               $this->db->where('comp_id',$this->session->companey_id);
@@ -618,7 +648,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                     <?php  if($enquiry->status!=3){ ?>
 
                      <!--<li><a  title="Move to <?=display('client')?>" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/3'?>" onclick="return confirm('Are you sure you want to move this <?=display('lead')?> to <?=display('client')?> ?')" style="font-size: 10px;">Move to <?=display('client')?></a></li>-->
-					 <li><a onclick="get_modal_move(<?=$data_type?>,<?= $enquiry->enquiry_id; ?>,'3')">
+           <li><a onclick="get_modal_move(<?=$data_type?>,<?= $enquiry->enquiry_id; ?>,'3')">
                         Move to <?=display('client')?>
                      </a></li>
                     <?php }
@@ -629,14 +659,14 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                         if($enquiry->status!=$key){ ?>                   
                        <!--<li><a  title="" href="<?=base_url().'lead/any_convert_to_any/'.$enquiry->status.'/'.$enquiry->enquiry_id.'/'.$key?>" onclick="return confirm('Are you sure you want to Move this <?=display('client')?> to <?=$enquiry_separation[$key]['title']?> ?')" style="font-size: 10px;"> Move to <?=$enquiry_separation[$key]['title']?></i>
                         </a></li>-->
-						<li><a onclick="get_modal_move(<?=$data_type?>,<?= $enquiry->enquiry_id; ?>,<?= $key; ?>)">
+            <li><a onclick="get_modal_move(<?=$data_type?>,<?= $enquiry->enquiry_id; ?>,<?= $key; ?>)">
                         Move to <?=$enquiry_separation[$key]['title']?>
                         </a></li>
                     <?php } 
                     }
                    }  ?>
                   </ul>
-				  
+          
 <!---------------------------------------------Stage move popup Start------------------------------>
 <a title="Mark as <?=display('lead')?>"  data-target="#movelead" data-toggle="modal" id="movepop"></a>
       <div id="movelead" class="modal fade" role="dialog">
@@ -652,14 +682,14 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                   <!--<form method="post" action="">-->
                   <!--<?php //echo form_open_multipart('enquiry/move_to_lead','class="form-inner"') ?>   -->
                  <div id="deal-move-content">
-				 
+         
                  </div>
-				    <div class="col-md-2"  id="save_button">
+            <div class="col-md-2"  id="save_button">
                            <div class="col-md-12">                                                
                               <button class="btn btn-primary" type="submit" >Move</button>            
                            </div>
                     </div>
-				
+        
                   </form>
                </div>
                <div class="modal-footer">
@@ -668,11 +698,11 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             </div>
          </div>
       </div>
-	
+  
 <script>
     function get_modal_move(current,id,next){ 
         //alert(next);
-       var cls = document.getElementById("movepop");		
+       var cls = document.getElementById("movepop");    
        $.ajax({
           url: "<?php echo base_url().'lead/get_all_stage_deals'?>",
           type: 'POST',
@@ -680,14 +710,14 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
           success: function(content) {                       
             $("#deal-move-content").html(content);
             cls.click();
-			$("#deal-move-content select").select2();
+      $("#deal-move-content select").select2();
           }
       });
     
     }
 </script>
 <!---------------------------------------------stage move popup End------------------------------>
-				  
+          
                   </div>  
                <!-- // multiple move buttons end  -->
                <a class="btn btn-danger btn-sm"  type="button" title="Drop Lead" data-target="#dropEnquiry" data-toggle="modal">
@@ -766,7 +796,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                  <?php echo form_open_multipart('lead/update_description/'.$details->enquiry_id,array('id'=>'disposition_save_form','class'=>'form-inner')) ?>
                  <input type="hidden" name="dis_subject">
                  <input type="hidden" name="unique_no" value="<?php echo $details->Enquery_id; ?>" >
-  			         <input type="hidden" name="url" value="<?php echo $this->uri->segment(1); ?>" >
+                 <input type="hidden" name="url" value="<?php echo $this->uri->segment(1); ?>" >
                  <input type="hidden" name="latest_task_id">
                   <div class="form-group col-sm-12">
                              <!--<label class="col-form-label">Lead Stage</label>-->
@@ -897,17 +927,17 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                 }
               }
               ?>
-			<?php
+      <?php
               if (user_access('240')===true) { ?>
                <li href="#institute" id="institute-tab" data-toggle="tab" >Institute</li>
-			  <?php } ?>
-			<?php if ($this->session->companey_id=='67' || $this->session->companey_id=='83') { ?>
+        <?php } ?>
+      <?php if ($this->session->companey_id=='67' || $this->session->companey_id=='83') { ?>
               <!--<li><a href="#qalification" data-toggle="tab" style="padding: 10px 10px; font-size:12px;">Qualifications</a></li>
-              <li><a href="#english" data-toggle="tab" style="padding: 10px 10px; font-size:12px;">English Language</a></li>-->			  
-			    <li href="#payment" data-toggle="tab" >Payment</li>
+              <li><a href="#english" data-toggle="tab" style="padding: 10px 10px; font-size:12px;">English Language</a></li>-->       
+          <li href="#payment" data-toggle="tab" >Payment</li>
               <li  href="#aggrement" data-toggle="tab" >Aggrement</li>
-			<?php } ?>
-			     <li href="#task" data-toggle="tab" >Task</li>
+      <?php } ?>
+           <li href="#task" data-toggle="tab" >Task</li>
             
            <!--  <li href="#related_enquiry" data-toggle="tab">Related Data</li> -->
             <?php if($this->session->companey_id=='83'){ ?>
@@ -1254,24 +1284,24 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                                 Institute Name
                               </th>
                               <?php if ($this->session->companey_id=='67') { ?>
-							                 <th>
+                               <th>
                                 Course Name
                               </th>
-							                 <th>
+                               <th>
                                 Program Lavel
                               </th>
-							                  <th>
+                                <th>
                                 Program Length
                               </th>
-							                 <th>
+                               <th>
                                 Program Discipline
                               </th>
                               
-							                <th>
+                              <th>
                                 Tuition Fee
                               </th>
-							             <?php } if ($this->session->companey_id!='67') { ?>
-							                 <th>
+                           <?php } if ($this->session->companey_id!='67') { ?>
+                               <th>
                                 Offer letter fee
                               </th>
                                 Application URL
@@ -1286,7 +1316,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                               <th>
                                 Password
                               </th>
-							             <?php } ?>
+                           <?php } ?>
                               <th>
                                 App status
                               </th>
@@ -1305,14 +1335,14 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                               </th>
                               <th>
                                 CV                           
-                              </th>							             
+                              </th>                          
                               <th>
                                 GRE/GMAT
                               </th>
                               <th>
                                 TOEFL/IELTS /PTE
                               </th>
-							             <?php } ?>
+                           <?php } ?>
                               <th>
                                 Remarks
                               </th>
@@ -1340,23 +1370,23 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                                   <?php
                                   }
                                   ?>
-									               <?php if ($this->session->companey_id!='67') { ?>
+                                 <?php if ($this->session->companey_id!='67') { ?>
                                     <td><?=$value['ol_fee']?></td>                                    
                                     <td><?=$value['application_url']?></td>
                                     <td><?=$value['major']?></td>
                                     <td><?=$value['user_name']?></td>
                                     <td><?=$value['password']?></td>
-									               <?php } ?>
+                                 <?php } ?>
                                     <td><?=$value['app_status_title']?></td>
                                     <td><?=$value['app_fee']?></td>
-									               <?php if ($this->session->companey_id!='67') { ?>
+                                 <?php if ($this->session->companey_id!='67') { ?>
                                     <td><?=$value['transcript']?></td>
                                     <td><?=$value['lors']?></td>
                                     <td><?=$value['sop']?></td>
                                     <td><?=$value['cv']?></td>
                                     <td><?=$value['gre_gmt']?></td>
                                     <td><?=$value['toefl']?></td>
-									               <?php } ?>
+                                 <?php } ?>
                                     <td><?=$value['remark']?></td>
                                     <td><?=$value['followup_comment']?></td>
                                     <td>
@@ -1386,7 +1416,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                           <label>Institute Name <i class="text-danger">*</i></label>
                           <select class="form-control" name='institute_id' id='institute_id' required>
                           <option value="">Please Select</option>
-						  <?php
+              <?php
                           if(!empty($institute_list)){
                             foreach ($institute_list as $key => $value) { ?>
                               <option value="<?=$value->institute_id?>"><?=$value->institute_name?></option>
@@ -1402,26 +1432,26 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
 <div class="form-group col-sm-4">                         
                           <label><?php echo display('program_discipline')?> </label>                          
                           <select name="p_disc" id="p_disc" class="form-control" onchange="">
-						      <option value="">Select</option>
+                  <option value="">Select</option>
                              <?php foreach($discipline as $dc){ ?>                                   
                         <option value="<?php echo $dc->id; ?>"><?php echo $dc->discipline; ?></option>
                     <?php } ?>
-                    </select>							  
+                    </select>               
                           </select>                          
 </div>
 <div class="form-group col-sm-4">                         
                           <label>Program Lavel </label>                          
                           <select name="p_lvl" id="p_lvl" class="form-control" onchange="find_level()">
-						      <option value="">Select</option>
+                  <option value="">Select</option>
                              <?php foreach($level as $lc){ ?>                                   
                         <option value="<?php echo $lc->id; ?>"><?php echo $lc->level; ?></option>
-                    <?php } ?>							  
+                    <?php } ?>                
                           </select>                          
 </div>
 <div class="form-group col-sm-4">                         
                           <label>Program Length </label>                          
                           <select name="p_length" id="p_length" class="form-control" onchange="find_app_crs()">
-							  
+                
                           </select>                          
 </div>
 
@@ -1441,7 +1471,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                           <label>Offer letter fee</label>
                           <input class="form-control" name="ol_fee" type="text" placeholder="O.letter fee" >  
 </div> -->
-<?php } ?>					   
+<?php } ?>             
 <?php if ($this->session->companey_id!='67') { ?>
                        <div class="form-group col-sm-4"> 
                           <label>Application URL </label>
@@ -1451,7 +1481,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                           <label>Major </label>
                           <input class="form-control" name="major" type="text" placeholder="Major" >  
                        </div>
-					  
+            
                        <div class="form-group col-sm-4"> 
                           <label>User Name </label>
                           <input class="form-control" name="username" type="text" placeholder="Username" >  
@@ -1862,6 +1892,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                           <th id="th-16">Vehicle Carrying Capacity</th>
                           <th id="th-17">Invoice Value</th> -->
                           <th id="th-18">Create Date</th>
+                          <th id="th-23">No Action</th>
                           <th id="th-19">Status</th>
                           <th id="th-20">Action</th>
                        </tr>
@@ -1961,7 +1992,7 @@ $(document).ready(function(){
                      // d.date_from = $("input[name=d_from_date]").val();
                      // d.date_to = $("input[name=d_to_date]").val();
                       d.enq_for = "<?=$details->enquiry_id?>";
-					  d.curr_stg = "<?=$data_type?>";
+            d.curr_stg = "<?=$data_type?>";
                      // d.booking_type = $("select[name=d_booking_type]").val();
                      // d.booking_branch  =  $("select[name=d_booking_branch]").val();
                      // d.delivery_branch  =  $("select[name=d_delivery_branch]").val();
@@ -2199,8 +2230,8 @@ if(user_access('1020'))
     <table id="visit_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
       <thead>
       <tr>
-				          <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
-				          <th id="th-1" width="15%">Visit Date</th>
+                  <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
+                  <th id="th-1" width="15%">Visit Date</th>
                   <th id="th-2" width="15%">Visit Time</th>
                   <th id="th-13" width="15%">Purpose of meeting</th>
                   <th id="th-10">Company Name</th>
@@ -2217,7 +2248,7 @@ if(user_access('1020'))
                   <th>Total Expense</th>
                   <th>Expense Staus</th>
                   <th id="th-9">Action</th>
-				        </tr>
+                </tr>
       </thead>
       <thead>
       </thead>
@@ -2376,7 +2407,7 @@ $(function() {
     if(filesizeinkb > 1024){
    alert('File Size not exceed ');
     }
-	}
+  }
   function addnewrow() {
     var n = ($('.detail tr').length - 0) + 1;
     var s = n + 3
@@ -2429,7 +2460,7 @@ if(user_access('1004'))
     <th class="th-sm">Agreement</th>
 <?php if($details->status=='5'){ ?>
     <th class="th-sm">PO File</th>
-	<th class="th-sm">Attach PO</th>
+  <th class="th-sm">Attach PO</th>
 <?php } ?>
     </tr>
   </thead>
@@ -3057,11 +3088,11 @@ if (document.getElementById('agg_same').checked)
                 }
               }
               ?>
-			  <?php include('tab_payment.php'); ?>
-			  <?php include('tab_aggriment.php'); ?>
-			  <?php include('tab_qualification.php'); ?>
+        <?php include('tab_payment.php'); ?>
+        <?php include('tab_aggriment.php'); ?>
+        <?php include('tab_qualification.php'); ?>
         <?php include('tab_login_trail.php'); ?>
-			  <?php include('tab_english.php'); ?>
+        <?php include('tab_english.php'); ?>
             </div>
       </div>
       </div>
@@ -3914,14 +3945,14 @@ if (document.getElementById('agg_same').checked)
             <label>Schedule</label>
 <style>
 .timepicker-picker {
-	height: 240px; 
-	margin: 0 80px; 
-	display: inline-flex; 
-	flex-direction: column;
-	justify-content: center; 
+  height: 240px; 
+  margin: 0 80px; 
+  display: inline-flex; 
+  flex-direction: column;
+  justify-content: center; 
 }
 .calendar {
-	cursor: pointer;
+  cursor: pointer;
 }
 .timepicker-picker table td {
     height: 24px;
@@ -3929,17 +3960,17 @@ if (document.getElementById('agg_same').checked)
     width: 24px;
 }
 .bootstrap-datetimepicker-widget table td.separator { 
-	width: 1px;
-	height: 1px;
-	line-height: 1px;
+  width: 1px;
+  height: 1px;
+  line-height: 1px;
 } 
 .bootstrap-datetimepicker-widget .timepicker-hour,
 .bootstrap-datetimepicker-widget .timepicker-minute,
 .bootstrap-datetimepicker-widget .glyphicon-chevron-up,
 .bootstrap-datetimepicker-widget .glyphicon-chevron-down {
-	width: 20px;
-	height: 15px; 
-	line-height: 1;
+  width: 20px;
+  height: 15px; 
+  line-height: 1;
 }
 .bootstrap-datetimepicker-widget table td span:hover {
     background: none;
@@ -3957,11 +3988,11 @@ if (document.getElementById('agg_same').checked)
        <div class="col-md-8">
        <label >Date & Time</label>
        <div class="input-group input-group-sm" id='datetimepicker'  >
-						<input type="text" class="form-control" style="width: 100%;" name="schedule_time"/>   
-						<span class="input-group-addon calendar">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</span>
-					</div>
+            <input type="text" class="form-control" style="width: 100%;" name="schedule_time"/>   
+            <span class="input-group-addon calendar">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
          </div>
          </div>
          </div>
@@ -4013,30 +4044,30 @@ function handleClick(myRadio) {
     }
   // jquery
 $(function () {
-		$('#datetimepicker').datetimepicker({ 
-				allowInputToggle: true,
-				showClose: true, //close the picker
-				format: 'YYYY-MM-DD HH:mm', //YYYY-MMM-DD LT
-				calendarWeeks: true,
-				inline: false,
+    $('#datetimepicker').datetimepicker({ 
+        allowInputToggle: true,
+        showClose: true, //close the picker
+        format: 'YYYY-MM-DD HH:mm', //YYYY-MMM-DD LT
+        calendarWeeks: true,
+        inline: false,
         sideBySide: true
-		});
-		$('#datetimepicker-sidebyside').datetimepicker({
-				showTodayButton: true,
-				showClose: true, //close the picker
-				showClear: true, //clear selection 
-				format: 'YYYY-MM-DD HH:mm', //YYYY-MMM-DD LT
-				calendarWeeks: true,
-				inline: true,
-				sideBySide: true
-		});
-		$('#datetimepicker-collapse').datetimepicker({
-				showClose: true, //close the picker
-				format: 'YYYY-MM-DD HH:mm', //YYYY-MMM-DD LT
-				calendarWeeks: true,
-				inline: true,
-				collapse: true
-		}); 
+    });
+    $('#datetimepicker-sidebyside').datetimepicker({
+        showTodayButton: true,
+        showClose: true, //close the picker
+        showClear: true, //clear selection 
+        format: 'YYYY-MM-DD HH:mm', //YYYY-MMM-DD LT
+        calendarWeeks: true,
+        inline: true,
+        sideBySide: true
+    });
+    $('#datetimepicker-collapse').datetimepicker({
+        showClose: true, //close the picker
+        format: 'YYYY-MM-DD HH:mm', //YYYY-MMM-DD LT
+        calendarWeeks: true,
+        inline: true,
+        collapse: true
+    }); 
 });
 
 </script>
@@ -4149,8 +4180,8 @@ $(function () {
 
 
 <!----------------------------------------------------------chat section ---------------------------------------------------------->
-		 
-		 <!--chat start---->
+     
+     <!--chat start---->
 
 <style>
 .chat-window{
@@ -4275,7 +4306,7 @@ $(function () {
 <div class="container">
     <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1" style="display: none;">
         <div class="col-xs-12 col-md-12">
-        	<div class="panel panel-default">
+          <div class="panel panel-default">
                 <div class="panel-heading top-bar">
                     <div class="col-md-8 col-xs-8">
                         <h5  style="font-size:9px;"><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;<?php echo  $enquiry->name." ".$enquiry->lastname ?></h5>
@@ -4286,13 +4317,13 @@ $(function () {
                     </div>
                 </div>
                 <div class="panel-body msg_container_base" id="chat_window">
-				<?php
+        <?php
         if($get_message!='ERROR')
-        {    	
-        //echo $get_message; exit();			
-				foreach(json_decode($get_message) as $msg){
-				if($msg->type!='OUT'){?>
-				<div class="row msg_container base_sent">
+        {     
+        //echo $get_message; exit();      
+        foreach(json_decode($get_message) as $msg){
+        if($msg->type!='OUT'){?>
+        <div class="row msg_container base_sent">
                         <div class="col-md-2 col-xs-2 avatar">
                             <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
                         </div>
@@ -4303,9 +4334,9 @@ $(function () {
                             </div>
                         </div>
                     </div>
-					
-				<?php }else{ ?>
-				 <div class="row msg_container base_receive ">
+          
+        <?php }else{ ?>
+         <div class="row msg_container base_receive ">
                         <div class="col-md-10 col-xs-10">
                             <div class="messages msg_sent">
                                 <p><?php echo $msg->text;  ?></p>
@@ -4316,27 +4347,27 @@ $(function () {
                             <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
                         </div>
                     </div>
-				
-				<?php } }
+        
+        <?php } }
 
       }?>
                     
 
                  </div>
-				 <form   id="chat_start">
+         <form   id="chat_start">
                 <div class="panel-footer">
                     <div class="input-group">
-					
-					 <input value="<?php echo $enquiry->phone; ?>" name="phone" type="hidden"  placeholder="Write your message here..." />
+          
+           <input value="<?php echo $enquiry->phone; ?>" name="phone" type="hidden"  placeholder="Write your message here..." />
                       <input id="btn-input" type="text" name="message" class="form-control input-sm chat_input" placeholder="Write your message here..." />
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-primary btn-sm" id="send_message" onclick="chat_start()" o>Send</button>
                         </span>
-				   
+           
                     </div>
                 </div>
-				 </form>
-    		</div>
+         </form>
+        </div>
         </div>
     </div>
     
@@ -4424,12 +4455,12 @@ function edit_contact(t)
         data:{cc_id:contact_id,task:'view'},
         success:function(res)
         {
-			if(res){
-				var cls = document.getElementById("open");
+      if(res){
+        var cls = document.getElementById("open");
                 cls.click();
-				$("#update_content").html(res);
-				$("#update_content select").select2();
-			}
+        $("#update_content").html(res);
+        $("#update_content select").select2();
+      }
           /* Swal.fire({
                 title:'Edit Contact',
                 html:res,
@@ -4544,7 +4575,7 @@ $(".toogle-timeline").click(function(){
 
 
 <!-- end chat-->
-		 
+     
 <!----------------------------------------------------------chat section end--------------------------------------------------------->
 <script>
     function add_more_phone(add_more_phone) {
@@ -4721,7 +4752,7 @@ $(".toogle-timeline").click(function(){
     document.getElementById('chat_start').addEventListener('keypress', function(event) {
         if (event.keyCode == 13) {
             event.preventDefault();
-		      $.ajax({
+          $.ajax({
            type: 'POST',
            url: '<?php echo base_url();?>message/chat_start',
            data: $('#chat_start').serialize()
@@ -4779,73 +4810,73 @@ $(".toogle-timeline").click(function(){
 
     $(function () {
       var bindDatePicker = function() {
-     		$(".date").datetimepicker({
+        $(".date").datetimepicker({
              format:'DD-MM-YYYY hh:mm:ss a',
-     			icons: {
-     				time: "fa fa-clock-o",
-     				date: "fa fa-calendar",
-     				up: "fa fa-arrow-up",
-     				down: "fa fa-arrow-down"
-     			}
-     		}).find('input:first').on("blur",function () {
-     			var date = parseDate($(this).val());   
-     			if (! isValidDate(date)) {
-     				date = moment().format('YYYY-MM-DD');
-     			}   
-     			$(this).val(date);
-     		});
-   	}      
+          icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-arrow-up",
+            down: "fa fa-arrow-down"
+          }
+        }).find('input:first').on("blur",function () {
+          var date = parseDate($(this).val());   
+          if (! isValidDate(date)) {
+            date = moment().format('YYYY-MM-DD');
+          }   
+          $(this).val(date);
+        });
+    }      
       var isValidDate = function(value, format) {
-     		format = format || false;
-     		if (format) {
-     			value = parseDate(value);
-     		}   
-     		var timestamp = Date.parse(value);   
-     		return isNaN(timestamp) == false;
+        format = format || false;
+        if (format) {
+          value = parseDate(value);
+        }   
+        var timestamp = Date.parse(value);   
+        return isNaN(timestamp) == false;
       }
       
       var parseDate = function(value) {
-     		var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
-     		if (m)
-     			value = m[5] + '-' + ("00" + m[3]).slice(-2) + '-' + ("00" + m[1]).slice(-2);   
-     		return value;
+        var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
+        if (m)
+          value = m[5] + '-' + ("00" + m[3]).slice(-2) + '-' + ("00" + m[1]).slice(-2);   
+        return value;
       }      
       bindDatePicker();
     });    
 
     $(function () {
       var bindDatePicker = function() {
-     		$(".date2").datetimepicker({
+        $(".date2").datetimepicker({
              format:'DD-MM-YYYY',
-       			icons: {
-       				time: "fa fa-clock-o",
-       				date: "fa fa-calendar",
-       				up: "fa fa-arrow-up",
-       				down: "fa fa-arrow-down"
-       			}
-     		}).find('input:first').on("blur",function () {
-     			var date = parseDate($(this).val());   
-     			if (! isValidDate(date)) {
-     				date = moment().format('YYYY-MM-DD');
-     			}   
-     			$(this).val(date);   		
-     		});
+            icons: {
+              time: "fa fa-clock-o",
+              date: "fa fa-calendar",
+              up: "fa fa-arrow-up",
+              down: "fa fa-arrow-down"
+            }
+        }).find('input:first').on("blur",function () {
+          var date = parseDate($(this).val());   
+          if (! isValidDate(date)) {
+            date = moment().format('YYYY-MM-DD');
+          }   
+          $(this).val(date);      
+        });
       }
       
     var isValidDate = function(value, format) {
-   		format = format || false;
-   		if (format) {
-   			value = parseDate(value);
-   		}   
-   		var timestamp = Date.parse(value);   
-   		return isNaN(timestamp) == false;
+      format = format || false;
+      if (format) {
+        value = parseDate(value);
+      }   
+      var timestamp = Date.parse(value);   
+      return isNaN(timestamp) == false;
     }
       
     var parseDate = function(value) {
-   		var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
-   		if (m)
-   			value = m[5] + '-' + ("00" + m[3]).slice(-2) + '-' + ("00" + m[1]).slice(-2);   
-   		return value;
+      var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
+      if (m)
+        value = m[5] + '-' + ("00" + m[3]).slice(-2) + '-' + ("00" + m[1]).slice(-2);   
+      return value;
     }      
     bindDatePicker();
   });      
@@ -5581,37 +5612,37 @@ function edit_dynamic_query(t)
 
 <script type="text/javascript">
 $('div.ieltsappeard').hide();
-	$('div.ieltsnappeard').hide();
-	$('div.ieltsdt').hide();
-	$('div.ieltslisten').hide();
-	$('div.ieltsread').hide();
-	$('div.ieltswrite').hide();
-	$('div.ieltsspeak').hide();
-	$('div.ieltsfinal').hide();
-	
-	$('div.pteappeard').hide();
-	$('div.ptenappeard').hide();
-	$('div.ptedt').hide();
-	$('div.ptelisten').hide();
-	$('div.pteread').hide();
-	$('div.ptewrite').hide();
-	$('div.ptespeak').hide();
-	$('div.ptefinal').hide();
-	
-	
+  $('div.ieltsnappeard').hide();
+  $('div.ieltsdt').hide();
+  $('div.ieltslisten').hide();
+  $('div.ieltsread').hide();
+  $('div.ieltswrite').hide();
+  $('div.ieltsspeak').hide();
+  $('div.ieltsfinal').hide();
+  
+  $('div.pteappeard').hide();
+  $('div.ptenappeard').hide();
+  $('div.ptedt').hide();
+  $('div.ptelisten').hide();
+  $('div.pteread').hide();
+  $('div.ptewrite').hide();
+  $('div.ptespeak').hide();
+  $('div.ptefinal').hide();
+  
+  
 $('#ielts').change(function(){
   if($(this).prop("checked")) {
     $('div.ieltsappeard').show();
 
   } else {
     $('div.ieltsappeard').hide();
-	$('div.ieltsnappeard').hide();
-	$('div.ieltsdt').hide();
-	$('div.ieltslisten').hide();
-	$('div.ieltsread').hide();
-	$('div.ieltswrite').hide();
-	$('div.ieltsspeak').hide();
-	$('div.ieltsfinal').hide();
+  $('div.ieltsnappeard').hide();
+  $('div.ieltsdt').hide();
+  $('div.ieltslisten').hide();
+  $('div.ieltsread').hide();
+  $('div.ieltswrite').hide();
+  $('div.ieltsspeak').hide();
+  $('div.ieltsfinal').hide();
   }
 }); 
  
@@ -5619,21 +5650,21 @@ $('#ielts').change(function(){
 $("input[id=ieltsappeard]").on( "click", function() {
 
 var test = $(this).val();
-	if(test=='Appeared'){
+  if(test=='Appeared'){
     $('div.ieltsdt').show();
-	$('div.ieltslisten').show();
-	$('div.ieltsread').show();
-	$('div.ieltswrite').show();
-	$('div.ieltsspeak').show();
-	$('div.ieltsfinal').show();
-		 }else{
-	$('div.ieltsdt').hide();
-	$('div.ieltslisten').hide();
-	$('div.ieltsread').hide();
-	$('div.ieltswrite').hide();
-	$('div.ieltsspeak').hide();
-	$('div.ieltsfinal').hide();		 
-		 }
+  $('div.ieltslisten').show();
+  $('div.ieltsread').show();
+  $('div.ieltswrite').show();
+  $('div.ieltsspeak').show();
+  $('div.ieltsfinal').show();
+     }else{
+  $('div.ieltsdt').hide();
+  $('div.ieltslisten').hide();
+  $('div.ieltsread').hide();
+  $('div.ieltswrite').hide();
+  $('div.ieltsspeak').hide();
+  $('div.ieltsfinal').hide();    
+     }
     } );
  
 
@@ -5643,43 +5674,43 @@ $('#pte').change(function(){
 
   } else {
     $('div.pteappeard').hide();
-	$('div.ptenappeard').hide();
-	$('div.ptedt').hide();
-	$('div.ptelisten').hide();
-	$('div.pteread').hide();
-	$('div.ptewrite').hide();
-	$('div.ptespeak').hide();
-	$('div.ptefinal').hide();
+  $('div.ptenappeard').hide();
+  $('div.ptedt').hide();
+  $('div.ptelisten').hide();
+  $('div.pteread').hide();
+  $('div.ptewrite').hide();
+  $('div.ptespeak').hide();
+  $('div.ptefinal').hide();
   }
 }); 
 
 $("input[id=pteappeard]").on( "click", function() {
 
 var test = $(this).val();
-	if(test=='Appeared'){
+  if(test=='Appeared'){
     $('div.ptedt').show();
-	$('div.ptelisten').show();
-	$('div.pteread').show();
-	$('div.ptewrite').show();
-	$('div.ptespeak').show();
-	$('div.ptefinal').show();
-		 }else{
-	$('div.ptedt').hide();
-	$('div.ptelisten').hide();
-	$('div.pteread').hide();
-	$('div.ptewrite').hide();
-	$('div.ptespeak').hide();
-	$('div.ptefinal').hide();		 
-		 }
+  $('div.ptelisten').show();
+  $('div.pteread').show();
+  $('div.ptewrite').show();
+  $('div.ptespeak').show();
+  $('div.ptefinal').show();
+     }else{
+  $('div.ptedt').hide();
+  $('div.ptelisten').hide();
+  $('div.pteread').hide();
+  $('div.ptewrite').hide();
+  $('div.ptespeak').hide();
+  $('div.ptefinal').hide();    
+     }
     } ); 
 </script>
 <script>
 function find_app_crs() { 
             var c_stage = $("#institute_id").val();
-			var l_stage = $("#p_lvl").val();
-			var lg_stage = $("#p_length").val();
-			var d_stage = $("#p_disc").val();
-			//alert(c_stage);
+      var l_stage = $("#p_lvl").val();
+      var lg_stage = $("#p_length").val();
+      var d_stage = $("#p_disc").val();
+      //alert(c_stage);
             $.ajax({
             type: 'POST',
             url: '<?php echo base_url();?>lead/select_app_by_ins',
@@ -5716,7 +5747,7 @@ function find_level() {
       $("#p_length").html(html);
   }
   });
-}	
+} 
 
 $("a[href$='#related_enquiry']").on('click',function(){
   var phone = "<?=$details->phone?>";

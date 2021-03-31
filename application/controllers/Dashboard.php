@@ -20,13 +20,13 @@ class Dashboard extends CI_Controller {
     public function hello(){
         echo "hwllow worlkd";
     }
-	
+  
 //for santram only map view page start
-	
-	public function visit_map_only()
+  
+  public function visit_map_only()
     {
         $id=$this->uri->segment('3');
-    	$visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
+      $visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
         if($visitdata->num_rows()!=0){
             $data['details'] =$visitdata->row();
             $this->load->model('Client_Model');
@@ -38,11 +38,11 @@ class Dashboard extends CI_Controller {
             $this->load->view('enquiry/visit_details_map_only', $data);
             //$this->load->view('layout/main_wrapper', $data);
         }else{
-			$this->load->view('enquiry/visit_details_map_not_found');
+      $this->load->view('enquiry/visit_details_map_not_found');
         }
        
     }
-	
+  
 //for santram only map view page End
 
          public function fb_token() { 
@@ -652,10 +652,10 @@ $this->load->library('zip');
                             'availability'          => $user_data->availability,
                             'validity_status'       => $validity_status,
                             'validity_msg'          => $validity_msg,
-							'dept_name'            => $user_data->dept_name,
-							'sales_region'         => $user_data->sales_region,
-							'sales_area'           => $user_data->sales_area,
-							'branch_name'          => $user_data->sales_branch,
+              'dept_name'            => $user_data->dept_name,
+              'sales_region'         => $user_data->sales_region,
+              'sales_area'           => $user_data->sales_area,
+              'branch_name'          => $user_data->sales_branch,
                             'login_token'=>$login_token,
                         ]);
                             // check device login right
@@ -1443,12 +1443,12 @@ if (!empty($enquiry_separation)) {
      public function forgot_password() {
              
             $email = $this->input->post('femail');
-			$ecode = $this->input->post('fecode');
+      $ecode = $this->input->post('fecode');
             $email_row = array();
             if(is_numeric($email) == 1)
             {
               $data = $this->dashboard_model->getUserDataByPhone($email,$ecode);
-			  print_r($data);exit;
+        print_r($data);exit;
               //$this->load->library('email');
               if(!empty($data))
               {
@@ -1456,22 +1456,22 @@ if (!empty($enquiry_separation)) {
                 $this->db->where('api_key','message');
                 $email_row  =   $this->db->get('api_integration')->row_array();
               }else{
-				  echo "5";die;
-			  }
+          echo "5";die;
+        }
               
             }
             else
             {
               $data = $this->dashboard_model->change_pass($email,$ecode);
-			  if(!empty($data))
+        if(!empty($data))
               {
               $this->load->library('email');
               $this->db->where('comp_id',$data->companey_id);
               $this->db->where('status',1);
               $email_row  =   $this->db->get('email_integration')->row_array();
-			  }else{
-				echo "5";die;  
-			  }
+        }else{
+        echo "5";die;  
+        }
             }
             
             if(!empty($data))
@@ -1540,9 +1540,9 @@ if (!empty($enquiry_separation)) {
             }
         }
       }
-			  }else{
-				echo "5";die;  
-			  }
+        }else{
+        echo "5";die;  
+        }
     }
     public function verifyOTP()
     {
@@ -3271,7 +3271,7 @@ public function set_layout_to_session() {
 
         $d_data =  $this->Branch_model->get_deal_data($info_id);
        // $oc = (array)json_decode($deal->other_charges);
-	      $oc = json_decode($deal->other_charges,true);
+        $oc = json_decode($deal->other_charges,true);
         
         $enquiry_id = $deal->enquiry_id;
         $booking_type = $deal->booking_type;
@@ -3608,7 +3608,7 @@ public function set_layout_to_session() {
               <td>'.$oc[17].'</td>
               <td>% of basic freight</td>
           </tr>
-		  <tr>
+      <tr>
               <td>Levy- in %</td>
               <td>'.$oc[18].'</td>
               <td>% of basic freight</td>
@@ -3658,7 +3658,7 @@ public function set_layout_to_session() {
         $folder =  explode('/',$_SERVER['REQUEST_URI'])[1];
 
 
-        $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/".$folder."/uploads/quotations/quotations-".time().".pdf";
+        $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/uploads/quotations/quotations_".$info_id.".pdf";
         //$pdf=   $this->pdf->create($content,0,$pdfFilePath1);
 
         //get template of caf
@@ -3739,8 +3739,11 @@ public function set_layout_to_session() {
         $task = 0;
         if(!empty($this->input->post('task')))
           $task = $this->input->post('task');
-
-        $this->pdf->create($content,$task);
+        
+        $folder =  explode('/',$_SERVER['REQUEST_URI'])[1];
+        $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/uploads/quotations/quotations_".$info_id.".pdf";
+        
+        $this->pdf->create($content,$task,$pdfFilePath1);
 
         if($this->input->post('redirect_url')){
             redirect($this->input->post('redirect_url')); //updateclient                

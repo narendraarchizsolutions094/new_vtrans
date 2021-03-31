@@ -4,10 +4,10 @@ class Client extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('user_agent');
-		$this->load->library('aws');
-		$this->load->library('upload');
-		$this->lang->load("activitylogmsg","english");;        
-		$this->load->model(
+        $this->load->library('aws');
+        $this->load->library('upload');
+        $this->lang->load("activitylogmsg","english");;        
+        $this->load->model(
                 array('Ticket_Model','Leads_Model','common_model','enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models','Institute_model','Datasource_model','Taskstatus_model','dash_model','Center_model','SubSource_model','Kyc_model','Education_model','SocialProfile_model','Closefemily_model','form_model','report_model','Configuration_Model','Doctor_model','rule_model','message_models')
                 );
         if (empty($this->session->user_id)) {
@@ -29,13 +29,13 @@ class Client extends CI_Controller {
         $data['created_bylist'] = $this->User_model->read();
         $data['sourse'] = $this->report_model->all_source();
         $data['datasourse'] = $this->report_model->all_datasource(); 
-        $data['dfields']  = $this->enquiry_model-> getformfield();		 
+        $data['dfields']  = $this->enquiry_model-> getformfield();       
         
         if(!empty($_GET) && !empty($_GET['desposition'])){
             $desp = $this->db->where('stg_id',$_GET['desposition'])->get('lead_stage')->row();        
-			$data['desp'] = $desp;			
-			$this->session->set_userdata('enquiry_filters_sess',array('stage'=>$_GET['desposition']));
-		}
+            $data['desp'] = $desp;          
+            $this->session->set_userdata('enquiry_filters_sess',array('stage'=>$_GET['desposition']));
+        }
         
         $data['subsource_list'] = $this->Datasource_model->subsourcelist();     
         $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
@@ -54,11 +54,11 @@ class Client extends CI_Controller {
         $data['aging_rule'] = $this->rule_model->get_rules(array(11));
         $this->load->model('Branch_model');
         $data['branch_lists']=$this->Branch_model->all_sales_branch();
-		$data['region_lists']=$this->Branch_model->all_sales_region();
-		$data['area_lists']=$this->Branch_model->all_sales_area();
-		$data['dept_lists']=$this->User_model->all_sales_dept();
+        $data['region_lists']=$this->Branch_model->all_sales_region();
+        $data['area_lists']=$this->Branch_model->all_sales_area();
+        $data['dept_lists']=$this->User_model->all_sales_dept();
         $data['state_list'] = $this->enquiry_model->get_user_state_list();
-        $data['city_list'] = $this->enquiry_model->get_user_city_list();		
+        $data['city_list'] = $this->enquiry_model->get_user_city_list();        
         $data['content'] = $this->load->view('enquiry_n', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -109,7 +109,7 @@ class Client extends CI_Controller {
     }
     public function view($enquiry_id) {
         $this->load->model('Client_Model');
-		//print_r($enquiry_id);exit;
+        //print_r($enquiry_id);exit;
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);   
         //$data['state_city_list'] = $this->location_model->get_city_by_state_id($data['details']->enquiry_state_id);
         //$data['state_city_list'] = $this->location_model->ecity_list();
@@ -170,13 +170,13 @@ class Client extends CI_Controller {
         $data['leadid']     = $data['details']->Enquery_id;
         $data['compid']     =  $data['details']->comp_id;
         $data['ins_list'] = $this->location_model->get_ins_list($data['details']->Enquery_id);
-		$data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id);
+        $data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id);
         $data['enquiry_id'] = $enquiry_id;
         $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
         if ($this->session->companey_id=='67') { 
-		$data['qualification_data'] = $this->enquiry_model->quali_data($data['details']->Enquery_id);
-		$data['english_data'] = $this->enquiry_model->eng_data($data['details']->Enquery_id);
-		}
+        $data['qualification_data'] = $this->enquiry_model->quali_data($data['details']->Enquery_id);
+        $data['english_data'] = $this->enquiry_model->eng_data($data['details']->Enquery_id);
+        }
         if ($this->session->companey_id=='67') { 
             $data['discipline'] = $this->location_model->find_discipline();
             $data['level'] = $this->location_model->find_level();
@@ -199,8 +199,8 @@ class Client extends CI_Controller {
              $data['commInfoData']=array();
         }
         
-		$data['course_list'] = $this->Leads_Model->get_course_list();
-        $data['data_type'] = base64_decode($this->uri->segment(4));	
+        $data['course_list'] = $this->Leads_Model->get_course_list();
+        $data['data_type'] = base64_decode($this->uri->segment(4)); 
         $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
         if (!empty($enquiry_separation) && !empty($data['data_type'])) {                    
             $enquiry_separation = json_decode($enquiry_separation,true);
@@ -210,14 +210,14 @@ class Client extends CI_Controller {
             $data['title'] =display('client');
         }
         if($this->session->companey_id == 65 && $this->session->user_right == 215){
-			$data['created_bylist'] = $this->User_model->read(147,false);
-		}else{
-			$data['created_bylist'] = $this->User_model->read();
-		} 
+            $data['created_bylist'] = $this->User_model->read(147,false);
+        }else{
+            $data['created_bylist'] = $this->User_model->read();
+        } 
         $this->load->model('Branch_model');
-		$data['branch_lists']=$this->Branch_model->all_sales_branch();
+        $data['branch_lists']=$this->Branch_model->all_sales_branch();
         $data['region_lists']=$this->Branch_model->all_sales_region();
-        //$data['dept_lists']=$this->User_model->all_sales_dept();	
+        //$data['dept_lists']=$this->User_model->all_sales_dept();  
         $enq['enquiry_id'] = $enquiry_id;
         $data['all_contact']= $this->Client_Model->getContactList()->result();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
@@ -321,8 +321,8 @@ class Client extends CI_Controller {
         if(user_role('1012')==true){
             
         }
-		$data['all_designation'] = $this->Leads_Model->desi_select();
-		//print_r($data['all_designation']);exit;
+        $data['all_designation'] = $this->Leads_Model->desi_select();
+        //print_r($data['all_designation']);exit;
         if($this->input->post('task')=='view')
         {
             $cc_id = $this->input->post('cc_id');
@@ -361,8 +361,8 @@ class Client extends CI_Controller {
            }
                echo'<div class="form-group col-md-6">
                   <label>Designation</label>
-				  <select class="form-control" name="designation" id="designation">
-						<option value="">---Select Designation----</option>';
+                  <select class="form-control" name="designation" id="designation">
+                        <option value="">---Select Designation----</option>';
                         foreach ($data['all_designation'] as $key => $value) {
                         echo'<option value="'.$value->id.'" '.(($value->id==$row->designation)?"selected":"").'>'.$value->desi_name.'</option>';
                         }
@@ -414,12 +414,12 @@ class Client extends CI_Controller {
                 'decision_maker'=>$this->input->post('decision_maker')??0,
                 'other_detail' => $otherdetails
             );
-			$enq_no = $this->input->post('client_id');
+            $enq_no = $this->input->post('client_id');
             $this->db->where(array('cc_id'=>$cc_id,'comp_id'=>$this->session->companey_id,'client_id'=>$this->input->post('client_id')));
             $this->db->update('tbl_client_contacts',$data);
-			$cmt_enq_id = $this->db->select('Enquery_id')->where('enquiry_id',$enq_no)->get('enquiry')->row();
-			$subject='Contact is update';
-			$this->Leads_Model->add_comment_for_events($subject, $cmt_enq_id->Enquery_id);
+            $cmt_enq_id = $this->db->select('Enquery_id')->where('enquiry_id',$enq_no)->get('enquiry')->row();
+            $subject='Contact is update';
+            $this->Leads_Model->add_comment_for_events($subject, $cmt_enq_id->Enquery_id);
             if($this->input->post('redirect_url')){
                 redirect($this->input->post('redirect_url')); //updateclient                
             }else{
@@ -441,7 +441,7 @@ class Client extends CI_Controller {
         $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
         // print_r($data['enquiry_list']);
         // die();
-		$data['all_designation'] = $this->Leads_Model->desi_select();
+        $data['all_designation'] = $this->Leads_Model->desi_select();
         $data['contact_create_form'] = $this->load->view('contacts/create_contact_form',array(),true);
         $data['content'] = $this->load->view('enquiry/contacts', $data, true);
         $this->load->view('layout/main_wrapper', $data);
@@ -779,15 +779,15 @@ class Client extends CI_Controller {
             $address = $this->input->post('address');
             $pin_code = $this->input->post('pin_code');
             $comp = $this->input->post('company');
-			
-			$sales_branch = $this->input->post('sales_branch');
-			$client_name = $this->input->post('client_name');
-			
-			$sales_region = $this->input->post('sales_region');
-			$sales_area = $this->input->post('sales_area');
-			$client_type = $this->input->post('client_type');
-			$business_load = $this->input->post('business_load');
-			$industries = $this->input->post('industries');
+            
+            $sales_branch = $this->input->post('sales_branch');
+            $client_name = $this->input->post('client_name');
+            
+            $sales_region = $this->input->post('sales_region');
+            $sales_area = $this->input->post('sales_area');
+            $client_type = $this->input->post('client_type');
+            $business_load = $this->input->post('business_load');
+            $industries = $this->input->post('industries');
             $designation = $this->input->post("designation");
 
             if($this->input->post('country_id')){
@@ -796,7 +796,7 @@ class Client extends CI_Controller {
                 $country_id = '';
             }
        
-			$enqarr = $this->db->select('*')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();           
+            $enqarr = $this->db->select('*')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();           
             if(!empty($other_phone)){
                $other_phone =   implode(',', $other_phone);
             }else{
@@ -841,20 +841,20 @@ class Client extends CI_Controller {
             $this->db->set('address', $address);
             $this->db->set('pin_code', $pin_code);
             //$this->db->set('company', $company);
-			//$this->db->set('sales_branch', $sales_branch);
-			//$this->db->set('client_name', $client_name);
-			//$this->db->set('sales_region', $sales_region);
-			//$this->db->set('sales_area', $sales_area);
-			$this->db->set('client_type', $client_type);
-			$this->db->set('business_load', $business_load);
-			$this->db->set('industries', $industries);
+            //$this->db->set('sales_branch', $sales_branch);
+            //$this->db->set('client_name', $client_name);
+            //$this->db->set('sales_region', $sales_region);
+            //$this->db->set('sales_area', $sales_area);
+            $this->db->set('client_type', $client_type);
+            $this->db->set('business_load', $business_load);
+            $this->db->set('industries', $industries);
             $this->db->set('designation',$designation);
             $this->db->set('enquiry', $enquiry);
             $this->db->set('lastname', $lastname);
             $this->db->set('state_id', $state_id);
             $this->db->set('city_id', $city_id);
-			$this->db->set('enquiry_subsource',$this->input->post('sub_source'));
-            //$this->db->set('product_id', $process_id);			
+            $this->db->set('enquiry_subsource',$this->input->post('sub_source'));
+            //$this->db->set('product_id', $process_id);            
             $this->db->where('enquiry_id', $enquiry_id);            
             $this->db->update('enquiry');  
             $this->load->model('rule_model');
@@ -915,7 +915,7 @@ class Client extends CI_Controller {
             }
             
       
-			if(!empty($enqarr)){                
+            if(!empty($enqarr)){                
                 if(isset($_POST['inputfieldno'])) {                    
                     $inputno   = $this->input->post("inputfieldno", true);
                     $enqinfo   = $this->input->post("enqueryfield", true);
@@ -945,8 +945,8 @@ class Client extends CI_Controller {
                             }
                     }                    
                 }
-				 
-			}
+                 
+            }
             if ($this->session->companey_id==29 && $en_comments == 'ENQ188474867063') {
                 $prop    =   $this->enquiry_model->get_extra_enquiry_property($en_comments,'paisaexporef',29);
                 $data = $this->enquiry_model->get_enquiry_all_data($en_comments);
@@ -998,29 +998,29 @@ class Client extends CI_Controller {
     }
 
     public function update_enquiry_tab($enquiry_id){        
-		if($this->session->companey_id=='67'){
-		}
+        if($this->session->companey_id=='67'){
+        }
         $tid    =   $this->input->post('tid');
         $form_type    =   $this->input->post('form_type');
         $enqarr = $this->db->select('*')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();
         $en_comments = $enqarr->Enquery_id;
         $type = $enqarr->status;
-		//For Comment Insert Code here
+        //For Comment Insert Code here
         $inputnos   = $this->input->post("inputfieldno", true);
         $cmt_text = $this->db->select('forms.title as title')->where('input_id',$inputnos[0])->join('forms','forms.id=tbl_input.form_id')->get('tbl_input')->row();
-        		
+                
         if($type == 1){                 
            // $comment_id = $this->Leads_Model->add_comment_for_events(display('enquery_updated'), $en_comments);
-              $subject=$cmt_text->title.' '.'is update at'.' '.display('enquery'). ' '.'stage';		   
-              $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);		   
+              $subject=$cmt_text->title.' '.'is update at'.' '.display('enquery'). ' '.'stage';        
+              $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);         
         }else if($type == 2){                   
              //$comment_id = $this->Leads_Model->add_comment_for_events(display('lead_updated'), $en_comments); 
-			 $subject=$cmt_text->title.' '.'is update at'.' '.display('lead'). ' '.'stage';
-             $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);			 
+             $subject=$cmt_text->title.' '.'is update at'.' '.display('lead'). ' '.'stage';
+             $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);            
         }else if($type == 3){
              //$comment_id = $this->Leads_Model->add_comment_for_events(display('client_updated'), $en_comments);
-			 $subject=$cmt_text->title.' '.'is update at'.' '.display('client'). ' '.'stage';
-			 $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);
+             $subject=$cmt_text->title.' '.'is update at'.' '.display('client'). ' '.'stage';
+             $comment_id = $this->Leads_Model->add_comment_for_events($subject,$en_comments);
         } 
         else
         {
@@ -1043,7 +1043,7 @@ class Client extends CI_Controller {
                 $file_count = 0;                
                 $file = !empty($_FILES['enqueryfiles'])?$_FILES['enqueryfiles']:'';                
                 foreach($inputno as $ind => $val){
-	
+    
                  if ($inputtype[$ind] == 8) {                                                
                         $file_data    =   $this->doupload($file,$file_count);
                         if (!empty($file_data['imageDetailArray']['file_name'])) {
@@ -1152,8 +1152,8 @@ class Client extends CI_Controller {
     public function update_dynamic_query( $user_id=0,$comp_id=0)
     {
         $this->load->model('Enquiry_model');
-		
-		$this->load->library('user_agent');
+        
+        $this->load->library('user_agent');
    
     $enq_id = $this->input->post('enquiry_id');
     $cmnt_id = $this->input->post('cmnt_id');
@@ -1168,9 +1168,9 @@ class Client extends CI_Controller {
     $comp_id  = $this->input->post('comp_id')??$comp_id; 
 
     $inputnos   = $this->input->post("inputfieldno", true);
-    $cmt_text = $this->db->select('input_label,forms.title as title')->where('input_id',$inputnos[0])->join('forms','forms.id=tbl_input.form_id')->get('tbl_input')->row();	
+    $cmt_text = $this->db->select('input_label,forms.title as title')->where('input_id',$inputnos[0])->join('forms','forms.id=tbl_input.form_id')->get('tbl_input')->row(); 
     $subject=$cmt_text->title.' '.'Updated';
-	//$stage_desc=$cmt_text->input_label.' '.'is Update';
+    //$stage_desc=$cmt_text->input_label.' '.'is Update';
 
           $this->Leads_Model->add_comment_for_events($subject,$en_comments,'',$user_id);
 
@@ -1184,7 +1184,7 @@ class Client extends CI_Controller {
                 foreach($inputno as $ind => $val){
   
 
-                 if ($inputtype[$ind] == 8) {  			 
+                 if ($inputtype[$ind] == 8) {            
                         $file_data    =   $this->doupload($file,$file_count,$comp_id);
 
                         if (!empty($file_data['imageDetailArray']['file_name'])) {
@@ -1347,8 +1347,8 @@ public function updateclientpersonel() {
             redirect($this->agent->referrer()); //updateclient
         }
     }
-	
-	/***********************************qualification Tab **************************************/
+    
+    /***********************************qualification Tab **************************************/
 public function create_qualification() {  
       $eid=$this->input->post("enquiryid", true);
 if(empty($eid)){
@@ -1358,80 +1358,80 @@ if(empty($eid)){
                     $q= $this->db->get()->row();
          $enq_no=$q->Enquery_id;
          $cmp_no=$q->comp_id;
-				$biarr[] = array( "enq_id"  => $enq_no,
-								  "xiipassfrom"   => $this->input->post("xiipassfrom", true),
-								  "xiipassto"   => $this->input->post("xiipassto", true),
-								  "xiiper"  => $this->input->post("xiiper", true), 
-								  "xiimb"  => $this->input->post("xiimb", true),
-								  "xiieng"  => $this->input->post("xiieng", true),
-								  "xiistrm"  => $this->input->post("xiistrm", true),
-								  "xiispec"  => $this->input->post("xiispec", true),
-								  "dpassfrom"  => $this->input->post("dpassfrom", true),
-								  "dpassto"  => $this->input->post("dpassto", true),
-								  "dper"  => $this->input->post("dper", true),
-								  "dback"  => $this->input->post("dback", true),
-								  "dtype"  => $this->input->post("dtype", true),
-								  "bpassfrom"  => $this->input->post("bpassfrom", true),
-								  "bpassto"  => $this->input->post("bpassto", true),
-								  "bper"  => $this->input->post("bper", true),
-								  "bback"  => $this->input->post("bback", true),
-								  "btype"  => $this->input->post("btype", true),
-								  "bspec"  => $this->input->post("bspec", true),
-								  "pgpassfrom"  => $this->input->post("pgpassfrom", true),
-								  "pgpassto"  => $this->input->post("pgpassto", true),
-								  "pgper"  => $this->input->post("pgper", true),
-								  "pgback"  => $this->input->post("pgback", true),
-								  "pgmtype"  => $this->input->post("pgmtype", true),
-								  "pgexp"  => $this->input->post("pgexp", true),
-								  "pgjob"  => $this->input->post("pgjob", true),
-								  "created_by" => $this->session->user_id,
-								  "cmp_no"  => $cmp_no,
-								  "created_date"  => date('d/m/Y')
-								 ); 	
-								 
-			if(!empty($biarr)){
-				$this->db->insert_batch('tbl_qualification', $biarr); 
-			}				
+                $biarr[] = array( "enq_id"  => $enq_no,
+                                  "xiipassfrom"   => $this->input->post("xiipassfrom", true),
+                                  "xiipassto"   => $this->input->post("xiipassto", true),
+                                  "xiiper"  => $this->input->post("xiiper", true), 
+                                  "xiimb"  => $this->input->post("xiimb", true),
+                                  "xiieng"  => $this->input->post("xiieng", true),
+                                  "xiistrm"  => $this->input->post("xiistrm", true),
+                                  "xiispec"  => $this->input->post("xiispec", true),
+                                  "dpassfrom"  => $this->input->post("dpassfrom", true),
+                                  "dpassto"  => $this->input->post("dpassto", true),
+                                  "dper"  => $this->input->post("dper", true),
+                                  "dback"  => $this->input->post("dback", true),
+                                  "dtype"  => $this->input->post("dtype", true),
+                                  "bpassfrom"  => $this->input->post("bpassfrom", true),
+                                  "bpassto"  => $this->input->post("bpassto", true),
+                                  "bper"  => $this->input->post("bper", true),
+                                  "bback"  => $this->input->post("bback", true),
+                                  "btype"  => $this->input->post("btype", true),
+                                  "bspec"  => $this->input->post("bspec", true),
+                                  "pgpassfrom"  => $this->input->post("pgpassfrom", true),
+                                  "pgpassto"  => $this->input->post("pgpassto", true),
+                                  "pgper"  => $this->input->post("pgper", true),
+                                  "pgback"  => $this->input->post("pgback", true),
+                                  "pgmtype"  => $this->input->post("pgmtype", true),
+                                  "pgexp"  => $this->input->post("pgexp", true),
+                                  "pgjob"  => $this->input->post("pgjob", true),
+                                  "created_by" => $this->session->user_id,
+                                  "cmp_no"  => $cmp_no,
+                                  "created_date"  => date('d/m/Y')
+                                 );     
+                                 
+            if(!empty($biarr)){
+                $this->db->insert_batch('tbl_qualification', $biarr); 
+            }               
             $this->session->set_flashdata('message', 'Save successfully');
 }else{
-	
-	      $this->db->set('xiipassfrom',$this->input->post("xiipassfrom", true));
-								  $this->db->set('xiipassto', $this->input->post("xiipassto", true));
-								  $this->db->set('xiiper', $this->input->post("xiiper", true)); 
-								  $this->db->set('xiimb', $this->input->post("xiimb", true));
-								  $this->db->set('xiieng', $this->input->post("xiieng", true));
-								  $this->db->set('xiistrm', $this->input->post("xiistrm", true));
-								  $this->db->set('xiispec', $this->input->post("xiispec", true));
-								  $this->db->set('dpassfrom', $this->input->post("dpassfrom", true));
-								  $this->db->set('dpassto', $this->input->post("dpassto", true));
-								  $this->db->set('dper', $this->input->post("dper", true));
-								  $this->db->set('dback', $this->input->post("dback", true));
-								  $this->db->set('dtype', $this->input->post("dtype", true));
-								  $this->db->set('bpassfrom', $this->input->post("bpassfrom", true));
-								  $this->db->set('bpassto', $this->input->post("bpassto", true));
-								  $this->db->set('bper', $this->input->post("bper", true));
-								  $this->db->set('bback', $this->input->post("bback", true));
-								  $this->db->set('btype', $this->input->post("btype", true));
-								  $this->db->set('bspec', $this->input->post("bspec", true));
-								  $this->db->set('pgpassfrom', $this->input->post("pgpassfrom", true));
-								  $this->db->set('pgpassto', $this->input->post("pgpassto", true));
-								  $this->db->set('pgper', $this->input->post("pgper", true));
-								  $this->db->set('pgback', $this->input->post("pgback", true));
-								  $this->db->set('pgmtype', $this->input->post("pgmtype", true));
-								  $this->db->set('pgexp', $this->input->post("pgexp", true));
-								  $this->db->set('pgjob', $this->input->post("pgjob", true));
-								  $this->db->set('updated_by',$this->session->user_id);
-								  $this->db->set('updated_date',date('d/m/Y'));
+    
+          $this->db->set('xiipassfrom',$this->input->post("xiipassfrom", true));
+                                  $this->db->set('xiipassto', $this->input->post("xiipassto", true));
+                                  $this->db->set('xiiper', $this->input->post("xiiper", true)); 
+                                  $this->db->set('xiimb', $this->input->post("xiimb", true));
+                                  $this->db->set('xiieng', $this->input->post("xiieng", true));
+                                  $this->db->set('xiistrm', $this->input->post("xiistrm", true));
+                                  $this->db->set('xiispec', $this->input->post("xiispec", true));
+                                  $this->db->set('dpassfrom', $this->input->post("dpassfrom", true));
+                                  $this->db->set('dpassto', $this->input->post("dpassto", true));
+                                  $this->db->set('dper', $this->input->post("dper", true));
+                                  $this->db->set('dback', $this->input->post("dback", true));
+                                  $this->db->set('dtype', $this->input->post("dtype", true));
+                                  $this->db->set('bpassfrom', $this->input->post("bpassfrom", true));
+                                  $this->db->set('bpassto', $this->input->post("bpassto", true));
+                                  $this->db->set('bper', $this->input->post("bper", true));
+                                  $this->db->set('bback', $this->input->post("bback", true));
+                                  $this->db->set('btype', $this->input->post("btype", true));
+                                  $this->db->set('bspec', $this->input->post("bspec", true));
+                                  $this->db->set('pgpassfrom', $this->input->post("pgpassfrom", true));
+                                  $this->db->set('pgpassto', $this->input->post("pgpassto", true));
+                                  $this->db->set('pgper', $this->input->post("pgper", true));
+                                  $this->db->set('pgback', $this->input->post("pgback", true));
+                                  $this->db->set('pgmtype', $this->input->post("pgmtype", true));
+                                  $this->db->set('pgexp', $this->input->post("pgexp", true));
+                                  $this->db->set('pgjob', $this->input->post("pgjob", true));
+                                  $this->db->set('updated_by',$this->session->user_id);
+                                  $this->db->set('updated_date',date('d/m/Y'));
             $this->db->where('enq_id', $eid);
             $this->db->update('tbl_qualification');
-			$this->session->set_flashdata('message', 'Updated successfully');
-	
+            $this->session->set_flashdata('message', 'Updated successfully');
+    
 }
             redirect($this->agent->referrer()); //updateclient
     }
-	/*************************************qualification tab End **********************************/
-	/***********************************English Tab **************************************/
-	    public function create_english() {  
+    /*************************************qualification tab End **********************************/
+    /***********************************English Tab **************************************/
+        public function create_english() {  
     $eid=$this->input->post("enquiryid", true);
 if(empty($eid)){
                     $this->db->select('*');
@@ -1440,66 +1440,66 @@ if(empty($eid)){
                     $q= $this->db->get()->row();
          $enq_no=$q->Enquery_id;
          $cmp_no=$q->comp_id;
-				$biarr[] = array( "enq_id"  => $enq_no,
-				
-								  "exam_ielts"   => $this->input->post("ielts", true), 
-								  "ieltsappeard"  => $this->input->post("ieltsappeard", true),
-								  "ieltsdate"  => $this->input->post("ieltsdt", true),
-								  "ieltslisten"  => $this->input->post("ieltslisten", true),
-								  "ieltsread"  => $this->input->post("ieltsread", true),
-								  "ieltswrite"  => $this->input->post("ieltswrite", true),
-								  "ieltsspeak"  => $this->input->post("ieltsspeak", true),
-								  "ieltsfinal"  => $this->input->post("ieltsfinal", true),
-								  
-								  "exam_pte"   => $this->input->post("pte", true), 
-								  "pteappeard"  => $this->input->post("pteappeard", true),
-								  "ptedt"  => $this->input->post("ptedt", true),
-								  "ptelisten"  => $this->input->post("ptelisten", true),
-								  "pteread"  => $this->input->post("pteread", true),
-								  "ptewrite"  => $this->input->post("ptewrite", true),
-								  "ptespeak"  => $this->input->post("ptespeak", true),
-								  "ptefinal"  => $this->input->post("ptefinal", true),
-								  
-								  "cmp_no"  => $cmp_no,
-								  "created_by" => $this->session->user_id,
-								  "created_date"  => date('d/m/Y')
-								 ); 	
-								 
-			if(!empty($biarr)){
-				$this->db->insert_batch('tbl_english', $biarr); 
-			}
-				
+                $biarr[] = array( "enq_id"  => $enq_no,
+                
+                                  "exam_ielts"   => $this->input->post("ielts", true), 
+                                  "ieltsappeard"  => $this->input->post("ieltsappeard", true),
+                                  "ieltsdate"  => $this->input->post("ieltsdt", true),
+                                  "ieltslisten"  => $this->input->post("ieltslisten", true),
+                                  "ieltsread"  => $this->input->post("ieltsread", true),
+                                  "ieltswrite"  => $this->input->post("ieltswrite", true),
+                                  "ieltsspeak"  => $this->input->post("ieltsspeak", true),
+                                  "ieltsfinal"  => $this->input->post("ieltsfinal", true),
+                                  
+                                  "exam_pte"   => $this->input->post("pte", true), 
+                                  "pteappeard"  => $this->input->post("pteappeard", true),
+                                  "ptedt"  => $this->input->post("ptedt", true),
+                                  "ptelisten"  => $this->input->post("ptelisten", true),
+                                  "pteread"  => $this->input->post("pteread", true),
+                                  "ptewrite"  => $this->input->post("ptewrite", true),
+                                  "ptespeak"  => $this->input->post("ptespeak", true),
+                                  "ptefinal"  => $this->input->post("ptefinal", true),
+                                  
+                                  "cmp_no"  => $cmp_no,
+                                  "created_by" => $this->session->user_id,
+                                  "created_date"  => date('d/m/Y')
+                                 );     
+                                 
+            if(!empty($biarr)){
+                $this->db->insert_batch('tbl_english', $biarr); 
+            }
+                
             $this->session->set_flashdata('message', 'Save successfully');
-		}else{
-			
-			                      $this->db->set('exam_ielts',$this->input->post("ielts", true)); 
-								  $this->db->set('ieltsappeard',$this->input->post("ieltsappeard", true));
-								  $this->db->set('ieltsdate', $this->input->post("ieltsdt", true));
-								  $this->db->set('ieltslisten', $this->input->post("ieltslisten", true));
-								  $this->db->set('ieltsread', $this->input->post("ieltsread", true));
-								  $this->db->set('ieltswrite', $this->input->post("ieltswrite", true));
-								  $this->db->set('ieltsspeak', $this->input->post("ieltsspeak", true));
-								  $this->db->set('ieltsfinal', $this->input->post("ieltsfinal", true));
-								  
-								  $this->db->set('exam_pte', $this->input->post("pte", true)); 
-								  $this->db->set('pteappeard', $this->input->post("pteappeard", true));
-								  $this->db->set('ptedt', $this->input->post("ptedt", true));
-								  $this->db->set('ptelisten', $this->input->post("ptelisten", true));
-								  $this->db->set('pteread', $this->input->post("pteread", true));
-								  $this->db->set('ptewrite', $this->input->post("ptewrite", true));
-								  $this->db->set('ptespeak',$this->input->post("ptespeak", true));
-								  $this->db->set('ptefinal',$this->input->post("ptefinal", true));
-								  $this->db->set('updated_by',$this->session->user_id);
-								  $this->db->set('updated_date',date('d/m/Y'));
+        }else{
+            
+                                  $this->db->set('exam_ielts',$this->input->post("ielts", true)); 
+                                  $this->db->set('ieltsappeard',$this->input->post("ieltsappeard", true));
+                                  $this->db->set('ieltsdate', $this->input->post("ieltsdt", true));
+                                  $this->db->set('ieltslisten', $this->input->post("ieltslisten", true));
+                                  $this->db->set('ieltsread', $this->input->post("ieltsread", true));
+                                  $this->db->set('ieltswrite', $this->input->post("ieltswrite", true));
+                                  $this->db->set('ieltsspeak', $this->input->post("ieltsspeak", true));
+                                  $this->db->set('ieltsfinal', $this->input->post("ieltsfinal", true));
+                                  
+                                  $this->db->set('exam_pte', $this->input->post("pte", true)); 
+                                  $this->db->set('pteappeard', $this->input->post("pteappeard", true));
+                                  $this->db->set('ptedt', $this->input->post("ptedt", true));
+                                  $this->db->set('ptelisten', $this->input->post("ptelisten", true));
+                                  $this->db->set('pteread', $this->input->post("pteread", true));
+                                  $this->db->set('ptewrite', $this->input->post("ptewrite", true));
+                                  $this->db->set('ptespeak',$this->input->post("ptespeak", true));
+                                  $this->db->set('ptefinal',$this->input->post("ptefinal", true));
+                                  $this->db->set('updated_by',$this->session->user_id);
+                                  $this->db->set('updated_date',date('d/m/Y'));
             $this->db->where('enq_id', $eid);
             $this->db->update('tbl_english');
-			$this->session->set_flashdata('message', 'Updated successfully');
-		}
+            $this->session->set_flashdata('message', 'Updated successfully');
+        }
             redirect($this->agent->referrer()); //updateclient
     }
-	/*************************************English tab End **********************************/
-	
-	   /***********************************payment tab **************************************/
+    /*************************************English tab End **********************************/
+    
+       /***********************************payment tab **************************************/
         public function create_payment() {      
             $this->db->select('*');
             $this->db->from('enquiry');
@@ -1549,8 +1549,8 @@ if(empty($eid)){
     }   
     
     /*************************************payment tab End **********************************/
-	/*************************************payment tab End **********************************/
-	/************************************add aggriment**************************/
+    /*************************************payment tab End **********************************/
+    /************************************add aggriment**************************/
     public function create_aggrement() {
         $this->db->select('*');
                     $this->db->from('enquiry');
@@ -1586,17 +1586,17 @@ if(empty($eid)){
                 redirect($this->agent->referrer()); //updateclient
             }
     }
-	public function find_same() {
+    public function find_same() {
         $smae_id = $this->input->post('cdata');
         echo json_encode($this->location_model->get_same($smae_id));
     }
-	
-	public function find_same_data() {
+    
+    public function find_same_data() {
         $smae_id = $this->input->post('cdata');
         echo json_encode($this->location_model->get_same_data($smae_id));
     }
-	
-	public function upload_aggrement_team() {
+    
+    public function upload_aggrement_team() {
     $ag_id = $this->input->post('ide');
     $ddata =  $this->db->where('id',$ag_id)->get('tbl_aggriment')->row();
 
@@ -1614,33 +1614,33 @@ if(empty($eid)){
 if(!empty($q1)){
     $noti_id =$q1->pk_i_admin_id;
    }else{
-	$noti_id = $this->session->user_id;
+    $noti_id = $this->session->user_id;
    }
 
 if(!empty($_FILES['file']['name']))
 {
 
-				$this->load->library("aws");
-				$_FILES['userfile']['name']= $_FILES['file']['name'];
-				$_FILES['userfile']['type']= $_FILES['file']['type'];
-				$_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
-				$_FILES['userfile']['error']= $_FILES['file']['error'];
-				$_FILES['userfile']['size']= $_FILES['file']['size'];    
-				
-				$image=$_FILES['userfile']['name'];
-				$path=  "uploads/agrmnt/".$image;
-        		$ret = move_uploaded_file($_FILES['file']['tmp_name'] ,$path);
+                $this->load->library("aws");
+                $_FILES['userfile']['name']= $_FILES['file']['name'];
+                $_FILES['userfile']['type']= $_FILES['file']['type'];
+                $_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
+                $_FILES['userfile']['error']= $_FILES['file']['error'];
+                $_FILES['userfile']['size']= $_FILES['file']['size'];    
+                
+                $image=$_FILES['userfile']['name'];
+                $path=  "uploads/agrmnt/".$image;
+                $ret = move_uploaded_file($_FILES['file']['tmp_name'] ,$path);
 
-			if($ret){
-                $this->aws->upload("",$path);	
-                								}
+            if($ret){
+                $this->aws->upload("",$path);   
+                                                }
                 $this->db->set('po_file',$path);
                 $this->db->where('id', $ag_id);
-                $this->db->update('tbl_aggriment');	
+                $this->db->update('tbl_aggriment'); 
                
-			}
+            }
             
-			$assign_data_noti[]=array('create_by'=> $noti_id,
+            $assign_data_noti[]=array('create_by'=> $noti_id,
                         'subject'=>'PO Uploded',
                         'query_id'=>$enq_id,
                         'task_date'=>date('d-m-Y'),
@@ -1656,33 +1656,33 @@ if(!empty($_FILES['file']['name']))
            }
 }
 /*******************************************************************************end add aggriment***************************************************/
-	public function upload_aggrement_student() {
+    public function upload_aggrement_student() {
     $enquiry_id = $this->input->post('ide');
     $this->db->from('tbl_aggriment');
                     $this->db->where('id',$enquiry_id);
                     $q= $this->db->get()->row();
     $enq_id =$q->enq_id;
-	$noti_id =$q->created_by;
+    $noti_id =$q->created_by;
     
-        	
+            
 if(!empty($_FILES['file']['name'])){
-				$this->load->library("aws");
-				$_FILES['userfile']['name']= $_FILES['file']['name'];
-				$_FILES['userfile']['type']= $_FILES['file']['type'];
-				$_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
-				$_FILES['userfile']['error']= $_FILES['file']['error'];
-				$_FILES['userfile']['size']= $_FILES['file']['size'];    
-				
-				$image=$_FILES['userfile']['name'];
-				$path=  "uploads/agrmnt/".$image;
-        		$ret = move_uploaded_file($_FILES['userfile']['tmp_name'] ,$path);
-			if($ret){										$this->aws->upload("",$path);									}
+                $this->load->library("aws");
+                $_FILES['userfile']['name']= $_FILES['file']['name'];
+                $_FILES['userfile']['type']= $_FILES['file']['type'];
+                $_FILES['userfile']['tmp_name']= $_FILES['file']['tmp_name'];
+                $_FILES['userfile']['error']= $_FILES['file']['error'];
+                $_FILES['userfile']['size']= $_FILES['file']['size'];    
+                
+                $image=$_FILES['userfile']['name'];
+                $path=  "uploads/agrmnt/".$image;
+                $ret = move_uploaded_file($_FILES['userfile']['tmp_name'] ,$path);
+            if($ret){                                       $this->aws->upload("",$path);                                   }
             $this->db->set('sign_file',$path);
-			$this->db->set('updated_by',$this->session->user_id);
+            $this->db->set('updated_by',$this->session->user_id);
             $this->db->where('id', $enquiry_id);
-            $this->db->update('tbl_aggriment');	
-			}
-			$assign_data_noti[]=array('create_by'=> $noti_id,
+            $this->db->update('tbl_aggriment'); 
+            }
+            $assign_data_noti[]=array('create_by'=> $noti_id,
                         'subject'=>'Agrrement Uploded By Student',
                         'query_id'=>$enq_id,
                         'task_date'=>date('d-m-Y'),
@@ -1727,7 +1727,7 @@ public function desposition()
         $data['prodcntry_list'] = $this->enquiry_model->get_user_productcntry_list();
         $data['state_list'] = $this->enquiry_model->get_user_state_list();
         $data['city_list'] = $this->enquiry_model->get_user_city_list();
-		$data['filterData'] = $this->Ticket_Model->get_filterData(1);
+        $data['filterData'] = $this->Ticket_Model->get_filterData(1);
  
         $data['content'] = $this->load->view('enquiry_n', $data, true);
         $this->load->view('layout/main_wrapper', $data);
@@ -1822,10 +1822,10 @@ public function view_editable_aggrement()
         $this->load->model('Enquiry_Model');
         $data['title'] = display('visit_list');
         if($this->session->companey_id == 65 && $this->session->user_right == 215){
-			$data['created_bylist'] = $this->User_model->read(147,false);
-		}else{
-			$data['created_bylist'] = $this->User_model->read();
-		}  
+            $data['created_bylist'] = $this->User_model->read(147,false);
+        }else{
+            $data['created_bylist'] = $this->User_model->read();
+        }  
        // print_r($data['contact_list']->result_array()); exit();
         $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
         
@@ -1845,7 +1845,7 @@ public function view_editable_aggrement()
          if(user_role('1020') || user_role('1021') || user_role('1022')){
         }
         $id=$this->uri->segment('3');
-    	$visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
+        $visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
         if($visitdata->num_rows()!=0){
             $data['details'] =$visitdata->row();
             $this->load->model('Client_Model');
@@ -1857,15 +1857,15 @@ public function view_editable_aggrement()
             $data['content'] = $this->load->view('enquiry/visit_details', $data, true);
             $this->load->view('layout/main_wrapper', $data);
         }else{
-			$this->session->set_flashdata('message', 'Travel History not found');
+            $this->session->set_flashdata('message', 'Travel History not found');
 
             redirect('client/visits');
         }
        
     }
-	
+    
 
-	
+    
     public function updateVisit_remarks()
     {
         
@@ -1877,7 +1877,7 @@ public function view_editable_aggrement()
             $data=['remarks'=>$remarks,'rating'=>$rating,'travelled_type'=>$travelledtype];
             $this->db->where('id',$visit_id)->update('tbl_visit',$data);
              $this->db->last_query();
-			$this->session->set_flashdata('message', 'Remark Updated');
+            $this->session->set_flashdata('message', 'Remark Updated');
             redirect($this->agent->referrer()); 
             
         }
@@ -1995,14 +1995,14 @@ public function view_editable_aggrement()
         }
         $this->load->model('report_model');
         $data['title'] = 'Visit Report';
-       $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
-       $content = ''; 		
-        if ($_POST) {			
-           $from		=	date("Y-m-d", strtotime($this->input->post('date_from')));
-           $to		=	date("Y-m-d", strtotime($this->input->post('date_to')));
-            $employee	=	$this->input->post('employee');			
-           $comp_id=$this->session->companey_id; 			
-           $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
+       $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));                  
+       $content = '';       
+        if ($_POST) {           
+           $from        =   date("Y-m-d", strtotime($this->input->post('date_from')));
+           $to      =   date("Y-m-d", strtotime($this->input->post('date_to')));
+            $employee   =   $this->input->post('employee');         
+           $comp_id=$this->session->companey_id;            
+           $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));  
           $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
            $where = "(visit_details.comp_id=$comp_id)";    
            $where .= " AND Date(visit_details.visit_start) >= '$from' AND Date(visit_details.visit_start) <= '$to'";
@@ -2015,17 +2015,17 @@ public function view_editable_aggrement()
                                        ->join('tbl_admin','tbl_admin.pk_i_admin_id=visit_details.created_by')
                                        ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
                                        ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
-                                       ->get('visit_details')->result();	
+                                       ->get('visit_details')->result();    
           $content .= $this->load->view('enquiry/visit_report',$data,true);
           $data['content'] = $content;
 
         }else{
-            $date = date("Y-m-d"); 		
-            $comp_id=$this->session->companey_id; 			
+            $date = date("Y-m-d");      
+            $comp_id=$this->session->companey_id;           
             $employee = array();
             $data['att_date'] = $date;
-            $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
-    	   $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+            $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id')); 
+           $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
             $where = "(visit_details.comp_id=$comp_id)";      
            $where .= " AND ( visit_details.created_by IN (".implode(',', $all_reporting_ids).') )';
             $data['reports'] = $this->db->select('tbl_visit.*,enquiry.*,tbl_admin.*,visit_details.*')
@@ -2036,7 +2036,7 @@ public function view_editable_aggrement()
                                         ->join('tbl_visit','tbl_visit.id=visit_details.visit_id')
                                         ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id')
                                         
-                                        ->get('visit_details')->result();	
+                                        ->get('visit_details')->result();   
                                         // echo $this->db->last_query();
                                         // die();
            $content .= $this->load->view('enquiry/visit_report',$data,true);
@@ -2064,7 +2064,7 @@ public function view_editable_aggrement()
                     $this->session->set_flashdata('exception','Invalid Visit');
                     redirect($_SERVER['HTTP_REFERER']);
                 }
-				foreach ($_POST['expense'] as $key =>$value ) {
+                foreach ($_POST['expense'] as $key =>$value ) {
                         $expense = $_POST['expense'][$key];
                         $amount = $_POST['amount'][$key];
                         if($_FILES['imagefile']['name'][$key]){
@@ -2087,11 +2087,11 @@ public function view_editable_aggrement()
                                ];
                     $this->db->insert('tbl_expense',$data);
                     
-	            	$this->Leads_Model->add_comment_for_events('Expense Added',$enq_id,0,$uid);
+                    $this->Leads_Model->add_comment_for_events('Expense Added',$enq_id,0,$uid);
                    
                 }
 
-            	$this->session->set_flashdata('message', 'Travel Expense Added');
+                $this->session->set_flashdata('message', 'Travel Expense Added');
                 // redirect('/visits/visit_details/'.$visit_id.'');   
                 redirect($this->agent->referrer()); //updateclient
 
@@ -2119,25 +2119,25 @@ public function visit_expense_status()
         $user_id=$this->session->user_id;
        // print_r($_POST);exit;
     foreach ($_POST['exp_ids'] as $key => $value) {
-		$visit_row = $this->db->select("enquiry.Enquery_id as comment_id,tbl_visit.user_id as visit_creator")
+        $visit_row = $this->db->select("enquiry.Enquery_id as comment_id,tbl_visit.user_id as visit_creator")
                         ->from("tbl_visit")
-						->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left')
+                        ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left')
                         ->where('tbl_visit.id', $value)
                         ->get();
-			$comment_id = $visit_row->row()->comment_id;
-			$visit_creator = $visit_row->row()->visit_creator;
-			if($_POST['status']=='1'){
+            $comment_id = $visit_row->row()->comment_id;
+            $visit_creator = $visit_row->row()->visit_creator;
+            if($_POST['status']=='1'){
             $subject = 'Visit Reject'; 
-			}else{
-			$subject = 'Visit Approve';	
-			}				
+            }else{
+            $subject = 'Visit Approve'; 
+            }               
 
         $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
         $this->db->where(array('comp_id'=>$comp_id,'visit_id'=>$value))->update('tbl_expense',$data);
-		//timeline code here
-		$this->Leads_Model->add_comment_for_events_stage($subject,$comment_id,0,0,$_POST['remarks'],0);
-		//Bell botification code here
-		$assign_data_noti[]=array(
+        //timeline code here
+        $this->Leads_Model->add_comment_for_events_stage($subject,$comment_id,0,0,$_POST['remarks'],0);
+        //Bell botification code here
+        $assign_data_noti[]=array(
             'create_by'=> $user_id,
             'related_to'=> $visit_creator,
             'subject'=>$subject,
@@ -2456,7 +2456,7 @@ public function all_update_expense_status()
 
                 if($colsall || in_array(1,$cols))
                     //$sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
-			    $sub[] = '<a href="'.$url.'">'.$res->client_name.'</a>'??'NA';
+                $sub[] = '<a href="'.$url.'">'.$res->client_name.'</a>'??'NA';
                 $header[1] = 'Name';
             }
            
@@ -2609,20 +2609,20 @@ public function all_update_expense_status()
 
     public function commercial_info($enquiry_id,$by=0)
     {
-		$keyword = $this->uri->segment(4);
+        $keyword = $this->uri->segment(4);
         $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
 
         $data['title'] = 'Add Deal';
-		$en_id = $this->db->select("enquiry_id")->from("enquiry")->where('Enquery_id', $enquiry_id)->get()->row();
-		if($keyword!='by_deals'){
-			$data_type = base64_decode($keyword);
-			$lead_id = $enquiry_id;
-			$by = 0;
-		}else{
-			$lead_id = $en_id->enquiry_id;
-			$data_type = '';
-			$by = $keyword;
-		}
+        $en_id = $this->db->select("enquiry_id")->from("enquiry")->where('Enquery_id', $enquiry_id)->get()->row();
+        if($keyword!='by_deals'){
+            $data_type = base64_decode($keyword);
+            $lead_id = $enquiry_id;
+            $by = 0;
+        }else{
+            $lead_id = $en_id->enquiry_id;
+            $data_type = '';
+            $by = $keyword;
+        }
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($lead_id);
         $data['branch'] = $this->Branch_model->branch_list()->result();
         $data['region_list'] = $this->Branch_model->sales_region_list()->result();
@@ -2633,7 +2633,7 @@ public function all_update_expense_status()
                                         ->get()->row();
         $data['max_discount'] = !empty($dis)?$dis->discount:100;
         $data['by'] = $by;
-		$data['data_type'] = $data_type;
+        $data['data_type'] = $data_type;
         $data['content'] = $this->load->view('enquiry/add_deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -2654,9 +2654,9 @@ public function all_update_expense_status()
             $dtype = $this->input->post('dtype');
             $enquiry_id = $this->input->post('enq_for');
             $deal_id= $this->input->post('deal_id')??0;
-			
-			$stage_for = $this->input->post('stage_for');
-			//print_r($deal_id);exit;
+            
+            $stage_for = $this->input->post('stage_for');
+            //print_r($deal_id);exit;
             $deal_data = $this->Branch_model->get_deal($deal_id);
            
             // if($btype=='zone')
@@ -2779,7 +2779,7 @@ public function all_update_expense_status()
                     $oc['rate_type'] = 'KG';
                     if(!empty($deal_data))
                     {
-						  $oc =json_decode($deal_data->other_charges,true);
+                          $oc =json_decode($deal_data->other_charges,true);
                         //$oc =(array)json_decode($deal_data->other_charges);
                         if(empty($oc[23]))
                             $oc[23]='';
@@ -3066,7 +3066,7 @@ public function all_update_expense_status()
                             <td><input name="oc[17]" value="'.$oc[17].'"></td>
                             <td>% of basic freight</td>
                         </tr>
-						<tr>
+                        <tr>
                             <td>Levy- in %</td>
                             <td><input name="oc[18]" value="'.$oc[18].'"></td>
                             <td>% of basic freight</td>
@@ -3132,7 +3132,7 @@ public function all_update_expense_status()
 //$deal_status= $this->db->select('edited,approval,id,createdby,status')->where('id', $deal_id)->get('commercial_info')->row();
  $deal_status = '0';
             if($deal_status!='0'){
-				if($deal_status->edited=='1' && $deal_status->approval=='pending')
+                if($deal_status->edited=='1' && $deal_status->approval=='pending')
                 {
                     if($deal_status->createdby==$this->session->user_id)
                     {
@@ -3141,7 +3141,7 @@ public function all_update_expense_status()
                     else
                     {
                        echo '<div class="col-md-6"><label>Select Status Here</label>
-					          <select name="edit_status">';
+                              <select name="edit_status">';
                          echo   '<option value="">Action</option>
                                     <option value="approve">Approve</option>
                                     <option value"reject">Reject</option>
@@ -3149,9 +3149,9 @@ public function all_update_expense_status()
                                 ';
                         echo'</select></div>';
                     }
-                }				
-			}	
-				echo'<input name="current_stage" value="'.$stage_for.'" type="hidden">';
+                }               
+            }   
+                echo'<input name="current_stage" value="'.$stage_for.'" type="hidden">';
                 echo'</div>
                 <div style="padding:15px;">
                     <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Save</button>';
@@ -3178,10 +3178,10 @@ public function all_update_expense_status()
         $this->load->model(array('Branch_model','Enquiry_model','Leads_Model'));
         
         $oc = json_encode($this->input->post('oc'));
-		//print_r($oc);exit;
+        //print_r($oc);exit;
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
-		$enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
+        $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
         $deal = array(
                     'enquiry_id'=>$this->input->post('enquiry_id'),
                     'deal_type'=>$this->input->post('deal_type'),
@@ -3193,7 +3193,7 @@ public function all_update_expense_status()
                     'comp_id'=>$this->session->companey_id,
                     'other_charges'=>$oc,
                     'updation_date'=>date('Y-m-d H:i:s'),
-					//'stage_id'=>$this->input->post('current_stage'),
+                    //'stage_id'=>$this->input->post('current_stage'),
                     'status'=>'0',
                     );
 //print_r($deal_id);exit;
@@ -3215,13 +3215,14 @@ public function all_update_expense_status()
                 if(empty($ddata->copy_id))
                 {
                     $this->db->update('commercial_info',array('original'=>0)); 
+                    file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
                 }
                 else
                 {
                     $deal['copy_id'] = $ddata->copy_id;
                     $this->db->delete('commercial_info');
                 }
-				$deal['stage_id']=$this->input->post('current_stage');
+                $deal['stage_id']=$this->input->post('current_stage');
                 $deal_id = $this->Branch_model->add_deal($deal);
                 $this->Leads_Model->add_comment_for_events_stage('Deal Updated.',$enq->Enquery_id,0,0,$remark,0);
             }
@@ -3229,6 +3230,7 @@ public function all_update_expense_status()
             {
                 $this->db->where('id',$deal_id);
                 $this->db->update('commercial_info',$deal);
+                file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
                 $this->db->where('deal_id',$deal_id)->delete('deal_data');
                 $this->Leads_Model->add_comment_for_events_stage('Deal Updated.',$enq->Enquery_id,0,0,$remark,0);
             }
@@ -3236,12 +3238,13 @@ public function all_update_expense_status()
         }
         else
         {
-			$deal['stage_id']=$this->input->post('current_stage');
+            $deal['stage_id']=$this->input->post('current_stage');
             $deal_id = $this->Branch_model->add_deal($deal);
-			//$this->db->set('status','3');
-			//$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
+            file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
+            //$this->db->set('status','3');
+            //$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
             //$this->db->update('enquiry');
-			//$this->Leads_Model->add_comment_for_events_stage('Deal Moved To Negotiation Successfully.',$enq->Enquery_id,0,0,'',0);
+            //$this->Leads_Model->add_comment_for_events_stage('Deal Moved To Negotiation Successfully.',$enq->Enquery_id,0,0,'',0);
             $this->Leads_Model->add_comment_for_events_stage('Deal Added.',$enq->Enquery_id,0,0,'',0);
         }
         
@@ -3280,12 +3283,12 @@ public function all_update_expense_status()
     {
          $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
         $keyword = $this->uri->segment(4);
-		if(!empty($keyword)){
-			$data_type = base64_decode($keyword);
-		}else{
-			$data_type = '';
-		}		
-		$data['data_type'] = $data_type;
+        if(!empty($keyword)){
+            $data_type = base64_decode($keyword);
+        }else{
+            $data_type = '';
+        }       
+        $data['data_type'] = $data_type;
         $data['title'] = 'Edit Deal';
         $data['deal'] =$deal= $this->Branch_model->get_deal($deal_id);
         $data['deal_data'] = $this->Branch_model->get_deal_data($deal_id);
@@ -3528,9 +3531,9 @@ public function all_update_expense_status()
 
         foreach ($res->result() as $key => $value) 
         {
-			if($value->client_name!=''){
+            if($value->client_name!=''){
             echo'<option value="'.$value->Enquery_id.'">'.$value->client_name.'</option>';
-			}
+            }
         }
     }
 
