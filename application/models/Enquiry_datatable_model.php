@@ -125,57 +125,57 @@ class Enquiry_datatable_model extends CI_Model {
 
         if($top_filter=='all')
         {
-            $where.="  enquiry.status IN ($data_type) ";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  (enquiry.status IN ($data_type) ";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
         }
         else if($top_filter=='droped')
         {            
-            $where.="  enquiry.status IN ($data_type)";
-            $where.=" AND enquiry.drop_status>0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  enquiry.drop_status>0";
+            $where.=" AND (enquiry.status IN ($data_type)";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
         }else if($top_filter=='created_today'){
            // $date=date('Y-m-d');
             //  $where.="enquiry.created_date LIKE '%$date%'";
-            $where.=" enquiry.status IN ($data_type)";
-            $where.=" AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  enquiry.drop_status=0";
+            $where.=" AND (enquiry.status IN ($data_type)";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
         }else if($top_filter=='updated_today'){
             // $date=date('Y-m-d');
             // $where.="enquiry.update_date LIKE '%$date%'";        
-            $where.=" enquiry.status IN ($data_type)";
-            $where.=" AND enquiry.drop_status=0 and enquiry.update_date is not NULL";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  enquiry.drop_status=0 and enquiry.update_date is not NULL";
+            $where.=" AND (enquiry.status IN ($data_type)";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
 
             //this->db->where('');
 
         }else if($top_filter=='active'){            
-            $where.="  enquiry.status IN ($data_type)";
-            $where.=" AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  enquiry.drop_status=0";
+            $where.=" AND (enquiry.status IN ($data_type)";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
         }
         else if($top_filter == 'assigned')
         {   
-            $where.=" enquiry.status IN ($data_type)";
-            $where.=" AND enquiry.aasign_to is not NULL AND enquiry.drop_status=0" ;
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  enquiry.aasign_to is not NULL AND enquiry.drop_status=0" ;
+            $where.=" AND (enquiry.status IN ($data_type)";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
 
         }
         else if($top_filter == 'unassigned')
         {
-            $where.="enquiry.status IN ($data_type)";
-            $where.=" AND enquiry.aasign_to is NULL AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  enquiry.aasign_to is NULL AND enquiry.drop_status=0";
+            $where.=" AND (enquiry.status IN ($data_type)";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
         }
         else if($top_filter == 'pending')
         {
-            $where.="  enquiry.status IN ($data_type)";
-            $where.=" AND enquiry.lead_stage=0 AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  enquiry.lead_stage=0 AND enquiry.drop_status=0";
+            $where.=" AND (enquiry.status IN ($data_type)";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
         }
         else{                        
-            $where.="  enquiry.status IN ($data_type)";
-            $where.=" AND enquiry.drop_status=0";
-			$where.=" OR commercial_info.stage_id='".$data_type."'";
+            $where.="  enquiry.drop_status=0";
+            $where.=" AND (enquiry.status IN ($data_type)";
+			$where.=" OR commercial_info.stage_id='".$data_type."')";
         }
 
         if(isset($enquiry_filters_sess['lead_stages']) && $enquiry_filters_sess['lead_stages'] !=-1){
