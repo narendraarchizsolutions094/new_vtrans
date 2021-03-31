@@ -5017,7 +5017,7 @@ public function insertComInfo($data)
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
         $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id','left');
 
-        $this->db->join('(select * from (select * from visit_details ORDER BY visit_id) as al GROUP BY visit_id
+        $this->db->join('(select * from (select * from visit_details ORDER BY visit_id desc) as al GROUP BY visit_id
 ) as visit_details','visit_details.visit_id=tbl_visit.id','left');
 		$this->db->join('tbl_expense','tbl_expense.visit_id=tbl_visit.id','left');
 		
