@@ -3021,7 +3021,7 @@ public function get_enq_list_post(){
   { 
         $token=$this->input->post('token'); 
         $remote=$_SERVER['REMOTE_ADDR'];
-      if($token ==='@thecrm360@' && $remote==='206.189.151.19'){
+      if($token ==='@vtranscrm&090@' && $remote==='206.189.151.19'){
         $this->load->dbutil();
       $prefs = array(
         'format' => 'zip',
@@ -3052,7 +3052,7 @@ public function get_enq_list_post(){
       $file=$this->input->post('file');
         $file1=str_replace(base_url(),'',$file);
         $remote=$_SERVER['REMOTE_ADDR'];
-      if($token ==='@thecrm360@' && $remote==='206.189.151.19'){
+      if($token ==='@vtranscrm&090@' && $remote==='206.189.151.19'){
         unlink($file1);
       }
     }
