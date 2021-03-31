@@ -13,7 +13,7 @@ class Aws {
 
 
 
-   	public $bucketName = 'newcrm360';
+   	public $bucketName = 'v-trans';
 	
 	public $client;
 	

@@ -7,7 +7,7 @@ class Auth extends CI_Controller {
 	}
 	public function signup_content(){		
 		$data['c']	=	$this->input->post('c');
-		$this->load->view('signup',$data);		
+		$this->load->view('signup',$data);	 	
 	}
 	public function signup(){
         $this->form_validation->set_rules('name', display('email'), 'required');
