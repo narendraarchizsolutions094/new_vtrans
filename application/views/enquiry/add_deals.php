@@ -112,7 +112,7 @@ $(document).on('submit','#data_table',function(e){
 			{
 				
 				Swal.fire({
-					title:'Saved And Moved To Negotiation Stage Successfully!',
+					title:'Saved And Moved To Approach Stage Successfully!',
 					icon:'success',
 					type:'success',
 					timer: 2000,

@@ -3238,11 +3238,11 @@ public function all_update_expense_status()
         }
         else
         {
-            $deal['stage_id']=$this->input->post('current_stage');
+            //$deal['stage_id']=$this->input->post('current_stage');
             $deal_id = $this->Branch_model->add_deal($deal);
             file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
-            //$this->db->set('status','3');
-            //$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
+			//$this->db->set('status','3');
+			//$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
             //$this->db->update('enquiry');
             //$this->Leads_Model->add_comment_for_events_stage('Deal Moved To Negotiation Successfully.',$enq->Enquery_id,0,0,'',0);
             $this->Leads_Model->add_comment_for_events_stage('Deal Added.',$enq->Enquery_id,0,0,'',0);
