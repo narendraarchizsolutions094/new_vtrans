@@ -7,7 +7,7 @@ class Enquiry_model extends CI_Model {
     private $table = "enquiry";
 
     public function create($data = [],$comp_id =0) {
-		$data['company'] = trim($data['company']);
+    $data['company'] = trim($data['company']);
 
     if(!empty($data['company']))
     {
@@ -29,9 +29,9 @@ class Enquiry_model extends CI_Model {
     }
 
     $this->db->insert($this->table, $data);
-	
-		$insid = $this->db->insert_id();
-	//echo $insid;exit();
+  
+    $insid = $this->db->insert_id();
+  //echo $insid;exit();
 
     //=====Create default Contact for Enquiry
    if(empty($_POST['contact_id']) && !empty($data['name'])){
@@ -54,52 +54,52 @@ class Enquiry_model extends CI_Model {
         }
     //===================================
 
-		if(isset($_POST['inputfieldno'])) {
-		$inputno   = $this->input->post("inputfieldno", true);
-		$enqinfo   = $this->input->post("enqueryfield", true);
-		$inputtype = $this->input->post("inputtype", true);
-		
-			foreach($inputno as $ind => $val){
-				
-				$biarr[] = array( 
+    if(isset($_POST['inputfieldno'])) {
+    $inputno   = $this->input->post("inputfieldno", true);
+    $enqinfo   = $this->input->post("enqueryfield", true);
+    $inputtype = $this->input->post("inputtype", true);
+    
+      foreach($inputno as $ind => $val){
+        
+        $biarr[] = array( 
 
-								  "enq_no"  => $data["Enquery_id"],
-								  "input"   => $val,
-								  "parent"  => $insid, 
-								  "fvalue"  => (!empty($enqinfo[$ind])) ? $enqinfo[$ind] : "",
-								  "cmp_no"  => empty($comp_id)?$this->session->companey_id:$comp_id,
-								 ); 	
-			}
-		
-			if(!empty($biarr)){
-				$this->db->insert_batch('extra_enquery', $biarr); 
-			}
-		}
-		return $insid;
+                  "enq_no"  => $data["Enquery_id"],
+                  "input"   => $val,
+                  "parent"  => $insid, 
+                  "fvalue"  => (!empty($enqinfo[$ind])) ? $enqinfo[$ind] : "",
+                  "cmp_no"  => empty($comp_id)?$this->session->companey_id:$comp_id,
+                 );   
+      }
+    
+      if(!empty($biarr)){
+        $this->db->insert_batch('extra_enquery', $biarr); 
+      }
+    }
+    return $insid;
     }
 
 
 
   public function enquiry_all_tab_api($companey_id,$enquiry_id)
-	{
-		//return array($company_id,$ticketno);
-		$this->load->model(array('form_model','Enquiry_model','Leads_Model'));
-		$this->session->companey_id = $companey_id;
-		
-		//2 for Ticket Tab 
-		$enquiry = $this->getEnquiry(array('enquiry_id'=>$enquiry_id))->row();
-		//return $ticket;
-		
-		if(!empty($enquiry))
-		{	
-			$process_id = $enquiry->product_id;
+  {
+    //return array($company_id,$ticketno);
+    $this->load->model(array('form_model','Enquiry_model','Leads_Model'));
+    $this->session->companey_id = $companey_id;
+    
+    //2 for Ticket Tab 
+    $enquiry = $this->getEnquiry(array('enquiry_id'=>$enquiry_id))->row();
+    //return $ticket;
+    
+    if(!empty($enquiry))
+    { 
+      $process_id = $enquiry->product_id;
 
-		  $tab_list = $this->form_model->get_tabs_list($companey_id,$process_id,0);
+      $tab_list = $this->form_model->get_tabs_list($companey_id,$process_id,0);
 
-  		$tabs = array();
+      $tabs = array();
 
-  		$primary_tab=0;
-  		$primary = $this->getPrimaryTab();
+      $primary_tab=0;
+      $primary = $this->getPrimaryTab();
 
         if($primary)
             $primary_tab = $primary->id;
@@ -108,7 +108,7 @@ class Enquiry_model extends CI_Model {
         $last_name_key = -1;
         $address_key = -1;
 
-       	$basic= $this->location_model->get_company_list1($process_id);  
+        $basic= $this->location_model->get_company_list1($process_id);  
 
       foreach ($basic as $key => $input)
       {
@@ -119,14 +119,14 @@ class Enquiry_model extends CI_Model {
             $prefix = array();
             if(!empty($prefixList))
             {
-            	foreach ($prefixList as $res)
-            	{
-            		$prefix[]  = $res->prefix;
-            	}
+              foreach ($prefixList as $res)
+              {
+                $prefix[]  = $res->prefix;
+              }
             }
             $basic[$key]['extra_field'][] =array('input_values'=>$prefix,
-            									'parameter_name'=>'name_prefix',
-            									'current_value'=>$enquiry->name_prefix);
+                              'parameter_name'=>'name_prefix',
+                              'current_value'=>$enquiry->name_prefix);
 
             $basic[$key]['parameter_name'] = 'fname';
             $basic[$key]['current_value'] = $enquiry->name;
@@ -214,7 +214,7 @@ class Enquiry_model extends CI_Model {
             foreach ($city_list as $res)
             {
               $values[] = array('key'=>$res->id,
-              					'state_id'=>$res->state_id,
+                        'state_id'=>$res->state_id,
                                 'value'=> $res->city
                               );
             }
@@ -552,54 +552,54 @@ class Enquiry_model extends CI_Model {
       }
 
         $tabs[]  = array('tab_id'=>$primary->id,
-        					'title'=>$primary->title,
-        					'is_query_type'=>$primary->form_type,
-        					'is_delete'=>$primary->is_delete,
-        					'is_edit'=>$primary->is_edit,
-        					'field_list'=>array_merge($basic,$dynamic),
-    						);
+                  'title'=>$primary->title,
+                  'is_query_type'=>$primary->form_type,
+                  'is_delete'=>$primary->is_delete,
+                  'is_edit'=>$primary->is_edit,
+                  'field_list'=>array_merge($basic,$dynamic),
+                );
 
        return $tabs;
   //       $match = array(
-		// 	'ticket_no' => $ticket->ticketno,
-		// 	'tck.client' => $ticket->client,
-		// 	'tck.tracking_no' => $ticket->tracking_no,
-		// 	'tck.phone' => $ticket->phone, 
-		// );
+    //  'ticket_no' => $ticket->ticketno,
+    //  'tck.client' => $ticket->client,
+    //  'tck.tracking_no' => $ticket->tracking_no,
+    //  'tck.phone' => $ticket->phone, 
+    // );
 
-		// $related_tickets = $this->Ticket_Model->all_related_tickets($match);
+    // $related_tickets = $this->Ticket_Model->all_related_tickets($match);
 
-		// $tabs[]  = array('tab_id'=>null,
-  //       					'title'=>'Related Tickets',
-  //       					'table'=>$related_tickets??array(),
-  //   						);
+    // $tabs[]  = array('tab_id'=>null,
+  //                'title'=>'Related Tickets',
+  //                'table'=>$related_tickets??array(),
+  //              );
 
         
         foreach ($tab_list as $res)
         { 
           
-        	if($res['primary_tab']!='1')
-        	{
-        		$dynamic = $this->Enquiry_model->get_dyn_fld($enquiry_id,$res['id'],0);
-        		$heading = array();
+          if($res['primary_tab']!='1')
+          {
+            $dynamic = $this->Enquiry_model->get_dyn_fld($enquiry_id,$res['id'],0);
+            $heading = array();
             $heading_ids=array();
             $i=0;
-        		foreach ($dynamic as $key => $value)
-			      {
-			          if(in_array($value['input_type'],array('2','3','4','20')))
-			          {
-			              $temp  = explode(',', $value['input_values']);
-			              if(!empty($temp))
-			              {   $reshape = array();
-			                  foreach ($temp as $k => $v)
-			                  {
-			                    $reshape[] = array('key'=>null,
-			                                      'value'=>$v);
-			                  }
-			                  $dynamic[$key]['input_values'] = $reshape;
-			              }
-			          }
-			          $heading[] = $value['input_label'];
+            foreach ($dynamic as $key => $value)
+            {
+                if(in_array($value['input_type'],array('2','3','4','20')))
+                {
+                    $temp  = explode(',', $value['input_values']);
+                    if(!empty($temp))
+                    {   $reshape = array();
+                        foreach ($temp as $k => $v)
+                        {
+                          $reshape[] = array('key'=>null,
+                                            'value'=>$v);
+                        }
+                        $dynamic[$key]['input_values'] = $reshape;
+                    }
+                }
+                $heading[] = $value['input_label'];
                 $heading_ids[]  = $value['input_id'];
 
                 $dynamic[$key]['parameter_name'] = array(
@@ -612,67 +612,67 @@ class Enquiry_model extends CI_Model {
                               );
                 $dynamic[$key]['current_value'] = $value['fvalue'];
               $i++;
-			       }
+             }
 
 
-        		$part = array('tab_id'=>$res['id'],
-        					'title'=>$res['title'],
-        					'is_query_type'=>$res['form_type'],
-        					'is_delete'=>$res['is_delete'],
-        					'is_edit'=>$res['is_edit'],
-        					'field_list'=>$dynamic,
-    						);
+            $part = array('tab_id'=>$res['id'],
+                  'title'=>$res['title'],
+                  'is_query_type'=>$res['form_type'],
+                  'is_delete'=>$res['is_delete'],
+                  'is_edit'=>$res['is_edit'],
+                  'field_list'=>$dynamic,
+                );
 
-        		if($res['form_type']==1)
-        		{
-        			$tid = $res['id'];
-    					$comp_id = $companey_id;
-    					$enquiry_no = $enquiry->Enquery_id;
+            if($res['form_type']==1)
+            {
+              $tid = $res['id'];
+              $comp_id = $companey_id;
+              $enquiry_no = $enquiry->Enquery_id;
 
-					$sql  = "SELECT GROUP_CONCAT(concat(`extra_enquery`.`input`,'#',`extra_enquery`.`fvalue`,'#',`extra_enquery`.`created_date`,'#',`extra_enquery`.`comment_id`) separator ',') as d FROM `extra_enquery` INNER JOIN (select * from tbl_input where form_id=$tid) as tbl_input ON `tbl_input`.`input_id`=`extra_enquery`.`input` where `extra_enquery`.`cmp_no`=$comp_id and `extra_enquery`.`enq_no`='$enquiry_no' GROUP BY `extra_enquery`.`comment_id` ORDER BY `extra_enquery`.`comment_id` DESC";
+          $sql  = "SELECT GROUP_CONCAT(concat(`extra_enquery`.`input`,'#',`extra_enquery`.`fvalue`,'#',`extra_enquery`.`created_date`,'#',`extra_enquery`.`comment_id`) separator ',') as d FROM `extra_enquery` INNER JOIN (select * from tbl_input where form_id=$tid) as tbl_input ON `tbl_input`.`input_id`=`extra_enquery`.`input` where `extra_enquery`.`cmp_no`=$comp_id and `extra_enquery`.`enq_no`='$enquiry_no' GROUP BY `extra_enquery`.`comment_id` ORDER BY `extra_enquery`.`comment_id` DESC";
 
-			             $sql_res = $this->db->query($sql)->result_array(); 
-						$data =array();
-			             if(!empty($sql_res))
-			             {	
-			             	
-			             	foreach ($sql_res as $key => $value) 
-			             	{
-			             		$abc = explode(',',$value['d']);
-			             		
-			             		if(!empty($abc))
-			             		{	$sub = array();
-			             			foreach ($abc as $k => $v)
-			             			{
-			             				$x = explode('#', $v);
-			             				$sub[] = array(
+                   $sql_res = $this->db->query($sql)->result_array(); 
+            $data =array();
+                   if(!empty($sql_res))
+                   {  
+                    
+                    foreach ($sql_res as $key => $value) 
+                    {
+                      $abc = explode(',',$value['d']);
+                      
+                      if(!empty($abc))
+                      { $sub = array();
+                        foreach ($abc as $k => $v)
+                        {
+                          $x = explode('#', $v);
+                          $sub[] = array(
                                           'input_id'=>$x[0],
                                           'value'=>$x[1],
                                           'updated_at'=>$x[2],
                                           'cmmnt_id'=>$x[3]
                                         );
-			             			}
-			             		}
-			             		$data[] = $sub;
-			             	}
-			             }
+                        }
+                      }
+                      $data[] = $sub;
+                    }
+                   }
               $part['enquiry_code']=$enquiry_no;
-			        $part['table']=array('heading'=>$heading,
-			        					              'data'=>$data,
+              $part['table']=array('heading'=>$heading,
+                                      'data'=>$data,
                                       'heading_ids'=> $heading_ids
                                     );
-        		}
-        		
-        		$tabs[] = $part;
-        	}
+            }
+            
+            $tabs[] = $part;
+          }
         }
 
-		session_destroy();
-		return $tabs;
-		}
-		else
-			return false;
-	}
+    session_destroy();
+    return $tabs;
+    }
+    else
+      return false;
+  }
 
   public function update_dynamic_query($user_id=0,$comp_id=0)
   {
@@ -703,7 +703,7 @@ class Enquiry_model extends CI_Model {
   
 
                  if ($inputtype[$ind] == 8) {  
-                        $this->load->library('upload');				 
+                        $this->load->library('upload');        
                         $file_data    =   $this->doupload($file,$file_count,$comp_id);
 
                         if (!empty($file_data['imageDetailArray']['file_name'])) {
@@ -841,12 +841,12 @@ class Enquiry_model extends CI_Model {
   }
 
   public function getPrimaryTab()
-	{
-		 return  $this->db->select('*')
+  {
+     return  $this->db->select('*')
             ->where(array('form_for'=>0,'primary_tab'=>1))
             ->get('forms')
             ->row();
-	}
+  }
 
   public function doupload($file,$key,$comp_id=0){ 
       //print_r($file); exit();
@@ -885,10 +885,10 @@ class Enquiry_model extends CI_Model {
     }
 
     public function comission_data($enq_code){
-	 	$this->db->select('*');
-	 	$this->db->where('tbl_comission.Enquiry_code',$enq_code);
-	 	return $this->db->get('tbl_comission')->result_array();
-	 }
+    $this->db->select('*');
+    $this->db->where('tbl_comission.Enquiry_code',$enq_code);
+    return $this->db->get('tbl_comission')->result_array();
+   }
 
     public function add_newbankdeal($data){
 
@@ -906,68 +906,68 @@ class Enquiry_model extends CI_Model {
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
         $this->db->where_in('product_id',$process);
 
-    	if($where)
+      if($where)
             $this->db->where($where);
             
 
-    	$this->db->where('enquiry.comp_id',$this->session->companey_id);
-    	return $this->db->get();
+      $this->db->where('enquiry.comp_id',$this->session->companey_id);
+      return $this->db->get();
     }
 
-	public function get_user_productcntry_list(){
+  public function get_user_productcntry_list(){
 
-		$this->db->select("*");
-		$this->db->from("tbl_product_country");
-		$this->db->where('comp_id',$this->session->companey_id);
-		return $this->db->get()->result();
-	}
-	public function get_user_state_list(){
+    $this->db->select("*");
+    $this->db->from("tbl_product_country");
+    $this->db->where('comp_id',$this->session->companey_id);
+    return $this->db->get()->result();
+  }
+  public function get_user_state_list(){
 
-		$this->db->select('*');
-		$this->db->from('state');
-		$this->db->where('comp_id',$this->session->companey_id);
-		$this->db->order_by('state','ASC');
-		return $this->db->get()->result();
-	}
-	public function get_user_city_list(){
+    $this->db->select('*');
+    $this->db->from('state');
+    $this->db->where('comp_id',$this->session->companey_id);
+    $this->db->order_by('state','ASC');
+    return $this->db->get()->result();
+  }
+  public function get_user_city_list(){
 
-		$this->db->select('*');
-		$this->db->from('city');
-		$this->db->where('comp_id',$this->session->companey_id);
-		$this->db->order_by('city','ASC');
-		return $this->db->get()->result();
-	}
-	/****************************************csv work*********************************/		
-			public function all_list_colmn($pid){
+    $this->db->select('*');
+    $this->db->from('city');
+    $this->db->where('comp_id',$this->session->companey_id);
+    $this->db->order_by('city','ASC');
+    return $this->db->get()->result();
+  }
+  /****************************************csv work*********************************/   
+      public function all_list_colmn($pid){
                     $this->db->select('*');
                     $this->db->from('tbl_product');
                     $this->db->where('product_name',$pid);
                     $q= $this->db->get()->row();
-				
+        
                     $this->db->select('*');
                     $this->db->from('tbl_input');
-					$this->db->where('process_id',$q->sb_id);
-					$this->db->order_by('input_id', 'asc');
+          $this->db->where('process_id',$q->sb_id);
+          $this->db->order_by('input_id', 'asc');
                     return $this->db->get()->result();
-			}
-			
-		public function update_tblextra($lid,$code,$enq_no) {
+      }
+      
+    public function update_tblextra($lid,$code,$enq_no) {
         $this->db->set('parent', $lid);
         $this->db->set('enq_no', $enq_no);
         $this->db->where('parent', $code);
         $this->db->update('extra_enquery');
     }
-	public function update_tbleqry2($enquiry_id) {
+  public function update_tbleqry2($enquiry_id) {
         $this->db->set('status', '3');
         $this->db->where('enquiry_id', $enquiry_id);
         $this->db->update('enquiry2');
     }
 /****************************************csv work end*********************************/
-	
-	public function getformfield($for=0){//for meanas 0=Enquiry , 1= product, 2= ticket
-	
-		$this->db->select('*');
-		$this->db->where('page_id',$for);
+  
+  public function getformfield($for=0){//for meanas 0=Enquiry , 1= product, 2= ticket
+  
+    $this->db->select('*');
+    $this->db->where('page_id',$for);
         $this->db->where(array("company_id"=> $this->session->companey_id, "status" => 1));
         if(!empty($this->session->process)){
             $this->db->group_start();
@@ -979,98 +979,98 @@ class Enquiry_model extends CI_Model {
             }
         }
         $this->db->group_end();
-		return $this->db->get("tbl_input")->result();
-				
-	}
-	public function getfieldvalue($enqnos = array(),$for=0){ //for means 0=enquiry,1=product,2=ticket	
-	
-		$this->db->select('*');
-			$this->db->where(array("cmp_no"=> $this->session->companey_id));				
-		if(!empty($enqnos)) {
-			$enqnos = trim($enqnos, ",");	
-			$this->db->where_in("parent", $enqnos);
-		}
+    return $this->db->get("tbl_input")->result();
+        
+  }
+  public function getfieldvalue($enqnos = array(),$for=0){ //for means 0=enquiry,1=product,2=ticket 
+  
+    $this->db->select('*');
+      $this->db->where(array("cmp_no"=> $this->session->companey_id));        
+    if(!empty($enqnos)) {
+      $enqnos = trim($enqnos, ","); 
+      $this->db->where_in("parent", $enqnos);
+    }
 
-	if($for==0)
-	{
-		if(isset($_COOKIE["dallowcols"])) {
-			
-			$dshowall = false;
-			$dacolarr  = explode(",", trim($_COOKIE["dallowcols"], ","));
-		}
+  if($for==0)
+  {
+    if(isset($_COOKIE["dallowcols"])) {
+      
+      $dshowall = false;
+      $dacolarr  = explode(",", trim($_COOKIE["dallowcols"], ","));
+    }
 
-		$resarr = $this->db->get("extra_enquery")->result();		
-		$newarr = array();
-		if(!empty($resarr)){
-			foreach($resarr as $ind => $res){				
-				$prnt = $res->parent;
-				$newarr[$prnt][$res->input] = $res;	
-			}
-		}		
-	}
-	else if($for==1)
-	{
+    $resarr = $this->db->get("extra_enquery")->result();    
+    $newarr = array();
+    if(!empty($resarr)){
+      foreach($resarr as $ind => $res){       
+        $prnt = $res->parent;
+        $newarr[$prnt][$res->input] = $res; 
+      }
+    }   
+  }
+  else if($for==1)
+  {
 
-	}
-	else if($for==2)
-	{
-		if(isset($_COOKIE["ticket_dallowcols"])) {
-			
-			$dshowall = false;
-			$dacolarr  = explode(",", trim($_COOKIE["ticket_dallowcols"], ","));
-		}
+  }
+  else if($for==2)
+  {
+    if(isset($_COOKIE["ticket_dallowcols"])) {
+      
+      $dshowall = false;
+      $dacolarr  = explode(",", trim($_COOKIE["ticket_dallowcols"], ","));
+    }
 
-		$resarr = $this->db->get("ticket_dynamic_data")->result();		
-		$newarr = array();
-		if(!empty($resarr)){
-			foreach($resarr as $ind => $res){				
-				$prnt = $res->parent;
-				$newarr[$prnt][$res->input] = $res;	
-			}
-		}		
-	}
+    $resarr = $this->db->get("ticket_dynamic_data")->result();    
+    $newarr = array();
+    if(!empty($resarr)){
+      foreach($resarr as $ind => $res){       
+        $prnt = $res->parent;
+        $newarr[$prnt][$res->input] = $res; 
+      }
+    }   
+  }
 
-		return $newarr;
-	}
+    return $newarr;
+  }
 
-	public function get_deal($enqid){
+  public function get_deal($enqid){
 
       $this->db->select('*');
       $this->db->from('tbl_newdeal');
       $this->db->where('enq_id',$enqid);
       return $this->db->get()->row();
-	}
-	
-	public function get_dyn_fld($enqno = "",$tid=0,$form_for=0){
+  }
+  
+  public function get_dyn_fld($enqno = "",$tid=0,$form_for=0){
 
-		$ticketno=0;
-		$tckid = 0;
-		$process =0;
-		if($form_for==2)
-		{	$ticketno = $enqno;
-			$ticket = $this->db->select('id,client,process_id')
-					->where('ticketno',$enqno)
-					->get('tbl_ticket');
+    $ticketno=0;
+    $tckid = 0;
+    $process =0;
+    if($form_for==2)
+    { $ticketno = $enqno;
+      $ticket = $this->db->select('id,client,process_id')
+          ->where('ticketno',$enqno)
+          ->get('tbl_ticket');
 
-			if($ticket->num_rows())
-			{
-				$ticket_row = $ticket->row();
-				$enqno = $ticket_row->client;
-				$tckid = $ticket_row->id;
-				$process = $ticket_row->process_id;
+      if($ticket->num_rows())
+      {
+        $ticket_row = $ticket->row();
+        $enqno = $ticket_row->client;
+        $tckid = $ticket_row->id;
+        $process = $ticket_row->process_id;
 
-			}
-		}  
-		
-			$this->db->select('product_id,Enquery_id');
-		     $this->db->from('enquiry');
-		     $this->db->where('enquiry_id',$enqno);
-		     $res_id = $this->db->get()->row_array();
+      }
+    }  
+    
+      $this->db->select('product_id,Enquery_id');
+         $this->db->from('enquiry');
+         $this->db->where('enquiry_id',$enqno);
+         $res_id = $this->db->get()->row_array();
 
-		if($form_for==0 or $process==0)
-		     $process = $res_id['product_id'];
-		
-     	// echo $enqno;exit();
+    if($form_for==0 or $process==0)
+         $process = $res_id['product_id'];
+    
+      // echo $enqno;exit();
         // $process = $this->session->userdata('process');
         // print_r($process);exit();
         $compid = $this->session->userdata('companey_id');
@@ -1080,71 +1080,71 @@ class Enquiry_model extends CI_Model {
         // // print_r($id);exit();
         $where ='';    
 
-		$this->db->select('othr.*,fld.fld_attributes,fld.input_id,fld.input_type,fld.input_values,fld.input_place,fld.input_label,fld.input_name,input_types.title as type');
-		$this->db->from('tbl_input fld');
-		$this->db->join('input_types','fld.input_type=input_types.id','LEFT');
-    	$where .= " FIND_IN_SET('".$process."',fld.process_id) AND fld.company_id = {$compid} AND fld.status=1 AND fld.form_id=$tid";
-		$this->db->where($where);
-		/*$enquiry_code = $res_id['Enquery_id'];*/
-		//$this->db->where(array('othr.parent' => $enqno));
-		//$this->db->join('extra_enquery othr', 'fld.input_id = othr.input', 'left');
-		if($form_for==2)
-		{
-			$this->db->join("( select * from ticket_dynamic_data where parent=$tckid group by ticket_dynamic_data.input) othr", 'fld.input_id = othr.input', 'left');
-		}
-		else
-		{
-		$this->db->join("( select * from extra_enquery where parent=$enqno group by extra_enquery.input) othr", 'fld.input_id = othr.input', 'left');
-		}
-		// $this->db->join('tbl_feedback fdb','fld.input_id = fdb.input','left');
-		// $this->db->or_where('fdb.user_id',$userid);
-		$this->db->order_by('fld.fld_order','ASC');
-		$resarr =  $this->db->get()->result_array();
-	    // print_r($resarr);exit();		
-		if(empty($resarr)){			
-			$this->db->select('*');
-			$this->db->from('tbl_input');
-			$where = " FIND_IN_SET('".$process."',process_id) AND company_id = {$compid} AND status=1 AND tbl_input.form_id=$tid";
-		    $this->db->where($where);
-			$this->db->order_by('tbl_input.input_id','ASC');
-			$resarr=  $this->db->get()->result_array();
-			// print_r($resarr);exit();
-		}
-		return $resarr;
-	}	
+    $this->db->select('othr.*,fld.fld_attributes,fld.input_id,fld.input_type,fld.input_values,fld.input_place,fld.input_label,fld.input_name,input_types.title as type');
+    $this->db->from('tbl_input fld');
+    $this->db->join('input_types','fld.input_type=input_types.id','LEFT');
+      $where .= " FIND_IN_SET('".$process."',fld.process_id) AND fld.company_id = {$compid} AND fld.status=1 AND fld.form_id=$tid";
+    $this->db->where($where);
+    /*$enquiry_code = $res_id['Enquery_id'];*/
+    //$this->db->where(array('othr.parent' => $enqno));
+    //$this->db->join('extra_enquery othr', 'fld.input_id = othr.input', 'left');
+    if($form_for==2)
+    {
+      $this->db->join("( select * from ticket_dynamic_data where parent=$tckid group by ticket_dynamic_data.input) othr", 'fld.input_id = othr.input', 'left');
+    }
+    else
+    {
+    $this->db->join("( select * from extra_enquery where parent=$enqno group by extra_enquery.input) othr", 'fld.input_id = othr.input', 'left');
+    }
+    // $this->db->join('tbl_feedback fdb','fld.input_id = fdb.input','left');
+    // $this->db->or_where('fdb.user_id',$userid);
+    $this->db->order_by('fld.fld_order','ASC');
+    $resarr =  $this->db->get()->result_array();
+      // print_r($resarr);exit();   
+    if(empty($resarr)){     
+      $this->db->select('*');
+      $this->db->from('tbl_input');
+      $where = " FIND_IN_SET('".$process."',process_id) AND company_id = {$compid} AND status=1 AND tbl_input.form_id=$tid";
+        $this->db->where($where);
+      $this->db->order_by('tbl_input.input_id','ASC');
+      $resarr=  $this->db->get()->result_array();
+      // print_r($resarr);exit();
+    }
+    return $resarr;
+  } 
 
-	public function get_dyn_fld_by_query($cmnt_id,$enqno = "",$tid=0,$form_for=0){
+  public function get_dyn_fld_by_query($cmnt_id,$enqno = "",$tid=0,$form_for=0){
 
-		$ticketno=0;
-		$tckid = 0;
-		$process = 0;
-		if($form_for==2)
-		{	
+    $ticketno=0;
+    $tckid = 0;
+    $process = 0;
+    if($form_for==2)
+    { 
       $ticketno = $enqno;
-			$ticket = $this->db->select('id,client,process_id')
-					->where('ticketno',$enqno)
-					->get('tbl_ticket');
+      $ticket = $this->db->select('id,client,process_id')
+          ->where('ticketno',$enqno)
+          ->get('tbl_ticket');
 
-			if($ticket->num_rows())
-			{
-				$ticket_row = $ticket->row();
-				$enqno = $ticket_row->client;
-				$tckid = $ticket_row->id;
-				$process = $ticket_row->process_id;
-			}
-		}
-		
+      if($ticket->num_rows())
+      {
+        $ticket_row = $ticket->row();
+        $enqno = $ticket_row->client;
+        $tckid = $ticket_row->id;
+        $process = $ticket_row->process_id;
+      }
+    }
+    
     //echo $enqno; exit();
-	     $this->db->select('product_id,Enquery_id');
-	     $this->db->from('enquiry');
-	     $this->db->where('enquiry_id',$enqno);
-	     $res_id = $this->db->get()->row_array();
+       $this->db->select('product_id,Enquery_id');
+       $this->db->from('enquiry');
+       $this->db->where('enquiry_id',$enqno);
+       $res_id = $this->db->get()->row_array();
 
-	     if($form_for==0 or $process==0)
-	     $process = $res_id['product_id'];
-	  
+       if($form_for==0 or $process==0)
+       $process = $res_id['product_id'];
+    
 
-     	// echo $enqno;exit();
+      // echo $enqno;exit();
         // $process = $this->session->userdata('process');
         // print_r($process);exit();
         $compid = $this->session->userdata('companey_id');
@@ -1154,82 +1154,82 @@ class Enquiry_model extends CI_Model {
         // // print_r($id);exit();
         $where ='';    
 
-		$this->db->select('othr.*,fld.fld_attributes,fld.input_id,fld.input_type,fld.input_values,fld.input_place,fld.input_label,fld.input_name');
-		$this->db->from('tbl_input fld');
-    	$where .= " FIND_IN_SET('".$process."',fld.process_id) AND fld.company_id = {$compid} AND fld.status=1 AND fld.form_id=$tid";
-		$this->db->where($where);
-		/*$enquiry_code = $res_id['Enquery_id'];*/
-		//$this->db->where(array('othr.parent' => $enqno));
-		//$this->db->join('extra_enquery othr', 'fld.input_id = othr.input', 'left');
-		if($form_for==2)
-		{
-			$this->db->join("( select * from ticket_dynamic_data where parent=$tckid and comment_id=$cmnt_id group by ticket_dynamic_data.input) othr", 'fld.input_id = othr.input', 'left');
-		}
-		else
-		{
-		$this->db->join("( select * from extra_enquery where parent=$enqno and comment_id=$cmnt_id group by extra_enquery.input) othr", 'fld.input_id = othr.input', 'left');
-		}
-		// $this->db->join('tbl_feedback fdb','fld.input_id = fdb.input','left');
-		// $this->db->or_where('fdb.user_id',$userid);
-		$this->db->order_by('fld.fld_order','ASC');
-		$resarr =  $this->db->get()->result_array();
-	    // print_r($resarr);exit();		
-		if(empty($resarr)){			
-			$this->db->select('*');
-			$this->db->from('tbl_input');
-			$where = " FIND_IN_SET('".$process."',process_id) AND company_id = {$compid} AND status=1 AND tbl_input.form_id=$tid";
-		    $this->db->where($where);
-			$this->db->order_by('tbl_input.input_id','ASC');
-			$resarr=  $this->db->get()->result_array();
-			// print_r($resarr);exit();
-		}
-		return $resarr;
-	}	
+    $this->db->select('othr.*,fld.fld_attributes,fld.input_id,fld.input_type,fld.input_values,fld.input_place,fld.input_label,fld.input_name');
+    $this->db->from('tbl_input fld');
+      $where .= " FIND_IN_SET('".$process."',fld.process_id) AND fld.company_id = {$compid} AND fld.status=1 AND fld.form_id=$tid";
+    $this->db->where($where);
+    /*$enquiry_code = $res_id['Enquery_id'];*/
+    //$this->db->where(array('othr.parent' => $enqno));
+    //$this->db->join('extra_enquery othr', 'fld.input_id = othr.input', 'left');
+    if($form_for==2)
+    {
+      $this->db->join("( select * from ticket_dynamic_data where parent=$tckid and comment_id=$cmnt_id group by ticket_dynamic_data.input) othr", 'fld.input_id = othr.input', 'left');
+    }
+    else
+    {
+    $this->db->join("( select * from extra_enquery where parent=$enqno and comment_id=$cmnt_id group by extra_enquery.input) othr", 'fld.input_id = othr.input', 'left');
+    }
+    // $this->db->join('tbl_feedback fdb','fld.input_id = fdb.input','left');
+    // $this->db->or_where('fdb.user_id',$userid);
+    $this->db->order_by('fld.fld_order','ASC');
+    $resarr =  $this->db->get()->result_array();
+      // print_r($resarr);exit();   
+    if(empty($resarr)){     
+      $this->db->select('*');
+      $this->db->from('tbl_input');
+      $where = " FIND_IN_SET('".$process."',process_id) AND company_id = {$compid} AND status=1 AND tbl_input.form_id=$tid";
+        $this->db->where($where);
+      $this->db->order_by('tbl_input.input_id','ASC');
+      $resarr=  $this->db->get()->result_array();
+      // print_r($resarr);exit();
+    }
+    return $resarr;
+  } 
 
-	public function get_dyn_fld_api($enqno = ""){
+  public function get_dyn_fld_api($enqno = ""){
      // echo $enqno;exit();
 
-			$this->db->select('*');
-			$this->db->where('enquiry_id',$enqno);
-			$this->db->from('enquiry');
-			$enqarr = $this->db->get()->row();
+      $this->db->select('*');
+      $this->db->where('enquiry_id',$enqno);
+      $this->db->from('enquiry');
+      $enqarr = $this->db->get()->row();
 
-		$this->db->select('othr.*,fld.input_id,fld.status,fld.input_type,fld.input_values,fld.input_place,fld.input_label');
-		$this->db->from('tbl_input fld');
-		
-		if(!empty($enqarr)){
-			
-			$this->db->where('fld.company_id', $enqarr->comp_id);
-		}
-		
-	//	$this->db->where('fld.company_id',$this->session->userdata('companey_id'));
-		//$this->db->where(array('othr.parent' => $enqno));
-		$this->db->join("( select * from extra_enquery where parent=$enqno) othr", 'fld.input_id = othr.input', 'left');
+    $this->db->select('othr.*,fld.input_id,fld.status,fld.input_type,fld.input_values,fld.input_place,fld.input_label');
+    $this->db->from('tbl_input fld');
+    
+    if(!empty($enqarr)){
+      
+      $this->db->where('fld.company_id', $enqarr->comp_id);
+    }
+    
+  //  $this->db->where('fld.company_id',$this->session->userdata('companey_id'));
+    //$this->db->where(array('othr.parent' => $enqno));
+    $this->db->join("( select * from extra_enquery where parent=$enqno) othr", 'fld.input_id = othr.input', 'left');
 
-		//$this->db->join('extra_enquery othr', 'fld.input_id = othr.input', 'left');
+    //$this->db->join('extra_enquery othr', 'fld.input_id = othr.input', 'left');
 
-		/*
-		$this->db->select("*");
-		$this->db->from('tbl_input');
-		$this->db->where('company_id',1);
-		$this->db->order_by('input_id asc');*/
-		$resarr =  $this->db->get()->result_array();
-		// print_r($resarr);exit();
-		
-		if(empty($resarr)){
-			
-			$this->db->select('*');
-			$this->db->where('enquiry_id',$enqno);
-			$this->db->from('enquiry');
-			$enqarr = $this->db->get()->row();
-			
-			$this->db->select('*');
-			$this->db->where('company_id', $enqarr->comp_id);
-			$this->db->from('tbl_input');
-			$resarr=  $this->db->get()->result_array();
-		}
-		return $resarr;
-	}
+    /*
+    $this->db->select("*");
+    $this->db->from('tbl_input');
+    $this->db->where('company_id',1);
+    $this->db->order_by('input_id asc');*/
+    $resarr =  $this->db->get()->result_array();
+    // print_r($resarr);exit();
+    
+    if(empty($resarr)){
+      
+      $this->db->select('*');
+      $this->db->where('enquiry_id',$enqno);
+      $this->db->from('enquiry');
+      $enqarr = $this->db->get()->row();
+      
+      $this->db->select('*');
+      $this->db->where('company_id', $enqarr->comp_id);
+      $this->db->from('tbl_input');
+      $resarr=  $this->db->get()->result_array();
+    }
+    return $resarr;
+  }
 
     public function created_byid($id) {
         return $this->db->select("*")
@@ -1243,72 +1243,72 @@ class Enquiry_model extends CI_Model {
     }
     
     public function datasourcelist($id) {
-		return $this->db->select('en2.*,ds.datasource_name,prd.product_name')->from('enquiry2 en2')
-					->join("tbl_product prd","prd.sb_id = en2.product_id")
-					->join("tbl_datasource ds","ds.datasource_id = en2.datasource_id")
-        ->where('en2.datasource_id',$id)		
-		->get()
+    return $this->db->select('en2.*,ds.datasource_name,prd.product_name')->from('enquiry2 en2')
+          ->join("tbl_product prd","prd.sb_id = en2.product_id")
+          ->join("tbl_datasource ds","ds.datasource_id = en2.datasource_id")
+        ->where('en2.datasource_id',$id)    
+    ->get()
         ->result();
-	 }
+   }
     
-	 public function institute_data($enq_code){
-	 	$this->db->select('institute_data.*,tbl_institute.institute_name,institute_app_status.title as app_status_title,tbl_crsmaster.course_name as course_name_str');
-	 	$this->db->where('institute_data.enquery_code',$enq_code);
-	 	$this->db->join('tbl_institute','institute_data.institute_id=tbl_institute.institute_id','left');
-	 	$this->db->join('tbl_crsmaster','tbl_crsmaster.id=institute_data.course_id','left');
-	 	$this->db->join('institute_app_status','institute_data.app_status=institute_app_status.id','left');
-	 	return $this->db->get('institute_data')->result_array();
-	 }
+   public function institute_data($enq_code){
+    $this->db->select('institute_data.*,tbl_institute.institute_name,institute_app_status.title as app_status_title,tbl_crsmaster.course_name as course_name_str');
+    $this->db->where('institute_data.enquery_code',$enq_code);
+    $this->db->join('tbl_institute','institute_data.institute_id=tbl_institute.institute_id','left');
+    $this->db->join('tbl_crsmaster','tbl_crsmaster.id=institute_data.course_id','left');
+    $this->db->join('institute_app_status','institute_data.app_status=institute_app_status.id','left');
+    return $this->db->get('institute_data')->result_array();
+   }
 
     public function name_product_list_byname($name){
-    	if($name){
+      if($name){
             $this->db->select('*');
             $this->db->from('tbl_product');
             $this->db->where('product_name',$name);
             $this->db->where('comp_id',$this->session->companey_id);
             return $this->db->get()->row();
-    	}else{
-    		return false;
-    	}		    
-	}
-/******************************************************qualification tab data************************************/	
-	public function quali_data($enq){
+      }else{
+        return false;
+      }       
+  }
+/******************************************************qualification tab data************************************/  
+  public function quali_data($enq){
             $this->db->select('*');
             $this->db->from('tbl_qualification');
             $this->db->where('enq_id',$enq);
             $this->db->where('cmp_no',$this->session->companey_id);
-            return $this->db->get()->result();		    
-	}
+            return $this->db->get()->result();        
+  }
 /******************************************************qualification tab data End************************************/
-/******************************************************English tab data************************************/	
-	public function eng_data($enq){
+/******************************************************English tab data************************************/  
+  public function eng_data($enq){
             $this->db->select('*');
             $this->db->from('tbl_english');
             $this->db->where('enq_id',$enq);
             $this->db->where('cmp_no',$this->session->companey_id);
-            return $this->db->get()->result();		    
-	}
+            return $this->db->get()->result();        
+  }
 /******************************************************English tab data End************************************/
-	public function enquiry_source_byname($name){
-    	if($name){
+  public function enquiry_source_byname($name){
+      if($name){
             $this->db->select('*');
             $this->db->from('lead_source');
             $this->db->where('TRIM(lead_name)',trim($name));
             $this->db->where('comp_id',$this->session->companey_id);
             return $this->db->get()->row();
-    	}else{
-    		return false;
-    	}		    
-	}
-		
-		public function name_services_list_byname($id){	
+      }else{
+        return false;
+      }       
+  }
+    
+    public function name_services_list_byname($id){ 
 
                     $this->db->select('*');
                     $this->db->from('tbl_product_country');
                     $this->db->where('TRIM(country_name)',trim($id));
                     $this->db->where('comp_id',$this->session->companey_id);
                     return $this->db->get()->row();
-		}
+    }
 
     /* -----------------------search read Enquiry---------------------- */
 
@@ -1359,95 +1359,95 @@ class Enquiry_model extends CI_Model {
 
     /* -----------------------search Active Enquiry---------------------- */
 
-   	public function active_enqueries($data_type=1){
-       	$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-		$where='';
-		$this->db->from("enquiry");
-		$where.=" enquiry.status=$data_type";
-		$where.=" AND enquiry.drop_status=0";
-		$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-		$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
-		$enquiry_filters_sess    =   $this->session->enquiry_filters_sess;        
-		$product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
-		if(!empty($this->session->process) && empty($product_filter)){    
-		    $arr = $this->session->process;   
-		    if (is_array($arr)) {	                 	
-		        $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
-		    }         
-		}else if (!empty($this->session->process) && !empty($product_filter)) {
-		    $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
-		}
-		$this->db->where($where);
-		return $this->db->count_all_results();
-	}
+    public function active_enqueries($data_type=1){
+        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+    $where='';
+    $this->db->from("enquiry");
+    $where.=" enquiry.status=$data_type";
+    $where.=" AND enquiry.drop_status=0";
+    $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+    $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+    $enquiry_filters_sess    =   $this->session->enquiry_filters_sess;        
+    $product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
+    if(!empty($this->session->process) && empty($product_filter)){    
+        $arr = $this->session->process;   
+        if (is_array($arr)) {                   
+            $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
+        }         
+    }else if (!empty($this->session->process) && !empty($product_filter)) {
+        $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
+    }
+    $this->db->where($where);
+    return $this->db->count_all_results();
+  }
 
     /* -------End End Enquiry------------------ */
    
-	/*----------------------- Today Enquiry----------------------*/
+  /*----------------------- Today Enquiry----------------------*/
 
 
-	public function all_today_update($data_type=1){
-	 $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-		$where = '';
-		$this->db->select('enquiry.Enquery_id');
-		$this->db->from("enquiry");		
-		$this->db->join('tbl_comment','tbl_comment.lead_id=enquiry.Enquery_id','inner');
+  public function all_today_update($data_type=1){
+   $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+    $where = '';
+    $this->db->select('enquiry.Enquery_id');
+    $this->db->from("enquiry");   
+    $this->db->join('tbl_comment','tbl_comment.lead_id=enquiry.Enquery_id','inner');
 
-		$where.=" enquiry.status=$data_type";
-		$where.=" AND tbl_comment.comment_msg NOT LIKE 'Raw Data Assigned'";
-		$date=date('Y-m-d');
+    $where.=" enquiry.status=$data_type";
+    $where.=" AND tbl_comment.comment_msg NOT LIKE 'Raw Data Assigned'";
+    $date=date('Y-m-d');
 
 
-		$where.=" AND tbl_comment.created_date LIKE '%$date%'";
-		$where.=" AND enquiry.drop_status=0";
-		$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-		$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
-		$enquiry_filters_sess    =   $this->session->enquiry_filters_sess;        
-		$product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
-		if(!empty($this->session->process) && empty($product_filter)){    
-		    $arr = $this->session->process;   
-		    if (is_array($arr)) {	                 	
-		        $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
-		    }         
-		}else if (!empty($this->session->process) && !empty($product_filter)) {
-		    $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
-		}
-		$this->db->where($where);
-		$this->db->group_by('tbl_comment.lead_id');
-		return $this->db->count_all_results();
-	}
+    $where.=" AND tbl_comment.created_date LIKE '%$date%'";
+    $where.=" AND enquiry.drop_status=0";
+    $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+    $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+    $enquiry_filters_sess    =   $this->session->enquiry_filters_sess;        
+    $product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
+    if(!empty($this->session->process) && empty($product_filter)){    
+        $arr = $this->session->process;   
+        if (is_array($arr)) {                   
+            $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
+        }         
+    }else if (!empty($this->session->process) && !empty($product_filter)) {
+        $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
+    }
+    $this->db->where($where);
+    $this->db->group_by('tbl_comment.lead_id');
+    return $this->db->count_all_results();
+  }
 
-	
+  
 /*-------Today Enquiry------------------*/
 
 /*-----------------------search Create Today Enquiry----------------------*/
 
 
-	public function all_creaed_today($data_type=1){
-	   	$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-		$where='';
-		$this->db->from("enquiry");
-		$where.=" enquiry.status=$data_type";
-		$date=date('Y-m-d');
-		$where.=" AND enquiry.created_date LIKE '%$date%'";
-		$where.=" AND enquiry.drop_status=0";
-		$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-		$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
-		$enquiry_filters_sess    =   $this->session->enquiry_filters_sess;        
-		$product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
-		if(!empty($this->session->process) && empty($product_filter)){    
-		    $arr = $this->session->process;   
-		    if (is_array($arr)) {	                 	
-		        $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
-		    }         
-		}else if (!empty($this->session->process) && !empty($product_filter)) {
-		    $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
-		}
-		$this->db->where($where);
-		return $this->db->count_all_results();
-	}
+  public function all_creaed_today($data_type=1){
+      $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+    $where='';
+    $this->db->from("enquiry");
+    $where.=" enquiry.status=$data_type";
+    $date=date('Y-m-d');
+    $where.=" AND enquiry.created_date LIKE '%$date%'";
+    $where.=" AND enquiry.drop_status=0";
+    $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+    $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+    $enquiry_filters_sess    =   $this->session->enquiry_filters_sess;        
+    $product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
+    if(!empty($this->session->process) && empty($product_filter)){    
+        $arr = $this->session->process;   
+        if (is_array($arr)) {                   
+            $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
+        }         
+    }else if (!empty($this->session->process) && !empty($product_filter)) {
+        $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
+    }
+    $this->db->where($where);
+    return $this->db->count_all_results();
+  }
 
-	
+  
 /*-------End Create Today Enquiry------------------*/
 
 
@@ -1455,64 +1455,64 @@ class Enquiry_model extends CI_Model {
 /*-----------------------search  Today Enquiry----------------------*/
 
 
-	public function all_enquery($data_type=1)
-	{
+  public function all_enquery($data_type=1)
+  {
     $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-		$where='';
-		$this->db->from("enquiry");
-		$where.=" enquiry.status=$data_type";
+    $where='';
+    $this->db->from("enquiry");
+    $where.=" enquiry.status=$data_type";
         $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
         $enquiry_filters_sess    =   $this->session->enquiry_filters_sess;        
-	    $product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
+      $product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
         if(!empty($this->session->process) && empty($product_filter)){    
-	        $arr = $this->session->process;   
-	        if (is_array($arr)) {	                 	
-	            $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
-	        }         
+          $arr = $this->session->process;   
+          if (is_array($arr)) {                   
+              $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
+          }         
         }else if (!empty($this->session->process) && !empty($product_filter)) {
             $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
         }
-		$this->db->where($where);
-	     return $this->db->count_all_results();
-	}
+    $this->db->where($where);
+       return $this->db->count_all_results();
+  }
 
 
-	public function all_enquery_count()
-	{
-	    /* 
-	    user roles
-	    3 = Country Head
-	    4 = Region Head
-	    5 = Territory Head
-	    6 = State Head
-	    7 = City Head 
-	    8 = User */
+  public function all_enquery_count()
+  {
+      /* 
+      user roles
+      3 = Country Head
+      4 = Region Head
+      5 = Territory Head
+      6 = State Head
+      7 = City Head 
+      8 = User */
        
-       $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);	    
-	   $user_id   = $this->session->user_id;
-	   $user_role = $this->session->user_role;
-	   $region_id = $this->session->region_id;
-	   $assign_country = $this->session->country_id;
-	   $assign_region = $this->session->region_id;
-	   $assign_territory = $this->session->territory_id;
-	   $assign_state = $this->session->state_id;
-	   $assign_city = $this->session->city_id;	   
+       $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);      
+     $user_id   = $this->session->user_id;
+     $user_role = $this->session->user_role;
+     $region_id = $this->session->region_id;
+     $assign_country = $this->session->country_id;
+     $assign_region = $this->session->region_id;
+     $assign_territory = $this->session->territory_id;
+     $assign_state = $this->session->state_id;
+     $assign_city = $this->session->city_id;     
        $cpny_id=$this->session->companey_id;
-	   
-		$where='';		
-		$this->db->select("enquiry.drop_status,enquiry.status,enquiry.enquiry_source,enquiry.product_id");
-		$this->db->from("enquiry");
-     	$where.="enquiry.is_delete=1";
-		$where.=" AND enquiry.status=1";
-		$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
-        $where.=" AND enquiry.comp_id=$cpny_id";		
-		$this->db->where($where);	    
-	    return $this->db->get(); 
-	}
+     
+    $where='';    
+    $this->db->select("enquiry.drop_status,enquiry.status,enquiry.enquiry_source,enquiry.product_id");
+    $this->db->from("enquiry");
+      $where.="enquiry.is_delete=1";
+    $where.=" AND enquiry.status=1";
+    $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+        $where.=" AND enquiry.comp_id=$cpny_id";    
+    $this->db->where($where);     
+      return $this->db->get(); 
+  }
 
-	
+  
 /*-------End Create Today Enquiry------------------*/
 
 
@@ -1520,26 +1520,26 @@ class Enquiry_model extends CI_Model {
 /*----------------------- all Dropped Enquiry----------------------*/
 
 
-	public function all_drop($data_type=1){  
-    	$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-		$where='';
-		$this->db->from("enquiry");
-		$where.=" enquiry.status=$data_type";
+  public function all_drop($data_type=1){  
+      $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+    $where='';
+    $this->db->from("enquiry");
+    $where.=" enquiry.status=$data_type";
         $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
         $enquiry_filters_sess    =   $this->session->enquiry_filters_sess;        
-	    $product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
+      $product_filter = !empty($enquiry_filters_sess['product_filter'])?$enquiry_filters_sess['product_filter']:'';
         if(!empty($this->session->process) && empty($product_filter)){    
-	        $arr = $this->session->process;   
-	        if (is_array($arr)) {	                 	
-	            $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
-	        }         
+          $arr = $this->session->process;   
+          if (is_array($arr)) {                   
+              $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
+          }         
         }else if (!empty($this->session->process) && !empty($product_filter)) {
             $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
         }
         $where.=" AND enquiry.drop_status>0";
-		$this->db->where($where);
-	     return $this->db->count_all_results();   
+    $this->db->where($where);
+       return $this->db->count_all_results();   
     }
 
     
@@ -1570,11 +1570,12 @@ class Enquiry_model extends CI_Model {
     }
 
     public function enquiry_by_id($enquiry_id) {
-        return $this->db->select("*,enquiry.created_by as enq_created_by,enquiry.city_id as enquiry_city_id,enquiry.state_id as enquiry_state_id,enquiry.created_date,enquiry.status,enquiry.address,tbl_product_country.country_name,tbl_product_country.id as country_id,tbl_product.product_name,tbl_center.center_name,enquiry.lead_created_date")
+        return $this->db->select("*,enquiry.created_by as enq_created_by,enquiry_tags.tag_ids,enquiry.city_id as enquiry_city_id,enquiry.state_id as enquiry_state_id,enquiry.created_date,enquiry.status,enquiry.address,tbl_product_country.country_name,tbl_product_country.id as country_id,tbl_product.product_name,tbl_center.center_name,enquiry.lead_created_date")
                         ->from($this->table)
                         ->join('tbl_product_country', 'tbl_product_country.id=enquiry.country_id', 'left')
                         ->join('tbl_admin', 'tbl_admin.pk_i_admin_id=enquiry.created_by', 'left')
                         ->join('tbl_product', 'tbl_product.sb_id=enquiry.product_id', 'left')
+                        ->join('enquiry_tags', 'enquiry_tags.enq_id=enquiry.enquiry_id', 'left')
                         ->join('tbl_center', 'tbl_center.center_id=enquiry.center_id', 'left')
                         ->join('tbl_datasource', 'tbl_datasource.datasource_id=enquiry.datasource_id', 'left')
                         ->where('enquiry.enquiry_id', $enquiry_id)
@@ -1789,7 +1790,7 @@ class Enquiry_model extends CI_Model {
         $company=$this->session->userdata('companey_id');
         return $this->db->select('*')
                         ->from('tbl_customer_type')
-						->where('comp_id', $company)
+            ->where('comp_id', $company)
                         ->get()
                         ->result();
     }
@@ -1864,7 +1865,7 @@ class Enquiry_model extends CI_Model {
         $company=$this->session->userdata('companey_id');
         return $this->db->select('*')
                         ->from('tbl_name_prefix')
-						->where('comp_id', $company)
+            ->where('comp_id', $company)
                         ->order_by('np_id', 'asc')
                         ->get()
                         ->result();
@@ -1975,26 +1976,26 @@ class Enquiry_model extends CI_Model {
     
     /*********************************************find personel data ajax***************************************************/
     public function getenq_by_phone($phone){
-		$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+    $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         $cpny_id=$this->session->companey_id;
         $phone=str_replace('.', '', $phone);
         $where = "enquiry.is_delete=1";
-		$where.=" AND phone=".$phone;
-		$where.=" AND comp_id=$cpny_id";
+    $where.=" AND phone=".$phone;
+    $where.=" AND comp_id=$cpny_id";
         return $this->db->select('*')
                         ->from('enquiry')
                         ->where($where)
-						//->group_by('enquiry.enquiry_id')
+            //->group_by('enquiry.enquiry_id')
                         ->get()
                         ->row();
-   }	   
+   }     
    public function all_states($states) {
 
         return $this->db->select('*')->from('state')->where('country_id',$states)->get()->result();
     }
     
       public function get_sent_whats_app() {
-			  $my_apikey = "CW9FFHPDJGC5RXUWSIC6";
+        $my_apikey = "CW9FFHPDJGC5RXUWSIC6";
           $api_url = "http://panel.apiwha.com/get_messages.php";
            $api_url .= "?apikey=". urlencode ($my_apikey);
            $api_url .= "&type=OUT";
@@ -2009,20 +2010,20 @@ class Enquiry_model extends CI_Model {
            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
            CURLOPT_CUSTOMREQUEST => "GET",
         ));
-		
-		   $response = curl_exec($curl);
-		 $array_search=array();
-		 if(!empty($response)){
-		 foreach(json_decode($response) as $res){
-			 if(in_array($res->to,$array_search)){
-			 }else{
-		 $array_search==array_push($array_search,$res->to);	 
-			 }}}
-            return $response = $array_search;		 
+    
+       $response = curl_exec($curl);
+     $array_search=array();
+     if(!empty($response)){
+     foreach(json_decode($response) as $res){
+       if(in_array($res->to,$array_search)){
+       }else{
+     $array_search==array_push($array_search,$res->to);  
+       }}}
+            return $response = $array_search;    
        }
-	   
-	    public function get_received_whats_app() {
-			  $my_apikey = "CW9FFHPDJGC5RXUWSIC6";
+     
+      public function get_received_whats_app() {
+        $my_apikey = "CW9FFHPDJGC5RXUWSIC6";
           $api_url = "http://panel.apiwha.com/get_messages.php";
            $api_url .= "?apikey=". urlencode ($my_apikey);
            $api_url .= "&type=IN";
@@ -2037,79 +2038,79 @@ class Enquiry_model extends CI_Model {
            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
            CURLOPT_CUSTOMREQUEST => "GET",
         ));
-		
-		   $response = curl_exec($curl);
-		 $array_search=array();
-/*		 foreach(json_decode($response) as $res){
-			 if(in_array($res->from,$array_search)){
-			 }else{
-		 $array_search==array_push($array_search,$res->from);	 
-			 }}
+    
+       $response = curl_exec($curl);
+     $array_search=array();
+/*     foreach(json_decode($response) as $res){
+       if(in_array($res->from,$array_search)){
+       }else{
+     $array_search==array_push($array_search,$res->from);  
+       }}
 */            
-			foreach(json_decode($response) as $res){
-		 		array_push($array_search,$res->from);	 
-			 }
+      foreach(json_decode($response) as $res){
+        array_push($array_search,$res->from);  
+       }
 
 
-			return $array_search;		 
+      return $array_search;    
        }
 
        public function set_received_whats_app_status($received_whats_app){
-       		foreach ($received_whats_app as $mobile_no) {       			
-       			$wp_mob_num = $mobile_no;
-		        if (strlen($mobile_no) == 12 && substr($mobile_no, 0, 2) == "91")
-		            $wp_mob_num = substr($mobile_no, 2, 10);
+          foreach ($received_whats_app as $mobile_no) {             
+            $wp_mob_num = $mobile_no;
+            if (strlen($mobile_no) == 12 && substr($mobile_no, 0, 2) == "91")
+                $wp_mob_num = substr($mobile_no, 2, 10);
 
-		        $this->db->where('mobile_no',$wp_mob_num);		        	
-		        
-		        if ($this->db->get('whatsapp_send_log')->num_rows()) {
-		        	$update_arr = array(
-		        					'status' => 99
-		        				);
-		        	$this->db->where('mobile_no',$wp_mob_num);
-		        	$this->db->update('whatsapp_send_log',$update_arr);	
-		        }else{
-		        	$update_arr = array(
-		        					'status' => 99,
-		        					'mobile_no' => $wp_mob_num,		        					
-		        				);
-		        	$this->db->where('mobile_no',$wp_mob_num);
+            $this->db->where('mobile_no',$wp_mob_num);              
+            
+            if ($this->db->get('whatsapp_send_log')->num_rows()) {
+              $update_arr = array(
+                      'status' => 99
+                    );
+              $this->db->where('mobile_no',$wp_mob_num);
+              $this->db->update('whatsapp_send_log',$update_arr); 
+            }else{
+              $update_arr = array(
+                      'status' => 99,
+                      'mobile_no' => $wp_mob_num,                     
+                    );
+              $this->db->where('mobile_no',$wp_mob_num);
 
-		        	$this->db->insert('whatsapp_send_log',$update_arr);	
-		        }
-		        
-       		}
+              $this->db->insert('whatsapp_send_log',$update_arr); 
+            }
+            
+          }
        }
-	     public function get_drop_list() {
-		$this->db->where('comp_id', $this->session->companey_id);
+       public function get_drop_list() {
+    $this->db->where('comp_id', $this->session->companey_id);
         $query = $this->db->get('tbl_drop');
-		
+    
         return $query->result();
     }
-	public function get_leadscore_list() {
-		$this->db->where('comp_id',$this->session->companey_id);
+  public function get_leadscore_list() {
+    $this->db->where('comp_id',$this->session->companey_id);
         $query = $this->db->get('lead_score');
         return $query->result();
     }
-	/*----------------------start api-------------------************/
-	  public function product_api($company){
-		            $this->db->select('*');
-					$this->db->from("tbl_product_country");
-					$this->db->where('comp_id', $company);
+  /*----------------------start api-------------------************/
+    public function product_api($company){
+                $this->db->select('*');
+          $this->db->from("tbl_product_country");
+          $this->db->where('comp_id', $company);
                    return $this->db->get()->result();
                     
-	  }
-	  public function product_list_api($user_id){		    
+    }
+    public function product_list_api($user_id){       
                      $this->db->select('process');
                     $this->db->where('pk_i_admin_id',$user_id);                    
-                    $user_res	=	$this->db->get('tbl_admin')->row_array();
+                    $user_res = $this->db->get('tbl_admin')->row_array();
                     $user_res = explode(',', $user_res['process']);
                     $this->db->select('*');
                     $this->db->from('tbl_product');
                     $this->db->where_in('sb_id',$user_res);                    
                     $this->db->order_by('sb_id','ASC');
                     return $this->db->get()->result();
-		}
+    }
     public function active_enqueries_api($id,$type,$user_role,$process='',$offset=-1,$limit=-1) 
     { 
         $all_reporting_ids    =   $this->common_model->get_categories($id,$type);
@@ -2124,10 +2125,10 @@ class Enquiry_model extends CI_Model {
 
         $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
-        $where.=" AND enquiry.drop_status=0";		
+        $where.=" AND enquiry.drop_status=0";   
         if (!empty($process)) 
         {
-        	$where.=" AND enquiry.product_id IN (".$process.")";		        	
+          $where.=" AND enquiry.product_id IN (".$process.")";              
         }
         $this->db->where($where);
 
@@ -2187,7 +2188,7 @@ class Enquiry_model extends CI_Model {
         }
 
        
-		$this->db->order_by('enquiry.enquiry_id','DESC');
+    $this->db->order_by('enquiry.enquiry_id','DESC');
     //for pagination api
 
     if($offset!=-1 && $limit!=-1)
@@ -2195,10 +2196,10 @@ class Enquiry_model extends CI_Model {
         $this->db->limit($limit,$offset);
     }
 
-		return $query = $this->db->get();
+    return $query = $this->db->get();
         //return $query->result();
     }
-	  public function enquiry_detail_for_api($enquiry_code) {
+    public function enquiry_detail_for_api($enquiry_code) {
         return $this->db->select("*,enquiry.created_date,enquiry.comp_id as enq_comp_id,enquiry.address,tbl_product_country.country_name as pcountry_name,tbl_product_country.id as country_id,tbl_product.product_name,tbl_center.center_name,lead_source.lead_name as enquiry_source_name,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name")
                         ->from($this->table)
                         ->join('tbl_product_country', 'tbl_product_country.id=enquiry.enquiry_subsource', 'left')
@@ -2207,16 +2208,16 @@ class Enquiry_model extends CI_Model {
                         ->join('tbl_product', 'tbl_product.sb_id=enquiry.product_id', 'left')
                         ->join('tbl_center', 'tbl_center.center_id=enquiry.center_id', 'left')
                         ->join('tbl_datasource', 'tbl_datasource.datasource_id=enquiry.datasource_id', 'left')
-						->join('state','state.id=enquiry.state_id','left')
-						->join('lead_source','lead_source.lsid=enquiry.enquiry_source','left')
-		    //->join('tbl_territory','tbl_territory.territory_id=enquiry.territory_id','left')
-		                 ->join('city','city.id=enquiry.city_id','left')
+            ->join('state','state.id=enquiry.state_id','left')
+            ->join('lead_source','lead_source.lsid=enquiry.enquiry_source','left')
+        //->join('tbl_territory','tbl_territory.territory_id=enquiry.territory_id','left')
+                     ->join('city','city.id=enquiry.city_id','left')
                         ->where('enquiry.Enquery_id', $enquiry_code)
                         ->where('enquiry.is_delete', '1')
-						->group_by('enquiry.Enquery_id')
+            ->group_by('enquiry.Enquery_id')
                         ->get()
                         ->row();
-	  }
+    }
        public function user_list_api($comp,$user_id=0) {
         $all_reporting_ids = array();
 
@@ -2239,36 +2240,36 @@ class Enquiry_model extends CI_Model {
  
     public function assign_enquery_api($key,$assign_employee,$enquiry_code,$user_id){
                         $this->db->set('aasign_to',$assign_employee);
-			            $this->db->set('assign_by',$user_id);
-			            $this->db->set('update_date',date('Y-m-d H:i:s'));
-			            $this->db->where('Enquery_id',$key);
-			            $this->db->update('enquiry');
-			            $this->db->set('assign_to',$assign_employee);
-			            $this->db->set('assign_by',$user_id);
-			            $this->db->set('assign_date',date('Y-m-d H:i:s'));
-			            //$this->db->set('enq_id',$key);
-			             $this->db->set('enq_code',$enquiry_code);
-			            
-			             $this->db->set('assign_status',0);
-			             $this->db->insert('tbl_assign_notification');
+                  $this->db->set('assign_by',$user_id);
+                  $this->db->set('update_date',date('Y-m-d H:i:s'));
+                  $this->db->where('Enquery_id',$key);
+                  $this->db->update('enquiry');
+                  $this->db->set('assign_to',$assign_employee);
+                  $this->db->set('assign_by',$user_id);
+                  $this->db->set('assign_date',date('Y-m-d H:i:s'));
+                  //$this->db->set('enq_id',$key);
+                   $this->db->set('enq_code',$enquiry_code);
+                  
+                   $this->db->set('assign_status',0);
+                   $this->db->insert('tbl_assign_notification');
 
                        }
 
  public function get_leadsource_list_api($comp) {
-		$this->db->where('comp_id', $comp);
+    $this->db->where('comp_id', $comp);
         $query = $this->db->get('lead_source');
         return $query->result();
     }
  public function get_leadscore_list_api($comp) {
-		$this->db->where('comp_id', $comp);
+    $this->db->where('comp_id', $comp);
         $query = $this->db->get('lead_score');
         return $query->result();
     }
  public function get_drop_list_api($comp) {
-		$this->db->where('comp_id', $comp);
+    $this->db->where('comp_id', $comp);
         $query = $this->db->get('tbl_drop');
         return $query->result();
-    }	
+    } 
 
 
       function all_rep($from,$to,$employe,$phone,$email,$address,$createdby,$source,$assign,$datasource,$enq_product,$company){      
@@ -2307,13 +2308,13 @@ class Enquiry_model extends CI_Model {
             $where .= " AND created_date LIKE '%$to%'";
         }
        if($employe!=''){
-			
-			$where .= " AND (created_by IN (".implode(',', $employe).')';
-			$where .= " OR .aasign_to IN (".implode(',', $employe).'))';  
-			
+      
+      $where .= " AND (created_by IN (".implode(',', $employe).')';
+      $where .= " OR .aasign_to IN (".implode(',', $employe).'))';  
+      
            /* $where .= " AND (enquiry.aasign_to=$employe";
            $where .= " OR enquiry.created_by=$employe)"; */
-		   
+       
         }
     
         if($source!=''){
@@ -2350,10 +2351,10 @@ class Enquiry_model extends CI_Model {
         }
 
         //$this->db->join("(select q.comm_id as comm_id, q.created_date, q.lead_id from tbl_comment as q  GROUP BY q.comm_id ORDER BY q.comm_id DESC ) as tbl_comment1", 'tbl_comment1.lead_id=enquiry.Enquery_id', 'left');
-		$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-		$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
+    $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+    $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
         
-		$this->db->where($where);
+    $this->db->where($where);
         
         $this->db->group_by('enquiry.enquiry_id');
         //$this->db->limit(1);
@@ -2366,8 +2367,8 @@ class Enquiry_model extends CI_Model {
 $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 $cpny_id=$this->session->companey_id;
         $where = "";
-		$where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+    $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where.=" AND enquiry.comp_id=$cpny_id";
 
         $process = $this->session->userdata('process');
@@ -2382,7 +2383,7 @@ $cpny_id=$this->session->companey_id;
                         ->from('enquiry')
                         ->where($where)
                         ->where_in('product_id',$process)
-						->group_by('enquiry.enquiry_id')
+            ->group_by('enquiry.enquiry_id')
                         ->get()
                         ->result();
                         // print_r($this->db->last_query());
@@ -2395,8 +2396,8 @@ $cpny_id=$this->session->companey_id;
     //     $all_reporting_ids    =   $this->common_model->get_categories($userid);
     //     $cpny_id=$companyid;
     //     $where = "enquiry.is_delete=1";
-	// 	$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    // 	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+  //  $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+    //  $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
     //     $where.=" AND enquiry.comp_id=$cpny_id";
 
     //     $query = $this->db->query("SELECT status FROM enquiry WHERE $where AND enquiry.status = 1 GROUP BY enquiry.enquiry_id");
@@ -2636,8 +2637,8 @@ $cpny_id=$this->session->companey_id;
       $all_reporting_ids    =   $this->common_model->get_categories($userid);
       $cpny_id=$companyid;
         //$where = "enquiry.is_delete=1";
-		  $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
       $where .=" AND product_id IN ($process)";
         $where.=" AND enquiry.comp_id=$cpny_id";
 
@@ -3095,11 +3096,11 @@ $cpny_id=$this->session->companey_id;
     }
 
     public function sourceDataChart($userid,$companyid)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         // $where.=" AND enquiry.comp_id=$cpny_id";
 
         $where="enquiry.comp_id=$cpny_id";
@@ -3140,7 +3141,7 @@ $cpny_id=$this->session->companey_id;
         $srclst_query = $this->db->query("SELECT lead_name FROM lead_source WHERE lead_source.comp_id = $cpny_id");
         $srclst = $srclst_query->result_array();
       
-    	$enquiry_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = 1)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
+      $enquiry_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = 1)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
 
         $EnquirySrc = $enquiry_src_qry->result_array();
 
@@ -3158,11 +3159,11 @@ $cpny_id=$this->session->companey_id;
     }
 
     public function enquiryLeadClientCount($userid,$companyid)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         // $where.=" AND enquiry.comp_id=$cpny_id";
         $where="enquiry.comp_id=$cpny_id";
         if($_POST){
@@ -3329,11 +3330,11 @@ $cpny_id=$this->session->companey_id;
         return $dataAry;
     }
     public function Dy_enquiryLeadClientCount($userid,$companyid,$status)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         // $where.=" AND enquiry.comp_id=$cpny_id";
         $where="enquiry.comp_id=$cpny_id";
         if($_POST){
@@ -3457,13 +3458,13 @@ $cpny_id=$this->session->companey_id;
         return $dataAry;
     }
     public function despositionDataChart($userid,$companyid)
-    {	
+    { 
         // not in use
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';        
+      
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';        
         // $where.=" AND enquiry.comp_id=$cpny_id";
 
 
@@ -3507,7 +3508,7 @@ $cpny_id=$this->session->companey_id;
         $desplst_query = $this->db->query("SELECT lead_stage_name FROM lead_stage WHERE  stage_for IN (".implode(',', $array).") AND lead_stage.comp_id = $cpny_id");
         $desplst = $desplst_query->result_array();
       
-    	$despenqqry = $this->db->query("SELECT lead_stage_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.lead_stage =  lead_stage.stg_id AND enquiry.status = 1)counternow FROM lead_stage WHERE lead_stage.comp_id = $cpny_id");
+      $despenqqry = $this->db->query("SELECT lead_stage_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.lead_stage =  lead_stage.stg_id AND enquiry.status = 1)counternow FROM lead_stage WHERE lead_stage.comp_id = $cpny_id");
 
         $despenq = $despenqqry->result_array();
 
@@ -3524,15 +3525,15 @@ $cpny_id=$this->session->companey_id;
         return $dataAry;
     }
     public function dy2despositionDataChart($userid,$companyid,$status)
-    {	
+    { 
         $data=[];
 
         // not in use
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';        
+      
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';        
         // $where.=" AND enquiry.comp_id=$cpny_id";
 
         $where="enquiry.comp_id=$cpny_id";
@@ -3575,7 +3576,7 @@ $cpny_id=$this->session->companey_id;
         $enqAyr = array(); 
        
       
-    	$despenqqry = $this->db->query("SELECT (SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.lead_stage =  lead_stage.stg_id AND enquiry.status = $status)counternow FROM lead_stage WHERE  lead_stage.comp_id = $cpny_id");
+      $despenqqry = $this->db->query("SELECT (SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.lead_stage =  lead_stage.stg_id AND enquiry.status = $status)counternow FROM lead_stage WHERE  lead_stage.comp_id = $cpny_id");
 
         $despenq = $despenqqry->result_array();
 
@@ -3586,13 +3587,13 @@ $cpny_id=$this->session->companey_id;
         return $data;
     }
     public function DydropDataChart($userid,$companyid,$status)
-    {	
+    { 
         $data=[];
 
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where="enquiry.comp_id=$cpny_id";
         if(!empty($_POST)){
             // $filter=json_encode(array(
@@ -3634,7 +3635,7 @@ $cpny_id=$this->session->companey_id;
             $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
         }
 
-    	$enquiry_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  right JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = $status  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
+      $enquiry_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  right JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = $status  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
         $enquiry_dropWise = $enquiry_drop->result_array();
         foreach ($enquiry_dropWise as $key => $value) {
           $data[]=$value['counternow'];
@@ -3643,18 +3644,18 @@ $cpny_id=$this->session->companey_id;
     }
 
     public function DYprocessWiseChart($userid,$companyid,$process,$status)
-    {	
+    { 
         $enquiry_processWise=[];
 
         if(user_access(553)){ 
         
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	$where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where.=" AND enquiry.comp_id=$cpny_id";
 
-    	$enquiry_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name FROM enquiry  LEFT JOIN tbl_product as tp ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = $status AND tp.sb_id In ($process) GROUP BY tp.sb_id");
+      $enquiry_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name FROM enquiry  LEFT JOIN tbl_product as tp ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = $status AND tp.sb_id In ($process) GROUP BY tp.sb_id");
         $enquiry_processWise = $enquiry_process->result();
             
         }
@@ -3663,13 +3664,13 @@ $cpny_id=$this->session->companey_id;
     }
 
     public function dysourceDataChart($userid,$companyid,$status)
-    {	
+    { 
         $data=[];
 
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         // $where.=" AND enquiry.comp_id=$cpny_id";
         $where="enquiry.comp_id=$cpny_id";
         if($_POST){
@@ -3710,7 +3711,7 @@ $cpny_id=$this->session->companey_id;
 
         $enqAyr = array(); 
         
-    	$enquiry_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = 1)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
+      $enquiry_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = 1)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
         $EnquirySrc = $enquiry_src_qry->result_array();
           foreach ($EnquirySrc as $key => $value) {
             $data[]=$value['counternow'];
@@ -3721,12 +3722,12 @@ $cpny_id=$this->session->companey_id;
     }
    
     public function monthWiseChart($userid,$companyid)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
 
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where="enquiry.comp_id=$cpny_id";
         if($_POST){
             $filter=json_decode($_POST['datas']);
@@ -3944,10 +3945,10 @@ $cpny_id=$this->session->companey_id;
         return $dataAry;
     }
     public function DYdropmonthWiseChart($userid,$companyid,$status)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	$where="enquiry.comp_id=$cpny_id";
+      $where="enquiry.comp_id=$cpny_id";
         if($_POST){
             // $filter=json_encode(array(
             //     'from_date'=>$_POST['from_date'],
@@ -4048,10 +4049,10 @@ $cpny_id=$this->session->companey_id;
         return $dataAry;
     }
     public function DYmonthWiseChart($userid,$companyid,$status)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	$where="enquiry.comp_id=$cpny_id";
+      $where="enquiry.comp_id=$cpny_id";
         if($_POST){
             // $filter=json_encode(array(
             //     'from_date'=>$_POST['from_date'],
@@ -4153,10 +4154,10 @@ $cpny_id=$this->session->companey_id;
         return $dataAry;
     }
     public function DROPmonthWiseChart($userid,$companyid)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	$where="enquiry.comp_id=$cpny_id";
+      $where="enquiry.comp_id=$cpny_id";
         if($_POST){
             // $filter=json_encode(array(
             //     'from_date'=>$_POST['from_date'],
@@ -4378,11 +4379,11 @@ $cpny_id=$this->session->companey_id;
 
 
     public function dropDataChart($userid,$companyid)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where="enquiry.comp_id=$cpny_id";
         if($_POST){
             $filter=json_decode($_POST['datas']);
@@ -4423,7 +4424,7 @@ $cpny_id=$this->session->companey_id;
         $droplst_query = $this->db->query("SELECT drop_reason FROM tbl_drop WHERE tbl_drop.comp_id = $cpny_id");
         $droplst = $droplst_query->result_array();
       
-    	$enquiry_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  right JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = 1  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
+      $enquiry_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  right JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = 1  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
         $enquiry_dropWise = $enquiry_drop->result_array();
         
         $lead_drop = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.drop_reason FROM enquiry  LEFT JOIN tbl_drop as tp ON tp.d_id = enquiry.drop_status WHERE $where AND enquiry.status = 2  AND tp.drop_reason IS NOT NULL GROUP BY tp.drop_reason");
@@ -4438,11 +4439,11 @@ $cpny_id=$this->session->companey_id;
     }
 
     public function conversionProbabilityChart($userid,$companyid)
-    {	
+    { 
         // not in use
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where="enquiry.comp_id=$cpny_id";
         if($_POST){
@@ -4481,7 +4482,7 @@ $cpny_id=$this->session->companey_id;
             $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
         }
         $hot = $warm = $cold = 0; 
-    	$query7 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.lead_score FROM `enquiry` WHERE $where GROUP BY enquiry.lead_score");
+      $query7 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.lead_score FROM `enquiry` WHERE $where GROUP BY enquiry.lead_score");
 
         $result7 = $query7->result();
         $res = array();
@@ -4503,11 +4504,11 @@ $cpny_id=$this->session->companey_id;
     }
    
     public function processWiseChart($userid,$companyid,$process)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	// $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	// $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         // $where.=" AND enquiry.comp_id=$cpny_id";
 
 
@@ -4545,7 +4546,7 @@ $cpny_id=$this->session->companey_id;
 
        if(user_access(60)) {
         
-    	$enquiry_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name,tp.sb_id FROM tbl_product as tp  LEFT JOIN enquiry ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = 1 AND tp.sb_id In ($process) GROUP BY tp.sb_id");
+      $enquiry_process = $this->db->query("SELECT count(enquiry.enquiry_id)counter,tp.product_name,tp.sb_id FROM tbl_product as tp  LEFT JOIN enquiry ON tp.sb_id = enquiry.product_id WHERE $where AND enquiry.status = 1 AND tp.sb_id In ($process) GROUP BY tp.sb_id");
         $enquiry_processWise = $enquiry_process->result_array();
         
         if(!empty($enquiry_processWise)){
@@ -4592,14 +4593,14 @@ $cpny_id=$this->session->companey_id;
 
 
     public function enquiryLeadClientChart($userid,$companyid)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-    	$where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         $where.=" AND enquiry.comp_id=$cpny_id";
 
-    	$query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
+      $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
         $result = $query->result();
         $enquiry = $lead = $client = 0;
         foreach($result as $r)
@@ -4623,8 +4624,8 @@ $cpny_id=$this->session->companey_id;
         return $dataAry;
     }
     public function DyenquiryLeadClientChart($userid,$companyid,$status)
-    {	
-    	$all_reporting_ids    =   $this->common_model->get_categories($userid);
+    { 
+      $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
         $arr = $this->session->process;  
         $where = '';
@@ -4668,7 +4669,7 @@ $cpny_id=$this->session->companey_id;
         }
     }else{
         $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-    	$where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+      $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         //$querys = $this->db->where($where);
     }
         $querys = $this->db->select("enquiry.created_date,enquiry.status,enquiry.aasign_to,enquiry.state_id,enquiry.city_id,enquiry.created_by,enquiry.product_id,count(enquiry.status) as c");
@@ -4689,168 +4690,168 @@ $cpny_id=$this->session->companey_id;
     }
 
     public function make_enquiry_read($enq_code){
-    	$this->db->where('tbl_enqstatus.enquiry_code',$enq_code);
-    	$this->db->where('tbl_enqstatus.user_id',$this->session->user_id);    	
-    	if($this->db->get('tbl_enqstatus')->num_rows()){
-    		$this->db->where('user_id',$this->session->user_id);
-    		$this->db->where('enquiry_code',$enq_code);    		
-    		$this->db->update('tbl_enqstatus',array('status'=>1));
-    	}else{
-    		$arr = array('enquiry_code'=>$enq_code,'user_id'=>$this->session->user_id,'status'=>1);
-    		$this->db->insert('tbl_enqstatus',$arr);
-    	}
+      $this->db->where('tbl_enqstatus.enquiry_code',$enq_code);
+      $this->db->where('tbl_enqstatus.user_id',$this->session->user_id);      
+      if($this->db->get('tbl_enqstatus')->num_rows()){
+        $this->db->where('user_id',$this->session->user_id);
+        $this->db->where('enquiry_code',$enq_code);       
+        $this->db->update('tbl_enqstatus',array('status'=>1));
+      }else{
+        $arr = array('enquiry_code'=>$enq_code,'user_id'=>$this->session->user_id,'status'=>1);
+        $this->db->insert('tbl_enqstatus',$arr);
+      }
 
     }
-	
-	public function get_state(){
+  
+  public function get_state(){
 
-    	$this->db->select('*');
-    	$this->db->from('state');
-    	$this->db->where('comp_id',$this->session->companey_id);
-    	return $this->db->get()->result();
+      $this->db->select('*');
+      $this->db->from('state');
+      $this->db->where('comp_id',$this->session->companey_id);
+      return $this->db->get()->result();
     }
-	public function change_enq_status($enqid){
+  public function change_enq_status($enqid){
 
-		return $this->db->where('enquiry_code',$enqid)->where('user_id',$this->session->user_id)->update('tbl_enqstatus',array('status'=>1));
+    return $this->db->where('enquiry_code',$enqid)->where('user_id',$this->session->user_id)->update('tbl_enqstatus',array('status'=>1));
 
-	}
+  }
 
-	public function get_enquiry_all_data($enquiry_code,$comp_id=29){	//29 company id is for paisa expo	
-		$this->db->select("enquiry.email,enquiry.phone as mobileno,enquiry.other_phone,CONCAT_WS(' ',enquiry.name_prefix,enquiry.name,enquiry.lastname) as name,enquiry.gender,enquiry.gender,enquiry.enquiry as remark,enquiry.org_name as company,lead_source.lead_name as lead_source,lead_stage.lead_stage_name,tbl_subsource.subsource_name,tbl_product_country.country_name as product_name,enquiry.product_id,enquiry.status,enquiry.drop_reason,enquiry.created_date,enquiry.update_date as last_updated_date,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_by_name,lead_description.description,enquiry.lead_discription_reamrk,enquiry.pin_code as pin-code,enquiry.partner_id as referred_by,city.city,state.state");
+  public function get_enquiry_all_data($enquiry_code,$comp_id=29){  //29 company id is for paisa expo 
+    $this->db->select("enquiry.email,enquiry.phone as mobileno,enquiry.other_phone,CONCAT_WS(' ',enquiry.name_prefix,enquiry.name,enquiry.lastname) as name,enquiry.gender,enquiry.gender,enquiry.enquiry as remark,enquiry.org_name as company,lead_source.lead_name as lead_source,lead_stage.lead_stage_name,tbl_subsource.subsource_name,tbl_product_country.country_name as product_name,enquiry.product_id,enquiry.status,enquiry.drop_reason,enquiry.created_date,enquiry.update_date as last_updated_date,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_by_name,lead_description.description,enquiry.lead_discription_reamrk,enquiry.pin_code as pin-code,enquiry.partner_id as referred_by,city.city,state.state");
 
-		$this->db->join('lead_stage','lead_stage.stg_id=enquiry.lead_stage','left');
-		$this->db->join('lead_source','lead_source.lsid=enquiry.enquiry_source','left');
-		$this->db->join('tbl_subsource','tbl_subsource.subsource_id=enquiry.sub_source','left');		
-		$this->db->join('tbl_product_country','tbl_product_country.id=enquiry.enquiry_subsource','left');
-		$this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=enquiry.created_by','left');		
-		$this->db->join('tbl_admin as tbl_admin2','tbl_admin2.pk_i_admin_id=enquiry.aasign_to','left');	
-		$this->db->join('tbl_admin as tbl_admin3','tbl_admin3.pk_i_admin_id=enquiry.assign_by','left');		  
+    $this->db->join('lead_stage','lead_stage.stg_id=enquiry.lead_stage','left');
+    $this->db->join('lead_source','lead_source.lsid=enquiry.enquiry_source','left');
+    $this->db->join('tbl_subsource','tbl_subsource.subsource_id=enquiry.sub_source','left');    
+    $this->db->join('tbl_product_country','tbl_product_country.id=enquiry.enquiry_subsource','left');
+    $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=enquiry.created_by','left');   
+    $this->db->join('tbl_admin as tbl_admin2','tbl_admin2.pk_i_admin_id=enquiry.aasign_to','left'); 
+    $this->db->join('tbl_admin as tbl_admin3','tbl_admin3.pk_i_admin_id=enquiry.assign_by','left');     
         $this->db->join('lead_description','lead_description.id = enquiry.lead_discription','left');   
         $this->db->join('state','state.id = enquiry.state_id','left');   
         $this->db->join('city','city.id = enquiry.city_id','left');   
 
-		$this->db->where('Enquery_id',$enquiry_code);
-		$enq_row	=	$this->db->get('enquiry')->row_array();
+    $this->db->where('Enquery_id',$enquiry_code);
+    $enq_row  = $this->db->get('enquiry')->row_array();
 
-		$process_id =	$enq_row['product_id'];
-		$this->db->select('input_name,extra_enquery.fvalue');
-		$this->db->where('tbl_input.company_id',$comp_id);
-		$this->db->where("FIND_IN_SET($process_id,tbl_input.process_id)>",0);
-		$this->db->where("tbl_input.status",1);
-		$this->db->join("(select * from extra_enquery where enq_no = '$enquiry_code') as extra_enquery",'extra_enquery.input=tbl_input.input_id','left');
-		$result	=	$this->db->get('tbl_input')->result_array();
-		$data = array();
-		if (!empty($result)) {
-			foreach ($result as $key => $value) {
-				$name	=	$value['input_name'];
-				$value	=	$value['fvalue'];
-				$data[$name] = $value;
-			}
-		}
-		$data = array_merge($enq_row,$data);
-		return $data;
-	}
+    $process_id = $enq_row['product_id'];
+    $this->db->select('input_name,extra_enquery.fvalue');
+    $this->db->where('tbl_input.company_id',$comp_id);
+    $this->db->where("FIND_IN_SET($process_id,tbl_input.process_id)>",0);
+    $this->db->where("tbl_input.status",1);
+    $this->db->join("(select * from extra_enquery where enq_no = '$enquiry_code') as extra_enquery",'extra_enquery.input=tbl_input.input_id','left');
+    $result = $this->db->get('tbl_input')->result_array();
+    $data = array();
+    if (!empty($result)) {
+      foreach ($result as $key => $value) {
+        $name = $value['input_name'];
+        $value  = $value['fvalue'];
+        $data[$name] = $value;
+      }
+    }
+    $data = array_merge($enq_row,$data);
+    return $data;
+  }
 
-	public function get_extra_enquiry_property($enquiry_code,$input_name,$comp_id){ // for non query type form only
-		$this->db->select('tbl_input.input_name,extra_enquery.fvalue,extra_enquery.id');
-		$this->db->where('tbl_input.input_name',$input_name);
-		$this->db->where('tbl_input.company_id',$comp_id);
-		$this->db->where('extra_enquery.enq_no',$enquiry_code);
-		$this->db->join('extra_enquery','extra_enquery.input=tbl_input.input_id','inner');
-		return $this->db->get('tbl_input')->row_array();
-	}
+  public function get_extra_enquiry_property($enquiry_code,$input_name,$comp_id){ // for non query type form only
+    $this->db->select('tbl_input.input_name,extra_enquery.fvalue,extra_enquery.id');
+    $this->db->where('tbl_input.input_name',$input_name);
+    $this->db->where('tbl_input.company_id',$comp_id);
+    $this->db->where('extra_enquery.enq_no',$enquiry_code);
+    $this->db->join('extra_enquery','extra_enquery.input=tbl_input.input_id','inner');
+    return $this->db->get('tbl_input')->row_array();
+  }
 
-	public function set_extra_enquiry_property($enquiry_code,$input_name,$input_value,$comp_id){ // for non query type form only
-		$prop	=	$this->get_extra_enquiry_property($enquiry_code,$input_name,$comp_id);
-		if (!empty($prop['id'])) {
-			$this->db->where('id',$prop['id']);
-			$this->db->set('fvalue',$input_value);
-			return $this->db->update('extra_enquery');
-		}else{
-			$this->db->select('enquiry_id');
-			$this->db->where('Enquery_id',$enquiry_code);
-			$enq_row	=	$this->db->get('enquiry')->row_array();			
-			$this->db->select('input_id');
-			$this->db->where('tbl_input.input_name',$input_name);
-			$this->db->where('tbl_input.company_id',$comp_id);
-			$input_row	=	$this->db->get('tbl_input')->row_array();
-			$ins_arr = array(
-							'parent' => $enq_row['enquiry_id'],
-							'input'	 => $input_row['input_id'],							
-							'cmp_no' => $comp_id,							
-							'enq_no' => $enquiry_code,
-							'fvalue' => $input_value,
-						);
-			$this->db->insert('extra_enquery',$ins_arr);
-		}
-	}
+  public function set_extra_enquiry_property($enquiry_code,$input_name,$input_value,$comp_id){ // for non query type form only
+    $prop = $this->get_extra_enquiry_property($enquiry_code,$input_name,$comp_id);
+    if (!empty($prop['id'])) {
+      $this->db->where('id',$prop['id']);
+      $this->db->set('fvalue',$input_value);
+      return $this->db->update('extra_enquery');
+    }else{
+      $this->db->select('enquiry_id');
+      $this->db->where('Enquery_id',$enquiry_code);
+      $enq_row  = $this->db->get('enquiry')->row_array();     
+      $this->db->select('input_id');
+      $this->db->where('tbl_input.input_name',$input_name);
+      $this->db->where('tbl_input.company_id',$comp_id);
+      $input_row  = $this->db->get('tbl_input')->row_array();
+      $ins_arr = array(
+              'parent' => $enq_row['enquiry_id'],
+              'input'  => $input_row['input_id'],             
+              'cmp_no' => $comp_id,             
+              'enq_no' => $enquiry_code,
+              'fvalue' => $input_value,
+            );
+      $this->db->insert('extra_enquery',$ins_arr);
+    }
+  }
 
-	public function is_enquiry_exist($where){
-		$this->db->where($where);
-		return $this->db->get('enquiry')->row_array();
-	}
+  public function is_enquiry_exist($where){
+    $this->db->where($where);
+    return $this->db->get('enquiry')->row_array();
+  }
 
-	public function getuseremail($from,$enquiry_code){
-		$domain = get_sys_parameter('imap_host','IMAP');
-		$port = get_sys_parameter('imap_port','IMAP');
-		$mode = get_sys_parameter('imap_mode','IMAP');
-		$user = get_sys_parameter('user','IMAP');
-		$password = get_sys_parameter('password','IMAP');
-		$host 	  =  "{".$domain.":".$port."/imap/".$mode."}INBOX";
-		$user	  = $user;
-		$password = $password;	
-		$inbox  = imap_open($host,$user ,$password)  or die('Cannot connect: ' . imap_last_error());
-		$comp_id = $this->session->companey_id;		
-		$this->db->select('created_date,drop_reason as msg_id');
-		$this->db->where('lead_id',$enquiry_code);
-		$this->db->where('comp_id',$comp_id);
-		$this->db->where('coment_type',6);
-		$this->db->order_by('comm_id','desc');
-		$this->db->limit(1);
-		$last_mail	=	$this->db->get('tbl_comment')->row_array();		
-		$since = '';
-		if (!empty($last_mail)) {
-			$since = 'SINCE '.date("d-M-Y", strtotime($last_mail['created_date'])).' ';
-		}		
-		$emails = imap_search($inbox,$since.'FROM '.$from);
-		$mailarr = array();
+  public function getuseremail($from,$enquiry_code){
+    $domain = get_sys_parameter('imap_host','IMAP');
+    $port = get_sys_parameter('imap_port','IMAP');
+    $mode = get_sys_parameter('imap_mode','IMAP');
+    $user = get_sys_parameter('user','IMAP');
+    $password = get_sys_parameter('password','IMAP');
+    $host     =  "{".$domain.":".$port."/imap/".$mode."}INBOX";
+    $user   = $user;
+    $password = $password;  
+    $inbox  = imap_open($host,$user ,$password)  or die('Cannot connect: ' . imap_last_error());
+    $comp_id = $this->session->companey_id;   
+    $this->db->select('created_date,drop_reason as msg_id');
+    $this->db->where('lead_id',$enquiry_code);
+    $this->db->where('comp_id',$comp_id);
+    $this->db->where('coment_type',6);
+    $this->db->order_by('comm_id','desc');
+    $this->db->limit(1);
+    $last_mail  = $this->db->get('tbl_comment')->row_array();   
+    $since = '';
+    if (!empty($last_mail)) {
+      $since = 'SINCE '.date("d-M-Y", strtotime($last_mail['created_date'])).' ';
+    }   
+    $emails = imap_search($inbox,$since.'FROM '.$from);
+    $mailarr = array();
 
-		if($emails) {
-			$output = '';
-			foreach($emails as $ind => $email_number) {					
-				$header   = imap_headerinfo($inbox, $email_number);
-				$overview = imap_fetch_overview($inbox,$email_number,0);
-				$message  = imap_fetchbody($inbox, $email_number, 1);
-				if (!empty($last_mail['msg_id']) && $last_mail['msg_id'] < $header->Msgno) {
-					
-					$insarr[] = array(
-								"comp_id" => $this->session->companey_id,
-								"lead_id" => $enquiry_code,
-								"remark" => $message,
-								"comment_msg"   => (!empty($header->subject)) ? $header->subject : "",
-								"created_date"   => date("Y-m-d H:i:s", strtotime($header->date)),
-								"coment_type"=>6,
-								"drop_reason"=>$header->Msgno
-								); 
-				}else if (empty($last_mail['msg_id'])) {
-					$insarr[] = array(
-								"comp_id" => $this->session->companey_id,
-								"lead_id" => $enquiry_code,
-								"remark" => $message,
-								"comment_msg"   => (!empty($header->subject)) ? $header->subject : "",
-								"created_date"   => date("Y-m-d H:i:s", strtotime($header->date)),
-								"coment_type"=>6,
-								"drop_reason"=>$header->Msgno
-								); 
-				}
-			}
-		}	
+    if($emails) {
+      $output = '';
+      foreach($emails as $ind => $email_number) {         
+        $header   = imap_headerinfo($inbox, $email_number);
+        $overview = imap_fetch_overview($inbox,$email_number,0);
+        $message  = imap_fetchbody($inbox, $email_number, 1);
+        if (!empty($last_mail['msg_id']) && $last_mail['msg_id'] < $header->Msgno) {
+          
+          $insarr[] = array(
+                "comp_id" => $this->session->companey_id,
+                "lead_id" => $enquiry_code,
+                "remark" => $message,
+                "comment_msg"   => (!empty($header->subject)) ? $header->subject : "",
+                "created_date"   => date("Y-m-d H:i:s", strtotime($header->date)),
+                "coment_type"=>6,
+                "drop_reason"=>$header->Msgno
+                ); 
+        }else if (empty($last_mail['msg_id'])) {
+          $insarr[] = array(
+                "comp_id" => $this->session->companey_id,
+                "lead_id" => $enquiry_code,
+                "remark" => $message,
+                "comment_msg"   => (!empty($header->subject)) ? $header->subject : "",
+                "created_date"   => date("Y-m-d H:i:s", strtotime($header->date)),
+                "coment_type"=>6,
+                "drop_reason"=>$header->Msgno
+                ); 
+        }
+      }
+    } 
 
 
-	if(!empty($insarr)){					
-		$this->db->insert_batch("tbl_comment", $insarr);
-	}
-	imap_close($inbox);
+  if(!empty($insarr)){          
+    $this->db->insert_batch("tbl_comment", $insarr);
+  }
+  imap_close($inbox);
     }
     
 public function insetFollowupTime($enquiry_id,$stageType,$oldTime,$newTime)
@@ -4885,7 +4886,7 @@ public function secsToStr($minutes)
 
 public function getComInfo($enquiry_id)
 {
-	 
+   
       $CommercialInfo=$this->db->select('*')
       ->where('enquiry_id',$enquiry_id)
       ->order_by('id','desc')
@@ -5005,23 +5006,26 @@ public function insertComInfo($data)
   public function visit_list_api($company_id,$user_id,$process,$limit=-1,$offset=-1)
   {
        $all_reporting_ids    =   $this->common_model->get_categories($user_id);
-	   //print_r($all_reporting_ids);exit;
+     //print_r($all_reporting_ids);exit;
        $where = '';
-        $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
-        $where .=" AND enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
+            $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+            $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
+            $where .=" AND enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
 
-        $this->db->select('tbl_visit.*,visit_details.meeting_status,CONCAT(tbl_admin.s_display_name, '.', tbl_admin.last_name) as created_by,visit_details.visit_status,tbl_expense.amount as total_expence,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
+        $this->db->select('tbl_visit.*,visit_details2.meeting_status,visit_details2.id as vid,visit_details2.id as vid,CONCAT(tbl_admin.s_display_name, '.', tbl_admin.last_name) as created_by,visit_details2.visit_status,tbl_expense.amount as total_expence,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
         $this->db->from('tbl_visit');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
         $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id','left');
 
-        $this->db->join('(select * from (select * from visit_details ORDER BY visit_id desc) as al GROUP BY visit_id
-) as visit_details','visit_details.visit_id=tbl_visit.id','left');
-		$this->db->join('tbl_expense','tbl_expense.visit_id=tbl_visit.id','left');
-		
-		$this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id','left');
+        //$this->db->join('(select max(id) as max_id,* from visit_details GROUP BY visit_id) as visit_details ','visit_details.max_id=tbl_visit.id','left');
+        
+        $this->db->join('(SELECT bb.* FROM visit_details bb INNER JOIN (SELECT visit_id, MAX(id) MostRecent FROM visit_details GROUP BY visit_details.visit_id) visit_details ON bb.visit_id = visit_details.visit_id AND bb.id = visit_details.MostRecent) as visit_details2', 'visit_details2.visit_id=tbl_visit.id','left');
+
+         
+    $this->db->join('tbl_expense','tbl_expense.visit_id=tbl_visit.id','left');
+    
+    $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id','left');
         $this->db->where("tbl_visit.comp_id",$company_id);
         // $this->db->where("tbl_visit.user_id",$user_id);
         $this->db->order_by("tbl_visit.created_at",'DESC');
