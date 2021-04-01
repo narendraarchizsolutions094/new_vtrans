@@ -3060,7 +3060,7 @@ public function get_enq_list_post(){
 
 
     public function tag_list_post(){
-      $this->input->post('comp_id');
+      $comp_id = $this->input->post('comp_id');
       $this->db->where('comp_id',$comp_id);
       $res = $this->db->get('tags')->result_array();
       if(!empty($res)){
