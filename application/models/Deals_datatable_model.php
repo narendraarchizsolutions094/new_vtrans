@@ -237,7 +237,7 @@ class Deals_datatable_model extends CI_Model{
         //echo $where; exit();
         if($where!='')
         $this->db->where($where);
- 
+        $this->db->order_by("id", "desc");
         $i = 0;
         // loop searchable columns 
         foreach($this->column_search as $item){
