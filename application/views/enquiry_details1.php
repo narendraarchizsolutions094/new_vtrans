@@ -2522,34 +2522,34 @@ function set_agreement_id(ag_id)
             
         </div>  
         <div class="form-group col-sm-6">
-              <label>Name <i class="text-danger"></i></label>
+              <label>Name <i class="text-danger">*</i></label>
             <input type="text" id="agg_user" name="agg_user" value="" class="form-control" required>
         </div>
          
         <div class="form-group col-sm-6">
-            <label>Mobile <i class="text-danger"></i></label>
+            <label>Mobile <i class="text-danger">*</i></label>
             <input type="text" id="agg_mobile" name="agg_mobile" value="" class="form-control" required> 
         </div>
                                                   
         <div class="form-group col-sm-6">
-            <label>Email <i class="text-danger"></i></label>
+            <label>Email <i class="text-danger">*</i></label>
             <input type="text" id="agg_email" name="agg_email" value="" class="form-control" required> 
         </div>
          
         <div class="form-group col-sm-6">
-            <label>Address <i class="text-danger"></i></label>
+            <label>Address <i class="text-danger">*</i></label>
             <input type="text" id="agg_adrs" name="agg_adrs" value="" class="form-control" required> 
         </div>
               
         <div class="form-group col-sm-6">
-            <label>Agreement Date <i class="text-danger"></i></label>
+            <label>Agreement Date <i class="text-danger">*</i></label>
             <input  id="agg_date" name="agg_date" value="<?=date('Y-m-d')?>" class="form-control form-date" required> 
         </div>
 <!--     </div>
     <div class="row" style="padding: 16px 0px;"> -->
       <div class="col-md-6">
           <div class="form-group">
-              <label>Deal</label>
+              <label>Deal <i class="text-danger">*</i></label>
               <select class="form-control"  name="deal_id" required> 
                 <option value="">Select Deal</option>
                <?php

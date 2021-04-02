@@ -145,7 +145,7 @@ a:hover, a:focus {
             </div>
 
             <div class="panel-body">
-              <table id="example" class="table table-striped table-bordered" style="width:100%">
+              <table id="rate_table" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                 <tr>
                     <th>S No.</th>
@@ -158,7 +158,7 @@ a:hover, a:focus {
                 </tr>
                 </thead>
                 <tbody>
-                <?php $sl=1; foreach ($branch_rate_list as $branch) {?>
+                <!--<?php $sl=1; foreach ($branch_rate_list as $branch) {?>
                 <tr>
                 <td><?php echo $sl; ?></td>
 							  <td width=""><?= $branch->from?></td>
@@ -178,7 +178,7 @@ a:hover, a:focus {
 
                         <?php $sl++; ?>
 
-                    <?php } ?> 
+                    <?php } ?>--> 
 
                 </tbody>
 
@@ -251,6 +251,27 @@ a:hover, a:focus {
 
   </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+  $('#rate_table').DataTable({ 
+
+          "processing": true,
+          "scrollX": true,
+          "serverSide": true,          
+          "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000] ],
+          "ajax": {
+              "url": "<?=base_url().'setting/rate_load_data'?>",
+              "type": "POST",
+          },
+          "columnDefs": [{ "orderable": false, "targets": 0 }],
+              "order": [[ 1, "desc" ]]
+  });
+
+});
+
+</script>
 
 <script>
 

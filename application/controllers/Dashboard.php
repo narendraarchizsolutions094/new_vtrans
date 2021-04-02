@@ -3637,7 +3637,7 @@ public function set_layout_to_session() {
           </tr>
           <tr>
               <td>ODA Charges</td>
-              <td colspan="2">'.''.'</td>
+              <td colspan="2">'.$oc[22].'</td>
           </tr>';
       }
       //<td colspan="2">'.$oc[23].'</td>

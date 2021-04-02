@@ -658,12 +658,61 @@ public function branch_rateList()
 
 	$data['page_title'] = 'Branch Rate List';
 	$data['branch'] = $this->Branch_model->branch_list()->result();
-	$data['branch_rate_list']= $this->Branch_model->rate_list('branch')->result();
+	//$data['branch_rate_list']= $this->Branch_model->rate_list('branch')->result();
 	$data['zone_rate_list']= $this->Branch_model->rate_list('zone')->result();
 	$data['content'] = $this->load->view('branch/rate-list',$data,true);
 	$this->load->view('layout/main_wrapper',$data);
 }
+/////////////////////////////rate list pagination start//////////////////////////
+public function rate_load_data()
+    {
 
+        $this->load->model('Branch_model');
+        $perpage = ($_POST['length'] !='') ? $_POST['length'] : 30;
+        $page = ($_POST['start'] !='') ? $_POST['start'] : 0;
+        $rate_mst = $this->Branch_model->getrateRows($perpage, $page);
+        //print_r($rate_mst);exit;
+        $no = ($_POST['start']!='') ? $_POST['start'] : 1;
+if(!empty($rate_mst)){		
+        foreach ($rate_mst as $rate) 
+        {   
+            $btn='';
+            $btn = '<a href="'.base_url("setting/editbranchrate/$rate->id/$rate->type").'" class="btn btn-xs  btn-primary"><i class="fa fa-edit"></i></a><a href="'.base_url("setting/branchrate_delete/$rate->id").'" onclick="return confirm('.display("are_you_sure").')" class="btn btn-xs  btn-danger"><i class="fa fa-trash"></i></a>';
+            $no++;        
+            $row = array();
+            $row[] = $no;
+            $row[] = $rate->from;
+            $row[] = $rate->to;
+            $row[] = $rate->rate;			
+            $row[] = ($rate->rate_status==0)?display('active'):display('inactive') ;
+			$row[] = $rate->created_at;
+            $row[] = $btn;
+            $data[] = $row;
+        }
+}else{
+	$btn='';
+            $btn = 'N/A';
+            $no++;        
+            $row = array();
+            $row[] = 'N/A';
+            $row[] = 'N/A';
+            $row[] = 'N/A';
+            $row[] = 'N/A';			
+            $row[] = 'N/A';
+			$row[] = 'N/A';
+            $row[] = 'N/A';
+            $data[] = $row;
+}
+    //echo $this->db->last_query();
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => count($rate_mst),
+            "recordsFiltered" => $this->Branch_model->getrateRows('','','count'),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+/////////////////////////////rate list pagination end//////////////////////////
 public function zone_ratelist()
 {
 	if (user_role('e30') == true) {

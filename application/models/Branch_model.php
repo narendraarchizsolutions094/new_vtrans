@@ -2,6 +2,16 @@
 class Branch_model extends CI_model
 {
 	
+	function __construct() {
+
+        //$this->column_order = array('info.id','enq.name','info.booking_type','info.business_type','info.creation_date','info.status','');
+
+        // Set searchable column fields
+
+        $this->column_search = array('enq.name','info.creation_date');
+
+    }
+	
 	public function add_vehicle_type($data)
 	{
 		$this->db->insert('vehicle',$data);
@@ -226,7 +236,38 @@ class Branch_model extends CI_model
 		return $this->db->get();
 		
 	}
+/////////////////////////////rate list pagination start//////////////////////////	
+	public function getrateRows($limit='', $start='',$count='') {
 
+        $company=$this->session->userdata('companey_id');
+        $this->db->select('rate.rate,rate.id,rate.type,rate.rate_status,rate.created_at,b1.branch_name from,b2.branch_name to');
+        $this->db->from('branchwise_rate rate');
+        $this->db->join('branch b1','b1.branch_id=rate.booking_branch');
+		$this->db->join('branch b2','b2.branch_id=rate.delivery_branch');
+        $this->db->where('rate.type', 'branch');
+		$this->db->where('rate.comp_id', $company);
+
+        if(!empty($_POST['search']['value']))
+        {
+            //$this->db->where('b1.branch_name LIKE ', $_POST['search']['value']);
+			$this->db->like('b1.branch_name', $_POST['search']['value']);
+        }
+        if($limit!='')
+        {
+            $this->db->limit($limit, $start);
+        }
+        if($count!='')
+        {
+            return $this->db->get()->num_rows();
+        }
+        else
+        {
+            return $this->db->get()->result();
+        }
+        
+                
+    }
+/////////////////////////////rate list pagination end//////////////////////////
 	public function from_to_table($from=array(),$to=array(),$type='branch',$comp_id=0)
 	{
 		if(empty($comp_id))

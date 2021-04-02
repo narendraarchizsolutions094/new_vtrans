@@ -2127,7 +2127,7 @@ body{
 	<p class="c9 c44"><span class="c36"></span></p>
 	<p class="c9"><span class="c22">To,</span></p>
 	<p class="c9"><span class="c17">M/s. </span><span class="c12"><?=$enq_name?></span></p>
-	<p class="c9"><span class="c17">Address</span><span class="c12"><?=$address?></span></p>
+	<p class="c9"><span class="c17">Address. </span><span class="c12"><?=$address?></span></p>
 	<p class="c9"><span class="c12"></span></p>
 	<p class="c9"><span class="c12"></span></p>
 	<p class="c9 c44"><span class="c22 c30"></span></p>
