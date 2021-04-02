@@ -31,10 +31,14 @@ class Lead extends REST_Controller {
       $user_id= $this->input->post('user_id');
       $process_id= $this->input->post('process_id');
       //for multiprocess id
-      if(!empty($process_id))
-      {
-        $process = implode(',',$process_id);
-      }
+      if (strpos(',',$process_id) !== false) 
+ 			{
+				$process = implode(',',$process_id);
+			}
+			else
+			{
+				$process = $process_id;
+			}
             $res= array();
             if(!empty($user_id)){
                     $user_role1 = $this->User_model->read_by_id($user_id); 
@@ -46,8 +50,20 @@ class Lead extends REST_Controller {
                   $res= array();
                   foreach($data['active_enquiry']->result() as $value){
                       $customer='';
-                      
-                    array_push($res,array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->org_name,'client_name'=>$value->client_name,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
+                      $tags_row = array();
+                      if(!empty($value->tag_ids)){
+                        $this->db->select('title,color');
+                        $this->db->where("id IN(".$value->tag_ids.")");
+                        $tags = $this->db->get('tags')->result_array();
+                        if(!empty($tags)){
+                          foreach ($tags as $k => $v) {
+                            $tags_row[] = array('color'=>$v['color'],'name'=>$v['title']);
+                          }
+                        }
+                      }
+                    array_push($res,array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->org_name,'client_name'=>$value->client_name,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,
+                    'tag'=>$tags_row,
+                    'lead_stage'=>$value->lead_stage,'lead_description'=>$value->lead_discription));  
                  } 
                }
 			}

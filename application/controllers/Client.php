@@ -205,7 +205,7 @@ class Client extends CI_Controller {
         if (!empty($enquiry_separation) && !empty($data['data_type'])) {                    
             $enquiry_separation = json_decode($enquiry_separation,true);
             $stage    =   $data['data_type'];
-            $data['title'] = $enquiry_separation[$stage]['title'];            
+            $data['title'] = $enquiry_separation[$stage]['title']??'Information';            
         }else{
             $data['title'] =display('client');
         }
@@ -3176,7 +3176,7 @@ public function all_update_expense_status()
     public function save_deal_data()
     {
         $this->load->model(array('Branch_model','Enquiry_model','Leads_Model'));
-        
+        $current_user = $this->User_model->read_by_id($this->session->user_id);
         $oc = json_encode($this->input->post('oc'));
         //print_r($oc);exit;
         $deal_id = $this->input->post('info_id');
@@ -3188,8 +3188,7 @@ public function all_update_expense_status()
                     'booking_type'=>$this->input->post('booking_type'),
                     'business_type'=>$this->input->post('business_type'),
                     'btype'=>$this->input->post('btype'),
-                    'dtype'=>$this->input->post('dtype'),
-                    'createdby'=>$this->session->user_id,
+                    'dtype'=>$this->input->post('dtype'),                    
                     'comp_id'=>$this->session->companey_id,
                     'other_charges'=>$oc,
                     'updation_date'=>date('Y-m-d H:i:s'),
@@ -3220,10 +3219,32 @@ public function all_update_expense_status()
                 else
                 {
                     $deal['copy_id'] = $ddata->copy_id;
+                    $deal['id'] = $deal_id;                    
                     $this->db->delete('commercial_info');
                 }
-                $deal['stage_id']=$this->input->post('current_stage');
+                //$deal['stage_id']=$this->input->post('current_stage');
+                $deal['createdby']=$ddata->createdby;
                 $deal_id = $this->Branch_model->add_deal($deal);
+
+                $this->db->where('deal_id',$deal_id);
+                $this->db->where('request_from_uid',$this->session->user_id);                
+                if($this->db->get('deal_approval_history')->num_rows()){
+                    $this->db->where('deal_id',$deal_id);
+                    $this->db->where('request_from_uid',$this->session->user_id);                
+                    $this->db->set('status','');
+                    $this->db->update('deal_approval_history');
+                }else{
+                    $this->db->insert('deal_approval_history',
+                    array(
+                        'comp_id' => $this->session->companey_id,
+                        'deal_id' => $deal_id,
+                        'request_from_uid' => $this->session->user_id,
+                        'request_to_uid' => $current_user->report_to,
+                        'status' => ''
+                        )
+                    );
+                }
+
                 $this->Leads_Model->add_comment_for_events_stage('Deal Updated.',$enq->Enquery_id,0,0,$remark,0);
             }
             else
@@ -3239,6 +3260,7 @@ public function all_update_expense_status()
         else
         {
             //$deal['stage_id']=$this->input->post('current_stage');
+            $deal['createdby']=$this->session->user_id;
             $deal_id = $this->Branch_model->add_deal($deal);
             file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
 			//$this->db->set('status','3');
@@ -3311,27 +3333,53 @@ public function all_update_expense_status()
         {
            $deal = $this->Branch_model->get_deal($deal_id);
            $enq  = $this->Enquiry_Model->getEnquiry(array('enquiry.enquiry_id'=>$deal->enquiry_id))->row();
-           if($deal->createdby==$this->session->user_id)
+
+           $this->db->where('deal_id',$deal_id);
+           $this->db->where('request_to_uid',$this->session->user_id);
+           $req_log2 = $this->db->get('deal_approval_history')->row_array();
+            
+           if($deal->createdby==$this->session->user_id || !empty($req_log2))
            {
                 $user_id = $deal->createdby;
                 $udata = $this->User_model->read_by_id($user_id);
                 $current_user = $this->User_model->read_by_id($this->session->user_id);
                 
                 $this->db->set('related_to',$current_user->report_to);
-                $this->Leads_Model->add_comment_for_events_popup('Deal needs approval, edited by '.$udata->s_display_name.' '.$udata->last_name,date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approval',1,0);
+                $this->Leads_Model->add_comment_for_events_popup('Deal needs approval, edited by '.$udata->s_display_name.' '.$udata->last_name,date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approval',1,0,$current_user->report_to);
               
                 $this->db->set('approval','pending');
                 $this->db->where('id',$deal->id);
                 $this->db->update('commercial_info');
                 $this->session->set_flashdata('message','Approval Request Send.');
-
+                
+                $this->db->where('deal_id',$deal_id);
+                $this->db->where('request_from_uid',$this->session->user_id);                
+                if($this->db->get('deal_approval_history')->num_rows()){
+                    $this->db->where('deal_id',$deal_id);
+                    $this->db->where('request_from_uid',$this->session->user_id);                
+                    $this->db->set('status','pending');
+                    $this->db->update('deal_approval_history');
+                }else{
+                    $this->db->insert('deal_approval_history',
+                    array(
+                        'comp_id' => $this->session->companey_id,
+                        'deal_id' => $deal_id,
+                        'request_from_uid' => $this->session->user_id,
+                        'request_to_uid' => $current_user->report_to,
+                        'status' => 'pending'
+                        )
+                    );
+                }
                 $this->Leads_Model->add_comment_for_events_stage('Deal approval request send.',$enq->Enquery_id,0,0,'',0);
 
                 redirect($_SERVER['HTTP_REFERER']);
            }
            else
            {
+               //echo $this->db->last_query();
             $this->session->set_userdata('exception','Deal not created by you.');
+            redirect($_SERVER['HTTP_REFERER']);
+
            }
         }
     }
