@@ -427,12 +427,12 @@ public function active_clients_page_post(){
                       $customer='';
                       $tags_row = array();
                     if(!empty($value->tag_ids)){
-                      $this->db->select('title,color');
+                      $this->db->select('title,color,id');
                       $this->db->where("id IN(".$value->tag_ids.")");
                       $tags = $this->db->get('tags')->result_array();
                       if(!empty($tags)){
                         foreach ($tags as $k => $v) {
-                          $tags_row[] = array('color'=>$v['color'],'name'=>$v['title']);
+                          $tags_row[] = array('color'=>$v['color'],'name'=>$v['title'],'id'=>$v['id']);
                         }
                       }
                     }
