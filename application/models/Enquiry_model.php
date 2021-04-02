@@ -2114,9 +2114,10 @@ class Enquiry_model extends CI_Model {
     public function active_enqueries_api($id,$type,$user_role,$process='',$offset=-1,$limit=-1) 
     { 
         $all_reporting_ids    =   $this->common_model->get_categories($id,$type);
-        $this->db->select('enquiry.*,comp.company_name');
+        $this->db->select('enquiry.*,comp.company_name,enquiry_tags.tag_ids');
         $this->db->from($this->table);    
-        $this->db->join('tbl_company comp','comp.id=enquiry.company','left');    
+        $this->db->join('tbl_company comp','comp.id=enquiry.company','left'); 
+        $this->db->join('enquiry_tags','enquiry_tags.enq_id=enquiry.enquiry_id','left');           
         $where  = "";
         $datatype = $type;
         $where .= " enquiry.status=$datatype ";

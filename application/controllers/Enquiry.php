@@ -3881,47 +3881,86 @@ echo  $details1;
 
             if($colsall || in_array(19,$cols))
             {
-                if($value->edited=='1' && $value->approval=='')
-                {
-                    if($value->createdby==$this->session->user_id)
-                    {
-                       $sub[]  ='<a href="'.base_url('client/ask_deal_approval/'.$value->id).'" onclick="return confirm(\'Send For Approval\')">
+                $this->db->where('deal_id',$value->id);
+                $this->db->where('request_from_uid',$this->session->user_id);
+                $req_log = $this->db->get('deal_approval_history')->row_array();
+                if($value->edited=='1' && ($value->approval=='pending' || $value->approval == '')){                
+                    if(!empty($req_log)){
+                        if($req_log['status'] == ''){
+                            $sub[]  ='<a href="'.base_url('client/ask_deal_approval/'.$value->id).'" onclick="return confirm(\'Send For Approval\')">
                             <label class="label label-warning text-black">Send For Approval</label>
-                            </a>';
-                    }
-                    else
-                    {
-                        $sub[] ='<label class="label label-danger">Edited</label>';
-                    }
-                    
-                }
-                else if($value->edited=='1' && $value->approval=='pending')
-                {
-                    if($value->createdby==$this->session->user_id)
-                    {
-                        $sub[] ='<label class="label label-primary">Waiting for approval</label>
-                        ';
-                    }
-                    else
-                    {
-                        $opt  ='<select onchange="location.href=\''.base_url('client/deal_action/'.$value->id.'/').'\'+this.value">';
-                            $opt.='<option value="">Action</option>
+                            </a>'; 
+                        }else if($req_log['status'] == 'pending'){
+                            $sub[] ='<label class="label label-primary">Waiting for approval</label>
+                            ';
+                        }
+                    }else{                     
+                        $this->db->where('deal_id',$value->id);
+                        $this->db->where('request_to_uid',$this->session->user_id);
+                        $req_log2 = $this->db->get('deal_approval_history')->row_array();
+                        if(!empty($req_log2)){
+                            if($req_log2['status'] != ''){
+                                $opt  ='<select onchange="location.href=\''.base_url('client/deal_action/'.$value->id.'/').'\'+this.value">';
+                                $opt.='<option value="">Action</option>
                                     <option value="approve">Approve</option>
                                     <option value"reject">Reject</option>
                                     <option value="resend">Send for Approval</option>
                                 ';
-                        $opt.='</select>';
-                         $sub[] = $opt;
+                                $opt.='</select>';
+                                $sub[] = $opt;
+                            }else if($req_log2['status'] == ''){
+                                $sub[] ='<label class="label label-danger">Edited</label>';
+                            }
+                        }else{
+                            $sub[] ='<label class="label label-danger">Edited</label>';
+                        }
                     }
-                }
-                else
-                {
-                $sub[] = '<select onchange="update_info_status('.$value->id.',this.value)">
+                }else{
+                    $sub[] = '<select onchange="update_info_status('.$value->id.',this.value)">
                         <option value="0" '.($value->status==0?'selected':'').'>Pending</option>
                         <option value="1" '.($value->status==1?'selected':'').'>Done</option>
                         <option value="2" '.($value->status==2?'selected':'').'>Deferred</option>
-                        </select>';
+                        </select>';    
                 }
+                // if($value->edited=='1' && $value->approval==''){
+                //     if($req_log['status'] == ''){
+                //        $sub[]  ='<a href="'.base_url('client/ask_deal_approval/'.$value->id).'" onclick="return confirm(\'Send For Approval\')">
+                //             <label class="label label-warning text-black">Send For Approval</label>
+                //             </a>';
+                //     }
+                //     else
+                //     {
+                //         $sub[] ='<label class="label label-danger">Edited</label>';
+                //     }
+                    
+                // }
+                // else if($value->edited=='1' && $value->approval=='pending')
+                // {
+                //     if($value->createdby==$this->session->user_id)
+                //     {
+                //         $sub[] ='<label class="label label-primary">Waiting for approval</label>
+                //         ';
+                //     }
+                //     else
+                //     {
+                //         $opt  ='<select onchange="location.href=\''.base_url('client/deal_action/'.$value->id.'/').'\'+this.value">';
+                //             $opt.='<option value="">Action</option>
+                //                     <option value="approve">Approve</option>
+                //                     <option value"reject">Reject</option>
+                //                     <option value="resend">Send for Approval</option>
+                //                 ';
+                //         $opt.='</select>';
+                //          $sub[] = $opt;
+                //     }
+                // }
+                // else
+                // {
+                // $sub[] = '<select onchange="update_info_status('.$value->id.',this.value)">
+                //         <option value="0" '.($value->status==0?'selected':'').'>Pending</option>
+                //         <option value="1" '.($value->status==1?'selected':'').'>Done</option>
+                //         <option value="2" '.($value->status==2?'selected':'').'>Deferred</option>
+                //         </select>';
+                // }
             
             }
             $part2 = "";
