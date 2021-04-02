@@ -835,10 +835,14 @@ $compid = $this->input->post('comp_id');
       $offset = $this->input->post('offset')??0;
       $limit = $this->input->post('limit')??10;
       //for multiprocess id
-      if(!empty($process_id))
+      if (strpos(',',$process_id) !== false) 
       {
-        $process = implode(',',$process_id);
-      }
+       $process = implode(',',$process_id);
+     }
+     else
+     {
+       $process = $process_id;
+     }
             $res= array();
             if(!empty($user_id)){
                     $user_role1 = $this->User_model->read_by_id($user_id); 
