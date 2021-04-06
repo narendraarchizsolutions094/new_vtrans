@@ -74,6 +74,42 @@ class Lead extends REST_Controller {
       
       }
 	  
+	  public function branch_list_post(){
+		$comp_id= $this->input->post('comp_id');
+		$region= $this->input->post('region_id');
+		$area= $this->input->post('area_id');
+        $branch_list=$this->User_model->all_branch_list($region,$area);
+        $branch_list_array = array();
+        //print_r($area_list);exit;
+        foreach ($branch_list as $branch) { 
+            $branch_list_array[] = array('branch_id'=>$branch->branch_id,'branch_name'=>$branch->branch_name);            
+        }
+        $this->set_response([
+                'status' => true,
+                'branch' => $branch_list_array  
+                 ], REST_Controller::HTTP_OK);
+      
+      }
+	  
+	  public function all_user_list_post(){
+		$comp_id= $this->input->post('comp_id');
+		$department= $this->input->post('dept_id');
+		$region= $this->input->post('region_id');
+		$area= $this->input->post('area_id');
+		$branch= $this->input->post('branch_id');
+        $user_list=$this->User_model->all_emp_list($department,$branch,$region,$area);
+        $user_list_array = array();
+        //print_r($area_list);exit;
+        foreach ($user_list as $users) { 
+            $user_list_array[] = array('user_id'=>$users->pk_i_admin_id,'user_name'=>$users->s_display_name.' '.$users->last_name,$users->s_user_email);            
+        }
+        $this->set_response([
+                'status' => true,
+                'users' => $user_list_array  
+                 ], REST_Controller::HTTP_OK);
+      
+      }
+	  
 /******************************All API for dept,region,area,branch*************************/	  
     public function active_leads_post(){   
       $user_id= $this->input->post('user_id');
