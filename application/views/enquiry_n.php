@@ -1272,6 +1272,7 @@ display: block;
             <div class="form-group col-md-6">
                 <label class="control-label" for="sale_area"><?=display('sales_area')?></label> 									
                 <select class="form-control" name="sale_area" id="filtered_area" onchange="find_branch();">
+				<option value="">---Select Area---</option>
                     <?php  if (!empty($area_lists)) {
                     foreach ($area_lists as $key => $value) { ?>
                 <option value="<?= $value->area_id;?>" <?php if($value->area_id == $this->session->sales_area){ echo "selected";} ?>><?= $value->area_name;?></option>
@@ -1284,6 +1285,7 @@ display: block;
 			<div class="form-group col-md-6">
                 <label class="control-label" for="sale_branch"><?=display('sales_branch')?></label> 									
                 <select class="form-control" name="sale_branch" id="filtered_branch" onchange="find_employee();">
+				<option value="">---Select Branch---</option>
                     <?php  if (!empty($branch_lists)) {
                     foreach ($branch_lists as $key => $value) { ?>
                 <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $this->session->branch_name){ echo "selected";} ?>><?= $value->branch_name;?></option>

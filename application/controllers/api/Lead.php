@@ -101,7 +101,7 @@ class Lead extends REST_Controller {
         $user_list_array = array();
         //print_r($area_list);exit;
         foreach ($user_list as $users) { 
-            $user_list_array[] = array('user_id'=>$users->pk_i_admin_id,'user_name'=>$users->s_display_name.' '.$users->last_name,$users->s_user_email);            
+            $user_list_array[] = array('user_id'=>$users->pk_i_admin_id,'user_name'=>$users->s_display_name.' '.$users->last_name,'user_email'=>$users->s_user_email);            
         }
         $this->set_response([
                 'status' => true,
