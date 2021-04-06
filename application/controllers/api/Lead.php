@@ -11,7 +11,7 @@ class Lead extends REST_Controller {
            $this->load->library('form_validation');
            	
 		$this->load->model(array(
-			'User_model','Leads_Model','Message_models','enquiry_model','common_model'
+			'Branch_model','User_model','Leads_Model','Message_models','enquiry_model','common_model'
 		));
 		$this->load->model('api/sync_model');
 		$this->load->library('email'); 
@@ -27,6 +27,54 @@ class Lead extends REST_Controller {
         header("Access-Control-Allow-Methods: GET, OPTIONS");
         header('Access-Control-Allow-Headers', 'Content-Type');*/
     }
+/******************************All API for dept,region,area,branch*************************/	
+	public function department_list_post(){
+		$comp_id= $this->input->post('comp_id');
+        $all_department = $this->Leads_Model->dept_select($comp_id);
+        $dept_list_array = array();
+        //print_r($all_department);exit;
+        foreach ($all_department as $dept) { 
+            $dept_list_array[] = array('dept_id'=>$dept->id,'dept_name'=>$dept->dept_name);            
+        }
+        $this->set_response([
+                'status' => true,
+                'department' => $dept_list_array  
+                 ], REST_Controller::HTTP_OK);
+      
+      }
+	  
+	  public function region_list_post(){
+		$comp_id= $this->input->post('comp_id');
+        $region_list=$this->Branch_model->sales_region_list('','',$comp_id)->result();
+        $region_list_array = array();
+        //print_r($region_list);exit;
+        foreach ($region_list as $region) { 
+            $region_list_array[] = array('reg_id'=>$region->region_id,'reg_name'=>$region->name);            
+        }
+        $this->set_response([
+                'status' => true,
+                'region' => $region_list_array  
+                 ], REST_Controller::HTTP_OK);
+      
+      }
+	  
+	  public function area_list_post(){
+		$comp_id= $this->input->post('comp_id');
+		$region= $this->input->post('region_id');
+        $area_list=$this->User_model->all_area_list($region);
+        $area_list_array = array();
+        //print_r($area_list);exit;
+        foreach ($area_list as $area) { 
+            $area_list_array[] = array('area_id'=>$area->area_id,'area_name'=>$area->area_name);            
+        }
+        $this->set_response([
+                'status' => true,
+                'area' => $area_list_array  
+                 ], REST_Controller::HTTP_OK);
+      
+      }
+	  
+/******************************All API for dept,region,area,branch*************************/	  
     public function active_leads_post(){   
       $user_id= $this->input->post('user_id');
       $process_id= $this->input->post('process_id');

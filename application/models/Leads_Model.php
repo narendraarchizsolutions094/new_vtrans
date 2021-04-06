@@ -30,10 +30,15 @@ class Leads_Model extends CI_Model {
         $this->db->insert('tbl_department', $data);
     }
 
-    public function dept_select() {
+    public function dept_select($comp_id='') {
+		if(!empty($comp_id)){
+			$comp_id = $comp_id;
+		}else{
+			$comp_id = $this->session->userdata('companey_id');
+		}
         $this->db->select("*");
         $this->db->from('tbl_department');
-        $this->db->where('comp_id', $this->session->userdata('companey_id'));
+        $this->db->where('comp_id', $comp_id);
         $query = $this->db->get();
         return $query->result();
     }
