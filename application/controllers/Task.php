@@ -195,7 +195,7 @@ class Task extends CI_Controller {
     }
     public function search_comment_and_task($date = '') {
         $details = '';
- 
+        $url = '';
         $date = date_create($date);
         $date = date_format($date,'d-m-Y'); 
         $recent_tasks = $this->Task_Model->search_taskby_id($date);      
