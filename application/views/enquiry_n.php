@@ -1243,7 +1243,7 @@ display: block;
                 <div class="row">
             <div class="form-group col-md-6">
                 <label class="control-label" for="dept_name"><?=display('department')?></label> 									
-                <select class="form-control" name="dept_name" id="dept_name">
+                <select class="form-control" name="dept_name" id="dept_name" onchange="find_employee();">
 					<option value=''>---Select Department----</option>
                         <?php  if (!empty($dept_lists)) {
                         foreach ($dept_lists as $key => $value) { ?>
@@ -1256,7 +1256,7 @@ display: block;
 
             <div class="form-group col-md-6">
                 <label class="control-label" for="sale_resions"><?=display('sales_resion')?></label> 									
-                <select class="form-control" name="sale_region" onchange="find_area();">
+                <select class="form-control" name="sale_region" onchange="find_area();find_employee();">
 					<option value="">---Select Region---</option>
                     <?php
                         if (!empty($region_lists)) {
@@ -1271,7 +1271,7 @@ display: block;
 
             <div class="form-group col-md-6">
                 <label class="control-label" for="sale_area"><?=display('sales_area')?></label> 									
-                <select class="form-control" name="sale_area" id="filtered_area" onchange="find_branch();">
+                <select class="form-control" name="sale_area" id="filtered_area" onchange="find_branch();find_employee();">
 				<option value="">---Select Area---</option>
                     <?php  if (!empty($area_lists)) {
                     foreach ($area_lists as $key => $value) { ?>
