@@ -1157,6 +1157,7 @@ public function get_all_stage_deals() {
 			        $this->db->set('stage_id',$next_stage);
                     $this->db->where('id', $value);
                     $this->db->update('commercial_info');
+                    $this->enquiry_model->save_goal_log(array('deal_id'=>$value,'stage'=>$next_stage,'uid'=>$this->session->user_id));
 		        }
 				 //////////////////update stage in deal table End///////////////////
 				 
@@ -1175,6 +1176,7 @@ public function get_all_stage_deals() {
 			        $this->db->set('stage_id',$next_stage);
                     $this->db->where('id', $value);
                     $this->db->update('commercial_info');
+                    $this->enquiry_model->save_goal_log(array('deal_id'=>$value,'stage'=>$next_stage,'uid'=>$this->session->user_id));
 		        }
 				 //////////////////update stage in deal table End///////////////////
 				

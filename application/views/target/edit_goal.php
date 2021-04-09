@@ -34,16 +34,44 @@ if($goal->goal_type=='team')
 		    </div>  
 		    <div class="col-sm-8" style="padding: 4px">
 				<label>Products</label>
+				<?php
+				$cur = explode(',', $goal->products);
+
+				?>
 				<select name="products[]" class="select2" multiple>
+					<option value="sundry" <?=in_array('sundry',$cur)?'selected':''?>>Sundry</option>
+					<option value="ftl" <?=in_array('ftl',$cur)?'selected':''?>>FTL</option>
 					<?php
-					if(!empty($product_list))
-					{	$cur = explode(',', $goal->products);
-						foreach ($product_list as $row)
-						{
-							echo'<option value="'.$row->id.'" '.(in_array($row->id,$cur)?'selected':'').'>'.$row->country_name.'</option>';
-						}
-					}	
+					// if(!empty($product_list))
+					// {	$cur = explode(',', $goal->products);
+					// 	foreach ($product_list as $row)
+					// 	{
+					// 		echo'<option value="'.$row->id.'" '.(in_array($row->id,$cur)?'selected':'').'>'.$row->country_name.'</option>';
+					// 	}
+					// }	
 					?>
+				</select>
+			</div>
+		</div>
+		<div class="row" >
+			<div class="col-sm-4" style="padding: 4px">
+				<label>Booking Type</label>
+				<?php
+				$cur = explode(',', $goal->deal_type);
+				?>
+				<select name="deal_type[]" class="select2" multiple>
+					<option value="domestic" <?=in_array('domestic',$cur)?'selected':''?>>Domestic</option>
+					<option value="saarc" <?=in_array('saarc',$cur)?'selected':''?>>SAARC</option>					
+				</select>
+			</div>
+			<div class="col-sm-8" style="padding: 4px">
+				<label>Business Type</label>
+				<?php
+				$cur = explode(',', $goal->business_type);
+				?>
+				<select name="business_type[]" class="select2" multiple>
+					<option value="inward" <?=in_array('inward',$cur)?'selected':''?>>Inward</option>
+					<option value="outward" <?=in_array('outward',$cur)?'selected':''?>>Outward</option>					
 				</select>
 			</div>
 		</div>
@@ -80,10 +108,10 @@ if($goal->goal_type=='team')
 		</div>
 		<div class="row">
 			<div class="col-sm-4" style="padding: 4px;">
-				<label>Metric <font color="red">*</font></label>
+				<label>Metric <font color="red">*</font></label>				
 				<select name="metric_type" class="form-control" required>
-					<option value="deal">Deal Value</option>
-					<option value="won">Won Deals</option>
+					<option value="freight" <?=$goal->metric_type=='freight'?'selected':''?>>Freight</option>
+					<option value="weight" <?=$goal->metric_type=='weight'?'selected':''?>>Weight</option>
 				</select>
 			</div>
 			<div class="col-sm-8" style="padding: 4px;">

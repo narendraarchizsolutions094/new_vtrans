@@ -128,6 +128,8 @@ class Target extends CI_controller
 			$target_list = implode(',', $this->input->post('target_list[]'));
 
 			$prod = $this->input->post('products')??array();
+			$deal_type = $this->input->post('deal_type')??array();
+			$business_type = $this->input->post('business_type')??array();
 			$data = array(	'goal_name'=>$this->input->post('goal_name'),
 							'goal_period'=>$this->input->post('goal_period'),
 							'time_range' =>$this->input->post('time_range'),
@@ -138,6 +140,8 @@ class Target extends CI_controller
 							'metric_type' =>$this->input->post('metric_type'),
 							'target_value' =>$this->input->post('target_value'),
 							'products' => implode(',',$prod),
+							'deal_type'=>implode(',',$deal_type),
+							'business_type'=>implode(',',$business_type),
 							'comp_id' =>$this->session->companey_id,
 							'process_id' =>$process_id,
 							'created_by'=>$this->session->user_id,
@@ -305,8 +309,8 @@ class Target extends CI_controller
 						// echo $this->db->last_query();
 						// print_r($Achieved); exit();
 
-						$forecast_value =(int)($goal->metric_type=='deal'?$Forecast->p_amnt:$Forecast->num_value);
-						$achieved_value =(int)($goal->metric_type=='deal'?$Achieved->p_amnt:$Achieved->num_value);
+						$forecast_value =(int)($goal->metric_type=='freight'?$Forecast->p_amnt:'');//$Forecast->num_value);
+						$achieved_value =(int)($goal->metric_type=='freight'?$Achieved->p_amnt:'');//$Achieved->num_value);
 
 						$percent=0;
 						if($target)
@@ -324,9 +328,8 @@ class Target extends CI_controller
 						if(!empty($goal->products))
 						{
 							foreach (explode(',',$goal->products) as $p)
-							{
-								$sub = $this->db->where('id',$p)->get('tbl_product_country')->row();
-								$prd[] = '<label class="label label-success">'.$sub->country_name.'</label>';
+							{								
+								$prd[] = '<label class="label label-success">'.ucfirst($p).'</label>';
 							}
 						}
 
@@ -338,11 +341,11 @@ class Target extends CI_controller
 							<a href="'.$url.'"><b>'.date('d-M-Y',strtotime($goal->date_from)).' - '.date('d-M-Y',strtotime($goal->date_to)).'</b></a><br>
 							'.implode(' ',$prd).'
 							</td>
-							<td>'.($goal->metric_type=='deal'?'Deal value':'Won deals').'</td>
+							<td>'.ucfirst($goal->metric_type).'</td>
 							<td style="cursor:pointer;">'.$goal_for_list.'</td>
 							<td>'.$target.'</td>
 							<td> <span data-ids="'.$Forecast->info_ids.'" onclick="view_source(this)" style="cursor:pointer">'.$forecast_value.'</span></td>
-							<td> <span data-ids="'.$Achieved->info_ids.'" onclick="view_source(this)" data-toggle="tooltip" data-title="'.($goal->metric_type=='won'?(float)$Achieved->p_amnt:'').'" style="cursor:pointer;">'.$achieved_value.'</span></td>
+							<td> <span data-ids="'.$Achieved->info_ids.'" onclick="view_source(this)" data-toggle="tooltip" data-title="'.($goal->metric_type=='weight'?(float)$Achieved->p_amnt:'').'" style="cursor:pointer;">'.$achieved_value.'</span></td>
 							<td style="text-align:center">
 								'.$achieved_value.'/'.$target.'<br>
 								<div class="progress" style="border:1px solid #cccccc;">
@@ -433,9 +436,8 @@ class Target extends CI_controller
 		if(!empty($goal->products))
 		{
 			foreach (explode(',',$goal->products) as $p)
-			{
-				$sub = $this->db->where('id',$p)->get('tbl_product_country')->row();
-				$prd[] = $sub->country_name;
+			{				
+				$prd[] = ucfirst($p);
 			}
 		}
 		$option_list = $this->common_model->get_categories($this->session->user_id);
@@ -544,6 +546,8 @@ class Target extends CI_controller
 			$goal_id = $this->input->post('goal_id');
 
 			$target_list = implode(',', $this->input->post('target_list[]'));
+			$deal_type = $this->input->post('deal_type')??array();
+			$business_type = $this->input->post('business_type')??array();
 
 			$prod = $this->input->post('products')??array();
 			$data = array('goal_period'=>$this->input->post('goal_period'),
@@ -553,6 +557,8 @@ class Target extends CI_controller
 							'goal_type' =>$this->input->post('goal_type'),
 							'goal_for' =>$target_list,
 							'metric_type' =>$this->input->post('metric_type'),
+							'deal_type'=>implode(',',$deal_type),
+							'business_type'=>implode(',',$business_type),
 							'target_value' =>$this->input->post('target_value'),
 							'products' => implode(',',$prod),
 						);

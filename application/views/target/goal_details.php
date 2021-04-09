@@ -54,9 +54,9 @@
 			if(!empty($goal->products))
 			{
 				echo'<div class="form-group">
-				<label>Prodcuts : '.implode(' , ',$products).'</label>
+				<label>Booking Type  : '.implode(' , ',$products).'</label>
 				</div>';
-			}
+			}			
 
 			?>
 		<div class="row">
@@ -129,7 +129,7 @@
 
 								if($goal->goal_type=='team')
 								{
-									$target = $user_target->target_value;
+									$target = '';//$user_target->target_value;
 								}
 
 								$userdata = $this->db->select('user.s_display_name,user.last_name,role.user_role')
@@ -142,7 +142,7 @@
 
 								$achieved_value =(int) ($goal->metric_type=='deal'?$user_achieved->p_amnt:$user_achieved->num_value);
 								
-
+								$percent = 0;
 								if($target)
 									$percent = round(($achieved_value/$target)*100,2);
 

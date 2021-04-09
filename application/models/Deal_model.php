@@ -360,5 +360,31 @@ class Deal_model extends CI_Model {
         }
         return $res;
     }
+
+    public function deal_month_wise_feed(){
+        $res = array(
+            array('name'=>'John','data'=>array(5,3,4,7,2),'stack'=>'male'),
+            array('name'=>'John','data'=>array(5,3,4,7,2),'stack'=>'male'),
+            array('name'=>'John','data'=>array(5,3,4,7,2),'stack'=>'male')
+        );
+        return $res;
+        // [{
+        //     name: 'John',
+        //     data: [5, 3, 4, 7, 2],
+        //     stack: 'male'
+        //   }, {
+        //     name: 'Joe',
+        //     data: [3, 4, 4, 2, 5],
+        //     stack: 'male'
+        //   }, {
+        //     name: 'Jane',
+        //     data: [2, 5, 6, 2, 1],
+        //     stack: 'female'
+        //   }, {
+        //     name: 'Janet',
+        //     data: [3, 0, 4, 4, 3],
+        //     stack: 'female'
+        //   }]
+    }
     //  Functions for deal graphs end
 }

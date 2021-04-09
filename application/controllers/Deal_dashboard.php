@@ -105,4 +105,9 @@ class Deal_dashboard extends CI_Controller {
         $data['feed'] = json_encode($this->deal_model->freight_wise_feed($_GET));       
         $this->load->view('graphs/deal/freight_wise',$data);
     }
+
+    public function deal_month_wise_feed($filter=array()){
+        $data['feed'] = json_encode($this->deal_model->deal_month_wise_feed($_GET));       
+        $this->load->view('graphs/deal/deal_month_wise',$data);
+    }
 }

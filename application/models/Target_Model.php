@@ -109,13 +109,13 @@ class Target_Model extends CI_model
 		//  exit();
 		if(!empty($goal))
 		{	
-			if($goal->metric_type=='deal')
+			if($goal->metric_type=='weight')
 				$this->db->select('sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
 			else
 				$this->db->select('count(id) as num_value,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
 
 			if(!empty($goal->products))
-				$this->db->where('enquiry.enquiry_source IN ('.$goal->products.')');
+				//$this->db->where('enquiry.enquiry_source IN ('.$goal->products.')');
 
 			$this->db->from('enquiry')
 				->join('commercial_info info','info.enquiry_id = enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status IN (0,1)','inner');
@@ -136,14 +136,14 @@ class Target_Model extends CI_model
 		$goal  = @$this->getGoals(array('goal_id'=>$goal_id),$fetch_type,$user)[0];
 		if(!empty($goal))
 		{
-			if($goal->metric_type=='deal')
+			if($goal->metric_type=='freight')
 				$this->db->select('sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
 			else
 				$this->db->select('count(id) as num_value,sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
 
 			
 			if(!empty($goal->products))
-				$this->db->where('enquiry.enquiry_source IN ('.$goal->products.')');
+				//$this->db->where('enquiry.enquiry_source IN ('.$goal->products.')');
 
 			$this->db->from('enquiry')
 				->join('commercial_info info','info.enquiry_id=enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status=1	','inner');

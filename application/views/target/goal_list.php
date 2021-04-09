@@ -602,17 +602,35 @@ chart.cursor.lineY.disabled = true;
 	            </select>         
 		    </div>  
 		    <div class="col-sm-8" style="padding: 4px">
-				<label>Products</label>
+				<label>Booking Type</label>
 				<select name="products[]" class="select2" multiple>
+					<option value="sundry">Sundry</option>
+					<option value="ftl">FTL</option>
 					<?php
-					if(!empty($product_list))
-					{
-						foreach ($product_list as $row)
-						{
-							echo'<option value="'.$row->id.'">'.$row->country_name.'</option>';
-						}
-					}	
+					// if(!empty($product_list))
+					// {
+					// 	foreach ($product_list as $row)
+					// 	{
+					// 		echo'<option value="'.$row->id.'">'.$row->country_name.'</option>';
+					// 	}
+					// }	
 					?>
+				</select>
+			</div>
+			</div>
+		<div class="row" >
+			<div class="col-sm-4" style="padding: 4px">
+				<label>Deal Type</label>
+				<select name="deal_type[]" class="select2" multiple>
+					<option value="domestic">Domestic</option>
+					<option value="saarc">SAARC</option>					
+				</select>
+			</div>
+			<div class="col-sm-8" style="padding: 4px">
+				<label>Business Type</label>
+				<select name="business_type[]" class="select2" multiple>
+					<option value="inward">Inward</option>
+					<option value="outward">Outward</option>					
 				</select>
 			</div>
 		</div>
@@ -651,8 +669,8 @@ chart.cursor.lineY.disabled = true;
 			<div class="col-sm-4" style="padding: 4px;">
 				<label>Metric <font color="red">*</font></label>
 				<select name="metric_type" class="form-control" required>
-					<option value="deal">Deal Value</option>
-					<option value="won">Won Deals</option>
+					<option value="freight">Freight</option>
+					<option value="weight">Weight</option>
 				</select>
 			</div>
 			<div class="col-sm-8" style="padding: 4px;">

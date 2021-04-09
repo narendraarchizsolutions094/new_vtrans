@@ -43,8 +43,8 @@ class Ticket_Report_datatable_model extends CI_Model {
             $select = 'count(tbl_ticket.ticketno) as count,lead_stage.lead_stage_name as title';
             $group_by = 'tbl_ticket.ticket_stage';
         }else if($for == 'user_chart'){
-            $select = 'count(tbl_ticket.ticketno) as count,CONCAT(admin2.s_display_name,admin2.last_name) as title';
-            $group_by = 'tbl_ticket.assign_to';
+            $select = 'count(tbl_ticket.ticketno) as count,CONCAT(tbl_admin.s_display_name,tbl_admin.last_name) as title';
+            $group_by = 'tbl_ticket.added_by';
         }else if($for == 'product_chart'){
             $select = 'count(tbl_ticket.ticketno) as count,tbl_product_country.country_name as title';
             $group_by = 'tbl_ticket.product';
@@ -86,9 +86,12 @@ class Ticket_Report_datatable_model extends CI_Model {
                 // $where .= " OR tbl_ticket.assign_to  =".$assign."";  
                 		  
             }else{
-    			
-                $where .= " AND ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
-    			$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))'; 
+    			if($for == 'user_wise'){
+                    $where .= " AND  tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
+                }else{
+                    $where .= " AND ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
+                    $where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))'; 
+                }
             }  
             if($assign!=''){	            		
                 $where .= " AND tbl_ticket.assign_to  =".$assign."";  
@@ -158,8 +161,10 @@ class Ticket_Report_datatable_model extends CI_Model {
             $res = array();
             if(!empty($result)){
                 foreach($result as $key=>$value){
-                    $title =  $value['title']??'NA';
-                    $res[] = array($title,(int)$value['count']);
+                    if($value['title']){
+                        $title =  $value['title']??'NA';
+                        $res[] = array($title,(int)$value['count']);
+                    }
                 }
             }
             return $res;

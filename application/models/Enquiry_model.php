@@ -1568,6 +1568,9 @@ class Enquiry_model extends CI_Model {
                         ->where('is_delete', '1')
                         ->get();
     }
+    public function save_goal_log($data){
+      $this->db->insert('tbl_goal_log',$data);
+    }
 
     public function enquiry_by_id($enquiry_id) {
         return $this->db->select("*,enquiry.created_by as enq_created_by,enquiry_tags.tag_ids,enquiry.city_id as enquiry_city_id,enquiry.state_id as enquiry_state_id,enquiry.created_date,enquiry.status,enquiry.address,tbl_product_country.country_name,tbl_product_country.id as country_id,tbl_product.product_name,tbl_center.center_name,enquiry.lead_created_date")

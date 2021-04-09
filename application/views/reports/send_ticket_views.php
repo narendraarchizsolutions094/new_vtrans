@@ -232,7 +232,7 @@
     generate_pie_graph('source_chart', 'Source Wise');
     generate_pie_graph('process_chart', 'Process Wise');
     generate_pie_graph('stage_chart', 'Stage Wise');
-    generate_pie_graph('user_chart', 'Employee Wise Assigned Data');
+    generate_pie_graph('user_chart', 'Employee Wise Added Data');
     generate_pie_graph('product_chart', 'Product/Service Wise');
     var send_data = '<?php 
              $filters['from_created']=$fromdate;
@@ -254,6 +254,7 @@
             data: JSON.parse(send_data),
             success: function(result) {
                 result = JSON.parse(result);
+                counter = 0;
 
                 Highcharts.chart(elm, {
                     chart: {
@@ -288,7 +289,19 @@
                             //     enabled: false
                             // },
                             innerSize: 50,
-                            depth: 45
+                            depth: 45,
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                color: '#000000',
+                                connectorColor: '#000000',
+                                useHTML:true,
+                                formatter: function() {
+                                    //counter++;
+                                    return this.point.name+'-'+this.point.y;
+                                }
+                            }
                         }
                     },
                     credits: {
@@ -547,6 +560,8 @@
                     series.dataFields.categoryX = "name";
                     series.tooltipText = "[{name}: bold]{value}[/]";
                     series.columns.template.strokeWidth = 0;
+                    series.columns.template.tooltipText = "{valueY}[/]";
+                    series.columns.template.showTooltipOn = "always";
 
                     series.tooltip.pointerOrientation = "vertical";
 
@@ -607,6 +622,8 @@
                     var series = chart.series.push(new am4charts.ColumnSeries());
                     series.dataFields.valueX = "sales";
                     series.dataFields.categoryY = "state";
+                    series.columns.template.tooltipText = "{categoryX}\n[bold]{valueY}[/]";
+                    series.columns.template.showTooltipOn = "always";
                     series.columns.template.tooltipText =
                         "{categoryY}: [bold]{valueX}[/]";
                     series.columns.template.strokeWidth = 0;

@@ -3112,13 +3112,17 @@ public function get_enq_list_post(){
           $tags = implode(',',$this->input->post('tags[]'));
 
           foreach ($enq as $key => $value) {
-              if($this->db->where('enq_id',$value)->count_all_results('enquiry_tags')){
-                  $this->db->where('comp_id',$comp_id);
-                  $this->db->where('enq_id',$value);
+            $erow = $this->db->select('enquiry_id')->where('Enquery_id',$value)->get('enquiry')->row_array();
+            if(!empty($erow['enquiry_id'])){
+              $enq_id = $erow['enquiry_id'];
+              if($this->db->where('enq_id',$enq_id)->count_all_results('enquiry_tags')){
+                $this->db->where('comp_id',$comp_id);
+                  $this->db->where('enq_id',$enq_id);
                   $this->db->set('tag_ids',$tags);
                   $this->db->update('enquiry_tags');
-              }else{
-                  $this->db->insert('enquiry_tags',array('comp_id'=>$comp_id,'enq_id'=>$value,'tag_ids'=>$tags));
+                }else{
+                  $this->db->insert('enquiry_tags',array('comp_id'=>$comp_id,'enq_id'=>$enq_id,'tag_ids'=>$tags));
+                }
               }
           }
           $this->set_response([
