@@ -309,8 +309,8 @@ class Target extends CI_controller
 						// echo $this->db->last_query();
 						// print_r($Achieved); exit();
 
-						$forecast_value =(int)($goal->metric_type=='freight'?$Forecast->p_amnt:'');//$Forecast->num_value);
-						$achieved_value =(int)($goal->metric_type=='freight'?$Achieved->p_amnt:'');//$Achieved->num_value);
+						$forecast_value =(int)($goal->metric_type=='freight'?$Forecast->e_amnt:$Forecast->e_amnt);//$Forecast->num_value);
+						$achieved_value =(int)($goal->metric_type=='freight'?$Achieved->e_amnt:$Achieved->e_amnt);
 
 						$percent=0;
 						if($target)
@@ -345,7 +345,7 @@ class Target extends CI_controller
 							<td style="cursor:pointer;">'.$goal_for_list.'</td>
 							<td>'.$target.'</td>
 							<td> <span data-ids="'.$Forecast->info_ids.'" onclick="view_source(this)" style="cursor:pointer">'.$forecast_value.'</span></td>
-							<td> <span data-ids="'.$Achieved->info_ids.'" onclick="view_source(this)" data-toggle="tooltip" data-title="'.($goal->metric_type=='weight'?(float)$Achieved->p_amnt:'').'" style="cursor:pointer;">'.$achieved_value.'</span></td>
+							<td> <span data-ids="'.$Achieved->info_ids.'" onclick="view_source(this)" data-toggle="tooltip" data-title="'.((float)$Achieved->info_count).'" style="cursor:pointer;">'.$achieved_value.'</span></td>
 							<td style="text-align:center">
 								'.$achieved_value.'/'.$target.'<br>
 								<div class="progress" style="border:1px solid #cccccc;">
@@ -468,9 +468,8 @@ class Target extends CI_controller
 		if(!empty($goal->products))
 		{
 			foreach (explode(',',$goal->products) as $p)
-			{
-				$sub = $this->db->where('id',$p)->get('tbl_product_country')->row();
-				$prd[] = $sub->country_name;
+			{				
+				$prd[] = ucfirst($p);
 			}
 		}
 		$option_list = $this->common_model->get_categories($this->session->user_id);

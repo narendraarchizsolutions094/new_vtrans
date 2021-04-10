@@ -174,8 +174,8 @@ $variable=explode(',',$_COOKIE['goal_filter_setting']);
 			<label>Metric</label>
 			<select class="form-control" name="metric_type">
 				<option value="">Select</option>
-				<option value="won">Won Deals (Number)</option>
-				<option value="deal">Deal Value(Amount)</option>
+				<option value="freight">Freight</option>
+				<option value="weight">Weight</option>
 			</select>
 		</div>
 	</div>

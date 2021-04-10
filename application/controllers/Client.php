@@ -284,9 +284,10 @@ class Client extends CI_Controller {
             $mobile = $this->input->post('mobileno');
             $email = $this->input->post('email');
             $otherdetails = $this->input->post('otherdetails');
+            $enq = $this->Enquiry_Model->getEnquiry(array('enquiry_id'=>$clientid));
             $data = array(
                 'comp_id'=>$this->session->companey_id,
-                'client_id' =>$clientid,
+                'client_id' =>$enq->row()->enquiry_id,
                 'c_name' => $name,
                 'emailid' => $email,
                 'contact_number' => $mobile,
@@ -294,7 +295,6 @@ class Client extends CI_Controller {
                 'other_detail' => $otherdetails,
                 'decision_maker' => $this->input->post('decision_maker')??0,
             );
-           $enq = $this->Enquiry_Model->getEnquiry(array('enquiry_id'=>$clientid));
             $enquiry_code = $enq->row()->Enquery_id;
             $this->Leads_Model->add_comment_for_events(display("new_contact_detail_added") , $enquiry_code);
             $insert_id = $this->Client_Model->clientContact($data);
@@ -3275,6 +3275,7 @@ public function all_update_expense_status()
         else
             $hook = $this->input->post('vtype');  
 
+        $potential_tonnage = $potential_amount = $expected_tonnage = $expected_amount = 0;
         foreach($hook as $link_id => $rate)
         {
             $data  = array(
@@ -3295,8 +3296,22 @@ public function all_update_expense_status()
                         'comp_id'=>$this->session->companey_id,
             );
             //print_r($data);
+            $potential_tonnage  +=   $this->input->post('pton['.$link_id.']');
+            $potential_amount   +=   $this->input->post('pamnt['.$link_id.']');
+            $expected_tonnage   +=   $this->input->post('eton['.$link_id.']');
+            $expected_amount    +=   $this->input->post('eamnt['.$link_id.']');
             $this->Branch_model->add_deal_data($data);
         }
+
+        $this->db->where('id',$deal_id);
+        $this->db->update('commercial_info',
+        array(
+            'potential_amount'  => $potential_amount,
+            'potential_tonnage' => $potential_tonnage,
+            'expected_amount'   => $expected_amount,
+            'expected_tonnage'  => $expected_tonnage
+            )
+        );
 
         echo'1';
     }
@@ -3581,6 +3596,35 @@ public function all_update_expense_status()
         {
             if($value->client_name!=''){
             echo'<option value="'.$value->Enquery_id.'">'.$value->client_name.'</option>';
+            }
+        }
+    }
+
+    
+    public function account_by_company2()
+    {
+        $this->load->model(array('Enquiry_Model'));
+        $comp_id  = $this->input->get('comp_id');
+
+            $all_reporting_ids  = $this->common_model->get_categories($this->session->user_id);
+
+            $this->db->select('enquiry.enquiry_id,enquiry.Enquery_id,enquiry.client_name');
+            $this->db->from('enquiry');
+            $this->db->where("enquiry.company",$comp_id);
+
+            if(!empty($this->input->get('escape_lead')))
+                $this->db->where('enquiry.status!=1');
+
+            $where="";
+            $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+            $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+            $this->db->where($where);
+            $res = $this->db->get();
+
+        foreach ($res->result() as $key => $value) 
+        {
+            if($value->client_name!=''){
+            echo'<option value="'.$value->enquiry_id.'">'.$value->client_name.'</option>';
             }
         }
     }

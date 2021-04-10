@@ -40,6 +40,11 @@ class Visits extends REST_Controller {
         $minus=0;
 $result =array();
         $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$limit,$offset);
+         //echo "<pre>";
+      //   print_r($_POST);
+      //   print_r($data['result']->result_array());
+       //echo $this->db->last_query();
+       //exit;
 		foreach($data['result']->result() as $key=> $value)
     {
 			$ades = $value->actualDistance;
@@ -83,9 +88,10 @@ $result =array();
             }
         }
 
-       $result[$key]=(array)$value;
-       $result[$key]['diff']=$percentChange;
+        
 
+
+        
         $visit_totalexp= $this->db->where(array('tbl_expense.visit_id'=> $value->id))->count_all_results('tbl_expense');
         $visit_reject= $this->db->where(array('tbl_expense.visit_id'=> $value->id,'approve_status' => 1))->count_all_results('tbl_expense');
         $visit_approve= $this->db->where(array('tbl_expense.visit_id'=> $value->id,'approve_status' => 2))->count_all_results('tbl_expense');
@@ -93,34 +99,60 @@ $result =array();
         $expstatus='N/A';
         if($visit_totalexp!=0)
         {
-                if($visit_reject==$visit_totalexp){
-                    $expstatus='Rejected ';
-                }elseif($visit_approve==$visit_totalexp){
-                    $expstatus='Approved';
-                }elseif($visit_pending==$visit_totalexp){
-                    // $expstatus='Pending';
-                    $expstatus='Pending';
-                }elseif($visit_reject!=0 AND $visit_approve!=0 OR $visit_pending!=0){
-                    $expstatus='Partial';
-                }         
+            if($visit_reject==$visit_totalexp){
+               $expstatus='Rejected ';
+            }elseif($visit_approve==$visit_totalexp){
+               $expstatus='Approved';
+            }elseif($visit_pending==$visit_totalexp){
+               // $expstatus='Pending';
+               $expstatus='Pending';
+            }elseif($visit_reject!=0 AND $visit_approve!=0 OR $visit_pending!=0){
+              $expstatus='Partial';
+            }         
+        }
+       // echo $expstatus.'<br>';
+        //continue;
+
+         $type = 0;               
+         if(!empty($_POST['filters']['expence'])){ //expence status filter
+            $type = $_POST['filters']['expence'];
+            if($type=='1' && $expstatus!='Approved'){
+               $minus++;
+               continue;
+            }
+            if($type=='2' and $expstatus!='Pending'){
+               $minus++;
+               continue;
+            }
+            if($type=='3' and $expstatus!='Rejected'){
+               $minus++;
+               continue;
+            }
+            if($type=='4' and $expstatus!='Partial'){
+               $minus++;
+               continue;
+            }
          }
-	//For total_expence And	visit_status  
-	//$visit_status= $this->db->select('visit_status')->where('visit_id', $value->id)->get('visit_details')->row();
-	//$total_expence= $this->db->select('amount')->where('visit_id', $value->id)->get('tbl_expense')->row();
+         //echo $expstatus.' '.$type;
+                  //For total_expence And	visit_status  
+                  //$visit_status= $this->db->select('visit_status')->where('visit_id', $value->id)->get('visit_details')->row();
+                  //$total_expence= $this->db->select('amount')->where('visit_id', $value->id)->get('tbl_expense')->row();
 	//$ttl_exp = $total_expence->amount;
 	//$vst_sts = $visit_status->visit_status;
 	//End
-      $result[$key]['status'] = $expstatus;
-	 // $result[$key]['meeting_status'] = $meeting_status;
-      //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
-      $result[$key]['visit_status'] = $value->visit_status;
-		} 
+   $result[$key]=(array)$value;
+   $result[$key]['diff']=$percentChange;
+   $result[$key]['status'] = $expstatus;
+   // $result[$key]['meeting_status'] = $meeting_status;
+   //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
+   $result[$key]['visit_status'] = $value->visit_status;
+} 
 
-          if(!empty($result))
-          {
-            $res= array();
-            
-            $res['offset'] = $offset;
+if(!empty($result))
+{
+   $res= array();
+   
+   $res['offset'] = $offset;
             $res['limit'] = $limit;
             $res['total'] = $total-$minus;
             $res['list'] = $result;

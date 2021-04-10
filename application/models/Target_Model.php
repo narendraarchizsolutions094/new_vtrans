@@ -112,15 +112,45 @@ class Target_Model extends CI_model
 			if($goal->metric_type=='weight')
 				$this->db->select('sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
 			else
-				$this->db->select('count(id) as num_value,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
+				$this->db->select('sum(info.expected_amount) as e_amnt,count(id) as num_value,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
+				
+				$this->db->from('enquiry')
+				->join('commercial_info info','info.enquiry_id = enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status IN (0,1) and `info`.`stage_id` IN(3,4)','inner');
+				$this->db->where('enquiry.lead_expected_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'"');	
+				//$this->db->where('enquiry.status=2');
 
-			if(!empty($goal->products))
-				//$this->db->where('enquiry.enquiry_source IN ('.$goal->products.')');
+				if(!empty($goal->products)){
+					$prod_arr = explode(',',$goal->products);
+					$this->db->where_in("info.booking_type",$prod_arr);
+				}
+				
 
-			$this->db->from('enquiry')
-				->join('commercial_info info','info.enquiry_id = enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status IN (0,1)','inner');
-			$this->db->where('enquiry.lead_expected_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'"');	
-			//$this->db->where('enquiry.status=2');
+				if(!empty($goal->business_type)){
+					$bus_type_arr = explode(',',$goal->business_type);
+					$bus_new_arr = array();
+					if(in_array('inward',$bus_type_arr)){
+						$bus_new_arr[] = 'in';
+					}
+					if(in_array('outward',$bus_type_arr)){
+						$bus_new_arr[] = 'out';
+					}
+					$this->db->where_in('info.business_type',$bus_new_arr);
+				}
+
+				if(!empty($goal->deal_type)){
+					$prods = explode(',',$goal->deal_type);					
+					if(!empty($prods)){
+						$prowhere = '';
+						if(!empty($prods[1])){
+							$prowhere .= '(';
+						}
+						$prowhere .= 'FIND_IN_SET("'.$prods[0].'",info.deal_type)>0';
+						if(!empty($prods[1])){
+							$prowhere .= ' OR FIND_IN_SET("'.$prods[1].'",info.deal_type)>0)';							
+						}
+						$this->db->where($prowhere);						
+					}
+				}
 
 			 $res =$this->db->get()->row();
 			//if($goal_id!=38)
@@ -136,23 +166,52 @@ class Target_Model extends CI_model
 		$goal  = @$this->getGoals(array('goal_id'=>$goal_id),$fetch_type,$user)[0];
 		if(!empty($goal))
 		{
-			if($goal->metric_type=='freight')
+			if($goal->metric_type=='freight'){
 				$this->db->select('sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
-			else
-				$this->db->select('count(id) as num_value,sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
+			}
+			else{
+				$this->db->select('sum(info.expected_tonnage) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
+			}
 
 			
-			if(!empty($goal->products))
-				//$this->db->where('enquiry.enquiry_source IN ('.$goal->products.')');
+			if(!empty($goal->products)){
+				$prod_arr = explode(',',$goal->products);
+				$this->db->where_in("info.booking_type",$prod_arr);
+			}
+			
+
+			if(!empty($goal->business_type)){
+				$bus_type_arr = explode(',',$goal->business_type);
+				$bus_new_arr = array();
+				if(in_array('inward',$bus_type_arr)){
+					$bus_new_arr[] = 'in';
+				}
+				if(in_array('outward',$bus_type_arr)){
+					$bus_new_arr[] = 'out';
+				}
+				$this->db->where_in('info.business_type',$bus_new_arr);
+			}
+
+			if(!empty($goal->deal_type)){
+				$prods = explode(',',$goal->deal_type);					
+				if(!empty($prods)){
+					$prowhere = '';
+					if(!empty($prods[1])){
+						$prowhere .= '(';
+					}
+					$prowhere .= 'FIND_IN_SET("'.$prods[0].'",info.deal_type)>0';
+					if(!empty($prods[1])){
+						$prowhere .= ' OR FIND_IN_SET("'.$prods[1].'",info.deal_type)>0)';							
+					}
+					$this->db->where($prowhere);						
+				}
+			}
 
 			$this->db->from('enquiry')
-				->join('commercial_info info','info.enquiry_id=enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status=1	','inner');
-			$this->db->where('enquiry.client_created_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'" ');
-			//$this->db->where('enquiry.status=3');
+				->join('commercial_info info','info.enquiry_id=enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status=1	and info.stage_id=5','inner');
+			$this->db->where('info.creation_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'" ');
 			$res = $this->db->get()->row();
-			//if($goal_id!=38)
 			return  $res;
-				//echo $this->db->last_query(); exit();
 		}
 		else
 			return false;
@@ -160,20 +219,50 @@ class Target_Model extends CI_model
 
 	public function getTarget($goal_id,$fetch_type,$user)
 	{
-		$goal  =(array) @$this->getGoals(array('goal_id'=>$goal_id),$fetch_type,$user)[0];
+		$goal  = $this->getGoals(array('goal_id'=>$goal_id),$fetch_type,$user);		
+		// var_dump($goal);
+		// echo $this->db->last_query();
+		// exit;
 		return (object)array_slice($goal,8,5);
 	}
 
 	public function getUserWiseForecast($goal_id,$user_id)
 	{
-		$goal  = $this->getGoals(array('goal_id'=>$goal_id))[0];
-		if($goal->metric_type=='deal')
-		$this->db->select('*, sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids,role.user_role ');
-		else
-			$this->db->select('*, count(*) as num_value,GROUP_CONCAT(info.id) as info_ids,');
+		$goal  = $this->getGoals(array('goal_id'=>$goal_id))[0];		
+		$this->db->select('*, sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids,role.user_role ');	
 
-		if(!empty($goal->products))
-				$this->db->where('enquiry.enquiry_source IN ('.$goal->products.')');
+		if(!empty($goal->products)){
+			$prod_arr = explode(',',$goal->products);
+			$this->db->where_in("info.booking_type",$prod_arr);
+		}
+		
+
+		if(!empty($goal->business_type)){
+			$bus_type_arr = explode(',',$goal->business_type);
+			$bus_new_arr = array();
+			if(in_array('inward',$bus_type_arr)){
+				$bus_new_arr[] = 'in';
+			}
+			if(in_array('outward',$bus_type_arr)){
+				$bus_new_arr[] = 'out';
+			}
+			$this->db->where_in('info.business_type',$bus_new_arr);
+		}
+
+		if(!empty($goal->deal_type)){
+			$prods = explode(',',$goal->deal_type);					
+			if(!empty($prods)){
+				$prowhere = '';
+				if(!empty($prods[1])){
+					$prowhere .= '(';
+				}
+				$prowhere .= 'FIND_IN_SET("'.$prods[0].'",info.deal_type)>0';
+				if(!empty($prods[1])){
+					$prowhere .= ' OR FIND_IN_SET("'.$prods[1].'",info.deal_type)>0)';							
+				}
+				$this->db->where($prowhere);						
+			}
+		}
 
 	$res =	$this->db->from('tbl_admin admin')
 					->join('commercial_info info','info.createdby=admin.pk_i_admin_id and info.status IN (0,1)','inner')
@@ -192,20 +281,45 @@ class Target_Model extends CI_model
 		if(!empty($goal))
 		{
 			
-			if($goal->metric_type=='deal')
-				$this->db->select('sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids,');
-			else
-				$this->db->select('*, count(*) as num_value,sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids,');
+		
+			$this->db->select('sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids,');
+		
+			if(!empty($goal->products)){
+				$prod_arr = explode(',',$goal->products);
+				$this->db->where_in("info.booking_type",$prod_arr);
+			}
+			
 
-			if(!empty($goal->products))
-				$this->db->where('enquiry.enquiry_source IN ('.$goal->products.')');
+			if(!empty($goal->business_type)){
+				$bus_type_arr = explode(',',$goal->business_type);
+				$bus_new_arr = array();
+				if(in_array('inward',$bus_type_arr)){
+					$bus_new_arr[] = 'in';
+				}
+				if(in_array('outward',$bus_type_arr)){
+					$bus_new_arr[] = 'out';
+				}
+				$this->db->where_in('info.business_type',$bus_new_arr);
+			}
 
+			if(!empty($goal->deal_type)){
+				$prods = explode(',',$goal->deal_type);					
+				if(!empty($prods)){
+					$prowhere = '';
+					if(!empty($prods[1])){
+						$prowhere .= '(';
+					}
+					$prowhere .= 'FIND_IN_SET("'.$prods[0].'",info.deal_type)>0';
+					if(!empty($prods[1])){
+						$prowhere .= ' OR FIND_IN_SET("'.$prods[1].'",info.deal_type)>0)';							
+					}
+					$this->db->where($prowhere);						
+				}
+			}
 			$this->db->from('enquiry')
 				->join('commercial_info info','info.enquiry_id=enquiry.enquiry_id and info.createdby = '.$user_id.' and info.status =1 ','inner');
-			$this->db->where('enquiry.client_created_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'"');
-			//$this->db->where('enquiry.status=3');
+			$this->db->where('info.creation_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'"');			
 			return $this->db->get()->row();
-				//echo $this->db->last_query(); exit();
 		}
 		else
 			return false;

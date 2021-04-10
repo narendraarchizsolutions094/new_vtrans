@@ -54,7 +54,7 @@
 			if(!empty($goal->products))
 			{
 				echo'<div class="form-group">
-				<label>Prodcuts : '.implode(' , ',$products).'</label>
+				<label>Booking Type : '.implode(' , ',$products).'</label>
 				</div>';
 			}
 			?>
@@ -98,9 +98,9 @@
 								}
 								
 
-								$foracast_value =(int) ($goal->metric_type=='deal'?$user_forecast->p_amnt:$user_forecast->num_value);
+								$foracast_value =(int)$user_forecast->p_amnt;
 
-								$achieved_value =(int) ($goal->metric_type=='deal'?$user_achieved->p_amnt:$user_achieved->num_value);
+								$achieved_value =(int)$user_achieved->p_amnt;
 								
 
 								if($target)

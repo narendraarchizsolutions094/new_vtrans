@@ -4995,7 +4995,7 @@ public function insertComInfo($data)
               $this->db->limit($limit,$offset);
           }
 
-
+          $this->db->order_by('info.id','desc');
         return $this->db->get();
 
   }
@@ -5050,7 +5050,7 @@ public function insertComInfo($data)
 
         if(!empty($_POST['filters']))
           {
-              $match_list = array('date_from','date_to','phone','company','enquiry_id','contact');
+              $match_list = array('date_from','date_to','phone','for','clientName','contact');
 
               $this->db->group_start();
               foreach ($_POST['filters'] as $key => $value)
@@ -5066,15 +5066,15 @@ public function insertComInfo($data)
                         //   $fld = 'client_created_date';
 
                         if($key=='date_from')
-                          $this->db->where($fld.'>=',$value);
+                          $this->db->where('tbl_visit.created_at>=',$value);
 
                         if($key=='date_to')
-                          $this->db->where($fld.'<=',$value);
+                          $this->db->where('tbl_visit.created_at<=',$value);
 
-                        if($key=='company')
+                        if($key=='for')
                           $this->db->where('enquiry.company = '.$value);
 
-                        if($key=='enquiry_id')
+                        if($key=='clientName')
                           $this->db->where('tbl_visit.enquiry_id = '.$value);
 
                         // if($key=='phone')

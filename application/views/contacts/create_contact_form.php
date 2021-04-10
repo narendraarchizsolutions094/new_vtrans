@@ -100,7 +100,7 @@ else
 function load_accounts(v)
 {
       $.ajax({
-            url:"<?=base_url('client/account_by_company')?>",
+            url:"<?=base_url('client/account_by_company2')?>",
             type:'get',
             data:{comp_id:v},
             success:function(q){

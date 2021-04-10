@@ -101,6 +101,7 @@
 				<?php
 						if(!empty($goal->goal_for))
 						{
+							$target = 0;
 							$this->load->model('Target_Model');
 
 							// if($goal->goal_type=='team')
@@ -121,15 +122,15 @@
 								//print_r($user_forecast);exit();
 								//$use_target = $this->Target_Model->ge
 								$user_target = $this->Target_Model->getTarget($goal->goal_id,2,$user_id);
-								//print_r($user_target);
 								//continue;
+								//print_r($user_target);
 								
 								if(!($user_forecast || $user_achieved))
 									continue;
 
-								if($goal->goal_type=='team')
+								if($goal->goal_type=='team' && !empty($user_target->target_value))
 								{
-									$target = '';//$user_target->target_value;
+									$target = $user_target->target_value;
 								}
 
 								$userdata = $this->db->select('user.s_display_name,user.last_name,role.user_role')
@@ -138,12 +139,12 @@
 										->where('user.pk_i_admin_id',$user_id)
 										->get()->row();
 
-								$foracast_value =(int) ($goal->metric_type=='deal'?$user_forecast->p_amnt:$user_forecast->num_value);
+								$foracast_value =(int)$user_forecast->p_amnt;
 
-								$achieved_value =(int) ($goal->metric_type=='deal'?$user_achieved->p_amnt:$user_achieved->num_value);
+								$achieved_value =(int)$user_achieved->p_amnt;
 								
 								$percent = 0;
-								if($target)
+								if(!empty($target))
 									$percent = round(($achieved_value/$target)*100,2);
 
 								if($percent<30)
