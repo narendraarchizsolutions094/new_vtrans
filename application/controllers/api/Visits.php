@@ -274,6 +274,9 @@ if(!empty($result))
     	$enquiry_id = $this->input->post('enquiry_id');
     	$user_id = $this->input->post('user_id');
       $contact_id  = $this->input->post('contact_id')??'';
+      $visit_date = $this->input->post('visit_date');
+      $visit_time = $this->input->post('visit_time');
+      $m_purpose = $this->input->post('m_purpose');
 
     	$this->form_validation->set_rules('company_id','company_id','required|trim');
     	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
@@ -308,6 +311,9 @@ if(!empty($result))
 	            {	$data['enquiry_id'] = $enquiry_id;
 	            	$this->Client_Model->add_visit($data);
 	            	$this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
+      
+                  $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', '', '', '', $visit_time, $res->Enquery_id, '', 'Visit -'.$m_purpose,1,3,$user_id,$comp_id);
+
 	            }
 	            $done = 1;
             }	

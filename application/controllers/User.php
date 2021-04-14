@@ -773,7 +773,7 @@ class User extends CI_Controller
         $data['products_list'] = $this->dash_model->all_product_list();
         $data['products'] = $this->dash_model->all_process_list();
          $this->load->model('Branch_model');
-        $data['region_list'] = $this->Branch_model->all_sales_region();
+        
         $data['user_meta'] = $this->user_model->get_user_meta($id,array('api_name','api_url'));
         $data['discount_list']= $this->Branch_model->discount_list();
         if($this->session->companey_id == 65){

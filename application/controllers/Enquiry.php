@@ -3724,9 +3724,13 @@ echo  $details1;
                 $sub[] = $res->rating!=''?$res->rating:'NA';
 
 
+        if($colsall || in_array(28,$cols)){
+            $sub[] = $res->remarks;
+        }
         if($colsall || in_array(7,$cols)){
             $sub[] = $res->employee;
         }
+        
             
 
                 
@@ -3771,7 +3775,7 @@ echo  $details1;
         }
 
         if($colsall || in_array(26,$cols)){                 
-            $sub[] = $res->city_name??'NA';    
+            $sub[] = $res->city??'NA';    
         }
         if($colsall || in_array(27,$cols)){                 
             $sub[] = $rate??'NA'; 

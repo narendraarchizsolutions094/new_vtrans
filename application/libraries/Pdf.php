@@ -93,11 +93,13 @@ public function create($html,$action=0,$pdfFilePath1='',$size=0){
         file_put_contents($file_location,$pdf); 
         $title = explode('/',$file_location);
         $title = end($title);
+        ob_end_clean();
         $dompdf->stream($title, array('Attachment'=>$action));
     }
     else
     {
         $title = 'Quotation.pdf';
+        ob_end_clean();
         $dompdf->stream($title, array('Attachment'=>$action));
     }
     

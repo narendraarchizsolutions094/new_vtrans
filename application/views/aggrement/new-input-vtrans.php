@@ -1093,59 +1093,59 @@ information:</span></h1>
 	</tr>
 	<tr>
 		<td class="bg-l">Minimum Chargeble Wt</td>
-		<td><!-- <input type="" name="charges[2]" value=" --><?=$charges[2]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[2]" value=" --><?=$charges[2]??''?><!-- " style="width: 100px;"> --></td>
 		<td>KG</td>
 		<td><b>Whichever is Higher</b></td>
 	</tr>
 	<tr>
 		<td  class="bg-d">Minimum Freight Value</td>
-		<td><!-- <input type="" name="charges[3]" value=" --><?=$charges[3]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[3]" value=" --><?=$charges[3]??''?><!-- " style="width: 100px;"> --></td>
 		<td>RS</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td class="bg-l">CFT Factor</td>
-		<td><!-- <input type="" name="charges[4]" value=" --><?=$charges[4]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[4]" value=" --><?=$charges[4]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">KG</td>
 	</tr>
 	<tr>
 		<td class="bg-d">Hamali Charges</td>
-		<td><!-- <input type="" name="charges[5]" value=" --><?=$charges[5]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[5]" value=" --><?=$charges[5]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per Kg/Box</td>
 	</tr>
-	<tr>
+	<tr> 
 		<td class="bg-l">FOV Charges (Owner risk)</td>
 		<td><!-- <input type="" name="charges[6]" value=" --><?=$charges[6]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of Invoice Value</td>
 	</tr>
-	<tr>
+	<tr> 
 		<td class="bg-d">FOV Charges (Carrier risk)</td>
 		<td><!-- <input type="" name="charges[7]" value=" --><?=$charges[7]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of Invoice Value</td>
 	</tr>
 	<tr>
 		<td class="bg-l">AOC Charges</td>
-		<td><!-- <input type="" name="charges[8]" value=" --><?=$charges[8]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[8]" value=" --><?=$charges[8]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of Total Freight</td>
 	</tr>
 	<tr>
 		<td class="bg-d">COD/DOD Charges</td>
-		<td><!-- <input type="" name="charges[9]" value=" --><?=$charges[8]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[9]" value=" --><?=$charges[8]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
 	<tr>
 		<td class="bg-l">Dynamic Fuel Surcharges in %</td>
-		<td><!-- <input type="" name="charges[10]" value=" --><?=$charges[17]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[10]" value=" --><?=$charges[17]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of basic freight</td>
 	</tr>
 	<tr>
 		<td class="bg-d">DACC Charges</td>
-		<td><!-- <input type="" name="charges[11]" value=" --><?=$charges[9]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[11]" value=" --><?=$charges[9]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
 	<tr>
 		<td class="bg-l">E-way bill charge</td>
-		<td><!-- <input type="" name="charges[12]" value=" --><?=$charges[18]?><!-- " style="width: 100px;"> --></td>
+		<td><!-- <input type="" name="charges[12]" value=" --><?=$charges[18]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
 	<tr>
@@ -1155,12 +1155,12 @@ information:</span></h1>
 	</tr>
 	<tr>
 		<td class="bg-l">Last Mile Delivery Charges</td>
-		<td><?=$charges[20]?></td>
+		<td><?=$charges[20]??''?></td>
 		<td colspan="2">Upto 3 MT Per GC</td>
 	</tr>
 	<tr>
 		<td class="bg-d">Other (Pelase Specify)</td>
-		<td><!-- <input type="" name="" style="width: 100px;"> --><?=$charges[11]?></td>
+		<td><!-- <input type="" name="" style="width: 100px;"> --><?=$charges[11]??''?></td>
 		<td colspan="2">At Actual</td>
 	</tr>
 </table>
@@ -1171,7 +1171,7 @@ normal"><span style="font-size:19.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 <p class="MsoNormal" align="center" style="margin-right:12.15pt;text-align:center;
 tab-stops:257.1pt 346.7pt"><b style="mso-bidi-font-weight:normal"><span style="color:#214685;mso-font-width:105%">Demurrage<span style="letter-spacing:
 -.75pt"> </span>Charges<span style="letter-spacing:-.75pt"> </span>to<span style="letter-spacing:-.7pt"> </span>be<span style="letter-spacing:-.75pt"> </span>Paid<span style="letter-spacing:-.75pt"> </span>By<span style="letter-spacing:-.7pt"> </span>
-<?=$charges[14]?>
+<?=$charges[14]??''?>
 </b>
 </p>
 
@@ -1183,7 +1183,7 @@ normal"><span style="font-size:7.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<th class="bg-l" style="width: 218px; font-weight: normal">
 		Demurrage charges beyond <input type="" name="ip[40]" style="width: 25px;"> days of arrival at destination (Max 7 Days Free)
 		</th>
-		<td> <?=$charges[13]?> + GST</td>
+		<td> <?=$charges[13]??''?> + GST</td>
 		<td>
 			Per KG on Per day basis
 		</td>
@@ -1195,7 +1195,7 @@ normal"><span style="font-size:16.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 
 <p class="MsoNormal" align="center" style="margin-right:20.2pt;text-align:center;
 tab-stops:220.1pt 306.65pt"><b style="mso-bidi-font-weight:normal"><span style="color:#214685;mso-font-width:105%">CR<span style="letter-spacing:-.5pt">
-</span>Charges<span style="letter-spacing:-.5pt"> </span>to<span style="letter-spacing:-.5pt"> </span>be<span style="letter-spacing:-.45pt"> </span>Paid<span style="letter-spacing:-.5pt"> </span>By<span style="letter-spacing:-.5pt"> </span> <?=$charges[12]?></p>
+</span>Charges<span style="letter-spacing:-.5pt"> </span>to<span style="letter-spacing:-.5pt"> </span>be<span style="letter-spacing:-.45pt"> </span>Paid<span style="letter-spacing:-.5pt"> </span>By<span style="letter-spacing:-.5pt"> </span> <?=$charges[12]??''?></p>
 
 <p class="MsoBodyText" style="margin-top:.4pt"><b style="mso-bidi-font-weight:
 normal"><span style="font-size:7.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></b></p>
@@ -1214,7 +1214,7 @@ normal"><span style="font-size:7.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 		<th class="bg-l" style="width: 218px; font-weight: normal">
 		GI Charges
 		</th>
-		<td><?=$charges[16]?></td>
+		<td><?=$charges[16]??''?></td>
 		<td>
 			Rs per GC
 		</td>
@@ -1691,7 +1691,7 @@ normal"><span style="font-size:3.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 </span>contract<span style="letter-spacing:-1.55pt"> </span>is<span style="mso-tab-count:1 dotted">
 
 <!-- <input type="" name="fule_price"> -->
-<?=$charges[21]?>
+<?=$charges[21]??''?>
 
  </span></span><span style="color:#010202">per<span style="letter-spacing:-.4pt"> </span><span style="letter-spacing:-.35pt">Ltr.</span></span></p>
 

@@ -1616,7 +1616,7 @@ if(!empty($q1)){
    }else{
     $noti_id = $this->session->user_id;
    }
-
+   $notimsg = 'PO Uploded';
 if(!empty($_FILES['file']['name']))
 {
 
@@ -1633,15 +1633,20 @@ if(!empty($_FILES['file']['name']))
 
             if($ret){
                 $this->aws->upload("",$path);   
-                                                }
-                $this->db->set('po_file',$path);
+            }
+            if($this->input->post('agreement_attachment') == 2){
+                $this->db->set('signed_agreement',$path);
+                $notimsg = 'Signed Agreement Uploded';
+            }else{
+                $this->db->set('po_file',$path);                
+            }
                 $this->db->where('id', $ag_id);
                 $this->db->update('tbl_aggriment'); 
                
             }
             
             $assign_data_noti[]=array('create_by'=> $noti_id,
-                        'subject'=>'PO Uploded',
+                        'subject'=>$notimsg,
                         'query_id'=>$enq_id,
                         'task_date'=>date('d-m-Y'),
                         'task_time'=>date('H:i:s')
@@ -3845,6 +3850,9 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
     public function attach_agreement_data()
     {
         //print_r($_POST);exit();
+        if(empty($_POST)){
+            die('Direct Access Not Allowed');
+        }
         $this->load->model(array('Branch_model','Leads_Model','Location_model'));
         $deal_id = $this->input->post('deal_id');
         $deal   =    $this->Branch_model->get_deal($deal_id);
@@ -3888,27 +3896,29 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $this->load->library('pdf');
 
         $res =   $this->load->view('aggrement/print_vtrans',$input,true);
-        
+        // echo $res;
+        // exit;
         $json = base64_decode($data['ag_data']);
         $ag_data = json_decode($json,true);
-        print_r($ag_data);
+        //print_r($ag_data);
         $enq_code = $data['enq_code'];
         $ag_path = 'assets/agreements/Agreement-'.time().rand(1111,9999).'.pdf';
-        $this->pdf->create($res,0,$ag_path);
         
         $ary = array(
-                    'enq_id'=>$enq_code,
-                    'comp_id'=>$this->session->companey_id,
-                    'agg_name'=>$ag_data['name'],
-                    'agg_phone'=>$ag_data['mobile'],
-                    'agg_email'=>$ag_data['email'],
-                    'agg_adrs'=>$ag_data['address'],
-                    'file'=>$ag_path,
-                    'agg_date'=>$ag_data['date'],
-                    'created_by'=>$this->session->user_id,
-                    'created_date'=>date('d/m/Y'),
-                );
+            'enq_id'=>$enq_code,
+            'comp_id'=>$this->session->companey_id,
+            'agg_name'=>$ag_data['name'],
+            'agg_phone'=>$ag_data['mobile'],
+            'agg_email'=>$ag_data['email'],
+            'agg_adrs'=>$ag_data['address'],
+            'file'=>$ag_path,
+            'agg_date'=>$ag_data['date'],
+            'created_by'=>$this->session->user_id,
+            'created_date'=>date('d/m/Y'),
+        );
         $this->db->insert('tbl_aggriment',$ary);
-        redirect(base_url($ag_path));
+        $this->pdf->create($res,0,$ag_path);
+        
+        //redirect($ag_path);
     }
 }

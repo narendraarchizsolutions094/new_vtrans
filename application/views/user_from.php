@@ -168,12 +168,19 @@
                                     <label><?php echo display('region_list')?> </label>
                                      <select class="form-control" name="region" id="region" >
                                           <option value="" >---Select region---</option>
-                                            <?php foreach($region_list as $region){
-                                            if($region->region_id==$department->region){ ?>                     
+                                            <?php 
+                                            if(!empty($region_list)){
+//print_r($region_list);
+                                                foreach($region_list as $key=>$region){
+                                                    if($region->region_id==$department->region){ ?>                     
                                                 <option value="<?=$region->region_id ?>" selected><?=$region->region_name ?></option>                                                
                                             <?php }else{?>
                                                 <option value="<?=$region->region_id ?>" ><?=$region->region_name ?></option>
-                                           <?php  } }?>                                            
+                                                    
+                                           <?php  } 
+                                                }
+                                            }
+                                        ?>                                            
                                      </select>                                    
                                 </div>       
                                 <div class="form-group col-md-4">                                    

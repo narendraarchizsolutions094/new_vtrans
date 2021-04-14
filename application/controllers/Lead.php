@@ -2844,7 +2844,13 @@ public function get_all_stage_deals() {
                 $qry .= "(enq.created_by  IN ($impuser) OR enq.aasign_to  IN ($impuser))";
             }
         $data["result"] = $this->db->query($qry)->result();
+        $this->load->model('Branch_model');
         $data["filter"]  = $filter;
+        $data['branch_lists']=$this->Branch_model->all_sales_branch();
+        $data['region_lists']=$this->Branch_model->all_sales_region();
+        $data['area_lists']=$this->Branch_model->all_sales_area();
+        $data['dept_lists']=$this->User_model->all_sales_dept();
+        $data['created_bylist'] = $this->User_model->read();
         $data['title']   = "Lead Search";
         $data['content'] = $this->load->view('lead_search', $data, true);
         $this->load->view('layout/main_wrapper', $data);

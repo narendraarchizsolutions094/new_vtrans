@@ -3053,7 +3053,11 @@ class Ticket extends CI_Controller
 				print_r($this->session->userdata());
 		}
 		public function upload_tickets(){
-			$data['title'] = "Upload ticket";
+			if($this->session->process[0] == 199){
+				$data['title'] = "Upload FTL Data";
+			}else{
+				$data['title'] = "Upload ticket";
+			}
 			$this->load->model('dash_model');
 			$data['process'] = $this->dash_model->get_user_product_list();
 			$data['content'] = $this->load->view('ticket/upload_ticket',$data,true);

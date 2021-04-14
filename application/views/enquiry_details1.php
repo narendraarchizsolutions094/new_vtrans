@@ -2460,6 +2460,7 @@ if(user_access('1004'))
     <th class="th-sm">Agreement</th>
 <?php if($details->status=='5'){ ?>
     <th class="th-sm">PO File</th>
+    <th class="th-sm">Signed Agreement</th>
   <th class="th-sm">Attach PO</th>
 <?php } ?>
     </tr>
@@ -2490,6 +2491,18 @@ $poname= explode('/', $val->po_file);
 $poname = end($poname);
   ?>
 <td><a href="<?php   echo base_url($val->po_file); ?>"  target="_blank"><?=$poname?></a></td>
+<td>
+<?php
+if($val->signed_agreement){ ?>
+   <a href="<?php echo base_url().$val->signed_agreement; ?>"  target="_blank">Signed Doc</a>
+<?php
+}else{
+   ?>
+<div class="form-group col-sm-2"><a href="#modalagg" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="set_agreement_id(<?=$val->id?>,2)"><i class="fa fa-upload" aria-hidden="true"></i></a></div>
+   <?php
+}
+?>
+  </td>
 <?php } ?>
   <td>
   <div class="form-group col-sm-2"><a href="#modalagg" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="set_agreement_id(<?=$val->id?>)"><i class="fa fa-upload" aria-hidden="true"></i></a></div>
@@ -2507,9 +2520,16 @@ $poname = end($poname);
   $('.dataTables_length').addClass('bs-select');
 });
 
-function set_agreement_id(ag_id)
+function set_agreement_id(ag_id,type=1)
 {
   $("input[name=ide]").val(ag_id);
+  if(type==2){
+   $("input[name='agreement_attachment']").val(2);
+   $("#exampleModalLabel6").html('Upload Signed Agreement');
+  }else{
+   $("input[name='agreement_attachment']").val(1);
+   $("#exampleModalLabel6").html('Upload PO Here');
+  }
 }
 </script> 
 <hr>
@@ -2597,6 +2617,7 @@ function set_agreement_id(ag_id)
       <div class="modal-dialog modal-dialog-centered" role="document">
      
 <form method="post" action="<?php echo base_url(); ?>client/upload_aggrement_team" enctype="multipart/form-data">
+         <input name='agreement_attachment' value='1' hidden/>
         <div class="modal-content tx-14">
           <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel6">Upload PO Here</h6>

@@ -28,7 +28,7 @@ class location extends CI_Controller {
         if (user_role('113') == true) {
         }
 
-        $data['title'] = display('territory_lsit');
+        $data['title'] = display('territory_list');
         $data['country'] = $this->location_model->territory_lsit();
         $data['content'] = $this->load->view('location/territory_list', $data, true);
         $this->load->view('layout/main_wrapper', $data);
@@ -90,7 +90,7 @@ class location extends CI_Controller {
     function state() {
         if (user_role('19') == true) {
         }
-        $data['title'] = display('country_list');
+        $data['title'] = display('state_list');
         $data['country'] = $this->location_model->state_list();
        // print_r($data['country']); exit();
         $data['content'] = $this->load->view('location/state_list', $data, true);
@@ -99,7 +99,7 @@ class location extends CI_Controller {
     function city() {
         if (user_role('117') == true) {
         }
-        $data['title'] = display('country_list');
+        $data['title'] = display('city_list');
         $data['country'] = $this->location_model->city_list();
         $data['content'] = $this->load->view('location/city_list', $data, true);
         $this->load->view('layout/main_wrapper', $data);

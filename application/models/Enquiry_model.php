@@ -4996,6 +4996,7 @@ public function insertComInfo($data)
           }
 
           $this->db->order_by('info.id','desc');
+          $this->db->group_by('info.id');
         return $this->db->get();
 
   }
