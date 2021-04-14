@@ -5,7 +5,7 @@
 <style>
 .highcharts-figure, .highcharts-data-table table {
   min-width: 310px; 
-  max-width: 800px;
+  /* max-width: 800px; */
   margin: 1em auto;
 }
 
@@ -50,40 +50,95 @@
 
 <script>
 Highcharts.chart('container', {
-
-chart: {
-  type: 'column'
-},
-
-title: {
-  text: 'Monthly Graph'
-},
-
-xAxis: {
-  categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
-},
-
-yAxis: {
-  allowDecimals: false,
-  min: 0,
-  title: {
-    text: 'Value'
-  }
-},
-
-tooltip: {
-  formatter: function () {
-    return '<b>' + this.x + '</b><br/>' +
-      this.series.name + ': ' + this.y + '<br/>' +
-      'Total: ' + this.point.stackTotal;
-  }
-},
-
-plotOptions: {
-  column: {
-    stacking: 'normal'
-  }
-},
-series: <?=$feed?>
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Monthly Deal'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Values'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    credits: {
+      enabled: false
+    },
+    plotOptions: {
+        stacking: 'normal',
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: <?=$feed?>
 });
+
+
+  // Highcharts.chart('container', {
+
+  // chart: {
+  //   type: 'column'
+  // },
+
+  // title: {
+  //   text: 'Monthly Graph'
+  // },
+
+  // xAxis: {
+  //   categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+  // },
+
+  // yAxis: {
+  //   allowDecimals: false,
+  //   min: 0,
+  //   title: {
+  //     text: 'Value'
+  //   }
+  // },
+
+  // tooltip: {
+  //   formatter: function () {
+  //     return '<b>' + this.x + '</b><br/>' +
+  //       this.series.name + ': ' + this.y + '<br/>' +
+  //       'Total: ' + this.point.stackTotal;
+  //   }
+  // },
+
+  // plotOptions: {
+  //   column: {
+  //     stacking: 'normal'
+  //   }
+  // },
+  // series: <?=$feed?>
+  // });
 </script>

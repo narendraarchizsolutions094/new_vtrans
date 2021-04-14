@@ -41,7 +41,10 @@ class Ticket_Report_datatable_model extends CI_Model {
             $group_by = 'tbl_ticket.process_id';
         }else if($for == 'stage_chart'){
             $select = 'count(tbl_ticket.ticketno) as count,lead_stage.lead_stage_name as title';
-            $group_by = 'tbl_ticket.ticket_stage';
+            $group_by = 'tbl_ticket.ticket_stage';            
+        }else if($for == 'sub_stage_chart'){
+            $select = 'count(tbl_ticket.ticketno) as count,lead_description.description as title';
+            $group_by = 'tbl_ticket.ticket_substage';            
         }else if($for == 'user_chart'){
             $select = 'count(tbl_ticket.ticketno) as count,CONCAT(tbl_admin.s_display_name,tbl_admin.last_name) as title';
             $group_by = 'tbl_ticket.added_by';
@@ -149,6 +152,8 @@ class Ticket_Report_datatable_model extends CI_Model {
             $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_ticket.added_by','left');
             $this->db->join('tbl_admin as admin2','admin2.pk_i_admin_id=tbl_ticket.assign_to','left');      
             $this->db->join('lead_stage','lead_stage.stg_id=tbl_ticket.ticket_stage','left');        
+            $this->db->join('lead_description','lead_description.id=tbl_ticket.ticket_substage','left');        
+            
             // $this->db->where('tbl_ticket',$comp_id);    
             $this->db->where($where);    
             

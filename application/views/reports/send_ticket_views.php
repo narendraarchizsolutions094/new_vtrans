@@ -94,24 +94,28 @@
                             <div id='source_chart'>
                             </div>
                         </div>
-                        <div class='col-md-4 card-graph'>
+                        <!-- <div class='col-md-4 card-graph'>
                             <div id='process_chart'>
                             </div>
-                        </div>
+                        </div> -->
                         <div class='col-md-4 card-graph'>
                             <div id='stage_chart'>
                             </div>
                         </div>
-                    </div>
-                    <div class='row'>
                         <div class='col-md-4 card-graph'>
                             <div id='user_chart'>
                             </div>
                         </div>
-                        <div class='col-md-4 card-graph'>
+                    </div>
+                    <div class='row'>
+                        <!-- <div class='col-md-4 card-graph'>
                             <div id='product_chart'>
                             </div>
-                        </div>
+                        </div> -->
+                        <div class='col-md-8 card-graph'>
+                            <div id='sub_stage_chart'>
+                            </div> 
+                        </div>                         
                         <div class='col-md-4 card-graph'>
                             <div id='container'>
                             </div>
@@ -230,10 +234,11 @@
     <!--------------------TABLE COLOUMN CONFIG----------------------------------------------->
     <script type="text/javascript">
     generate_pie_graph('source_chart', 'Source Wise');
-    generate_pie_graph('process_chart', 'Process Wise');
+    //generate_pie_graph('process_chart', 'Process Wise');
     generate_pie_graph('stage_chart', 'Stage Wise');
+    generate_pie_graph('sub_stage_chart', 'Sub Stage Wise');
     generate_pie_graph('user_chart', 'Employee Wise Added Data');
-    generate_pie_graph('product_chart', 'Product/Service Wise');
+    //generate_pie_graph('product_chart', 'Product/Service Wise');
     var send_data = '<?php 
              $filters['from_created']=$fromdate;
              $filters['to_created']=$fromdate;

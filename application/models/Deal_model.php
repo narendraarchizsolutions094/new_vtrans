@@ -360,31 +360,227 @@ class Deal_model extends CI_Model {
         }
         return $res;
     }
+    public function deal_month_wise_feed($filter=array()){
+        $in  = $this->get_business_type_feed('in',$filter);
+        $out = $this->get_business_type_feed('out',$filter);
+        
+        $domestic   = $this->get_deal_type_feed('domestic',$filter);
+        $saarc      = $this->get_deal_type_feed('saarc',$filter);
 
-    public function deal_month_wise_feed(){
-        $res = array(
-            array('name'=>'John','data'=>array(5,3,4,7,2),'stack'=>'male'),
-            array('name'=>'John','data'=>array(5,3,4,7,2),'stack'=>'male'),
-            array('name'=>'John','data'=>array(5,3,4,7,2),'stack'=>'male')
-        );
-        return $res;
-        // [{
-        //     name: 'John',
-        //     data: [5, 3, 4, 7, 2],
-        //     stack: 'male'
-        //   }, {
-        //     name: 'Joe',
-        //     data: [3, 4, 4, 2, 5],
-        //     stack: 'male'
-        //   }, {
-        //     name: 'Jane',
-        //     data: [2, 5, 6, 2, 1],
-        //     stack: 'female'
-        //   }, {
-        //     name: 'Janet',
-        //     data: [3, 0, 4, 4, 3],
-        //     stack: 'female'
-        //   }]
+        $ftl   = $this->get_booking_type_feed('ftl',$filter);
+        $sandary = $this->get_booking_type_feed('sundry',$filter);
+
+        $weight = $this->get_weight_feed($filter);
+        $freight = $this->get_frieght_type_feed($filter);
+
+        $res = array($in,$out,$domestic,$saarc,$ftl,$sandary,$weight,$freight);
+
+        return $res;      
     }
     //  Functions for deal graphs end
+
+    public function get_business_type_feed($type,$filter){
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
+        $this->db->select("count(id) as c,month(creation_date) as m");
+        $this->db->where('year(creation_date)',date("Y"));
+        $this->db->where($where);
+        $this->db->where('FIND_IN_SET(business_type,"'.$type.'")>',0);
+        $this->db->group_by('month(creation_date)');
+        $data = $this->db->get('commercial_info')->result_array();
+        //print_r($data);
+        $month_res = array();
+        if(!empty($data)){
+            foreach($month_arr as $month){
+                $flag = 0;
+                $dflag = 0;
+                foreach($data as $key=>$value){
+                    if($value['m'] == $month){
+                        $dflag = $value['c'];
+                        break;
+                    }
+                }
+                if(!$dflag){
+                    $month_res[] = 0;
+                }else{
+                    $month_res[] = (int)$dflag;
+                }
+            }
+        }else{
+            $month_res = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+       // print_r($month_res);
+       if($type == 'in'){
+           return array('name'=>'Inward','data'=>$month_res);
+       }else{
+            return array('name'=>'Outward','data'=>$month_res);
+       }
+    }
+    public function get_deal_type_feed($type,$filter){
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
+        $this->db->select("count(id) as c,month(creation_date) as m");
+        $this->db->where('year(creation_date)',date("Y"));
+        $this->db->where($where);
+        $this->db->where('FIND_IN_SET(deal_type,"'.$type.'")>',0);
+        $this->db->group_by('month(creation_date)');
+        $data = $this->db->get('commercial_info')->result_array();
+        //print_r($data);
+        $month_res = array();
+        if(!empty($data)){
+            foreach($month_arr as $month){
+                $flag = 0;
+                $dflag = 0;
+                foreach($data as $key=>$value){
+                    if($value['m'] == $month){
+                        $dflag = $value['c'];
+                        break;
+                    }
+                }
+                if(!$dflag){
+                    $month_res[] = 0;
+                }else{
+                    $month_res[] = (int)$dflag;
+                }
+            }
+        }else{
+            $month_res = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }      
+       
+        if($type == 'domestic'){
+            return array('name'=>'Domestic','data'=>$month_res);
+        }else{
+            return array('name'=>'SAARC','data'=>$month_res);
+        }
+    }
+    public function get_booking_type_feed($type,$filter){
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
+        $this->db->select("count(id) as c,month(creation_date) as m");
+        $this->db->where('year(creation_date)',date("Y"));
+        $this->db->where($where);
+        $this->db->where('FIND_IN_SET(booking_type,"'.$type.'")>',0);
+        $this->db->group_by('month(creation_date)');
+        $data = $this->db->get('commercial_info')->result_array();
+        //print_r($data);
+        $month_res = array();
+        if(!empty($data)){
+            foreach($month_arr as $month){
+                $flag = 0;
+                $dflag = 0;
+                foreach($data as $key=>$value){
+                    if($value['m'] == $month){
+                        $dflag = $value['c'];
+                        break;
+                    }
+                }
+                if(!$dflag){
+                    $month_res[] = 0;
+                }else{
+                    $month_res[] = (int)$dflag;
+                }
+            }
+        }else{
+            $month_res = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+       // print_r($month_res);
+       
+        if($type == 'ftl'){
+            return array('name'=>'FTL','data'=>$month_res);
+        }else{
+            return array('name'=>'Sandary','data'=>$month_res);
+        }
+    }
+    public function get_weight_feed($filter){
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
+        $this->db->select("sum(expected_tonnage) as c,month(creation_date) as m");
+        $this->db->where('year(creation_date)',date("Y"));
+        $this->db->group_by('month(creation_date)');
+        $this->db->where($where);
+        $data = $this->db->get('commercial_info')->result_array();
+        //print_r($data);
+        $month_res = array();
+        if(!empty($data)){
+            foreach($month_arr as $month){
+                $flag = 0;
+                $dflag = 0;
+                foreach($data as $key=>$value){
+                    if($value['m'] == $month){
+                        $dflag = $value['c'];
+                        break;
+                    }
+                }
+                if(!$dflag){
+                    $month_res[] = 0;
+                }else{
+                    $month_res[] = (int)$dflag;
+                }
+            }
+        }else{
+            $month_res = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+       // print_r($month_res);
+       
+        return array('name'=>'Weight','data'=>$month_res,"type"=>'spline');
+    }
+    public function get_frieght_type_feed($filter){
+        if(!empty($filter['employee'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['employee']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
+        $this->db->select("sum(expected_amount) as c,month(creation_date) as m");
+        $this->db->where('year(creation_date)',date("Y"));
+        $this->db->where($where);
+        $this->db->group_by('month(creation_date)');
+        $data = $this->db->get('commercial_info')->result_array();
+        //print_r($data);
+        $month_res = array();
+        if(!empty($data)){
+            foreach($month_arr as $month){
+                $flag = 0;
+                $dflag = 0;
+                foreach($data as $key=>$value){
+                    if($value['m'] == $month){
+                        $dflag = $value['c'];
+                        break;
+                    }
+                }
+                if(!$dflag){
+                    $month_res[] = 0;
+                }else{
+                    $month_res[] = (int)$dflag;
+                }
+            }
+        }else{
+            $month_res = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+       // print_r($month_res);
+       
+        return array('name'=>'Freight','data'=>$month_res,"type"=>'spline');
+    }
 }

@@ -18,7 +18,8 @@ class Deal_dashboard extends CI_Controller {
             'branch_wise' => base_url().'deal_dashboard/branch_wise_feed',
             'area_wise' => base_url().'deal_dashboard/area_wise_feed',
             'waight_wise' => base_url().'deal_dashboard/waight_wise_feed',
-            'freight_wise' => base_url().'deal_dashboard/freight_wise_feed'
+            'freight_wise' => base_url().'deal_dashboard/freight_wise_feed',
+            'deal_month_wise'=> base_url().'deal_dashboard/deal_month_wise_feed'
         );
         // $data['content'] = 
         $this->load->view('graphs/deal/index',$data);
@@ -50,7 +51,8 @@ class Deal_dashboard extends CI_Controller {
             'branch_wise' => base_url().'deal_dashboard/branch_wise_feed'.$para,
             'area_wise' => base_url().'deal_dashboard/area_wise_feed'.$para,
             'waight_wise' => base_url().'deal_dashboard/waight_wise_feed'.$para,
-            'freight_wise' => base_url().'deal_dashboard/freight_wise_feed'.$para
+            'freight_wise' => base_url().'deal_dashboard/freight_wise_feed'.$para,            
+            'deal_month_wise'=> base_url().'deal_dashboard/deal_month_wise_feed'.$para
         );
         $this->load->model('User_model');
         $data['user_list'] = $this->User_model->companey_users();
@@ -107,7 +109,7 @@ class Deal_dashboard extends CI_Controller {
     }
 
     public function deal_month_wise_feed($filter=array()){
-        $data['feed'] = json_encode($this->deal_model->deal_month_wise_feed($_GET));       
+        $data['feed'] = json_encode($this->deal_model->deal_month_wise_feed($_GET));             
         $this->load->view('graphs/deal/deal_month_wise',$data);
     }
 }

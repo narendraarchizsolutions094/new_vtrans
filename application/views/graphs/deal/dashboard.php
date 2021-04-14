@@ -68,4 +68,7 @@
     <div class="col-md-4">
         <iframe src="<?=$urls['freight_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
     </div>
+    <div class="col-md-12">
+        <iframe src="<?=$urls['deal_month_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
+    </div>
 </div>
