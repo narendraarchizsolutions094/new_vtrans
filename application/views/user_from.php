@@ -354,6 +354,8 @@
 								<div class="form-group col-md-4">
                                     <label class="control-label" for="sales_area"><?=display('sales_area')?></label> 									
                                     <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();">
+                                    <option value="0"> --- Select --- </option>
+
                                         <?php  if (!empty($area_lists)) {
                                             foreach ($area_lists as $key => $value) { ?>
                                                 <option value="<?= $value->area_id;?>" <?php if($value->area_id == $department->sales_area){ echo "selected";} ?>><?= $value->area_name;?></option>
@@ -366,6 +368,7 @@
 								<div class="form-group col-md-4">
                                     <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
                                     <select class="form-control" name="sales_branch" id="filtered_branch">
+                                    <option value="0"> --- Select --- </option>
                                         <?php  if (!empty($branch_lists)) {
                                             foreach ($branch_lists as $key => $value) { ?>
                                                 <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $department->sales_branch){ echo "selected";} ?>><?= $value->branch_name;?></option>
