@@ -395,7 +395,7 @@
                                      $km_rate = $this->user_model->get_user_meta($department->pk_i_admin_id,array('km_rate'));
                                      
                                     ?>               
-                                      <input type="number" class="form-control" name="km_rate" value="<?php if(!empty($km_rate['km_rate'])){echo $km_rate['km_rate'];}else{
+                                      <input type="text" class="form-control" name="km_rate" value="<?php if(!empty($km_rate['km_rate'])){echo $km_rate['km_rate'];}else{
                                           echo'0';
                                       } ?>">
                                 </div>
