@@ -855,7 +855,11 @@ class Report extends CI_Controller
     $data['employee'] = $this->User_model->read();
     $data['process'] = $this->dash_model->product_list();
     $data["dfields"] = $this->report_model->get_dynfields();
-
+    $this->load->model('Branch_model');
+    $data['region_list']=$this->Branch_model->sales_region_list()->result();
+    $data['area_list']=$this->Branch_model->sales_area_list()->result();
+    $data['branch_list']=$this->Branch_model->branch_list()->result();
+    
     $data["fieldsval"]        = $this->report_model->getdynfielsval();
     $data['products'] = $this->location_model->productcountry();
     // print_r($data["fieldsval"]);
@@ -958,14 +962,14 @@ class Report extends CI_Controller
       }
 
       if (in_array('Status', $this->session->userdata('post_report_columns'))) {
-        if ($repdetails->status == 1) {
-          $status = 'Enquiry';
-        } else if ($repdetails->status == 2) {
-          $status = 'Lead';
-        } else {
-          $status = 'Client';
-        }
-        $row[] = $status;
+        // if ($repdetails->status == 1) {
+        //   $status = 'Enquiry';
+        // } else if ($repdetails->status == 2) {
+        //   $status = 'Lead';
+        // } else {
+        //   $status = 'Client';
+        // }
+        $row[] = $repdetails->status_title;
       }
       if (in_array('DOE', $this->session->userdata('post_report_columns'))) {
         $row[] = $repdetails->inq_created_date;

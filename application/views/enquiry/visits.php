@@ -61,6 +61,23 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                       <label>
                       <input type="checkbox" value="expensetype" id="expensetypecheckbox" name="filter_checkbox" <?php if(in_array('expensetype',$variable)){echo'checked';} ?>> Expense Type</label>
                     </li>        
+
+                    <li>
+                      <label>
+                      <input type="checkbox" value="region" id="regioncheckbox" name="filter_checkbox" <?php if(in_array('region',$variable)){echo'checked';} ?>> Region</label>
+                    </li>        
+
+                    <li>
+                      <label>
+                      <input type="checkbox" value="area" id="areacheckbox" name="filter_checkbox" <?php if(in_array('area',$variable)){echo'checked';} ?>> Area</label>
+                    </li>        
+
+                    <li>
+                      <label>
+                      <input type="checkbox" value="branch" id="branchcheckbox" name="filter_checkbox" <?php if(in_array('branch',$variable)){echo'checked';} ?>> Branch</label>
+                    </li>        
+
+
                     <li class="text-center">
                       <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
                     </li>                   
@@ -214,6 +231,62 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
             </select>
         </div>
     </div>
+
+    <div class='col-md-3' id="regionfilter" style="<?php if(!in_array('region',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Region</label> 
+          <select class="form-control v_filter"  name="region">
+                <option value="">Select</option>
+                <?php
+                if(!empty($region_list)){
+                  foreach($region_list as $key=>$value){
+                    ?>
+                    <option value="<?=$value->region_id?>"><?=$value->name?></option>
+                    <?php
+                  }
+                }
+                ?>                
+          </select>
+        </div>
+    </div>
+
+    <div class='col-md-3' id="areafilter" style="<?php if(!in_array('area',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Area</label>
+          <select class="form-control v_filter" name="area">
+                <option value="">Select</option>
+                <?php
+                if(!empty($area_list)){
+                  foreach($area_list as $key=>$value){
+                    ?>
+                    <option value="<?=$value->area_id?>"><?=$value->area_name?></option>
+                    <?php
+                  }
+                }
+                ?>
+          </select>
+        </div>
+    </div>
+
+    <div class='col-md-3' id="branchfilter" style="<?php if(!in_array('branch',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Branch</label>
+          <select class="form-control v_filter" name="branch">
+                <option value="">Select</option>
+                <?php
+                if(!empty($branch_list)){
+                  foreach($branch_list as $key=>$value){
+                    ?>
+                    <option value="<?=$value->branch_id?>"><?=$value->branch_name?></option>
+                    <?php
+                  }
+                }
+                ?>
+          </select>
+        </div>
+    </div>
+
+
 </div>
 <script>
 
@@ -236,7 +309,7 @@ $(document).ready(function(){
       });
 });
 $('input[name="filter_checkbox"]').click(function(){  
-  if($('#createdbycheckbox').is(":checked")||$('#companycheckbox').is(":checked")||$('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")||$('#ratingcheckbox').is(":checked")||$('#differencecheckbox').is(":checked")){ 
+  if($('#createdbycheckbox').is(":checked")||$('#companycheckbox').is(":checked")||$('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")||$('#ratingcheckbox').is(":checked")||$('#differencecheckbox').is(":checked")||$('#regioncheckbox').is(":checked")||$('#areacheckbox').is(":checked")||$('#branchcheckbox').is(":checked")){ 
     $('#filter_pannel').show();
   }else{
     $('#filter_pannel').hide();
@@ -285,6 +358,29 @@ $('input[name="filter_checkbox"]').click(function(){
         else{
           $('#expensetypefilter').hide();
     }
+
+    if($('#regioncheckbox').is(":checked")){
+        $('#regionfilter').show();
+            }
+        else{
+          $('#regionfilter').hide();
+    }
+
+    if($('#areacheckbox').is(":checked")){
+        $('#areafilter').show();
+            }
+        else{
+          $('#areafilter').hide();
+    }
+
+    if($('#branchcheckbox').is(":checked")){
+        $('#branchfilter').show();
+            }
+        else{
+          $('#branchfilter').hide();
+    }
+
+
     if($('#contactcheckbox').is(":checked")){
         $('#contactfilter').show();
             }
@@ -500,6 +596,13 @@ var table2  = $('#datatable').DataTable({
           "scrollX": true,
           "serverSide": true,          
           "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
+          dom: 'Bfrtip',
+          buttons: [
+              'copyHtml5',
+              'excelHtml5',
+              'csvHtml5',
+              'pdfHtml5'
+          ],
           "ajax": {
               "url": "<?=base_url().'enquiry/visit_load_data'?>",
               "type": "POST",
@@ -515,6 +618,9 @@ var table2  = $('#datatable').DataTable({
                      d.contact = obj[5]['value'];
                      d.createdby = obj[6]['value'];
                      d.expensetype = obj[7]['value'];
+                     d.region = obj[8]['value'];
+                     d.area = obj[9]['value'];
+                     d.branch = obj[10]['value'];
                      d.to_time = '';//obj[5]['value'];
                      d.view_all=true;
                     if(c && c!='')

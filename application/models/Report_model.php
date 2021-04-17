@@ -1056,12 +1056,17 @@ class Report_model extends CI_Model {
 		
 		$this->db->select("*");
         $this->db->where('company_id',$this->session->companey_id);
-        $this->db->where('page_id',$for);
+        //$this->db->where('page_id',$for);
 		$this->db->where("tbl_input.status", 1);
 		$this->db->where("tbl_input.input_type!=", 19);
         /*if(!empty($pross)){
 			$this->db->where("process_id", $pross);
 		}*/
+        if(!empty($this->session->process[0])){
+            $process_id = $this->session->process[0];
+			$this->db->where("FIND_IN_SET($process_id,process_id)>",0);
+
+        }
 		
         return $this->db->get('tbl_input')->result_array();
 		

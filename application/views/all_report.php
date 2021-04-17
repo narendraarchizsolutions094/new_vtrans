@@ -373,6 +373,62 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                 <?php }}?>
                             </select>
                         </div>
+
+                        
+                        <div class='col-md-3' id="regionfilter" >
+                            <div class="form-group">
+                            <label>Region</label> 
+                            <select class="form-control v_filter"  name="region">
+                                    <option value="">Select</option>
+                                    <?php
+                                    if(!empty($region_list)){
+                                    foreach($region_list as $key=>$value){
+                                        ?>
+                                        <option value="<?=$value->region_id?>" <?php if(!empty(set_value('region'))){if ($value->region_id==set_value('region')) {echo 'selected';}}?>><?=$value->name?></option>
+                                        <?php
+                                    }
+                                    }
+                                    ?>                
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class='col-md-3' id="areafilter" >
+                            <div class="form-group">
+                            <label>Area</label>
+                            <select class="form-control v_filter" name="area">
+                                    <option value="">Select</option>
+                                    <?php
+                                    if(!empty($area_list)){
+                                    foreach($area_list as $key=>$value){
+                                        ?>
+                                        <option value="<?=$value->area_id?>" <?php if(!empty(set_value('area'))){if ($value->area_id==set_value('area')) {echo 'selected';}}?>><?=$value->area_name?></option>
+                                        <?php
+                                    }
+                                    }
+                                    ?>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class='col-md-3' id="branchfilter" >
+                            <div class="form-group">
+                            <label>Branch</label>
+                            <select class="form-control v_filter" name="branch">
+                                    <option value="">Select</option>
+                                    <?php
+                                    if(!empty($branch_list)){
+                                    foreach($branch_list as $key=>$value){
+                                        ?>
+                                        <option value="<?=$value->branch_id?>" <?php if(!empty(set_value('branch'))){if ($value->branch_id==set_value('branch')) {echo 'selected';}}?>><?=$value->branch_name?></option>
+                                        <?php
+                                    }
+                                    }
+                                    ?>
+                            </select>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="row col-md-12">
                         <div class="form-group col-md-4">

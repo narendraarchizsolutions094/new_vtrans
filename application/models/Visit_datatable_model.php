@@ -82,9 +82,9 @@ class Visit_datatable_model extends CI_Model{
         $this->db->from($this->table);
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id','left');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
+        $this->db->join('enquiry_status','enquiry.status=enquiry_status.status_id','left');
+        $this->db->join('city','enquiry.city_id=city.id','left');
         $this->db->join('branch','branch.branch_id=enquiry.sales_branch','left');
-       $this->db->join('enquiry_status','enquiry.status=enquiry_status.status_id','left');
-       $this->db->join('city','enquiry.city_id=city.id','left');
         $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region','left');
         $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area','left');
         $this->db->join('tbl_company','tbl_company.id=enquiry.company','left');
@@ -98,7 +98,19 @@ class Visit_datatable_model extends CI_Model{
         $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
         $and =1;
-        
+       
+        if(!empty($_POST['area'])){
+            $where .= " AND  sales_area.area_id='".$_POST['area']."'";
+        }
+
+        if(!empty($_POST['region'])){
+            $where .= " AND  sales_region.region_id='".$_POST['region']."'";
+        }   
+
+        if(!empty($_POST['branch'])){
+            $where .= " AND  branch.branch_id='".$_POST['branch']."'";
+        }
+
         if(!empty($_POST['from_date']))
         {
             $where.=" AND tbl_visit.visit_date >= '".$_POST['from_date']."'";
