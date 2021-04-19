@@ -2040,7 +2040,7 @@ function moveto_lead(){
   data: DataString,
   success:function(data){
       if(data.trim()==1){
-           alert('Successfully Moved in <?=display('lead')?>s'); 
+           alert('Successfully Moved in <?=display('lead')?>'); 
         window.location.href='<?php echo base_url();?>enquiry'
       }else{
        alert(data);

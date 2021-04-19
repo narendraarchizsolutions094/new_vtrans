@@ -309,6 +309,16 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                     <?php if(!empty(set_value('report_columns'))){if (in_array('City',set_value('report_columns'))) {echo 'selected';}}?>>
                                     City</option>
 
+                                    <option
+                                    <?php if(!empty(set_value('report_columns'))){if (in_array('Sales Region',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Sales Region</option>
+                                    <option
+                                    <?php if(!empty(set_value('report_columns'))){if (in_array('Sales Area',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Sales Area</option>
+                                    <option
+                                    <?php if(!empty(set_value('report_columns'))){if (in_array('Sales Branch',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Sales Branch</option>
+
                                 <option
                                     <?php if(!empty(set_value('report_columns'))){if (in_array('Company Name',set_value('report_columns'))) {echo 'selected';}}?>>
                                     Company Name</option>
@@ -319,6 +329,7 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                     <option
                                     <?php if(!empty(set_value('report_columns'))){if (in_array('Enquiry Id',set_value('report_columns'))) {echo 'selected';}}?>>
                                     Enquiry Id</option>
+                                    
 
                                 <?php if(!empty($dfields)) { 
 								foreach($dfields as $dind => $df){									

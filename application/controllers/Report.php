@@ -620,14 +620,14 @@ class Report extends CI_Controller
       }
 
       if (in_array('Status', $report_columns)) {
-        if ($repdetails->status == 1) {
-          $status = 'Enquiry';
-        } else if ($repdetails->status == 2) {
-          $status = 'Lead';
-        } else {
-          $status = 'Client';
-        }
-        $row[] = $status;
+        // if ($repdetails->status == 1) {
+        //   $status = 'Enquiry';
+        // } else if ($repdetails->status == 2) {
+        //   $status = 'Lead';
+        // } else {
+        //   $status = 'Client';
+        // }
+        $row[] = $repdetails->status_title;
       }
       if (in_array('DOE', $report_columns)) {
         $row[] = $repdetails->inq_created_date;
@@ -644,6 +644,18 @@ class Report extends CI_Controller
       if (in_array('City', $report_columns)) {
         $row[] = (!empty($repdetails->city_name)) ? $repdetails->city_name : 'NA';
       }
+
+      if (in_array('Sales Region', $report_columns)) {
+        $row[] = (!empty($repdetails->region_name)) ? $repdetails->region_name : 'NA';
+      }
+      if (in_array('Sales Area', $report_columns)) {
+        $row[] = (!empty($repdetails->area_name)) ? $repdetails->area_name : 'NA';
+      }
+      if (in_array('Sales Branch', $report_columns)) {
+        $row[] = (!empty($repdetails->branch_name)) ? $repdetails->branch_name : 'NA';
+      }
+
+
       if (in_array('Company Name', $report_columns)) {
         $row[] = (!empty($repdetails->company)) ? $repdetails->company : 'NA';
       }
@@ -807,6 +819,29 @@ class Report extends CI_Controller
     } else {
       $Enquiry_Id = $this->input->post('Enquiry_Id');
     }
+
+
+    if ($this->input->post('region') == '') {
+      $region = '';
+    } else {
+      $region = $this->input->post('region');
+    }
+
+    if ($this->input->post('area') == '') {
+      $area = '';
+    } else {
+      $area = $this->input->post('area');
+    }
+
+
+    if ($this->input->post('branch') == '') {
+      $branch = '';
+    } else {
+      $branch = $this->input->post('branch');
+    }
+
+
+
     $data['post_report_columns'] = $this->input->post('report_columns');
     // print_r($data['post_report_columns']);
     // die();
@@ -837,8 +872,11 @@ class Report extends CI_Controller
       'drop_status1'    =>  $drop_status,
       'all1'            =>  $all,
       'post_report_columns' => $post_report_columns,
-      'productlst' => $productlst,
-      'hier_wise' => $hier_wise,
+      'productlst'  => $productlst,
+      'hier_wise'   => $hier_wise,
+      'area'        => $area,
+      'branch'      => $branch,
+      'region'      => $region
     );
     $this->session->set_userdata($data_arr);
 
@@ -891,6 +929,9 @@ class Report extends CI_Controller
     $all = $this->session->userdata('all1');
     $productlst = $this->session->userdata('productlst');
     $Enquiry_Id = $this->session->userdata('Enquiry_Id');
+    $area = $this->session->userdata('area');
+    $branch = $this->session->userdata('branch');
+    $region = $this->session->userdata('region');
     $rep_details = $this->report_datatable_model->get_datatables();
    // echo $this->db->last_query();
     $i = 1;
@@ -985,6 +1026,15 @@ class Report extends CI_Controller
       }
       if (in_array('City', $this->session->userdata('post_report_columns'))) {
         $row[] = (!empty($repdetails->city_name)) ? $repdetails->city_name : 'NA';
+      }
+      if (in_array('Sales Region', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->region_name)) ? $repdetails->region_name : 'NA';
+      }
+      if (in_array('Sales Area', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->area_name)) ? $repdetails->area_name : 'NA';
+      }
+      if (in_array('Sales Branch', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->branch_name)) ? $repdetails->branch_name : 'NA';
       }
       if (in_array('Company Name', $this->session->userdata('post_report_columns'))) {
         $row[] = (!empty($repdetails->company)) ? $repdetails->company : 'NA';

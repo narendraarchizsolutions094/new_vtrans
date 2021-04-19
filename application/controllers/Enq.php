@@ -46,7 +46,11 @@ class Enq extends CI_Controller
 			$data['desp'] = $desp;			
 			$this->session->set_userdata('enquiry_filters_sess',array('stage'=>$_GET['desposition']));
 		}		
-		$data['title'] = display('enquiry_list');
+		if($all == 'All'){
+			$data['title'] = 'All Clients';
+		}else{
+			$data['title'] = display('enquiry_list');
+		}
 		$data['subsource_list'] = $this->Datasource_model->subsourcelist();
 		$data['user_list'] = $this->User_model->companey_users();
 		if($this->session->companey_id == 65 && $this->session->user_right == 215){
