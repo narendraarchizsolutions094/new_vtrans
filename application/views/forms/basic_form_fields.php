@@ -44,9 +44,10 @@
                         <input class="form-control" value="<?php  echo set_value('lastname');?>" name="lastname" type="text" placeholder="Last Name">  
                      </div>
 
-                     <div class="form-group col-sm-4 col-md-4 "> 
+                     <div class="form-group col-sm-4 col-md-4"> 
                         <label><?php echo display("designation"); ?> <i class="text-danger"></i></label>
                         <select class="form-control" name="designation">
+						<option value="">Select Designation</option>
                           <?php
                           $desg=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_designation')->result();
                             if(!empty($desg))
@@ -58,6 +59,13 @@
                             }
                           ?>
                         </select>
+						<i class="fa fa-plus" onclick="showDivAttid('1')" style="color:red"></i>
+                     </div>
+					 
+					 <div class="form-group col-sm-4 col-md-4" id="new_designation" style="display:none;"> 
+                        <label><?php echo "New Designation"; ?> <i class="text-danger"></i></label>
+                        <input class="form-control" name="new_designation" type="text" placeholder="Designation Name">
+                        <i class="fa fa-times" onclick="showDivAttid('0')" style="color:red"></i>						
                      </div>
 
                      <?php
@@ -542,6 +550,20 @@ function clientname() {
         }    
     });
 	  }
+</script>
+<script>
+    function showDivAttid(x){
+
+        if(x==1) {
+
+            document.getElementById("new_designation").style.display = 'block';
+        }
+        else
+        {
+            document.getElementById("new_designation").style.display = 'none';
+        }
+    }
+
 </script>
 <script>
   

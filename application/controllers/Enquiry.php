@@ -535,6 +535,13 @@ class Enquiry extends CI_Controller
                     $sales_region = $d->region_id;
                 }
             }
+			if(!empty($this->input->post('new_designation'))){
+				$insert_id    =   $this->enquiry_model->create_designation($this->input->post('new_designation'));
+				$designation = $insert_id;
+			}else{
+				$designation = $this->input->post('designation');
+			}
+			//print_r($designation);exit;
            
             $postData = [
                 'Enquery_id' => $encode,
@@ -556,7 +563,7 @@ class Enquiry extends CI_Controller
                 'company' => $this->input->post('company'),
 				'sales_branch' => $this->input->post('sales_branch'),
 				'client_name' => $this->input->post('client_name'),
-                'designation' => $this->input->post('designation'),
+                'designation' => $designation,
                 'address' => $this->input->post('address'),
                 'pin_code' => $this->input->post('pin_code'),
                 'checked' => 0,
@@ -579,7 +586,7 @@ class Enquiry extends CI_Controller
                 'status' => $status
             ];
             
-            $insert_id    =   $this->enquiry_model->create($postData);
+            //$insert_id    =   $this->enquiry_model->create($postData);
             if ($this->input->post('apply_with')) {
                 $course_apply = $this->Institute_model->readRowcrs($this->input->post('apply_with'));
                 $institute_data = array(
