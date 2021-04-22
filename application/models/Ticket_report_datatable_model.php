@@ -6,7 +6,7 @@ class Ticket_Report_datatable_model extends CI_Model {
         $this->load->model('common_model');		
     }
     var $table = 'tbl_ticket'; 
-    function report_analitics($for){        
+    function report_analitics($for,$x){        
         
         $user_id = $this->session->userdata('user_id');       
           
@@ -155,8 +155,10 @@ class Ticket_Report_datatable_model extends CI_Model {
             $this->db->join('lead_description','lead_description.id=tbl_ticket.ticket_substage','left');        
             
             // $this->db->where('tbl_ticket',$comp_id);    
-            $this->db->where($where);    
-            
+            $this->db->where($where);
+if(!empty($x)){			
+            $this->db->where('ticket_stage',$x);
+}
             if(!empty($group_by)){
                 $this->db->group_by($group_by);
             }                           

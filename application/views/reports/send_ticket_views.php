@@ -81,6 +81,23 @@
                     href="<?=base_url().'ticket/daily_summary/141?date='.date('Y-m-d',strtotime('-1 days'))?>"> <i
                         class="fa fa-arrow-right"></i> Ticket Summary </a>
             </div>
+			<div class="btn-group">
+    <select class="form-control" id="lead_stage_change" name="lead_stage" onchange="find_graph_data()">
+                        <option>---Select Stage---</option>
+						<option value="0">All</option>
+                        <?php
+                          if(!empty($ticket_stages))
+                          {
+                            foreach($ticket_stages as $single)
+                            {  
+                              ?>                              
+                              <option value="<?=$single->stg_id?>"><?php echo $single->lead_stage_name; ?></option>
+                              <?php 
+                            }
+                          }
+                           ?>
+    </select>
+            </div>
             <div class="row text-center">
                 <?php 
         echo " Ticket Report of  <b>".$fromdate.' </b>';
@@ -232,12 +249,28 @@
     </div>
     
     <!--------------------TABLE COLOUMN CONFIG----------------------------------------------->
-    <script type="text/javascript">
-    generate_pie_graph('source_chart', 'Source Wise');
+<script>
+function find_graph_data() {
+  var x = document.getElementById("lead_stage_change").value;
+    generate_pie_graph('source_chart', 'Source Wise',x);
     //generate_pie_graph('process_chart', 'Process Wise');
-    generate_pie_graph('stage_chart', 'Stage Wise');
-    generate_pie_graph('sub_stage_chart', 'Sub Stage Wise');
-    generate_pie_graph('user_chart', 'Employee Wise Added Data');
+    generate_pie_graph('stage_chart', 'Stage Wise',x);
+    generate_pie_graph('sub_stage_chart', 'Sub Stage Wise',x);
+    generate_pie_graph('user_chart', 'Employee Wise Added Data',x);
+    //generate_pie_graph('product_chart', 'Product/Service Wise');
+    var send_data = '<?php 
+             $filters['from_created']=$fromdate;
+             $filters['to_created']=$fromdate;
+             echo json_encode($filters);
+            ?>';
+}
+</script>
+    <script type="text/javascript">
+    generate_pie_graph('source_chart', 'Source Wise','0');
+    //generate_pie_graph('process_chart', 'Process Wise');
+    generate_pie_graph('stage_chart', 'Stage Wise','0');
+    generate_pie_graph('sub_stage_chart', 'Sub Stage Wise','0');
+    generate_pie_graph('user_chart', 'Employee Wise Added Data','0');
     //generate_pie_graph('product_chart', 'Product/Service Wise');
     var send_data = '<?php 
              $filters['from_created']=$fromdate;
@@ -245,14 +278,14 @@
              echo json_encode($filters);
             ?>';
 
-    function generate_pie_graph(elm, title) {
+    function generate_pie_graph(elm, title,x) {
         var send_data = '<?php 
              $filters['from_created']=$fromdate;
              $filters['to_created']=$fromdate;
              echo json_encode($filters);
             ?>';
         // $form_data= serialize;
-        var url = "<?=base_url().'report/ticket_report_analitics/'?>" + elm;
+        var url = "<?=base_url().'report/ticket_report_analitics/'?>" + elm+'/'+x;
         $.ajax({
             url: url,
             type: 'POST',

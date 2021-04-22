@@ -292,7 +292,7 @@ class Report extends CI_Controller
       $to =  $this->session->set_userdata('todt', $cdate);
       $data['title'] = 'View '.display('ticket').' Report';      
       $this->session->set_userdata('ticket_filters_sess', $data['filters']);
-      
+      $data['ticket_stages'] = $this->Leads_Model->stage_by_type(4); // 4 = ticket
       $this->load->view('reports/send_ticket_views', $data);
     }
   }
@@ -1175,11 +1175,11 @@ class Report extends CI_Controller
       $result  = $this->report_datatable_model->report_analitics($for);      
       echo json_encode($result);      
     }
-    public function ticket_report_analitics($for){
+    public function ticket_report_analitics($for,$x){
       // die();
     
       $this->load->model('ticket_report_datatable_model');
-      $result  = $this->ticket_report_datatable_model->report_analitics($for);      
+      $result  = $this->ticket_report_datatable_model->report_analitics($for,$x);      
       echo json_encode($result);  
     }
     public function prticket_report_analitics(){
