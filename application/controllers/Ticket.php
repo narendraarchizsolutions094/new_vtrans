@@ -2277,20 +2277,22 @@ class Ticket extends CI_Controller
 		
 		$all_reporting_ids  = $this->common_model->get_categories($user_id);
 
-		$this->db->select('tbl_ticket_subject.subject_title as name,count(tbl_ticket.category) as value');
+		$this->db->select('sales_area.area_name as name,count(tbl_ticket.category) as value');
 		$this->db->from('tbl_ticket');
 		$where = " ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
 		$where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))';  
 		$this->db->where($where);
 		
 		$this->db->join('tbl_ticket_subject','tbl_ticket.category=tbl_ticket_subject.id');
+		$this->db->join('branch','branch.branch_name=tbl_ticket_subject.subject_title');
+		$this->db->join('sales_area','sales_area.area_id=branch.area_id');
 		$this->db->where('tbl_ticket.process_id IN ('.$process.')');
 		$this->db->where('tbl_ticket.company',$comp_id);
 		if($fromdate!='all'){
 			$this->db->where('date(tbl_ticket.coml_date) >=', $fromdate);
 			$this->db->where('date(tbl_ticket.coml_date) <=', $todate);
 		}
-		$this->db->group_by('tbl_ticket.category');
+		$this->db->group_by('sales_area.area_id');
 		$result = $this->db->get()->result_array();
 		//echo $this->db->last_query();
 		echo json_encode($result);		
