@@ -1,5 +1,5 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <!-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script> -->
@@ -235,7 +235,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class='col-md-3' id="regionfilter" style="<?php if(!in_array('region',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Region</label> 
-          <select class="form-control v_filter"  name="region">
+          <select class="form-control v_filter"  name="region" onchange="find_area();">
                 <option value="">Select</option>
                 <?php
                 if(!empty($region_list)){
@@ -253,7 +253,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class='col-md-3' id="areafilter" style="<?php if(!in_array('area',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Area</label>
-          <select class="form-control v_filter" name="area">
+          <select class="form-control v_filter" id="filtered_area" name="area" onchange="find_branch();">
                 <option value="">Select</option>
                 <?php
                 if(!empty($area_list)){
@@ -271,7 +271,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class='col-md-3' id="branchfilter" style="<?php if(!in_array('branch',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Branch</label>
-          <select class="form-control v_filter" name="branch">
+          <select class="form-control v_filter" name="branch" id="filtered_branch">
                 <option value="">Select</option>
                 <?php
                 if(!empty($branch_list)){
@@ -289,6 +289,57 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 
 </div>
 <script>
+
+ function find_area() { 
+
+            var reg_id = $("select[name='region']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_area_by_region',
+            data: {region:reg_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].area_id)+'">'+(obj[i].area_name)+'</option>';
+                }
+                
+                $("#filtered_area").html(html);
+                
+            }           
+            });
+}
+
+ function find_branch() { 
+
+            var reg_id = $("select[name='region']").val();
+			var area_id = $("select[name='area']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_branch_by_arearegion',
+            data: {region:reg_id,area:area_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].branch_id)+'">'+(obj[i].branch_name)+'</option>';
+                }
+                
+                $("#filtered_branch").html(html);
+                
+            }           
+            });
+}
 
 $(document).ready(function(){
     $("#save_advance_filters").on('click',function(e){

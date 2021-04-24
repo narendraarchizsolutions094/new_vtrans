@@ -706,7 +706,7 @@ display: block;
                       
 					  <div class="form-group col-md-3" id="regionfilter">
                         <label for="">Sales Region</label> 
-                        <select name="sales_region" class="form-control">
+                        <select name="sales_region" class="form-control" onchange="find_areas();">
                           <option value="">Select</option>
                           <?php
                             foreach ($region_lists as $k=>$v) {  ?>
@@ -718,7 +718,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="areafilter">
                         <label for="">Sales Area</label> 
-                        <select name="sales_area" class="form-control">
+                        <select name="sales_area" class="form-control" id="filter_area" onchange="find_branchs();">
                           <option value="">Select</option>
                           <?php
                             foreach ($area_lists as $k=>$v) {  ?>
@@ -730,7 +730,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="branchfilter">
                         <label for="">Sales Branch</label> 
-                        <select name="sales_branch" class="form-control">
+                        <select name="sales_branch" class="form-control" id="filter_branch">
                           <option value="">Select</option>
                           <?php
                             foreach ($branch_lists as $k=>$v) {  ?>
@@ -2901,5 +2901,57 @@ function mark_tag(){
       }
     });
   }
+  
+  
+  function find_areas() { 
+
+            var reg_id = $("select[name='sales_region']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_area_by_region',
+            data: {region:reg_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].area_id)+'">'+(obj[i].area_name)+'</option>';
+                }
+                
+                $("#filter_area").html(html);
+                
+            }           
+            });
+}
+
+ function find_branchs() { 
+
+            var reg_id = $("select[name='sales_region']").val();
+			var area_id = $("select[name='sales_area']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_branch_by_arearegion',
+            data: {region:reg_id,area:area_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].branch_id)+'">'+(obj[i].branch_name)+'</option>';
+                }
+                
+                $("#filter_branch").html(html);
+                
+            }           
+            });
+}
   
 </script>
