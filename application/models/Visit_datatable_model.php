@@ -78,7 +78,8 @@ class Visit_datatable_model extends CI_Model{
         // print_r($_POST);
         $this->db->select($this->table.'.*,tbl_visit.created_at,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.company, tbl_visit.id as vids,tbl_company.company_name,enquiry.client_name,contact.c_name as contact_person,sales_region.name as region_name,branch.branch_name as branch_name,sales_area.area_name as area_name,enquiry_status.title as enquiry_status_title,city.city');
         $this->db->select('(SELECT sum(amount) from tbl_expense  where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="2") as visit_otexpSum');
-        $this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1" AND tbl_expense.approve_status = "2" ) as visit_expSum');
+        //$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1" AND tbl_expense.approve_status = "2" ) as visit_expSum');
+		$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1") as visit_expSum');
         $this->db->from($this->table);
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id','left');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
