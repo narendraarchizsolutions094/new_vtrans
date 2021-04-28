@@ -536,8 +536,8 @@ class Enquiry extends CI_Controller
                 }
             }
 			if(!empty($this->input->post('new_designation'))){
-				$insert_id    =   $this->enquiry_model->create_designation($this->input->post('new_designation'));
-				$designation = $insert_id;
+				$desi_id    =   $this->enquiry_model->create_designation($this->input->post('new_designation'));
+				$designation = $desi_id;
 			}else{
 				$designation = $this->input->post('designation');
 			}
@@ -586,7 +586,7 @@ class Enquiry extends CI_Controller
                 'status' => $status
             ];
             
-            //$insert_id    =   $this->enquiry_model->create($postData);
+            $insert_id    =   $this->enquiry_model->create($postData);
             if ($this->input->post('apply_with')) {
                 $course_apply = $this->Institute_model->readRowcrs($this->input->post('apply_with'));
                 $institute_data = array(
