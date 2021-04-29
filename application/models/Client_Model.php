@@ -225,21 +225,22 @@ class Client_Model extends CI_Model
             }
         }
 
-        $this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids');
+        //$this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids');
+		$this->db->select('comp.id,comp.company_name');
         $this->db->from('tbl_company comp')
-                        ->join('enquiry enq','enq.company=comp.id','left')
+                       // ->join('enquiry enq','enq.company=comp.id','left')
                         ->group_by('comp.id');
         
 
         $where="comp.comp_id=".$comp_id;
-        if($user_id!=-1)
+        /* if($user_id!=-1)
         {
             if(!empty($user_id))
             {
                 $where .= " AND ( enq.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
             }
-        }
+        } */
 
         // if($id)
         //     $where.= "AND comp.id =".$id;
