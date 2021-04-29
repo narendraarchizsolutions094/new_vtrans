@@ -91,14 +91,14 @@ $where1='';
         // if($where)
         //     $this->db->where($where);
 
-		$this->db->select('company');
+		/* $this->db->select('company');
 		$this->db->from('enquiry');
 		$this->db->where($where1);
 		$res = $this->db->get()->result();
 $id_array=array();
 foreach($res as $val){
 	$id_array[] = $val->company;
-}
+} */
 
         $this->db->select('contacts.*,enquiry.company,comp.company_name,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.status,comp.company_name,desg.desi_name,enquiry.client_name');
         $this->db->from('tbl_client_contacts contacts');
@@ -107,7 +107,8 @@ foreach($res as $val){
         $this->db->join('tbl_designation desg','desg.id=contacts.designation','left');
         // $this->db->order_by('contacts.cc_id desc');
         // return $this->db->get();
-        $this->db->where_in('enquiry.company',array_unique($id_array));
+		
+       // $this->db->where_in('enquiry.company',array_unique($id_array));
 
         $and =1;
         // if(!empty($_POST['from_date']))

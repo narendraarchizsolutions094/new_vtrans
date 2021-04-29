@@ -116,16 +116,16 @@ class Client_Model extends CI_Model
         $where1 .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
 
 
-        $this->db->select('company');
+        /* $this->db->select('company');
         $this->db->from('enquiry');
         $this->db->where($where1);
         $res = $this->db->get()->result();
         $id_array=array();
         foreach($res as $val){
             $id_array[] = $val->company;
-        }
+        } */
 
-
+//print_r($id_array);exit;
         // if($where)
         //     $this->db->where($where);
        
@@ -137,7 +137,7 @@ class Client_Model extends CI_Model
         $this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
         $this->db->join('tbl_designation','tbl_designation.id=contacts.designation','left');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
-        $this->db->where_in('enquiry.company',array_unique($id_array));
+       // $this->db->where_in('enquiry.company',array_unique($id_array));
 
         $this->db->order_by('contacts.cc_id desc');
 
