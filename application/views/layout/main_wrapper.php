@@ -1914,8 +1914,9 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                 if(in_array(199, array_column($user_process_list, 'sb_id'))){
                 ?>
 
-                <li class="<?php echo ($segment1 == "ticket" && $_COOKIE['selected_process'] == 199) ? "active" : null ?>">
-                    <a href="<?php echo base_url("ticket/index/199") ?>" onclick="setCookie_new('selected_process',[199],365);  ">
+                <li class="<?php echo ($segment1 == "ticket" && $_COOKIE['selected_process'] == 199) ? "active" : null ?>" 
+				style="<?php if(in_array('ftl1',$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
+                    <a href="<?php echo base_url("ticket/ftlfeedback/199") ?>" onclick="setCookie_new('selected_process',[199],365);  ">
                         <i class="fa fa-line-chart icon-class"></i>
                         &nbsp;<?php echo 'FTL Feedback' ?>
                         <?php  if($this->session->menu==1){ ?></br>

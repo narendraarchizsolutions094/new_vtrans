@@ -73,7 +73,7 @@ class LeadRules extends CI_Controller {
         $this->form_validation->set_rules('type','Rule For','required');        
         $this->form_validation->set_rules('rule_action','Rule Action','required');        
         $this->form_validation->set_rules('rule_title','Rule Title','required');                
-        $status = 0;        
+        $status = 0;		
         if ($this->form_validation->run() == true) {
             if (!empty($rule_json) && !empty($rule_action)) {  
                 $jsonResult = array("data" => array());
@@ -127,6 +127,7 @@ class LeadRules extends CI_Controller {
                 }else{
                     $ins_data = array(
                                 'comp_id'    => $this->session->companey_id,
+								'process_id' => $this->session->process[0],
                                 'type'       => $type,
                                 'rule_sql'   => $result,
                                 'status'     => $rule_status,

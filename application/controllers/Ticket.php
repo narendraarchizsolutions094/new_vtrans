@@ -77,7 +77,40 @@ class Ticket extends CI_Controller
 		$this->session->set_flashdata('message', 'Deleted successfully');
 		redirect('ticket/natureOfComplaintList');
 	}
-	public function index($proc=0)
+	public function index()
+	{
+
+		$this->load->model('Datasource_model');
+		$this->load->model('dash_model');
+		$this->load->model('enquiry_model');
+		$this->load->model('report_model');
+		$this->load->model('Leads_Model');
+		if (isset($_SESSION['ticket_filters_sess']))
+			unset($_SESSION['ticket_filters_sess']);
+		$data['sourse'] = $this->report_model->all_source();
+		$data['title'] = 'All Ticket';
+		//$data["tickets"] = $this->Ticket_Model->getall();
+		//print_r($data['tickets']); exit();
+		$data['created_bylist'] = $this->User_model->read();
+		$data['products'] = $this->dash_model->get_user_product_list();
+		$data['prodcntry_list'] = $this->enquiry_model->get_user_productcntry_list();
+		$data['problem'] = $this->Ticket_Model->get_sub_list();
+		$data['stage'] =  $this->Leads_Model->stage_by_type(4);
+		$data['sub_stage'] = $this->Leads_Model->find_description();
+		$data['ticket_status'] = $this->Ticket_Model->ticket_status()->result();
+		$x =$data['dfields'] = $this->enquiry_model->getformfield(2);
+		// echo $this->db->last_query();
+		// print_r($x);exit();
+		//print_r($data["tickets"]);die;
+		$data['issues'] = $this->Ticket_Model->get_issue_list();
+		$data['filterData'] = $this->Ticket_Model->get_filterData(2);
+		// print_r($data);
+		$data['user_list'] = $this->User_model->companey_users();
+		$data['content'] = $this->load->view('ticket/list-ticket', $data, true);
+		$this->load->view('layout/main_wrapper', $data);
+	}
+	
+	public function ftlfeedback($proc=0)
 	{
 		if($_COOKIE['selected_process']==199){
 			$this->session->set_userdata('process',array(199));
@@ -114,7 +147,7 @@ class Ticket extends CI_Controller
 		$data['filterData'] = $this->Ticket_Model->get_filterData(2);
 		// print_r($data);
 		$data['user_list'] = $this->User_model->companey_users();
-		$data['content'] = $this->load->view('ticket/list-ticket', $data, true);
+		$data['content'] = $this->load->view('ticket/ftl-feedback', $data, true);
 		$this->load->view('layout/main_wrapper', $data);
 	}
 
