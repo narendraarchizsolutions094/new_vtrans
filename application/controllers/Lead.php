@@ -2121,6 +2121,8 @@ public function get_all_stage_deals() {
         $q = $this->db->get()->result();        
         if($for == 0){
             $static = array('Company name', 'Name prefixed', 'First Name', 'Last Name', 'Mobile No', 'other_number', 'Email Address', 'state', 'city', 'address', 'process', 'source', 'datasource', 'Remarks', 'Services');
+        }else if($for == 4){
+            $static = array(display('tracking_no'),'Name','Phone','Email','GC Date','Bkg Branch','Bkg Region','Delivery Branch','Dly Type','Pay Mode','Charged Weight','No Of Articles','Actual Weight','Consignor Name','Consignor Tel No','Consignor Mobile No','Consignee Name','Consignee Tel No','Consignee Mobile No','Current Status','Vehicle No');
         }else{
             $static = array(display('tracking_no'),'Name','Mobile No','Email');
         }

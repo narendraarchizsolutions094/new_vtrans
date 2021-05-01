@@ -928,7 +928,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                               //var_dump($process_filter);
                               if(user_access(270)){
                                   foreach ($user_process_list as $product) { 
-                                      if($product->sb_id !=199 ){?>
+                                     if($product->sb_id !=199 ){?>
                                     <li>
                                         <label>
                                             <input type="checkbox" name='product_filter[]' value="<?=$product->sb_id ?>" <?php if (empty($process_filter) || in_array($product->sb_id, $process_filter)) { echo "checked";                         
@@ -1910,13 +1910,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                          Deals</a>
                         </li>';
                 }
-
-                if(in_array(199, array_column($user_process_list, 'sb_id'))){
                 ?>
 
-                <li class="<?php echo ($segment1 == "ticket" && $_COOKIE['selected_process'] == 199) ? "active" : null ?>" 
+                <li class="<?php echo ($segment1 == "ticket" && $segment2 == "ftlfeedback") ? "active" : null ?>" 
 				style="<?php if(in_array('ftl1',$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
-                    <a href="<?php echo base_url("ticket/ftlfeedback/199") ?>" onclick="setCookie_new('selected_process',[199],365);  ">
+                    <a href="<?php echo base_url("ticket/ftlfeedback") ?>">
                         <i class="fa fa-line-chart icon-class"></i>
                         &nbsp;<?php echo 'FTL Feedback' ?>
                         <?php  if($this->session->menu==1){ ?></br>
@@ -1924,9 +1922,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             <?php echo 'FTL Feedback' ?></p> <?php } ?>
                     </a>
                 </li>
-                <?php
-                    }
-                ?>
+                
                     <li class="<?php echo (($segment1 == "task") ? "active" : null) ?>"
                         style="<?php if(in_array(90,$module) || in_array(91,$module) || in_array(92,$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
                         <a href="<?php echo base_url("task/index") ?>">

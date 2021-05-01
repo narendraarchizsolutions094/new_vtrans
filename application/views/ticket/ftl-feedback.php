@@ -157,13 +157,7 @@ input[name=lead_stages]{
 					<div class="panel-heading no-print" style ="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
 						<div class="row">
 							<div class="btn-group"> 
-				                <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a> 
-
-                        <?php
-                        if(user_access('310'))
-                          { ?>
-				                <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" href="<?=base_url().'ticket/add'?>" title="New "></a>  
-                        <?php } ?>
+				                <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>
 				            </div>
 							<div class="col-md-4 col-sm-4 col-xs-4 pull-right" >  
 					          <div style="float: right;">   
@@ -249,14 +243,9 @@ input[name=lead_stages]{
                       <?php
                       }
                       ?>
-                            <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo display('table_config'); ?></a>
-                          <?php
-                          if(!empty($this->session->process) && in_array('199',$this->session->process)){
-                          ?>
-                            <a href="<?=base_url();?>ticket/upload_tickets" class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo 'Import FTL FeedBack'; ?></a>
-                          <?php
-                          }
-                        ?>
+                            <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo display('table_config'); ?></a>                         
+                            <a href="<?=base_url();?>ticket/upload_feedback" class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo 'Import FTL FeedBack'; ?></a>
+                          
 					            </div>                                         
 					          </div>  
 					        </div>       
@@ -273,7 +262,7 @@ input[name=lead_stages]{
 							<div class="panel-body">
 							<!-- Filter Panel Start -->
 
-<form id="ticket_filter">
+<form id="feedback_filter">
 	<div class="row" id="filter_pannel">
         <div class="col-lg-12">
           
@@ -536,15 +525,15 @@ input[name=lead_stages]{
  <?php 
         $acolarr = array();
         $dacolarr = array();
-        if(isset($_COOKIE["ticket_allowcols"])) {
+        if(isset($_COOKIE["feedback_allowcols"])) {
           $showall = false;
-          $acolarr  = explode(",", trim($_COOKIE["ticket_allowcols"], ","));       
+          $acolarr  = explode(",", trim($_COOKIE["feedback_allowcols"], ","));       
         }else{          
           $showall = true;
         }         
-        if(isset($_COOKIE["ticket_dallowcols"])) {
+        if(isset($_COOKIE["feedback_dallowcols"])) {
           $dshowall = false;
-          $dacolarr  = explode(",", trim($_COOKIE["ticket_dallowcols"], ","));       
+          $dacolarr  = explode(",", trim($_COOKIE["feedback_dallowcols"], ","));       
         }else{
           $dshowall = false;
         }       
@@ -554,52 +543,34 @@ input[name=lead_stages]{
 							<div class="row">
 								<div class="col-md-1"></div>
 								<div class="col-md-12">
-									<table id="ticket_table" class=" table table-striped table-bordered" style="width:100%;">
+									<table id="feedback_table" class=" table table-striped table-bordered" style="width:100%;">
 										<thead>
 										<th class="noExport sorting_disabled">
                     <input type='checkbox' class="checked_all1" value="check all" >
                      </th>
 											<th>S.No.</th>
-                      <?=($showall or in_array(1,$acolarr))?'<th>'.display('ticket').'</th>':''?>
-
-                      <?php
-                      if($this->session->companey_id==65)
-                      {
-                      ?>
-                        <?=($showall or in_array(15,$acolarr))?'<th>'.display('tracking_no').'</th>':''?>
-                      <?php
-                      }
-                      ?>
-                      <?=($showall or in_array(7,$acolarr))?'<th>Created By</th>':''?>
-                      <?=($showall or in_array(9,$acolarr))?'<th>Date</th>':''?>
-                      <?=($showall or in_array(18,$acolarr))?'<th>'.display('last_updated').'</th>':''?>                      
-											<?=($showall or in_array(2,$acolarr))?'<th>'.display('problem_for').'</th>':''?>
-										  <?=($showall or in_array(3,$acolarr))?'<th>Email</th>':''?>
-											<?=($showall or in_array(4,$acolarr))?'<th>Phone</th>':''?>
-											<?=($showall or in_array(5,$acolarr))?'<th>Product</th>':''?>
-											<?=($showall or in_array(6,$acolarr))?'<th>Assign To</th>':''?>
-                      <?=($showall or in_array(17,$acolarr))?'<th>Assign By</th>':''?>
-                      <?=($showall or in_array(8,$acolarr))?'<th>Priority</th>':''?>
-                      <?=($showall or in_array(19,$acolarr))?'<th>'.display('ticket_problem').'</th>':''?>
-										  <?=($showall or in_array(10,$acolarr))?'<th>Referred By</th>':''?>
-                      <?=($showall or in_array(11,$acolarr))?'<th>'.display('data_source').'</th>':''?>
-                      <?=($showall or in_array(12,$acolarr))?'<th>'.display('stage').'</th>':''?>
-                      <?=($showall or in_array(13,$acolarr))?'<th>Sub Stage</th>':''?>
-                      <?=($showall or in_array(14,$acolarr))?'<th>'.display('ticket_remark').'</th>':''?>
-                      <?=($showall or in_array(16,$acolarr))?'<th>Status</th>':''?>
-
-
-                      <?php 
-                      if(!empty($dacolarr) and !empty($dfields))
-                      {
-                        foreach($dfields as $ind => $flds)
-                        {                
-                          if(!empty(in_array($flds->input_id, $dacolarr )))
-                          {            
-                          ?><th><?php echo $flds->input_label; ?></th><?php 
-                          }
-                        }
-                       } ?>
+                      <?=($showall or in_array(1,$acolarr))?'<th>FTL Feedback</th>':''?>
+                      <?=($showall or in_array(2,$acolarr))?'<th>Name</th>':''?>
+                      <?=($showall or in_array(3,$acolarr))?'<th>Phone</th>':''?>
+                      <?=($showall or in_array(4,$acolarr))?'<th>Email</th>':''?>                      
+					  <?=($showall or in_array(5,$acolarr))?'<th>GC Date</th>':''?>
+					  <?=($showall or in_array(6,$acolarr))?'<th>Bkg Branch</th>':''?>
+					  <?=($showall or in_array(7,$acolarr))?'<th>Bkg Region</th>':''?>
+					  <?=($showall or in_array(8,$acolarr))?'<th>Delivery Branch</th>':''?>
+					  <?=($showall or in_array(9,$acolarr))?'<th>Dly Type</th>':''?>
+                      <?=($showall or in_array(10,$acolarr))?'<th>Pay Mode</th>':''?>
+                      <?=($showall or in_array(11,$acolarr))?'<th>Charged Weight</th>':''?>
+                      <?=($showall or in_array(12,$acolarr))?'<th>No Of Articles</th>':''?>
+					  <?=($showall or in_array(13,$acolarr))?'<th>Actual Weight</th>':''?>
+                      <?=($showall or in_array(14,$acolarr))?'<th>Consignor Name</th>':''?>
+                      <?=($showall or in_array(15,$acolarr))?'<th>Consignor Tel No</th>':''?>
+                      <?=($showall or in_array(16,$acolarr))?'<th>Consignor Mobile No</th>':''?>
+                      <?=($showall or in_array(17,$acolarr))?'<th>Consignee Name</th>':''?>
+                      <?=($showall or in_array(18,$acolarr))?'<th>Consignee Tel No</th>':''?>
+					  <?=($showall or in_array(19,$acolarr))?'<th>Consignee Mobile No</th>':''?>
+					  <?=($showall or in_array(20,$acolarr))?'<th>Current Status</th>':''?>
+					  <?=($showall or in_array(21,$acolarr))?'<th>Vehicle No</th>':''?>
+					  <?=($showall or in_array(22,$acolarr))?'<th>Added By</th>':''?>
 
 										</thead>
 										<tbody>
@@ -622,7 +593,7 @@ input[name=lead_stages]{
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><?=display('ticket')?> Assignment</h4>
+        <h4 class="modal-title">FTL Feedback Assignment</h4>
       </div>
       <div class="modal-body">
       
@@ -652,7 +623,7 @@ input[name=lead_stages]{
           <input type="hidden" value="" class="enquiry_id_input" >
           
             <div class="form-group col-sm-12">        
-            <button class="btn btn-success" type="button" onclick="assign_tickets();">Assign</button>        
+            <button class="btn btn-success" type="button" onclick="assign_feedback();">Assign</button>        
             </div>
     
                 </div>          
@@ -673,7 +644,7 @@ input[name=lead_stages]{
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><?=display('ticket')?> Assignment</h4>
+        <h4 class="modal-title">FTL Feedback</h4>
       </div>
       <div class="modal-body">
           <i class="fa fa-question-circle" style="font-size:100px;"></i><br><h1>Are you sure, you want to permanently delete selected record?</h1>
@@ -747,7 +718,7 @@ $('.checked_all1').on('change', function() {
 }); 
 </script>
 <script>
-function assign_tickets(){
+function assign_feedback(){
   if($('.checkbox1:checked').size() > 1000){
     // alert('You can not assign more that 1000 enquiry at once');
     Swal.fire({
@@ -758,8 +729,8 @@ function assign_tickets(){
   timer: 1000
 }); 
   }else{
-      var p_url = '<?php echo base_url();?>ticket/assign_tickets';
-      var re_url = '<?php echo base_url();?>ticket'; 
+      var p_url = '<?php echo base_url();?>ticket/assign_feedback';
+      var re_url = '<?php echo base_url();?>ticket/ftlfeedback'; 
 		var epid = $("#emply").val();	  
 
     var x = $(".checkbox1:checked");
@@ -804,7 +775,7 @@ $(document).ready(function(){
     $("input[name='filter_checkbox']:checked").each(function(){
       arr.push($(this).val());
     });        
-    setCookie('ticket_filter_setting',arr,365);    
+    setCookie('feedback_filter_setting',arr,365);    
     Swal.fire({
   position: 'top-end',
   icon: 'success',
@@ -817,7 +788,7 @@ $(document).ready(function(){
 
 
 
-var enq_filters  = getCookie('ticket_filter_setting');
+var enq_filters  = getCookie('feedback_filter_setting');
 if (enq_filters=='') {
     $('#filter_pannel').hide();
     $('#save_filterbutton').hide();
@@ -1084,7 +1055,7 @@ $(document).ready(function(){
 // }
 
 $(document).ready(function() {
-  var table = $('#ticket_table').DataTable({         
+  var table = $('#feedback_table').DataTable({         
           "processing": true,
           "scrollX": true,
           "scrollY": 520,
@@ -1095,7 +1066,7 @@ $(document).ready(function() {
           "columnDefs": [{ "orderable": false, "targets": 0 }],
           "order": [[ 1, "desc" ]],
           "ajax": {
-              "url": "<?=base_url().'Ticket/ticket_load_data'?>",
+              "url": "<?=base_url().'Ticket/feedback_load_data'?>",
               "type": "POST",
               //"dataType":"html",
               //success:function(q){ //alert(q); //document.write(q);},
@@ -1139,9 +1110,9 @@ $(document).ready(function() {
          });
 
 
-    $('#ticket_filter').change(function() {
+    $('#feedback_filter').change(function() {
 
-        var form_data = $("#ticket_filter").serialize();       
+        var form_data = $("#feedback_filter").serialize();       
        // alert(form_data);
         $.ajax({
         url: '<?=base_url()?>ticket/ticket_set_filters_session',
@@ -1149,7 +1120,7 @@ $(document).ready(function() {
         data: form_data,
         success: function(responseData){
          // document.write(responseData);
-          $('#ticket_table').DataTable().ajax.reload();
+          $('#feedback_table').DataTable().ajax.reload();
           //stage_counter(); 
           if(!$("#active_class").hasClass('hide_countings')){
            return update_short_dashboard(); 
@@ -1208,13 +1179,13 @@ function delete_recorde(){
         Arr.push($(this).val());
       });
       $.ajax({
-        url:'<?=base_url().'ticket/delete_ticket'?>',
+        url:'<?=base_url().'ticket/delete_feedback'?>',
         type:'post',
         data:{ticket_list:Arr},
         success:function(q)
         {
           $("#DeleteSelected").find('button[data-dismiss=modal]').click();
-           $('#ticket_table').DataTable().ajax.reload();
+           $('#feedback_table').DataTable().ajax.reload();
         }
       });
   }else{
@@ -1323,19 +1294,6 @@ function delete_recorde(){
          <div class = "col-md-4">  
             <label class=""><input type="checkbox" class="choose-col"  value = "16"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>><?=display('ticket')?> Status</label>  &nbsp;
           </div>
-           
-        <?php   
-        if(!empty($dfields)) {           
-            foreach($dfields as $ind => $fld){              
-            ?>
-            <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="dchoose-col"  value = "<?php echo $fld->input_id; ?>"  <?php echo (in_array($fld->input_id, $dacolarr)) ? "checked" : ""; ?>>   <?php echo ucwords($fld->input_label); ?></label>  &nbsp;
-          </div>
-            <?php   
-              
-            }?>
-             </div>
-          <?php } ?>
                 
               <div class="col-12" style="padding: 0px;">
                 <div class="row">              
@@ -1407,14 +1365,14 @@ for (var i = 0; i < checkboxes.length; i++) {
       dchkval += $(this).val()+",";
     });
     
-    document.cookie = "ticket_allowcols="+chkval+"; expires=Thu, 18 Dec 2053 12:00:00 UTC; path=/";
-    document.cookie = "ticket_dallowcols="+dchkval+"; expires=Thu, 18 Dec 2053 12:00:00 UTC; path=/";
+    document.cookie = "feedback_allowcols="+chkval+"; expires=Thu, 18 Dec 2053 12:00:00 UTC; path=/";
+    document.cookie = "feedback_dallowcols="+dchkval+"; expires=Thu, 18 Dec 2053 12:00:00 UTC; path=/";
    // alert("C");
     location.reload();    
   });
 
   function ticket_save_filter(){
-var form_data = $("#ticket_filter").serialize();       
+var form_data = $("#feedback_filter").serialize();       
 // alert(form_data);
 $.ajax({
 url: '<?=base_url()?>ticket/ticket_save_filter/2',
