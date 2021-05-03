@@ -29,6 +29,7 @@
                                 <input type='checkbox' class="checked_all" value="check all">&nbsp;
                                 <?php echo display('serial') ?></th>
                             <th class="th1">Title</th>
+                            <th class="th1">Branch</th>
                             <th class="th1"><?=display('proccess')?></th>
                             <th>Action</th>
                         </tr>
@@ -44,6 +45,7 @@
                                 &nbsp; <?php echo $sl;?>
                             </td>
                             <td class="th1"><?php echo $sub->subject_title; ?></td>
+                            <td class="th1"><?php echo $sub->branch_name; ?></td>
                             <td class="th1"><?php 
                             $process_in_each  = $sub->process_id;
                             $process_in_each  = explode(',',$process_in_each);

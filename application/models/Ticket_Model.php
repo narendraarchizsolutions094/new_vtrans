@@ -672,15 +672,16 @@ class Ticket_Model extends CI_Model
 
 	public function get_sub_list($compid = '',$process='')
 	{
+		$this->db->select('tbl_ticket_subject.*,branch.branch_name as branch_name');
 		if ($compid != '') {
-			$this->db->where('comp_id', $compid);
+			$this->db->where('tbl_ticket_subject.comp_id', $compid);
 		} else {
-			$this->db->where('comp_id', $this->session->userdata('companey_id'));
+			$this->db->where('tbl_ticket_subject.comp_id', $this->session->userdata('companey_id'));
 		}
 		if(!empty($process)){
 			$this->db->where('FIND_IN_SET('.$process.',process_id)>',0);
 		}
-
+		$this->db->join('branch','branch.branch_id=tbl_ticket_subject.branch_id','left');
 		$query = $this->db->get('tbl_ticket_subject');
 		return $query->result();
 		//echo $this->db->last_query();
