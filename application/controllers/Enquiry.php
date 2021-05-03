@@ -535,6 +535,13 @@ class Enquiry extends CI_Controller
                     $sales_region = $d->region_id;
                 }
             }
+			if(!empty($this->input->post('new_designation'))){
+				$desi_id    =   $this->enquiry_model->create_designation($this->input->post('new_designation'));
+				$designation = $desi_id;
+			}else{
+				$designation = $this->input->post('designation');
+			}
+			//print_r($designation);exit;
            
             $postData = [
                 'Enquery_id' => $encode,
@@ -556,7 +563,7 @@ class Enquiry extends CI_Controller
                 'company' => $this->input->post('company'),
 				'sales_branch' => $this->input->post('sales_branch'),
 				'client_name' => $this->input->post('client_name'),
-                'designation' => $this->input->post('designation'),
+                'designation' => $designation,
                 'address' => $this->input->post('address'),
                 'pin_code' => $this->input->post('pin_code'),
                 'checked' => 0,
@@ -3496,14 +3503,15 @@ echo  $details1;
                             'comp_id'=>$this->session->companey_id,
                             'user_id'=>$this->session->user_id,
                         );
-            $res = $this->Enquiry_model->getEnquiry(array('Enquery_id'=>$data['enquiry_id']))->row();
+			
+            $res = $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$data['enquiry_id']))->row();
             
             $mobileno = $res->phone;
             $email = $res->email;
             //$stage_time = $this->input->post('next_visit_time');
             $enq_code  = $res->Enquery_id;
             $data['enquiry_id'] = $res->enquiry_id;
-            
+            //print_r($data);exit;
             $notification_id = '';
             if($visit_type==2)
             {

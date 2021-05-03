@@ -16,6 +16,7 @@ class Rule_model extends CI_Model {
         }
         $this->db->where('comp_id',$comp_id);
         $this->db->where('status',1);
+		$this->db->where('process_id',$this->session->process[0]);
         if (!empty($type)) {
             $this->db->where_in('type',$type);
         }

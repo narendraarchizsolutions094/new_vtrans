@@ -88,49 +88,100 @@
             </div>
             <div class="row">
                 <div class='' style=" margin-top:50px; padding: 10px;">
-                    <div class='row'>
+                    <div class="col-md-12">
 
-                        <div class='col-md-4 card-graph'>
-                            <div id='source_chart'>
+                        <div class="col-md-3 card-graph">
+                            <div id="source_chart">
                             </div>
                         </div>
-                        <!-- <div class='col-md-4 card-graph'>
+                        <!-- <div class='col-md-3 card-graph'>
                             <div id='process_chart'>
                             </div>
                         </div> -->
-                        <div class='col-md-4 card-graph'>
+                        <div class="col-md-3 card-graph">
                             <div id='stage_chart'>
                             </div>
                         </div>
-                        <div class='col-md-4 card-graph'>
+                        <!--<div class='col-md-3 card-graph'>
                             <div id='user_chart'>
                             </div>
-                        </div>
-                    </div>
-                    <div class='row'>
-                        <!-- <div class='col-md-4 card-graph'>
+                        </div>-->
+                        <!-- <div class='col-md-3 card-graph'>
                             <div id='product_chart'>
                             </div>
                         </div> -->
-                        <div class='col-md-8 card-graph'>
+                        <div class="col-md-3 card-graph">
                             <div id='sub_stage_chart'>
                             </div> 
                         </div>                         
-                        <div class='col-md-4 card-graph'>
+                        <div class="col-md-3 card-graph">
                             <div id='container'>
                             </div>
                         </div>
-
-
-
+						<div style="height: 400px;">
+						<div class="col-md-8" style="height: 400px;overflow-y: scroll;">
+                                <center>
+                                    <h3><button onclick="exportTableToCSV('members.csv')">Export Employee Wise Added Data </button></h3>
+                                </center>
+                            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+							    <th>S.No</th>
+                                <th>User Name</th>
+                                <th>Total Tickets</th>
+								<?php foreach($ticket_stages as $stage){ ?>
+                                <th><?php echo $stage->lead_stage_name; ?></th>
+                                <?php } ?>								
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+						// print_r($ticket_users);exit;
+                            if(!empty($ticket_users)){
+								$i=1;
+                                foreach($ticket_users as $key=>$value){
+                                        echo "<tr class='small-tr'>";
+                                        echo "<td>".$i."</td>";
+										echo "<td>".$value[0]."</td>";
+										echo "<td>".$value[1]."</td>";
+								foreach($ticket_stages as $key=>$stage){
+									$keys = $this->ticket_report_datatable_model->report_employee_wise($fromdate,$fromdate,$stage->stg_id,$value[2]);
+									if(!empty($keys)){
+									foreach($keys as $v){
+										if(!empty($v)){
+										echo "<td>".$v."</td>";
+										}else{
+										echo "<td>0</td>";
+										}
+									}
+									}else{
+										echo "<td>0</td>";
+									}
+								}
+                                        echo "</tr>";
+                                $i++;}
+                            }
+                            ?>                            
+                        </tbody>                        
+                    </table>
+                        </div>
+						</div>
                     </div>
                     <div class="row pd-20" style="width:100%;">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="card card-graph_full2"><br>
                                 <center>
-                                    <h3>Failure Point Wise Ticket</h3>
+                                    <h3>Failure Point Area Wise Ticket</h3>
                                 </center>
                                 <div id="chartdiv7"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card card-graph_full2"><br>
+                                <center style="padding-bottom:30px;">
+                                    <h3>Failure Point Region Wise Ticket</h3>
+                                </center>
+                                <div id="region_chart"></div>
                             </div>
                         </div>
                     </div>
@@ -230,15 +281,62 @@
             </div>
         </div>
     </div>
+
+<script>
+function exportTableToCSV(filename) {
+    var csv = [];
+	var rows = document.querySelectorAll('#example tr');
+    //var rows = document.querySelectorAll("table tr");
     
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+        csv.push(row.join(","));        
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+</script>
+
     <!--------------------TABLE COLOUMN CONFIG----------------------------------------------->
     <script type="text/javascript">
     generate_pie_graph('source_chart', 'Source Wise');
     //generate_pie_graph('process_chart', 'Process Wise');
     generate_pie_graph('stage_chart', 'Stage Wise');
     generate_pie_graph('sub_stage_chart', 'Sub Stage Wise');
-    generate_pie_graph('user_chart', 'Employee Wise Added Data');
+    //generate_pie_graph('user_chart', 'Employee Wise Added Data');
     //generate_pie_graph('product_chart', 'Product/Service Wise');
+	generate_pie_graph('region_chart', 'Region Wise');
     var send_data = '<?php 
              $filters['from_created']=$fromdate;
              $filters['to_created']=$fromdate;

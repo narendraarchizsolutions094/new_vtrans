@@ -116,16 +116,16 @@ class Client_Model extends CI_Model
         $where1 .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
 
 
-        $this->db->select('company');
+        /* $this->db->select('company');
         $this->db->from('enquiry');
         $this->db->where($where1);
         $res = $this->db->get()->result();
         $id_array=array();
         foreach($res as $val){
             $id_array[] = $val->company;
-        }
+        } */
 
-
+//print_r($id_array);exit;
         // if($where)
         //     $this->db->where($where);
        
@@ -137,7 +137,7 @@ class Client_Model extends CI_Model
         $this->db->join('enquiry','enquiry.enquiry_id=contacts.client_id','inner');
         $this->db->join('tbl_designation','tbl_designation.id=contacts.designation','left');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
-        $this->db->where_in('enquiry.company',array_unique($id_array));
+       // $this->db->where_in('enquiry.company',array_unique($id_array));
 
         $this->db->order_by('contacts.cc_id desc');
 
@@ -225,21 +225,22 @@ class Client_Model extends CI_Model
             }
         }
 
-        $this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids');
+        //$this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids');
+		$this->db->select('comp.id,comp.company_name');
         $this->db->from('tbl_company comp')
-                        ->join('enquiry enq','enq.company=comp.id','left')
+                       // ->join('enquiry enq','enq.company=comp.id','left')
                         ->group_by('comp.id');
         
 
         $where="comp.comp_id=".$comp_id;
-        if($user_id!=-1)
+        /* if($user_id!=-1)
         {
             if(!empty($user_id))
             {
                 $where .= " AND ( enq.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
             }
-        }
+        } */
 
         // if($id)
         //     $where.= "AND comp.id =".$id;

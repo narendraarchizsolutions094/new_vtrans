@@ -157,13 +157,13 @@ input[name=lead_stages]{
 					<div class="panel-heading no-print" style ="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
 						<div class="row">
 							<div class="btn-group"> 
-				                <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a> 
-
-                        <?php
-                        if(user_access('310'))
-                          { ?>
-				                <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" href="<?=base_url().'ticket/add'?>" title="New "></a>  
-                        <?php } ?>
+				                <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>
+				            </div>
+							<div class="btn-group">
+							<form id="search_form" method="POST">
+                                <input type="text"  class="form-control" id="msearch" name="msearch" style="padding-top:0px;">
+                                <button type = "button" id="master_search_form" class="btn btn-success">Find</button>								
+							</form>
 				            </div>
 							<div class="col-md-4 col-sm-4 col-xs-4 pull-right" >  
 					          <div style="float: right;">   
@@ -177,26 +177,6 @@ input[name=lead_stages]{
                     <li>
                       <label>
                       <input type="checkbox" value="date" id="datecheckbox" name="filter_checkbox"> Date </label>
-                    </li>  
-                    
-                    <li>
-                      <label>
-                      <input type="checkbox" value="source" id="sourcecheckbox" name="filter_checkbox"> Source</label>
-                    </li>                
-                    
-                     <li>
-                      <label>
-                      <input type="checkbox" value="problem" id="problemcheckbox" name="filter_checkbox"> Problem</label>
-                    </li>
-
-                     <li>
-                      <label>
-                      <input type="checkbox" value="priority" id="prioritycheckbox" name="filter_checkbox"> Priority</label>
-                    </li>    
-
-                     <li>
-                      <label>
-                      <input type="checkbox" value="issue" id="issuecheckbox" name="filter_checkbox"> Issue</label>
                     </li>    
 
                     <li>
@@ -212,19 +192,12 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="assign_by" id="assign_bycheckbox" name="filter_checkbox"> Assign By</label>
                     </li>
-
-                    <li>
+					
+					<li>
                       <label>
-                      <input type="checkbox" value="product" id="prodcheckbox" name="filter_checkbox"> Product</label>
-                    </li> 
-                    <li>
-                      <label>
-                      <input type="checkbox" value="stage" id="stagecheckbox" name="filter_checkbox"> Stage</label>
-                    </li> 
-                   <li>
-                      <label>
-                      <input type="checkbox" value="sub_stage" id="sub_stagecheckbox" name="filter_checkbox"> Sub Stage</label>
-                    </li> 
+                      <input type="checkbox" value="problam" id="problamcheckbox" name="filter_checkbox"> Customer Feedback</label>
+                    </li>
+					
                     <li>
                       <label>
                       <input type="checkbox" value="status" id="statuscheckbox" name="filter_checkbox"> Status</label>
@@ -249,14 +222,9 @@ input[name=lead_stages]{
                       <?php
                       }
                       ?>
-                            <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo display('table_config'); ?></a>
-                          <!---<?php
-                          if(!empty($this->session->process) && in_array('199',$this->session->process)){
-                          ?>
-                            <a href="<?=base_url();?>ticket/upload_tickets" class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo 'Import FTL FeedBack'; ?></a>
-                          <?php
-                          }
-                        ?>-->
+                            <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo display('table_config'); ?></a>                         
+                            <a href="<?=base_url();?>ticket/upload_feedback" class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom :1px solid #ccc; width: 100%; text-align: left"><?php echo 'Import FTL FeedBack'; ?></a>
+                          
 					            </div>                                         
 					          </div>  
 					        </div>       
@@ -273,7 +241,7 @@ input[name=lead_stages]{
 							<div class="panel-body">
 							<!-- Filter Panel Start -->
 
-<form id="ticket_filter">
+<form id="feedback_filter">
 	<div class="row" id="filter_pannel">
         <div class="col-lg-12">
           
@@ -289,70 +257,7 @@ input[name=lead_stages]{
                           <label for="to-date"><?php echo display("to_date"); ?></label>
                           <input   class="form-control form-date" id="to-date" name="to_created" style="padding-top:0px;" value="<?=$filterData['to_created']==''||$filterData['to_created']=='0000-00-00'?'':$filterData['to_created']?>">
                         </div>
-                        
-                        <div class="form-group col-md-3" id="update_fromdatefilter">
-                          <label for="update-from-date"><?php echo display("update_from_date"); ?></label>
-                          <input  class="form-control form-date" id="update-from-date" name="update_from_created" style="padding-top:0px;" value="<?= $filterData['update_from_created']=='' || $filterData['update_from_created']== '0000-00-00' ?'':$filterData['update_from_created'] ?>">
-                        </div>
-                        <div class="form-group col-md-3" id="update_todatefilter">
-                          <label for="update-to-date"><?php echo display("update_to_date"); ?></label>
-                          <input class="form-control form-date" id="update-to-date" name="update_to_created" style="padding-top:0px;" value="<?= $filterData['update_to_created']=='' || $filterData['update_to_created']== '0000-00-00' ?'':$filterData['update_to_created'] ?>">
-                        </div>
 
-
-                         <div class="col-md-3" id="sourcefilter">
-                          <label for="source"><?php echo display("source"); ?></label>
-                          <select class="form-control" name="source" id="source">
-                              <option value="" style="display:">---Select Source---</option>
-                               <?php foreach ($sourse as $row) {?>
-                                
-                                 <option value="<?=$row->lsid?>" <?php if($row->lsid==$filterData['source']) {echo 'selected';}?>  <?php if(!empty(set_value('source'))){if (in_array($row->lsid,set_value('source'))) {echo 'selected';}}?>><?=$row->lead_name?></option>
-                              <?php }?>
-
-                          </select>
-                        </div>
-
-
-                        <!-- ======= Problem filter======== -->
-
-                        <div class="form-group col-md-3" id="problemfilter">
-                          <label for="problem"><?php echo display("problem"); ?></label>
-                          <select class="form-control" name="problem" id="problem">
-                              <option value="" style="display:">---Select Problem---</option>
-                               <?php foreach ($problem as $row) {?>
-                                
-                                 <option value="<?=$row->id?>"  <?php if($row->id==$filterData['problem']) {echo 'selected';}?>><?=$row->subject_title?></option>
-                              <?php 
-	                          }
-	                          ?>
-
-                          </select>
-                        </div>
-
-                        <div class="form-group col-md-3" id="priorityfilter">
-                          <label for="priority">Priority</label>
-                          <select class="form-control" name="priority" id="priority">
-              <option value="" style="display:">---Select Priority---</option>
-              <option value="1"  <?php if(1==$filterData['priority']) {echo 'selected';}?>>Low</option>
-							<option value="2"  <?php if(2==$filterData['priority']) {echo 'selected';}?>>Medium</option>
-							<option value="3"  <?php if(3==$filterData['priority']) {echo 'selected';}?>>High</option>n>
-                           </select>
-                        </div>
-
-						<div class="form-group col-md-3" id="issuefilter">
-                          <label for="issue">Issue</label>
-                         <select class="form-control" name="issue" id="issue">
-                              <option value="" style="display:">---Select Issue---</option>
-                               <?php  if(!empty($issues)) {
-								foreach($issues as $ind => $issue){
-									?><option value = "<?php echo $issue->id ?>" <?php if(3==$filterData['priority']) {echo 'selected';}?>><?php echo ucfirst($issue->title) ?> </option>
-								<?php
-								}	
-							} ?>
-
-                          </select>
-                        </div>
-                        <!-- ======================= -->
                      </div>
                     <!-- <div class="form-row">                       -->
                         
@@ -391,54 +296,24 @@ input[name=lead_stages]{
                               <?php }}?>    
                          </select>                          
                         </div>
-                        
-                    <!-- </div> -->
 
-                    <!-- <div class="row"> -->
-                    <div class="form-group col-md-3" id="prodfilter">
-                    <label for="">Products</label>  
-                    <select name="prodcntry" class="form-control"> 
-                          <option value="">Select</option>
+                    <div class="form-group col-md-3" id="problamfilter">
+                    <label for="">Customer Feedback</label>  
+                    <select name="cust_problam" class="form-control"> 
+                          <option value="0">Select</option>
                          <?php 
-                              if (!empty($prodcntry_list)) {
-                              foreach ($prodcntry_list as $prodcntrylist) {?>
-                              <option value="<?=$prodcntrylist->id;?>" <?php if($prodcntrylist->id==$filterData['prodcntry']) {echo 'selected';}?> <?php if(!empty(set_value('prodcntry'))){if (in_array($prodcntrylist->id,set_value('prodcntry'))) {echo 'selected';}}?>><?= $prodcntrylist->country_name ?></option>
-                              <?php }}?>    
-                    </select> 
-                    </div> 
-                    
-                     <div class="form-group col-md-3" id="stagefilter">
-                    <label for="">Stage</label>  
-                    <select name="stage" class="form-control"> 
-                          <option value="">Select</option>
-                         <?php 
-                              if (!empty($stage)) {
-                              foreach ($stage as $stage_list) {?>
-                              <option value="<?=$stage_list->stg_id?>" <?php if($stage_list->stg_id==$filterData['stage']) {echo 'selected';}?>><?=$stage_list->lead_stage_name?> </option>
-                              <?php 
-                              }
-                            }
-                        ?>    
-                    </select> 
-                    </div> 
-
-                     <div class="form-group col-md-3" id="sub_stagefilter">
-                    <label for="">Sub Stage</label>  
-                    <select name="sub_stage" class="form-control"> 
-                          <option value="">Select</option>
-                         <?php 
-                              if (!empty($sub_stage)) {
-                              foreach ($sub_stage as $sub_stage_list) {?>
-                              <option value="<?=$sub_stage_list->id?>" <?php if($sub_stage_list->id==$filterData['sub_stage']) {echo 'selected';}?>><?=$sub_stage_list->description?> </option>
+                              if (!empty($customer_feed)) {
+                              foreach ($customer_feed as $feed) {?>
+                              <option value="<?=$feed->id; ?>" <?php if($feed->id==$filterData['cust_problam']) {echo 'selected';}?>><?=$feed->feedback;?> </option>
                               <?php 
                               }
                             }
                         ?>     
                     </select> 
-                    </div> 
+                    </div>						
                    
                    <div class="form-group col-md-3" id="statusfilter">
-                    <label for=""><?=display('ticket')?> Status</label>  
+                    <label for="">FTL Status</label>  
                     <select name="ticket_status" class="form-control"> 
                           <option value="0">Select</option>
                          <?php 
@@ -453,7 +328,7 @@ input[name=lead_stages]{
                     </div> 
                   
                     <div class="form-group col-md-3">
-                    <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
+                    <button class="btn btn-success" id="save_filterbutton" type="button" onclick="feedback_save_filter();" style="margin: 20px;">Save</button>        
                         </div>           
                     <!-- </div> -->
           
@@ -536,15 +411,15 @@ input[name=lead_stages]{
  <?php 
         $acolarr = array();
         $dacolarr = array();
-        if(isset($_COOKIE["ticket_allowcols"])) {
+        if(isset($_COOKIE["feedback_allowcols"])) {
           $showall = false;
-          $acolarr  = explode(",", trim($_COOKIE["ticket_allowcols"], ","));       
+          $acolarr  = explode(",", trim($_COOKIE["feedback_allowcols"], ","));       
         }else{          
           $showall = true;
         }         
-        if(isset($_COOKIE["ticket_dallowcols"])) {
+        if(isset($_COOKIE["feedback_dallowcols"])) {
           $dshowall = false;
-          $dacolarr  = explode(",", trim($_COOKIE["ticket_dallowcols"], ","));       
+          $dacolarr  = explode(",", trim($_COOKIE["feedback_dallowcols"], ","));       
         }else{
           $dshowall = false;
         }       
@@ -554,52 +429,34 @@ input[name=lead_stages]{
 							<div class="row">
 								<div class="col-md-1"></div>
 								<div class="col-md-12">
-									<table id="ticket_table" class=" table table-striped table-bordered" style="width:100%;">
+									<table id="feedback_table" class=" table table-striped table-bordered" style="width:100%;">
 										<thead>
 										<th class="noExport sorting_disabled">
                     <input type='checkbox' class="checked_all1" value="check all" >
                      </th>
 											<th>S.No.</th>
-                      <?=($showall or in_array(1,$acolarr))?'<th>'.display('ticket').'</th>':''?>
-
-                      <?php
-                      if($this->session->companey_id==65)
-                      {
-                      ?>
-                        <?=($showall or in_array(15,$acolarr))?'<th>'.display('tracking_no').'</th>':''?>
-                      <?php
-                      }
-                      ?>
-                      <?=($showall or in_array(7,$acolarr))?'<th>Created By</th>':''?>
-                      <?=($showall or in_array(9,$acolarr))?'<th>Date</th>':''?>
-                      <?=($showall or in_array(18,$acolarr))?'<th>'.display('last_updated').'</th>':''?>                      
-											<?=($showall or in_array(2,$acolarr))?'<th>'.display('problem_for').'</th>':''?>
-										  <?=($showall or in_array(3,$acolarr))?'<th>Email</th>':''?>
-											<?=($showall or in_array(4,$acolarr))?'<th>Phone</th>':''?>
-											<?=($showall or in_array(5,$acolarr))?'<th>Product</th>':''?>
-											<?=($showall or in_array(6,$acolarr))?'<th>Assign To</th>':''?>
-                      <?=($showall or in_array(17,$acolarr))?'<th>Assign By</th>':''?>
-                      <?=($showall or in_array(8,$acolarr))?'<th>Priority</th>':''?>
-                      <?=($showall or in_array(19,$acolarr))?'<th>'.display('ticket_problem').'</th>':''?>
-										  <?=($showall or in_array(10,$acolarr))?'<th>Referred By</th>':''?>
-                      <?=($showall or in_array(11,$acolarr))?'<th>'.display('data_source').'</th>':''?>
-                      <?=($showall or in_array(12,$acolarr))?'<th>'.display('stage').'</th>':''?>
-                      <?=($showall or in_array(13,$acolarr))?'<th>Sub Stage</th>':''?>
-                      <?=($showall or in_array(14,$acolarr))?'<th>'.display('ticket_remark').'</th>':''?>
-                      <?=($showall or in_array(16,$acolarr))?'<th>Status</th>':''?>
-
-
-                      <?php 
-                      if(!empty($dacolarr) and !empty($dfields))
-                      {
-                        foreach($dfields as $ind => $flds)
-                        {                
-                          if(!empty(in_array($flds->input_id, $dacolarr )))
-                          {            
-                          ?><th><?php echo $flds->input_label; ?></th><?php 
-                          }
-                        }
-                       } ?>
+                      <?=($showall or in_array(1,$acolarr))?'<th>FTL Feedback</th>':''?>
+                      <?=($showall or in_array(2,$acolarr))?'<th>Name</th>':''?>
+                      <?=($showall or in_array(3,$acolarr))?'<th>Phone</th>':''?>
+                      <?=($showall or in_array(4,$acolarr))?'<th>Email</th>':''?>                      
+					  <?=($showall or in_array(5,$acolarr))?'<th>GC Date</th>':''?>
+					  <?=($showall or in_array(6,$acolarr))?'<th>Bkg Branch</th>':''?>
+					  <?=($showall or in_array(7,$acolarr))?'<th>Bkg Region</th>':''?>
+					  <?=($showall or in_array(8,$acolarr))?'<th>Delivery Branch</th>':''?>
+					  <?=($showall or in_array(9,$acolarr))?'<th>Dly Type</th>':''?>
+                      <?=($showall or in_array(10,$acolarr))?'<th>Pay Mode</th>':''?>
+                      <?=($showall or in_array(11,$acolarr))?'<th>Charged Weight</th>':''?>
+                      <?=($showall or in_array(12,$acolarr))?'<th>No Of Articles</th>':''?>
+					  <?=($showall or in_array(13,$acolarr))?'<th>Actual Weight</th>':''?>
+                      <?=($showall or in_array(14,$acolarr))?'<th>Consignor Name</th>':''?>
+                      <?=($showall or in_array(15,$acolarr))?'<th>Consignor Tel No</th>':''?>
+                      <?=($showall or in_array(16,$acolarr))?'<th>Consignor Mobile No</th>':''?>
+                      <?=($showall or in_array(17,$acolarr))?'<th>Consignee Name</th>':''?>
+                      <?=($showall or in_array(18,$acolarr))?'<th>Consignee Tel No</th>':''?>
+					  <?=($showall or in_array(19,$acolarr))?'<th>Consignee Mobile No</th>':''?>
+					  <?=($showall or in_array(20,$acolarr))?'<th>Current Status</th>':''?>
+					  <?=($showall or in_array(21,$acolarr))?'<th>Vehicle No</th>':''?>
+					  <?=($showall or in_array(22,$acolarr))?'<th>Added By</th>':''?>
 
 										</thead>
 										<tbody>
@@ -622,7 +479,7 @@ input[name=lead_stages]{
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><?=display('ticket')?> Assignment</h4>
+        <h4 class="modal-title">FTL Feedback Assignment</h4>
       </div>
       <div class="modal-body">
       
@@ -652,7 +509,7 @@ input[name=lead_stages]{
           <input type="hidden" value="" class="enquiry_id_input" >
           
             <div class="form-group col-sm-12">        
-            <button class="btn btn-success" type="button" onclick="assign_tickets();">Assign</button>        
+            <button class="btn btn-success" type="button" onclick="assign_feedback();">Assign</button>        
             </div>
     
                 </div>          
@@ -673,7 +530,7 @@ input[name=lead_stages]{
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><?=display('ticket')?> Assignment</h4>
+        <h4 class="modal-title">FTL Feedback</h4>
       </div>
       <div class="modal-body">
           <i class="fa fa-question-circle" style="font-size:100px;"></i><br><h1>Are you sure, you want to permanently delete selected record?</h1>
@@ -747,7 +604,7 @@ $('.checked_all1').on('change', function() {
 }); 
 </script>
 <script>
-function assign_tickets(){
+function assign_feedback(){
   if($('.checkbox1:checked').size() > 1000){
     // alert('You can not assign more that 1000 enquiry at once');
     Swal.fire({
@@ -758,8 +615,8 @@ function assign_tickets(){
   timer: 1000
 }); 
   }else{
-      var p_url = '<?php echo base_url();?>ticket/assign_tickets';
-      var re_url = '<?php echo base_url();?>ticket'; 
+      var p_url = '<?php echo base_url();?>ticket/assign_feedback';
+      var re_url = '<?php echo base_url();?>ticket/ftlfeedback'; 
 		var epid = $("#emply").val();	  
 
     var x = $(".checkbox1:checked");
@@ -804,7 +661,7 @@ $(document).ready(function(){
     $("input[name='filter_checkbox']:checked").each(function(){
       arr.push($(this).val());
     });        
-    setCookie('ticket_filter_setting',arr,365);    
+    setCookie('feedback_filter_setting',arr,365);    
     Swal.fire({
   position: 'top-end',
   icon: 'success',
@@ -817,7 +674,7 @@ $(document).ready(function(){
 
 
 
-var enq_filters  = getCookie('ticket_filter_setting');
+var enq_filters  = getCookie('feedback_filter_setting');
 if (enq_filters=='') {
     $('#filter_pannel').hide();
     $('#save_filterbutton').hide();
@@ -834,42 +691,6 @@ if (!enq_filters.includes('date')) {
   $('#update_todatefilter').hide();
 }else{
   $("input[value='date']").prop('checked', true);
-}
-
-if (!enq_filters.includes('emp')) {
-  $('#empfilter').hide();
-}else{
-  $("input[value='emp']").prop('checked', true);
-}
-
-if (!enq_filters.includes('source')) {
-  $('#sourcefilter').hide();
-}else{
-  $("input[value='source']").prop('checked', true);
-}
-
-if (!enq_filters.includes('problem')) {
-  $('#problemfilter').hide();
-}else{
-  $("input[value='problem']").prop('checked', true);
-}
-
-if (!enq_filters.includes('priority')) {
-  $('#priorityfilter').hide();
-}else{
-  $("input[value='priority']").prop('checked', true);
-}
-
-if (!enq_filters.includes('issue')) {
-  $('#issuefilter').hide();
-}else{
-  $("input[value='issue']").prop('checked', true);
-}
-
-if (!enq_filters.includes('product')) {
-  $('#prodfilter').hide();
-}else{
-  $("input[value='product']").prop('checked', true);
 }
 
 
@@ -891,16 +712,11 @@ if (!enq_filters.includes('assign_by')) {
   $("input[value='assign_by']").prop('checked', true);
 }
 
-if (!enq_filters.includes('stage')) {
-  $('#stagefilter').hide();
-}else{
-  $("input[value='stage']").prop('checked', true);
-}
+if (!enq_filters.includes('problam')) {
+  $('#problamfilter').hide();
 
-if (!enq_filters.includes('sub_stage')) {
-  $('#sub_stagefilter').hide();
 }else{
-  $("input[value='sub_stage']").prop('checked', true);
+  $("input[value='problam']").prop('checked', true);
 }
 
 if (!enq_filters.includes('status')) {
@@ -913,11 +729,8 @@ if (!enq_filters.includes('status')) {
 $('#buttongroup').hide();
 
  $('input[name="filter_checkbox"]').click(function(){  
-  if($('#datecheckbox').is(":checked")||$('#sourcecheckbox').is(":checked")||$('#sourcecheckbox').is(":checked")||
-  $('#problemcheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||
-  $('#assign_bycheckbox').is(":checked")||$('#issuecheckbox').is(":checked")||$('#prioritycheckbox').is(":checked")||
-  $('#prodcheckbox').is(":checked")||$('#stagecheckbox').is(":checked")||$('#sub_stagecheckbox').is(":checked")||
-  $('#statuscheckbox').is(":checked")){
+  if($('#datecheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||
+  $('#assign_bycheckbox').is(":checked")||$('#problamcheckbox').is(":checked")||$('#statuscheckbox').is(":checked")){
     $('#save_filterbutton').show();
     $('#filter_pannel').show();
 
@@ -932,42 +745,14 @@ $('#buttongroup').hide();
          $('#fromdatefilter').show();
          $('#todatefilter').show();
          $('#save_filterbutton').show();
-         
-         $('#update_fromdatefilter').show();
-         $('#update_todatefilter').show();
-
          $("#buttongroup").show();
         }
         else{
-          $('#update_fromdatefilter').hide();
-          $('#update_todatefilter').hide();
            $('#fromdatefilter').hide();
            $('#todatefilter').hide();
            $("#buttongroup").hide();
         }
       
-        if($('#sourcecheckbox').is(":checked")){
-         $('#save_filterbutton').show();
-
-          $('#sourcefilter').show();
-          $("#buttongroup").show();
-        }
-        else{
-          $('#sourcefilter').hide();
-          $("#buttongroup").hide();
-        }
-
-        if($('#problemcheckbox').is(":checked")){
-         $('#save_filterbutton').show();
-
-          $('#problemfilter').show();
-          $("#buttongroup").show();
-        }
-        else{
-          $('#problemfilter').hide();
-          $("#buttongroup").hide();
-        }
-
         if($('#createdbycheckbox').is(":checked")){
          $('#save_filterbutton').show();
 
@@ -976,6 +761,7 @@ $('#buttongroup').hide();
         else{
           $('#createdbyfilter').hide();
         }
+		
         if($('#assigncheckbox').is(":checked")){
          $('#save_filterbutton').show();
 
@@ -984,6 +770,7 @@ $('#buttongroup').hide();
         else{
           $('#assignfilter').hide();
         }
+		
         if($('#assign_bycheckbox').is(":checked")){
          $('#save_filterbutton').show();
 
@@ -992,48 +779,15 @@ $('#buttongroup').hide();
         else{
           $('#assign_byfilter').hide();
         }
-
-        if($('#issuecheckbox').is(":checked")){
-        $('#save_filterbutton').show();
-
+		
+		if($('#problamcheckbox').is(":checked")){
          $('#save_filterbutton').show();
+          $('#problamfilter').show();
+        }
+        else{
+          $('#problamfilter').hide();
+        }
 
-          $('#issuefilter').show();
-        }
-        else{
-          $('#issuefilter').hide();
-        }
-        if($('#prioritycheckbox').is(":checked")){
-        $('#save_filterbutton').show();
-
-          $('#priorityfilter').show();
-        }
-        else{
-          $('#priorityfilter').hide();
-        }
-       if($('#prodcheckbox').is(":checked")){
-        $('#save_filterbutton').show();
-         $('#prodfilter').show();
-         //alert("check");
-       }
-       else{
-         $('#prodfilter').hide();
-       }
-      if($('#stagecheckbox').is(":checked")){
-        $('#save_filterbutton').show();
-          $('#stagefilter').show();
-        }
-        else{
-          $('#stagefilter').hide();
-
-        }
-        if($('#sub_stagecheckbox').is(":checked")){
-         $('#save_filterbutton').show();
-          $('#sub_stagefilter').show();
-        }
-        else{
-          $('#sub_stagefilter').hide();
-        }
         if($('#statuscheckbox').is(":checked")){
          $('#save_filterbutton').show();
           $('#statusfilter').show();
@@ -1064,27 +818,8 @@ $(document).ready(function(){
   }  
 });
 
-// function moveto_client(){
-//   if($('.checkbox1:checked').size() > 1000){
-//     alert('You can not move more that 1000 enquiry at once');
-//   }else{
-//   $.ajax({
-//   type: 'POST',
-//   url: '<?php echo base_url();?>enquiry/move_to_client',
-//   data: $('#enquery_assing_from').serialize(),
-//   success:function(data){
-//       if(data=='1'){
-//            alert('Successfully Moved in Clients'); 
-//         window.location.href='<?php echo base_url();?>led/index'
-//       }else{
-//        alert(data);
-//       }
-//   }});
-//   }
-// }
-
 $(document).ready(function() {
-  var table = $('#ticket_table').DataTable({         
+  var table = $('#feedback_table').DataTable({         
           "processing": true,
           "scrollX": true,
           "scrollY": 520,
@@ -1095,7 +830,7 @@ $(document).ready(function() {
           "columnDefs": [{ "orderable": false, "targets": 0 }],
           "order": [[ 1, "desc" ]],
           "ajax": {
-              "url": "<?=base_url().'Ticket/ticket_load_data'?>",
+              "url": "<?=base_url().'Ticket/feedback_load_data'?>",
               "type": "POST",
               //"dataType":"html",
               //success:function(q){ //alert(q); //document.write(q);},
@@ -1139,17 +874,17 @@ $(document).ready(function() {
          });
 
 
-    $('#ticket_filter').change(function() {
+    $('#feedback_filter').change(function() {
 
-        var form_data = $("#ticket_filter").serialize();       
+        var form_data = $("#feedback_filter").serialize();       
        // alert(form_data);
         $.ajax({
-        url: '<?=base_url()?>ticket/ticket_set_filters_session',
+        url: '<?=base_url()?>ticket/feedback_set_filters_session',
         type: 'post',
         data: form_data,
         success: function(responseData){
          // document.write(responseData);
-          $('#ticket_table').DataTable().ajax.reload();
+          $('#feedback_table').DataTable().ajax.reload();
           //stage_counter(); 
           if(!$("#active_class").hasClass('hide_countings')){
            return update_short_dashboard(); 
@@ -1208,13 +943,13 @@ function delete_recorde(){
         Arr.push($(this).val());
       });
       $.ajax({
-        url:'<?=base_url().'ticket/delete_ticket'?>',
+        url:'<?=base_url().'ticket/delete_feedback'?>',
         type:'post',
         data:{ticket_list:Arr},
         success:function(q)
         {
           $("#DeleteSelected").find('button[data-dismiss=modal]').click();
-           $('#ticket_table').DataTable().ajax.reload();
+           $('#feedback_table').DataTable().ajax.reload();
         }
       });
   }else{
@@ -1244,69 +979,69 @@ function delete_recorde(){
         <hr>
           <div class="row">
           <div class = "col-md-4">             
-          <label class=""><input type="checkbox" class="choose-col" id="choose-col" value = "1" <?php echo ($showall == true or in_array(1, $acolarr)) ? "checked" : ""; ?>> <?=display('ticket')?></label>
+          <label class=""><input type="checkbox" class="choose-col" id="choose-col" value = "1" <?php echo ($showall == true or in_array(1, $acolarr)) ? "checked" : ""; ?>> FTL Feedback</label>
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>>  <?=display('problem_for')?></label> 
+          <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>> Name</label> 
           </div>
           <div class = "col-md-4">  
-          <label  class=""><input type="checkbox" class="choose-col"  value = "3"  <?php echo ($showall == true or in_array(3, $acolarr)) ? "checked" : ""; ?>> Email</label>
+          <label  class=""><input type="checkbox" class="choose-col"  value = "3"  <?php echo ($showall == true or in_array(3, $acolarr)) ? "checked" : ""; ?>> Phone</label>
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "4"  <?php echo ($showall == true or in_array(4, $acolarr)) ? "checked" : ""; ?>>  Phone </label>
+          <label class=""><input type="checkbox" class="choose-col"  value = "4"  <?php echo ($showall == true or in_array(4, $acolarr)) ? "checked" : ""; ?>> Email </label>
           </div>
           
           
           
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "5"  <?php echo ($showall == true or in_array(5, $acolarr)) ? "checked" : ""; ?>>  Product </label>
+          <label class=""><input type="checkbox" class="choose-col"  value = "5"  <?php echo ($showall == true or in_array(5, $acolarr)) ? "checked" : ""; ?>> GC Date </label>
               </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "6"  <?php echo ($showall == true or in_array(6, $acolarr)) ? "checked" : ""; ?>>  Assign To </label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "6"  <?php echo ($showall == true or in_array(6, $acolarr)) ? "checked" : ""; ?>> Bkg Branch </label>  &nbsp;
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "17"  <?php echo ($showall == true or in_array(17, $acolarr)) ? "checked" : ""; ?>>  Assign By </label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "7"  <?php echo ($showall == true or in_array(17, $acolarr)) ? "checked" : ""; ?>> Bkg Region </label>  &nbsp;
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "7"  <?php echo ($showall == true or in_array(7, $acolarr)) ? "checked" : ""; ?>> Created By</label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "8"  <?php echo ($showall == true or in_array(7, $acolarr)) ? "checked" : ""; ?>> Delivery Branch </label>  &nbsp;
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "8"  <?php echo ($showall == true or in_array(8, $acolarr)) ? "checked" : ""; ?>>  Priority</label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "9"  <?php echo ($showall == true or in_array(8, $acolarr)) ? "checked" : ""; ?>> Dly Type </label>  &nbsp;
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "19"  <?php echo ($showall == true or in_array(19, $acolarr)) ? "checked" : ""; ?>>  <?=display('ticket_problem')?> </label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "10"  <?php echo ($showall == true or in_array(19, $acolarr)) ? "checked" : ""; ?>> Pay Mode </label>  &nbsp;
           </div>
 
 
           <div class = "col-md-4">  
           
-              <label class=""><input type="checkbox" class="choose-col"  value = "9"  <?php echo ($showall == true or in_array(9, $acolarr)) ? "checked" : ""; ?>>     <?php echo display("create_date"); ?></label> &nbsp;
+              <label class=""><input type="checkbox" class="choose-col"  value = "11"  <?php echo ($showall == true or in_array(9, $acolarr)) ? "checked" : ""; ?>> Charged Weight </label> &nbsp;
           </div>
           <div class = "col-md-4">  
           
-              <label class=""><input type="checkbox" class="choose-col"  value = "18"  <?php echo ($showall == true or in_array(18, $acolarr)) ? "checked" : ""; ?>>     <?php echo display("last_updated"); ?></label> &nbsp;
+              <label class=""><input type="checkbox" class="choose-col"  value = "12"  <?php echo ($showall == true or in_array(18, $acolarr)) ? "checked" : ""; ?>> No Of Articles </label> &nbsp;
           </div>
 
         <div class = "col-md-4">  
           
-           <label  class=""><input type="checkbox" class="choose-col"  value = "10"  <?php echo ($showall == true or in_array(10, $acolarr)) ? "checked" : ""; ?>> <?php echo "<th>Referred By</th>"; ?></label>  &nbsp; 
+           <label  class=""><input type="checkbox" class="choose-col"  value = "13"  <?php echo ($showall == true or in_array(10, $acolarr)) ? "checked" : ""; ?>> Actual Weight </label>  &nbsp; 
          </div>
 
          <div class = "col-md-4">  
           
-               <label class=""><input type="checkbox" class="choose-col"  value = "11"  <?php echo ($showall == true or in_array(11, $acolarr)) ? "checked" : ""; ?>>   <?php echo display("data_source"); ?></label>  &nbsp; 
+               <label class=""><input type="checkbox" class="choose-col"  value = "14"  <?php echo ($showall == true or in_array(11, $acolarr)) ? "checked" : ""; ?>> Consignor Name </label>  &nbsp; 
            </div>
           
          <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "12"  <?php echo ($showall == true or in_array(12, $acolarr)) ? "checked" : ""; ?>>  Stage</label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "15"  <?php echo ($showall == true or in_array(12, $acolarr)) ? "checked" : ""; ?>> Consignor Tel No </label>  &nbsp;
           </div>
 
           <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "13"  <?php echo ($showall == true or in_array(13, $acolarr)) ? "checked" : ""; ?>>  Sub Stage</label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "16"  <?php echo ($showall == true or in_array(13, $acolarr)) ? "checked" : ""; ?>> Consignor Mobile No </label>  &nbsp;
           </div>
 
            <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "14"  <?php echo ($showall == true or in_array(14, $acolarr)) ? "checked" : ""; ?>>  <?=display('ticket_remark')?></label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "17"  <?php echo ($showall == true or in_array(14, $acolarr)) ? "checked" : ""; ?>> Consignee Name </label>  &nbsp;
           </div>
 
           <?php
@@ -1314,28 +1049,27 @@ function delete_recorde(){
           {
           ?>
            <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "15"  <?php echo ($showall == true or in_array(15, $acolarr)) ? "checked" : ""; ?>>  <?=display('tracking_no')?></label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "18"  <?php echo ($showall == true or in_array(15, $acolarr)) ? "checked" : ""; ?>> Consignee Tel No </label>  &nbsp;
           </div>
 
           <?php
         }
         ?>
          <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "16"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>><?=display('ticket')?> Status</label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "19"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Consignee Mobile No </label>  &nbsp;
           </div>
-           
-        <?php   
-        if(!empty($dfields)) {           
-            foreach($dfields as $ind => $fld){              
-            ?>
-            <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="dchoose-col"  value = "<?php echo $fld->input_id; ?>"  <?php echo (in_array($fld->input_id, $dacolarr)) ? "checked" : ""; ?>>   <?php echo ucwords($fld->input_label); ?></label>  &nbsp;
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "20"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Current Status </label>  &nbsp;
           </div>
-            <?php   
-              
-            }?>
-             </div>
-          <?php } ?>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "21"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Vehicle No </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "22"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Added By </label>  &nbsp;
+          </div>
                 
               <div class="col-12" style="padding: 0px;">
                 <div class="row">              
@@ -1407,17 +1141,17 @@ for (var i = 0; i < checkboxes.length; i++) {
       dchkval += $(this).val()+",";
     });
     
-    document.cookie = "ticket_allowcols="+chkval+"; expires=Thu, 18 Dec 2053 12:00:00 UTC; path=/";
-    document.cookie = "ticket_dallowcols="+dchkval+"; expires=Thu, 18 Dec 2053 12:00:00 UTC; path=/";
+    document.cookie = "feedback_allowcols="+chkval+"; expires=Thu, 18 Dec 2053 12:00:00 UTC; path=/";
+    document.cookie = "feedback_dallowcols="+dchkval+"; expires=Thu, 18 Dec 2053 12:00:00 UTC; path=/";
    // alert("C");
     location.reload();    
   });
 
-  function ticket_save_filter(){
-var form_data = $("#ticket_filter").serialize();       
+  function feedback_save_filter(){
+var form_data = $("#feedback_filter").serialize();       
 // alert(form_data);
 $.ajax({
-url: '<?=base_url()?>ticket/ticket_save_filter/2',
+url: '<?=base_url()?>ticket/feedback_save_filter/4',
 type: 'post',
 data: form_data,
 success: function(responseData){
@@ -1437,6 +1171,40 @@ success: function(responseData){
 jQuery(function($){ //on document.ready
         $('.form-date').datepicker({ dateFormat: 'yy-mm-dd' });
       });
+</script>
+
+<script>
+function master_search_form(){
+//$("#master_search_form").click(function(e) {
+	alert('hi');
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+    var url =  '<?php echo base_url();?>ticket/add_feedbacks/45';
+      $.ajax({
+         type: "POST",
+         url: url,
+         data: $('#customer_feed').serialize(),		 // serializes the form's elements.
+         success: function(data)
+         {
+if(data==1){			 
+Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'Feedback Create successfully',
+  showConfirmButton: false,
+  timer: 1500
+});
+}else{
+Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'Feedback Update successfully',
+  showConfirmButton: false,
+  timer: 1500
+});
+}
+         }
+       });
+  };
 </script>
 
 

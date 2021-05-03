@@ -1,6 +1,7 @@
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
 	<div class="col-md-4 col-sm-4 col-xs-4"> 
-          <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>   
+        <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>
+        <!--<a href="<?=base_url().'compay_profile/company_upload_data'?>" class="btn btn-danger">Add Company</a>-->		  
           <?php
           // if(user_access('1010'))
           // {

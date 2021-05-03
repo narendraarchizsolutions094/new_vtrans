@@ -2695,7 +2695,6 @@ public function all_update_expense_status()
             //     $dbranch = array(0);  
         
             $main_array = array();
-
             if(!empty($chain))
             {   $i=1;
                 foreach ($chain as $key => $r)
@@ -2733,6 +2732,7 @@ public function all_update_expense_status()
                                 'rate.delivery_branch' => $value,
                                 );
                                 $row = $this->Branch_model->rate_list($btype,$where)->row();
+								//print_r($row);exit;
                                 if(!empty($row))
                                     $main_array[] = $row; 
                             }

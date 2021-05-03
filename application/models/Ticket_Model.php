@@ -123,6 +123,8 @@ class Ticket_Model extends CI_Model
 					'city' =>$value->city??NULL,
 					'stage' =>$value->stage??NULL,
 					'top_filter' =>$value->top_filter??NULL,
+					'cust_problam' =>$value->cust_problam??NULL					
+					
 					
 			];
 		}else{
@@ -142,13 +144,14 @@ class Ticket_Model extends CI_Model
 					'stage' =>$value->stage??NULL,
 					'sub_stage' =>$value->sub_stage??NULL,
 					'ticket_status' =>$value->ticket_status??NULL,
+					'cust_problam' =>$value->cust_problam??NULL
 		];
 	}
 	}else{
 		if($type==1){
-			$pdata=[ 'from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
+			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
 		}else{
-			$pdata=[ 'from_created' =>'', 'to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
+			$pdata=[ 'cust_problam' =>'', 'to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
 	       }
 	}
 	return $pdata;
@@ -333,6 +336,14 @@ class Ticket_Model extends CI_Model
 
 		$this->db->where('company_id',$this->session->companey_id);
 		return $this->db->get('tbl_ticket_status');
+	}
+	
+	public function feed_by_cust()
+	{
+        $this->db->select('feedback,id');
+		$this->db->from('customer_feedback');
+		$this->db->where('comp_id',$this->session->companey_id);
+		return $this->db->get()->result();
 	}
 
 	public function saveconv($tckno, $subjects, $msg, $client, $user_id, $stage = 0, $sub_stage = 0, $ticket_status = 0,$comp_id=0)
@@ -645,6 +656,32 @@ class Ticket_Model extends CI_Model
 			->get()
 			->row();
 	}
+	
+	public function get_feed($tctno)
+	{
+
+		return $this->db->select("ftl_feedback.*,branch.branch_name,dbranch.branch_name as delbrcnh,sales_region.name as region")
+			->where("ftl_feedback.tracking_no", $tctno)
+			->where("ftl_feedback.company", $this->session->companey_id)
+			->from("ftl_feedback")
+            ->join("branch", "branch.branch_id = ftl_feedback.bkg_branch", "LEFT")
+		    ->join("branch as dbranch", "dbranch.branch_id = ftl_feedback.delivery_branch", "LEFT")
+		    ->join("sales_region", "sales_region.region_id = ftl_feedback.bkg_region", "LEFT")
+			->order_by("ftl_feedback.fdbk_id DESC")
+			->get()
+			->row();
+	}
+	
+	public function get_feed_tab($tctno)
+	{
+
+		return $this->db->select("*")
+			->where("gc_no", $tctno)
+			->from("feedback_tab")
+			->get()
+			->row();
+	}
+	
 	public function get_issue_list()
 	{
 		$this->db->where('comp_id', $this->session->companey_id);
@@ -686,6 +723,41 @@ class Ticket_Model extends CI_Model
 		return $query->result();
 		//echo $this->db->last_query();
 		//return 
+	}
+	
+	public function get_all_list_one()
+	{
+		$this->db->select("customer_feedback.feedback as feed_name,count(feedback_tab.gc_no) as ttlcount,(SELECT COUNT(fdbk_id) FROM ftl_feedback) as ttlfeed");
+		$this->db->from("customer_feedback");
+		$this->db->join("feedback_tab", "feedback_tab.cust_feed = customer_feedback.id", "LEFT");
+		$this->db->join("ftl_feedback", "ftl_feedback.tracking_no = feedback_tab.gc_no", "LEFT");
+		$this->db->where("customer_feedback.comp_id", $this->session->companey_id);
+		$this->db->group_by('customer_feedback.id');
+		$this->db->order_by('customer_feedback.id','ASC');
+		$query = $this->db->get();
+		return $query->result(); 
+	}
+	
+	public function get_all_list_two()
+	{
+		$this->db->select("sales_region.name as region,sales_region.region_id as rid,
+		(SELECT COUNT(fdbk_id) FROM feedback_tab INNER JOIN ftl_feedback ON ftl_feedback.tracking_no = feedback_tab.gc_no WHERE feedback_tab.cust_feed='1' AND ftl_feedback.bkg_region=rid) as satisfied,
+		(SELECT COUNT(fdbk_id) FROM feedback_tab INNER JOIN ftl_feedback ON ftl_feedback.tracking_no = feedback_tab.gc_no WHERE feedback_tab.cust_feed='2' AND ftl_feedback.bkg_region=rid) as service_consern,
+		(SELECT COUNT(fdbk_id) FROM feedback_tab INNER JOIN ftl_feedback ON ftl_feedback.tracking_no = feedback_tab.gc_no WHERE feedback_tab.cust_feed='3' AND ftl_feedback.bkg_region=rid) as rate_consern,
+		(SELECT COUNT(fdbk_id) FROM feedback_tab INNER JOIN ftl_feedback ON ftl_feedback.tracking_no = feedback_tab.gc_no WHERE feedback_tab.cust_feed='4' AND ftl_feedback.bkg_region=rid) as not_ready,
+		(SELECT COUNT(fdbk_id) FROM feedback_tab INNER JOIN ftl_feedback ON ftl_feedback.tracking_no = feedback_tab.gc_no WHERE feedback_tab.cust_feed='5' AND ftl_feedback.bkg_region=rid) as no_responce,
+		(SELECT COUNT(fdbk_id) FROM feedback_tab INNER JOIN ftl_feedback ON ftl_feedback.tracking_no = feedback_tab.gc_no WHERE feedback_tab.cust_feed='6' AND ftl_feedback.bkg_region=rid) as no_contact,
+		(SELECT COUNT(fdbk_id) FROM feedback_tab INNER JOIN ftl_feedback ON ftl_feedback.tracking_no = feedback_tab.gc_no WHERE feedback_tab.cust_feed='7' AND ftl_feedback.bkg_region=rid) as wrong_no,
+		");
+		$this->db->from("sales_region");
+		$this->db->join("ftl_feedback", "ftl_feedback.bkg_region = sales_region.region_id", "LEFT");
+		$this->db->join("feedback_tab", "feedback_tab.gc_no = ftl_feedback.tracking_no", "LEFT");
+		$this->db->join("customer_feedback", "customer_feedback.id = feedback_tab.cust_feed", "LEFT");
+		$this->db->where("sales_region.comp_id", $this->session->companey_id);
+		$this->db->group_by('sales_region.region_id');
+		$this->db->order_by('sales_region.region_id','ASC');
+		$query = $this->db->get();
+		return $query->result(); 
 	}
 
 	public function delete_subject($drop = null)
