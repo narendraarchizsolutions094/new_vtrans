@@ -182,47 +182,68 @@ class Feedback_datatable_model extends CI_Model{
           $dshowall = false;
         }       
 
-        $this->db->select('ftl_feedback.*,branch.branch_name,dbranch.branch_name as delbrcnh,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region');
+        $this->db->select('ftl_feedback.*,branch.branch_name,dbranch.branch_name as delbrcnh,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region,feedback_tab.cust_feed');
         $this->db->from($this->table);
         $this->db->join("branch", "branch.branch_id = ftl_feedback.bkg_branch", "LEFT");
 		$this->db->join("branch as dbranch", "dbranch.branch_id = ftl_feedback.delivery_branch", "LEFT");
 		$this->db->join("sales_region", "sales_region.region_id = ftl_feedback.bkg_region", "LEFT");
         $this->db->join("tbl_admin", "tbl_admin.pk_i_admin_id = ftl_feedback.added_by", "LEFT");
+		$this->db->join("feedback_tab", "feedback_tab.gc_no = ftl_feedback.tracking_no", "LEFT");
 
-         $this->db->where("ftl_feedback.company",$this->session->companey_id);
-
-        $enquiry_filters_sess   =   $this->session->ticket_filters_sess;
+        $enquiry_filters_sess   =   $this->session->feedback_filters_sess;
             
         $top_filter             =   !empty($enquiry_filters_sess['top_filter'])?$enquiry_filters_sess['top_filter']:'';
         $from_created           =   !empty($enquiry_filters_sess['from_created'])?$enquiry_filters_sess['from_created']:'';       
-        $to_created             =   !empty($enquiry_filters_sess['to_created'])?$enquiry_filters_sess['to_created']:'';
-
-        $where='';
-$CHK = 0;
-
-         if(!empty($from_created) && !empty($to_created)){
+        $to_created             =   !empty($enquiry_filters_sess['to_created'])?$enquiry_filters_sess['to_created']:'';		
+		$createdby              =   !empty($enquiry_filters_sess['createdby'])?$enquiry_filters_sess['createdby']:'';
+        $assign                 =   !empty($enquiry_filters_sess['assign'])?$enquiry_filters_sess['assign']:'';
+		$feed_status            =   !empty($enquiry_filters_sess['ticket_status'])?$enquiry_filters_sess['ticket_status']:'';
+        $assign_by              =   !empty($enquiry_filters_sess['assign_by'])?$enquiry_filters_sess['assign_by']:'';
+		$cust_problam           =   !empty($enquiry_filters_sess['cust_problam'])?$enquiry_filters_sess['cust_problam']:'';
+//print_r($cust_problam);exit;
+         $where = " ftl_feedback.company =  '".$this->session->companey_id."'";
+		 $where .= " AND (ftl_feedback.added_by IN (".implode(',', $all_reporting_ids).')';
+         $where .= " OR ftl_feedback.assign_to IN (".implode(',', $all_reporting_ids).'))';
+        if(!empty($from_created) && !empty($to_created)){
             $from_created = date("Y-m-d",strtotime($from_created));
             $to_created = date("Y-m-d",strtotime($to_created));
-            $where .= " (DATE(ftl_feedback.created_date) >= '".$from_created."' AND DATE(tck.created_date) <= '".$to_created."')";
-            $CHK = 1;
+            $where .= " AND DATE(ftl_feedback.created_date) >= '".$from_created."' AND DATE(ftl_feedback.created_date) <= '".$to_created."'";
         }
-
         if(!empty($from_created) && empty($to_created)){
             $from_created = date("Y-m-d",strtotime($from_created));
-            $where .= " DATE(ftl_feedback.created_date) >=  '".$from_created."'"; 
-            $CHK = 1;                           
+            $where .= " AND DATE(ftl_feedback.created_date) >=  '".$from_created."'";                        
         }
-        
         if(empty($from_created) && !empty($to_created)){            
-            
             $to_created = date("Y-m-d",strtotime($to_created));
-
-            $where .=  " DATE(ftl_feedback.created_date) <=  '".$to_created."'"; 
-            $CHK = 1;                                 
+            $where .= " AND DATE(ftl_feedback.created_date) <=  '".$to_created."'";                                    
         }
-		 
-		$where .= "  ftl_feedback.added_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR ftl_feedback.assign_to IN (".implode(',', $all_reporting_ids).')';
+		
+		if(!empty($createdby)){            
+            $where .= " AND ftl_feedback.added_by =  '".$createdby."'";                              
+        }
+
+        if(!empty($assign)){            
+
+            $where .= " AND ftl_feedback.assign_to =  '".$assign."'";                             
+        }
+
+        if(!empty($assign_by)){            
+		
+            $where .= " AND ftl_feedback.assigned_by =  '".$assign_by."'"; 
+                            
+        }
+		
+		if(!empty($feed_status)){            
+
+            $where .= " AND ftl_feedback.current_status =  '".$feed_status."'"; 
+			
+        }
+		
+		if(!empty($cust_problam)){            
+
+            $where .= " AND feedback_tab.cust_feed =  '".$cust_problam."'"; 
+			
+        }
 
         $this->db->where($where);
 

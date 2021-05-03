@@ -123,6 +123,8 @@ class Ticket_Model extends CI_Model
 					'city' =>$value->city??NULL,
 					'stage' =>$value->stage??NULL,
 					'top_filter' =>$value->top_filter??NULL,
+					'cust_problam' =>$value->cust_problam??NULL					
+					
 					
 			];
 		}else{
@@ -142,13 +144,14 @@ class Ticket_Model extends CI_Model
 					'stage' =>$value->stage??NULL,
 					'sub_stage' =>$value->sub_stage??NULL,
 					'ticket_status' =>$value->ticket_status??NULL,
+					'cust_problam' =>$value->cust_problam??NULL
 		];
 	}
 	}else{
 		if($type==1){
-			$pdata=[ 'from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
+			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
 		}else{
-			$pdata=[ 'from_created' =>'', 'to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
+			$pdata=[ 'cust_problam' =>'', 'to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
 	       }
 	}
 	return $pdata;

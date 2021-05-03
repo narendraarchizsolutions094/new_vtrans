@@ -122,18 +122,11 @@ class Ticket extends CI_Controller
 		$this->load->model('Leads_Model');
 		if (isset($_SESSION['ticket_filters_sess']))
 			unset($_SESSION['ticket_filters_sess']);
-		$data['sourse'] = $this->report_model->all_source();
 		$data['title'] = 'FTL Feedback List';
 		$data['created_bylist'] = $this->User_model->read();
-		$data['products'] = $this->dash_model->get_user_product_list();
-		$data['prodcntry_list'] = $this->enquiry_model->get_user_productcntry_list();
-		$data['problem'] = $this->Ticket_Model->get_sub_list();
-		$data['stage'] =  $this->Leads_Model->stage_by_type(4);
-		$data['sub_stage'] = $this->Leads_Model->find_description();
 		$data['ticket_status'] = $this->Ticket_Model->ticket_status()->result();
-		//print_r($data["tickets"]);die;
-		$data['issues'] = $this->Ticket_Model->get_issue_list();
-		$data['filterData'] = $this->Ticket_Model->get_filterData(2);
+		$data['customer_feed'] = $this->Ticket_Model->feed_by_cust();
+		$data['filterData'] = $this->Ticket_Model->get_filterData(4);
 		$data['user_list'] = $this->User_model->companey_users();
 		$data['content'] = $this->load->view('ticket/ftl-feedback', $data, true);
 		$this->load->view('layout/main_wrapper', $data);
@@ -149,6 +142,12 @@ class Ticket extends CI_Controller
 	public function ticket_set_filters_session()
 	{
 		$this->session->set_userdata('ticket_filters_sess', $_POST);
+		//print_r($_SESSION);
+	}
+	
+	public function feedback_set_filters_session()
+	{
+		$this->session->set_userdata('feedback_filters_sess', $_POST);
 		//print_r($_SESSION);
 	}
 
@@ -281,6 +280,60 @@ class Ticket extends CI_Controller
 
 		
 	}
+	
+	public function feedback_save_filter()
+	{
+		  $type=$this->uri->segment(3);
+		 $user_id=$this->session->user_id;
+		$comp_id=$this->session->companey_id;
+		// print_r($this->input->post());
+		// die();
+		//check already exist or not
+		$count=$this->db->where(array('user_id'=>$user_id,'comp_id'=>$comp_id,'type'=>$type))->count_all_results('tbl_filterdata');
+		
+		if($count==0){
+				
+			$filterData=[
+				'from_created' =>$this->input->post('from_created'),
+				'to_created' =>$this->input->post('to_created'),
+				'createdby' =>$this->input->post('createdby'), 
+				'assign' => $this->input->post('assign'),
+				'assign_by' => $this->input->post('assign_by'),
+				'cust_problam' => $this->input->post('cust_problam'),
+				'ticket_status' =>$this->input->post('ticket_status'),
+				];
+		$data=[
+			'user_id'=>$user_id,
+			'comp_id'=>$comp_id,
+			'type'=>$type,
+			'filter_data'=>json_encode($filterData)];
+			$this->db->insert('tbl_filterdata',$data);
+			echo'inserted';
+			
+		}else{
+		
+			$filterData=[
+			    'from_created' =>$this->input->post('from_created'),
+				'to_created' =>$this->input->post('to_created'),
+				'createdby' =>$this->input->post('createdby'), 
+				'assign' => $this->input->post('assign'),
+				'assign_by' => $this->input->post('assign_by'),
+				'cust_problam' => $this->input->post('cust_problam'),
+				'ticket_status' =>$this->input->post('ticket_status'),
+				];
+		$data=[
+			'user_id'=>$user_id,
+			'comp_id'=>$comp_id,
+			'type'=>$type,
+			'filter_data'=>json_encode($filterData)];
+			$this->db->where(array('user_id'=>$user_id,'comp_id'=>$comp_id,'type'=>$type))->update('tbl_filterdata',$data);
+			echo'updated';
+			
+		}
+
+		
+	}
+	
 	public function autofill()
 	{
 		if($post = $this->input->post())
