@@ -104,7 +104,7 @@ class Ticket_Model extends CI_Model
 		$value=json_decode($filter->filter_data);
 		if($type==1){
 			$pdata=[
-				'from_created' =>$value->from_created??NULL,
+				    'from_created' =>$value->from_created??NULL,
 					'to_created' =>$value->to_created??NULL,
 					'source' =>$value->source??NULL,
 					'filter_checkbox' => $value->filter_checkbox??NULL,
@@ -151,7 +151,7 @@ class Ticket_Model extends CI_Model
 		if($type==1){
 			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
 		}else{
-			$pdata=[ 'cust_problam' =>'', 'to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
+			$pdata=[ 'cust_problam' =>'','from_created' =>'','to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
 	       }
 	}
 	return $pdata;

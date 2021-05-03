@@ -3649,4 +3649,54 @@ class Ticket extends CI_Controller
 			$this->load->view('ticket/daily-summary', $data);
 			//$this->load->view('layout/login_wrapper', $data);			
 		}
+	public function find_ftldetails(){
+		
+	$keyword = $this->input->post('msearch');
+	$companey_id = $this->session->companey_id;
+	
+			$this->db->select('*');
+    	    $this->db->from('ftl_feedback');
+    	    $this->db->like('tracking_no',$keyword);
+			$this->db->or_like('phone',$keyword);
+			$this->db->or_like('email',$keyword);
+			$this->db->or_like('name',$keyword);
+			$this->db->where('company',$companey_id);
+    	    $q=$this->db->get()->result();
+    	    if(!empty($q)){
+    
+    $i=1;
+	
+                        echo '<div class="col-md-12">';
+                            echo '<div class="profile-card" style="padding: 10px;">';
+							
+echo '<table width="100%" class="datatable1 table table-striped table-bordered table-hover">';
+  echo '<tr>';
+    echo '<th>S.No</th>';
+    echo '<th>GC No</th>';
+    echo '<th>Name</th>';
+    echo '<th>Email</th>';
+	echo '<th>Phone</th>';
+	echo '<th>Action</th>';
+  echo '</tr>';
+ foreach($q as $value){
+  echo '<tr>';
+    echo '<td>'.$i.'</td>';
+    echo '<td>'.$value->tracking_no.'</td>';
+    echo '<td>'.$value->name.'</td>';
+    echo '<td>'.$value->email.'</td>';
+	echo '<td>'.$value->phone.'</td>';
+	echo '<td><a href="'.base_url('ticket/feed_view/'.$value->tracking_no).'" class="btn btn-table pull-right" style="cursor: pointer;margin-left:5px;"><i class="fa fa-info-circle"></i></a></td>';
+  echo '</tr>';
+  $i++;	}
+echo '</table>';
+
+                            echo '</div>';
+                        echo '</div>';
+						echo '<br>';
+   	    }else{
+   	                  echo '<div class="col-md-12" style="font-size: 18px;color: red;text-align: center;">';
+                            echo 'Sorry, there are no results matching your search detail!';
+                        echo '</div>';
+   	    }
+    }
 }

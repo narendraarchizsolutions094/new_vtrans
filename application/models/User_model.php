@@ -59,6 +59,7 @@ class User_model extends CI_Model {
 		if(!empty($dept)){
 		$this->db->where('dept_name', $dept);
 		}
+		$this->db->where('b_status', '1');
         $query = $this->db->get();
         return $query->result();
     }

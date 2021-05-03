@@ -52,7 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
         <div class="panel-body">
-          <table width="100%" class="datatable1 table table-striped table-bordered table-hover ">
+          <table width="100%" class="datatable1 table table-striped table-bordered table-hover">
             <thead>
                 <tr>
                   <th>BOOKING REGION</th>

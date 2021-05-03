@@ -162,7 +162,8 @@ input[name=lead_stages]{
 							<div class="btn-group">
 							<form id="search_form" method="POST">
                                 <input type="text"  class="form-control" id="msearch" name="msearch" style="padding-top:0px;">
-                                <button type = "button" id="master_search_form" class="btn btn-success">Find</button>								
+                                <button type = "button" onclick="master_search_form();" class="btn btn-danger pull-right" 
+								style="margin-right: -50px;margin-top: -34px;"><i class="fa fa-search" aria-hidden="true"></i></button>								
 							</form>
 				            </div>
 							<div class="col-md-4 col-sm-4 col-xs-4 pull-right" >  
@@ -687,8 +688,6 @@ if (enq_filters=='') {
 if (!enq_filters.includes('date')) {
   $('#fromdatefilter').hide();
   $('#todatefilter').hide();
-  $('#update_fromdatefilter').hide();
-  $('#update_todatefilter').hide();
 }else{
   $("input[value='date']").prop('checked', true);
 }
@@ -1175,33 +1174,19 @@ jQuery(function($){ //on document.ready
 
 <script>
 function master_search_form(){
-//$("#master_search_form").click(function(e) {
-	alert('hi');
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-    var url =  '<?php echo base_url();?>ticket/add_feedbacks/45';
+    var url =  '<?php echo base_url();?>ticket/find_ftldetails';
       $.ajax({
          type: "POST",
          url: url,
-         data: $('#customer_feed').serialize(),		 // serializes the form's elements.
+         data: $('#search_form').serialize(),		 // serializes the form's elements.
          success: function(data)
-         {
-if(data==1){			 
+         {			 
 Swal.fire({
-  position: 'top-end',
+  width: 600,
   icon: 'success',
-  title: 'Feedback Create successfully',
-  showConfirmButton: false,
-  timer: 1500
+  title: data,
+  showConfirmButton: true,
 });
-}else{
-Swal.fire({
-  position: 'top-end',
-  icon: 'success',
-  title: 'Feedback Update successfully',
-  showConfirmButton: false,
-  timer: 1500
-});
-}
          }
        });
   };
