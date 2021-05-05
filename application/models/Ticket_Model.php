@@ -123,8 +123,10 @@ class Ticket_Model extends CI_Model
 					'city' =>$value->city??NULL,
 					'stage' =>$value->stage??NULL,
 					'top_filter' =>$value->top_filter??NULL,
-					'cust_problam' =>$value->cust_problam??NULL					
-					
+					'cust_problam' =>$value->cust_problam??NULL,
+                    'sales_region' =>$value->sales_region??NULL,
+                    'sales_area' =>$value->sales_area??NULL,
+                    'sales_branch' =>$value->sales_branch??NULL,															
 					
 			];
 		}else{
@@ -144,7 +146,10 @@ class Ticket_Model extends CI_Model
 					'stage' =>$value->stage??NULL,
 					'sub_stage' =>$value->sub_stage??NULL,
 					'ticket_status' =>$value->ticket_status??NULL,
-					'cust_problam' =>$value->cust_problam??NULL
+					'cust_problam' =>$value->cust_problam??NULL,
+					'sales_region' =>$value->sales_region??NULL,
+                    'sales_area' =>$value->sales_area??NULL,
+                    'sales_branch' =>$value->sales_branch??NULL,
 		];
 	}
 	}else{
@@ -390,6 +395,50 @@ class Ticket_Model extends CI_Model
 		}
 		//echo $this->db->last_query();				
 	}
+	
+	public function saveconv_feed($tckno, $subjects, $msg, $client, $user_id, $stage = 0, $sub_stage = 0, $ticket_status = 0,$comp_id=0)
+	{
+		//echo $comp_id; exit();
+		$ticket_status = $this->input->post('feedbk_status') ?? $ticket_status;
+		$insarr = array(
+			"tck_id" => $tckno,
+			"comp_id" => $this->session->companey_id??$comp_id,
+			"parent" => 0,
+			"subj"   => $subjects,
+			"msg"    => $msg,
+			"attacment" => "",
+			"status"  => 0,
+			"ticket_status" => $ticket_status,
+			"stage"  => $stage,
+			"sub_stage"  => $sub_stage,
+			"client"   => $client,
+			"added_by" => $user_id,
+		);
+		$ret = $this->db->insert("tbl_feedback_conv", $insarr);
+		$last_id = $this->db->insert_id();
+		if ($ret) {
+		
+			$this->session->set_flashdata('message', 'Successfully saved');
+			if ($stage) {
+				$this->db->set('ftl_feedback.ftl_stage', $stage);
+			}
+			if ($sub_stage) {
+				$this->db->set('ftl_feedback.ftl_substage', $sub_stage);
+			}
+			if ($ticket_status) {
+				$this->db->set('ftl_feedback.current_status', $ticket_status);
+			}
+			if ($stage || $sub_stage || $ticket_status) {
+				$this->db->set('last_update',date('Y-m-d H:i:s'));
+				$this->db->where('ftl_feedback.company', $this->session->companey_id??$comp_id);
+				$this->db->where('ftl_feedback.fdbk_id', $tckno);
+				$this->db->update('ftl_feedback');
+			}
+			return $last_id;
+        } else {
+			$this->session->set_flashdata('message', 'Failed to save');
+		}			
+	}
 
 	function updatestatus()
 	{
@@ -440,6 +489,25 @@ class Ticket_Model extends CI_Model
 			->where("cnv.tck_id", $conv)
 			->where("cnv.comp_id", $compid)
 			->from("tbl_ticket_conv cnv")
+			->join("lead_stage", 'lead_stage.stg_id=cnv.stage', 'left')
+			->join("lead_description", 'lead_description.id=cnv.sub_stage', 'left')
+			->join("tbl_admin as admin", "admin.pk_i_admin_id=cnv.added_by")
+			->join("tbl_admin as user", "user.pk_i_admin_id=cnv.assignedTo", 'left')
+			->join("tbl_ticket_status status", "cnv.ticket_status = status.id", "LEFT")
+			->order_by("cnv.id DESC")
+			->get()
+			->result();
+			//echo $this->db->last_query(); exit();
+	}
+	
+	function getconv_feed($conv)
+	{
+		$compid = $this->session->companey_id;
+
+		return $this->db->select("cnv.*,lead_stage.lead_stage_name,lead_description.description as sub_stage,concat(admin.s_display_name,' ',admin.last_name) as updated_by,status.status_name,concat(user.s_display_name,' ',user.last_name) as assignedTo")
+			->where("cnv.tck_id", $conv)
+			->where("cnv.comp_id", $compid)
+			->from("tbl_feedback_conv cnv")
 			->join("lead_stage", 'lead_stage.stg_id=cnv.stage', 'left')
 			->join("lead_description", 'lead_description.id=cnv.sub_stage', 'left')
 			->join("tbl_admin as admin", "admin.pk_i_admin_id=cnv.added_by")
@@ -679,7 +747,7 @@ class Ticket_Model extends CI_Model
 			->where("gc_no", $tctno)
 			->from("feedback_tab")
 			->get()
-			->row();
+			->result();
 	}
 	
 	public function get_issue_list()
@@ -718,27 +786,42 @@ class Ticket_Model extends CI_Model
 		if(!empty($process)){
 			$this->db->where('FIND_IN_SET('.$process.',process_id)>',0);
 		}
-		$this->db->join('branch','branch.branch_id=tbl_ticket_subject.branch_id','left');
+		$this->db->join('branch','branch.branch_id=tbl_ticket_subject.id','left');
 		$query = $this->db->get('tbl_ticket_subject');
 		return $query->result();
 		//echo $this->db->last_query();
 		//return 
 	}
 	
-	public function get_all_list_one()
+	public function get_all_list_one($from_created='',$to_created='')
 	{
 		$this->db->select("customer_feedback.feedback as feed_name,count(feedback_tab.gc_no) as ttlcount,(SELECT COUNT(fdbk_id) FROM ftl_feedback) as ttlfeed");
 		$this->db->from("customer_feedback");
 		$this->db->join("feedback_tab", "feedback_tab.cust_feed = customer_feedback.id", "LEFT");
 		$this->db->join("ftl_feedback", "ftl_feedback.tracking_no = feedback_tab.gc_no", "LEFT");
-		$this->db->where("customer_feedback.comp_id", $this->session->companey_id);
+		
+        $where = " customer_feedback.comp_id =  '".$this->session->companey_id."'";
+		if(!empty($from_created) && !empty($to_created)){
+            $from_created = date("Y-m-d",strtotime($from_created));
+            $to_created = date("Y-m-d",strtotime($to_created));
+            $where .= " AND DATE(feedback_tab.created_date) >= '".$from_created."' AND DATE(feedback_tab.created_date) <= '".$to_created."'";
+        }
+        if(!empty($from_created) && empty($to_created)){
+            $from_created = date("Y-m-d",strtotime($from_created));
+            $where .= " AND DATE(feedback_tab.created_date) >=  '".$from_created."'";                        
+        }
+        if(empty($from_created) && !empty($to_created)){            
+            $to_created = date("Y-m-d",strtotime($to_created));
+            $where .= " AND DATE(feedback_tab.created_date) <=  '".$to_created."'";                                    
+        }
+		$this->db->where($where);
 		$this->db->group_by('customer_feedback.id');
 		$this->db->order_by('customer_feedback.id','ASC');
 		$query = $this->db->get();
 		return $query->result(); 
 	}
 	
-	public function get_all_list_two()
+	public function get_all_list_two($from_created,$to_created)
 	{
 		$this->db->select("sales_region.name as region,sales_region.region_id as rid,
 		(SELECT COUNT(fdbk_id) FROM feedback_tab INNER JOIN ftl_feedback ON ftl_feedback.tracking_no = feedback_tab.gc_no WHERE feedback_tab.cust_feed='1' AND ftl_feedback.bkg_region=rid) as satisfied,
@@ -753,7 +836,21 @@ class Ticket_Model extends CI_Model
 		$this->db->join("ftl_feedback", "ftl_feedback.bkg_region = sales_region.region_id", "LEFT");
 		$this->db->join("feedback_tab", "feedback_tab.gc_no = ftl_feedback.tracking_no", "LEFT");
 		$this->db->join("customer_feedback", "customer_feedback.id = feedback_tab.cust_feed", "LEFT");
-		$this->db->where("sales_region.comp_id", $this->session->companey_id);
+		$where = " sales_region.comp_id =  '".$this->session->companey_id."'";
+		if(!empty($from_created) && !empty($to_created)){
+            $from_created = date("Y-m-d",strtotime($from_created));
+            $to_created = date("Y-m-d",strtotime($to_created));
+            $where .= " AND DATE(feedback_tab.created_date) >= '".$from_created."' AND DATE(feedback_tab.created_date) <= '".$to_created."'";
+        }
+        if(!empty($from_created) && empty($to_created)){
+            $from_created = date("Y-m-d",strtotime($from_created));
+            $where .= " AND DATE(feedback_tab.created_date) >=  '".$from_created."'";                        
+        }
+        if(empty($from_created) && !empty($to_created)){            
+            $to_created = date("Y-m-d",strtotime($to_created));
+            $where .= " AND DATE(feedback_tab.created_date) <=  '".$to_created."'";                                    
+        }
+		$this->db->where($where);
 		$this->db->group_by('sales_region.region_id');
 		$this->db->order_by('sales_region.region_id','ASC');
 		$query = $this->db->get();

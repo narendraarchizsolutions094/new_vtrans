@@ -206,6 +206,9 @@ class Enq extends CI_Controller
 			if ($showall == true or in_array(7, $acolarr)) {
 				$row[] = (!empty($each->product_name)) ? ucwords($each->product_name) : "NA";
 			}
+			if ($showall == true or in_array(30, $acolarr)) {
+				$row[] = (!empty($each->lead_stage_name)) ? ucwords($each->lead_stage_name) : "NA";
+			}
 			if ($showall == true or in_array(8, $acolarr)) {
 				if ($each->lead_stage_name) {
 					$option = '<option value="' . $each->lead_stage_name . '">' . ucwords($each->lead_stage_name) . '</option>';

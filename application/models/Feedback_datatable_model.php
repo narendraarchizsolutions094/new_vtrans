@@ -182,13 +182,18 @@ class Feedback_datatable_model extends CI_Model{
           $dshowall = false;
         }       
 
-        $this->db->select('ftl_feedback.*,branch.branch_name,dbranch.branch_name as delbrcnh,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region,feedback_tab.cust_feed');
+       // $this->db->select('ftl_feedback.*,customer_feedback.feedback as cfeed,tbl_ticket_status.status_name,branch.branch_name,dbranch.branch_name as delbrcnh,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region,feedback_tab.*');
+	   $this->db->select('ftl_feedback.*,tbl_ticket_status.status_name,branch.branch_name,dbranch.branch_name as delbrcnh,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region');
         $this->db->from($this->table);
         $this->db->join("branch", "branch.branch_id = ftl_feedback.bkg_branch", "LEFT");
 		$this->db->join("branch as dbranch", "dbranch.branch_id = ftl_feedback.delivery_branch", "LEFT");
 		$this->db->join("sales_region", "sales_region.region_id = ftl_feedback.bkg_region", "LEFT");
+		$this->db->join("sales_area", "sales_area.region_id = sales_region.region_id", "LEFT");
+		$this->db->join("branch as rb", "branch.region_id = sales_region.region_id", "LEFT");
         $this->db->join("tbl_admin", "tbl_admin.pk_i_admin_id = ftl_feedback.added_by", "LEFT");
 		$this->db->join("feedback_tab", "feedback_tab.gc_no = ftl_feedback.tracking_no", "LEFT");
+		//$this->db->join("customer_feedback", "customer_feedback.id = feedback_tab.cust_feed", "LEFT");
+		$this->db->join("tbl_ticket_status", "tbl_ticket_status.id = ftl_feedback.current_status", "LEFT");
 
         $enquiry_filters_sess   =   $this->session->feedback_filters_sess;
             
@@ -200,10 +205,14 @@ class Feedback_datatable_model extends CI_Model{
 		$feed_status            =   !empty($enquiry_filters_sess['ticket_status'])?$enquiry_filters_sess['ticket_status']:'';
         $assign_by              =   !empty($enquiry_filters_sess['assign_by'])?$enquiry_filters_sess['assign_by']:'';
 		$cust_problam           =   !empty($enquiry_filters_sess['cust_problam'])?$enquiry_filters_sess['cust_problam']:'';
+		
+		$sales_region           =   !empty($enquiry_filters_sess['sales_region'])?$enquiry_filters_sess['sales_region']:'';
+		$sales_area             =   !empty($enquiry_filters_sess['sales_area'])?$enquiry_filters_sess['sales_area']:'';
+		$sales_branch           =   !empty($enquiry_filters_sess['sales_branch'])?$enquiry_filters_sess['sales_branch']:'';
 //print_r($cust_problam);exit;
          $where = " ftl_feedback.company =  '".$this->session->companey_id."'";
-		 $where .= " AND (ftl_feedback.added_by IN (".implode(',', $all_reporting_ids).')';
-         $where .= " OR ftl_feedback.assign_to IN (".implode(',', $all_reporting_ids).'))';
+		// $where .= " AND (ftl_feedback.added_by IN (".implode(',', $all_reporting_ids).')';
+        // $where .= " OR ftl_feedback.assign_to IN (".implode(',', $all_reporting_ids).'))';
         if(!empty($from_created) && !empty($to_created)){
             $from_created = date("Y-m-d",strtotime($from_created));
             $to_created = date("Y-m-d",strtotime($to_created));
@@ -235,7 +244,25 @@ class Feedback_datatable_model extends CI_Model{
 		
 		if(!empty($feed_status)){            
 
-            $where .= " AND ftl_feedback.current_status =  '".$feed_status."'"; 
+            $where .= " AND ftl_feedback.status =  '".$feed_status."'"; 
+			
+        }
+		
+		if(!empty($sales_region)){            
+
+            $where .= " AND ftl_feedback.bkg_region =  '".$sales_region."'"; 
+			
+        }
+		
+		if(!empty($sales_area)){            
+
+            $where .= " AND sales_area.area_id =  '".$sales_area."'"; 
+			
+        }
+		
+		if(!empty($sales_branch)){            
+
+            $where .= " AND rb.branch_id =  '".$sales_branch."'"; 
 			
         }
 		
@@ -244,8 +271,45 @@ class Feedback_datatable_model extends CI_Model{
             $where .= " AND feedback_tab.cust_feed =  '".$cust_problam."'"; 
 			
         }
+		
+		if($top_filter=='total'){            
+
+        }elseif($top_filter=='created'){            
+        }elseif($top_filter=='assigned'){             
+        }elseif($top_filter=='updated'){  
+            $where .= ' AND ';          
+            $where.="  ftl_feedback.last_update!=ftl_feedback.created_date";
+        }elseif($top_filter=='total_activity'){              
+        }elseif($top_filter=='closed'){  
+            $where .= ' AND ';          
+            $where.="  ftl_feedback.status=3";
+        }elseif($top_filter=='pending'){  
+            $where .= ' AND ';          
+            $where.="  ftl_feedback.last_update = ftl_feedback.created_date";            
+        }
+        if($top_filter=='created'){
+            $where .= ' AND ';                      
+            $where .= " ftl_feedback.added_by IN (".implode(',', $all_reporting_ids).')';
+        }else if($top_filter=='assigned'){
+            $where .= ' AND ';                      
+            $where .= " ftl_feedback.assign_to IN (".implode(',', $all_reporting_ids).')';
+        }else{
+            $where .= ' AND ';  
+            $where .= " ( ftl_feedback.added_by IN (".implode(',', $all_reporting_ids).')';
+            $where .= ' OR ';
+            $where .= " ftl_feedback.assign_to IN (".implode(',', $all_reporting_ids).'))';
+        }
+
+
+        if(!empty($_POST['specific_list']))
+        {
+           
+            $where.=" AND ( ftl_feedback.fdbk_id IN (".$_POST['specific_list'].") ) ";
+            $and =1;
+        }
 
         $this->db->where($where);
+		$this->db->group_by('ftl_feedback.tracking_no');
 
         $i = 0;
         // loop searchable columns 

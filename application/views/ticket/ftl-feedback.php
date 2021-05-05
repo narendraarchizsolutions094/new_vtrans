@@ -199,6 +199,21 @@ input[name=lead_stages]{
                       <input type="checkbox" value="problam" id="problamcheckbox" name="filter_checkbox"> Customer Feedback</label>
                     </li>
 					
+					<li>
+                      <label>
+                      <input type="checkbox" value="region" id="regioncheckbox" name="filter_checkbox"> Sales region</label>
+                    </li>
+					
+					<li>
+                      <label>
+                      <input type="checkbox" value="area" id="areacheckbox" name="filter_checkbox"> Sales area</label>
+                    </li>
+					
+					<li>
+                      <label>
+                      <input type="checkbox" value="branch" id="branchcheckbox" name="filter_checkbox"> Sales Branch</label>
+                    </li>
+					
                     <li>
                       <label>
                       <input type="checkbox" value="status" id="statuscheckbox" name="filter_checkbox"> Status</label>
@@ -301,7 +316,7 @@ input[name=lead_stages]{
                     <div class="form-group col-md-3" id="problamfilter">
                     <label for="">Customer Feedback</label>  
                     <select name="cust_problam" class="form-control"> 
-                          <option value="0">Select</option>
+                          <option value="">Select</option>
                          <?php 
                               if (!empty($customer_feed)) {
                               foreach ($customer_feed as $feed) {?>
@@ -311,12 +326,53 @@ input[name=lead_stages]{
                             }
                         ?>     
                     </select> 
-                    </div>						
+                    </div>
+
+                    <div class="form-group col-md-3" id="regionfilter">
+                    <label for="">Sales Region</label>  
+                    <select name="sales_region" class="form-control" onchange="find_area();"> 
+                          <option value="">Select</option>
+				    <?php
+                        if (!empty($region_lists)) {
+                        foreach ($region_lists as $key => $value) { ?>
+                        <option value="<?= $value->region_id;?>" <?php if($value->region_id==$filterData['sales_region']) {echo 'selected';}?>><?= $value->name;?></option>
+                    <?php
+                    }
+                    }
+                    ?>                              
+                    </select> 
+                    </div>
+ 
+                     <div class="form-group col-md-3" id="areafilter">
+                    <label for="">Sales Area</label>  
+                    <select name="sales_area" class="form-control" id="filtered_area" onchange="find_branch();"> 
+                          <option value="">Select</option>
+                    <?php  if (!empty($area_lists)) {
+                            foreach ($area_lists as $key => $value) { ?>
+                            <option value="<?= $value->area_id;?>" <?php if($value->area_id == $filterData['sales_area']){ echo "selected";} ?>><?= $value->area_name;?></option>
+                    <?php
+                    }
+                    } ?>    
+                    </select> 
+                    </div>
+
+                    <div class="form-group col-md-3" id="branchfilter">
+                    <label for="">Sales Branch</label>  
+                    <select name="sales_branch" class="form-control" id="filtered_branch"> 
+                          <option value="">Select</option>
+                    <?php  if (!empty($branch_lists)) {
+                            foreach ($branch_lists as $key => $value) { ?>
+                            <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $filterData['sales_branch']){ echo "selected";} ?>><?= $value->branch_name;?></option>
+                    <?php
+                    }
+                    } ?>       
+                    </select> 
+                    </div>					
                    
                    <div class="form-group col-md-3" id="statusfilter">
                     <label for="">FTL Status</label>  
                     <select name="ticket_status" class="form-control"> 
-                          <option value="0">Select</option>
+                          <option value="">Select</option>
                          <?php 
                               if (!empty($ticket_status)) {
                               foreach ($ticket_status as $sub_stage_list) {?>
@@ -326,8 +382,7 @@ input[name=lead_stages]{
                             }
                         ?>     
                     </select> 
-                    </div> 
-                  
+                    </div>
                     <div class="form-group col-md-3">
                     <button class="btn btn-success" id="save_filterbutton" type="button" onclick="feedback_save_filter();" style="margin: 20px;">Save</button>        
                         </div>           
@@ -458,6 +513,17 @@ input[name=lead_stages]{
 					  <?=($showall or in_array(20,$acolarr))?'<th>Current Status</th>':''?>
 					  <?=($showall or in_array(21,$acolarr))?'<th>Vehicle No</th>':''?>
 					  <?=($showall or in_array(22,$acolarr))?'<th>Added By</th>':''?>
+					  <!--<?=($showall or in_array(23,$acolarr))?'<th>How Are The Services?</th>':''?>
+					  <?=($showall or in_array(24,$acolarr))?'<th>Is This First FTL</th>':''?>
+                      <?=($showall or in_array(25,$acolarr))?'<th>Other Locations Where FTL Service Is Required</th>':''?>
+                      <?=($showall or in_array(26,$acolarr))?'<th>If Using Any Other Transporter</th>':''?>
+                      <?=($showall or in_array(27,$acolarr))?'<th>If Yes Please Specify Name</th>':''?>
+                      <?=($showall or in_array(28,$acolarr))?'<th>Remarks On Improvement Required</th>':''?>
+                      <?=($showall or in_array(29,$acolarr))?'<th>Next FTL Booking Expected</th>':''?>
+					  <?=($showall or in_array(30,$acolarr))?'<th>Customer Feedback</th>':''?>
+					  <?=($showall or in_array(31,$acolarr))?'<th>Action Taken</th>':''?>
+					  <?=($showall or in_array(32,$acolarr))?'<th>Response By</th>':''?>
+					  <?=($showall or in_array(33,$acolarr))?'<th>Response Remark</th>':''?>-->
 
 										</thead>
 										<tbody>
@@ -552,24 +618,6 @@ input[name=lead_stages]{
         $("select[name='ticket_status']").change();
         update_short_dashboard();
       });
-//    $.ajax({
-//       url: "<?=base_url().'ticket/list_short_details/'?>",
-//       type: 'get',
-//       dataType: 'json',
-//       success: function(responseData){
-//         //alert(JSON.stringify(responseData));
-//       $('#today_created').html(responseData.created_today);
-//       $('#today_updated').html(responseData.updated_today);
-//       $('#today_close').html(responseData.closed_today);
-//       $('#today_total').html(responseData.all_today);
-      
-//      // all_lead_stage_c  = $("input[name='top_filter']:checked").next().next().next().html();
-
-// //      console.log(all_lead_stage_c);
-      
-//       //$('#lead_stage_-1').text(all_lead_stage_c);     
-//       }
-//     });
 
 </script>
 
@@ -718,6 +766,27 @@ if (!enq_filters.includes('problam')) {
   $("input[value='problam']").prop('checked', true);
 }
 
+if (!enq_filters.includes('region')) {
+  $('#regionfilter').hide();
+
+}else{
+  $("input[value='region']").prop('checked', true);
+}
+
+if (!enq_filters.includes('area')) {
+  $('#areafilter').hide();
+
+}else{
+  $("input[value='area']").prop('checked', true);
+}
+
+if (!enq_filters.includes('branch')) {
+  $('#branchfilter').hide();
+
+}else{
+  $("input[value='branch']").prop('checked', true);
+}
+
 if (!enq_filters.includes('status')) {
   $('#statusfilter').hide();
 
@@ -729,7 +798,8 @@ $('#buttongroup').hide();
 
  $('input[name="filter_checkbox"]').click(function(){  
   if($('#datecheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||
-  $('#assign_bycheckbox').is(":checked")||$('#problamcheckbox').is(":checked")||$('#statuscheckbox').is(":checked")){
+  $('#assign_bycheckbox').is(":checked")||$('#problamcheckbox').is(":checked")||$('#statuscheckbox').is(":checked")||
+  $('#regioncheckbox').is(":checked")||$('#areacheckbox').is(":checked")||$('#branchcheckbox').is(":checked")){
     $('#save_filterbutton').show();
     $('#filter_pannel').show();
 
@@ -785,6 +855,30 @@ $('#buttongroup').hide();
         }
         else{
           $('#problamfilter').hide();
+        }
+		
+		if($('#regioncheckbox').is(":checked")){
+         $('#save_filterbutton').show();
+          $('#regionfilter').show();
+        }
+        else{
+          $('#regionfilter').hide();
+        }
+		
+		if($('#areacheckbox').is(":checked")){
+         $('#save_filterbutton').show();
+          $('#areafilter').show();
+        }
+        else{
+          $('#areafilter').hide();
+        }
+		
+		if($('#branchcheckbox').is(":checked")){
+         $('#save_filterbutton').show();
+          $('#branchfilter').show();
+        }
+        else{
+          $('#branchfilter').hide();
         }
 
         if($('#statuscheckbox').is(":checked")){
@@ -899,32 +993,18 @@ $(document).ready(function() {
 function update_short_dashboard()
 {  
    $.ajax({
-      url: "<?=base_url().'ticket/short_dashboard/'?>",
+      url: "<?=base_url().'ticket/short_dashboard_feedback/'?>",
       type: 'get',
       dataType: 'json',
       success: function(responseData){
      //alert(responseData);
-        $(".created_self").html(responseData.created);
-       
-        $(".assigned").html(responseData.assigned);
-        
+        $(".created_self").html(responseData.created);      
+        $(".assigned").html(responseData.assigned);        
         $(".updated").html(responseData.updated);
         $(".total_activity").html(responseData.activity);
        $(".closed").html(responseData.closed);
        $(".pending").html(responseData.pending);
-       $(".total").html(responseData.total);
-
-        //alert(JSON.stringify(responseData));
-      //  $('#today_created').html(responseData.created_today);
-      // $('#today_updated').html(responseData.updated_today);
-      // $('#today_close').html(responseData.closed_today);
-      // $('#today_total').html(responseData.all_today);
-      
-     // all_lead_stage_c  = $("input[name='top_filter']:checked").next().next().next().html();
-
-//      console.log(all_lead_stage_c);
-      
-      //$('#lead_stage_-1').text(all_lead_stage_c);     
+       $(".total").html(responseData.total);     
       },
       error:function(u,v,w)
       {
@@ -999,48 +1079,48 @@ function delete_recorde(){
           <label class=""><input type="checkbox" class="choose-col"  value = "6"  <?php echo ($showall == true or in_array(6, $acolarr)) ? "checked" : ""; ?>> Bkg Branch </label>  &nbsp;
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "7"  <?php echo ($showall == true or in_array(17, $acolarr)) ? "checked" : ""; ?>> Bkg Region </label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "7"  <?php echo ($showall == true or in_array(7, $acolarr)) ? "checked" : ""; ?>> Bkg Region </label>  &nbsp;
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "8"  <?php echo ($showall == true or in_array(7, $acolarr)) ? "checked" : ""; ?>> Delivery Branch </label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "8"  <?php echo ($showall == true or in_array(8, $acolarr)) ? "checked" : ""; ?>> Delivery Branch </label>  &nbsp;
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "9"  <?php echo ($showall == true or in_array(8, $acolarr)) ? "checked" : ""; ?>> Dly Type </label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "9"  <?php echo ($showall == true or in_array(9, $acolarr)) ? "checked" : ""; ?>> Dly Type </label>  &nbsp;
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "10"  <?php echo ($showall == true or in_array(19, $acolarr)) ? "checked" : ""; ?>> Pay Mode </label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "10"  <?php echo ($showall == true or in_array(10, $acolarr)) ? "checked" : ""; ?>> Pay Mode </label>  &nbsp;
           </div>
 
 
           <div class = "col-md-4">  
           
-              <label class=""><input type="checkbox" class="choose-col"  value = "11"  <?php echo ($showall == true or in_array(9, $acolarr)) ? "checked" : ""; ?>> Charged Weight </label> &nbsp;
+              <label class=""><input type="checkbox" class="choose-col"  value = "11"  <?php echo ($showall == true or in_array(11, $acolarr)) ? "checked" : ""; ?>> Charged Weight </label> &nbsp;
           </div>
           <div class = "col-md-4">  
           
-              <label class=""><input type="checkbox" class="choose-col"  value = "12"  <?php echo ($showall == true or in_array(18, $acolarr)) ? "checked" : ""; ?>> No Of Articles </label> &nbsp;
+              <label class=""><input type="checkbox" class="choose-col"  value = "12"  <?php echo ($showall == true or in_array(12, $acolarr)) ? "checked" : ""; ?>> No Of Articles </label> &nbsp;
           </div>
 
         <div class = "col-md-4">  
           
-           <label  class=""><input type="checkbox" class="choose-col"  value = "13"  <?php echo ($showall == true or in_array(10, $acolarr)) ? "checked" : ""; ?>> Actual Weight </label>  &nbsp; 
+           <label  class=""><input type="checkbox" class="choose-col"  value = "13"  <?php echo ($showall == true or in_array(13, $acolarr)) ? "checked" : ""; ?>> Actual Weight </label>  &nbsp; 
          </div>
 
          <div class = "col-md-4">  
           
-               <label class=""><input type="checkbox" class="choose-col"  value = "14"  <?php echo ($showall == true or in_array(11, $acolarr)) ? "checked" : ""; ?>> Consignor Name </label>  &nbsp; 
+               <label class=""><input type="checkbox" class="choose-col"  value = "14"  <?php echo ($showall == true or in_array(14, $acolarr)) ? "checked" : ""; ?>> Consignor Name </label>  &nbsp; 
            </div>
           
          <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "15"  <?php echo ($showall == true or in_array(12, $acolarr)) ? "checked" : ""; ?>> Consignor Tel No </label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "15"  <?php echo ($showall == true or in_array(15, $acolarr)) ? "checked" : ""; ?>> Consignor Tel No </label>  &nbsp;
           </div>
 
           <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "16"  <?php echo ($showall == true or in_array(13, $acolarr)) ? "checked" : ""; ?>> Consignor Mobile No </label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "16"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Consignor Mobile No </label>  &nbsp;
           </div>
 
            <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "17"  <?php echo ($showall == true or in_array(14, $acolarr)) ? "checked" : ""; ?>> Consignee Name </label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "17"  <?php echo ($showall == true or in_array(17, $acolarr)) ? "checked" : ""; ?>> Consignee Name </label>  &nbsp;
           </div>
 
           <?php
@@ -1048,27 +1128,71 @@ function delete_recorde(){
           {
           ?>
            <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "18"  <?php echo ($showall == true or in_array(15, $acolarr)) ? "checked" : ""; ?>> Consignee Tel No </label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "18"  <?php echo ($showall == true or in_array(18, $acolarr)) ? "checked" : ""; ?>> Consignee Tel No </label>  &nbsp;
           </div>
 
           <?php
         }
         ?>
          <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "19"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Consignee Mobile No </label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "19"  <?php echo ($showall == true or in_array(19, $acolarr)) ? "checked" : ""; ?>> Consignee Mobile No </label>  &nbsp;
           </div>
 		  
 		  <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "20"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Current Status </label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "20"  <?php echo ($showall == true or in_array(20, $acolarr)) ? "checked" : ""; ?>> Current Status </label>  &nbsp;
           </div>
 		  
 		  <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "21"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Vehicle No </label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "21"  <?php echo ($showall == true or in_array(21, $acolarr)) ? "checked" : ""; ?>> Vehicle No </label>  &nbsp;
           </div>
 		  
 		  <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "22"  <?php echo ($showall == true or in_array(16, $acolarr)) ? "checked" : ""; ?>> Added By </label>  &nbsp;
+            <label class=""><input type="checkbox" class="choose-col"  value = "22"  <?php echo ($showall == true or in_array(22, $acolarr)) ? "checked" : ""; ?>> Added By </label>  &nbsp;
           </div>
+		  
+		  <!--<div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "23"  <?php echo ($showall == true or in_array(23, $acolarr)) ? "checked" : ""; ?>> How Are The Services? </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "24"  <?php echo ($showall == true or in_array(24, $acolarr)) ? "checked" : ""; ?>> Is This First FTL </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "25"  <?php echo ($showall == true or in_array(25, $acolarr)) ? "checked" : ""; ?>> Other Locations Where FTL Service Is Required </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "26"  <?php echo ($showall == true or in_array(26, $acolarr)) ? "checked" : ""; ?>> If Using Any Other Transporter </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "27"  <?php echo ($showall == true or in_array(27, $acolarr)) ? "checked" : ""; ?>> If Yes Please Specify Name </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "28"  <?php echo ($showall == true or in_array(28, $acolarr)) ? "checked" : ""; ?>> Remarks On Improvement Required </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "29"  <?php echo ($showall == true or in_array(29, $acolarr)) ? "checked" : ""; ?>> Next FTL Booking Expected </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "30"  <?php echo ($showall == true or in_array(30, $acolarr)) ? "checked" : ""; ?>> Customer Feedback </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "31"  <?php echo ($showall == true or in_array(31, $acolarr)) ? "checked" : ""; ?>> Action Taken </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "32"  <?php echo ($showall == true or in_array(32, $acolarr)) ? "checked" : ""; ?>> Response By </label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+            <label class=""><input type="checkbox" class="choose-col"  value = "33"  <?php echo ($showall == true or in_array(33, $acolarr)) ? "checked" : ""; ?>> Response Remark </label>  &nbsp;
+          </div>-->
                 
               <div class="col-12" style="padding: 0px;">
                 <div class="row">              
@@ -1191,7 +1315,58 @@ Swal.fire({
        });
   };
 </script>
+<script>
+function find_area() { 
 
+            var reg_id = $("select[name='sales_region']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_area_by_region',
+            data: {region:reg_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].area_id)+'">'+(obj[i].area_name)+'</option>';
+                }
+                
+                $("#filtered_area").html(html);
+                
+            }           
+            });
+}
+
+ function find_branch() { 
+
+            var reg_id = $("select[name='sales_region']").val();
+			var area_id = $("select[name='sales_area']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_branch_by_arearegion',
+            data: {region:reg_id,area:area_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].branch_id)+'">'+(obj[i].branch_name)+'</option>';
+                }
+                
+                $("#filtered_branch").html(html);
+                
+            }           
+            });
+}
+</script>
 
 <!--   Table Config -->
 
