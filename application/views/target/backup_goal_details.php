@@ -35,11 +35,22 @@
 			<small><b><?=$goal->date_from.' - '.$goal->date_to?></b></small>
 		</div>
 		<div class="panel-body">
+			<div style='border:1px solid gray'>
 			<div class="form-group">
-				<label>Metric Type: <?=($goal->metric_type=='deal')?'Deal Value':'Won Deals'?></label>
+				<label>Goal Name : <?=$goal->goal_name;?></label>
+			</div>
+			
+			<div class="form-group">
+				<label>Metric Type : <?=ucfirst($goal->metric_type)?></label>
 			</div>
 			<div class="form-group">
-				<label>Goal For: <?=($goal->goal_type=='user')?'User':'Role'?></label>
+				<label>Deal Type : <?=ucwords($goal->deal_type)?></label>
+			</div>
+			<div class="form-group">
+				<label>Business Type : <?=ucwords($goal->business_type)?></label>
+			</div>
+			<div class="form-group">
+				<label>Goal For : <?=($goal->goal_type=='user')?'User':'Role'?></label>
 			</div>
 			
 			<?php
@@ -56,8 +67,10 @@
 				echo'<div class="form-group">
 				<label>Booking Type : '.implode(' , ',$products).'</label>
 				</div>';
-			}
+			}			
+
 			?>
+			</div>
 
 			<br>
 
@@ -90,17 +103,17 @@
 							foreach (explode(',', $goal->goal_for) as $user_id)
 							{
 								$user_forecast = $this->Target_Model->getUserWiseForecast($goal->goal_id,$user_id);
-								$user_achieved= $this->Target_Model->getUserWiseAchieved($goal->goal_id,$user_id);
-
+								$user_achieved= $this->Target_Model->getAchieved($goal->goal_id,2,$user_id);
+								//echo $this->db->last_query();
 								if($goal->goal_type=='team')
 								{
 									$target = $custom_target[$user_id];
 								}
 								
 
-								$foracast_value =(int)$user_forecast->p_amnt;
+								$foracast_value =(int)$user_forecast->e_amnt;
 
-								$achieved_value =(int)$user_achieved->p_amnt;
+								$achieved_value =(int)$user_achieved->e_amnt;
 								
 
 								if($target)

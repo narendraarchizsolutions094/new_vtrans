@@ -13,7 +13,8 @@ class Target extends CI_controller
 		//$this->session->process = array(197);
 		$this->load->model('location_model');
 		$data['title'] = display('all_goals');
-
+		$rightids=$this->common_model->get_right_ids();
+		$this->db->where_in('use_id',$rightids);
 		$roles = $this->db->where('comp_id',$this->session->companey_id)->get('tbl_user_role')->result();
 
 		$r = array();
@@ -184,6 +185,10 @@ class Target extends CI_controller
 		$end_date_from = $this->input->post('end_date_from')??0;
 		$end_date_to = $this->input->post('end_date_to')??0;
 
+		$booking_type 	= $this->input->post('booking_type');
+		$deal_type 		= $this->input->post('deal_type');
+		$business_type 	= $this->input->post('business_type');
+
 		$role  = $this->input->post('role_for')??0;
 		$user = $this->input->post('user_for')==''?0:$this->input->post('user_for');
 		//echo $user;exit();
@@ -201,6 +206,18 @@ class Target extends CI_controller
 
 
 		$where =array();
+
+		if($booking_type){
+			$where[] = 'FIND_IN_SET("'.$booking_type.'",goals.products)>0';			
+		}
+		if($deal_type){
+			$where[] = 'FIND_IN_SET("'.$deal_type.'",goals.deal_type)>0';
+		}		
+		if($business_type){
+			$where[] = 'FIND_IN_SET("'.$business_type.'",goals.business_type)>0';			
+		}
+
+		
 		if($start_date_from)
 		{
 			$where[] = " (goals.date_from >= '".$start_date_from."')";
@@ -269,6 +286,7 @@ class Target extends CI_controller
 				{	$num=1;
 					foreach ($all_goals as $goal)
 					{
+						//echo $goal->goal_id.'<br>';
 						$target = $goal->target_value;
 
 						$for_list = $this->get_userdata($goal->goal_for);
@@ -305,11 +323,17 @@ class Target extends CI_controller
 						//echo $fetch_type.' '.$user.'|201';exit();
 						$Forecast = $ci->Target_Model->getForecast($goal->goal_id,$fetch_type,$user);
 						
-						$Achieved = $ci->Target_Model->getAchieved($goal->goal_id,$fetch_type,$user);
+						
 						// echo $this->db->last_query();
-						// print_r($Achieved); exit();
+						// echo "<pre>";
+						//print_r($Achieved);
+						//echo $goal->goal_name.' '.$goal->goal_id.'<br>';
+						//exit();
+						$Achieved = $ci->Target_Model->getAchieved($goal->goal_id,$fetch_type,$user);
 
-						$forecast_value =(int)($goal->metric_type=='freight'?$Forecast->e_amnt:$Forecast->e_amnt);//$Forecast->num_value);
+						$forecast_value =(int)($goal->metric_type=='freight'?$Forecast->e_amnt:$Forecast->e_amnt);
+						
+						//$Forecast->num_value);
 						$achieved_value =(int)($goal->metric_type=='freight'?$Achieved->e_amnt:$Achieved->e_amnt);
 
 						$percent=0;
@@ -447,10 +471,14 @@ class Target extends CI_controller
 				->where('ad.pk_i_admin_id IN ('.implode(',', $option_list).')')
 				->group_by('role.use_id')
 				->get()->result();
-
+		// echo "<pre>";
+		// print_r($op);
+		// exit;
 		$data['option_list'] = $op;
 		$data['products'] = $prd;
 		$data['user_id'] = empty($user_id)?$this->session->user_id:$user_id;
+		$data['rights']	=	$this->common_model->get_right_ids();
+		//print_r($data['rights']);
 		$data['content'] = $this->load->view('target/goal_details',$data,true);
 		$this->load->view('layout/main_wrapper',$data);
 	}
@@ -507,7 +535,8 @@ class Target extends CI_controller
 		$this->load->model(array('location_model'));
 
 		$data['title'] = display('edit_goal');
-
+		$rightids=$this->common_model->get_right_ids();
+		$this->db->where_in('use_id',$rightids);
 		$roles = $this->db->where('comp_id',$this->session->companey_id)->get('tbl_user_role')->result();
 		$r = array();
 		foreach ($roles as $role)
@@ -645,8 +674,8 @@ class Target extends CI_controller
 			$Forecast = $ci->Target_Model->getForecast($goal->goal_id,$fetch_type,$user);
 			$Achieved = $ci->Target_Model->getAchieved($goal->goal_id,$fetch_type,$user);
 
-			$forecast_value =(int)($goal->metric_type=='deal'?$Forecast->p_amnt:$Forecast->num_value);
-			$achieved_value =(int)($goal->metric_type=='deal'?$Achieved->p_amnt:$Achieved->num_value);
+			$forecast_value =(int)$Forecast->e_amnt;
+			$achieved_value =(int)$Achieved->e_amnt;
 
 			//print_r($Forecast);exit();
 				$total_target[$goal->metric_type] 	+= $target;

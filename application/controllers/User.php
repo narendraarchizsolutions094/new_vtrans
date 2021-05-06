@@ -867,7 +867,8 @@ class User extends CI_Controller
         $permissions = implode(',', $permissions);
         $data = array(
             'user_role' => $user_role,
-            'user_permissions' => $permissions
+            'user_permissions' => $permissions,
+            'parent_right'=>$this->input->post('parent_right')
         );
         $this->User_model->update_user_role($id, $data);
         $this->session->set_flashdata('SUCCESSMSG', 'Update Successfully');

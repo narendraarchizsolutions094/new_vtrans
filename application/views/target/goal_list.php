@@ -63,7 +63,23 @@ $variable=explode(',',$_COOKIE['goal_filter_setting']);
                     <li>
                       <label>
                       <input type="checkbox" value="matric" id="matriccheckbox" name="filter_checkbox" <?php if(in_array('matric',$variable)){echo'checked';} ?>> Matric</label>
-                    </li>                
+                    </li>  
+
+
+					<li>
+                      <label>
+                      <input type="checkbox" value="booking_type" id="booking_type_checkbox" name="filter_checkbox" <?php if(in_array('booking_type',$variable)){echo'checked';} ?>> Booking Type</label>
+                    </li>  
+					<li>
+                      <label>
+                      <input type="checkbox" value="deal_type" id="deal_type_checkbox" name="filter_checkbox" <?php if(in_array('deal_type',$variable)){echo'checked';} ?>> Deal Type</label>
+                    </li>  
+					<li>
+                      <label>
+                      <input type="checkbox" value="business_type" id="business_type_checkbox" name="filter_checkbox" <?php if(in_array('business_type',$variable)){echo'checked';} ?>> Business Type</label>
+                    </li>  
+
+
                   <!--  <li>
                       <label>
                       <input type="checkbox" value="goals" id="goalcheckbox" name="filter_checkbox" <?php if(in_array('goals',$variable)){echo'checked';} ?>> Goal Analytics</label>
@@ -179,6 +195,40 @@ $variable=explode(',',$_COOKIE['goal_filter_setting']);
 			</select>
 		</div>
 	</div>
+
+	<div class="col-md-3" id="booking_type" style="<?php if(!in_array('booking_type',$variable)){echo'display:none';} ?>">
+		<div class="form-group">
+			<label> Booking Type </label>
+			<select class="form-control" name="booking_type">
+				<option value="">Select</option>
+				<option value="sundry">Sundry</option>
+				<option value="ftl">FTL</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="col-md-3" id="deal_type" style="<?php if(!in_array('deal_type',$variable)){echo'display:none';} ?>">
+		<div class="form-group">
+			<label>Deal Type</label>
+			<select class="form-control" name="deal_type">
+				<option value="">Select</option>
+				<option value="domestic">Domestic</option>
+				<option value="saarc">SAARC</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="col-md-3" id="business_type" style="<?php if(!in_array('business_type',$variable)){echo'display:none';} ?>">
+		<div class="form-group">
+			<label>Business Type</label>
+			<select class="form-control" name="business_type">
+				<option value="">Select</option>
+				<option value="inward">Inward</option>
+				<option value="outward">Outward</option>
+			</select>
+		</div>
+	</div>
+
 	<div class="col-md-3" id="goalfilter" style="<?php if(!in_array('goals',$variable)){echo'display:none';} ?>">
 	<div class="form-group" ><br>
 			<label><input type="checkbox" name="graph" value="1"> Goal Analytics</label>
@@ -209,7 +259,7 @@ $variable=explode(',',$_COOKIE['goal_filter_setting']);
 });
 $('input[name="filter_checkbox"]').click(function(){  
   if($('#datecheckbox').is(":checked")||$('#rolecheckbox').is(":checked")||$('#usercheckbox').is(":checked")||
-  $('#golecheckbox').is(":checked")||$('#matriccheckbox').is(":checked")){ 
+  $('#golecheckbox').is(":checked")||$('#matriccheckbox').is(":checked")||$('#booking_type_checkbox').is(":checked")||$('#deal_type_checkbox').is(":checked")||$('#business_type_checkbox').is(":checked")){ 
     $('#filter_pannel').show();
   }else{
     $('#filter_pannel').hide();
@@ -247,6 +297,41 @@ $('input[name="filter_checkbox"]').click(function(){
         else{
           $('#goalfilter').hide();
 		}
+
+		if($('#booking_type_checkbox').is(":checked")){
+        	$('#booking_type').show();
+        }
+        else{
+          $('#booking_type').hide();
+		}
+
+
+		if($('#deal_type_checkbox').is(":checked")){
+        	$('#deal_type').show();
+        }
+        else{
+          $('#deal_type').hide();
+		}
+
+		if($('#business_type_checkbox').is(":checked")){
+        	$('#business_type').show();
+        }
+        else{
+          $('#business_type').hide();
+		}
+
+
+		
+
+
+
+
+
+
+		
+
+
+		
 });
 		
 
@@ -312,17 +397,12 @@ $("#filter_form").change(function(){
 				var p = JSON.parse(res);
 				$("#goal_graph").hide();
 				$("#goal_table").html(p.code);
-				console.log(p.count_goals);
+				//console.log(p.count_goals);
 				if(p.graph)
 				{	
 					$("#goal_graph").show();
-					// =================================================
-
 					res = p.gval;
-					//document.write(JSON.stringify(res));
-					//alert(res);
-					am4core.ready(function() {
-
+				am4core.ready(function() {
 			// Themes begin
 			am4core.useTheme(am4themes_animated);
 			// Themes end
@@ -577,7 +657,7 @@ chart.cursor.lineY.disabled = true;
 
 <!-- ================================== Modal -=-================================= -->
 <div id="add_goal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
     <form onsubmit="return validate_form()" action="<?=base_url('target/save_goal')?>" method="post">
@@ -595,9 +675,9 @@ chart.cursor.lineY.disabled = true;
             <div class="form-group col-sm-4" style="padding: 4px;">  
 	            <label>Goal Period <font color="red">*</font></label>       
 	            <select class="form-control"  name="goal_period" onchange="load_range(this.value)">
-	            	<!-- <option value="weekly">Weekly</option>
+	            	<option value="weekly">Weekly</option>
 	            	<option value="monthly">Monthly</option>
-	            	<option value="quarterly">Quarterly</option> -->
+	            	<option value="quarterly">Quarterly</option>
 	            	<option value="yearly" selected>Yearly</option>
 	            </select>         
 		    </div>  
