@@ -3166,4 +3166,43 @@ public function get_enq_list_post(){
       'msg' =>'Success'
        ], REST_Controller::HTTP_OK);
   }
+
+  public function business_load_post(){
+    $data = array('FTL','LTL/Sundry');
+    $this->set_response([
+      'status' => TRUE,
+      'msg' =>$data
+       ], REST_Controller::HTTP_OK);
+  }
+  public function industries_post(){
+    $data = array(
+      'Auto & Auto Ancillaries',
+      'Heavy Engineering',
+      'Retail',
+      'E-Commerce',
+      'Telecom & IT',
+      'Clothing',
+      'Chemicals',
+      'Pharmaceuticals',
+      'Others'
+    );
+    $this->set_response([
+      'status' => TRUE,
+      'msg' =>$data
+       ], REST_Controller::HTTP_OK);
+  }
+  public function client_type_post(){
+    $data = array(
+      'MSME',
+      'Pvt. Ltd.',
+      'Public Ltd',
+      'Partnership',
+      'Multinational',
+      'Proprietorship'
+    );
+    $this->set_response([
+      'status' => TRUE,
+      'msg' =>$data
+       ], REST_Controller::HTTP_OK);
+  }
 }
