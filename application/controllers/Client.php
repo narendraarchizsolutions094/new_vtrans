@@ -459,9 +459,10 @@ class Client extends CI_Controller {
 
     public function company_details($id)
     {
+		//print_r($id);exit;
         $this->load->model(array('Client_Model','enquiry_model'));
 
-        $company =  $this->Client_Model->getCompanyList($id)->row();
+        $company =  $this->Client_Model->getCompanyList_enq($id)->row();
 
         $data['title'] = 'Company Details';
         

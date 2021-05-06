@@ -128,6 +128,10 @@ class Ticket extends CI_Controller
 		$data['customer_feed'] = $this->Ticket_Model->feed_by_cust();
 		$data['filterData'] = $this->Ticket_Model->get_filterData(4);
 		$data['user_list'] = $this->User_model->companey_users();
+		$this->load->model('Branch_model');
+        $data['branch_lists']=$this->Branch_model->all_sales_branch();
+		$data['region_lists']=$this->Branch_model->all_sales_region();
+		$data['area_lists']=$this->Branch_model->all_sales_area();
 		$data['content'] = $this->load->view('ticket/ftl-feedback', $data, true);
 		$this->load->view('layout/main_wrapper', $data);
 	}
@@ -301,6 +305,9 @@ class Ticket extends CI_Controller
 				'assign_by' => $this->input->post('assign_by'),
 				'cust_problam' => $this->input->post('cust_problam'),
 				'ticket_status' =>$this->input->post('ticket_status'),
+				'sales_region' =>$this->input->post('sales_region'),
+				'sales_area' =>$this->input->post('sales_area'),
+				'sales_branch' =>$this->input->post('sales_branch'),
 				];
 		$data=[
 			'user_id'=>$user_id,
@@ -320,6 +327,9 @@ class Ticket extends CI_Controller
 				'assign_by' => $this->input->post('assign_by'),
 				'cust_problam' => $this->input->post('cust_problam'),
 				'ticket_status' =>$this->input->post('ticket_status'),
+				'sales_region' =>$this->input->post('sales_region'),
+				'sales_area' =>$this->input->post('sales_area'),
+				'sales_branch' =>$this->input->post('sales_branch'),
 				];
 		$data=[
 			'user_id'=>$user_id,
@@ -767,7 +777,7 @@ class Ticket extends CI_Controller
 				$sub[] = $point->consignee_mobile_no ?? 'NA';
 			}
 			if ($showall or in_array(20, $acolarr)) {
-				$sub[] = $point->current_status ?? 'NA';
+				$sub[] = $point->status_name ?? 'NA';
 			}
 			if ($showall or in_array(21, $acolarr)) {
 				$sub[] = $point->vehicle_no ?? 'NA';
@@ -775,6 +785,39 @@ class Ticket extends CI_Controller
 			if ($showall or in_array(22, $acolarr)) {
 				$sub[] = $point->s_display_name.' '.$point->last_name ?? 'NA';
 			}
+			/* if ($showall or in_array(23, $acolarr)) {
+				$sub[] = $point->service ?? 'NA';
+			}
+			if ($showall or in_array(24, $acolarr)) {
+				$sub[] = $point->first_ftl ?? 'NA';
+			}
+			if ($showall or in_array(25, $acolarr)) {
+				$sub[] = $point->other_loc ?? 'NA';
+			}
+			if ($showall or in_array(26, $acolarr)) {
+				$sub[] = $point->other_trans ?? 'NA';
+			}
+			if ($showall or in_array(27, $acolarr)) {
+				$sub[] = $point->trans_name ?? 'NA';
+			}
+			if ($showall or in_array(28, $acolarr)) {
+				$sub[] = $point->improvement_rmk ?? 'NA';
+			}
+			if ($showall or in_array(29, $acolarr)) {
+				$sub[] = $point->exp_booking ?? 'NA';
+			}
+			if ($showall or in_array(30, $acolarr)) {
+				$sub[] = $point->cfeed ?? 'NA';
+			}
+			if ($showall or in_array(31, $acolarr)) {
+				$sub[] = $point->action_taken ?? 'NA';
+			}
+			if ($showall or in_array(32, $acolarr)) {
+				$sub[] = $point->resp_by ?? 'NA';
+			}
+			if ($showall or in_array(33, $acolarr)) {
+				$sub[] = $point->resp_rmk ?? 'NA';
+			} */
 			
 			$data[] = $sub;
 		}
@@ -1181,7 +1224,7 @@ class Ticket extends CI_Controller
 
 
 		$data['feed_status'] = $this->Ticket_Model->ticket_status()->result();
-		$data["conversion"] = $this->Ticket_Model->getconv($data["ftlfeed"]->fdbk_id);		
+		$data["conversion"] = $this->Ticket_Model->getconv_feed($data["ftlfeed"]->fdbk_id);		
 		$data['feed_stages'] = $this->Leads_Model->stage_by_type(4); // 4 = ftlfeed
 		$data['customer_feed'] = $this->Ticket_Model->feed_by_cust();
 		//print_r($data['customer_feed']);exit;
@@ -1567,6 +1610,81 @@ class Ticket extends CI_Controller
 
 		redirect('ticket/view/' . $ticketno);
 	}
+	
+	
+	public function ftl_disposition($ticketno)
+	{
+		//print_r($_POST); exit();
+		$lead_stage	=	$this->input->post('lead_stage');
+		$stage_desc	=	$this->input->post('lead_description');
+		$stage_remark	=	$this->input->post('conversation');
+		$client	=	$this->input->post('client');
+		
+		$stage_date = date("d-m-Y", strtotime($this->input->post('c_date')));
+		$stage_time = date("H:i:s", strtotime($this->input->post('c_time')));
+		$user_id = $this->session->user_id;
+		$this->session->set_flashdata('SUCCESSMSG', 'Update Successfully');
+		$this->Ticket_Model->saveconv_feed($ticketno, 'Stage Updated', $stage_remark, $client, $user_id, $lead_stage, $stage_desc);
+
+		$contact_person = '';
+		$mobileno = $this->input->post('mobile');
+		$email = $this->input->post('email');
+		$designation = '';
+		$enq_code = $this->input->post('ticketno');
+		$notification_id = $this->input->post('dis_notification_id');
+		$dis_subject = '';
+		$this->Leads_Model->add_comment_for_events_popup($stage_remark, $stage_date, $contact_person, $mobileno, $email, $designation, $stage_time, $enq_code, $notification_id, $dis_subject, 2,2);
+		$ticketno	=	$this->input->post('ticketno');
+		$this->load->model('rule_model');
+		$this->rule_model->execute_rules($ticketno, array(8,10));
+
+		if(user_access('319') && !empty($this->input->post('mail_alert')))
+		{
+				$this->load->model('Message_models');
+				$tckdata = $this->db->where('ticketno',$ticketno)->get('tbl_ticket')->row();
+				$subject = ticket_subject($tckdata->ticketno,$tckdata->message);
+
+				$sub_stage_name = $stage_name = $username= '';
+
+				//fetching names
+				$sub_stage_name = $this->db->where('id',$stage_desc)->get('lead_description')->row();
+				if(!empty($sub_stage_name))
+					$sub_stage_name = $sub_stage_name->description;
+
+				$stage_name = $this->db->where('stg_id',$lead_stage)->get('lead_stage')->row();
+				if(!empty($stage_name))
+					$stage_name = $stage_name->lead_stage_name;
+
+				$username= $this->db->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row();
+
+				if(!empty($username))
+					$username = $username->s_display_name;
+
+
+				//===================
+				$message = "<b><u>Your Feedback has been Updated.</u><b><br>
+							<p><b>Stage:</b> ".$stage_name." <p>
+							<p><b>Sub Stage:</b> ".$sub_stage_name." <p>";
+
+				if(!empty($stage_remark))
+				$message.="<p><b>Remark:</b> ".$stage_remark." <p>";
+						
+				$message.="<p style='font-size:12px; font-style:italic;'><b>Updated By:</b> ".$username." <p>";
+				//echo $message;exit();
+				$to = $tckdata->email;
+				$_mail_ = $this->Message_models->send_email($to,$subject,$message,$this->session->companey_id);
+				if($_mail_)
+				{
+					$this->session->set_flashdata('message','Email Notification Sent Successfully');
+				}
+				else
+					$this->session->set_flashdata('message','Unable to send notification.');
+		}
+
+		redirect('ticket/feed_view/' . $ticketno);
+	}
+	
+	
 	public function assign_tickets()
 	{
 		if (user_role('313') == true) {}
@@ -1670,11 +1788,8 @@ class Ticket extends CI_Controller
 	
 	public function add_feedback()
 	{
-
-		$feed_id = $this->input->post('feed_id');
 		$client_gc = $this->input->post('client_gc');
-		
-	if(empty($feed_id)){
+
 		$insarr = array(
 					"gc_no" 	=> $client_gc,
 					"service" 	=> $this->input->post('service'),
@@ -1691,25 +1806,23 @@ class Ticket extends CI_Controller
 					"added_by" 	=> $this->session->user_id,
 					);
 		$this->db->insert('feedback_tab',$insarr);
+		$tic = $this->db->select('fdbk_id')->where('tracking_no',$client_gc)->get('ftl_feedback')->row();
+		$insarr1 = array(
+			"tck_id" => $tic->fdbk_id,
+			"comp_id" => $this->session->companey_id,
+			"parent" => 0,
+			"subj"   => 'Feedback created',
+			"msg"    => 'Feedback details Inserted successfully',
+			"attacment" => "",
+			"status"  => 0,
+			"ticket_status" => '',
+			"stage"  => '',
+			"sub_stage"  => '',
+			"client"   => '0',
+			"added_by" => $this->session->user_id,
+		);
+		$ret = $this->db->insert("tbl_feedback_conv", $insarr1);
 		echo '1';
-	}else{
-		
-		            $this->db->set('gc_no', $client_gc);
-					$this->db->set('service', $this->input->post('service'));
-					$this->db->set('first_ftl', $this->input->post('first_ftl'));
-					$this->db->set('other_loc', $this->input->post('other_loc'));
-					$this->db->set('other_trans', $this->input->post('other_trans'));
-					$this->db->set('trans_name', $this->input->post('trans_name'));
-					$this->db->set('improvement_rmk', $this->input->post('improvement_rmk'));
-					$this->db->set('exp_booking', $this->input->post('exp_booking'));
-					$this->db->set('cust_feed', $this->input->post('cust_feed'));
-					$this->db->set('action_taken', $this->input->post('action_taken'));
-					$this->db->set('resp_by', $this->input->post('resp_by'));
-					$this->db->set('resp_rmk', $this->input->post('resp_rmk'));					
-					$this->db->where('id', $feed_id);
-					$this->db->update('feedback_tab');
-		echo '0';			
-	}
 	}
 	
 	public function update_ticket($tckt = "")
@@ -2425,10 +2538,16 @@ class Ticket extends CI_Controller
 	
 	public function feedback_dash()
 	{
+		$from_created = $this->input->post("from_date");
+		
+		$to_created = $this->input->post("to_date");
+		
 		if (user_access('ftl2')) {
 			$data['title'] = 'FTL Dashboard';
-			$data['tableone'] = $this->Ticket_Model->get_all_list_one();
-			$data['tabletwo'] = $this->Ticket_Model->get_all_list_two();
+			$data['tableone'] = $this->Ticket_Model->get_all_list_one($from_created,$to_created);
+			$data['tabletwo'] = $this->Ticket_Model->get_all_list_two($from_created,$to_created);
+			$data['from_date'] = $from_created;
+			$data['to_date'] = $to_created;
 			/* echo '<pre>';
 			print_r($data['tabletwo']);exit;
 			echo '</pre>'; */
@@ -3056,6 +3175,175 @@ class Ticket extends CI_Controller
 				$data['activity'] = $num->row()->num;
 				echo json_encode($data);
 			}
+			
+			public function short_dashboard_feedback()
+			{
+				
+				$this->feedback_common_query_short_dashboard('created');
+        		$data['created'] = $this->db->count_all_results();
+        		
+        		$this->feedback_common_query_short_dashboard('assigned');
+				$data['assigned'] = $this->db->count_all_results();
+
+				$this->feedback_common_query_short_dashboard();
+				$this->db->where('ftl_feedback.last_update != ftl_feedback.created_date');
+				$data['updated'] = $this->db->count_all_results();
+				
+
+				$this->feedback_common_query_short_dashboard();
+				$this->db->where('ftl_feedback.status','3');
+				$data['closed'] = $this->db->count_all_results();
+				
+				$this->feedback_common_query_short_dashboard();
+				$this->db->where('ftl_feedback.last_update = ftl_feedback.created_date');
+				$data['pending'] = $this->db->count_all_results();
+
+				$this->feedback_common_query_short_dashboard();
+				$data['total']  = $this->db->count_all_results();
+				
+				$this->feedback_common_query_short_dashboard();
+				 $this->db->get();
+				 $res = $this->db->last_query();
+				$num = $this->db->query("SELECT count(*) as num from tbl_feedback_conv inner join ($res) chk on chk.fdbk_id= tbl_feedback_conv.tck_id");
+				$data['activity'] = $num->row()->num;
+				echo json_encode($data);
+			}
+			
+		public function feedback_common_query_short_dashboard($para='')
+		{
+			$comp_id = $this->session->companey_id;
+		$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        $acolarr = array();
+        $dacolarr = array();
+        if(isset($_COOKIE["feedback_allowcols"])) {
+          $showall = false;
+          $acolarr  = explode(",", trim($_COOKIE["feedback_allowcols"], ","));       
+        }else{          
+          $showall = true;
+        }         
+        if(isset($_COOKIE["feedback_dallowcols"])) {
+          $dshowall = false;
+          $dacolarr  = explode(",", trim($_COOKIE["feedback_dallowcols"], ","));       
+        }else{
+          $dshowall = false;
+        }       
+        
+        // $this->db->select('ftl_feedback.*,customer_feedback.feedback as cfeed,tbl_ticket_status.status_name,branch.branch_name,dbranch.branch_name as delbrcnh,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region,feedback_tab.*');
+        $this->db->select('ftl_feedback.*,tbl_ticket_status.status_name,branch.branch_name,dbranch.branch_name as delbrcnh,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region');
+        $this->db->from("ftl_feedback");
+		$this->db->join("branch", "branch.branch_id = ftl_feedback.bkg_branch", "LEFT");
+		$this->db->join("branch as dbranch", "dbranch.branch_id = ftl_feedback.delivery_branch", "LEFT");
+		$this->db->join("sales_region", "sales_region.region_id = ftl_feedback.bkg_region", "LEFT");
+		$this->db->join("sales_area", "sales_area.region_id = sales_region.region_id", "LEFT");
+		$this->db->join("branch as rb", "rb.region_id = sales_region.region_id", "LEFT");
+        $this->db->join("tbl_admin", "tbl_admin.pk_i_admin_id = ftl_feedback.added_by", "LEFT");
+		$this->db->join("tbl_ticket_status", "tbl_ticket_status.id = ftl_feedback.current_status", "LEFT");
+		$this->db->join("feedback_tab", "feedback_tab.gc_no = ftl_feedback.tracking_no", "LEFT");
+		//$this->db->join("customer_feedback", "customer_feedback.id = feedback_tab.cust_feed", "LEFT");
+			 
+        $this->db->where("ftl_feedback.company",$this->session->companey_id);
+        $this->db->group_by("ftl_feedback.fdbk_id");
+		
+		$enquiry_filters_sess   =   $this->session->feedback_filters_sess;
+            
+        $top_filter             =   !empty($enquiry_filters_sess['top_filter'])?$enquiry_filters_sess['top_filter']:'';
+        $from_created           =   !empty($enquiry_filters_sess['from_created'])?$enquiry_filters_sess['from_created']:'';       
+        $to_created             =   !empty($enquiry_filters_sess['to_created'])?$enquiry_filters_sess['to_created']:'';		
+		$createdby              =   !empty($enquiry_filters_sess['createdby'])?$enquiry_filters_sess['createdby']:'';
+        $assign                 =   !empty($enquiry_filters_sess['assign'])?$enquiry_filters_sess['assign']:'';
+		$feed_status            =   !empty($enquiry_filters_sess['ticket_status'])?$enquiry_filters_sess['ticket_status']:'';
+        $assign_by              =   !empty($enquiry_filters_sess['assign_by'])?$enquiry_filters_sess['assign_by']:'';
+		$cust_problam           =   !empty($enquiry_filters_sess['cust_problam'])?$enquiry_filters_sess['cust_problam']:'';
+		
+		$sales_region           =   !empty($enquiry_filters_sess['sales_region'])?$enquiry_filters_sess['sales_region']:'';
+		$sales_area             =   !empty($enquiry_filters_sess['sales_area'])?$enquiry_filters_sess['sales_area']:'';
+		$sales_branch           =   !empty($enquiry_filters_sess['sales_branch'])?$enquiry_filters_sess['sales_branch']:'';
+		
+	     $where = " ftl_feedback.company =  '".$this->session->companey_id."'";
+		 
+	         if(!empty($from_created) && !empty($to_created)){
+	            $from_created = date("Y-m-d",strtotime($from_created));
+	            $to_created = date("Y-m-d",strtotime($to_created));
+	            $where .= " (DATE(ftl_feedback.created_date) >= '".$from_created."' AND DATE(ftl_feedback.created_date) <= '".$to_created."') OR (DATE(ftl_feedback.last_update) >= '".$from_created."' AND DATE(ftl_feedback.last_update) <= '".$to_created."')";
+	            $CHK = 1;
+	        }
+	        if(!empty($from_created) && empty($to_created)){
+	            $from_created = date("Y-m-d",strtotime($from_created));
+	            $where .= " DATE(ftl_feedback.created_date) >=  '".$from_created."' OR DATE(ftl_feedback.last_update) >=  '".$from_created."'  "; 
+	            $CHK = 1;                           
+	        }
+	        if(empty($from_created) && !empty($to_created)){            
+	            $to_created = date("Y-m-d",strtotime($to_created));
+	            $where .= " DATE(ftl_feedback.created_date) <=  '".$to_created."' OR DATE(ftl_feedback.last_update) <=  '".$to_created."'"; 
+	            $CHK = 1;                                  
+			}	
+			
+	        if(!empty($createdby)){            
+            $where .= " AND ftl_feedback.added_by =  '".$createdby."'";                              
+        }
+
+        if(!empty($assign)){            
+
+            $where .= " AND ftl_feedback.assign_to =  '".$assign."'";                             
+        }
+
+        if(!empty($assign_by)){            
+		
+            $where .= " AND ftl_feedback.assigned_by =  '".$assign_by."'"; 
+                            
+        }
+		
+		if(!empty($feed_status)){            
+
+            $where .= " AND ftl_feedback.current_status =  '".$feed_status."'"; 
+			
+        }
+		
+		if(!empty($sales_region)){            
+
+            $where .= " AND ftl_feedback.bkg_region =  '".$sales_region."'"; 
+			
+        }
+		
+		if(!empty($sales_area)){            
+
+            $where .= " AND sales_area.area_id =  '".$sales_area."'"; 
+			
+        }
+		
+		if(!empty($sales_branch)){            
+
+            $where .= " AND rb.branch_id =  '".$sales_branch."'"; 
+			
+        }
+		
+		if(!empty($cust_problam)){            
+
+            $where .= " AND feedback_tab.cust_feed =  '".$cust_problam."'"; 
+			
+        }
+
+			if($para=='created'){                      
+				
+				$where .= " AND ftl_feedback.added_by IN (".implode(',', $all_reporting_ids).')';
+
+			}else if($para=='assigned'){                     
+	
+				$where .= " AND ftl_feedback.assign_to IN (".implode(',', $all_reporting_ids).')';
+
+			}else{
+				
+				$where .= ' AND '; 
+				$where .= " ( ftl_feedback.added_by IN (".implode(',', $all_reporting_ids).')';
+		
+				$where .= ' OR ';
+				$where .= " ftl_feedback.assign_to IN (".implode(',', $all_reporting_ids).'))';
+			}
+			$this->db->where($where);
+			$this->db->group_by('ftl_feedback.tracking_no');
+			
+		}
+			
 		public function common_query_short_dashboard($para='')
 		{
 			$comp_id = $this->session->companey_id;
@@ -3377,6 +3665,22 @@ class Ticket extends CI_Controller
 				}
 			}
 		}
+		
+		public function change_feedback_status($tid){
+			$status	=	$this->input->post('feedbk_status');
+			$comp_id = $this->session->companey_id;
+			if($status){
+				$this->db->where('fdbk_id',$tid);
+				$this->db->where('company',$comp_id);
+				$this->db->set('status',$status);
+				if($this->db->update('ftl_feedback')){
+					$comment_id = $this->Ticket_Model->saveconv_feed($tid,'FTL-Feedback'.' Status Changed','','0',$this->session->user_id,0,0,$status,$comp_id);
+					$ticketno = $this->input->post('ticketno');
+					$this->load->model('rule_model');
+					$this->rule_model->execute_rules($ticketno, array(3,6,7));
+				}
+			}
+		}
 
 		public function chk()
 		{
@@ -3587,6 +3891,7 @@ class Ticket extends CI_Controller
 				}else{
 				$dbranch_id = $dbid->branch_id;
 				}
+				
 			
 			
 						if($tracking_no){
@@ -3625,7 +3930,7 @@ class Ticket extends CI_Controller
 				if ($record > 0) {
 					$res = 'Record(' . $record . ') inserted';
 				} else {
-					$res = 'No Unique record Found !';
+					$res = 'Go To FTL Feedback List And Check All Records!';
 				}
 				if ($failed_record) {
 					$res .= ' (' . $failed_record . ') duplicate record ';
@@ -3649,4 +3954,54 @@ class Ticket extends CI_Controller
 			$this->load->view('ticket/daily-summary', $data);
 			//$this->load->view('layout/login_wrapper', $data);			
 		}
+	public function find_ftldetails(){
+		
+	$keyword = $this->input->post('msearch');
+	$companey_id = $this->session->companey_id;
+	
+			$this->db->select('*');
+    	    $this->db->from('ftl_feedback');
+    	    $this->db->like('tracking_no',$keyword);
+			$this->db->or_like('phone',$keyword);
+			$this->db->or_like('email',$keyword);
+			$this->db->or_like('name',$keyword);
+			$this->db->where('company',$companey_id);
+    	    $q=$this->db->get()->result();
+    	    if(!empty($q)){
+    
+    $i=1;
+	
+                        echo '<div class="col-md-12">';
+                            echo '<div class="profile-card" style="padding: 10px;">';
+							
+echo '<table width="100%" class="datatable1 table table-striped table-bordered table-hover">';
+  echo '<tr>';
+    echo '<th>S.No</th>';
+    echo '<th>GC No</th>';
+    echo '<th>Name</th>';
+    echo '<th>Email</th>';
+	echo '<th>Phone</th>';
+	echo '<th>Action</th>';
+  echo '</tr>';
+ foreach($q as $value){
+  echo '<tr>';
+    echo '<td>'.$i.'</td>';
+    echo '<td>'.$value->tracking_no.'</td>';
+    echo '<td>'.$value->name.'</td>';
+    echo '<td>'.$value->email.'</td>';
+	echo '<td>'.$value->phone.'</td>';
+	echo '<td><a href="'.base_url('ticket/feed_view/'.$value->tracking_no).'" class="btn btn-table pull-right" style="cursor: pointer;margin-left:5px;"><i class="fa fa-info-circle"></i></a></td>';
+  echo '</tr>';
+  $i++;	}
+echo '</table>';
+
+                            echo '</div>';
+                        echo '</div>';
+						echo '<br>';
+   	    }else{
+   	                  echo '<div class="col-md-12" style="font-size: 18px;color: red;text-align: center;">';
+                            echo 'Sorry, there are no results matching your search detail!';
+                        echo '</div>';
+   	    }
+    }
 }

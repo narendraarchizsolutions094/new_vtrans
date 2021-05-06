@@ -3,6 +3,7 @@
 	<ul  class="nav nav-tabs" role="tablist"> 
 		<li class="active"><a  href="#basic" data-toggle="tab" style="padding: 10px 10px; ">Basic</a></li>
 		<li><a  href="#feedback" data-toggle="tab" style="padding: 10px 10px;">Feedback</a></li>
+		<li><a  href="#prefeedback" data-toggle="tab" style="padding: 10px 10px;">Previous Feedback</a></li>
 	</ul>
 	<div class="tab-content clearfix">
         <div class="tab-pane active" id="basic">
@@ -125,10 +126,10 @@
 			<label>How Are The Services ?</label>
 			<select class="form-control" name="service">
 				<option >Select</option>
-				<option value="Average" <?php if(!empty($feed_tab->service)){ if($feed_tab->service=='Average'){ echo 'selected';}else{ echo '';}} ?> >Average</option>
-				<option value="Good" <?php if(!empty($feed_tab->service)){ if($feed_tab->service=='Good'){ echo 'selected';}else{ echo '';}} ?>>Good</option>
-				<option value="Very Good" <?php if(!empty($feed_tab->service)){ if($feed_tab->service=='Very Good'){ echo 'selected';}else{ echo '';}} ?>>Very Good</option>
-				<option value="Excellent" <?php if(!empty($feed_tab->service)){ if($feed_tab->service=='Excellent'){ echo 'selected';}else{ echo '';}} ?>>Excellent</option>
+				<option value="Average">Average</option>
+				<option value="Good">Good</option>
+				<option value="Very Good">Very Good</option>
+				<option value="Excellent">Excellent</option>
 			</select>
 		</div>
 		
@@ -136,38 +137,38 @@
 			<label>Is This First FTL</label>
 			<select class="form-control" name="first_ftl">
 				<option >Select</option>
-				<option value="YES" <?php if(!empty($feed_tab->first_ftl)){ if($feed_tab->first_ftl=='YES'){ echo 'selected';}else{ echo '';}} ?>>YES</option>
-				<option value=" NO" <?php if(!empty($feed_tab->first_ftl)){ if($feed_tab->first_ftl=='NO'){ echo 'selected';}else{ echo '';}} ?>>NO</option>
+				<option value="YES">YES</option>
+				<option value=" NO">NO</option>
 			</select>
 		</div>
 		
 		<div class="form-group col-md-6">
 			<label>Other Locations Where FTL Service Is Required</label>
-			<input type="text" name="other_loc" value="<?php if(!empty($feed_tab->other_loc)){ echo $feed_tab->other_loc;}else{ echo '';} ?>" class="form-control">
+			<input type="text" name="other_loc" class="form-control">
 		</div>
 		
 		<div class="form-group col-md-6">
 			<label>If Using Any Other Transporter</label>
 			<select class="form-control" name="other_trans">
 				<option >Select</option>
-				<option value="YES" <?php if(!empty($feed_tab->other_trans)){ if($feed_tab->other_trans=='YES'){ echo 'selected';}else{ echo '';}} ?>>YES</option>
-				<option value="NO" <?php if(!empty($feed_tab->other_trans)){ if($feed_tab->other_trans=='NO'){ echo 'selected';}else{ echo '';}} ?>>NO</option>
+				<option value="YES">YES</option>
+				<option value="NO">NO</option>
 			</select>
 		</div>
 		
 		<div class="form-group col-md-6">
 			<label>If Yes Please Specify Name :</label>
-			<input type="text" name="trans_name" value="<?php if(!empty($feed_tab->trans_name)){ echo $feed_tab->trans_name;}else{ echo '';} ?>" class="form-control">
+			<input type="text" name="trans_name" class="form-control">
 		</div>
 		
 		<div class="form-group col-md-12">
 			<label>Remarks On Improvement Required</label>
-			<textarea name="improvement_rmk" class="form-control" value="<?php if(!empty($feed_tab->improvement_rmk)){ echo $feed_tab->improvement_rmk;}else{ echo '';} ?>"><?php if(!empty($feed_tab->improvement_rmk)){ echo $feed_tab->improvement_rmk;}else{ echo '';} ?></textarea>
+			<textarea name="improvement_rmk" class="form-control"></textarea>
 		</div>
 		
 		<div class="form-group col-md-6">
 			<label>Next FTL Booking Expected</label>
-			<input type="text" name="exp_booking" value="<?php if(!empty($feed_tab->exp_booking)){ echo $feed_tab->exp_booking;}else{ echo '';} ?>" class="form-control">
+			<input type="text" name="exp_booking" class="form-control">
 		</div>
 		
 		<div class="form-group col-md-6">
@@ -175,37 +176,86 @@
 			<select class="form-control" name="cust_feed">
 				<option >Select</option>
 				<?php foreach($customer_feed as $cfeed){ ?>
-				<option value="<?php echo $cfeed->id; ?>" <?php if(!empty($feed_tab->cust_feed)){ if($feed_tab->cust_feed==$cfeed->id){ echo 'selected';}else{ echo '';}} ?>><?php echo $cfeed->feedback; ?></option>
+				<option value="<?php echo $cfeed->id; ?>"><?php echo $cfeed->feedback; ?></option>
 				<?php } ?>
 			</select>
 		</div>
 		
 		<div class="form-group col-md-6">
 			<label>Action Taken</label>
-			<input type="text" name="action_taken" value="<?php if(!empty($feed_tab->action_taken)){ echo $feed_tab->action_taken;}else{ echo '';} ?>" class="form-control">
+			<input type="text" name="action_taken" class="form-control">
 		</div>
 		
 		<div class="form-group col-md-6">
 			<label>Response By</label>
-			<input type="text" name="resp_by" value="<?php if(!empty($feed_tab->resp_by)){ echo $feed_tab->resp_by;}else{ echo '';} ?>" class="form-control">
+			<input type="text" name="resp_by" class="form-control">
 		</div>
 		
 		<div class="form-group col-md-12">
 			<label>Response Remark</label>
-			<textarea name="resp_rmk" class="form-control" value="<?php if(!empty($feed_tab->resp_rmk)){ echo $feed_tab->resp_rmk;}else{ echo '';} ?>"><?php if(!empty($feed_tab->resp_rmk)){ echo $feed_tab->resp_rmk;}else{ echo '';} ?></textarea>
+			<textarea name="resp_rmk" class="form-control"></textarea>
 		</div>
 					</div>
 					<div class="text-center">
-					    <input type ="hidden" name = "feed_id" value = "<?php if(!empty($feed_tab->id)){ echo $feed_tab->id;}else{ echo '';} ?>">
 						<input type ="hidden" name = "client_gc" value = "<?php echo $ftlfeed->tracking_no; ?>">
 					</div>
 					
 				</div>
-				<center><button type = "button" id="add_feedback_form" class="btn btn-success">Update</button></center>
+				<center><button type = "button" id="add_feedback_form" class="btn btn-success">Add New</button></center>
 			</div>	
 		</div>	
 	  </div>
 	  </form>
+	</div>
+	
+	<div class="tab-pane" id="prefeedback">
+			<div class="row">
+
+		<div class="col-md-12">
+			<div class="row">
+					
+		    <table width="100%" id="predatatable" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+				  <th>S.no</th>
+				  <th>GC No</th>
+                  <th>How Are The Services</th>
+                  <th>Is This First FTL</th>
+                  <th>Other Locations Where FTL Service Is Required</th>
+				  <th>If Using Any Other Transporter</th>
+				  <th>If Yes Please Specify Name</th>
+				  <th>Remarks On Improvement Required</th>
+				  <th>Next FTL Booking Expected</th>
+				  <th>Customer Feedback</th>
+				  <th>Action Taken</th>
+				  <th>Response By</th>
+				  <th>Response Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+			<?php $i=1; foreach($feed_tab as $tab){ ?>
+                <tr>
+				  <th><?php echo $i; ?></th>
+				  <th><?php echo $tab->gc_no; ?></th>
+                  <th><?php echo $tab->service; ?></th>
+                  <th><?php echo $tab->first_ftl; ?></th>
+                  <th><?php echo $tab->other_loc; ?></th>
+				  <th><?php echo $tab->other_trans; ?></th>
+				  <th><?php echo $tab->trans_name; ?></th>
+				  <th><?php echo $tab->improvement_rmk; ?></th>
+				  <th><?php echo $tab->exp_booking; ?></th>
+				  <th><?php foreach($customer_feed as $cfeed){ if($cfeed->id==$tab->cust_feed){ echo $cfeed->feedback;}} ?></th>
+				  <th><?php echo $tab->action_taken; ?></th>
+				  <th><?php echo $tab->resp_by; ?></th>
+				  <th><?php echo $tab->resp_rmk; ?></th>
+                </tr>
+			<?php $i++; } ?>
+            </tbody>            
+          </table>
+				
+			</div>	
+		</div>	
+	  </div>
 	</div>
 	
   </div>
@@ -304,9 +354,19 @@
 
 <!-- jquery-ui js -->
 <script src="<?php echo base_url('assets/js/jquery-ui.min.js') ?>" type="text/javascript"></script>      
-<!-- DataTables JavaScript -->
-<script src="<?php echo base_url("assets/datatables/js/dataTables.min.js") ?>"></script>  
+<!-- DataTables JavaScript -->  
+<script src="<?php echo base_url("assets/datatables/js/dataTables.min.js") ?>"></script>
 <script src="<?php echo base_url() ?>assets/js/custom.js" type="text/javascript"></script>
+<script type="text/javascript">
+        $(document).ready(function() {
+        $('#predatatable').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        } );
+    } );
+</script>
 <script>
     $(document).ready(function(){
         $("#disable_form :input").prop("disabled", true);

@@ -48,21 +48,23 @@ public function get_all_stage_deals() {
         $enq_id = $this->input->post('enq_id');
         $next_stg = $this->input->post('next_stg');		
 
-        $all_deals_lists = $this->Leads_Model->dealstagelist($enq_id,$current_stg); 
+        $all_deals_lists = $this->Leads_Model->dealstagelist($enq_id,$current_stg,$next_stg); 
 		//print_r($all_deals_lists);exit;
         $details .= '
 		            <input type="hidden" value="'.$current_stg.'" name="current_stg">
 					<input type="hidden" value="'.$enq_id.'" name="enq_id">
-					<input type="hidden" value="'.$next_stg.'" name="next_stg">
-					 
-		            <div class="form-group col-md-10">                 
+					<input type="hidden" value="'.$next_stg.'" name="next_stg">';
+					if(empty($all_deals_lists)){
+					echo '<span style="color:red;">No Any Deal With Status Done! </span>';
+					}
+		            echo '<div class="form-group col-md-10">                 
                         <select class="form-control" id="deal_id" name="deal_id[]" multiple required>';                    
                               foreach ($all_deals_lists as $deals) { 
                          $details .= '<option value="'.$deals->id.'">'.$deals->client_name.' '.'['.$deals->booking_type.']'.'['.$deals->business_type.']</option>';
                                }                                         
                         '</select>
-                    </div>
-                          ';
+                    </div>';
+                    
         echo $details;
     }
 /////////////////////////////////move to stage with deals/////////////////////////////////////

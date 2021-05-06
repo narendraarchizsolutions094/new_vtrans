@@ -54,7 +54,7 @@
          <a class="nav-link" data-toggle="tab" href="#contacts">Contacts</a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(1)">Accounts</a>
+         <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(1)">Clients(Stage Wise)</a>
       </li>
       <!-- <li class="nav-item">
          <a class="nav-link" data-toggle="tab" href="#accounts" onclick="load_account(2)"><?=display('lead')?></a>
@@ -243,6 +243,9 @@
               <?php if ($showall == true or in_array(7, $acolarr)) {  ?>
             <th>Process</th>
              <?php } ?>
+			 <?php if ($showall == true or in_array(30, $acolarr)) {  ?>
+            <th>Lead stage</th>
+             <?php } ?>
               <?php if ($showall == true or in_array(8, $acolarr)) {  ?>
                   <th>Disposition</th>
              <?php } ?>                  
@@ -411,10 +414,7 @@
 .tab-pane{
   max-width: 100%;
 }
-table th
-{
-  width: auto!important;
-}
+
 
 
 </style>

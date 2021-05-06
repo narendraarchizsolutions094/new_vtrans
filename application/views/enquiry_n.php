@@ -912,9 +912,12 @@ display: block;
             <?php } ?>
               <?php if ($showall == true or in_array(2, $acolarr)) {  ?>
                   <th><?php echo display("company_name"); ?></th>
+				<?php if($this->uri->segment(3)=='All'){ ?>
+				  <th>Account Status</th>
+				<?php } ?>
                    <?php } ?>
             <?php if ($showall == true or in_array(21, $acolarr)) {  ?>
-                  <th><?php echo display("client_name"); ?></th>
+                  <th><?php echo 'Client name'; ?></th>
                    <?php } ?>
               <?php if ($showall == true or in_array(3, $acolarr)) {  ?>
             <th>Name</th>
@@ -930,6 +933,9 @@ display: block;
                    <?php } ?>
               <?php if ($showall == true or in_array(7, $acolarr)) {  ?>
             <th>Process</th>
+             <?php } ?>
+			 <?php if ($showall == true or in_array(30, $acolarr)) {  ?>
+                  <th>Lead stage</th>
              <?php } ?>
               <?php if ($showall == true or in_array(8, $acolarr)) {  ?>
                   <th>Disposition</th>
@@ -1381,6 +1387,9 @@ display: block;
           </div>
           <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="choose-col"  value = "7"  <?php echo ($showall == true or in_array(7, $acolarr)) ? "checked" : ""; ?>> Process</label>  &nbsp;
+          </div>
+		  <div class = "col-md-4">  
+          <label class=""><input type="checkbox" class="choose-col"  value = "30"  <?php echo ($showall == true or in_array(30, $acolarr)) ? "checked" : ""; ?>> Lead Stage</label>  &nbsp;
           </div>
           <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="choose-col"  value = "8"  <?php echo ($showall == true or in_array(8, $acolarr)) ? "checked" : ""; ?>>  Disposition</label>  &nbsp;
