@@ -138,6 +138,7 @@ class Common_model extends CI_Model {
         $all_ids = $this->get_categories($main_uid);
 
         $this->db->where('pk_i_admin_id IN ('.implode(',',$all_ids).')');
+        $this->db->where('b_status',1);
         $res = $this->db->where('companey_id',$comp_id)->get('tbl_admin')->result();
         return $res;
     }

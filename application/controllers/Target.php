@@ -13,9 +13,16 @@ class Target extends CI_controller
 		//$this->session->process = array(197);
 		$this->load->model('location_model');
 		$data['title'] = display('all_goals');
-		$rightids=$this->common_model->get_right_ids();
-		$this->db->where_in('use_id',$rightids);
-		$roles = $this->db->where('comp_id',$this->session->companey_id)->get('tbl_user_role')->result();
+		
+		$option_list = $this->common_model->get_categories($this->session->user_id);
+		$roles = $this->db->select('role.use_id,GROUP_CONCAT(ad.pk_i_admin_id) as ids,GROUP_CONCAT(ad.s_display_name) as names,role.user_role')
+				->from('tbl_admin ad')
+				->join('tbl_user_role role','ad.user_type=role.use_id','left')
+				->where('ad.pk_i_admin_id IN ('.implode(',', $option_list).')')
+				->where('ad.b_status',1)
+				->group_by('role.use_id')
+				->get()->result();
+
 
 		$r = array();
 		foreach ($roles as $role)
@@ -535,9 +542,19 @@ class Target extends CI_controller
 		$this->load->model(array('location_model'));
 
 		$data['title'] = display('edit_goal');
-		$rightids=$this->common_model->get_right_ids();
-		$this->db->where_in('use_id',$rightids);
-		$roles = $this->db->where('comp_id',$this->session->companey_id)->get('tbl_user_role')->result();
+		// $rightids=$this->common_model->get_right_ids();
+		// $this->db->where_in('use_id',$rightids);
+		// $roles = $this->db->where('comp_id',$this->session->companey_id)->get('tbl_user_role')->result();
+
+		$option_list = $this->common_model->get_categories($this->session->user_id);
+		$roles = $this->db->select('role.use_id,GROUP_CONCAT(ad.pk_i_admin_id) as ids,GROUP_CONCAT(ad.s_display_name) as names,role.user_role')
+				->from('tbl_admin ad')
+				->join('tbl_user_role role','ad.user_type=role.use_id','left')
+				->where('ad.pk_i_admin_id IN ('.implode(',', $option_list).')')
+				->where('b_status',1)
+				->group_by('role.use_id')
+				->get()->result();
+
 		$r = array();
 		foreach ($roles as $role)
 		{
@@ -546,6 +563,7 @@ class Target extends CI_controller
 		}
 		$data['roles'] = json_encode($r);
 
+		$this->db->where_in('pk_i_admin_id',$option_list);
 		$users  = $this->db->where('companey_id',$this->session->companey_id)->get('tbl_admin')->result();
 		
 		$u = array();

@@ -15,7 +15,7 @@
                                 placeholder="<?php echo display('user_function') ?>" value="<?= $userRole->user_role ?>"
                                 required>
                         </div>
-                        <div class='col-md-4'>
+                        <div class='col-md-4' style="display:none;">
                         <label>Parent Right</label>                        
                         <select name='parent_right' class='form-control'>
                             <option>

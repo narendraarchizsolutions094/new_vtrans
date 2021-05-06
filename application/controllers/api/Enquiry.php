@@ -145,6 +145,16 @@ class Enquiry extends REST_Controller {
             }
         }    
     }
+
+    public function aging_rules_post(){
+      $this->load->model('rule_model');
+      $comp_id	=	$this->input->post('company_id');		
+      $aging_rule = $this->rule_model->get_rules(array(11),$comp_id);	
+      $this->set_response([
+        'status' => TRUE,
+        'message' => $aging_rule
+    ], REST_Controller::HTTP_OK);
+    }
     public function create_post()
     { 	
     	    $file = @$_FILES;
@@ -2983,7 +2993,7 @@ public function get_enq_list_post(){
                  
                   //echo $offset; exit();
               $data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process,$offset,$limit);
-                      
+                      //echo $this->db->last_query();
                 if(!empty($data['active_enquiry']->result()))
                 {
                   $res= array();

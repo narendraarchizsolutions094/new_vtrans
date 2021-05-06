@@ -2127,7 +2127,9 @@ class Enquiry_model extends CI_Model {
     }
     public function active_enqueries_api($id,$type,$user_role,$process='',$offset=-1,$limit=-1) 
     { 
-        $all_reporting_ids    =   $this->common_model->get_categories($id,$type);
+        $all_reporting_ids    =   $this->common_model->get_categories($id,$type);       
+        
+
         $this->db->select('enquiry.*,comp.company_name,enquiry_tags.tag_ids');
         $this->db->from($this->table);    
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left'); 
@@ -2162,8 +2164,7 @@ class Enquiry_model extends CI_Model {
         //print_r($_POST);exit();
         if(!empty($_POST['filters']))
         {
-            $match_list = array('date_from','date_to','phone');
-
+            $match_list = array('date_from','date_to','phone','tag','aging_rule');
             $this->db->group_start();
             foreach ($_POST['filters'] as $key => $value)
             {
@@ -2172,19 +2173,31 @@ class Enquiry_model extends CI_Model {
                       if(in_array($key, $match_list))
                       {
                           $fld = 'created_date';
-                          if($type=='2')
+                          if($type=='2'){
                             $fld = 'lead_created_date';
-                          else if($type=='3')
+                          }
+                          else if($type=='3'){
                             $fld = 'client_created_date';
+                          }
 
-                          if($key=='date_from')
+                          if($key=='date_from'){
                             $this->db->where($fld.'>=',$value);
+                          }
 
-                          if($key=='date_to')
+                          if($key=='date_to'){
                             $this->db->where($fld.'<=',$value);
+                          }
 
-                          if($key=='phone')
+                          if($key=='phone'){
                             $this->db->where('phone LIKE "%'.$value.'%" OR other_phone LIKE "%'.$value.'%"');
+                          }
+                          
+                          if($key=='tag'){                              
+                              $this->db->where("FIND_IN_SET($value,enquiry_tags.tag_ids)>",0);
+                          }
+                          if($key=='aging_rule'){
+                            $this->db->where($value);
+                          }
                       }
                       else
                       {
