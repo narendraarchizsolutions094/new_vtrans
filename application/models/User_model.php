@@ -219,6 +219,7 @@ class User_model extends CI_Model {
             $this->db->where('tbl_admin.user_type', $_GET['user_role']);            
         }
         $this->db->where('tbl_admin.user_type!=', 1);
+		$this->db->where('tbl_admin.b_status', 1);
         $this->db->where('tbl_admin.companey_id',$this->session->companey_id);  
         return $this->db->get()->result();
     }
