@@ -21,7 +21,25 @@ class Common_model extends CI_Model {
         return $this->list;
     
     }
-    
+    public function get_right_ids(){
+        $user_right    =   $this->session->user_right;         
+        $query    =   $this->db->query(
+                        "SELECT GROUP_CONCAT(lv SEPARATOR ',') as rids FROM (
+                            SELECT @pv:=(SELECT GROUP_CONCAT(use_id SEPARATOR ',') FROM tbl_user_role 
+                            WHERE FIND_IN_SET(parent_right, @pv)) AS lv FROM tbl_user_role 
+                            JOIN
+                            (SELECT @pv:=$user_right) tmp
+                            ) a;"                        
+                        );
+        $res    =   $query->row_array();
+        $arr = array();
+        if (!empty($res['rids'])) {
+            $res = $res['rids'];
+            $arr = explode(',', $res);            
+        }
+        array_push($arr, $user_right);        
+        return $arr;
+    }
     public function get_categories($user_id){   
         $this->list = array();
         $categories = array();
@@ -120,6 +138,7 @@ class Common_model extends CI_Model {
         $all_ids = $this->get_categories($main_uid);
 
         $this->db->where('pk_i_admin_id IN ('.implode(',',$all_ids).')');
+        $this->db->where('b_status',1);
         $res = $this->db->where('companey_id',$comp_id)->get('tbl_admin')->result();
         return $res;
     }

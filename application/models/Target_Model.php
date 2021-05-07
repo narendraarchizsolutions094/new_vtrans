@@ -84,6 +84,7 @@ class Target_Model extends CI_model
 			$inter = array_intersect($all_reporting_ids, $a);
 			if(count($inter))
 			{
+				//print_r($inter).'<br>';
 				$row->goal_for = implode(',', $inter);
 				$sum=0;
 				if($row->goal_type=='team')
@@ -110,12 +111,12 @@ class Target_Model extends CI_model
 		if(!empty($goal))
 		{	
 			if($goal->metric_type=='weight')
-				$this->db->select('sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
+				$this->db->select('sum(info.expected_tonnage) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
 			else
 				$this->db->select('sum(info.expected_amount) as e_amnt,count(id) as num_value,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
 				
 				$this->db->from('enquiry')
-				->join('commercial_info info','info.enquiry_id = enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status IN (0,1) and `info`.`stage_id` IN(3,4)','inner');
+				->join('commercial_info info','info.enquiry_id = enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status IN (0) ','inner');
 				$this->db->where('enquiry.lead_expected_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'"');	
 				//$this->db->where('enquiry.status=2');
 
@@ -155,7 +156,7 @@ class Target_Model extends CI_model
 			 $res =$this->db->get()->row();
 			//if($goal_id!=38)
 			 return $res;
-			echo $this->db->last_query(); exit();
+			//echo $this->db->last_query(); exit();
 		}
 		else
 			return false;
@@ -209,7 +210,7 @@ class Target_Model extends CI_model
 
 			$this->db->from('enquiry')
 				->join('commercial_info info','info.enquiry_id=enquiry.enquiry_id and info.createdby IN ('.$goal->goal_for.') and info.status=1	and info.stage_id=5','inner');
-			$this->db->where('info.creation_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'" ');
+			$this->db->where('date(info.creation_date) BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'" ');
 			$res = $this->db->get()->row();
 			return  $res;
 		}
@@ -221,15 +222,27 @@ class Target_Model extends CI_model
 	{
 		$goal  = $this->getGoals(array('goal_id'=>$goal_id),$fetch_type,$user);		
 		// var_dump($goal);
-		// echo $this->db->last_query();
-		// exit;
-		return (object)array_slice($goal,8,5);
+		 //echo $this->db->last_query();
+		 //exit;
+		 //print_r($goal);
+		 //exit;
+		// return (object)
+		//print_r(array_slice($goal,8,5));exit;
+		return $goal;
 	}
 
 	public function getUserWiseForecast($goal_id,$user_id)
 	{
 		$goal  = $this->getGoals(array('goal_id'=>$goal_id))[0];		
-		$this->db->select('*, sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids,role.user_role ');	
+		
+		if($goal->metric_type=='freight'){
+			$this->db->select('admin.*,sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
+		}
+		else{
+			$this->db->select('admin.*,sum(info.expected_tonnage) as e_amnt,sum(info.potential_amount) as p_amnt,COUNT(DISTINCT(info.id)) as info_count,GROUP_CONCAT(info.id) as info_ids,COUNT(DISTINCT(enquiry.enquiry_id)) as enq_count,GROUP_CONCAT(DISTINCT(enquiry.enquiry_id)) as enq_ids');
+		}
+
+		//$this->db->select('*, sum(info.expected_amount) as e_amnt,sum(info.potential_amount) as p_amnt,GROUP_CONCAT(info.id) as info_ids,role.user_role ');	
 
 		if(!empty($goal->products)){
 			$prod_arr = explode(',',$goal->products);
@@ -265,7 +278,7 @@ class Target_Model extends CI_model
 		}
 
 	$res =	$this->db->from('tbl_admin admin')
-					->join('commercial_info info','info.createdby=admin.pk_i_admin_id and info.status IN (0,1)','inner')
+					->join('commercial_info info','info.createdby=admin.pk_i_admin_id and info.status IN (0)','inner')
 					->join('enquiry','enquiry.enquiry_id=info.enquiry_id','inner')
 					->join('tbl_user_role role','admin.user_type=role.use_id','left')
 					->where('enquiry.lead_expected_date BETWEEN "'.$goal->date_from.'" and "'.$goal->date_to.'"')
