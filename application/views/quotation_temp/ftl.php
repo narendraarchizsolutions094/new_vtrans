@@ -232,7 +232,7 @@ body{
 				<p class="c10"><span class="c4">1 day after reaching loading/unloading point (In Rs)</span></p>
 			</td>
 			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">3000</span></p>
+				 <p class="c28"><span class="c4">3000</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
