@@ -5,8 +5,8 @@ if (!defined('BASEPATH'))
 
 class Leads_Model extends CI_Model {
 	
-	public function dealstagelist($enq_id,$current_stg,$next_stg) {
-        $this->db->select("id,stage_id,enquiry.client_name,booking_type,business_type");
+	public function dealstagelist($enq_id,$current_stg,$next_stg=0) {
+        $this->db->select("id,stage_id,enquiry.client_name,booking_type,business_type,commercial_info.status as deal_status");
         $this->db->from('commercial_info');
         $this->db->join('enquiry', 'enquiry.enquiry_id = commercial_info.enquiry_id');
 		$this->db->where('commercial_info.enquiry_id', $enq_id);

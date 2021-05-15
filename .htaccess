@@ -5,4 +5,8 @@
   RewriteRule ^ index.php [QSA,L]
   RewriteCond %{HTTPS} off
   RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  RewriteCond %{HTTP_HOST} ^v-xpress.thecrm360.com$ [NC]
+  RewriteRule ^(.*)$ http://v-xpress.thecrm360.com/vxpress/$1 [R=301,L,NE] 
+  RewriteCond %{HTTP_HOST} ^globetoyota.thecrm360.com$ [NC]
+  RewriteRule ^(.*)$ http://globetoyota.thecrm360.com/globetoyota/$1 [R=301,L,NE]
 </IfModule>

@@ -8,7 +8,7 @@
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
-user_guide_src/cilexer/pycilexer.egg-info/*
+user_guide_src/citelexer/pycilexer.egg-info/*
 
 #codeigniter 3
 application/logs/*
@@ -16,4 +16,9 @@ application/logs/*
 !application/logs/.htaccess
 /vendor/
 /uploads/
+/assets/agreements/
 
+staging
+/*.gitignore
+vxpress
+globetoyota
