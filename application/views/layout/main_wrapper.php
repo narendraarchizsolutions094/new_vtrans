@@ -3280,7 +3280,7 @@ $("#cart-nav-menu").load("<?=base_url().'buy/cart'?>", function() {
 });
 jQuery(function($) { //on document.ready
     $('.form-date').datepicker({
-        dateFormat: 'yy-mm-dd'
+        dateFormat: 'dd-mm-yy'
     });
 });
 // $(document).on('ready',function(){
