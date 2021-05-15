@@ -2188,11 +2188,11 @@ body{
 
 	<p class="c21 c44"><span class="c23"></span></p>
 	<ul class="c28 lst-kix_list_6-0 start">
-		<li class="c48 c92 li-bullet-0"><span class="c36">Payment Terms: 15 days from the date of Invoice.</span></li>
+		<li class="c48 c92 li-bullet-0">• <span class="c36">Payment Terms: 15 days from the date of Invoice.</span></li>
 	</ul>
 	<p class="c44 c91"><span class="c36"></span></p>
 	<ul class="c28 lst-kix_list_6-0">
-		<li class="c48 c80 li-bullet-0"><span class="c36">Note: This proposal is valid for 30 days from the date of quotation.</span></li>
+		<li class="c48 c80 li-bullet-0">• <span class="c36">Note: This proposal is valid for 30 days from the date of quotation.</span></li>
 	</ul>
 	<p class="c21 c44"><span class="c23"></span></p>
 	<p class="c21 c44"><span class="c42 c25"></span></p>
@@ -2218,7 +2218,7 @@ body{
 @fuel_surcharge
 	<p class="c1 c44"><span class="c42 c25"></span></p>
 	<ul class="c28 lst-kix_list_8-0 start">
-		<li class="c72 c48 li-bullet-0"><span class="c14">The average fuel price at the time of signing the contract is </span><span class="c14 c57">Rs <?=$avg_fule_price?> </span><span class="c14">per Ltr.</span></li>
+		<li class="c72 c48 li-bullet-0">• <span class="c14">The average fuel price at the time of signing the contract is </span><span class="c14 c57">Rs <?=$avg_fule_price?> </span><span class="c14">per Ltr.</span></li>
 	</ul>
 	<p class="c1 c44"><span class="c42 c25"></span></p>
 	<p class="c21"><span class="c62 c66">Other Terms and Conditions:</span></p>

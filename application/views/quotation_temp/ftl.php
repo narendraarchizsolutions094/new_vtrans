@@ -135,111 +135,111 @@ body{
 	<a id="t.bc29bdae038a83da8f0b0af614bbe6e2f20eabb0"></a>
 	<a id="t.2"></a>
 </p>
-<table class="c46" xss=removed border="1px">
+<table class="c46" xss=removed border="1px" width="100%">
 	<tbody>
 		<tr class="c58">
-			<td class="c44" colspan="1" rowspan="1" style="background:#00b0f0;">
+			<td class="c44" colspan="1" rowspan="1" style="background:#00b0f0;padding: 0px 5px;">
 				<p class="c28"><span class="c4 c36">Vehicle Type</span></p>
 			</td>
-			<td class="c7" colspan="1" rowspan="1" style="background:#00b0f0;">
+			<td class="c7" colspan="1" rowspan="1" style="background:#00b0f0;padding: 0px 5px;">
 				<p class="c28"><span class="c4 c36">Days</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1" style="background:#00b0f0;">
+			<td class="c5" colspan="1" rowspan="1" style="background:#00b0f0;padding: 0px 5px;">
 				<p class="c28"><span class="c4 c36">Charges</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2">
+			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">9mt & below</span></p>
 			</td>
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">1 day after reaching loading/unloading point. (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">1000</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">1500</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2">
+			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">21 mt vehicle & below</span></p>
 			</td>
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">1 day after reaching loading/unloading point (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">1500</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">1800</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2">
+			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">32ft Single & Multi XL </span></p>
 			</td>
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">1 day after reaching loading/unloading point (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">1800</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">2000</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2">
+			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">20ftt Trailer</span></p>
 			</td>
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">1 day after reaching loading/unloading point. (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">2000</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">3000</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2">
-				<p class="c10"><span class="c4">40 ft Trailer</span></p>
+			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
+				<p class="c10"><span class="c4">40 ft Trailer & 30MT and above</span></p>
 			</td>
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">1 day after reaching loading/unloading point (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">3000</span></p>
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
 			</td>
-			<td class="c5" colspan="1" rowspan="1">
+			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
 				<p class="c28"><span class="c4">4000</span></p>
 			</td>
 		</tr>

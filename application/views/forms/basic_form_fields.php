@@ -45,7 +45,7 @@
                      </div>
 
                      <div class="form-group col-sm-4 col-md-4"> 
-                        <label><?php echo display("designation"); ?> <i class="text-danger"></i></label>
+                        <label><?php echo display("designation"); ?> <i class="text-danger">*</i></label>
                         <select class="form-control" name="designation">
 						<option value="">Select Designation</option>
                           <?php
@@ -104,7 +104,7 @@
                         <?php
                           }?>
 
-                        <input class="form-control" value="<?php if(!empty($_GET['phone'])){echo $_GET['phone']; }else{ echo set_value('mobileno')?set_value('mobileno'):($this->input->get('phone')?$this->input->get('phone'):'');}?>" name="mobileno" type="text" maxlength='10' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Enter Mobile Number" <?=$required?>>
+                        <input class="form-control" value="<?php if(!empty($_GET['phone'])){echo $_GET['phone']; }else{ echo set_value('mobileno')?set_value('mobileno'):($this->input->get('phone')?$this->input->get('phone'):'');}?>" name="mobileno" type="text" maxlength='10' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Enter Mobile Number" <?=$required?> required>
                         <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
                      </div>
                      <div id="add_more_phone">
@@ -120,8 +120,8 @@
                     if($companylist['field_id']==EMAIL){
                     ?>
                      <div class="form-group col-sm-4 col-md-4 enq-email"> 
-                        <label><?php echo display('email') ?>  </label>
-                        <input class="form-control" value="<?php  echo set_value('email');?> " name="email" type="email"  placeholder="Enter Email">  
+                        <label><?php echo display('email') ?><i class="text-danger">*</i></label>
+                        <input class="form-control" value="<?php  echo set_value('email');?> " name="email" type="email"  placeholder="Enter Email" required>  
                      </div>                     
                      <?php
                    }
@@ -130,12 +130,12 @@
                     if($companylist['field_id']==COMPANY){
                     ?>
                      <div class="form-group col-sm-4 col-md-4">
-                        <label><?php echo display('company_name') ?> <i class="text-danger"></i></label>
-                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)"> 
+                        <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
+                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)" required> 
                      </div>
 					 
-					           <div class="form-group col-md-4">
-                            <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
+					    <div class="form-group col-md-4">
+                            <label class="control-label" for="sales_branch"><?=display('sales_branch')?><i class="text-danger">*</i></label> 									
                             <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()">
                                     <?php  if (!empty($branch_lists)) {
                                         foreach ($branch_lists as $key => $value) { ?>
@@ -144,16 +144,16 @@
                                         }
                                         } ?>
                             </select>
-                      </div>
+                        </div>
 					  
 					           <div class="form-group col-sm-4 col-md-4">
-                        <label><?php echo 'Client Name'; ?> <i class="text-danger"></i></label>
+                        <label><?php echo 'Client Name'; ?> <i class="text-danger">*</i></label>
                         <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name"  placeholder="Enter Client Name" readonly>  
                      </div>
 
                      <div class="form-group col-md-4">
-                            <label class="control-label">Contact</label>                  
-                            <select class="form-control" id="contact_id" name="contact_id" onchange="set_contact(this.value)">
+                            <label class="control-label">Contact <i class="text-danger">*</i></label>                  
+                            <select class="form-control" id="contact_id" name="contact_id" onchange="set_contact(this.value)" required>
                             </select>
                       </div>
                    
@@ -165,8 +165,8 @@
                     ?>      
                               
                      <div class="form-group col-sm-4 col-md-4 enq-source">
-                        <label><?php echo display('lead_source') ?> <i class="text-danger"></i></label>
-                        <select class="form-control" name="lead_source" id="lead_source" onchange="find_sub()">
+                        <label><?php echo display('lead_source') ?> <i class="text-danger">*</i></label>
+                        <select class="form-control" name="lead_source" id="lead_source" onchange="find_sub()" required>
                            <option value="" style="display:none;">---Select---</option>
                            <?php foreach ($leadsource as $post){ ?>
                            <option value="<?= $post->lsid?>"><?= $post->lead_name?></option>
@@ -212,8 +212,8 @@
                    
 
                     <div class="form-group col-md-4">
-                              <label class="control-label" for="client_type"><?php echo  'Client Type';?></label>                   
-                          <select class="form-control" name="client_type" id="client_type">
+                              <label class="control-label" for="client_type"><?php echo  'Client Type';?><i class="text-danger">*</i></label>                   
+                          <select class="form-control" name="client_type" id="client_type" required>
                                   <option value="">--Select Client Type--</option>
                           <option value="MSME">MSME</option>
                                   <option value="Pvt. Ltd."> Pvt. Ltd.</option>
@@ -225,8 +225,8 @@
                       </div>
                     
                     <div class="form-group col-md-4">
-                              <label class="control-label" for="business_load"><?php echo 'Type Of Load / Business';?></label>                  
-                          <select class="form-control" name="business_load" id="business_load">
+                              <label class="control-label" for="business_load"><?php echo 'Type Of Load / Business';?><i class="text-danger">*</i></label>                  
+                          <select class="form-control" name="business_load" id="business_load" required>
                                   <option value="">--Select Load/Business--</option>
                           <option value="FTL" >FTL</option>
                                   <option value="LTL/Sundry"> LTL / Sundry</option>
@@ -234,8 +234,8 @@
                       </div>
                     
                     <div class="form-group col-md-4">
-                              <label class="control-label" for="industries"><?php echo 'Industries';?></label>                  
-                          <select class="form-control" name="industries" id="industries">
+                              <label class="control-label" for="industries"><?php echo 'Industries';?><i class="text-danger">*</i></label>                  
+                          <select class="form-control" name="industries" id="industries" required>
                                   <option value="">--Select industries--</option>
                           <option value="FMCG">FMCG</option>
                                   <option value="Auto &amp; Auto Ancillaries" > Auto &amp; Auto Ancillaries</option>
@@ -255,8 +255,8 @@
                     if($companylist['field_id']==STATE_FIELD){
                     ?>                
                      <div class="form-group col-sm-4 col-md-4 enq-state">
-                        <label> <?php echo display("state"); ?> <i class="text-danger"></i></label>
-                        <select name="state_id" class="" id="fstate">
+                        <label> <?php echo display("state"); ?> <i class="text-danger">*</i></label>
+                        <select name="state_id" class="" id="fstate" required>
                            <option value="" style="display:none;">---Select---</option>
                            <?php foreach($state_list as $state){?>
                            <option value="<?php echo $state->id ?>"><?php echo $state->state; ?></option>
@@ -271,8 +271,8 @@
                     ?>             
                                              
                       <div class="form-group col-sm-4 col-md-4 enq-city">
-                        <label><?php echo display("city"); ?> <i class="text-danger"></i></label>
-                        <select name="city_id" class="" id="fcity">
+                        <label><?php echo display("city"); ?> <i class="text-danger">*</i></label>
+                        <select name="city_id" class="" id="fcity" required>
                            <option value="" style="display:none;">---Select---</option>
                             <?php foreach ($city_list as $city){ ?>
                            <option value="<?= $city->id?>"><?= $city->city?></option>

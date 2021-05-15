@@ -324,6 +324,7 @@ function generate_table()
 	});
 	var deal_id = "<?=$deal->id?>";
 	var deal_type = $("select[name=deal_type]").val();
+	var unique_no = "<?=$deal->quatation_number?>";
 	var booking_type = $("select[name=booking_type]").val();
 	var business_type = $("select[name=business_type]").val();
 
@@ -331,7 +332,7 @@ function generate_table()
 	var dtype = $("select[name=dtype]").val();
 	var enq_for = $("input[name=for]").val();
 	var stage_for = "<?=$data_type?>";
-//alert('d');
+//alert(unique_no);
 	if(blist.length==0 || dlist.length==0)
 	{
 		var msg = 'Fill required fields.';
@@ -354,6 +355,7 @@ function generate_table()
 		type:'POST',
 		data:{	
 				deal_type:deal_type,
+				unique_no:unique_no,
 				booking_type:booking_type,
 				business_type:business_type,
 				chain:BList,

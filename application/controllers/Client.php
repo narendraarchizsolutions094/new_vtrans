@@ -2664,6 +2664,7 @@ public function all_update_expense_status()
             $btype = $this->input->post('btype');
             $dtype = $this->input->post('dtype');
             $enquiry_id = $this->input->post('enq_for');
+			$unique_no = $this->input->post('unique_no');
             $deal_id= $this->input->post('deal_id')??0;
             
             $stage_for = $this->input->post('stage_for');
@@ -2803,6 +2804,7 @@ public function all_update_expense_status()
                 <form id="data_table">
                 <input name="deal_type" type="hidden" value="'.implode(',',$deal_type).'">
                 <input name="booking_type" type="hidden" value="'.$booking_type.'">
+				<input name="unique_no" type="hidden" value="'.$unique_no.'">
                 <input name="business_type" type="hidden" value="'.$business_type.'">
 				<input name="insurance" type="hidden" value="'.$insurance.'">
                 <input name="btype" type="hidden" value="'.$btype.'">
@@ -3194,11 +3196,27 @@ public function all_update_expense_status()
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
         $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
+		$unique = $this->input->post('unique_no');
+		$edit = $this->input->post('edited');
+		
+		if(empty($unique)){
 		$branch = substr($enq->branch_name,0,2);
 		$region = substr($enq->rnm,0,2);
 		$number = str_pad(rand(0,999), 3, "0", STR_PAD_LEFT);
 		$type   = strtoupper($this->input->post('booking_type'));
-		$unique_no = $region.''.$branch.''.$number.''.$type;
+		$unique_no = $region.''.$branch.''.$number.''.$type.'-1.0';
+		}else{
+		if($edit==1)
+            {
+			$next = explode('-',$unique);
+			$nexts = $next[1]+1;
+			$next_version = $nexts.'.0';
+        $unique_no = $next[0].'-'.$next_version;
+        }else{
+			$unique_no = $unique;	
+			}		
+		}
+			
 		//print_r($unique_no);exit;
         $deal = array(
                     'enquiry_id'=>$this->input->post('enquiry_id'),
@@ -3238,9 +3256,9 @@ public function all_update_expense_status()
                 }
                 else
                 {
-                    $deal['copy_id'] = $ddata->copy_id;
-                    $deal['id'] = $deal_id;                    
-                    $this->db->delete('commercial_info');
+                    //$deal['copy_id'] = $ddata->copy_id;
+                    //$deal['id'] = $deal_id;                    
+                    //$this->db->delete('commercial_info');
                 }
                 //$deal['stage_id']=$this->input->post('current_stage');
                 $deal['createdby']=$ddata->createdby;

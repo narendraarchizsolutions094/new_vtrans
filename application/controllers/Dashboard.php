@@ -2915,7 +2915,7 @@ public function set_layout_to_session() {
                   if($booking_type=='ftl')
                   {
                       $freight_table = '';
-                      $freight_table .="<table border='1px' style='width:400px'>
+                      $freight_table .="<table border='1px' width='100%'>
                       <thead>
                         <tr>
                           <th>From</th>
@@ -2964,7 +2964,7 @@ public function set_layout_to_session() {
                           foreach ($result as $key => $rows)
                           {
                             $freight_table.='
-                            <table border="1">
+                            <table border="1" width="100%">
                                   <thead>
                                   <tr>
                                     <th>To <i class="fa fa-arrow-right"></i><br>
@@ -3017,13 +3017,13 @@ public function set_layout_to_session() {
 
                       }//type-zone/area
                       
-                        $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge from oda_matrix GROUP bY dis,we")->result();
+                        $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge,id from oda_matrix GROUP bY dis,we ORDER BY id ASC")->result();
                         if(!empty($oda_query))
                         {
                    
                           $oda_row = array_unique(array_column($oda_query, 'dis'));
                           $oda_col =  array_unique(array_column($oda_query, 'we'));
-                           $oda_table = '<table border="1">';
+                           $oda_table = '<table border="1" width="100%">';
 
                             foreach ($oda_row as $key => $value1)
                             {
@@ -3067,7 +3067,7 @@ public function set_layout_to_session() {
                     $fuel_surcharge='';
                     if(!empty($fuel_data))
                     {
-                         $fuel_surcharge .="<table border='1px' style='width:400px'>
+                         $fuel_surcharge .="<table border='1px' width='100%'>
                          <thead>
                                 <tr>
                                   <th>Greater Than or<br> Equal To (Rs.)</th>
@@ -3093,7 +3093,7 @@ public function set_layout_to_session() {
                     }
                       
                       $booking_type = $deal->booking_type;
-                      $oc_table ='<table border="1px" style="max-width:90%">
+                      $oc_table ='<table border="1px" width="100%">
                     <thead>
                         <tr>
                             <th align="center">Name of Charges</th>
@@ -3322,7 +3322,7 @@ public function set_layout_to_session() {
         $freight_table = '';
         $area_table='';
         $oda_table='';
-        $freight_table .="<table border='1px' style='width:400px'>
+        $freight_table .="<table border='1px' width='100%'>
         <thead>
           <tr>
             <th style='background:#00b0f0;'>From</th>
@@ -3370,7 +3370,7 @@ public function set_layout_to_session() {
               foreach ($result as $key => $rows)
               {
                 $freight_table.='
-                <table border="1">
+                <table border="1" width="100%">
                       <thead>
                       <tr>
                         <th style="background:#00b0f0;">
@@ -3430,13 +3430,13 @@ public function set_layout_to_session() {
 
           }//type-zone/area
 
-          $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge from oda_matrix GROUP bY dis,we")->result();
+          $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge,id from oda_matrix GROUP bY dis,we ORDER BY id ASC")->result();
             if(!empty($oda_query))
             {
        
               $oda_row = array_unique(array_column($oda_query, 'dis'));
               $oda_col =  array_unique(array_column($oda_query, 'we'));
-               $oda_table = '<table border="1">';
+               $oda_table = '<table border="1" width="100%">';
 
                 foreach ($oda_row as $key => $value1)
                 {
@@ -3480,7 +3480,7 @@ public function set_layout_to_session() {
                     $fuel_surcharge='';
                     if(!empty($fuel_data))
                     {
-                         $fuel_surcharge .="<table border='1px' style='width:400px'>
+                         $fuel_surcharge .="<table border='1px' width='100%'>
                          <thead>
                                 <tr>
                                   <th style='background:#00b0f0;'>Greater Than or<br> Equal To (Rs.)</th>
@@ -3507,7 +3507,7 @@ public function set_layout_to_session() {
       }
         
         $booking_type = $deal->booking_type;       
-        $oc_table ='<table border="1px" style="width:500px">
+        $oc_table ='<table border="1px" width="100%">
       <thead>
           <tr>
               <th align="center" style="background:#00b0f0;">Name of Charges</th>
