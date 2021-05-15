@@ -2659,6 +2659,7 @@ public function all_update_expense_status()
 
             $booking_type = $this->input->post('booking_type');
             $business_type = $this->input->post('business_type');
+			$insurance = $this->input->post('insurance');
             $chain = $this->input->post('chain');
             $btype = $this->input->post('btype');
             $dtype = $this->input->post('dtype');
@@ -2803,6 +2804,7 @@ public function all_update_expense_status()
                 <input name="deal_type" type="hidden" value="'.implode(',',$deal_type).'">
                 <input name="booking_type" type="hidden" value="'.$booking_type.'">
                 <input name="business_type" type="hidden" value="'.$business_type.'">
+				<input name="insurance" type="hidden" value="'.$insurance.'">
                 <input name="btype" type="hidden" value="'.$btype.'">
                 <input name="dtype" type="hidden" value="'.$dtype.'">
                 <input name="edited" type="hidden" value="0">
@@ -2845,7 +2847,7 @@ public function all_update_expense_status()
                     $vehicles = $this->Branch_model->get_vehicles()->result();
 
                     echo'
-                        <th style="width:115px">Insurance <label class="badge pull-right" onclick="rep_insurance()">R</label></th>
+                        <!--<th style="width:115px">Insurance <label class="badge pull-right" onclick="rep_insurance()">R</label></th>-->
                         <th style="width:130px">Paymode <label class="badge pull-right" onclick="rep_paymode()">R</label></th>
                         ';
 
@@ -2923,12 +2925,12 @@ public function all_update_expense_status()
                             <td><input name="capacity['.$row->id.']" type="number" class="capacity_ip" value="'.$capacity.'"></td>';
                     }
                         echo'
-                             <td>
+                             <!--<td>
                              <select name="insurance['.$row->id.']" data-id="'.$row->id.'"  class="insurance_ip">
                                 <option value="carrier" '.($insurance=='carrier'?'selected':'').'>Carrier</option>
                                 <option value="owner" '.($insurance=='owner'?'selected':'').'>Owner risk</option>
                                 </select>
-                            </td>
+                            </td>-->
                             <td><select name="paymode['.$row->id.']" data-id="'.$row->id.'"  class="paymode_ip">
                                 <option value="paid" '.($paymode=='paid'?'selected':'').'>Paid</option>
                                 <option value="topay" '.($paymode=='topay'?'selected':'').'>To-Pay</option>
@@ -3192,11 +3194,19 @@ public function all_update_expense_status()
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
         $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
+		$branch = substr($enq->branch_name,0,2);
+		$region = substr($enq->rnm,0,2);
+		$number = str_pad(rand(0,999), 3, "0", STR_PAD_LEFT);
+		$type   = strtoupper($this->input->post('booking_type'));
+		$unique_no = $region.''.$branch.''.$number.''.$type;
+		//print_r($unique_no);exit;
         $deal = array(
                     'enquiry_id'=>$this->input->post('enquiry_id'),
+					'quatation_number'=>$unique_no,
                     'deal_type'=>$this->input->post('deal_type'),
                     'booking_type'=>$this->input->post('booking_type'),
                     'business_type'=>$this->input->post('business_type'),
+					'insurance'=>$this->input->post('insurance'),
                     'btype'=>$this->input->post('btype'),
                     'dtype'=>$this->input->post('dtype'),                    
                     'comp_id'=>$this->session->companey_id,
@@ -3205,7 +3215,7 @@ public function all_update_expense_status()
                     //'stage_id'=>$this->input->post('current_stage'),
                     'status'=>'0',
                     );
-//print_r($deal_id);exit;
+//print_r($deal);exit;
         if(!empty($deal_id))
         {   
             $edit = $this->input->post('edited');
@@ -3254,8 +3264,8 @@ public function all_update_expense_status()
                         )
                     );
                 }
-
-                $this->Leads_Model->add_comment_for_events_stage('Deal Updated.',$enq->Enquery_id,0,0,$remark,0);
+                 $msg = $unique_no.' Deal Updated';
+                $this->Leads_Model->add_comment_for_events_stage($msg,$enq->Enquery_id,0,0,$remark,0);
             }
             else
             {
@@ -3263,7 +3273,8 @@ public function all_update_expense_status()
                 $this->db->update('commercial_info',$deal);
                 file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
                 $this->db->where('deal_id',$deal_id)->delete('deal_data');
-                $this->Leads_Model->add_comment_for_events_stage('Deal Updated.',$enq->Enquery_id,0,0,$remark,0);
+				$msg = $unique_no.' Deal Updated';
+                $this->Leads_Model->add_comment_for_events_stage($msg,$enq->Enquery_id,0,0,$remark,0);
             }
 
         }
@@ -3277,7 +3288,8 @@ public function all_update_expense_status()
 			//$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
             //$this->db->update('enquiry');
             //$this->Leads_Model->add_comment_for_events_stage('Deal Moved To Negotiation Successfully.',$enq->Enquery_id,0,0,'',0);
-            $this->Leads_Model->add_comment_for_events_stage('Deal Added.',$enq->Enquery_id,0,0,'',0);
+			$msg = $unique_no.' Deal Added';
+            $this->Leads_Model->add_comment_for_events_stage($msg,$enq->Enquery_id,0,0,'',0);
         }
         
         if($deal['booking_type']=='sundry')

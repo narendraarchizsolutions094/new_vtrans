@@ -363,13 +363,14 @@ function manage_filters()
 				     <thead class="thead-light">
                <tr>                              
                   <th>S.N.</th>
+				  <th id="th-24">Quatation number</th>
                   <th id="th-1">Name</th>
                   <th id="th-21">Company</th>
                   <th id="th-22">Client Name</th>
-              <!--     <th id="th-2">Branch Type</th> -->
+                <!--<th id="th-2">Branch Type</th> -->
                   <th id="th-3">Business Type</th>
                   <th id="th-4">Booking Type</th>
-<!--                   <th id="th-5">Booking Branch</th>
+                <!--<th id="th-5">Booking Branch</th>
                   <th id="th-6">Delivery Branch</th>
                   <th id="th-7">Rate</th>
                   <th id="th-8">Discount</th>
@@ -393,7 +394,25 @@ function manage_filters()
     			</table>
 
 </div>
-
+<style>.tr_hover {
+background-color: #ffb099; 
+}</style>
+<script>
+function refresh_table_exs(){
+      // alert(exstatus);
+      var tr_list = $("#deals_table tbody").find('tr');
+      $(tr_list).each(function(k,v){
+          var sfa = $(v).find('td > a.sfa > label.label').text();
+		  //alert(sfa);
+           var string = "Send For Approval";
+          if(sfa === string)
+          {
+            $(v).addClass('tr_hover');
+          }
+         
+      });
+}
+</script>
 <script>
                   
 function editComInfo(id)
@@ -462,6 +481,7 @@ $(document).ready(function(){
           },
           "drawCallback":function(settings ){
             update_top_filter();
+			refresh_table_exs();
           },
           columnDefs: [
                        { orderable: false, targets: -1 }

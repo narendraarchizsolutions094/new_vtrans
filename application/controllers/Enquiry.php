@@ -3845,6 +3845,8 @@ echo  $details1;
             $sub = array();
 
             $sub[] = $value->id;
+			
+			$sub[] = $value->quatation_number;
 
              if(!empty($_POST['view_all']))
              {
@@ -3903,7 +3905,7 @@ echo  $details1;
                 if($value->edited=='1' && ($value->approval=='pending' || $value->approval == '')){                
                     if(!empty($req_log)){
                         if($req_log['status'] == ''){
-                            $sub[]  ='<a href="'.base_url('client/ask_deal_approval/'.$value->id).'" onclick="return confirm(\'Send For Approval\')">
+                            $sub[]  ='<a href="'.base_url('client/ask_deal_approval/'.$value->id).'" class="sfa" onclick="return confirm(\'Send For Approval\')">
                             <label class="label label-warning text-black">Send For Approval</label>
                             </a>'; 
                         }else if($req_log['status'] == 'pending'){

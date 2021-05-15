@@ -18,7 +18,7 @@
 	            <option value="saarc">SAARC</option>
 	        </select>
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-2">
 			<div class="form-group"> 
 		        <label>Booking Type</label>
 		        <select class="form-control" name="booking_type" id="booking_type" onchange="set_type(this)">
@@ -27,11 +27,19 @@
 		        </select>
 		    </div>
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-2">
 			<label>Business Type</label>
 	        <select class="form-control" name="business_type" id="business_type">
 	            <option value="in">Inward</option>
 	            <option value="out">Outward</option>
+	        </select>
+		</div>
+		<div class="col-lg-2">
+			<label>Insurance</label>
+	        <select class="form-control" name="insurance" id="insurance">
+			    <option>Select Here</option>
+	            <option value="carrier">Carrier</option>
+                <option value="owner">Owner risk</option>
 	        </select>
 		</div>
 	</div>
@@ -164,6 +172,7 @@ function generate_table()
 	var deal_type = $("select[name=deal_type]").val();
 	var booking_type = $("select[name=booking_type]").val();
 	var business_type = $("select[name=business_type]").val();
+	var insurance = $("select[name=insurance]").val();
 
 	var btype = $("select[name=btype]").val();
 	var dtype = $("select[name=dtype]").val();
@@ -194,6 +203,7 @@ function generate_table()
 				deal_type:deal_type,
 				booking_type:booking_type,
 				business_type:business_type,
+				insurance:insurance,
 				chain:BList,
 				btype:btype,
 				dtype:dtype,
