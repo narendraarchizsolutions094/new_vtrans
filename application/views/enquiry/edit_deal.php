@@ -25,7 +25,7 @@
 	            <option value="saarc" <?=in_array('saarc',$d_array)?'selected':''?>>Saarc</option>
 	        </select>
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-2">
 			<div class="form-group"> 
 		        <label>Booking Type</label>
 		        <select class="form-control" name="booking_type" id="booking_type" onchange="set_type(this)">
@@ -44,11 +44,19 @@
 		        </select>
 		    </div>
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-2">
 			<label>Business Type</label>
 	        <select class="form-control" name="business_type" id="business_type">
 	            <option value="in"<?=$deal->business_type=='in'?'selected':''?>>Inward</option>
 	            <option value="out"<?=$deal->business_type=='out'?'selected':''?>>Outward</option>
+	        </select>
+		</div>
+		<div class="col-lg-2">
+			<label>Insurance</label>
+	        <select class="form-control" name="insurance" id="insurance">
+			    <option>Select Here</option>
+	            <option value="carrier" <?=$deal->insurance=='carrier'?'selected':''?>>Carrier</option>
+                <option value="owner" <?=$deal->insurance=='owner'?'selected':''?>>Owner risk</option>
 	        </select>
 		</div>
 	</div>

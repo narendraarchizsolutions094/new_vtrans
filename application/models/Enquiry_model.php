@@ -912,9 +912,11 @@ class Enquiry_model extends CI_Model {
     {
       
       $process = $this->session->userdata('process');
-        $this->db->select('enquiry.*,comp.company_name');
+        $this->db->select('enquiry.*,comp.company_name,branch.branch_name,sales_region.name as rnm');
         $this->db->from('enquiry');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
+		$this->db->join('branch','branch.branch_id=enquiry.sales_branch','left');
+		$this->db->join('sales_region','sales_region.region_id=enquiry.sales_region','left');
         $this->db->where_in('product_id',$process);
 
       if($where)
