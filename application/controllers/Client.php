@@ -3854,7 +3854,10 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
 
     public function attach_agreement_data()
     {
-        //print_r($_POST);exit();
+        // echo "<pre>";
+        // print_r($_FILES);
+        // print_r($_POST);
+        // exit();
         if(empty($_POST)){
             die('Direct Access Not Allowed');
         }
@@ -3881,7 +3884,7 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
                 }
                 $path= $path.'/'.$nf;
                 if(move_uploaded_file($_FILES['ip']['tmp_name'][$i],$path))
-                    $_POST['ip'][$i] ='Yes';
+                    $_POST['ip'][$i] ='Yes';               
             }
         }
         $data = $_POST;

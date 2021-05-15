@@ -23,7 +23,7 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
-        $this->db->select('count(status) as c,status');        
+        $this->db->select('count(status) as c,status');             
         $this->db->where($where);
         $this->db->group_by('status');
         $result = $this->db->get('commercial_info')->result_array();

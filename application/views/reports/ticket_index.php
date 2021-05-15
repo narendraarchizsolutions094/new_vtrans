@@ -55,10 +55,12 @@
             <label>Select Employee</label> 
             <input name="id" value="<?= $value['id'] ?>"  hidden>
             <select class="form-control process"  name="users[]"   multiple required>
-           <?php  foreach ($created_bylist as $user) { 
-              $users=explode(',',$value['mail_users']);
+           <?php 
+            $sch_users=explode(',',$value['mail_users']);
+            print_r($sch_users);
+            foreach ($created_bylist as $user) { 
               ?>
-              <option value="<?= $user->pk_i_admin_id?>" <?php if(in_array($user->pk_i_admin_id, $users)){echo'selected';} ?>><?= $user->s_display_name ?>(<?= $user->s_user_email?>)                                
+              <option value="<?= $user->pk_i_admin_id?>" <?php if(in_array($user->pk_i_admin_id, $sch_users)){echo'selected';} ?>><?= $user->s_display_name ?>(<?= $user->s_user_email?>)                                
                              </option><?php } ?>
                      </select>
            </div>

@@ -24,14 +24,16 @@ class Deals extends REST_Controller {
         //print_r($enq->enquiry_id);exit;
 		$enq_code = $enq->enquiry_id;
         $all_deals_lists = $this->Leads_Model->dealstagelist($enq_code,$current_stg); 
-
+		// echo "<pre>";
+		// print_r($all_deals_lists);
+		// exit();
           if(!empty($all_deals_lists))
           {
             $res= array();
             foreach($all_deals_lists as $deals)
             {
 			  $deal_name = $deals->client_name.' '.'['.$deals->booking_type.']['.$deals->business_type.']';
-			  array_push($res,array('id'=>$deals->id,'name'=>$deal_name));
+			  array_push($res,array('id'=>$deals->id,'name'=>$deal_name,'deal_status'=>$deals->deal_status));
             } 
             $this->set_response([
                 'status' => TRUE,

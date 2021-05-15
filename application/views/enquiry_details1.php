@@ -2485,12 +2485,18 @@ if(user_access('1004'))
    <div class="form-group col-sm-2"><a href="#modalagg" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="set_agreement_id(<?=$val->id?>)"><i class="fa fa-upload" aria-hidden="true"></i></a></div>
 <?php } ?>
       </td>
+      
 <?php if($details->status=='5'){ ?>
 <?php if(!empty($val->po_file)){
 $poname= explode('/', $val->po_file);
 $poname = end($poname);
   ?>
 <td><a href="<?php   echo base_url($val->po_file); ?>"  target="_blank"><?=$poname?></a></td>
+<?php }else{
+   ?>
+   <td></td>
+   <?php
+} ?>
 <td>
 <?php
 if($val->signed_agreement){ ?>
@@ -2503,7 +2509,6 @@ if($val->signed_agreement){ ?>
 }
 ?>
   </td>
-<?php } ?>
   <td>
   <div class="form-group col-sm-2"><a href="#modalagg" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="set_agreement_id(<?=$val->id?>)"><i class="fa fa-upload" aria-hidden="true"></i></a></div>
   </td>

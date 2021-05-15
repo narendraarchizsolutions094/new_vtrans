@@ -55,14 +55,14 @@ public function get_all_stage_deals() {
 					<input type="hidden" value="'.$enq_id.'" name="enq_id">
 					<input type="hidden" value="'.$next_stg.'" name="next_stg">';
 					if(empty($all_deals_lists)){
-					echo '<span style="color:red;">No Any Deal With Status Done! </span>';
+					$details .= '<span style="color:red;">No Any Deal With Status Done! </span>';
 					}
-		            echo '<div class="form-group col-md-10">                 
+		            $details .= '<div class="form-group col-md-10">                 
                         <select class="form-control" id="deal_id" name="deal_id[]" multiple required>';                    
                               foreach ($all_deals_lists as $deals) { 
                          $details .= '<option value="'.$deals->id.'">'.$deals->client_name.' '.'['.$deals->booking_type.']'.'['.$deals->business_type.']</option>';
                                }                                         
-                        '</select>
+                    $details .=    '</select>
                     </div>';
                     
         echo $details;

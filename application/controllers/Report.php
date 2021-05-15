@@ -38,10 +38,10 @@ class Report extends CI_Controller
     }
     $data['title'] = 'Ticket Reports List';
     if ($this->session->companey_id == 65 && $this->session->user_right == 215) {
-      $data['created_bylist'] = $this->user_model->read(147, false);
+      //$data['created_bylist'] = $this->user_model->read(147, false);
     } else {
-      $data['created_bylist'] = $this->user_model->read();
     }
+    $data['created_bylist'] = $this->user_model->read();
     $data['reports'] = $this->report_model->get_all_reports(2);
     $data['content'] = $this->load->view('reports/ticket_index', $data, true);
     $this->load->view('layout/main_wrapper', $data);
@@ -407,7 +407,7 @@ class Report extends CI_Controller
     $data['rid'] = $id;
     $this->session->set_userdata('ticket_reportid', $id);
     $this->db->where('id', $id);
-    $report_row =   $this->db->where('type', 2)->get('reports')->row_array();
+    $report_row =   $this->db->where('type', 2)->get('reports')->row_array(); 
     $data['filters'] = json_decode($report_row['filters'], true);
     // print_r($filters);
     // die();

@@ -21,6 +21,10 @@ class Enquiry extends CI_Controller
             }
         }
     }
+    public function current_time(){
+        echo "time is " . date("Y-m-d h:i:sa");
+    }
+
     public function add_enquery_comission($enq_code) 
     {
         $enq_code = base64_decode($enq_code);
