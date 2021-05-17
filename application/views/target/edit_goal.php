@@ -110,12 +110,13 @@ if($goal->goal_type=='team')
 			<div class="col-sm-4" style="padding: 4px;">
 				<label>Metric <font color="red">*</font></label>				
 				<select name="metric_type" class="form-control" required>
+					<option value="">--- Select ---</option>
 					<option value="freight" <?=$goal->metric_type=='freight'?'selected':''?>>Freight</option>
 					<option value="weight" <?=$goal->metric_type=='weight'?'selected':''?>>Weight</option>
 				</select>
 			</div>
 			<div class="col-sm-8" style="padding: 4px;">
-				<label>Target <font color="red">*</font></label>
+				<label>Target <font color="red">*</font><span id='target_metric'></span></label>
 
 					<input type="number" name="target_value" class="form-control" onchange="viewTeamTable()" value="<?=$goal->target_value?>" required>
 			</div>
@@ -138,6 +139,13 @@ if($goal->goal_type=='team')
 </div>
 </div>
 <script type="text/javascript">
+$("select[name='metric_type']").on('change',function(){
+	if($(this).val() == 'freight'){
+		$("#target_metric").text(' (In Rupees)');
+	}else if($(this).val() == 'weight'){
+		$("#target_metric").text(' (In Tons)');
+	}
+});
 function load_range(v)
 { 
 	var range_list = '';
@@ -394,6 +402,7 @@ function manageDate(cur_date,day,month,year)
 }
 load_range("<?=$goal->goal_period?>");
 $(document).ready(function(){
+	$("select[name='metric_type']").trigger('change');
 	$("select").select2();
 	var temp='<?=$goal->goal_type?>';
 	load_values(temp);

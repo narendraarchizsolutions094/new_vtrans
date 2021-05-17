@@ -564,6 +564,7 @@ class Target extends CI_controller
 		$data['roles'] = json_encode($r);
 
 		$this->db->where_in('pk_i_admin_id',$option_list);
+		$this->db->where('b_status',1);
 		$users  = $this->db->where('companey_id',$this->session->companey_id)->get('tbl_admin')->result();
 		
 		$u = array();

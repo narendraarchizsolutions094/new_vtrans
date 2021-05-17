@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -14,10 +13,11 @@ class Leads_Model extends CI_Model {
 		if($next_stg=='4' || $next_stg=='5'){
 			$this->db->where('commercial_info.status', '1');
 		}
+		//$this->db->where('commercial_info.stage_id', $current_stg);
+		$this->db->group_by('commercial_info.id');
         $query = $this->db->get();
         return $query->result();
     }
-
     public function get_list_admin($aid) {
         $this->db->select(" * ");
         $this->db->from('allleads');
@@ -26,8 +26,7 @@ class Leads_Model extends CI_Model {
         $this->db->where('allleads.adminid', $aid);
         $query = $this->db->get();
         return $query->result();
-    }
-	
+    }	
     /***************************************************Department Master section start************************************/
     public function dept_add($data) {
         $this->db->insert('tbl_department', $data);

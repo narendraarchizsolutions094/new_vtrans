@@ -4,8 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 class Deals extends REST_Controller {
-  function __construct() 
-  {
+  	function __construct() {
       parent::__construct();
       $this->load->library('form_validation');
 	  $this->load->model(array('enquiry_model','common_model','Leads_Model'));
@@ -28,8 +27,7 @@ class Deals extends REST_Controller {
 		// echo "<pre>";
 		// print_r($all_deals_lists);
 		// exit();
-          if(!empty($all_deals_lists))
-          {
+        if(!empty($all_deals_lists)){
             $res= array();
             foreach($all_deals_lists as $deals)
             {
@@ -40,18 +38,15 @@ class Deals extends REST_Controller {
                 'status' => TRUE,
                 'data' =>$res
                  ], REST_Controller::HTTP_OK);
-          }   
-		else
-         {
-	    
+        }else{	    
 	        $this->set_response([
 	          'status' => false,
 	          'msg' =>'not found'
 	          ], REST_Controller::HTTP_OK);
-	      }
+	    }
     }
-  //================= Only for Deal List==================
-  //================= Only for V-trans==================
+    //================= Only for Deal List==================
+    //================= Only for V-trans==================
   	public function deals_list_page_post()
     {
       $user_id= $this->input->post('user_id');

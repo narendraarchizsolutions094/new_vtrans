@@ -574,6 +574,7 @@ $company=$this->session->userdata('companey_id');
     public function get_users_by_role($role)
     {
         $this->db->where('user_permissions',$role);
+        $this->db->where('b_status',1);
         $this->db->where('companey_id',$this->session->companey_id);
        return  $this->db->get('tbl_admin')->result();
     }
