@@ -2644,6 +2644,7 @@ public function all_update_expense_status()
         $data['max_discount'] = !empty($dis)?$dis->discount:100;
         $data['by'] = $by;
         $data['data_type'] = $data_type;
+		//print_r($data['data_type']);exit;
         $data['content'] = $this->load->view('enquiry/add_deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -3192,7 +3193,7 @@ public function all_update_expense_status()
         $this->load->model(array('Branch_model','Enquiry_model','Leads_Model'));
         $current_user = $this->User_model->read_by_id($this->session->user_id);
         $oc = json_encode($this->input->post('oc'));
-        //print_r($oc);exit;
+        //print_r($this->input->post('current_stage'));exit;
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
         $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
@@ -3230,7 +3231,7 @@ public function all_update_expense_status()
                     'comp_id'=>$this->session->companey_id,
                     'other_charges'=>$oc,
                     'updation_date'=>date('Y-m-d H:i:s'),
-                    //'stage_id'=>$this->input->post('current_stage'),
+                    'stage_id'=>$this->input->post('current_stage'),
                     'status'=>'0',
                     );
 //print_r($deal);exit;

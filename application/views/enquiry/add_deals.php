@@ -67,6 +67,7 @@
 			</select>
 		</div>
 	</div>
+	<input type="hidden" name="current_stage" value="<?=$data_type;?>">
 </div>
 
 <div class="row panel-box">
