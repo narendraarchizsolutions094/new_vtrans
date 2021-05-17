@@ -15,6 +15,7 @@ class Deals extends REST_Controller {
    public function stage_deals_list_post()
     {
       $current_stg = $this->input->post('current_stg');
+	  $next_stg = $this->input->post('next_stg');
       $enq_id = $this->input->post('enq_id');
 	  
 	    $enq = $this->db->select('enquiry_id')
@@ -23,7 +24,7 @@ class Deals extends REST_Controller {
                         ->get()->row();
         //print_r($enq->enquiry_id);exit;
 		$enq_code = $enq->enquiry_id;
-        $all_deals_lists = $this->Leads_Model->dealstagelist($enq_code,$current_stg); 
+        $all_deals_lists = $this->Leads_Model->dealstagelist($enq_code,$current_stg,$next_stg); 
 		// echo "<pre>";
 		// print_r($all_deals_lists);
 		// exit();
@@ -32,7 +33,7 @@ class Deals extends REST_Controller {
             $res= array();
             foreach($all_deals_lists as $deals)
             {
-			  $deal_name = $deals->client_name.' '.'['.$deals->booking_type.']['.$deals->business_type.']';
+			  $deal_name = $deals->quatation_number;
 			  array_push($res,array('id'=>$deals->id,'name'=>$deal_name,'deal_status'=>$deals->deal_status));
             } 
             $this->set_response([

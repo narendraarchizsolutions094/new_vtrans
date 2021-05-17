@@ -60,7 +60,7 @@ public function get_all_stage_deals() {
 		            $details .= '<div class="form-group col-md-10">                 
                         <select class="form-control" id="deal_id" name="deal_id[]" multiple required>';                    
                               foreach ($all_deals_lists as $deals) { 
-                         $details .= '<option value="'.$deals->id.'">'.$deals->client_name.' '.'['.$deals->booking_type.']'.'['.$deals->business_type.']</option>';
+                         $details .= '<option value="'.$deals->id.'">'.$deals->quatation_number.'</option>';
                                }                                         
                     $details .=    '</select>
                     </div>';
