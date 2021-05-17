@@ -4,19 +4,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 class Deals extends REST_Controller {
-  function __construct() 
-  {
+  	function __construct() {
       parent::__construct();
       $this->load->library('form_validation');
 	  $this->load->model(array('enquiry_model','common_model','Leads_Model'));
-  }
-
-  //================= Only for Deal List==================
-   public function stage_deals_list_post()
-    {
-      $current_stg = $this->input->post('current_stg');
-      $enq_id = $this->input->post('enq_id');
-	  
+  	}
+    //================= Only for Deal List==================
+    public function stage_deals_list_post(){
+        $current_stg = $this->input->post('current_stg');
+        $enq_id = $this->input->post('enq_id');	  
 	    $enq = $this->db->select('enquiry_id')
                         ->from('enquiry')
                         ->where('Enquery_id',$enq_id)
@@ -27,11 +23,9 @@ class Deals extends REST_Controller {
 		// echo "<pre>";
 		// print_r($all_deals_lists);
 		// exit();
-          if(!empty($all_deals_lists))
-          {
+        if(!empty($all_deals_lists)){
             $res= array();
-            foreach($all_deals_lists as $deals)
-            {
+            foreach($all_deals_lists as $deals){
 			  $deal_name = $deals->client_name.' '.'['.$deals->booking_type.']['.$deals->business_type.']';
 			  array_push($res,array('id'=>$deals->id,'name'=>$deal_name,'deal_status'=>$deals->deal_status));
             } 
@@ -39,18 +33,15 @@ class Deals extends REST_Controller {
                 'status' => TRUE,
                 'data' =>$res
                  ], REST_Controller::HTTP_OK);
-          }   
-		else
-         {
-	    
+        }else{	    
 	        $this->set_response([
 	          'status' => false,
 	          'msg' =>'not found'
 	          ], REST_Controller::HTTP_OK);
-	      }
+	    }
     }
-  //================= Only for Deal List==================
-  //================= Only for V-trans==================
+    //================= Only for Deal List==================
+    //================= Only for V-trans==================
   	public function deals_list_page_post()
     {
       $user_id= $this->input->post('user_id');

@@ -88,7 +88,7 @@ class Deals_datatable_model extends CI_Model{
         $this->db->where("info.comp_id",$this->session->companey_id);
 
        // $where="info.original=1 AND";
-	    $where="info.original=1 OR info.original=0 AND";
+	    $where="(info.original=1 OR info.original=0) AND";
         $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
         $and =1;

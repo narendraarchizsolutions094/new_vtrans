@@ -2136,9 +2136,12 @@ class Enquiry_model extends CI_Model {
         $this->db->from($this->table);    
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left'); 
         $this->db->join('enquiry_tags','enquiry_tags.enq_id=enquiry.enquiry_id','left');           
+        $this->db->join('commercial_info','commercial_info.enquiry_id = enquiry.enquiry_id','left');
         $where  = "";
         $datatype = $type;
-        $where .= " enquiry.status=$datatype ";
+        //$where .= " enquiry.status=$datatype ";
+        $where.="  (enquiry.status = '".$datatype. "'";
+			  $where.=" OR commercial_info.stage_id='".$datatype."')";
         $user_id   = $id;
         $user_role = $user_role;
 
@@ -2225,6 +2228,7 @@ class Enquiry_model extends CI_Model {
     {  
         $this->db->limit($limit,$offset);
     }
+    $this->db->group_by('enquiry.Enquery_id');        
 
     return $query = $this->db->get();
         //return $query->result();
@@ -3207,14 +3211,14 @@ $cpny_id=$this->session->companey_id;
             if(!empty($_POST['from_date']) AND !empty($_POST['to_date'])){
                 $from_date=$_POST['from_date'];
                 $to_date=$_POST['to_date'];
-                $where.=" AND enquiry.created_date >= $from_date";
-                $where.=" AND enquiry.created_date <=$to_date";
+                $where.=" AND date(enquiry.created_date) >= $from_date";
+                $where.=" AND date(enquiry.created_date) <=$to_date";
                 
             }
             if(!empty($_POST['users'])){
                 $users=$_POST['users'];
-                 $where.=" AND enquiry.created_by=$users";
-                 $where.=" OR enquiry.aasign_to=$users";
+                 $where.=" AND (enquiry.created_by=$users";
+                 $where.=" OR enquiry.aasign_to=$users)";
             }else{
                 $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
@@ -3242,7 +3246,7 @@ $cpny_id=$this->session->companey_id;
 
         $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
         $result = $query->result();
-
+        
         foreach($result as $r)
         {
             if($r->status == 1)

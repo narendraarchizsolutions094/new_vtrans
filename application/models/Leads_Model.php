@@ -1,11 +1,9 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Leads_Model extends CI_Model {
-	
-	public function dealstagelist($enq_id,$current_stg,$next_stg=0) {
+class Leads_Model extends CI_Model {	
+	public function dealstagelist($enq_id,$current_stg,$next_stg=0){
         $this->db->select("id,stage_id,enquiry.client_name,booking_type,business_type,commercial_info.status as deal_status");
         $this->db->from('commercial_info');
         $this->db->join('enquiry', 'enquiry.enquiry_id = commercial_info.enquiry_id');
@@ -14,10 +12,10 @@ class Leads_Model extends CI_Model {
 			$this->db->where('commercial_info.status', '1');
 		}
 		$this->db->where('commercial_info.stage_id', $current_stg);
+		$this->db->group_by('commercial_info.id');
         $query = $this->db->get();
         return $query->result();
     }
-
     public function get_list_admin($aid) {
         $this->db->select(" * ");
         $this->db->from('allleads');
@@ -26,8 +24,7 @@ class Leads_Model extends CI_Model {
         $this->db->where('allleads.adminid', $aid);
         $query = $this->db->get();
         return $query->result();
-    }
-	
+    }	
     /***************************************************Department Master section start************************************/
     public function dept_add($data) {
         $this->db->insert('tbl_department', $data);

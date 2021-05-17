@@ -749,12 +749,13 @@ chart.cursor.lineY.disabled = true;
 			<div class="col-sm-4" style="padding: 4px;">
 				<label>Metric <font color="red">*</font></label>
 				<select name="metric_type" class="form-control" required>
+					<option value="">--- Select ---</option>
 					<option value="freight">Freight</option>
 					<option value="weight">Weight</option>
 				</select>
 			</div>
-			<div class="col-sm-8" style="padding: 4px;">
-				<label>Target <font color="red">*</font></label>
+			<div class="col-sm-8" style="padding: 4px;">		
+				<label>Target <font color="red">*</font><span id='target_metric'></span></label>
 
 					<input type="number" name="target_value" class="form-control" onchange="viewTeamTable()" required>
 			</div>
@@ -783,6 +784,13 @@ chart.cursor.lineY.disabled = true;
 </div>
 <button id="editGoal" data-toggle="modal" data-target="#edit_goal" style="display: none;"></button>
 <script type="text/javascript">
+$("select[name='metric_type']").on('change',function(){
+	if($(this).val() == 'freight'){
+		$("#target_metric").text(' (In Rupees)');
+	}else if($(this).val() == 'weight'){
+		$("#target_metric").text(' (In Tons)');
+	}
+});
 $(document).ready(function(){
 	$(".select2").select2();
 });	
@@ -1039,4 +1047,6 @@ function view_source(t)
 		window.open(url,'_blank');
 	}
 }
+
+
 </script>

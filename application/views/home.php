@@ -137,15 +137,15 @@
 	<div class="col-lg-2">
         <div class="form-group">
           <label>From</label>
-          <input  class="d_filter form-control form-date" name="from_date" id="from_date" value="<?php if(!empty($fdata['from_date'])){echo$fdata['from_date'];} ?>">
+          <input  class="d_filter form-control form-date" name="from_date" id="from_date" value="<?php if(!empty($fdata['from_date'])){echo $fdata['from_date'];} ?>">
         
         </div>
     </div>
-
+ 
       <div class="col-lg-2">
         <div class="form-group">
           <label>To</label>
-           <input  class="d_filter form-control form-date" name="to_date" value="<?php if(!empty($fdata['from_date'])){echo$fdata['from_date'];} ?>">
+           <input  class="d_filter form-control form-date" name="to_date" value="<?php if(!empty($fdata['to_date'])){echo $fdata['to_date'];} ?>">
         </div>
       </div>
 
