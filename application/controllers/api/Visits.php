@@ -18,6 +18,7 @@ class Visits extends REST_Controller {
 
   	public function visit_list_page_post()
     {
+	  $visit_id= $this->input->post('visit_id')??0;
       $user_id= $this->input->post('user_id');
       $process_id= $this->input->post('process_id');
       $company_id = $this->input->post('company_id');
@@ -36,10 +37,10 @@ class Visits extends REST_Controller {
 
        $res= array();
     
-        $total = $this->enquiry_model->visit_list_api($company_id,$user_id,$process)->num_rows();
+        $total = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id)->num_rows();
         $minus=0;
 $result =array();
-        $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$limit,$offset);
+        $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id,$limit,$offset);
          //echo "<pre>";
       //   print_r($_POST);
       //   print_r($data['result']->result_array());

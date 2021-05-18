@@ -1874,6 +1874,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                      <thead class="thead-light">
                        <tr>                              
                           <th>S.N.</th>
+						  <th id="th-21">Quatation number</th>
                           <th id="th-21">Company</th>
                           <th id="th-22">Client Name</th>
                           <th id="th-3">Business Type</th>

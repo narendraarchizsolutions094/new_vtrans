@@ -5038,7 +5038,7 @@ public function insertComInfo($data)
     return  $this->db->get('tags')->result_array();
 }
 
-  public function visit_list_api($company_id,$user_id,$process,$limit=-1,$offset=-1)
+  public function visit_list_api($company_id,$user_id,$process,$visit_id,$limit=-1,$offset=-1)
   {
        $all_reporting_ids    =   $this->common_model->get_categories($user_id);
      //print_r($all_reporting_ids);exit;
@@ -5046,6 +5046,9 @@ public function insertComInfo($data)
             $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
             $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
             $where .=" AND enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
+			if(!empty($visit_id)){
+			$where .=" AND tbl_visit.id=$visit_id";
+			}
 
         $this->db->select('tbl_visit.*,visit_details2.meeting_status,visit_details2.id as vid,visit_details2.id as vid,CONCAT(tbl_admin.s_display_name, '.', tbl_admin.last_name) as created_by,visit_details2.visit_status,tbl_expense.amount as total_expence,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
         $this->db->from('tbl_visit');
