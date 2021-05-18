@@ -649,11 +649,12 @@ public function get_ins_list($process_id=0){
    }
    /*************************************payment list End*******************************/
    /*************************************aggriment list *******************************/
-   public function get_agg_list($process_id=0){
-    $this->db->select("*");
+   public function get_agg_list($process_id=0,$deal_id=0){
+    $this->db->select("tbl_aggriment.*,commercial_info.quatation_number");
     $this->db->from('tbl_aggriment');
-    //$this->db->where('comp_id',$comp_id);
-    $this->db->where('enq_id',$process_id);
+	$this->db->join('commercial_info', 'commercial_info.id = tbl_aggriment.deal_id','left');
+    $this->db->where('commercial_info.stage_id',$deal_id);
+    $this->db->where('tbl_aggriment.enq_id',$process_id);
     $this->db->order_by('tbl_aggriment.id asc');
     return $this->db->get()->result();
    }

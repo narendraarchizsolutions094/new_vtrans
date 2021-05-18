@@ -2453,6 +2453,7 @@ if(user_access('1004'))
   <thead>
     <tr>
       <th class="th-sm">S.No</th>
+	  <th class="th-sm">Quatation.No</th>
       <th class="th-sm">Name</th>
       <th class="th-sm">Mobile</th>
       <th class="th-sm">Email</th>
@@ -2470,6 +2471,7 @@ if(user_access('1004'))
       <?php $i=1; foreach($aggrement_list as $val){ ?>
     <tr>
       <td><?php echo $i; ?></td>
+	  <td><?php echo $val->quatation_number;  ?></td>
       <td><?php echo $val->agg_name;  ?></td>
       <td><?php echo $val->agg_phone;  ?></td>
       <td><?php echo $val->agg_email;  ?></td>
@@ -2581,11 +2583,11 @@ function set_agreement_id(ag_id,type=1)
                <?php
                $ci = &get_instance();
                $ci->load->model('Branch_model');
-               $deal_list = $ci->Branch_model->deal_list(array('status'=>1,'enquiry_id'=>$details->enquiry_id));
+               $deal_list = $ci->Branch_model->deal_list(array('status'=>1,'enquiry_id'=>$details->enquiry_id,'stage_id'=>$data_type));
                 if(!empty($deal_list))
                 {
                   foreach ($deal_list as $key => $drow) {
-                    echo'<option value="'.$drow->id.'">#'.$drow->id.' | '.ucwords($drow->booking_type).' | '.ucwords($drow->business_type).'ward </option>';
+                    echo'<option value="'.$drow->id.'">'.$drow->quatation_number.'</option>';
                   }
                  
                 }

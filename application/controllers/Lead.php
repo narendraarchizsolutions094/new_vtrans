@@ -342,7 +342,7 @@ public function get_all_stage_deals() {
         $data['institute_data'] = $this->enquiry_model->institute_data($data['details']->Enquery_id);
         $data['dynamic_field']  = $this->enquiry_model->get_dyn_fld($enquiry_id);
         $data['ins_list'] = $this->location_model->get_ins_list($data['details']->Enquery_id);
-        $data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id);
+        $data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id,base64_decode($this->uri->segment(4)));
         $data['tab_list'] = $this->form_model->get_tabs_list($this->session->companey_id, $data['details']->product_id,0);
         $this->load->helper('custom_form_helper');
         $data['leadid']     = $data['details']->Enquery_id;

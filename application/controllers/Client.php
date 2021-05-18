@@ -170,7 +170,8 @@ class Client extends CI_Controller {
         $data['leadid']     = $data['details']->Enquery_id;
         $data['compid']     =  $data['details']->comp_id;
         $data['ins_list'] = $this->location_model->get_ins_list($data['details']->Enquery_id);
-        $data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id);
+        //$data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id);
+		$data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id,base64_decode($this->uri->segment(4)));
         $data['enquiry_id'] = $enquiry_id;
         $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
         if ($this->session->companey_id=='67') { 
@@ -3734,6 +3735,7 @@ public function all_update_expense_status()
                             'email'=>$this->input->post("agg_email", true),
                             'address'=>$this->input->post("agg_adrs", true),
                             'date'=>$this->input->post("agg_date", true),
+							'deal'=>$this->input->post("deal_id", true),
                             );
         $ag_encode = base64_encode(json_encode($ag_data));
 
@@ -3945,6 +3947,7 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         
         $ary = array(
             'enq_id'=>$enq_code,
+			'deal_id'=>$ag_data['deal'],
             'comp_id'=>$this->session->companey_id,
             'agg_name'=>$ag_data['name'],
             'agg_phone'=>$ag_data['mobile'],
