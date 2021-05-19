@@ -5119,7 +5119,7 @@ public function insertComInfo($data)
                       if(is_int($value))
                         $this->db->where($key,$value);
                       else
-                        $this->db->where($key.' LIKE "%'.$value.'%"');
+                        $this->db->where('enquiry.'.$key.' LIKE "%'.$value.'%"');
                     } 
                 }
                 else
