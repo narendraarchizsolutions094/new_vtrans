@@ -1010,6 +1010,12 @@ normal"><span style="font-size:12.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 
 		</div>
 	</div>
+	
+<br><br>
+<div style="width: 100%">
+@freight_table	
+</div>
+<br>
 </div>
 
 <p class="MsoBodyText" style="margin-top:.25pt"><b style="mso-bidi-font-weight:

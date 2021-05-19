@@ -3755,7 +3755,198 @@ public function all_update_expense_status()
         $oc =(array) json_decode($deal->other_charges);
 
         $deal_data = $this->Branch_model->get_deal_data($deal_id);
+		
+///////////////////// Charges Table Implented By Shivam ///////////////////
+		
+		if($deal->booking_type=='ftl')
+    {
+        $freight_table = '';
+        $area_table='';
+        $oda_table='';
+        $freight_table .="<table border='1px' width='100%'>
+        <thead>
+          <tr>
+            <th style='background:#00b0f0;'>From</th>
+            <th style='background:#00b0f0;'>To</th>
+            <th style='background:#00b0f0;'>Vehicle Type</th>
+            <th style='background:#00b0f0;'>Freight</th>
+          </tr>
+        </thead>
+        <tbody>
+        ";
+        foreach ($deal_data as $key => $drow)
+        {
+            $freight_table.="
+            <tr>
+              <td>".$drow->bbranch."</td>
+              <td>".$drow->dbranch."</td>
+              <td>".$drow->vtype_name."</td>
+              <td>".$drow->invoice_value."</td>
+            </tr>
+            ";
+        }
+        $freight_table.="</tbody></table>";
+        $fuel_surcharge='';
+      }
+      else
+      {
+
+          if($deal->btype=='branch' || $deal->btype=='zone')
+          {
+              if($deal->btype=='branch')
+              {
+                $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,branch.branch_name as bname from deal_data deal left join branch on branch.branch_id=deal.booking_branch where deal.deal_id=$deal_id");
+              }
+              else if($deal->btype=='zone')
+              {
+                 $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,zones.name as bname from deal_data deal left join zones on zones.zone_id=deal.booking_branch where deal.deal_id=$deal_id");
+              }
+             
+              $freight_table ='';
+
+              if(!empty($query))
+              {
+                $result = $query->result();
+
+              foreach ($result as $key => $rows)
+              {
+                $freight_table.='
+                <table border="1" width="100%">
+                      <thead>
+                      <tr>
+                        <th style="background:#00b0f0;">
+                        <div style="display:inline-block;">
+                      To<br>
+                      From 
+                    </div>
+                    <div style="display:inline-block; width:50px;">
+                      <i class="fa fa-arrow-right"></i><br>
+                      <i class="fa fa-arrow-down"></i>
+                    </div>
+                        </th>';
+
+              if($deal->btype=='branch')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,branch.branch_name as dname,deal.rate,deal.discount from deal_data deal left join branch on branch.branch_id=deal.delivery_branch where deal.deal_id=$deal_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+              else if($deal->btype=='zone')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,zones.name as dname,deal.rate,deal.discount from deal_data deal left join zones on zones.zone_id=deal.delivery_branch where deal.deal_id=$deal_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+
+                foreach ($cols as $key2 => $value2)
+                {
+                    $freight_table.='<th style="background:#00b0f0;">'.$value2->dname.'</th>';
+                }
+                $freight_table.='</tr>
+                <tr>
+                <th style="background:#00b0f0;">'.$rows->bname.'</th>';
+
+                foreach ($cols as $key2 => $value2)
+                {
+                    $r = $value2->rate;
+                    $d = $value2->discount;
+                    $price = $r*(1-round(($d/100),2));
+                    $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
+                }
+
+              $freight_table.='</tr>
+
+            </tbody></table>';                   
+              }
       
+            }//ifend
+            else
+            {
+              $freight_table='';
+            }
+            $area_table='';
+
+          }
+          else
+          {
+
+
+
+
+          }//type-zone/area
+
+          $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge,id from oda_matrix GROUP bY dis,we ORDER BY id ASC")->result();
+            if(!empty($oda_query))
+            {
+       
+              $oda_row = array_unique(array_column($oda_query, 'dis'));
+              $oda_col =  array_unique(array_column($oda_query, 'we'));
+               $oda_table = '<table border="1" width="100%">';
+
+                foreach ($oda_row as $key => $value1)
+                {
+                        if($key==0)
+                        {
+                          $oda_table.='
+                          <thead><tr>
+                          <th class="text-center" style="background:#00b0f0;">Distance Range</th>';
+                          foreach ($oda_col as $key2 => $value2)
+                          {
+                            $col = explode('-',$value2);
+                           $oda_table.='<th class="text-center" style="background:#00b0f0;">'.$col[0].' To '.$col[1].'<br> KGS</th>';
+                          }
+                          $oda_table.='</tr></thead>
+                          <tbody>';
+                        }
+                  $oda_table.='<tr>';
+                  $row = explode('-',$value1);
+                  $oda_table.='<th style="background:#00b0f0;">'.$row[0].' To '.$row[1].' KMS</th>';
+                  
+                  foreach ($oda_col as $key2 => $value2)
+                  {
+                      foreach ($oda_query as $key3 => $value3)
+                      {
+                        if($value1==$value3->dis && $value2==$value3->we)
+                          $oda_table.='<td>'.$value3->charge.'</td>';    
+                      }
+                  }
+
+                  $oda_table.='</tr>';                   
+                }
+                $oda_table.= '</tbody></table>';
+
+            }
+            else
+            {
+              $oda_table  = '';
+            }
+
+            $fuel_data = $this->db->where('comp_id',$this->session->companey_id)->get('fuel_surcharge')->result();
+                    $fuel_surcharge='';
+                    if(!empty($fuel_data))
+                    {
+                         $fuel_surcharge .="<table border='1px' width='100%'>
+                         <thead>
+                                <tr>
+                                  <th style='background:#00b0f0;'>Greater Than or<br> Equal To (Rs.)</th>
+                                  <th style='background:#00b0f0;'>Less Than Rs.</th>
+                                  <th style='background:#00b0f0;'>FSC Applicable (%)</th>
+                                 
+                                </tr>
+                              </thead>
+                              <tbody>
+                              ";
+                              foreach ($fuel_data as $fkey => $frow)
+                              {
+                                  $fuel_surcharge.="
+                                  <tr>
+                                    <td>".$frow->greater_than."</td>
+                                    <td>".$frow->less_than."</td>
+                                    <td>".$frow->fsc."</td>
+                                  </tr>
+                                  ";
+                              }
+                              $fuel_surcharge.="</tbody></table>";
+                      }
+
+      }
+ ///////////////////// Charges Table Implented By Shivam ///////////////////      
 
         $enq = $this->db->select('e.*,r.region_name,desg.desi_name,tbl_company.company_name')
                         ->from('enquiry e')
@@ -3845,8 +4036,9 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
     $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
     $this->db->where('input_id','4478');
     $compt = $this->db->get()->row_array();
-
-
+        
+		
+		
         $raw['industries'] = $industries;
         $raw['client_type'] = $client_type;
         $raw['compt'] = $client_type;
@@ -3856,6 +4048,11 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $raw['emp_list'] = $user_list;
         //print_r($raw['city_list']);exit();
        $data =  $this->load->view('aggrement/new-input-vtrans',$raw,TRUE);
+	   
+	    $data = str_replace('@freight_table', $freight_table,$data);
+        $data = str_replace('@area_table', $area_table,$data);
+        $data = str_replace('@oda_table',$oda_table, $data);
+        $data = str_replace('@fuel_surcharge',$fuel_surcharge, $data);
 
         echo'<!DOCTYPE html>
         <html>
@@ -3920,6 +4117,202 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
                     $_POST['ip'][$i] ='Yes';               
             }
         }
+		
+		$deal_data = $this->Branch_model->get_deal_data($deal_id);
+		
+///////////////////// Charges Table Implented By Shivam ///////////////////
+		
+		if($deal->booking_type=='ftl')
+    {
+        $freight_table = '';
+        $area_table='';
+        $oda_table='';
+        $freight_table .="<table border='1px' width='100%'>
+        <thead>
+          <tr>
+            <th style='background:#00b0f0;'>From</th>
+            <th style='background:#00b0f0;'>To</th>
+            <th style='background:#00b0f0;'>Vehicle Type</th>
+            <th style='background:#00b0f0;'>Freight</th>
+          </tr>
+        </thead>
+        <tbody>
+        ";
+        foreach ($deal_data as $key => $drow)
+        {
+            $freight_table.="
+            <tr>
+              <td>".$drow->bbranch."</td>
+              <td>".$drow->dbranch."</td>
+              <td>".$drow->vtype_name."</td>
+              <td>".$drow->invoice_value."</td>
+            </tr>
+            ";
+        }
+        $freight_table.="</tbody></table>";
+        $fuel_surcharge='';
+      }
+      else
+      {
+
+          if($deal->btype=='branch' || $deal->btype=='zone')
+          {
+              if($deal->btype=='branch')
+              {
+                $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,branch.branch_name as bname from deal_data deal left join branch on branch.branch_id=deal.booking_branch where deal.deal_id=$deal_id");
+              }
+              else if($deal->btype=='zone')
+              {
+                 $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,zones.name as bname from deal_data deal left join zones on zones.zone_id=deal.booking_branch where deal.deal_id=$deal_id");
+              }
+             
+              $freight_table ='';
+
+              if(!empty($query))
+              {
+                $result = $query->result();
+
+              foreach ($result as $key => $rows)
+              {
+                $freight_table.='
+                <table border="1" width="100%">
+                      <thead>
+                      <tr>
+                        <th style="background:#00b0f0;">
+                        <div style="display:inline-block;">
+                      To<br>
+                      From 
+                    </div>
+                    <div style="display:inline-block; width:50px;">
+                      <i class="fa fa-arrow-right"></i><br>
+                      <i class="fa fa-arrow-down"></i>
+                    </div>
+                        </th>';
+
+              if($deal->btype=='branch')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,branch.branch_name as dname,deal.rate,deal.discount from deal_data deal left join branch on branch.branch_id=deal.delivery_branch where deal.deal_id=$deal_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+              else if($deal->btype=='zone')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,zones.name as dname,deal.rate,deal.discount from deal_data deal left join zones on zones.zone_id=deal.delivery_branch where deal.deal_id=$deal_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+
+                foreach ($cols as $key2 => $value2)
+                {
+                    $freight_table.='<th style="background:#00b0f0;">'.$value2->dname.'</th>';
+                }
+                $freight_table.='</tr>
+                <tr>
+                <th style="background:#00b0f0;">'.$rows->bname.'</th>';
+
+                foreach ($cols as $key2 => $value2)
+                {
+                    $r = $value2->rate;
+                    $d = $value2->discount;
+                    $price = $r*(1-round(($d/100),2));
+                    $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
+                }
+
+              $freight_table.='</tr>
+
+            </tbody></table>';                   
+              }
+      
+            }//ifend
+            else
+            {
+              $freight_table='';
+            }
+            $area_table='';
+
+          }
+          else
+          {
+
+
+
+
+          }//type-zone/area
+
+          $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge,id from oda_matrix GROUP bY dis,we ORDER BY id ASC")->result();
+            if(!empty($oda_query))
+            {
+       
+              $oda_row = array_unique(array_column($oda_query, 'dis'));
+              $oda_col =  array_unique(array_column($oda_query, 'we'));
+               $oda_table = '<table border="1" width="100%">';
+
+                foreach ($oda_row as $key => $value1)
+                {
+                        if($key==0)
+                        {
+                          $oda_table.='
+                          <thead><tr>
+                          <th class="text-center" style="background:#00b0f0;">Distance Range</th>';
+                          foreach ($oda_col as $key2 => $value2)
+                          {
+                            $col = explode('-',$value2);
+                           $oda_table.='<th class="text-center" style="background:#00b0f0;">'.$col[0].' To '.$col[1].'<br> KGS</th>';
+                          }
+                          $oda_table.='</tr></thead>
+                          <tbody>';
+                        }
+                  $oda_table.='<tr>';
+                  $row = explode('-',$value1);
+                  $oda_table.='<th style="background:#00b0f0;">'.$row[0].' To '.$row[1].' KMS</th>';
+                  
+                  foreach ($oda_col as $key2 => $value2)
+                  {
+                      foreach ($oda_query as $key3 => $value3)
+                      {
+                        if($value1==$value3->dis && $value2==$value3->we)
+                          $oda_table.='<td>'.$value3->charge.'</td>';    
+                      }
+                  }
+
+                  $oda_table.='</tr>';                   
+                }
+                $oda_table.= '</tbody></table>';
+
+            }
+            else
+            {
+              $oda_table  = '';
+            }
+
+            $fuel_data = $this->db->where('comp_id',$this->session->companey_id)->get('fuel_surcharge')->result();
+                    $fuel_surcharge='';
+                    if(!empty($fuel_data))
+                    {
+                         $fuel_surcharge .="<table border='1px' width='100%'>
+                         <thead>
+                                <tr>
+                                  <th style='background:#00b0f0;'>Greater Than or<br> Equal To (Rs.)</th>
+                                  <th style='background:#00b0f0;'>Less Than Rs.</th>
+                                  <th style='background:#00b0f0;'>FSC Applicable (%)</th>
+                                 
+                                </tr>
+                              </thead>
+                              <tbody>
+                              ";
+                              foreach ($fuel_data as $fkey => $frow)
+                              {
+                                  $fuel_surcharge.="
+                                  <tr>
+                                    <td>".$frow->greater_than."</td>
+                                    <td>".$frow->less_than."</td>
+                                    <td>".$frow->fsc."</td>
+                                  </tr>
+                                  ";
+                              }
+                              $fuel_surcharge.="</tbody></table>";
+                      }
+
+      }
+ ///////////////////// Charges Table Implented By Shivam ///////////////////
+
+		
         $data = $_POST;
         $data['oc'] =$oc;
        $this->print_new($data);
@@ -3935,12 +4328,213 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $input['oc'] = $data['oc'];
         $input['gst_specify'] = $data['gst_specify'];
         $this->load->library('pdf');
+		
+$json = base64_decode($data['ag_data']);
+$ag_data = json_decode($json,true);
+$deal_id = $ag_data['deal'];
+$deal_data = $this->Branch_model->get_deal_data($deal_id);
+$deal   =    $this->Branch_model->get_deal($deal_id);		
+///////////////////// Charges Table Implented By Shivam ///////////////////
+		
+		if($deal->booking_type=='ftl')
+    {
+        $freight_table = '';
+        $area_table='';
+        $oda_table='';
+        $freight_table .="<table border='1px' width='100%'>
+        <thead>
+          <tr>
+            <th style='background:#ECF8FD;'>From</th>
+            <th style='background:#ECF8FD;'>To</th>
+            <th style='background:#ECF8FD;'>Vehicle Type</th>
+            <th style='background:#ECF8FD;'>Freight</th>
+          </tr>
+        </thead>
+        <tbody>
+        ";
+        foreach ($deal_data as $key => $drow)
+        {
+            $freight_table.="
+            <tr>
+              <td>".$drow->bbranch."</td>
+              <td>".$drow->dbranch."</td>
+              <td>".$drow->vtype_name."</td>
+              <td>".$drow->invoice_value."</td>
+            </tr>
+            ";
+        }
+        $freight_table.="</tbody></table>";
+        $fuel_surcharge='';
+      }
+      else
+      {
+
+          if($deal->btype=='branch' || $deal->btype=='zone')
+          {
+              if($deal->btype=='branch')
+              {
+                $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,branch.branch_name as bname from deal_data deal left join branch on branch.branch_id=deal.booking_branch where deal.deal_id=$deal_id");
+              }
+              else if($deal->btype=='zone')
+              {
+                 $query = $this->db->query("SELECT DISTINCT deal.booking_branch as bid ,zones.name as bname from deal_data deal left join zones on zones.zone_id=deal.booking_branch where deal.deal_id=$deal_id");
+              }
+             
+              $freight_table ='';
+
+              if(!empty($query))
+              {
+                $result = $query->result();
+
+              foreach ($result as $key => $rows)
+              {
+                $freight_table.='
+                <table border="1" width="100%">
+                      <thead>
+                      <tr>
+                        <th style="background:#ECF8FD;">
+                        <div style="display:inline-block;">
+                      To<br>
+                      From 
+                    </div>
+                    <div style="display:inline-block; width:50px;">
+                      <i class="fa fa-arrow-right"></i><br>
+                      <i class="fa fa-arrow-down"></i>
+                    </div>
+                        </th>';
+
+              if($deal->btype=='branch')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,branch.branch_name as dname,deal.rate,deal.discount from deal_data deal left join branch on branch.branch_id=deal.delivery_branch where deal.deal_id=$deal_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+              else if($deal->btype=='zone')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,zones.name as dname,deal.rate,deal.discount from deal_data deal left join zones on zones.zone_id=deal.delivery_branch where deal.deal_id=$deal_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+
+                foreach ($cols as $key2 => $value2)
+                {
+                    $freight_table.='<th style="background:#ECF8FD;">'.$value2->dname.'</th>';
+                }
+                $freight_table.='</tr>
+                <tr>
+                <th style="background:#ECF8FD;">'.$rows->bname.'</th>';
+
+                foreach ($cols as $key2 => $value2)
+                {
+                    $r = $value2->rate;
+                    $d = $value2->discount;
+                    $price = $r*(1-round(($d/100),2));
+                    $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
+                }
+
+              $freight_table.='</tr>
+
+            </tbody></table>';                   
+              }
+      
+            }//ifend
+            else
+            {
+              $freight_table='';
+            }
+            $area_table='';
+
+          }
+          else
+          {
+
+
+
+
+          }//type-zone/area
+
+          $oda_query = $this->db->query("SELECT concat(distance_from,'-',distance_to) as dis,concat(weight_from,'-',weight_to) as we,charge,id from oda_matrix GROUP bY dis,we ORDER BY id ASC")->result();
+            if(!empty($oda_query))
+            {
+       
+              $oda_row = array_unique(array_column($oda_query, 'dis'));
+              $oda_col =  array_unique(array_column($oda_query, 'we'));
+               $oda_table = '<table border="1" width="100%">';
+
+                foreach ($oda_row as $key => $value1)
+                {
+                        if($key==0)
+                        {
+                          $oda_table.='
+                          <thead><tr>
+                          <th class="text-center" style="background:#ECF8FD;">Distance Range</th>';
+                          foreach ($oda_col as $key2 => $value2)
+                          {
+                            $col = explode('-',$value2);
+                           $oda_table.='<th class="text-center" style="background:#ECF8FD;">'.$col[0].' To '.$col[1].'<br> KGS</th>';
+                          }
+                          $oda_table.='</tr></thead>
+                          <tbody>';
+                        }
+                  $oda_table.='<tr>';
+                  $row = explode('-',$value1);
+                  $oda_table.='<th style="background:#ECF8FD;">'.$row[0].' To '.$row[1].' KMS</th>';
+                  
+                  foreach ($oda_col as $key2 => $value2)
+                  {
+                      foreach ($oda_query as $key3 => $value3)
+                      {
+                        if($value1==$value3->dis && $value2==$value3->we)
+                          $oda_table.='<td>'.$value3->charge.'</td>';    
+                      }
+                  }
+
+                  $oda_table.='</tr>';                   
+                }
+                $oda_table.= '</tbody></table>';
+
+            }
+            else
+            {
+              $oda_table  = '';
+            }
+
+            $fuel_data = $this->db->where('comp_id',$this->session->companey_id)->get('fuel_surcharge')->result();
+                    $fuel_surcharge='';
+                    if(!empty($fuel_data))
+                    {
+                         $fuel_surcharge .="<table border='1px' width='100%'>
+                         <thead>
+                                <tr>
+                                  <th style='background:#ECF8FD;'>Greater Than or<br> Equal To (Rs.)</th>
+                                  <th style='background:#ECF8FD;'>Less Than Rs.</th>
+                                  <th style='background:#ECF8FD;'>FSC Applicable (%)</th>
+                                 
+                                </tr>
+                              </thead>
+                              <tbody>
+                              ";
+                              foreach ($fuel_data as $fkey => $frow)
+                              {
+                                  $fuel_surcharge.="
+                                  <tr>
+                                    <td>".$frow->greater_than."</td>
+                                    <td>".$frow->less_than."</td>
+                                    <td>".$frow->fsc."</td>
+                                  </tr>
+                                  ";
+                              }
+                              $fuel_surcharge.="</tbody></table>";
+                      }
+
+      }
+ ///////////////////// Charges Table Implented By Shivam ///////////////////
+
 
         $res =   $this->load->view('aggrement/print_vtrans',$input,true);
+ $res = str_replace('@freight_table', $freight_table,$res);
+ $res = str_replace('@area_table', $area_table,$res);
+ $res = str_replace('@oda_table',$oda_table, $res);
+ $res = str_replace('@fuel_surcharge',$fuel_surcharge, $res);
         // echo $res;
         // exit;
-        $json = base64_decode($data['ag_data']);
-        $ag_data = json_decode($json,true);
+        
         //print_r($ag_data);
         $enq_code = $data['enq_code'];
         $ag_path = 'assets/agreements/Agreement-'.time().rand(1111,9999).'.pdf';

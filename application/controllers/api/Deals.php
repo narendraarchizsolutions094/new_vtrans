@@ -23,7 +23,7 @@ class Deals extends REST_Controller {
                         ->get()->row();
         //print_r($enq->enquiry_id);exit;
 		$enq_code = $enq->enquiry_id;
-        $all_deals_lists = $this->Leads_Model->dealstagelist($enq_code,$current_stg,$next_stg); 
+        $all_deals_lists = $this->Leads_Model->dealstagelist($enq_code,$current_stg,$next_stg);
 		// echo "<pre>";
 		// print_r($all_deals_lists);
 		// exit();

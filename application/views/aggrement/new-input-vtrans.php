@@ -743,7 +743,8 @@ Carrier<span style="letter-spacing:-1.9pt"> </span>Risk<span style="letter-spaci
 
 <p class="MsoListParagraph" style="margin-top:2.75pt;margin-right:0in;margin-bottom:
 0in;margin-left:34.65pt;margin-bottom:.0001pt;mso-list:l0 level2 lfo1;
-tab-stops:34.65pt 146.45pt 519.0pt"><!--[if !supportLists]--><span style="color:#010202;mso-font-width:84%"><span style="mso-list:Ignore">b)<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><!--[if gte vml 1]><v:group
+tab-stops:34.65pt 146.45pt 519.0pt"><!--[if !supportLists]--><span style="color:#010202;mso-font-width:84%"><span style="mso-list:Ignore">b)<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp; </span></span></span>
+<!--[endif]--><!--[if gte vml 1]><v:group
  id="_x0000_s1105" style='position:absolute;left:0;text-align:left;
  margin-left:139.65pt;margin-top:1.35pt;width:35.3pt;height:13.55pt;z-index:-16485376;
  mso-position-horizontal-relative:page' coordorigin="2793,27" coordsize="706,271">
@@ -1026,16 +1027,15 @@ mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA"><br 
 
 <div class="WordSection6">
 
-<h1 align="center" style="margin-top:4.15pt;margin-right:132.4pt;margin-bottom:
-0in;margin-left:114.55pt;margin-bottom:.0001pt;text-align:center"><span style="color:#214685;mso-font-width:105%">Other Charges Annexure-1</span></h1>
+<h1 align="center" style="margin-top:4.15pt;margin-right:132.4pt;margin-bottom:0in;margin-left:114.55pt;margin-bottom:.0001pt;text-align:center">
+<span style="color:#214685;mso-font-width:105%">Other Charges Annexure-1</span></h1>
 
 <p class="MsoBodyText"><b style="mso-bidi-font-weight:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></b></p>
 
 <p class="MsoBodyText" style="margin-top:.1pt"><b style="mso-bidi-font-weight:
 normal"><span style="font-size:12.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p></span></b></p>
-
-
-<div style="width: 100%">
+	
+	<div style="width: 100%">
 	<div style="width:70%; display: inline-block;">
 		Name of the customer:
 		<br>
@@ -1054,6 +1054,11 @@ normal"><span style="font-size:12.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:
 			</table>
 		</div>
 	</div>
+<br>
+<div style="width: 100%">
+@freight_table	
+</div>
+<br>
 </div>
 
 <p class="MsoBodyText" style="margin-top:.25pt"><b style="mso-bidi-font-weight:
