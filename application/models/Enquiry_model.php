@@ -5084,7 +5084,7 @@ public function insertComInfo($data)
 
         if(!empty($_POST['filters']))
           {
-              $match_list = array('date_from','date_to','phone','for','clientName','contact');
+              $match_list = array('date_from','date_to','phone','for','clientName','contact','enquiry_id');
 
               $this->db->group_start();
               foreach ($_POST['filters'] as $key => $value)
@@ -5106,10 +5106,13 @@ public function insertComInfo($data)
                           $this->db->where('tbl_visit.created_at<=',$value);
 
                         if($key=='for')
-                          $this->db->where('enquiry.company = '.$value);
+                          $this->db->where('enquiry.company',$value);
 
                         if($key=='clientName')
-                          $this->db->where('tbl_visit.enquiry_id = '.$value);
+                          $this->db->where('tbl_visit.enquiry_id',$value);
+					    
+						if($key=='enquiry_id')
+                           $this->db->where('enquiry.Enquery_id',$value);
 
                         // if($key=='phone')
                         //   $this->db->where('phone LIKE "%'.$value.'%" OR other_phone LIKE "%'.$value.'%"');
@@ -5119,7 +5122,7 @@ public function insertComInfo($data)
                       if(is_int($value))
                         $this->db->where($key,$value);
                       else
-                        $this->db->where('enquiry.'.$key.' LIKE "%'.$value.'%"');
+                        $this->db->where($key.' LIKE "%'.$value.'%"');
                     } 
                 }
                 else
