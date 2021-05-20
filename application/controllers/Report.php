@@ -378,21 +378,27 @@ class Report extends CI_Controller
        
         foreach ($users_id as $value_id) {
           $userdata = $this->db->select('s_user_email,pk_i_admin_id,s_display_name')->where(array('pk_i_admin_id' => $value_id, 'b_status' => 1))->get('tbl_admin')->row();
-          $to = $userdata->s_user_email;
-          $data['userName']=$userdata->s_display_name;
-          $view_load = $this->load->view('mail-temps/report-mail', $data, true);
 
-          $this->email->set_newline("\r\n");
-          $this->email->clear(TRUE);
-          $this->email->from($from);
-          $this->email->to($to);
-          $this->email->subject($subject);
-          $this->email->message($view_load);
-          if ($this->email->send()) {
-            echo 'Your Email has successfully been sent.';
-          } else {
-            show_error($this->email->print_debugger());
+          if(!empty($userdata)){
+            $to = $userdata->s_user_email;
+            $data['userName']=$userdata->s_display_name;
+            $view_load = $this->load->view('mail-temps/report-mail', $data, true);
+
+            $this->email->set_newline("\r\n");
+            $this->email->clear(TRUE);
+            $this->email->from($from);
+            $this->email->to($to);
+            $this->email->subject($subject);
+            $this->email->message($view_load);
+            if ($this->email->send()) {
+              echo 'Your Email has successfully been sent.';
+            } else {
+              show_error($this->email->print_debugger());
+            }
+          }else{
+            echo 'User is inactive';
           }
+
         }
       }
     }
