@@ -152,8 +152,8 @@
                      </div>
 
                      <div class="form-group col-md-4">
-                            <label class="control-label">Contact <i class="text-danger">*</i></label>                  
-                            <select class="form-control" id="contact_id" name="contact_id" onchange="set_contact(this.value)" required>
+                            <label class="control-label">Contact <i class="text-danger"></i></label>                  
+                            <select class="form-control" id="contact_id" name="contact_id" onchange="set_contact(this.value)">
                             </select>
                       </div>
                    
