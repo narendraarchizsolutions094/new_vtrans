@@ -512,11 +512,13 @@ class Deals extends REST_Controller {
   		if($this->form_validation->run())
   		{
   			$info_id = $this->input->post('info_id');
+			$submit = $this->input->post('submit');
 
   			$url = base_url('dashboard/pdf_gen');
   			$fields = array('info_id'=>$info_id,
   							'email'=>1,
   							'api'=>1,
+							'submit'=>$submit,
   							);
   			
 
