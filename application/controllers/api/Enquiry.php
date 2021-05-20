@@ -967,11 +967,11 @@ public function updateEnquiryTab_post()
               {
                 $phone = '91'.$enq->phone;
                // echo $phone.'<br>'.$msg; exit();
-                  $this->Message_models->sendwhatsapp($phone,$msg); 
-                    if($template_row['media'])
+                  $this->Message_models->sendwhatsapp($phone,$msg,$company_id,$user_id); 
+                    if($template_row->media)
                     {            
-                      $media_url = $template_row['media'];    
-                      $this->Message_models->sendwhatsapp($phone,base_url().$media_url); 
+                      $media_url = $template_row->media;    
+                      $this->Message_models->sendwhatsapp($phone,base_url().$media_url,$company_id,$user_id); 
                       
                     }
                   $send_result =1;
@@ -979,7 +979,7 @@ public function updateEnquiryTab_post()
               else if($msg_type=='2')
               {
                  $phone = '91'.$enq->phone;
-                  $this->Message_models->smssend($phone,$msg);
+                  $this->Message_models->smssend($phone,$msg,$company_id);
                   $send_result =1;
               }
               else if($msg_type=='3')
