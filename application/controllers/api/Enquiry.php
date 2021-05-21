@@ -2063,7 +2063,7 @@ public function updateEnquiryTab_post()
       public function move_to_lead_post()
       {
         $this->form_validation->set_rules('expected_date','Expected Date');
-       // $this->form_validation->set_rules('conversion_probability','Conversion Probability','required');
+        $this->form_validation->set_rules('conversion_probability','Conversion Probability','required');
         $this->form_validation->set_rules('comment','Comment','required');
         $this->form_validation->set_rules('enquiry_code[]','Enquery Code' ,'required');
         $this->form_validation->set_rules('user_id','User Id' ,'required');
@@ -2075,8 +2075,12 @@ public function updateEnquiryTab_post()
                 $date 		= date('d-m-Y H:i:s');
                         
                 $lead_score	= $this->input->post('conversion_probability');
-                $lead_stage = $this->input->post('lead_stage');
+				$lead_stage = $this->input->post('stage');
+				$lead_discription = $this->input->post('description');
+				$assign_employee = $this->input->post('employee');
                 $comment 	= $this->input->post('comment');
+				$expected_date 	= $this->input->post('expected_date');
+				$user_id 	= $this->input->post('user_id');
     //            $assign_to=$this->session->user_id;
                 
                 if(empty($lead_score)){
@@ -2116,14 +2120,26 @@ public function updateEnquiryTab_post()
                               'ld_created' 		=> $date,
                               'ld_for' 			=> $enq->enquiry,
                               'lead_score' 		=> $lead_score,
-                              'lead_stage' 		=> 1,
+                              'lead_stage' 		=> $lead_stage,
                               'comment' 		=> $comment,
                               'ld_status' 		=> '1'
                     );
-                    
-                    $this->db->set('status',2);
-                    $this->db->where('Enquery_id',$key);
-                    $this->db->update('enquiry');
+					
+			$this->db->set('lead_score', $lead_score);
+            $this->db->set('lead_stage', $lead_stage);
+            $this->db->set('lead_discription', $lead_discription);
+            $this->db->set('lead_comment', $comment);
+            $this->db->set('lead_expected_date', $expected_date);
+            $this->db->set('lead_drop_status', 0);
+            $this->db->set('lead_created_date', date('Y-m-d H:i:s'));
+            $this->db->set('status', 2);
+            $this->db->set('update_date', date('Y-m-d H:i:s'));
+            if ((!empty($assign_employee)) AND $assign_employee!=0) {
+                $this->db->set('aasign_to', $assign_employee);
+                $this->db->set('assign_by',$this->session->user_id);
+                }
+            $this->db->where('Enquery_id',$key);
+            $this->db->update('enquiry');
                   	
                   	$this->Leads_Model->add_comment_for_events_stage_api(display('move_to_lead',$enq->comp_id),$enq->Enquery_id,'','','',$assigner_user_id);
                   	

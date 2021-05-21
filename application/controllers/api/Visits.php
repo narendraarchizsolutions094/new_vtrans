@@ -700,10 +700,10 @@ if(!empty($result))
                             'enquiry_id'=>$enquiry_id,
                         );
 
-	            	// if(!empty($enquiry_id)){
-                  // $this->Client_Model->add_visit($data);
-	            	// $this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
-                  // }
+	            	if(!empty($enquiry_id)){
+                    $this->Client_Model->add_visit($data);
+	                $this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
+                    }
 	            $done = 1;
             }	
                //add expense start
