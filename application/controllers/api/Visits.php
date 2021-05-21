@@ -683,6 +683,7 @@ if(!empty($result))
     		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
     		$update_visit_data = array( 'remarks'=>$this->input->post('remarks'),
                             'rating'=>$this->input->post('rating'),  );
+							
          $res = $this->db->where(array('comp_id'=>$comp_id,'user_id'=>$user_id,'id'=>$visit_id))->update('tbl_visit',$update_visit_data);
 
          $done = 0;
