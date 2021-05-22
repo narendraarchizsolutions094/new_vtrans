@@ -252,7 +252,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="col-md-5">
 								</div>
 								<div class="col-md-2">
-									 <input type="time" name="aging_exec_time" class="form-control" value="<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>">
+									 <input type="time" name="aging_exec_time" class="form-control" value='<?=!empty($rule_data["rule_action"])?$rule_data["rule_action"]:""?>'>
 								</div>
 						</div>	
 						<br>
@@ -743,9 +743,9 @@ function builder_fun(rule_type)
 	});
 	$(document).ajaxComplete(function() {
 		if ("<?=!empty($rule_data['type'])?>") {
-	  		$("#email_template").val("<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>");
-	  		$("#sms_template").val("<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>");
-	  		$("#whatsapp_template").val("<?=!empty($rule_data['rule_action'])?$rule_data['rule_action']:''?>");
+	  		$("#email_template").val('<?=!empty($rule_data["rule_action"])?$rule_data["rule_action"]:""?>');
+	  		$("#sms_template").val('<?=!empty($rule_data["rule_action"])?$rule_data["rule_action"]:""?>');
+	  		$("#whatsapp_template").val('<?=!empty($rule_data["rule_action"])?$rule_data["rule_action"]:""?>');
 		}
 	});
 	$(".multiple-select").select2();
