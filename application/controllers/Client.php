@@ -4393,7 +4393,7 @@ $deal   =    $this->Branch_model->get_deal($deal_id);
                       <thead>
                       <tr>
                         <th style="background:#ECF8FD;">
-                        <div style="display:inline-block;">
+                        <div style="display:inline-block;padding-top:10px;">
                       To<br>
                       From 
                     </div>
@@ -4529,9 +4529,9 @@ $deal   =    $this->Branch_model->get_deal($deal_id);
 
         $res =   $this->load->view('aggrement/print_vtrans',$input,true);
  $res = str_replace('@freight_table', $freight_table,$res);
- $res = str_replace('@area_table', $area_table,$res);
- $res = str_replace('@oda_table',$oda_table, $res);
- $res = str_replace('@fuel_surcharge',$fuel_surcharge, $res);
+ //$res = str_replace('@area_table', $area_table,$res);
+ //$res = str_replace('@oda_table',$oda_table, $res);
+ //$res = str_replace('@fuel_surcharge',$fuel_surcharge, $res);
         // echo $res;
         // exit;
         
