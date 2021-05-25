@@ -90,19 +90,20 @@ foreach($basic_fields as $row)
    <div class="form-group col-sm-6 col-md-6 enq-mobile"> 
       <label><?php echo display('mobile') ?><i class="text-danger">*</i></label>
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
-      <input class="form-control mask-number" name="mobileno" type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+      <input class="form-control mask-number" name="mobileno" type="<?= $type ?>" maxlength='10' id="mobileno" onchange="exist_alert()" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
       <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
-      <?php }else{ 
-         $disabled = 'disabled';
+      <?php }else{
+            $disabled = '';		  
+         //$disabled = 'disabled';
          if($this->session->companey_id == 90){ 
             $disabled = '';
             ?>
-            <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" name="mobileno" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+            <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' id="mobileno" onchange="exist_alert()" value="<?php echo $details->phone ?>" name="mobileno" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
             <?php
          }else{
             ?>
-               <input class="form-control mask-number" hidden name="mobileno" type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
-               <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+               <input class="form-control mask-number" hidden name="mobileno" type="<?= $type ?>" maxlength='10' id="mobileno" onchange="exist_alert()" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+               <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' id="mobileno" onchange="exist_alert()" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
             <?php
          }
          ?>
@@ -136,15 +137,16 @@ foreach($basic_fields as $row)
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
 
       <input class="form-control" name="email" type="email" value="<?php echo $details->email ?>">  
-      <?php }else{ 
-         $disabled = 'disabled';
+      <?php }else{
+            $disabled = '';		  
+         //$disabled = 'disabled';
          if($this->session->companey_id == 90 || $this->session->companey_id == 84){
             $disabled = '';?>
             <input name="email" class="form-control" <?=$disabled?> type="email" value="<?php echo $details->email ?>">  
             <?php
          }else{ ?>
             <input class="form-control" name="email" hidden type="email" value="<?php echo $details->email ?>">  
-            <input class="form-control" <?=$disabled?> type="email" value="<?php echo $details->email ?>">  
+            <input class="form-control" <?=$disabled?> type="email" id="email" onchange="exist_alert()" value="<?php echo $details->email ?>">  
          <?php
          }
          ?>
@@ -313,11 +315,11 @@ foreach($basic_fields as $row)
       ?>
       <div class="form-group col-sm-6 col-md-6 enq-company">
       <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
-      <input class="form-control" name="company" id="company_list" type="company" value="<?php echo $details->company_name; ?>" readonly>
+      <input class="form-control" name="company" id="company_list" type="company" value="<?php echo $details->company_name; ?>">
    </div>
 	  <div class="form-group col-md-6">
             <label class="control-label" for="sales_resion"><?=display('sales_resion')?><i class="text-danger">*</i></label> 									
-            <select class="form-control" name="sales_region" id="sales_region" onchange="find_area();" disabled required>
+            <select class="form-control" name="sales_region" id="sales_region" onchange="find_area();" required>
                 <?php
                     if (!empty($region_lists)) {
                         foreach ($region_lists as $key => $value) { ?>
@@ -331,7 +333,7 @@ foreach($basic_fields as $row)
 								
 		<div class="form-group col-md-6">
             <label class="control-label" for="sales_area"><?=display('sales_area')?><i class="text-danger">*</i></label> 									
-            <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();" disabled required>
+            <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();" required>
                 <?php  if (!empty($area_lists)) {
                 foreach ($area_lists as $key => $value) { ?>
             <option value="<?= $value->area_id;?>" <?php if($value->area_id == $details->enq_salearea){ echo "selected";} ?>><?= $value->area_name;?></option>
@@ -343,7 +345,7 @@ foreach($basic_fields as $row)
    
     <div class="form-group col-md-6">
             <label class="control-label" for="sales_branch"><?=display('sales_branch')?><i class="text-danger">*</i></label> 									
-        <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()" disabled required>
+        <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()" required>
                 <?php  if (!empty($branch_lists)) {
                 foreach ($branch_lists as $key => $value) { ?>
                 <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $details->enq_salebrach){ echo "selected";} ?>><?= $value->branch_name;?></option>
@@ -355,7 +357,7 @@ foreach($basic_fields as $row)
 					  
 	<div class="form-group col-sm-6 col-md-6">
         <label><?php echo 'Client Name'; ?> <i class="text-danger">*</i></label>
-        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name" disabled required> 
+        <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name" required> 
     </div>
 	
    
@@ -1054,7 +1056,28 @@ function clientname() {
         }
       });
     }
-  }  
+  }
+
+function exist_alert(){ 
+var email = $('#email').val();
+var phone = $('#mobileno').val();
+           
+     $.ajax({
+          url: "<?php echo base_url().'enquiry/get_exist_alert'?>",
+          type: 'POST',
+		  data: {email:email,phone:phone},
+          
+          success: function(content) {
+if(content!=0){			  
+Swal.fire(
+  'Already exist details....',
+  content
+)
+}
+          }
+      });
+    
+}  
 </script>
 <?php
 if($this->session->companey_id==65 && $tid == 57){

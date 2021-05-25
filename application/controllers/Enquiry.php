@@ -4126,4 +4126,54 @@ echo  $details1;
 
         $this->load->view('enquiry/lead_summary_pie',$data);
     }
+	
+	function get_exist_alert()
+    {    
+        $email = $this->input->post('email');
+        $phone = $this->input->post('phone');
+		$company = $this->session->companey_id;
+/* $where='';
+$where.="  enquiry.comp_id = '".$company."'";
+if(!empty($email) && !empty($phone)){
+	$where .= "AND enquiry.email =  '".$email."'";
+	$where .= " AND enquiry.phone =  '".$phone."'";
+}else if(!empty($email)&& empty($phone)){
+	$where .= "AND enquiry.email =  '".$email."'";
+}else if(empty($email)&& !empty($phone)){
+	$where .= "AND enquiry.phone =  '".$phone."'";
+} */	
+        $this->db->select('enquiry_id,name_prefix,name,lastname,status,phone,email');
+        //$this->db->where('comp_id',$company);
+		$this->db->or_where('phone',$phone);
+		$this->db->or_where('email',$email);
+        $res=$this->db->get('enquiry');
+        $enq_id=$res->row();
+		
+        if(!empty($enq_id->enquiry_id)){
+			if($enq_id->status==1){
+				$url = 'enquiry/view/'.$enq_id->enquiry_id.'/'.base64_encode($enq_id->status);
+			}else if($enq_id->status==2){
+				$url = 'lead/lead_details/'.$enq_id->enquiry_id.'/'.base64_encode($enq_id->status);
+			}else{
+				$url = 'client/view/'.$enq_id->enquiry_id.'/'.base64_encode($enq_id->status);
+			}
+            $html = '<table class="table table-bordered table-hover">
+			            <tr>
+                            <th>Name</th>
+							<th>Email</th>
+							<th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td>'.$enq_id->name_prefix.' '.$enq_id->name.' '.$enq_id->lastname.'</td>
+							<td>'.$enq_id->email.'</td>
+							<td>'.$enq_id->phone.'</td>
+                            <td><a href="'.base_url($url).'">View details</a></td>
+                        </tr>
+                    </table>';
+			echo $html;
+        }else{
+			echo 0;
+		}			
+    }
 }

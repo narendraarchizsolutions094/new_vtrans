@@ -3197,16 +3197,41 @@ public function all_update_expense_status()
         //print_r($this->input->post('current_stage'));exit;
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
-        $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
+        $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>'18940'))->row();
 		$unique = $this->input->post('unique_no');
 		$edit = $this->input->post('edited');
+//For Region		
+$r_string = $enq->rnm;		
+$r_lastChar = $r_string[-1];
+if(is_numeric($r_lastChar)){
+	$r_add = $r_lastChar;
+}else{
+    $r_add = '';
+}
+//For Area
+$a_string = $enq->area_name;		
+$a_lastChar = $a_string[-1];
+if(is_numeric($a_lastChar)){
+	$a_add = $a_lastChar;
+}else{
+    $a_add = '';
+}
+//For Branch
+$b_string = $enq->branch_name;		
+$b_lastChar = $b_string[-1];
+if(is_numeric($b_lastChar)){
+	$b_add = $b_lastChar;
+}else{
+    $b_add = '';
+}
 		
 		if(empty($unique)){
 		$branch = substr($enq->branch_name,0,2);
+		$area   = substr($enq->area_name,0,2);
 		$region = substr($enq->rnm,0,2);
 		$number = str_pad(rand(0,999), 3, "0", STR_PAD_LEFT);
 		$type   = strtoupper($this->input->post('booking_type'));
-		$unique_no = $region.''.$branch.''.$number.''.$type.'-1.0';
+		$unique_no = strtoupper($region).''.$r_add.''.strtoupper($area).''.$a_add.''.strtoupper($branch).''.$b_add.''.$number.''.$type.'-1.0';
 		}else{
 		if($edit==1)
             {

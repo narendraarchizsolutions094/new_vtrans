@@ -104,7 +104,7 @@
                         <?php
                           }?>
 
-                        <input class="form-control" value="<?php if(!empty($_GET['phone'])){echo $_GET['phone']; }else{ echo set_value('mobileno')?set_value('mobileno'):($this->input->get('phone')?$this->input->get('phone'):'');}?>" name="mobileno" type="text" maxlength='10' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Enter Mobile Number" <?=$required?> required>
+                        <input class="form-control" value="<?php if(!empty($_GET['phone'])){echo $_GET['phone']; }else{ echo set_value('mobileno')?set_value('mobileno'):($this->input->get('phone')?$this->input->get('phone'):'');}?>" name="mobileno" id="mobileno" onchange="exist_alert()" type="text" maxlength='10' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Enter Mobile Number" <?=$required?> required>
                         <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
                      </div>
                      <div id="add_more_phone">
@@ -121,7 +121,7 @@
                     ?>
                      <div class="form-group col-sm-4 col-md-4 enq-email"> 
                         <label><?php echo display('email') ?><i class="text-danger">*</i></label>
-                        <input class="form-control" value="<?php  echo set_value('email');?> " name="email" type="email"  placeholder="Enter Email" required>  
+                        <input class="form-control" value="<?php  echo set_value('email');?> " name="email" id="email" onchange="exist_alert()" type="email"  placeholder="Enter Email" required>  
                      </div>                     
                      <?php
                    }
@@ -587,4 +587,25 @@ function clientname() {
         }    
     });
   }
+  
+function exist_alert(){ 
+var email = $('#email').val();
+var phone = $('#mobileno').val();
+           
+     $.ajax({
+          url: "<?php echo base_url().'enquiry/get_exist_alert'?>",
+          type: 'POST',
+		  data: {email:email,phone:phone},
+          
+          success: function(content) {
+if(content!=0){			  
+Swal.fire(
+  'Already exist details....',
+  content
+)
+}
+          }
+      });
+    
+}
 </script>
