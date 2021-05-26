@@ -127,7 +127,8 @@
                         <thead>
                             <tr>
 							    <th>S.No</th>
-                                <th>User Name</th>
+                                <th>CS Name</th>
+								<th>Region Name</th>
                                 <th>Total Tickets</th>
 								<?php foreach($ticket_stages as $stage){ ?>
                                 <th><?php echo $stage->lead_stage_name; ?></th>
@@ -144,8 +145,9 @@
                                         echo "<td>".$i."</td>";
 										echo "<td>".$value[0]."</td>";
 										echo "<td>".$value[1]."</td>";
+										echo "<td>".$value[2]."</td>";
 								foreach($ticket_stages as $key=>$stage){
-									$keys = $this->ticket_report_datatable_model->report_employee_wise($fromdate,$fromdate,$stage->stg_id,$value[2]);
+									$keys = $this->ticket_report_datatable_model->report_employee_wise($fromdate,$fromdate,$stage->stg_id,$value[3]);
 									if(!empty($keys)){
 									foreach($keys as $v){
 										if(!empty($v)){

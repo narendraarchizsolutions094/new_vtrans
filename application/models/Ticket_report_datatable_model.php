@@ -376,7 +376,7 @@ if($for == 'region_chart'){
         $group_by = '';
         $from_table    =   'tbl_ticket';
         if($for == ''){
-            $select = 'count(tbl_ticket.ticketno) as count,CONCAT(tbl_admin.s_display_name,tbl_admin.last_name) as title,tbl_admin.pk_i_admin_id as user_id';
+            $select = 'count(tbl_ticket.ticketno) as count,CONCAT(tbl_admin.s_display_name,tbl_admin.last_name) as title,tbl_admin.pk_i_admin_id as user_id,sales_region.name as region';
             $group_by = 'tbl_ticket.added_by';
         }else{
             $select = 'count(tbl_ticket.ticketno) as count';
@@ -475,7 +475,8 @@ if($for == 'region_chart'){
             $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_ticket.added_by','left');
             $this->db->join('tbl_admin as admin2','admin2.pk_i_admin_id=tbl_ticket.assign_to','left');      
             $this->db->join('lead_stage','lead_stage.stg_id=tbl_ticket.ticket_stage','left');        
-            $this->db->join('lead_description','lead_description.id=tbl_ticket.ticket_substage','left');        
+            $this->db->join('lead_description','lead_description.id=tbl_ticket.ticket_substage','left');
+            $this->db->join('sales_region','sales_region.region_id=tbl_admin.sales_region','left');			
             
             // $this->db->where('tbl_ticket',$comp_id);    
             $this->db->where($where);
@@ -491,8 +492,9 @@ if($for == 'region_chart'){
                 foreach($result as $key=>$value){
                     if($value['title']){
                         $title =  $value['title']??'NA';
+						$region =  $value['region']??'NA';
 						$user_id =  $value['user_id']??'NA';
-                        $res[] = array($title,(int)$value['count'],$user_id);
+                        $res[] = array($title,$region,(int)$value['count'],$user_id);
                     }
                 }
             }
