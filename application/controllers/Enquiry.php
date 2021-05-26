@@ -4129,23 +4129,18 @@ echo  $details1;
 	
 	function get_exist_alert()
     {    
-        $email = $this->input->post('email');
-        $phone = $this->input->post('phone');
+        $type = $this->input->post('type');
+        $parameter = $this->input->post('parameter');
 		$company = $this->session->companey_id;
-/* $where='';
-$where.="  enquiry.comp_id = '".$company."'";
-if(!empty($email) && !empty($phone)){
-	$where .= "AND enquiry.email =  '".$email."'";
-	$where .= " AND enquiry.phone =  '".$phone."'";
-}else if(!empty($email)&& empty($phone)){
-	$where .= "AND enquiry.email =  '".$email."'";
-}else if(empty($email)&& !empty($phone)){
-	$where .= "AND enquiry.phone =  '".$phone."'";
-} */	
+	
         $this->db->select('enquiry_id,name_prefix,name,lastname,status,phone,email');
-        //$this->db->where('comp_id',$company);
-		$this->db->or_where('phone',$phone);
-		$this->db->or_where('email',$email);
+		if($parameter=='mobile'){
+		$this->db->where('phone',$type);
+		}
+		if($parameter=='email'){
+		$this->db->where('email',$type);
+		}
+		$this->db->where('comp_id',$company);
         $res=$this->db->get('enquiry');
         $enq_id=$res->row();
 		

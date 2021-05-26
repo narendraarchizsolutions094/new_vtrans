@@ -90,7 +90,7 @@ foreach($basic_fields as $row)
    <div class="form-group col-sm-6 col-md-6 enq-mobile"> 
       <label><?php echo display('mobile') ?><i class="text-danger">*</i></label>
       <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
-      <input class="form-control mask-number" name="mobileno" type="<?= $type ?>" maxlength='10' id="mobileno" onchange="exist_alert()" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+      <input class="form-control mask-number" name="mobileno" type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
       <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
       <?php }else{
             $disabled = '';		  
@@ -98,12 +98,12 @@ foreach($basic_fields as $row)
          if($this->session->companey_id == 90){ 
             $disabled = '';
             ?>
-            <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' id="mobileno" onchange="exist_alert()" value="<?php echo $details->phone ?>" name="mobileno" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+            <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" name="mobileno" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
             <?php
          }else{
             ?>
-               <input class="form-control mask-number" hidden name="mobileno" type="<?= $type ?>" maxlength='10' id="mobileno" onchange="exist_alert()" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
-               <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' id="mobileno" onchange="exist_alert()" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+               <input class="form-control mask-number" hidden name="mobileno" type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+               <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
             <?php
          }
          ?>
@@ -146,7 +146,7 @@ foreach($basic_fields as $row)
             <?php
          }else{ ?>
             <input class="form-control" name="email" hidden type="email" value="<?php echo $details->email ?>">  
-            <input class="form-control" <?=$disabled?> type="email" id="email" onchange="exist_alert()" value="<?php echo $details->email ?>">  
+            <input class="form-control" <?=$disabled?> type="email" onchange="exist_alert(this.value,'email')" value="<?php echo $details->email ?>">  
          <?php
          }
          ?>
@@ -1058,14 +1058,11 @@ function clientname() {
     }
   }
 
-function exist_alert(){ 
-var email = $('#email').val();
-var phone = $('#mobileno').val();
-           
+function exist_alert(type,parameter){         
      $.ajax({
           url: "<?php echo base_url().'enquiry/get_exist_alert'?>",
           type: 'POST',
-		  data: {email:email,phone:phone},
+		  data: {type:type,parameter:parameter},
           
           success: function(content) {
 if(content!=0){			  
