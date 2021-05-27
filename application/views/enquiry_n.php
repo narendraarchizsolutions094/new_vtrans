@@ -159,15 +159,15 @@ input[name=lead_stages]{
         </div>
          <div class="col-md-4 col-sm-8 col-xs-8 pull-right" >  
           <div style="float: right;">     
-      <?php if(!empty($this->session->telephony_token)){ ?>
-              <div class="btn-group dropdown-filter">
+      <?php //if(!empty($this->session->telephony_token)){ ?>
+              <!--<div class="btn-group dropdown-filter">
                       <?php if($this->session->availability == 1) { ?>
                       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#callbreak" >Available</button>
                     <?php } elseif($this->session->availability == 2) { ?>
                       <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#callbreak" > Not Available</button>
                     <?php } ?>
-              </div>  
-            <?php } ?> 
+              </div>-->  
+            <?php //} ?> 
             <div class="btn-group dropdown-filter">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Filter by <span class="caret"></span>

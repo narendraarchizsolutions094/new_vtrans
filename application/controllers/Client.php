@@ -3121,8 +3121,9 @@ public function all_update_expense_status()
                                     <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge" >
                                 </div>
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_distance" name="oc[23]" value="'.$oc[23].'" type="number" style="width:49%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
-                                     <input id="oda_weight" name="oc[24]" value="'.$oc[24].'" type="number" style="width:49%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip">
+                                    <input id="oda_distance" name="oc[23]" value="'.$oc[23].'" type="number" style="width:45%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
+                                    <input id="oda_weight" name="oc[24]" value="'.$oc[24].'" type="number" style="width:45%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip">
+									&nbsp;<span onclick="rate_alert()" class="btn btn-primary btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
                                 </div>
                             </td>
                         </tr>';
@@ -4581,5 +4582,38 @@ $deal   =    $this->Branch_model->get_deal($deal_id);
         $this->pdf->create($res,0,$ag_path);
         
         //redirect($ag_path);
+    }
+	
+	function get_exist_oda()
+    {
+		$company = $this->session->companey_id;
+	
+        $this->db->select('*');
+		$this->db->where('comp_id',$company);
+        $res=$this->db->get('oda_matrix');
+        $oda_data=$res->result();
+		
+        if(!empty($oda_data)){
+			
+            echo '<table class="table table-bordered table-hover">
+			            <tr>
+                            <th>S.No</th>
+							<th>Distance</th>
+							<th>Weight</th>
+                            <th>Charge</th>
+                        </tr>';
+                foreach($oda_data as $key => $val){
+                    $i = $key + 1;					
+            echo    '<tr>
+			            <td>'.$i.'</td>
+                        <td>'.$val->distance_from.' - '.$val->distance_to.' KM</td>
+					    <td>'.$val->weight_from.' - '.$val->weight_to.' KG</td>
+					    <td>'.$val->charge.'</td>
+                    </tr>';
+			    }
+			echo '</table>';
+        }else{
+			echo 0;
+		}			
     }
 }

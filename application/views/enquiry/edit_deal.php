@@ -707,6 +707,22 @@ $(document).on('click','.toggle-btn',function(){
 	
 });
 
+function rate_alert(){         
+     $.ajax({
+          url: "<?php echo base_url().'client/get_exist_oda'?>",
+          type: 'POST',
+		 // data: {parameter:parameter},
+          
+          success: function(content) {
+if(content!=0){			  
+Swal.fire(
+  'ODA Matrix Details...',
+  content
+)
+}
+          }
+      });    
+}
 </script>
 <style type="text/css">
 	.tablebox input:not(input[type=radio])

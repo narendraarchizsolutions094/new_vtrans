@@ -770,12 +770,20 @@ class location extends CI_Controller {
                         $this->db->insert('sales_area');
                         $area_id = $this->db->insert_id();
                     }
-                    $this->db->where('region_id', $region_id);
-                    $this->db->where('area_id', $area_id);
+                    //$this->db->where('region_id', $region_id);
+                    //$this->db->where('area_id', $area_id);
                     $this->db->where('branch_name', $filesop[2]);
                     $id5 = $this->db->get('branch');
                     $id6 = $id5->num_rows();
                     if ($id6 > 0) {
+						$this->db->set('region_id', $region_id);
+                        $this->db->set('area_id', $area_id);
+						$this->db->set('comp_id', $this->session->userdata('companey_id'));
+						$this->db->set('created_by', $this->session->userdata('user_id'));
+						$this->db->set('type', 'branch');
+						$this->db->set('branch_status', '1');
+						$this->db->where('branch_name', $id5->row()->branch_id);
+                        $this->db->update('branch');
                         $branch_id = $id5->row()->branch_id;
                     } else {
                         $this->db->set('region_id', $region_id);
