@@ -45,8 +45,8 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-lg-5">
+<div class="row" style="padding:15px;">
+	<div class="col-lg-6" style="padding:10px;">
 		<div class="form-group"> 
 	        <label>Type <font color="red">*</font></label>
 			<select class="form-control" name="btype" onchange="load_branch(this)" data-type="booking">
@@ -56,7 +56,8 @@
 			</select>
 		</div>
 	</div>
-	<div class="col-lg-5">
+
+	<div class="col-lg-6" style="padding:10px;">
 		<div class="form-group"> 
 	        <label>Type <font color="red">*</font></label>
 			<select class="form-control" name="dtype" data-type="delivery" >
@@ -72,6 +73,7 @@
 
 <div class="row panel-box">
 </div>
+
 <div class="row">
 	<div class="col-lg-12" align="right">
 		<button class="btn btn-primary" onclick="make_clone()"><i class="fa fa-plus"></i> Add</button>
@@ -292,7 +294,7 @@ function make_clone()
 {//alert('ss');
 	var type = $("select[name=btype]").val();
 	$.ajax({
-		url:'<?=base_url('client/branch-panel-clone/')?>'+count+'/'+type,
+		url:'<?=base_url('client/branch_panel_clone/')?>'+count+'/'+type,
 		success:function(res)
 		{
 			$('.panel-box').append(res);
@@ -462,6 +464,27 @@ function rep_discount()
 			$(v).val(fixed);
 			$(v).trigger('change');
 		});
+}
+
+function rep_final_rate()
+{
+		var ref =	$(".final_rate");
+		var fixed = $(ref[0]).val();
+
+		$(".final_rate").each(function(k,v){
+			$(v).val(fixed);
+			$(v).trigger('change');
+		});
+}
+
+function final_rate_calculate(uid)
+{
+		var rate =	$("#rate_"+uid).val();
+		var discount =	$("#discount_"+uid).val();
+		var final_rate =	$("#final_rate_"+uid).val();
+		var dis_rate = rate/100*discount;
+		var finalrate = rate-dis_rate;
+		$("#final_rate_"+uid).val(finalrate);
 }
 
 function rep_paymode()

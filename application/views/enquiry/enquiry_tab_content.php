@@ -89,26 +89,8 @@ foreach($basic_fields as $row)
    <?php  if($row['id']== MOBILE && is_active_field(MOBILE,$process_id)){  ?>
    <div class="form-group col-sm-6 col-md-6 enq-mobile"> 
       <label><?php echo display('mobile') ?><i class="text-danger">*</i></label>
-      <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
-      <input class="form-control mask-number" name="mobileno" type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+      <input class="form-control mask-number" id="mobileno" name="mobileno" type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
       <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
-      <?php }else{
-            $disabled = '';		  
-         //$disabled = 'disabled';
-         if($this->session->companey_id == 90){ 
-            $disabled = '';
-            ?>
-            <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" name="mobileno" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
-            <?php
-         }else{
-            ?>
-               <input class="form-control mask-number" hidden name="mobileno" type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
-               <input class="form-control mask-number" <?=$disabled?>  type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
-            <?php
-         }
-         ?>
-      <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
-         <?php } ?>
    </div>
    <?php }?>
    <?php
@@ -133,25 +115,8 @@ foreach($basic_fields as $row)
       if($row['id']== EMAIL && is_active_field(EMAIL,$process_id)){
       ?>
    <div class="form-group col-sm-6 col-md-6 enq-email"> 
-      <label><?php echo display('email') ?><i class="text-danger">*</i></label>
-      <?php    if ($viewpro!='viewpro' && $this->session->companey_id == 76) {   ?>
-
-      <input class="form-control" name="email" type="email" value="<?php echo $details->email ?>">  
-      <?php }else{
-            $disabled = '';		  
-         //$disabled = 'disabled';
-         if($this->session->companey_id == 90 || $this->session->companey_id == 84){
-            $disabled = '';?>
-            <input name="email" class="form-control" <?=$disabled?> type="email" value="<?php echo $details->email ?>">  
-            <?php
-         }else{ ?>
-            <input class="form-control" name="email" hidden type="email" value="<?php echo $details->email ?>">  
-            <input class="form-control" <?=$disabled?> type="email" onchange="exist_alert(this.value,'email')" value="<?php echo $details->email ?>">  
-         <?php
-         }
-         ?>
-
-     <?php }  ?>
+        <label><?php echo display('email') ?><i class="text-danger">*</i></label> 
+        <input class="form-control" id="email" name="email" type="email" onchange="exist_alert(this.value,'email')" value="<?php echo $details->email ?>">  
    </div>
    <?php }?>
    <?php
@@ -384,7 +349,7 @@ function clientname() {
 	  }
 	  
  function find_area() { 
-
+            var fill_id = '<?=$details->enq_salearea;?>';
             var reg_id = $("select[name='sales_region']").val();
             $.ajax({
             type: 'POST',
@@ -398,7 +363,7 @@ function clientname() {
                 
                 for(var i=0; i <(obj.length); i++){
                     
-                    html +='<option value="'+(obj[i].area_id)+'">'+(obj[i].area_name)+'</option>';
+                    html +='<option value="'+(obj[i].area_id)+'" '+((fill_id==obj[i].area_id)?"selected":"")+'>'+(obj[i].area_name)+'</option>';
                 }
                 
                 $("#filtered_area").html(html);
@@ -588,6 +553,7 @@ function clientname() {
    <div class="col-md-12 text-center">                                                      
       <input type="submit" name="submit_only" class="btn btn-primary" value="Save" >
       <input type="submit" name="submit_and_next" class="btn btn-primary" value="Save And Next">
+	  <input class="btn btn-success" onclick="disableField();" value="Enable Edit">
       <input type="hidden" name="go_new_tab">           
    </div>
 </div>
@@ -1074,7 +1040,27 @@ Swal.fire(
           }
       });
     
-}  
+} 
+
+$(window).load(function() {
+document.getElementById("company_list").disabled = true;
+document.getElementById("sales_region").disabled = true;
+document.getElementById("filtered_area").disabled = true;
+document.getElementById("sales_branch").disabled = true;
+document.getElementById("client_name").disabled = true;
+document.getElementById("mobileno").disabled = true;
+document.getElementById("email").disabled = true;
+});
+
+function disableField() {
+document.getElementById("company_list").disabled = false;
+document.getElementById("sales_region").disabled = false;
+document.getElementById("filtered_area").disabled = false;
+document.getElementById("sales_branch").disabled = false;
+document.getElementById("client_name").disabled = false;
+document.getElementById("mobileno").disabled = false;
+document.getElementById("email").disabled = false;
+}
 </script>
 <?php
 if($this->session->companey_id==65 && $tid == 57){

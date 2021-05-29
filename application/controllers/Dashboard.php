@@ -3271,8 +3271,11 @@ public function set_layout_to_session() {
 
         $d_data =  $this->Branch_model->get_deal_data($info_id);
        // $oc = (array)json_decode($deal->other_charges);
+	   if($deal->status==0){
         $oc = json_decode($deal->other_charges,true);
-        
+	   }else{
+		$oc = json_decode($deal->update_charges,true);
+	   }
         $enquiry_id = $deal->enquiry_id;
         $booking_type = $deal->booking_type;
         //$docTemplate=$this->db->where(array('comp_id'=>65,'title'=>$deal->booking_type))->get('tbl_doctemplate')->result();

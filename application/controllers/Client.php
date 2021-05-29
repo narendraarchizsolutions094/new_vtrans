@@ -810,7 +810,7 @@ class Client extends CI_Controller {
                 $process_id    =   $this->input->post('product_id');
             }
 
-
+if(!empty($comp)){
             $company = $this->db->where('company_name',$comp)->get('tbl_company')->row();
               if(!empty($company))
               {
@@ -826,27 +826,40 @@ class Client extends CI_Controller {
                 $this->db->insert('tbl_company',$new_company);
                 $company = $this->db->insert_id();
               }
-
+}
 
             if($exp_date = $this->input->post('expected_closure_date'))
                 $this->db->set('lead_expected_date', $exp_date);
 
-
-            //$this->db->set('phone', $mobile);
+if(!empty($mobile)){
+            $this->db->set('phone', $mobile);
+}
             $this->db->set('other_phone', $other_phone);
-            $this->db->set('country_id', $country_id);            
-            //$this->db->set('email', $email);
+            $this->db->set('country_id', $country_id);
+if(!empty($email)){            
+            $this->db->set('email', $email);
+}
             $this->db->set('name_prefix', $name_prefix);
             $this->db->set('name', $firstname);
             $this->db->set('enquiry_source', $lead_source);
             $this->db->set('sub_source', $subsource);
             $this->db->set('address', $address);
             $this->db->set('pin_code', $pin_code);
-            //$this->db->set('company', $company);
-            //$this->db->set('sales_branch', $sales_branch);
-            //$this->db->set('client_name', $client_name);
-            //$this->db->set('sales_region', $sales_region);
-            //$this->db->set('sales_area', $sales_area);
+if(!empty($company)){
+            $this->db->set('company', $company);
+}
+if(!empty($sales_branch)){
+            $this->db->set('sales_branch', $sales_branch);
+}
+if(!empty($client_name)){
+            $this->db->set('client_name', $client_name);
+}
+if(!empty($sales_region)){
+            $this->db->set('sales_region', $sales_region);
+}
+if(!empty($sales_area)){
+            $this->db->set('sales_area', $sales_area);
+}
             $this->db->set('client_type', $client_type);
             $this->db->set('business_load', $business_load);
             $this->db->set('industries', $industries);
@@ -856,7 +869,9 @@ class Client extends CI_Controller {
             $this->db->set('state_id', $state_id);
             $this->db->set('city_id', $city_id);
             $this->db->set('enquiry_subsource',$this->input->post('sub_source'));
-            //$this->db->set('product_id', $process_id);            
+if(!empty($process_id)){
+            $this->db->set('product_id', $process_id); 
+}			
             $this->db->where('enquiry_id', $enquiry_id);            
             $this->db->update('enquiry');  
             $this->load->model('rule_model');
@@ -2790,13 +2805,24 @@ public function all_update_expense_status()
                         $oc = $extract;
                         $oc[22] = $oc[23] = '';
                     }
+					if(empty($deal_id)){
+                        $extract=  array_values($oc_data);
+                        unset($extract[0]);
+                        $uc = $extract;
+                        $uc[22] = $uc[23] = ''; 							
+				        }
                     $oc['rate_type'] = 'KG';
+					$uc['rate_type'] = 'KG';
                     if(!empty($deal_data))
                     {
                           $oc =json_decode($deal_data->other_charges,true);
+						  $uc =json_decode($deal_data->update_charges,true);
                         //$oc =(array)json_decode($deal_data->other_charges);
                         if(empty($oc[23]))
                             $oc[23]='';
+                        $edit_remark = $deal_data->edit_remark;
+						if(empty($uc[23]))
+                            $uc[23]='';
                         $edit_remark = $deal_data->edit_remark;
                     }
                     
@@ -2834,11 +2860,14 @@ public function all_update_expense_status()
                         <th>Booking From</th>
                         <th>Delivery To</th>';
                     if($booking_type=='sundry')
-                    {echo'<th style="width:100px;"> Rate/<select name="oc[rate_type]" class="exclude_select2" style=" background:#d9edf7; border:0px;">
+                    {
+						echo'<th style="width:100px;"> Rate/<select name="oc[rate_type]" class="exclude_select2" style=" background:#d9edf7; border:0px;">
                                     <option '.($oc['rate_type']=='KG'?'selected':'').'>KG</option>
                                     <option '.($oc['rate_type']=='Box'?'selected':'').'>Box</option>
-                                </select></th>
-                        <th style="width:75px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>';
+                                </select>
+							</th>
+                        <th style="width:75px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>
+						<th style="width:75px">Final rate <label class="badge pull-right" onclick="rep_final_rate()">R</label></th>';
                     }
 
                      if($booking_type=='ftl')
@@ -2880,6 +2909,7 @@ public function all_update_expense_status()
                 {
                     $rate=$row->rate;
                     $discount=0;
+					$final_rate=0;
                     $paymode='';
                     $insurance='';
                     $eton=0;
@@ -2896,6 +2926,7 @@ public function all_update_expense_status()
                     {
                         $rate= $chk->rate;
                         $discount=$chk->discount;
+						$final_rate= $chk->final_rate;
                         $paymode=$chk->paymode;
                         $insurance=$chk->insurance;
                         $eton=$chk->expected_tonnage;
@@ -2914,8 +2945,9 @@ public function all_update_expense_status()
                             <td><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->to.'</td>';
                     if($booking_type=='sundry')
                     {
-                        echo'<td><input type="number" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
-                        <td><input type="number" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'"></td>';
+                        echo'<td><input type="number" id="rate_'.$row->id.'" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
+                        <td><input type="number" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
+						<td><input type="text" id="final_rate_'.$row->id.'" class="final_rate" name="final_rate['.$row->id.']" data-id="'.$row->id.'" value="'.$final_rate.'"></td>';
                     }
 
                     if($booking_type=='ftl')
@@ -2978,155 +3010,190 @@ public function all_update_expense_status()
                     <i class="fa fa-edit"></i> Edit
                  </span>';
 
-                 }
+                 }				 
+
                 
                 echo' <div class="t_box">
                     <table class="table table-bordered table-dark">
                     <thead>
                         <tr>
                             <th align="center">Name of Charges</th>
-                            <th align="center">Amount (Rs.)</th>
-                            <th align="center">Units</th>
+                            <th align="center">Initial Amount (Rs.)</th>';
+  if(!empty($deal_id)){echo'<th align="center">Offerd Amount (Rs.)</th>';}
+                       echo'<th align="center">Units</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr '.(($oc[1]!=$uc[1])?"style='background:#ffbaba;'":"").'>
                             <td>GC Charges</td>
-                            <td><input name="oc[1]" value="'.$oc[1].'"></td>
-                            <td>In Rs. Per GC</td>
+                            <td><input name="oc[1]" value="'.$oc[1].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[1]" value="'.$uc[1].'"></td>';}			
+                       echo'<td>In Rs. Per GC</td>
                         </tr>';
                     if($booking_type=='sundry')
                     {
-                    echo'<tr>
+                    echo'<tr '.(($oc[2]!=$uc[2])?"style='background:#ffbaba;'":"").'>
                             <td>Minimum Chargeable Wt</td>
-                            <td><input name="oc[2]" value="'.$oc[2].'"></td>
-                            <td>KGs, Whichever is Higher</td>
+                            <td><input name="oc[2]" value="'.$oc[2].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[2]" value="'.$uc[2].'"></td>';}
+                       echo'<td>KGs, Whichever is Higher</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[3]!=$uc[3])?"style='background:#ffbaba;'":"").'>
                             <td>Minimum Freight Value</td>
-                            <td><input name="oc[3]" value="'.$oc[3].'"></td>
-                            <td>In Rs.</td>
+                            <td><input name="oc[3]" value="'.$oc[3].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[3]" value="'.$uc[3].'"></td>';}
+                        echo'<td>In Rs.</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[4]!=$uc[4])?"style='background:#ffbaba;'":"").'>
                             <td>CFT factor</td>
-                            <td><input name="oc[4]" value="'.$oc[4].'"></td>
-                            <td>KG.</td>
+                            <td><input name="oc[4]" value="'.$oc[4].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[4]" value="'.$uc[4].'"></td>';}
+                       echo'<td>KG.</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[5]!=$uc[5])?"style='background:#ffbaba;'":"").'>
                             <td>Hamali Charges</td>
-                            <td><input name="oc[5]" value="'.$oc[5].'"></td>
-                            <td>Per Kg.</td>
+                            <td><input name="oc[5]" value="'.$oc[5].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[5]" value="'.$uc[5].'"></td>';}
+                       echo'<td>Per Kg.</td>
                         </tr>';
                     }
-                    echo'<tr>
+                    echo'<tr '.(($oc[6]!=$uc[6])?"style='background:#ffbaba;'":"").'>
                             <td>FOV Charges (owner risk)</td>
-                            <td><input name="oc[6]" value="'.$oc[6].'"></td>
-                            <td>% of Invoice Value</td>
+                            <td><input name="oc[6]" value="'.$oc[6].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[6]" value="'.$uc[6].'"></td>';}
+                       echo'<td>% of Invoice Value</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[7]!=$uc[7])?"style='background:#ffbaba;'":"").'>
                             <td>FOV Charges (Carrier risk)</td>
-                            <td><input name="oc[7]" value="'.$oc[7].'"></td>
-                            <td>% of Invoice Value</td>
+                            <td><input name="oc[7]" value="'.$oc[7].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[7]" value="'.$uc[7].'"></td>';}
+                       echo'<td>% of Invoice Value</td>
                         </tr>';
                     if($booking_type=='sundry')
                     {
-                    echo'<tr>
+                    echo'<tr '.(($oc[8]!=$uc[8])?"style='background:#ffbaba;'":"").'>
                             <td>AOC Charges</td>
-                            <td><input name="oc[8]" value="'.$oc[8].'"></td>
-                            <td>% of Total Freight</td>
+                            <td><input name="oc[8]" value="'.$oc[8].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[8]" value="'.$uc[8].'"></td>';}
+                       echo'<td>% of Total Freight</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[9]!=$uc[9])?"style='background:#ffbaba;'":"").'>
                             <td>COD/DOD Charges</td>
-                            <td><input name="oc[9]" value="'.$oc[9].'"></td>
-                            <td>Per GC</td>
+                            <td><input name="oc[9]" value="'.$oc[9].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[9]" value="'.$uc[9].'"></td>';}
+                       echo'<td>Per GC</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[10]!=$uc[10])?"style='background:#ffbaba;'":"").'>
                             <td>DACC Charges</td>
-                            <td><input name="oc[10]" value="'.$oc[10].'"></td>
-                            <td>Per GC</td>
+                            <td><input name="oc[10]" value="'.$oc[10].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[10]" value="'.$uc[10].'"></td>';}
+                       echo'<td>Per GC</td>
                         </tr>';
                     }
-                    echo'<tr>
+                    echo'<tr '.(($oc[11]!=$uc[11])?"style='background:#ffbaba;'":"").'>
                             <td>Other (Please Specify)</td>
-                            <td><input name="oc[11]" value="'.$oc[11].'"></td>
-                            <td>At Actual</td>
+                            <td><input name="oc[11]" value="'.$oc[11].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[11]" value="'.$uc[11].'"></td>';}
+                       echo'<td>At Actual</td>
                         </tr>';
                     if($booking_type=='sundry')
                     {
                     echo'<tr>
-                            <td colspan="3" style="font-weight:bold">CR Charges to be Paid By Consignor <input type="radio" name="oc[12]" value="Consignor" '.($oc[12]=='Consignor'?'checked':'').'>   Consignee  <input type="radio" name="oc[12]" value="Consignee" '.($oc[12]=='Consignee'?'checked':'').'> </td>
-                        </tr>
-                        <tr>
+                            <td colspan="2" style="font-weight:bold">CR Charges to be Paid By Consignor <input type="radio" name="oc[12]" value="Consignor" '.($oc[12]=='Consignor'?'checked':'').'>   Consignee  <input type="radio" name="oc[12]" value="Consignee" '.($oc[12]=='Consignee'?'checked':'').'> </td>';
+  if(!empty($deal_id)){echo'<td colspan="2" style="font-weight:bold">CR Charges to be Paid By Consignor <input type="radio" name="uc[12]" value="Consignor" '.($uc[12]=='Consignor'?'checked':'').'>   Consignee  <input type="radio" name="uc[12]" value="Consignee" '.($uc[12]=='Consignee'?'checked':'').'> </td>';}
+                    echo'</tr>
+                        <tr '.(($oc[13]!=$uc[13])?"style='background:#ffbaba;'":"").'>
                             <td>Demurrage charges</td>
-                            <td><input name="oc[13]" value="'.$oc[13].'"></td>
-                            <td>Per KG on Per day basis</td>
+                            <td><input name="oc[13]" value="'.$oc[13].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[13]" value="'.$uc[13].'"></td>';}
+                       echo'<td>Per KG on Per day basis</td>
                         </tr>
                         <tr>
-                            <td colspan="3" style="font-weight:bold">Demurrage Charges to be Paid By Consignor <input type="radio" name="oc[14]" value="Consignor" '.($oc[14]=='Consignor'?'checked':'').'>   Consignee  <input type="radio" name="oc[14]" value="Consignee" '.($oc[14]=='Consignee'?'checked':'').'> </td>
-                        </tr>';
+                            <td colspan="2" style="font-weight:bold">Demurrage Charges to be Paid By Consignor <input type="radio" name="oc[14]" value="Consignor" '.($oc[14]=='Consignor'?'checked':'').'>   Consignee  <input type="radio" name="oc[14]" value="Consignee" '.($oc[14]=='Consignee'?'checked':'').'> </td>';
+  if(!empty($deal_id)){echo'<td colspan="2" style="font-weight:bold">Demurrage Charges to be Paid By Consignor <input type="radio" name="uc[14]" value="Consignor" '.($uc[14]=='Consignor'?'checked':'').'>   Consignee  <input type="radio" name="uc[14]" value="Consignee" '.($uc[14]=='Consignee'?'checked':'').'> </td>';}
+                    echo'</tr>';
                     }
-                    echo'<tr>
+                    echo'<tr '.(($oc[15]!=$uc[15])?"style='background:#ffbaba;'":"").'>
                             <td>Loading/Unloading Charges/Union Charges</td>
-                            <td><input name="oc[15]" value="'.$oc[15].'"></td>
-                            <td>Per Kg / Box</td>
+                            <td><input name="oc[15]" value="'.$oc[15].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[15]" value="'.$uc[15].'"></td>';}
+                       echo'<td>Per Kg / Box</td>
                         </tr>';
                     if($booking_type=='sundry')
                     {
-                    echo'<tr>
+                    echo'<tr '.(($oc[16]!=$uc[16])?"style='background:#ffbaba;'":"").'>
                             <td>GI Charges</td>
-                            <td><input name="oc[16]" value="'.$oc[16].'"></td>
-                            <td>In Rs. per GC</td>
+                            <td><input name="oc[16]" value="'.$oc[16].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[16]" value="'.$uc[16].'"></td>';}
+                       echo'<td>In Rs. per GC</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[17]!=$uc[17])?"style='background:#ffbaba;'":"").'>
                             <td>Dynamic Fuel Surcharge in %</td>
-                            <td><input name="oc[17]" value="'.$oc[17].'"></td>
-                            <td>% of basic freight</td>
+                            <td><input name="oc[17]" value="'.$oc[17].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[17]" value="'.$uc[17].'"></td>';}
+                       echo'<td>% of basic freight</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[18]!=$uc[18])?"style='background:#ffbaba;'":"").'>
                             <td>Levy- in %</td>
-                            <td><input name="oc[18]" value="'.$oc[18].'"></td>
-                            <td>% of basic freight</td>
+                            <td><input name="oc[18]" value="'.$oc[18].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[18]" value="'.$uc[18].'"></td>';}
+                       echo'<td>% of basic freight</td>
                         </tr>';
                     }
-                    echo'<tr>
+                    echo'<tr '.(($oc[19]!=$uc[19])?"style='background:#ffbaba;'":"").'>
                             <td>E-way bill charge</td>
-                            <td><input name="oc[19]" value="'.$oc[19].'"></td>
-                            <td>In Rs. Per GC</td>
+                            <td><input name="oc[19]" value="'.$oc[19].'"></td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[19]" value="'.$uc[19].'"></td>';}
+                       echo'<td>In Rs. Per GC</td>
                         </tr>';
                     if($booking_type=='sundry')
                     {
 
-                    echo'<tr>
+                    echo'<tr '.(($oc[20]!=$uc[20])?"style='background:#ffbaba;'":"").'>
                             <td>Door Collection Charges</td>
                             <td id="door_box">
                                 <input name="oc[20]" value="'.$oc[20].'">
-                            </td>
-                            <td>Upto 3 MT and above free</td>
+                            </td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[20]" value="'.$uc[20].'"></td>';}
+                       echo'<td>Upto 3 MT and above free</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[21]!=$uc[21])?"style='background:#ffbaba;'":"").'>
                             <td>Last Mile  Delivery charges</td>
                             <td id="mile_box">
                              <input name="oc[21]" value="'.$oc[21].'">
-                            </td>
-                            <td>Upto 3 MT and above free</td>
+                            </td>';
+  if(!empty($deal_id)){echo'<td><input name="uc[21]" value="'.$uc[21].'"></td>';}
+                       echo'<td>Upto 3 MT and above free</td>
                         </tr>
                         <tr>
                             <td>Re Delivery charges</td>
-                            <td colspan="2">Rs. 1200 per GC or actual expense whichever is higher</td>
+                            <td colspan="3">Rs. 1200 per GC or actual expense whichever is higher</td>
                         </tr>
-                        <tr>
+                        <tr '.(($oc[22]!=$uc[22])?"style='background:#ffbaba;'":"").'>
                             <td>ODA Charges</td>
                             <td colspan="2">
                                 <div style="width:49%; display:inline-block;">
                                     <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge" >
                                 </div>
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_distance" name="oc[23]" value="'.$oc[23].'" type="number" style="width:45%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
-                                    <input id="oda_weight" name="oc[24]" value="'.$oc[24].'" type="number" style="width:45%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip">
+                                    <input id="oda_distance" name="oc[23]" value="'.$oc[23].'" type="number" style="width:40%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
+                                    <input id="oda_weight" name="oc[24]" value="'.$oc[24].'" type="number" style="width:40%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip">
 									&nbsp;<span onclick="rate_alert()" class="btn btn-primary btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
                                 </div>
-                            </td>
-                        </tr>';
+                            </td>';
+	if(!empty($deal_id)){
+					   echo'<td colspan="2">
+                                <div style="width:49%; display:inline-block;">
+                                    <input id="uoda_value" name="uc[22]" value="'.$uc[22].'" placeholder="Charge" >
+                                </div>
+                                <div style="width:49%; display:inline-block;">
+                                    <input id="uoda_distance" name="uc[23]" value="'.$uc[23].'" type="number" style="width:40%" placeholder="Distance ( In KM )" onkeyup="uoda_cal()" class="exip">
+                                    <input id="uoda_weight" name="uc[24]" value="'.$uc[24].'" type="number" style="width:40%" placeholder="Weight ( In KG )" onkeyup="uoda_cal()" class="exip">
+									&nbsp;<span onclick="rate_alert()" class="btn btn-primary btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                                </div>
+                            </td>';
+	}
+                        echo'</tr>';
                     }
                 echo'</tbody>
                     </table>';
@@ -3194,13 +3261,26 @@ public function all_update_expense_status()
     {
         $this->load->model(array('Branch_model','Enquiry_model','Leads_Model'));
         $current_user = $this->User_model->read_by_id($this->session->user_id);
-        $oc = json_encode($this->input->post('oc'));
         //print_r($this->input->post('current_stage'));exit;
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
         $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>'18940'))->row();
 		$unique = $this->input->post('unique_no');
 		$edit = $this->input->post('edited');
+        if($edit==1 && $this->input->post('booking_type')=='sundry')
+        {		
+		$urate_type = array();$zero = array();
+		$urate_type['rate_type'] = $this->input->post('oc[rate_type]');
+		$u_post = $this->input->post('uc');
+		$zero[] = 'NA';
+		$unset = array_merge($zero,$u_post);
+		$final = array_merge($urate_type,$unset);
+		unset($final[0]);
+		$uc = json_encode($final);
+		}else{
+		$uc = json_encode($this->input->post('uc'));
+		}
+        $oc = json_encode($this->input->post('oc'));
 //For Region		
 $r_string = $enq->rnm;		
 $r_lastChar = $r_string[-1];
@@ -3233,6 +3313,7 @@ if(is_numeric($b_lastChar)){
 		$number = str_pad(rand(0,999), 3, "0", STR_PAD_LEFT);
 		$type   = strtoupper($this->input->post('booking_type'));
 		$unique_no = strtoupper($region).''.$r_add.''.strtoupper($area).''.$a_add.''.strtoupper($branch).''.$b_add.''.$number.''.$type.'-1.0';
+		$uc = $oc;
 		}else{
 		if($edit==1)
             {
@@ -3240,8 +3321,10 @@ if(is_numeric($b_lastChar)){
 			$nexts = $next[1]+1;
 			$next_version = $nexts.'.0';
         $unique_no = $next[0].'-'.$next_version;
+		$uc = $uc;
         }else{
-			$unique_no = $unique;	
+			$unique_no = $unique;
+            $uc = $oc;			
 			}		
 		}
 			
@@ -3257,6 +3340,7 @@ if(is_numeric($b_lastChar)){
                     'dtype'=>$this->input->post('dtype'),                    
                     'comp_id'=>$this->session->companey_id,
                     'other_charges'=>$oc,
+					'update_charges'=>$uc,
                     'updation_date'=>date('Y-m-d H:i:s'),
                     'stage_id'=>$this->input->post('current_stage'),
                     'status'=>'0',
@@ -3352,6 +3436,7 @@ if(is_numeric($b_lastChar)){
                         'delivery_branch'=>$this->input->post('did['.$link_id.']'),
                         'rate'=>$this->input->post('rate['.$link_id.']')??'',
                         'discount'=>$this->input->post('discount['.$link_id.']')??'',
+						'final_rate'=>$this->input->post('final_rate['.$link_id.']')??'',
                         'insurance'=>$this->input->post('insurance['.$link_id.']')??'',
                         'paymode'=>$this->input->post('paymode['.$link_id.']')??'',
                         'potential_tonnage'=>$this->input->post('pton['.$link_id.']')??'',
@@ -3543,11 +3628,8 @@ if(is_numeric($b_lastChar)){
     public function branch_panel_clone($did,$type='branch')
     {
     $this->load->model('Branch_model');
-
     $region_list = $this->Branch_model->sales_region_list()->result();
-
-    echo'<div class="row" style=" margin-bottom: 20px;
-    border-bottom: 1px solid #d6d6d6; padding-bottom:20px;">
+    echo'<div class="row" style="padding-bottom: 20px;border-bottom: 1px solid #d6d6d6;">
             <div class="col-lg-6">
                 <div class="form-group">';
                 if($type=='branch')
@@ -3590,6 +3672,7 @@ if(is_numeric($b_lastChar)){
                     </div>
                 </div>
             </div>
+	
             <div class="col-lg-6">
                 <div class="form-group">';
             if($type=='branch')
@@ -3778,7 +3861,13 @@ if(is_numeric($b_lastChar)){
         $ref_no = !empty($agr->ref_no)?$agr->ref_no+1:1;
 
         $deal   =    $this->Branch_model->get_deal($deal_id);
+       // $oc =(array) json_decode($deal->other_charges);
+		
+		if($deal->status==0){
         $oc =(array) json_decode($deal->other_charges);
+	   }else{
+		$oc =(array) json_decode($deal->update_charges);
+	   }
 
         $deal_data = $this->Branch_model->get_deal_data($deal_id);
 		
@@ -4120,7 +4209,12 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $this->load->model(array('Branch_model','Leads_Model','Location_model'));
         $deal_id = $this->input->post('deal_id');
         $deal   =    $this->Branch_model->get_deal($deal_id);
+       // $oc =(array) json_decode($deal->other_charges);
+		if($deal->status==0){
         $oc =(array) json_decode($deal->other_charges);
+	   }else{
+		$oc =(array) json_decode($deal->update_charges);
+	   }
 
         for($i=110;$i<=115;$i++)
         {   
