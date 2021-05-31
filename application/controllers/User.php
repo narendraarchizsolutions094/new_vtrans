@@ -512,6 +512,7 @@ class User extends CI_Controller
            
             'picture' => (!empty($img) ? $img : $this->input->post('new_file')),
             'report_to' => $this->input->post('report_to', true),
+            'sibling_id' => $this->input->post('sibling_user', true),
             'telephony_agent_id' => $this->input->post('telephony_agent_id', true),
             'process' => !empty($this->input->post('process', true)) ? implode(',', $this->input->post('process', true)) : '',
             'products' => !empty($this->input->post('product', true)) ? implode(',', $this->input->post('product', true)) : '',

@@ -40,7 +40,14 @@ class Common_model extends CI_Model {
         array_push($arr, $user_right);        
         return $arr;
     }
-    public function get_categories($user_id){   
+    public function get_categories($user_id){           
+        $user_row  = $this->db->where('pk_i_admin_id',$user_id)->get('tbl_admin')->row_array();
+        $sibling_id = 0;
+        if(!empty($user_row['sibling_id'])){
+            $user_id = $user_row['sibling_id'];
+            $sibling_id = $user_row['sibling_id'];
+        }
+
         $this->list = array();
         $categories = array();
         $this->db->select('pk_i_admin_id');
@@ -59,6 +66,9 @@ class Common_model extends CI_Model {
         $categories    =   $this->fetch_recursive($categories);
 
         array_push($categories, $user_id);
+        if($sibling_id){
+            array_push($categories, $sibling_id);
+        }
         
         return array_unique($categories);
     }

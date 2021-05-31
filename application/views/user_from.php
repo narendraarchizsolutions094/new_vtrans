@@ -291,7 +291,7 @@
                                     
                                     <label>Report to</label>
                                     <select class="form-control" name="report_to">
-                                        <option value="" style="display:none;">---Select---</option>
+                                        <option value="" >---Select---</option>
                                         <?php foreach($user_list as $user){?>
                                         
                                             <option value="<?= $user->pk_i_admin_id ?>" <?php if($user->pk_i_admin_id==$department->report_to){echo 'selected';}?>><?= $user->s_display_name." ".$user->last_name ?></option>
@@ -300,6 +300,19 @@
                                     </select>
                                     
                                 </div>
+                                
+                                <div class="form-group col-md-4">                                    
+                                    <label>Sibling User</label>
+                                    <select class="form-control" name="sibling_user" <?php if($department->report_to){ echo "disabled" ;}?>>
+                                        <option value="" >---Select---</option>
+                                        <?php foreach($user_list as $user){?>                                        
+                                            <option value="<?= $user->pk_i_admin_id ?>" <?php if($user->pk_i_admin_id==$department->sibling_id ){echo 'selected';}?>><?= $user->s_display_name." ".$user->last_name ?></option>                                        
+                                        <?php } ?>
+                                    </select>
+                                    <small>Note - if this user has any sibling user then Nighter this user report to anyone nor anyone should report to this user</small>                                    
+                                </div>
+
+
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label class="control-label" for="process">Process <i class="text-danger">*</i></label> 									

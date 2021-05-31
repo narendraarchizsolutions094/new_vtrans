@@ -1194,7 +1194,7 @@ class Ticket extends CI_Controller
 		$tabs = $this->db->select('id')
 						->where(array('form_for'=>2,'primary_tab'=>1))
 						->get('forms')
-						->row();
+						->row(); 
         if($tabs)
             $primary_tab = $tabs->id;
         $data['primary_tab'] = $primary_tab;
