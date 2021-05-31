@@ -131,8 +131,8 @@
 <?php //} ?>
 <?php   //if (user_access('d36')) { ?>
 
-<div class="modal fade" id="editBranch" tabindex="-1" role="dialog" aria-labelledby="course_upload_label" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="editBranch" role="dialog" aria-labelledby="course_upload_labels" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="documents">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>

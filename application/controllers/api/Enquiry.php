@@ -3221,4 +3221,42 @@ public function get_enq_list_post(){
       'msg' =>$data
        ], REST_Controller::HTTP_OK);
   }
+  
+ public function call_timline_post()
+  {      
+  	$this->load->model('Leads_Model');
+	$company_id = $this->input->post('company_id');
+    $enquiry_id   = $this->input->post('enquiry_id');
+	$comment_msg  = $this->input->post('comment_msg[]');
+	$created_by   = $this->input->post('created_by');
+	$remark       = $this->input->post('remark[]');   
+    if(!empty($enquiry_id))
+    {
+	foreach($comment_msg as $key => $value){	
+	  $data  = $this->Leads_Model->add_comment_for_events_stage_api($value,$enquiry_id,'','',$remark[$key],$created_by,'5',$company_id);
+	}
+      if(!empty($data))
+      {
+        $this->set_response([
+        'status'      => TRUE,           
+        'msg'     => "Timeline Created Successfully"
+        ], REST_Controller::HTTP_OK);   
+      }
+      else
+      {
+        $this->set_response([
+        'status'  => false,           
+        'msg'     => "No Data Updated"
+        ], REST_Controller::HTTP_OK); 
+      }
+    }
+    else
+    {
+      $msg = 'Please Provide Valid Enquery id';
+      $this->set_response([
+        'status'  => false,
+        'msg'     => $msg,//"Please provide a company id"
+      ],REST_Controller::HTTP_OK);
+    } 
+  }
 }

@@ -782,7 +782,7 @@ class location extends CI_Controller {
 						$this->db->set('created_by', $this->session->userdata('user_id'));
 						$this->db->set('type', 'branch');
 						$this->db->set('branch_status', '1');
-						$this->db->where('branch_name', $id5->row()->branch_id);
+						$this->db->where('branch_id', $id5->row()->branch_id);
                         $this->db->update('branch');
                         $branch_id = $id5->row()->branch_id;
                     } else {

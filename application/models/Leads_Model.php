@@ -1193,10 +1193,16 @@ public function all_description($diesc) {
         $this->db->insert('tbl_comment');
     }
 
-    public function add_comment_for_events_stage_api($conversation, $lead_id,$stage_id,$stage_desc,$stage_remark,$user_id,$comment_type=0) {
+    public function add_comment_for_events_stage_api($conversation, $lead_id,$stage_id,$stage_desc,$stage_remark,$user_id,$comment_type=0,$company_id=0) {
         $ld_updt_by = $user_id;
+		if(empty($company_id)){
+		   $company_id = $this->session->userdata('companey_id');
+		}else{
+		   $company_id = $company_id;
+		}
         $adt = date("Y-m-d H:i:s");
         $this->db->set('lead_id', $lead_id);
+		$this->db->set('comp_id',$company_id);
         $this->db->set('created_date', $adt);
         $this->db->set('comment_msg', $conversation);
         $this->db->set('created_by', $ld_updt_by);
