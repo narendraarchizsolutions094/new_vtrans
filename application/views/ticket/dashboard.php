@@ -180,13 +180,23 @@
 </div>
 <br>
 <div class="row pd-20" style="width:100%;">
-    <div class="col-md-12 pd-20">
+    <div class="col-md-6 pd-20">
         <div class="card card-graph_full2">
             <br>
             <center>
                 <h3>Referred By</h3>
             </center>
             <div id="chartdiv1"></div>
+            <br>
+        </div>
+    </div>
+	<div class="col-md-6 pd-20">
+        <div class="card card-graph_full2">
+            <br>
+            <center>
+                <h3>Failure Point Region Wise Ticket</h3>
+            </center>
+            <div id="region_chart"></div>
             <br>
         </div>
     </div>
@@ -277,6 +287,83 @@
 
 <br><!-- Chart code -->
 <script>
+generate_pie_graph('region_chart', 'Region Wise');
+function generate_pie_graph(elm, title) {
+        var send_data = '<?php 
+             $filters['from_created']=$fromdate;
+             $filters['to_created']=$todate;
+             echo json_encode($filters);
+            ?>';
+        // $form_data= serialize;
+        var url = "<?=base_url().'report/ticket_report_analitics/'?>" + elm;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.parse(send_data),
+            success: function(result) {
+                result = JSON.parse(result);
+                counter = 0;
+
+                Highcharts.chart(elm, {
+                    chart: {
+                        type: 'pie',
+                        options3d: {
+                            enabled: true,
+                            alpha: 45
+                        },
+                        margin: [0, 0, 0, 0],
+                        spacingTop: 0,
+                        spacingBottom: 0,
+                        spacingLeft: 0,
+                        spacingRight: 0
+                    },
+                    title: {
+                        text: ''
+                    },
+                    exporting: {
+                        buttons: {
+                            contextButton: {
+                                menuItems: ["viewFullscreen", "printChart", "downloadPNG"]
+                            }
+                        }
+                    },
+                    subtitle: {
+                        text: title
+                    },
+                    plotOptions: {
+                        pie: {
+                            //size:'40%',
+                            // dataLabels: {
+                            //     enabled: false
+                            // },
+                            innerSize: 50,
+                            depth: 45,
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                color: '#000000',
+                                connectorColor: '#000000',
+                                useHTML:true,
+                                formatter: function() {
+                                    //counter++;
+                                    return this.point.name+'-'+this.point.y;
+                                }
+                            }
+                        }
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Count',
+                        data: result
+                    }]
+                });
+            }
+        });
+    }
+
 $(document).ready(function() {
     $.ajax({
         url: "<?=base_url('ticket/subsource_typeJson/'.$fromdate.'/'.$todate.'')?>",
@@ -874,6 +961,13 @@ $(document).ready(function() {
     });
 });
 </script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/cylinder.js"></script>
+<script src="https://code.highcharts.com/modules/funnel3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>

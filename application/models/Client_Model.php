@@ -278,6 +278,57 @@ class Client_Model extends CI_Model
         //echo $this->db->last_query(); exit();
     }
 	
+	public function filter_getCompanyList($id =0,$where=array(),$comp_id=0,$user_id=0,$process=0,$keyword=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
+    {
+
+        $process = !empty($process)?$process:$this->session->process;
+        $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
+
+        $user_id  = empty($user_id)?$this->session->user_id:$user_id;
+
+        if($user_id!=-1)
+        {
+            if(!empty($user_id))
+            {
+                $all_reporting_ids    =   $this->common_model->get_categories($user_id);
+            }
+        }
+		$this->db->select('comp.id,comp.company_name');
+        $this->db->from('tbl_company comp')
+                        ->group_by('comp.id');
+        
+
+        $where="comp.comp_id=".$comp_id;
+
+        if(!empty($where))
+            $this->db->where($where);
+
+
+        if(is_array($process))
+            $this->db->where_in('comp.process_id',$process);
+        else 
+            $this->db->where(' comp.process_id IN ('.$process.') ');
+
+        if(!empty($id))
+        {
+            $this->db->where('comp.id',$id);
+        }
+		
+		if(!empty($keyword))
+        {
+            $this->db->like('comp.company_name',$keyword);
+        }
+
+        if($action=='count')
+         return  $this->db->count_all_results();
+        if($limit!=-1 and $offset!=-1)
+            $this->db->limit($limit,$offset);
+        
+        $res =  $this->db->get();
+
+        return $res;
+    }
+	
 	public function getCompanyList_enq($id =0,$where=array(),$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
     {
 

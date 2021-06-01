@@ -381,7 +381,46 @@ class Dashboard extends REST_Controller {
                 'message' => strip_tags(validation_errors()),
             ], REST_Controller::HTTP_OK); 
         }
-    }   
+    }
+
+    public function filter_unique_company_list_post()
+    {
+        $user_id = $this->input->post('user_id')??0;
+        $company_id = $this->input->post('company_id');
+        $process =  $this->input->post('process');//can be multiple
+        $key = $this->input->post('key')??0;
+		$keyword = $this->input->post('keyword');
+
+        $this->form_validation->set_rules('company_id','company_id', 'trim|required');
+        $this->form_validation->set_rules('process','process', 'trim|required');
+        if($this->form_validation->run()==true)
+        {
+            $this->load->model('Client_Model');
+          
+            $res = $this->Client_Model->filter_getCompanyList($key,array(),$company_id,$user_id,$process,$keyword)->result();
+            $ary = array();
+            foreach ($res as $key => $value)
+            {
+                unset($value->enq_ids);
+                unset($value->created_at);
+                unset($value->updated_at);
+                unset($value->comp_id); 
+                $ary[] = $value;
+            }
+            $res = $ary;
+            $this->set_response([
+                'status' => TRUE,            
+                'data' => $res
+            ], REST_Controller::HTTP_OK); 
+        }
+        else
+        {
+            $this->set_response([
+                'status' => FALSE,            
+                'message' => strip_tags(validation_errors()),
+            ], REST_Controller::HTTP_OK); 
+        }
+    }	
 
     public function account_by_vcompany_post()
     {
