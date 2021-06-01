@@ -491,6 +491,7 @@
                       <?=($showall or in_array(7,$acolarr))?'<th>Created By</th>':''?>
                       <?=($showall or in_array(9,$acolarr))?'<th>Created Date</th>':''?>
                       <?=($showall or in_array(18,$acolarr))?'<th>'.display('last_updated').'</th>':''?>                      
+											<?=($showall or in_array(20,$acolarr))?'<th>Name</th>':''?>
 											<?=($showall or in_array(2,$acolarr))?'<th>Client</th>':''?>
 										  <?=($showall or in_array(3,$acolarr))?'<th>Email</th>':''?>
 											<?=($showall or in_array(4,$acolarr))?'<th>Phone</th>':''?>
@@ -563,6 +564,11 @@
           <div class = "col-md-4">             
           <label class=""><input type="checkbox" class="choose-col" id="choose-col" value = "1" <?php echo ($showall == true or in_array(1, $acolarr)) ? "checked" : ""; ?>> Ticket</label>
           </div>
+          
+          <div class = "col-md-4">  
+          <label class=""><input type="checkbox" class="choose-col"  value = "20"  <?php echo ($showall == true or in_array(20, $acolarr)) ? "checked" : ""; ?>>Name</label> 
+          </div>
+
           <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>>  Client</label> 
           </div>
