@@ -1193,7 +1193,7 @@ public function all_description($diesc) {
         $this->db->insert('tbl_comment');
     }
 
-    public function add_comment_for_events_stage_api($conversation, $lead_id,$stage_id,$stage_desc,$stage_remark,$user_id,$comment_type=0,$company_id=0) {
+    public function add_comment_for_events_stage_api($conversation, $lead_id,$stage_id,$stage_desc,$stage_remark,$user_id,$comment_type=0,$company_id=0,$timestamp=0) {
         $ld_updt_by = $user_id;
 		if(empty($company_id)){
 		   $company_id = $this->session->userdata('companey_id');
@@ -1210,6 +1210,7 @@ public function all_description($diesc) {
         $this->db->set('stage_description', $stage_desc);
         $this->db->set('remark', $stage_remark);
         $this->db->set('coment_type', $comment_type);
+		$this->db->set('call_timestamp', $timestamp);
         return $this->db->insert('tbl_comment');
     }
     

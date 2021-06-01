@@ -3229,11 +3229,15 @@ public function get_enq_list_post(){
     $enquiry_id   = $this->input->post('enquiry_id');
 	$comment_msg  = $this->input->post('comment_msg[]');
 	$created_by   = $this->input->post('created_by');
-	$remark       = $this->input->post('remark[]');   
+	$remark       = $this->input->post('remark[]'); 
+    $call_timestamp  = $this->input->post('call_timestamp[]');	
     if(!empty($enquiry_id))
     {
-	foreach($comment_msg as $key => $value){	
-	  $data  = $this->Leads_Model->add_comment_for_events_stage_api($value,$enquiry_id,'','',$remark[$key],$created_by,'5',$company_id);
+	foreach($comment_msg as $key => $value){
+      $find_row = $this->db->select('comm_id')->where('call_timestamp',$call_timestamp[$key])->where('lead_id',$enquiry_id)->get('tbl_comment')->row_array();
+    if(empty($find_row['comm_id'])){	  
+	  $data  = $this->Leads_Model->add_comment_for_events_stage_api($value,$enquiry_id,'','',$remark[$key],$created_by,'5',$company_id,$call_timestamp[$key]);
+    }
 	}
       if(!empty($data))
       {
