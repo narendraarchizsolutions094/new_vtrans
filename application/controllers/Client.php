@@ -317,6 +317,14 @@ class Client extends CI_Controller {
           $this->db->where(array('cc_id'=>$cc_id,'comp_id'=>$this->session->companey_id));
           $this->db->delete('tbl_client_contacts');
     }
+	
+	public function delete_log()
+    {
+         $cc_id = $this->input->post('cc_id');
+          $this->db->where(array('comm_id'=>$cc_id,'comp_id'=>$this->session->companey_id));
+          $this->db->delete('tbl_comment');
+    }
+	
     public function edit_contact()
     {
         if(user_role('1012')==true){
@@ -445,6 +453,14 @@ class Client extends CI_Controller {
         $data['all_designation'] = $this->Leads_Model->desi_select();
         $data['contact_create_form'] = $this->load->view('contacts/create_contact_form',array(),true);
         $data['content'] = $this->load->view('enquiry/contacts', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+	
+	public function all_type_log()
+    {
+        $this->load->model(array('Client_Model','Enquiry_Model'));
+        $data['title'] = 'Logs';
+        $data['content'] = $this->load->view('enquiry/all_logs', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
 
@@ -2561,6 +2577,100 @@ public function all_update_expense_status()
         );
         echo json_encode($output);
     }
+	
+	public function log_load_data()
+    { 
+        $this->load->model('contacts_datatable_model');
+        $result = $this->contacts_datatable_model->getRows_log($_POST);
+        $colsall  = true;
+        $cols = array();
+        if(!empty($_POST['allow_cols']))
+        {
+            $cols  = explode(',',$_POST['allow_cols']);
+            $colsall = false;
+        }
+        $data = array();
+        $header = array();
+        $i=1;
+        foreach ($result as $key => $res)
+        {
+            $sub = array();
+
+            $sub[] = $i++;
+            $header[0] = '#';
+            if(!empty($_POST['view_all']))
+            {
+                if($res->status=='1')
+                    $url = base_url('enquiry/view/').$res->enquiry_id;
+                else if($res->status=='2')
+                    $url = base_url('lead/lead_details/').$res->enquiry_id;
+                else if($res->status=='3')
+                    $url = base_url('client/view/').$res->enquiry_id;
+                else
+                    $url = base_url('client/view/').$res->enquiry_id;
+
+                if($colsall || in_array(1,$cols))
+                    //$sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
+                $sub[] = '<a href="'.$url.'">'.$res->client_name.'</a>'??'NA';
+                $header[1] = 'Name';
+            }
+           
+            if($colsall || in_array(2,$cols)){
+                $sub[] = trim($res->company_name)??'NA';
+                $header[2] = 'Company Name';
+            }
+
+            if($colsall || in_array(3,$cols)){
+                $sub[] = trim($res->phone)?$res->phone:'NA';
+                $header[3] = 'Mobile Number';
+            }
+            
+            if($colsall || in_array(4,$cols)){
+                $sub[] = $res->emailid??'NA';
+                $header[4] = 'Email ID';
+            }
+			
+			if($colsall || in_array(5,$cols)){
+                $sub[] = trim($res->comment_msg)?$res->comment_msg:'NA';
+                $header[5] = 'Log Header';
+            }
+
+            if($colsall || in_array(6,$cols)){
+                $sub[] = trim($res->remark)?$res->remark:'NA';
+                $header[6] = 'Log Details';
+            }
+
+            if($colsall || in_array(7,$cols)){
+                $sub[] = $res->emailid??'NA';
+                $header[7] = 'create By';
+            }
+
+            if($colsall || in_array(8,$cols))
+            {
+                $html = '';
+                $html.='<td style="width:50px;">
+                                            <div class="btn-group">';
+                  if(user_access('log2'))
+                  {
+                    $html.='<button class="btn btn-danger btn-xs"  data-cc-id="'.$res->comm_id.'" onclick="deletelog(this)">
+                      <i class="fa fa-trash"></i>
+                    </button>';
+                  }
+                $sub[]=$html;
+                $header[8] = 'Action';
+            }
+            $data[] =$sub;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" =>$this->contacts_datatable_model->countAll_log(),
+            "recordsFiltered" => $this->contacts_datatable_model->countFiltered_log($_POST),
+            "data" => $data,
+            "headings"=>$header,
+        );
+        echo json_encode($output);
+    }
 
  
     public function company_load_data()
@@ -3228,7 +3338,7 @@ public function all_update_expense_status()
                               <select name="edit_status">';
                          echo   '<option value="">Action</option>
                                     <option value="approve">Approve</option>
-                                    <option value"reject">Reject</option>
+                                    <option value="reject">Reject</option>
                                     <option value="resend">Send for Approval</option>
                                 ';
                         echo'</select></div>';
@@ -3513,7 +3623,7 @@ if(is_numeric($b_lastChar)){
                 $current_user = $this->User_model->read_by_id($this->session->user_id);
                 
                 $this->db->set('related_to',$current_user->report_to);
-                $this->Leads_Model->add_comment_for_events_popup('Deal needs approval, edited by '.$udata->s_display_name.' '.$udata->last_name,date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approval',1,0,$current_user->report_to);
+                $this->Leads_Model->add_comment_for_events_popup($deal->quatation_number.' Deal needs approval, edited by '.$udata->s_display_name.' '.$udata->last_name,date('d-m-Y'),$udata->s_display_name.' '.$udata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approval',1,0,$current_user->report_to);
               
                 $this->db->set('approval','pending');
                 $this->db->where('id',$deal->id);
@@ -3538,7 +3648,7 @@ if(is_numeric($b_lastChar)){
                         )
                     );
                 }
-                $this->Leads_Model->add_comment_for_events_stage('Deal approval request send.',$enq->Enquery_id,0,0,'',0);
+                $this->Leads_Model->add_comment_for_events_stage($deal->quatation_number.' Deal approval request send.',$enq->Enquery_id,0,0,'',0);
 
                 redirect($_SERVER['HTTP_REFERER']);
            }
@@ -3568,11 +3678,11 @@ if(is_numeric($b_lastChar)){
            if($action=='approve' && $deal->createdby!=$this->session->user_id)
            {
                 
-              $this->Leads_Model->add_comment_for_events_popup('Deal approved By '.$cdata->s_display_name.' '.$cdata->last_name,date('d-m-Y'),$cdata->s_display_name.' '.$cdata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,'Deal approved',1,0);
+              $this->Leads_Model->add_comment_for_events_popup($deal->quatation_number.' Deal approved By '.$cdata->s_display_name.' '.$cdata->last_name,date('d-m-Y'),$cdata->s_display_name.' '.$cdata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,$deal->quatation_number.' Deal approved',1,0);
 
-              $this->Leads_Model->add_comment_for_events_stage('Deal approved ',$enq->Enquery_id,0,0,'',0);
+              $this->Leads_Model->add_comment_for_events_stage($deal->quatation_number.' Deal approved ',$enq->Enquery_id,0,0,'',0);
 
-                $this->db->where('id',$deal->copy_id)->delete('commercial_info');
+                //$this->db->where('id',$deal->copy_id)->delete('commercial_info');
 
                 $this->db->set('approval','done');
                 $this->db->set('edited',0);

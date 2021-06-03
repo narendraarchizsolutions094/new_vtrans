@@ -3263,4 +3263,34 @@ public function get_enq_list_post(){
       ],REST_Controller::HTTP_OK);
     } 
   }
+  
+  public function exist_check_post()
+  {      
+  	    $type = $this->input->post('type_data');
+        $parameter = $this->input->post('parameter');
+		$company = $this->input->post('company_id');
+	
+        $this->db->select('enquiry_id');
+		if($parameter=='mobile'){
+		$this->db->where('phone',$type);
+		}
+		if($parameter=='email'){
+		$this->db->where('email',$type);
+		}
+		$this->db->where('comp_id',$company);
+        $res=$this->db->get('enquiry');
+        $enq_id=$res->row();	
+    if(!empty($enq_id->enquiry_id))
+    {
+		if($parameter=='mobile'){
+		$msg = 'This Mobile Already Exist'; 
+		}else if($parameter=='email'){
+		$msg = 'This Email Already Exist';
+		}
+        $this->set_response([
+        'status'      => TRUE,           
+        'msg'     => $msg,
+        ], REST_Controller::HTTP_OK);
+    } 
+  }
 }

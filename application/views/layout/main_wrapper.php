@@ -1453,9 +1453,18 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         </a>
                     </li>
                     <?php
-                    }
+                    } ?>
+					
+					<?php if(user_access('log1')){ ?>
+                    <li class="<?=( $segment1=='client' AND $segment2=='all_type_log')?'active':''?>">
+                        <a href="<?=base_url('client/all_type_log')?>">
+                            <i class="fa fa-address-book icon-class"></i>
+                            <?= 'Logs';?>
+                        </a>
+                    </li>
+                    <?php } ?>
 
-                    if(user_access('1060'))
+                  <?php if(user_access('1060'))
                     {
                     ?>
 

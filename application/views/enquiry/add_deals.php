@@ -22,6 +22,7 @@
 			<div class="form-group"> 
 		        <label>Booking Type</label>
 		        <select class="form-control" name="booking_type" id="booking_type" onchange="set_type(this)">
+				    <option>#-Select Here</option>
 		            <option value="sundry">Sundry</option>
 		            <option value="ftl">FTL</option>
 		        </select>
@@ -30,6 +31,7 @@
 		<div class="col-lg-2">
 			<label>Business Type</label>
 	        <select class="form-control" name="business_type" id="business_type">
+			    <option>#-Select Here</option>
 	            <option value="in">Inward</option>
 	            <option value="out">Outward</option>
 	        </select>
@@ -37,7 +39,7 @@
 		<div class="col-lg-2">
 			<label>Insurance</label>
 	        <select class="form-control" name="insurance" id="insurance">
-			    <option>Select Here</option>
+			    <option>#-Select Here</option>
 	            <option value="carrier">Carrier</option>
                 <option value="owner">Owner risk</option>
 	        </select>
