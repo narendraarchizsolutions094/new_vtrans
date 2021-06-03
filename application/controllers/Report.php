@@ -330,13 +330,13 @@ class Report extends CI_Controller
         $data['pending'] =   $this->db->where(array('comp_id' => $comp_id, 'created_date = update_date', 'Date(update_date)' => $rdate))->count_all_results('enquiry');
       } else {
         $subject = 'Ticket Report : ' . date("F jS, Y", strtotime($schdate));
-        $data['created'] =  $this->db->where(array('company' => $comp_id, 'Date(coml_date)' => $rdate))->count_all_results('tbl_ticket');
-        $data['assigned'] =   $this->db->where(array('tbl_ticket.company' => $comp_id, 'Date(tbl_ticket_conv.send_date)' => $rdate, 'tbl_ticket_conv.subj' => 'Ticked Assigned'))
+        $data['created'] =  $this->db->where(array('company' => $comp_id, 'Date(coml_date)' => $rdate,'process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
+        $data['assigned'] =   $this->db->where(array('tbl_ticket.company' => $comp_id, 'Date(tbl_ticket_conv.send_date)' => $rdate, 'tbl_ticket_conv.subj' => 'Ticked Assigned','tbl_ticket.process_id'=>$filters['process_id']))
           ->join('tbl_ticket_conv', 'tbl_ticket_conv.tck_id=tbl_ticket.id')->count_all_results('tbl_ticket');
-        $data['updated'] =   $this->db->where(array('company' => $comp_id, 'Date(last_update)' => $rdate))->count_all_results('tbl_ticket');
-        $data['followups'] =   $this->db->where(array('comp_id' => $comp_id, 'Date(send_date)' => $rdate))->count_all_results('tbl_ticket_conv');
-        $data['all_closed'] =   $this->db->where(array('company' => $comp_id, 'ticket_status' => 3, 'Date(last_update)' => $rdate))->count_all_results('tbl_ticket');
-        $data['pending'] =   $this->db->where(array('company' => $comp_id, 'last_update = coml_date', 'Date(last_update)' => $rdate))->count_all_results('tbl_ticket');
+        $data['updated'] =   $this->db->where(array('company' => $comp_id, 'Date(last_update)' => $rdate,'tbl_ticket.process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
+        $data['followups'] =   $this->db->where(array('comp_id' => $comp_id, 'Date(tbl_ticket_conv.send_date)' => $rdate,'tbl_ticket.process_id'=>$filters['process_id']))->join('tbl_ticket', 'tbl_ticket_conv.tck_id=tbl_ticket.id')->count_all_results('tbl_ticket_conv');
+        $data['all_closed'] =   $this->db->where(array('company' => $comp_id, 'ticket_status' => 3, 'Date(last_update)' => $rdate,'tbl_ticket.process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
+        $data['pending'] =   $this->db->where(array('company' => $comp_id, 'last_update = coml_date', 'Date(last_update)' => $rdate,'tbl_ticket.process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
       }
       $encrypted_string = $this->encryption->encrypt($schid);
       $schid  = str_replace(array('+', '/', '='), array('-', '_', '~'),  $encrypted_string);

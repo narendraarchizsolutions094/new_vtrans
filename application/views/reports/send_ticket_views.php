@@ -77,8 +77,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="btn-group">
+            <?php
+            $process_id = $this->session->process[0];
+            ?>
                 <a target="_BLANK" class="btn btn-primary"
-                    href="<?=base_url().'ticket/daily_summary/141?date='.date('Y-m-d',strtotime('-1 days'))?>"> <i
+                    href="<?=base_url().'ticket/daily_summary/'.$process_id.'?date='.date('Y-m-d',strtotime('-1 days'))?>"> <i
                         class="fa fa-arrow-right"></i> Ticket Summary </a>
             </div>
             <div class="row text-center">
