@@ -89,7 +89,7 @@ if(!empty($failurePoints)){
                 <div class="btn-group"> 
                      <a class="btn btn-primary" href="javascript:void(0)" onclick="window.history.back();"> <i class="fa fa-arrow-left"></i>  Back </a>  
                 </div>
-                <div class="btn-group"> 
+                <!-- <div class="btn-group"> 
                 <?php if($process_id == 198){ ?>                    
                         <a class="btn btn-primary" href="<?=base_url().'ticket/daily_summary/141?date='.date('Y-m-d',strtotime('-1 days'))?>">   Get V-Trans Report</a>                      
                     <?php
@@ -100,7 +100,7 @@ if(!empty($failurePoints)){
                     }
                     ?>
 
-                </div>
+                </div> -->
             </div>
             <div class="panel-body panel-form">
 			
