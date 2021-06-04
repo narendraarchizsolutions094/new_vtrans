@@ -3922,7 +3922,7 @@ echo  $details1;
                                 $opt  ='<select onchange="location.href=\''.base_url('client/deal_action/'.$value->id.'/').'\'+this.value">';
                                 $opt.='<option value="">Action</option>
                                     <option value="approve">Approve</option>
-                                    <option value"reject">Reject</option>
+                                    <option value="reject">Reject</option>
                                     <option value="resend">Send for Approval</option>
                                 ';
                                 $opt.='</select>';
@@ -3965,7 +3965,7 @@ echo  $details1;
                 //         $opt  ='<select onchange="location.href=\''.base_url('client/deal_action/'.$value->id.'/').'\'+this.value">';
                 //             $opt.='<option value="">Action</option>
                 //                     <option value="approve">Approve</option>
-                //                     <option value"reject">Reject</option>
+                //                     <option value="reject">Reject</option>
                 //                     <option value="resend">Send for Approval</option>
                 //                 ';
                 //         $opt.='</select>';
