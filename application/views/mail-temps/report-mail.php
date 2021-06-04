@@ -66,7 +66,7 @@
                                  Greetings for the day.
                                  <br><br>
                                  <?php
-                                 if($filters['process_id'] == 198){
+                                 if(!empty($filters['process_id']) && $filters['process_id'] == 198){
                                     $crm = 'V-Xpress';
                                  }else{
                                     $crm = 'V-Trans';
