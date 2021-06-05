@@ -3374,7 +3374,7 @@ public function all_update_expense_status()
         //print_r($this->input->post('current_stage'));exit;
         $deal_id = $this->input->post('info_id');
         $enq_id = $this->input->post('enquiry_id');
-        $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>'18940'))->row();
+        $enq =  $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$enq_id))->row();
 		$unique = $this->input->post('unique_no');
 		$edit = $this->input->post('edited');
         if($edit==1 && $this->input->post('booking_type')=='sundry')
