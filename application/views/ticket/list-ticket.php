@@ -572,7 +572,9 @@ input[name=lead_stages]{
                       ?>
                       <?=($showall or in_array(7,$acolarr))?'<th>Created By</th>':''?>
                       <?=($showall or in_array(9,$acolarr))?'<th>Date</th>':''?>
-                      <?=($showall or in_array(18,$acolarr))?'<th>'.display('last_updated').'</th>':''?>                      
+                      <?=($showall or in_array(18,$acolarr))?'<th>'.display('last_updated').'</th>':''?>    
+                      <?=($showall or in_array(20,$acolarr))?'<th>Name</th>':''?>    
+
 											<?=($showall or in_array(2,$acolarr))?'<th>'.display('problem_for').'</th>':''?>
 										  <?=($showall or in_array(3,$acolarr))?'<th>Email</th>':''?>
 											<?=($showall or in_array(4,$acolarr))?'<th>Phone</th>':''?>
@@ -1109,19 +1111,19 @@ $(document).ready(function() {
         dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp", 
         buttons: [  
             {extend: 'copy', className: 'btn-xs btn',exportOptions: {
-                        columns: "thead th:not(.noExport)"
+                        // columns: "thead th:not(.noExport)"
                     }}, 
             {extend: 'csv', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn',exportOptions: {
-                        columns: "thead th:not(.noExport)"
+                        // columns: "thead th:not(.noExport)"
                     }}, 
             {extend: 'excel', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn', title: 'exportTitle',exportOptions: {
-                        columns: "thead th:not(.noExport)"
+                        // columns: "thead th:not(.noExport)"
                     }}, 
             {extend: 'pdf', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn',exportOptions: {
-                        columns: "thead th:not(.noExport)"
+                        //columns: "thead th:not(.noExport)"
                     }}, 
             {extend: 'print', className: 'btn-xs btn',exportOptions: {
-                        columns: "thead th:not(.noExport)"
+                        // columns: "thead th:not(.noExport)"
                     }} 
              ] ,  <?php  } ?>               
             drawCallback: function (settings) {   
@@ -1248,6 +1250,9 @@ function delete_recorde(){
           </div>
           <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>>  <?=display('problem_for')?></label> 
+          </div>
+          <div class = "col-md-4">  
+          <label  class=""><input type="checkbox" class="choose-col"  value = "20"  <?php echo ($showall == true or in_array(20, $acolarr)) ? "checked" : ""; ?>> Name</label>
           </div>
           <div class = "col-md-4">  
           <label  class=""><input type="checkbox" class="choose-col"  value = "3"  <?php echo ($showall == true or in_array(3, $acolarr)) ? "checked" : ""; ?>> Email</label>
