@@ -60,196 +60,199 @@ body{
 	background-image: url(<?=$watermark?>);
 	background-size: 100% 100%;
 }
+.c43 {
+		-webkit-text-decoration-skip: none;
+		text-decoration: underline;
+		text-decoration-skip-ink: none
+	}
+.c9 {
+		padding-top: 0pt;
+		padding-bottom: 0pt;
+		line-height: 0.2;
+		orphans: 2;
+		widows: 2;
+		text-align: left
+	}
 </style>
 <body>
 <div>
-	<p class="c19"><strong><span class="c1">Ref No: </span><span class="c12">VT/HO/2019-20/<?=date('y')?>/001</span></strong><span class="c1">                                                                                                           <strong>Date:  @{creationdate}</strong></span></p>
+	<p class="c19"><strong><span class="c1">Ref No: </span><span class="c12">VT/HO/2019-20/<?=date('y')?>/001</span></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="c1"><strong>Date:  @{creationdate}</strong></span></p>
 </div>
 <p class="c0"> </p>
-<p class="c20"><span class="c1">To,</span></p>
-<p class="c20"><span class="c24 c1">M/s.  @{fullname}</span></p>
-<p class="c20"><span class="c24 c1">Address. </span><span class="c24 c12">  @{address}</span></p>
-<p class="c20"><span class="c24 c1">Mobile No. @{mobile}</span></p>
-<p class="c20"><span class="c24 c1">Email ID.    @{email}</span></p>
-<p class="c6 c18"> </p>
-<p class="c2"><span class="c1 c48">Kind Attention</span><span class="c1">: </span><span class="c12">Mr. /Ms. <strong> @{fullname}</strong></span></p>
+<p class="c9"><span class="c1"><strong>To,</strong></span></p>
+<p class="c9"><span class="c24 c1"><strong>M/s.</strong>&nbsp;  @{fullname}</span></p>
+<p class="c9"><span class="c24 c1"><strong>Address.</strong> </span><span class="c24 c12">&nbsp;  @{address}</span></p>
+
+<p class="c9"><span class="c24 c1"><strong>Mobile No.</strong>&nbsp; @{mobile}</span></p>
+<p class="c9"><span class="c24 c1"><strong>Email ID.</strong>&nbsp;    @{email}</span></p>
+
+<p class="c2"><span class="c1 c43"><strong>Kind Attention</strong></span><span class="c1">: </span><span class="c12">Mr. /Ms. <strong> @{fullname}</strong></span></p>
 <p class="c6"><span class="c24 c12">Dear Sir/Madam,</span></p>
-<p class="c20"><span class="c43 c1">Subject:  </span><span class="c43 c12">Quotation for Transportation of your valued materials.</span></p>
-<p class="c20"> </p>
+<p class="c20"><span class="c43  c1"><strong>Subject:</strong> </span><span class="c43 c12">Quotation for Transportation of your valued materials.</span></p>
+
 <p class="c20"><span class="c25">This is in continuation to our discussion regarding your logistic needs; firstly we would like to express our gratitude for the confidence shown in our services by inviting our business proposal.</span></p>
 <p class="c20"><span class="c25">Please find enclosed a write up of our company’s profile for your information. (Annexure – 1)</span></p>
 <p class="c20"><span class="c30">Further on the subjected, we are enclosing our rate annexure for the transportation of your goods along with terms and </span><span class="c25">conditions. (Annexure –2) </span></p>
 <p class="c20"><span class="c25">We are very confident that we will be able to fulfil all your requirements and will bring more value on the table with value added services such as dedicated customer service team, speedy response, 24 X 7 tracking on desktop as well as mobile, transit insurance and many more delightful features and privileges.  </span></p>
 <p class="c20"><span class="c25">Should you require any clarifications or further information, please feel free to contact us at the below given address. </span></p>
 <p class="c20"><span class="c25">Thanking you and we look forward to the pleasure of your patronage.</span></p>
-<p class="c0"> </p>
-<p class="c10"><span class="c39 c36 c38 c51">For V-Trans (India) Ltd.</span></p>
-<p class="c20"><span class="c1"><strong>Name:</strong> </span>@{username}</p>
-<p class="c11"><span class="c24 c1"><strong>Designation:</strong> </span>@{userdesignation}</p>
-<p class="c11"><span class="c24 c1"><strong>Mobile No.:</strong>  </span>@{usermobile}</p>
-<p class="c11"><span class="c24 c1"><strong>Email ID:</strong>  </span>@{useremail}<span class="c24 c1"> </span></p>
+
+<p class="c10"><span class="c43 c12">For V-Trans (India) Ltd.</span></p>
+<p class="c6 c18"> </p>
+<p class="c9"><span class="c1"><strong>Name:</strong> </span>@{username}</p>
+<p class="c9"><span class="c24 c1"><strong>Designation:</strong> </span>@{userdesignation}</p>
+<p class="c9"><span class="c24 c1"><strong>Mobile No.:</strong>  </span>@{usermobile}</p>
+<p class="c9"><span class="c24 c1"><strong>Email ID:</strong>  </span>@{useremail}<span class="c24 c1"> </span></p>
 <p class="c2"><strong><span class="c1">Encl:</span></strong><span class="c12"> As Stated above.</span><span class="c1 c39">   </span><span class="c36 c38 c57">        </span></p>
-<p id="h.gjdgxs" class="c2 c18"></p>
-<p class="c0"> </p>
-<p id="h.gjdgxs" class="c0"></p>
-<p class="c23 c24" align="center" style="font-size: 18px;
-    font-weight: bold;
-    color: #212194;
-    text-decoration: underline;">
+
+
+<p class="c23 c24" align="center" style="font-size: 18px;font-weight: bold;color: #212194;text-decoration: underline;page-break-before: always;">
 	<span class="c2">Annexure I - Company Profile </span></p>
-<p class="c1"> </p>
 <p class="c20"><strong><span class="c16">About V-Trans:</span></strong></p>
+<p class="c6 c18"> </p>
 <p class="c42"><span class="c25">V-Trans is a leading Logistics and Transport services provider headquartered in Mumbai. Incorporated in 1958, V-Trans is a pioneer in the national road transport industry, offering surface transportation solutions across the country. As a group, V-Trans offers Single Window Freight Management, Transportation, Cargo Express Movement & Warehousing Management services and solutions under its three divisions: V-Trans, V-Xpress and V-Logis.</span></p>
+<p class="c6 c18"> </p>
 <p class="c42"><span class="c25">V-Trans is enabled with best-in-the-business infrastructure automation with total IT digitization, and a robust fleet of over 1500 GPS-enabled vehicles. With over 650 + branches V-Trans has successfully been able to reach out to its customers across the country. V-Trans was one of the early companies to receive the ISO 9001:2015 certification. </span></p>
+<p class="c6 c18"> </p>
 <p class="c33"><span class="c25">The V-Trans team drives market leadership through its motivated people, cutting-edge technology, wide range of innovative, vertical specific products and value-added services to deliver unmatched standards of service quality to its customers. The companies single minded focus is to live up to their customer expectations and drive excellence in its commitment to serve each customer with passion and pride.</span></p>
+<p class="c6 c18"> </p>
 <p class="c42"><span class="c25">V-Trans market leadership is further validated by numerous awards and recognitions from customers. The company has won numerous awards including ‘Best Road Transport Company in India’ for 2018, at ICC - Supply Chain Logistics Summit & Excellence Award; ICC Supply Chain & Logistics Excellence Award – Road Transporter of the Year – 2016; Transport Excellence for Outperformance in Safety Award - 2015 to name a few. </span></p>
+<p class="c6 c18"> </p>
 <p class="c42"><span class="c25">V-Trans accept its social responsibility and believes in always giving back to the society. They have CSR programs in the field of health, education and community upliftment. V-Trans also conducts regular training programs for drivers of their owned and attached vehicles in association with WIAA & Castrol Institute to hone their driving techniques and apprise them on changing trends.</span></p>
-<p class="c1 c24"> </p>
-<p class="c23 c24" align="center" style="font-size: 18px;
-    font-weight: bold;
-    color: #212194;
-    text-decoration: underline;">
-	<span class="c2">Annexure II - Commercial’s. </span></p>
-<p class="c23"><strong><span class="c16">Freight Charges (IN INR):-  </span></strong></p>
-<p>
-	<a id="t.003eb80078a12e954a2030e22814279ce51f52cb"></a>
-	<a id="t.0"></a>
-</p>
-@freight_table
+<p class="c23 c24" align="center" style="font-size: 18px;font-weight: bold;color: #212194;text-decoration: underline;page-break-before: always;">
 <p class="c1"> </p>
+	<span class="c2">Annexure II - Commercial’s. </span></p>
+<p class="c1"> </p>
+<p class="c23"><strong><span class="c16">Freight Charges (IN INR):-  </span></strong></p>
+<p class="c1"> </p>
+@freight_table
+
 <ul class="c35 lst-kix_list_6-0 start">
 	<li class="c31 c56"><span class="c6">Payment Terms: 15 days from the date of Invoice.</span></li>
 </ul>
-<p class="c45 c64"> </p>
+
 <ul class="c35 lst-kix_list_6-0">
 	<li class="c31 c61"><span class="c6">Note: This proposal is valid for 30 days from the date of quotation.</span></li>
 </ul>
+<p class="c1"> </p>
 <p class="c9"><strong><span class="c16">Other Charges:-</span></strong></p>
-<p>
-	<a id="t.618e4acd674e7539b9b76a60d5857646a0e403b8"></a>
-	<a id="t.1"></a>
-</p>
+<p class="c1"> </p>
 @oc_table
-<p class="c9"><strong><span class="c13"> Vehicle  Detention charges matrix :</span></strong></p>
-<p>
-	<a id="t.bc29bdae038a83da8f0b0af614bbe6e2f20eabb0"></a>
-	<a id="t.2"></a>
-</p>
+<p class="c1"> </p>
+<p class="c9" style="page-break-before: always;"><strong><span class="c13"> Vehicle  Detention charges matrix :</span></strong></p>
+<p class="c1"> </p>
 <table class="c46" xss=removed border="1px" width="100%">
 	<tbody>
 		<tr class="c58">
-			<td class="c44" colspan="1" rowspan="1" style="background:#00b0f0;padding: 0px 5px;">
-				<p class="c28"><span class="c4 c36">Vehicle Type</span></p>
+			<td class="c44" colspan="1" rowspan="1" style="background:#00b0f0;padding: 5px 5px;">
+				Vehicle Type
 			</td>
-			<td class="c7" colspan="1" rowspan="1" style="background:#00b0f0;padding: 0px 5px;">
-				<p class="c28"><span class="c4 c36">Days</span></p>
+			<td class="c7" colspan="1" rowspan="1" style="background:#00b0f0;padding: 5px 5px;">
+				Days
 			</td>
-			<td class="c5" colspan="1" rowspan="1" style="background:#00b0f0;padding: 0px 5px;">
-				<p class="c28"><span class="c4 c36">Charges</span></p>
-			</td>
-		</tr>
-		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">9mt & below</span></p>
-			</td>
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">1 day after reaching loading/unloading point. (In Rs)</span></p>
-			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">1000</span></p>
+			<td class="c5" colspan="1" rowspan="1" style="background:#00b0f0;padding: 5px 5px;">
+				Charges
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
+			<td class="c44" colspan="1" rowspan="2" style="padding: 5px 5px;">
+				9mt & below
 			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">1500</span></p>
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1 day after reaching loading/unloading point. (In Rs)
 			</td>
-		</tr>
-		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">21 mt vehicle & below</span></p>
-			</td>
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">1 day after reaching loading/unloading point (In Rs)</span></p>
-			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">1500</span></p>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1000
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				2nd day onwards after reaching loading/unloading point (In Rs)
 			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">1800</span></p>
-			</td>
-		</tr>
-		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">32ft Single & Multi XL </span></p>
-			</td>
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">1 day after reaching loading/unloading point (In Rs)</span></p>
-			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">1800</span></p>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1500
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
+			<td class="c44" colspan="1" rowspan="2" style="padding: 5px 5px;">
+				21 mt vehicle & below
 			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">2000</span></p>
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1 day after reaching loading/unloading point (In Rs)
 			</td>
-		</tr>
-		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">20ftt Trailer</span></p>
-			</td>
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">1 day after reaching loading/unloading point. (In Rs)</span></p>
-			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">2000</span></p>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1500
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				2nd day onwards after reaching loading/unloading point (In Rs)
 			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">3000</span></p>
-			</td>
-		</tr>
-		<tr class="c15">
-			<td class="c44" colspan="1" rowspan="2" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">40 ft Trailer & 30MT and above</span></p>
-			</td>
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">1 day after reaching loading/unloading point (In Rs)</span></p>
-			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				 <p class="c28"><span class="c4">3000</span></p>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1800
 			</td>
 		</tr>
 		<tr class="c15">
-			<td class="c7" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c10"><span class="c4">2nd day onwards after reaching loading/unloading point (In Rs)</span></p>
+			<td class="c44" colspan="1" rowspan="2" style="padding: 5px 5px;">
+				32ft Single & Multi XL
 			</td>
-			<td class="c5" colspan="1" rowspan="1" style="padding: 0px 5px;">
-				<p class="c28"><span class="c4">4000</span></p>
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1 day after reaching loading/unloading point (In Rs)
+			</td>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1800
+			</td>
+		</tr>
+		<tr class="c15">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				2nd day onwards after reaching loading/unloading point (In Rs)
+			</td>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				2000
+			</td>
+		</tr>
+		<tr class="c15">
+			<td class="c44" colspan="1" rowspan="2" style="padding: 5px 5px;">
+				20ftt Trailer
+			</td>
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1 day after reaching loading/unloading point. (In Rs)
+			</td>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				2000
+			</td>
+		</tr>
+		<tr class="c15">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				2nd day onwards after reaching loading/unloading point (In Rs)
+			</td>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				3000
+			</td>
+		</tr>
+		<tr class="c15">
+			<td class="c44" colspan="1" rowspan="2" style="padding: 5px 5px;">
+				40 ft Trailer & 30MT and above
+			</td>
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				1 day after reaching loading/unloading point (In Rs)
+			</td>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				 3000
+			</td>
+		</tr>
+		<tr class="c15">
+			<td class="c7" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				2nd day onwards after reaching loading/unloading point (In Rs)
+			</td>
+			<td class="c5" colspan="1" rowspan="1" style="padding: 5px 5px;">
+				4000
 			</td>
 		</tr>
 	</tbody>
 </table>
-<p class="c9 c45"> </p>
-<p class="c10"><strong><span class="c16">Other Terms and Conditions:</span></strong></p>
-<ol class="c35 lst-kix_list_9-0 start" start="1" style="text-align: justify;
-    font-size: 12px;
-    color: black;">
+<p class="c10" style="page-break-before: always;margin-top:-30px;"><strong><span class="c16">Other Terms and Conditions:</span></strong></p>
+<ol class="c35 lst-kix_list_9-0 start" start="1" style="text-align: justify;font-size: 12px;color: black;">
 	<li>Vehicle detained at loading OR unloading point charges as per above matrix, after 2nd day vehicle will be unloaded only.  </li>
 	<li>In case of ODC vehicle, RTO penalty if any will be additional. </li>
 	<li>The above quoted rates are valid only for one point pick up and one point delivery only.</li>
@@ -274,13 +277,13 @@ body{
 	<li>In case of any dispute between the parties Mumbai courts shall have exclusive jurisdiction in the matter. </li>
 	<li>GST shall be levied at the prevailing rate @ 12% of invoice amount.</li>
 </ol>
-<p class="c0"> </p>
+
 <p class="c10"><span class="c39 c51 c36 c38">For V-Trans (India) Ltd.</span></p>
-<p class="c0"> </p>
-<p class="c20"><span class="c1"><strong>Name:</strong> </span>@{username}</p>
-<p class="c11"><span class="c24 c1"><strong>Designation:</strong> </span>@{userdesignation}</p>
-<p class="c11"><span class="c24 c1"><strong>Mobile No.:</strong>  </span>@{usermobile}</p>
-<p class="c11"><span class="c24 c1"><strong>Email ID:</strong>  </span>@{useremail}<span class="c24 c1"> </span></p>
+
+<p class="c9"><span class="c1"><strong>Name:</strong> </span>@{username}</p>
+<p class="c9"><span class="c24 c1"><strong>Designation:</strong> </span>@{userdesignation}</p>
+<p class="c9"><span class="c24 c1"><strong>Mobile No.:</strong>  </span>@{usermobile}</p>
+<p class="c9"><span class="c24 c1"><strong>Email ID:</strong>  </span>@{useremail}<span class="c24 c1"> </span></p>
 
 </div>
 </body>

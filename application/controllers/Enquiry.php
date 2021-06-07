@@ -1238,7 +1238,8 @@ class Enquiry extends CI_Controller
 			$data['created_bylist'] = $this->User_model->read(147,false);
 		}else{
 			$data['created_bylist'] = $this->User_model->read();
-		} 
+		}
+			
         $data['all_designation'] = $this->Leads_Model->desi_select();		
         $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
 
@@ -1771,7 +1772,8 @@ Array
             $assign_employee = $this->input->post('assign_employee');
 
             if(!empty($expected_date))
-                $expected_date = date('Y-m-d h:i:s',strtotime($expected_date));
+                //$expected_date = date('Y-m-d h:i:s',strtotime($expected_date));
+			    $expected_date = date('Y-m-d',strtotime($expected_date));
 
             if (!empty($lead_score)) {
                 $lead_score = $this->input->post('lead_score');

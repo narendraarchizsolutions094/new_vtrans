@@ -3621,7 +3621,7 @@ pre .arg {
     /*background-image: url(../img/profile-bg.jpg);*/
     background-size: cover;
     background-position: center center;
-    padding: 30px 15px;
+    padding: 0px 15px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }

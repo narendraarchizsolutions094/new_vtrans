@@ -2162,23 +2162,22 @@ body{
 	<p class="c9 c58" style="text-align: center"><span class="c25 c32">Annexure I - Company Profile </span></p>
 	<p class="c9 c44"><span class="c25 c66 c73"></span></p>
 	<p class="c55"><span class="c62 c66">About V-Trans:</span></p>
-	<p class="c29"><span class="c23">V-Trans is a leading Logistics and Transport services provider headquartered in Mumbai. Incorporated in 1958, V-Trans is a pioneer in the national road transport industry, offering surface transportation solutions across the country. As a group, V-Trans offers Single Window Freight Management, Transportation, Cargo Express Movement &amp; Warehousing Management services and solutions under its three divisions: V-Trans, V-Xpress and V-Logis.</span></p>
-	<p class="c29"><span class="c23">V-Trans is enabled with best-in-the-business infrastructure automation with total IT digitization, and a robust&nbsp;fleet of over 1500 GPS-enabled vehicles. With over 650 + branches V-Trans has successfully been able to reach out to its customers across the country. V-Trans was one of the early companies to receive the ISO 9001:2015 certification. </span></p>
+	<p class="c84"><span class="c23">V-Trans is a leading Logistics and Transport services provider headquartered in Mumbai. Incorporated in 1958, V-Trans is a pioneer in the national road transport industry, offering surface transportation solutions across the country. As a group, V-Trans offers Single Window Freight Management, Transportation, Cargo Express Movement &amp; Warehousing Management services and solutions under its three divisions: V-Trans, V-Xpress and V-Logis.</span></p>
+	<p class="c84"><span class="c23">V-Trans is enabled with best-in-the-business infrastructure automation with total IT digitization, and a robust&nbsp;fleet of over 1500 GPS-enabled vehicles. With over 650 + branches V-Trans has successfully been able to reach out to its customers across the country. V-Trans was one of the early companies to receive the ISO 9001:2015 certification. </span></p>
 	<p class="c84"><span class="c23">The V-Trans team drives market leadership through its motivated people, cutting-edge technology, wide range of innovative, vertical specific products and value-added services to deliver unmatched standards of service quality to its customers. The companies single minded focus is to live up to their customer expectations and drive excellence in its commitment&nbsp;to serve each customer with passion and pride.</span></p>
-	<p class="c29"><span class="c23">V-Trans market leadership is further validated by numerous awards and recognitions from customers. The company has won numerous awards including &lsquo;Best Road Transport Company in India&rsquo; for 2018, at ICC - Supply Chain Logistics Summit &amp; Excellence Award; ICC Supply Chain &amp; Logistics Excellence Award &ndash; Road Transporter of the Year &ndash; 2016; Transport Excellence for Outperformance in Safety Award - 2015 to name a few. </span></p>
-	<p class="c29"><span class="c23">V-Trans accept its social responsibility and believes in always giving back to the society. They have CSR programs in the field of health, education and community upliftment. V-Trans also conducts regular training programs for drivers of their owned and attached vehicles in association with WIAA &amp; Castrol Institute to hone their driving techniques and apprise them on changing trends.</span></p>
-	<p class="c21 c44"><span class="c23"></span></p>
+	<p class="c84"><span class="c23">V-Trans market leadership is further validated by numerous awards and recognitions from customers. The company has won numerous awards including &lsquo;Best Road Transport Company in India&rsquo; for 2018, at ICC - Supply Chain Logistics Summit &amp; Excellence Award; ICC Supply Chain &amp; Logistics Excellence Award &ndash; Road Transporter of the Year &ndash; 2016; Transport Excellence for Outperformance in Safety Award - 2015 to name a few. </span></p>
+	<p class="c84"><span class="c23">V-Trans accept its social responsibility and believes in always giving back to the society. They have CSR programs in the field of health, education and community upliftment. V-Trans also conducts regular training programs for drivers of their owned and attached vehicles in association with WIAA &amp; Castrol Institute to hone their driving techniques and apprise them on changing trends.</span></p>
+
 	<!--<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>
 	<p class="c9 c18"><span class="c19"></span></p>-->
-	<p class="c9 c58" style="text-align: center;"><span class="c32 c25">Annexure II - Commercial&rsquo;s.</span></p>
+	<p class="c9 c58" style="text-align: center;page-break-before: always;"><span class="c32 c25">Annexure II - Commercial&rsquo;s.</span></p>
 	<p class="c9 c44"><span class="c36"></span></p>
 	<p class="c9"><span class="c22 c79">Freight Charges (IN INR):</span><span class="c66 c79">- &nbsp;</span></p>
 	<a id="t.b882eaace525279cc79cc0cb72fa0b52ebb13879"></a>
-	<a id="t.0"></a>
 @freight_table
 	<p class="c21 c44"><span class="c23"></span></p>
 	<a id="t.ffa63e318986c00808b4dba271e72d8b8f394f6b"></a>
@@ -2186,7 +2185,7 @@ body{
 
 @area_table
 
-	<p class="c21 c44"><span class="c23"></span></p>
+	
 	<ul class="c28 lst-kix_list_6-0 start">
 		<li class="c48 c92 li-bullet-0">• <span class="c36">Payment Terms: 15 days from the date of Invoice.</span></li>
 	</ul>
@@ -2194,34 +2193,30 @@ body{
 	<ul class="c28 lst-kix_list_6-0">
 		<li class="c48 c80 li-bullet-0">• <span class="c36">Note: This proposal is valid for 30 days from the date of quotation.</span></li>
 	</ul>
-	<p class="c21 c44"><span class="c23"></span></p>
-	<p class="c21 c44"><span class="c42 c25"></span></p>
+	
 	<p class="c1"><span class="c22 c79">Other Charges:</span><span class="c62 c66">-</span></p>
 	<a id="t.bf3f90bfec3a4eae4da6e865d0043ddc2466ba1d"></a>
-	<a id="t.2"></a>
+	
 	@oc_table
-	<p class="c1 c44"><span class="c42 c25 c57"></span></p>
-	<p class="c1"><span class="c22 c62">ODA Matrix:</span></p>
+
+	<p class="c1"><span class="c22 c79">ODA Matrix:</span></p>
 	<a id="t.ff9bb25f608643c8b4ff717247f08bf3c2ffad08"></a>
-	<a id="t.3"></a>
+
 	@oda_table
-	<p class="c1 c44"><span class="c42 c25"></span></p>
-	<p class="c1 c44"><span class="c42 c25"></span></p>
-	<p class="c1 c44"><span class="c42 c25"></span></p>
 
 	<p class="c21"><span class="c22 c79 c85">Dynamic Fuel Surcharge</span><span class="c62 c66">:</span></p>
 	<p class="c72"><span class="c23">The fuel surcharge shall be calculated on basic freight based on average fuel price of four metro cities. Fuel surcharge will Increase /Decrease by 1% with every Increase/ Decrease of Rs.3 /- in average fuel price of four Metro cities; minimum 12% fuel surcharge shall be applicable.</span></p>
-	<p class="c72 c44"><span class="c10"></span></p>
-	<p class="c72"><span class="c75 c66">Fuel surcharge calculator:</span><span class="c14">&nbsp;</span></p>
+	<p class="c1 c44"><span class="c42 c25"></span></p>
+	<p class="c72"><span class="c22 c79 c85">Fuel surcharge calculator:</span><span class="c14">&nbsp;</span></p>
 	<a id="t.e439a2ddc31e074f59726d8a0ccc082c191323fb"></a>
-	<a id="t.4"></a>
+
 @fuel_surcharge
 	<p class="c1 c44"><span class="c42 c25"></span></p>
 	<ul class="c28 lst-kix_list_8-0 start">
 		<li class="c72 c48 li-bullet-0">• <span class="c14">The average fuel price at the time of signing the contract is </span><span class="c14 c57">Rs <?=$avg_fule_price?> </span><span class="c14">per Ltr.</span></li>
 	</ul>
-	<p class="c1 c44"><span class="c42 c25"></span></p>
-	<p class="c21"><span class="c62 c66">Other Terms and Conditions:</span></p>
+
+	<p class="c21" style="page-break-before: always;"><span class="c62 c66">Other Terms and Conditions:</span></p>
 	<style type="text/css">
 		.lst-kix_list_7-0 li{
 			font-family: arial!important;
@@ -2232,11 +2227,9 @@ body{
 		  left: -10px;
 		}*/
 	</style>
-	<ol class="c28 lst-kix_list_7-0 start" start="1" style="text-align: justify;
-    font-size: 12px;
-    color: black;">
+	<ol class="c28 lst-kix_list_7-0 start" start="1" style="text-align: justify;font-size: 12px;color: black;">
 
-<li><span>In case of cheque bounce, penalty charges of Rs. 500/- + “Taxes” will be applicable for each case.</span>
+<li><span>In case of cheque bounce, penalty charges of Rs. 500/- + “Taxes” will be applicable for each case.</span></li>
 <li><span>Loading, Unloading Hamali, Warai, Thappi would be excluding if applicable.</span></li>
 <li><span>Above Rates for one point Pickup & one point Delivery Only.</span></li>
 <li><span>Vehicle Detention charges:  Rs. 700/-.<span></li>
@@ -2274,7 +2267,6 @@ body{
 	</ol>
 
 	<p class="c1 c44"><span class="c42 c25"></span></p>
-	<p class="c1 c44"><span class="c42 c25"></span></p>
 	<p class="c21"><span class="c66 c75">For V-Trans (India) Ltd.</span></p>
 	<p class="c21 c44"><span class="c36"></span></p>
 	<p class="c9"><span class="c22">Name: </span><span class="c52"><?=$user?></span></p>
@@ -2282,7 +2274,6 @@ body{
 	<p class="c5"><span class="c17">Mobile No.:</span><span class="c52"> <?=$user_mobile?></span></p>
 	<p class="c5"><span class="c22">Email ID:</span><span class="c52"> <?=$user_email?></span></p>
 	<p class="c9 c44"><span class="c14 c57"></span></p>
-	<p class="c9 c44"><span class="c14"></span></p>
 	<p class="c9 c44"><span class="c14"></span></p>
 
 </body>

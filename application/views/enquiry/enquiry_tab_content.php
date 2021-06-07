@@ -325,6 +325,21 @@ foreach($basic_fields as $row)
         <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name" required> 
     </div>
 	
+	<div class="form-group col-sm-6 col-md-6">
+        <label><?php echo 'Expected Closer Date'; ?></label>
+        <input class="form-control" name="expected_date" type="date" id="expected_date" value="<?php echo $details->lead_expected_date; ?>" placeholder="Expected Closer Date"> 
+    </div>
+	
+	<div class="form-group col-sm-6 col-md-6">
+	<label class="col-form-label">Conversion Probability</label>
+        <select class="form-control" id="Lead_Scores" name="lead_score">
+        <option>Select Here</option>
+        <?php foreach ($lead_score as $score) {  ?>
+        <option value="<?= $score->sc_id?>" <?php if($score->sc_id==$details->lead_score){ echo 'selected';}?>><?= $score->score_name?>&nbsp;<?= $score->probability?></option>
+        <?php } ?>
+        </select>
+    </div>
+	
    
 <script>
 $("#sales_branch").trigger("change");
@@ -1050,6 +1065,8 @@ document.getElementById("sales_branch").disabled = true;
 document.getElementById("client_name").disabled = true;
 document.getElementById("mobileno").disabled = true;
 document.getElementById("email").disabled = true;
+document.getElementById("expected_date").disabled = true;
+document.getElementById("Lead_Scores").disabled = true;
 });
 
 function disableField() {
@@ -1060,6 +1077,8 @@ document.getElementById("sales_branch").disabled = false;
 document.getElementById("client_name").disabled = false;
 document.getElementById("mobileno").disabled = false;
 document.getElementById("email").disabled = false;
+document.getElementById("expected_date").disabled = false;
+document.getElementById("Lead_Scores").disabled = false;
 }
 </script>
 <?php

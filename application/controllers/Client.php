@@ -807,7 +807,12 @@ class Client extends CI_Controller {
             $business_load = $this->input->post('business_load');
             $industries = $this->input->post('industries');
             $designation = $this->input->post("designation");
-
+			$lead_score = $this->input->post('lead_score');
+            $expected_date = $this->input->post("expected_date");
+			
+			if(!empty($expected_date)){
+                $expected_date = date('Y-m-d',strtotime($expected_date));
+			}
             if($this->input->post('country_id')){
                  $country_id = implode(',',$this->input->post('country_id'));
             }else{
@@ -888,6 +893,8 @@ if(!empty($sales_area)){
 if(!empty($process_id)){
             $this->db->set('product_id', $process_id); 
 }			
+            $this->db->set('lead_score', $lead_score);
+			$this->db->set('lead_expected_date', $expected_date);
             $this->db->where('enquiry_id', $enquiry_id);            
             $this->db->update('enquiry');  
             $this->load->model('rule_model');

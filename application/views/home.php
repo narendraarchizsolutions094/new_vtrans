@@ -8,7 +8,7 @@
 <style>
 .card-graph{
     min-height:250px;
-    max-height:400px;
+    max-height:500px;
     border:1px solid;    
     /* margin:2px; */
     box-shadow: 0px 0px 7px -1px;
@@ -389,9 +389,9 @@ if (!empty($enquiry_separation)) {
 
             </div>
 
-            <!------------------------------------------------------------------html widget End-------------------------------------------->
+            <!-------------------------------------html widget End--------------------------->
 
-            <!------------------------------------------------------------------html FUNNEL START-------------------------------------------->
+            <!-----------------------html FUNNEL START------------------------->
 
             <div class="row row-xs">
                 <div class="col-md-12">
@@ -409,28 +409,27 @@ if (!empty($enquiry_separation)) {
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <hr style="border: 1px solid #3a95e4 !important">
                 </div>
-                <div class="row pd-20" style="width:100%; padding:20px;">
+                <div class="row pd-20" style="width:100%;">
+
                 <div class="col-md-6 " style="padding:10px;">
-                    <div class="card card-graph" style="height:400px; padding:10px;">
+                    <div class="card card-graph" style="padding:10px;">
                         <div class="card-header pd-y-10 d-md-flex align-items-center justify-content-between">
-                            <h3 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8"
-                                style="font-size:14px"><?php echo display("enquiries"); ?></h3>
+						<text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true"><?php echo 'All Clients'; ?></text>
                         </div><!-- card-header -->
                         <canvas id="bar-chart-grouped" width="800" ></canvas>
                     </div><!-- card -->
                 </div>
                 <div class="col-md-6 " style="padding:10px;">
-                    <div class="card card-graph" style="height:400px;">
-                        <div class="card-header pd-y-20 d-md-flex align-items-center">
-                            <h3 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8"
-                                style="font-size:14px"><?php echo display("conversion_probability"); ?></h3>
+                    <div class="card card-graph">
+                        <div class="card-header pd-y-20 d-md-flex align-items-center" style="padding:10px;">
+								<text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900" y="24" aria-hidden="true"><?php echo display("conversion_probability"); ?></text>
                         </div>
-                       <div id="chartdiv2" style="margin-top: 100px;" ></div>
+                       <div id="chartdiv2" style="height: 343px;" ></div>
                     </div>
                 </div>
                 </div>
 
-                <!----------------------------------------------------------------------Process wise charts------------------------------------------>
+                <!--------------------------Process wise charts----------------------------->
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <hr style="border: 1px solid #3a95e4 !important">
                 </div>
@@ -451,7 +450,7 @@ if (!empty($enquiry_separation)) {
                     <hr style="border: 1px solid red !important">
                 </div>
 
-                <!------------------------------------------------------------------HTML Map/Calender START-------------------------------------------->
+                <!-----------------------HTML Map/Calender START---------------------------->
                 <div class="row pd-20">
               
                 <div class="col-lg-12" >
@@ -463,6 +462,13 @@ if (!empty($enquiry_separation)) {
                         .fc-title {
                             color: black;
                         }
+						.fc-center h2{
+						color:#333333;
+						font-size:18px !important;
+						fill:#333333;
+						font-family: 'Montserrat' !important;
+                        font-weight:900;						
+						}
                         </style>
                         <div class='pull-right' style="float: right;margin-right: 78px;margin-left: 5px;">
                             <div class="btn-group dropdown-filter">
@@ -497,7 +503,7 @@ if (!empty($enquiry_separation)) {
                     </div>
                 </div>
                 </div>
-                <!------------------------------------------------------------------HTML Map/Calender END-------------------------------------------->
+                <!------------------------------HTML Map/Calender END------------------------------->
 
                 <div class="col-lg-6 col-xl-6 mg-t-10">
                     <div class="card" style="height:95%;">
@@ -518,43 +524,42 @@ if (!empty($enquiry_separation)) {
 
                     </div>
                 </div>
-                <!------------------------------------------------------------------html map/Calender END-------------------------------------------->
+                <!--------------------------------html map/Calender END-------------------------------->
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <hr style="border: 1px solid red !important">
                 </div>
 
-                <!------------------------------------------------------------------Disposition/Source START-------------------------------------------->
+                <!-------------------------------------Disposition/Source START------------------------------->
                 <div class="row pd-20">
-          
-                <div class="col-lg-6 pd-20">
-                    <div class="card card-graph" style="height:95%;">
+		<style>
+          .highcharts-title{
+			font-weight:900 !important;
+            font-family: 'Montserrat' !important;			
+		  }
+		</style>
+                <div class="col-lg-12 pd-20">
+                    <div class="card card-graph" style="height:400px;">
                         <figure class="highcharts-figure">
                             <div id="container1"></div>
                         </figure>
 
                     </div>
                 </div>
-                <div class="col-md-6 ">
-                    <div class="card card-graph" style="height:100%;">
-                        <figure class="highcharts-figure">
-                            <div id="container2"></div>
-                        </figure>
-                    </div>
-                </div>
-                <!------------------------------------------------------------------Disposition/Source END-------------------------------------------->
-                <!------------------------------------------------------------------html map/Calender END-------------------------------------------->
+                
+                <!-------------------------------Disposition/Source END---------------------------->
+                <!-------------------------------html map/Calender END------------------------------------>
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <hr style="border: 1px solid red !important">
                 </div>
 
-                <!------------------------------------------------------------------Timeline START-------------------------------------------->
+                <!------------------------------Timeline START--------------------------------->
                 <div class="row pd-20">
                 <div class="col-md-12 pd-20">
 
                     <div class="card card-graph_full2 " style="height:100%; width:100% !important;">
 
                                     <div class="page-header">
-                                        <h1><?php echo display('average_follow_up_rate'); ?></h1>
+                                     <center><text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true"><?php echo display('average_follow_up_rate'); ?></text></center>
                                     </div>
                                     <div style="display:inline-block;width:100%;overflow-y:auto;">
                                         <ul class="timeline timeline-horizontal">
@@ -674,12 +679,18 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                     <hr style="border: 1px solid #3a95e4 !important">
                 </div>
             </div>
-                <div class="row pd-20">
-                <div class="col-md-12 pd-20">
-                <div class="card card-graph_full2 pd-20" style="height:95%;">
-               
-    <center><label>Drop Data</label></center>
-    <canvas id="process_Monthwise" width="800" height="350"></canvas>
+<div class="row pd-20">
+<div class="col-md-6 pd-20">
+<div class="card card-graph_full2 pd-20" style="height:430px;">
+    <center><text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true">Drop Data</text></center>
+    <canvas id="process_Monthwise" width="800" height="400"></canvas>
+</div>
+</div>
+<div class="col-md-6 ">
+<div class="card card-graph" style="height:100%;">
+    <figure class="highcharts-figure">
+        <div id="container2"></div>
+    </figure>
 </div>
 </div>
 </div>
@@ -697,8 +708,7 @@ if(user_access('260') || user_access('261') || user_access('250'))
  <div class="row pd-20">
                 <div class="col-md-12 pd-20">
                 <div class="card card-graph_full2 pd-20">
-               
-    <center><label>Year <?=date('Y')?></label></center>
+    <center><text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true">Year <?=date('Y')?></text></center>
     <canvas id="target_forecasting" width="800" height="350"></canvas>
 </div>
 </div>
@@ -711,8 +721,7 @@ if(user_access('260') || user_access('261') || user_access('250'))
 <div class="row pd-20">
                 <div class="col-md-12 pd-20">
                 <div class="card card-graph_full2 pd-20" >
-             
-    <center><label>Year <?=((int)date('Y'))-1?> VS <?=((int)date('Y'))?></label></center>
+    <center><text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true">Year <?=((int)date('Y'))-1?> VS <?=((int)date('Y'))?></text></center>         
     <canvas id="target_forecasting_previous" width="800" height="350"></canvas>
 </div>
 </div>
@@ -720,15 +729,15 @@ if(user_access('260') || user_access('261') || user_access('250'))
 <?php
 }
 ?>
-                <!------------------------------------------------------------------Timeline END-------------------------------------------->
+                <!----------------------------------Timeline END---------------------------------->
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <hr style="border: 1px solid #3a95e4 !important">
                 </div>
-                <!-------------------------------------------------------Grapth JS --------------------------------------------->
+                <!--------------------------Grapth JS --------------------------->
 
 
 
-                <!-----------------------------------------------------Graph JS End------------------------------------------------------------>
+                <!----------------------------------Graph JS End-------------------------------------->
 
             </div><!-- container -->
 

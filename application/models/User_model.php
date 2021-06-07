@@ -124,7 +124,8 @@ class User_model extends CI_Model {
         
         if($hier_wise){
             $where = "  tbl_admin.pk_i_admin_id IN (".implode(',', $all_reporting_ids).')';               
-            $where .= "  AND tbl_admin.b_status=1";                                
+            $where .= "  AND tbl_admin.b_status=1";
+            $where .= "  AND tbl_admin.user_type!=216 AND tbl_admin.user_type!=217";			
         }else{
             $where = "  tbl_admin.b_status=1";                                
         }
@@ -153,8 +154,8 @@ class User_model extends CI_Model {
         $this->db->where($where);
 
         return $this->db->get()->result();
-        // print_r($this->db->last_query());
-        // die();
+         //print_r($this->db->last_query());
+         //die();
     }
 
 
