@@ -2464,6 +2464,7 @@ if(user_access('1004'))
     <th class="th-sm">PO File</th>
     <th class="th-sm">Signed Agreement</th>
   <th class="th-sm">Attach PO</th>
+  <th class="th-sm">Agreement Doc</th>
 <?php } ?>
     </tr>
   </thead>
@@ -2516,6 +2517,9 @@ if($val->signed_agreement){ ?>
   <div class="form-group col-sm-2"><a href="#modalagg" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="set_agreement_id(<?=$val->id?>)"><i class="fa fa-upload" aria-hidden="true"></i></a></div>
   </td>
 <?php } ?>
+<td>
+  <div class="form-group col-sm-2"><a href="#modalaggdoc" data-toggle="modal" class="btn" data-animation="effect-scale"  onclick="find_agreement_doc(<?=$val->deal_id?>)"><i class="fa fa-file" aria-hidden="true"></i></a></div>
+</td>
     </tr>
 
     <?php $i++;} ?>
@@ -2538,6 +2542,17 @@ function set_agreement_id(ag_id,type=1)
    $("input[name='agreement_attachment']").val(1);
    $("#exampleModalLabel6").html('Upload PO Here');
   }
+}
+
+function find_agreement_doc(doc) { 
+  $.ajax({
+  type: 'POST',
+  url: '<?php echo base_url();?>client/get_aggdoc_list',
+  data: {doc_id:doc},  
+  success:function(data){
+      $("#all_doc_table").html(data);
+  }
+  });
 }
 </script> 
 <hr>
@@ -2649,6 +2664,25 @@ function set_agreement_id(ag_id,type=1)
           </div>
         </div>
        </form>
+      </div>
+    </div>
+	
+<div class="modal fade" id="modalaggdoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel6" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content tx-14">
+          <div class="modal-header">
+            <h6 class="modal-title" id="exampleModalLabel6">Aggrement Documents</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body col-sm-12" id="all_doc_table">
+              
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary tx-13" data-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
 

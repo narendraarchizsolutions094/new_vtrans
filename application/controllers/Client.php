@@ -4364,7 +4364,16 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
                 }
                 $path= $path.'/'.$nf;
                 if(move_uploaded_file($_FILES['ip']['tmp_name'][$i],$path))
-                    $_POST['ip'][$i] ='Yes';               
+                    $_POST['ip'][$i] ='Yes';
+//INSERT DOCUMENT CODE
+$doc_ary = array(
+			'deal_id'=>$deal_id,
+            'comp_id'=>$this->session->companey_id,
+			'doc_id'=>$i,
+            'doc_url'=>$path,
+            'created_by'=>$this->session->user_id,
+        );
+$this->db->insert('tbl_aggriment_docs',$doc_ary);				
             }
         }
 		
@@ -4838,6 +4847,57 @@ $deal   =    $this->Branch_model->get_deal($deal_id);
 			echo '</table>';
         }else{
 			echo 0;
+		}			
+    }
+	
+	function get_aggdoc_list()
+    {
+		$company = $this->session->companey_id;
+	    $dea_id  = $this->input->post('doc_id');
+        $this->db->select('*');
+		$this->db->where('comp_id',$company);
+		$this->db->where('deal_id',$dea_id);
+        $res=$this->db->get('tbl_aggriment_docs');
+        $doc_data=$res->result();
+		
+        if(!empty($doc_data)){
+			
+            echo '<table class="table table-bordered table-hover">
+			            <tr>
+                            <th>S.No</th>
+							<th>Particulars</th>
+							<th>File</th>
+                            <th>Action</th>
+                        </tr>';
+                foreach($doc_data as $key => $val){
+				if($val->doc_id=='110'){
+					$Particulars = 'Copy of Address proof';
+				}else if($val->doc_id=='111'){
+					$Particulars = 'Copy of Address proof';
+				}else if($val->doc_id=='112'){
+					$Particulars = 'Copy of GST Registration certificate';
+				}else if($val->doc_id=='113'){
+					$Particulars = 'Copy of CIN No. / LLPIN';
+				}else if($val->doc_id=='114'){
+					$Particulars = 'Partnership Deed';
+				}else if($val->doc_id=='115'){
+					$Particulars = 'MOA & AOA of Company';
+				}
+                    $i = $key + 1;					
+            echo    '<tr>
+			            <td>'.$i.'</td>
+                        <td>'.$Particulars.'</td>
+					    <td><a href="'.base_url($val->doc_url).'" target="_blank" class="btn" data-animation="effect-scale"><i class="fa fa-file" aria-hidden="true"></i></a></td>
+					    <td><a href="'.base_url($val->doc_url).'" class="btn" data-animation="effect-scale"  download><i class="fa fa-download" aria-hidden="true"></i></a></td>
+                    </tr>';
+			    }
+			echo '</table>';
+        }else{
+			echo '<table class="table table-bordered table-hover">
+			            <tr>
+                            <th>No Data Found!</th>
+                        </tr>';
+			echo '</table>';
 		}			
     }
 }

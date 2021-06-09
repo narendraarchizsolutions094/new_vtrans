@@ -3291,6 +3291,16 @@ public function get_enq_list_post(){
         'status'      => TRUE,           
         'msg'     => $msg,
         ], REST_Controller::HTTP_OK);
-    } 
+    }else{
+		if($parameter=='mobile'){
+		$msg = 'No Mobile Exist'; 
+		}else if($parameter=='email'){
+		$msg = 'No Email Exist';
+		}
+        $this->set_response([
+        'status'      => FALSE,           
+        'msg'     => $msg,
+        ], REST_Controller::HTTP_OK);
+	}		
   }
 }
