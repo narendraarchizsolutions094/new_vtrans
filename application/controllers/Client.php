@@ -211,9 +211,9 @@ class Client extends CI_Controller {
             $data['title'] =display('client');
         }
         if($this->session->companey_id == 65 && $this->session->user_right == 215){
-            $data['created_bylist'] = $this->User_model->read(147,false);
+            $data['created_bylist'] = $this->User_model->readone(147,false);
         }else{
-            $data['created_bylist'] = $this->User_model->read();
+            $data['created_bylist'] = $this->User_model->readone();
         } 
         $this->load->model('Branch_model');
         $data['branch_lists']=$this->Branch_model->all_sales_branch();
@@ -285,6 +285,12 @@ class Client extends CI_Controller {
             $mobile = $this->input->post('mobileno');
             $email = $this->input->post('email');
             $otherdetails = $this->input->post('otherdetails');
+			if(!empty($this->input->post('new_designation'))){
+				$desi_id    =   $this->Enquiry_Model->create_designation($this->input->post('new_designation'));
+				$designation = $desi_id;
+			}else{
+				$designation = $this->input->post('designation');
+			}
             $enq = $this->Enquiry_Model->getEnquiry(array('enquiry_id'=>$clientid));
             $data = array(
                 'comp_id'=>$this->session->companey_id,
@@ -292,7 +298,7 @@ class Client extends CI_Controller {
                 'c_name' => $name,
                 'emailid' => $email,
                 'contact_number' => $mobile,
-                'designation' => $this->input->post('designation'),
+                'designation' => $designation,
                 'other_detail' => $otherdetails,
                 'decision_maker' => $this->input->post('decision_maker')??0,
             );
@@ -1639,6 +1645,12 @@ if(empty($eid)){
     public function upload_aggrement_team() {
     $ag_id = $this->input->post('ide');
     $ddata =  $this->db->where('id',$ag_id)->get('tbl_aggriment')->row();
+	
+	$this->db->select('quatation_number');
+	$this->db->from('commercial_info');
+                    $this->db->where('id',$ddata->deal_id);
+                    $qutation_no= $this->db->get()->row();
+
 
     $this->db->from('enquiry');
                     $this->db->where('Enquery_id',$ddata->enq_id);
@@ -1692,6 +1704,7 @@ if(!empty($_FILES['file']['name']))
                         'task_time'=>date('H:i:s')
                         );
            $this->db->insert_batch('query_response',$assign_data_noti);
+		   $this->Leads_Model->add_comment_for_events('Deal '.$qutation_no->quatation_number.' - '.$notimsg,$enq_id,0,$this->session->user_id);
            $this->load->library('user_agent');
            
            if($this->input->post('redirect_url')){
@@ -2983,8 +2996,8 @@ public function all_update_expense_status()
                                     <option '.($oc['rate_type']=='Box'?'selected':'').'>Box</option>
                                 </select>
 							</th>
-                        <th style="width:75px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>
-						<th style="width:75px">Final rate <label class="badge pull-right" onclick="rep_final_rate()">R</label></th>';
+                        <th style="width:100px">Discount <label class="badge pull-right" onclick="rep_discount()">R</label></th>
+						<th style="width:75px">Final rate</th>';
                     }
 
                      if($booking_type=='ftl')
@@ -3588,7 +3601,7 @@ if(is_numeric($b_lastChar)){
 
     public function edit_commercial_info($deal_id)
     {
-         $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
+        $this->load->model(array('Client_Model','Leads_Model','Branch_model'));
         $keyword = $this->uri->segment(4);
         if(!empty($keyword)){
             $data_type = base64_decode($keyword);
@@ -3980,7 +3993,7 @@ if(is_numeric($b_lastChar)){
         $deal   =    $this->Branch_model->get_deal($deal_id);
        // $oc =(array) json_decode($deal->other_charges);
 		
-		if($deal->status==0){
+		if($deal->status==0 && $deal->approval!='done'){
         $oc =(array) json_decode($deal->other_charges);
 	   }else{
 		$oc =(array) json_decode($deal->update_charges);
@@ -4327,7 +4340,7 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $deal_id = $this->input->post('deal_id');
         $deal   =    $this->Branch_model->get_deal($deal_id);
        // $oc =(array) json_decode($deal->other_charges);
-		if($deal->status==0){
+		if($deal->status==0 && $deal->approval!='done'){
         $oc =(array) json_decode($deal->other_charges);
 	   }else{
 		$oc =(array) json_decode($deal->update_charges);

@@ -331,6 +331,7 @@ class Dashboard extends CI_Controller {
                 $data = $this->session->set_userdata([
                 'isLogIn'        => true,
                 'user_id'        => $user_data->pk_i_admin_id,
+				'timline_sts'    => $user_data->timline_access,
                 'companey_id'    => $user_data->companey_id,
                 'email'          => $user_data->s_user_email,
                 'designation'    => $user_data->designation,
@@ -417,6 +418,7 @@ class Dashboard extends CI_Controller {
             'menu' => $menu,
                     'isLogIn' => true,
                     'user_id' => $check_user->row()->pk_i_admin_id,
+					'timline_sts' => $check_user->row()->timline_access,
                     'companey_id' => $check_user->row()->companey_id,
                     'email' => $check_user->row()->s_user_email,
                     'designation' => $check_user->row()->designation,
@@ -439,7 +441,7 @@ class Dashboard extends CI_Controller {
                     'footer_text' => (!empty($setting->footer_text) ? $setting->footer_text : null),
                     // 'process' => $process,
                     'telephony_agent_id' => $check_user->row()->telephony_agent_id,
-          'telephony_token'    => $check_user->row()->telephony_token,
+                    'telephony_token'    => $check_user->row()->telephony_token,
                     'availability'    => $check_user->row()->availability,
                     'expiry_date'       => strtotime($check_user->row()->valid_upto),
                 ]);
@@ -627,6 +629,7 @@ $this->load->library('zip');
                 'menu'                  => $menu,
                             'isLogIn'               => true,
                             'user_id'               =>$user_data->pk_i_admin_id,
+							'timline_sts'           =>$user_data->timline_access,
                             'companey_id'           =>$user_data->companey_id,
                             //'process'               => $check_user->row()->process,
                             'email'                 => $user_data->s_user_email,
@@ -647,7 +650,7 @@ $this->load->library('zip');
                             'favicon'               => (!empty($setting->favicon) ? $setting->favicon : null),
                             'footer_text'           => (!empty($setting->footer_text) ? $setting->footer_text : null),                    
                             'telephony_agent_id'    => $user_data->telephony_agent_id,
-              'telephony_token'       => $user_data->telephony_token,
+                            'telephony_token'       => $user_data->telephony_token,
                             'expiry_date'           => strtotime($user_data->valid_upto),
                             'availability'          => $user_data->availability,
                             'validity_status'       => $validity_status,
@@ -724,7 +727,7 @@ public function login_in_process(){
     $menu=2;
   }
                     $data = $this->session->set_userdata([
-              'menu'                  => $menu,
+                        'menu'                  => $menu,
                         'isLogIn'               => true,
                         'user_id'               => $check_user->row()->pk_i_admin_id,
                         'companey_id'           => $check_user->row()->companey_id,
@@ -751,6 +754,7 @@ public function login_in_process(){
                         'expiry_date'           => strtotime($check_user->row()->valid_upto),
                         'account_type'          => $check_user->row()->account_type,
                         'availability'    => $check_user->row()->availability,
+						'timline_sts'           => $check_user->row()->timline_access,
                     ]);         
                     $res = array('status'=>true,'message'=>'Logged in');                                        
                }else{                    
@@ -3271,7 +3275,7 @@ public function set_layout_to_session() {
 
         $d_data =  $this->Branch_model->get_deal_data($info_id);
        // $oc = (array)json_decode($deal->other_charges);
-	   if($deal->status==0){
+	   if($deal->status==0 && $deal->approval!='done'){
         $oc = json_decode($deal->other_charges,true);
 	   }else{
 		$oc = json_decode($deal->update_charges,true);

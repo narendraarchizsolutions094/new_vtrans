@@ -124,6 +124,58 @@ class User_model extends CI_Model {
         
         if($hier_wise){
             $where = "  tbl_admin.pk_i_admin_id IN (".implode(',', $all_reporting_ids).')';               
+            $where .= "  AND tbl_admin.b_status=1";			
+        }else{
+            $where = "  tbl_admin.b_status=1";                                
+        }
+        if (!empty($user_right)) {
+            $where .= "  AND tbl_admin.user_permissions='".$user_right."'";                                            
+        }
+        $exclude = array();
+        if($this->session->companey_id == 57){
+            $exclude = array(200,201);
+        }else{
+            $exclude = $sep_arr;
+        }
+        
+        //process wise user select
+        if($proc_wise){
+            foreach($process as $pid){
+                $where .= " AND (FIND_IN_SET($pid,process) >0)";
+            }       
+        }
+        
+        if(!empty($exclude) && empty($user_right)){
+            foreach($exclude as $rid){
+                $where .= "  AND tbl_admin.user_permissions!='".$rid."'";                                            
+            }
+        }
+        $this->db->where($where);
+
+        return $this->db->get()->result();
+         //print_r($this->db->last_query());
+         //die();
+    }
+	
+	public function readone($user_right='',$hier_wise=true,$proc_wise=true) {        
+        $user_separation  = get_sys_parameter('user_separation','COMPANY_SETTING');
+        $sep_arr=array();
+        if (!empty($user_separation)) {
+            $user_separation = json_decode($user_separation,true);
+            foreach ($user_separation as $key => $value) { 
+                $sep_arr[] = $key;
+            }
+        }
+        $process=$this->session->userdata('process');
+        // print_r(implode(',', $process));
+        $this->load->model('common_model');
+        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);                      
+        $this->db->select("*");
+        $this->db->from($this->table);         
+        $this->db->join('tbl_user_role', 'tbl_user_role.use_id=tbl_admin.user_permissions', 'left');
+        
+        if($hier_wise){
+            $where = "  tbl_admin.pk_i_admin_id IN (".implode(',', $all_reporting_ids).')';               
             $where .= "  AND tbl_admin.b_status=1";
             $where .= "  AND tbl_admin.user_type!=216 AND tbl_admin.user_type!=217";			
         }else{

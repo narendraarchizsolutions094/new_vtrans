@@ -52,7 +52,7 @@ else
   echo'<input name="enquiry_id" type="hidden" value="'.$enquiry_id.'">';
 }
 ?>
-     <div class="form-group col-md-6">
+    <div class="form-group col-md-6">
         <label>Designation</label>
 			  <select class="form-control" name="designation" id="designation">
 					<option value=''>---Select Designation----</option>
@@ -67,7 +67,13 @@ else
               } 
               ?>
           </select>
-     </div>
+		  <i class="fa fa-plus" onclick="showDivAttid('1')" style="color:red"></i>
+	</div>
+	<div class="form-group col-sm-6 col-md-6" id="new_designation" style="display:none;"> 
+        <label><?php echo "New Designation"; ?> <i class="text-danger"></i></label>
+        <input class="form-control" name="new_designation" type="text" placeholder="Designation Name">
+        <i class="fa fa-times" onclick="showDivAttid('0')" style="color:red"></i>						
+    </div>
                <div class="form-group col-md-6">
                   <label>Name</label>
                   <input class="form-control" name="name" placeholder="Contact Name"  type="text"  required>
@@ -119,5 +125,19 @@ function load_accounts(v)
       //       }
       // });
 }
+
+</script>
+<script>
+    function showDivAttid(x){
+
+        if(x==1) {
+
+            document.getElementById("new_designation").style.display = 'block';
+        }
+        else
+        {
+            document.getElementById("new_designation").style.display = 'none';
+        }
+    }
 
 </script>

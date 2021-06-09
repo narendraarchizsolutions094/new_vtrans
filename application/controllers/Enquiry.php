@@ -1235,9 +1235,9 @@ class Enquiry extends CI_Controller
             $data['commInfoData']=array();
         }
         if($this->session->companey_id == 65 && $this->session->user_right == 215){
-			$data['created_bylist'] = $this->User_model->read(147,false);
+			$data['created_bylist'] = $this->User_model->readone(147,false);
 		}else{
-			$data['created_bylist'] = $this->User_model->read();
+			$data['created_bylist'] = $this->User_model->readone();
 		}
 			
         $data['all_designation'] = $this->Leads_Model->desi_select();		
@@ -1462,6 +1462,25 @@ class Enquiry extends CI_Controller
             $this->Leads_Model->add_comment_for_events("$tabname Deleted ", $enqcode);
         }
         redirect($this->agent->referrer());
+    }
+	
+	public function timeline_access()
+    {
+
+            $pk_id = $this->input->post('pk_id');
+			$status = $this->input->post('status');
+            $this->db->set('timline_access', $status);
+            $this->db->where('pk_i_admin_id', $pk_id);
+            $this->db->update('tbl_admin');
+			if ( $this->db->affected_rows() > 0 )
+            {
+				$data = array(
+                    'timline_sts'  => $status, 
+                );
+				$this->session->set_userdata($data);
+                echo '1';
+            }
+
     }
 
     public function mview($enquiry_id)

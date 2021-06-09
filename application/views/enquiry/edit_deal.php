@@ -95,7 +95,10 @@ $did=1;
 $type=$deal->btype;
 $this->load->model('Branch_model');
 $region_list = $this->Branch_model->sales_region_list()->result();
-$list = $this->db->query("SELECT deal_data.*,GROUP_CONCAT(deal_data.delivery_branch) as dlist, book.area_id barea, book.region_id bregion FROM `deal_data` left join branch book on book.branch_id=deal_data.booking_branch where deal_id=".$deal->id." GROUP by deal_data.booking_branch")->result();
+$list = $this->db->query("SELECT deal_data.*,GROUP_CONCAT(deal_data.delivery_branch) as dlist, book.area_id barea, book.region_id bregion ,del.area_id darea, del.region_id dregion FROM `deal_data` left join branch book on book.branch_id=deal_data.booking_branch  left join branch del on del.branch_id=deal_data.delivery_branch where deal_id=".$deal->id." GROUP by deal_data.booking_branch")->result();
+/* echo '<pre>';
+print_r($list);exit;
+echo '</pre>'; */
 foreach($list as $row)
 {
     echo'<div class="row" style=" margin-bottom: 20px;
@@ -174,7 +177,7 @@ foreach($list as $row)
                             {
                                 foreach ($region_list as $reg)
                                 {
-                                    echo'<option value="'.$reg->region_id.'">'.$reg->name.'</option>';
+                                    echo'<option value="'.$reg->region_id.'" '.($row->dregion==$reg->region_id?'selected':'').'>'.$reg->name.'</option>';
                                 }
                                 
                             }
@@ -183,13 +186,33 @@ foreach($list as $row)
                     </div>
                     <div class="col-md-6">
                         <label>Area</label>
-                        <select id="d_area'.$did.'" data-did="'.$did.'" class="form-control" name="area"  onchange="load_branch_particular(this)">
-                         
-                        </select>
+                        <select id="d_area'.$did.'" data-did="'.$did.'" class="form-control" name="area"  onchange="load_branch_particular(this)">';
+                        $resda =	$this->Branch_model->sales_area_list(0,array('sales_area.region_id'=>$row->dregion))->result();
+						if(!empty($resda))
+						{	echo'<option value="">Select Area</option>';
+							foreach ($resda as $key => $value) {
+								echo'<option value="'.$value->area_id.'" '.($value->area_id==$row->darea?'selected':'').'>'.$value->area_name.'</option>';
+							}
+						}
+                       echo '</select>
                     </div>
                     <div class="col-md-12">
-                        <select id="dbranch_holder'.$did.'" data-did="'.$did.'" onchange="include_branch(this)" multiple data-close-on-select="false">
-                        </select>
+                        <select id="dbranch_holder'.$did.'" data-did="'.$did.'" onchange="include_branch(this)" multiple data-close-on-select="false">';
+						$sel_res =	$this->Branch_model->branch_list(0,"branch.branch_id IN (".$row->dlist.")")->result();
+						$all = array();
+						foreach ($sel_res as $key => $val) {
+							$all[] = $val->branch_id;
+						}
+
+						$resbd =	$this->Branch_model->branch_list(0,"branch.area_id = (".$row->darea.")")->result();
+
+							if(!empty($resbd))
+							{	
+								foreach ($resbd as $key => $value) {
+									echo'<option value="'.$value->branch_id.'" '.(in_array($value->branch_id,$all)?"selected":"").'>'.$value->branch_name.'</option>';
+								}
+							}
+                        echo '</select>
                     </div>
                     ';
                 }

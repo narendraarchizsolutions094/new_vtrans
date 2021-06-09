@@ -4542,11 +4542,39 @@ function deleteContact(t)
                 
           
 }
-
+//AUTO HIDE SHOW TIMELINE SESSION CODE
+ $(document).ready(function()
+  {
+	  var t_id = <?=$this->session->timline_sts;?>;
+    if(t_id == 1){
+		$(".timeline").hide(500,function(){
+            $(".details-column").removeClass('col-md-6');
+            $(".details-column").addClass('col-md-9');
+        });
+        $(this).data('vis','0');
+        $(this).find('i').removeClass('fa-caret-right');
+        $(this).find('i').addClass('fa-caret-left');
+	}else{
+	    $(".timeline").show(500);
+        $(this).data('vis','1');
+        $(".details-column").addClass('col-md-6');
+        $(".details-column").removeClass('col-md-9');
+        $(this).find('i').addClass('fa-caret-right');
+        $(this).find('i').removeClass('fa-caret-left');	
+	}
+  })
 
 $(".toogle-timeline").click(function(){
     if($(this).data('vis')=='1')
       { 
+        $.ajax({
+          url: "<?php echo base_url().'enquiry/timeline_access'?>",
+          type: 'POST',          
+          data: {
+              'pk_id':<?=$this->session->user_id;?>,
+			  'status':'1'
+          },
+        });	  
         $(".timeline").hide(500,function(){
             $(".details-column").removeClass('col-md-6');
             $(".details-column").addClass('col-md-9');
@@ -4557,6 +4585,15 @@ $(".toogle-timeline").click(function(){
       }
     else
     {
+        $.ajax({
+          url: "<?php echo base_url().'enquiry/timeline_access'?>",
+          type: 'POST',          
+          data: {
+              'pk_id':<?=$this->session->user_id;?>,
+			  'status':'0'
+          },
+        }); 
+		
         $(".timeline").show(500);
         $(this).data('vis','1');
         $(".details-column").addClass('col-md-6');
@@ -4566,7 +4603,7 @@ $(".toogle-timeline").click(function(){
     }
     //setTimeout(manageScroll,1000);
 });
-
+//AUTO HIDE SHOW TIMELINE SESSION CODE END
   $(document).ready(function()
   {
 

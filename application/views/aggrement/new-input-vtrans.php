@@ -1096,24 +1096,24 @@ information:</span></h1>
 		<td><!-- <input type="" name="charges[1]" value=" --><?=$charges[1]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-l">Minimum Chargeble Wt</td>
 		<td><!-- <input type="" name="charges[2]" value=" --><?=$charges[2]??''?><!-- " style="width: 100px;"> --></td>
 		<td>KG</td>
 		<td><b>Whichever is Higher</b></td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td  class="bg-d">Minimum Freight Value</td>
 		<td><!-- <input type="" name="charges[3]" value=" --><?=$charges[3]??''?><!-- " style="width: 100px;"> --></td>
 		<td>RS</td>
 		<td></td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-l">CFT Factor</td>
 		<td><!-- <input type="" name="charges[4]" value=" --><?=$charges[4]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">KG</td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-d">Hamali Charges</td>
 		<td><!-- <input type="" name="charges[5]" value=" --><?=$charges[5]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per Kg/Box</td>
@@ -1128,27 +1128,27 @@ information:</span></h1>
 		<td><!-- <input type="" name="charges[7]" value=" --><?=$charges[7]?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of Invoice Value</td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-l">AOC Charges</td>
 		<td><!-- <input type="" name="charges[8]" value=" --><?=$charges[8]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of Total Freight</td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-d">COD/DOD Charges</td>
 		<td><!-- <input type="" name="charges[9]" value=" --><?=$charges[8]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-l">Dynamic Fuel Surcharges in %</td>
 		<td><!-- <input type="" name="charges[10]" value=" --><?=$charges[17]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">% of basic freight</td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-d">DACC Charges</td>
 		<td><!-- <input type="" name="charges[11]" value=" --><?=$charges[9]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-l">E-way bill charge</td>
 		<td><!-- <input type="" name="charges[12]" value=" --><?=$charges[18]??''?><!-- " style="width: 100px;"> --></td>
 		<td colspan="2">Per GC</td>
@@ -1158,7 +1158,7 @@ information:</span></h1>
 		<td><?=$charges[19]?></td>
 		<td colspan="2">Upto 3 MT Per GC</td>
 	</tr>
-	<tr>
+	<tr <?php if($ip[39]=='ftl'){ echo "style='display:none'";} ?>>
 		<td class="bg-l">Last Mile Delivery Charges</td>
 		<td><?=$charges[20]??''?></td>
 		<td colspan="2">Upto 3 MT Per GC</td>
