@@ -23,7 +23,7 @@
 					<thead>               
   	         <tr>
                 <th>&nbsp; # &nbsp;</th>
-                <th id="th-1" >Name</th>
+                <th id="th-1" style="width: 20%;">Client Name</th>
                 <th id="th-2" style="width: 20%;">Company</th>
                 <th id="th-3" style="width: 20%;">Mobile Number</th>
                 <th id="th-4" style="width: 20%;">Email ID</th>
