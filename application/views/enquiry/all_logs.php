@@ -1,3 +1,52 @@
+<style>
+  /*TAG STYLE START*/
+.tag {
+  background: #eee;
+  border-radius: 3px 0 0 3px;
+  color: red;
+  display: inline-block;
+  height: 17px;
+  line-height: 17px;
+  padding: 0 10px 0 19px;
+  position: relative;  
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+  font-size: xx-small !important;  
+}
+
+.tag::before {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+  content: '';
+  height: 6px;
+  left: 10px;
+  position: absolute;
+  width: 6px;
+  top: 6px;
+}
+
+.tag::after {
+  background: #fff;
+  border-bottom: 8px solid transparent;
+  border-left: 10px solid #eee;
+  border-top: 9px solid transparent;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.tag:hover {
+  background-color: crimson;
+  color: white;
+}
+
+.tag:hover::after {
+   border-left-color: crimson; 
+}
+/*TAG STYLE END*/
+</style>
 <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">
 	<div class="col-md-4 col-sm-4 col-xs-4"> 
           <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>           

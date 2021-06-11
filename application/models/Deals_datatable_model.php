@@ -81,7 +81,7 @@ class Deals_datatable_model extends CI_Model{
 //print_r($_POST['curr_stg']);exit;
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
-        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type,enq.client_name,comp.company_name');
+        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type,enq.client_name,comp.company_name,(SELECT SUM(expected_amount) FROM deal_data WHERE deal_data.deal_id = info.id) as qotation_amt');
         $this->db->from($this->table.' info');
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
         $this->db->join('tbl_company comp','enq.company=comp.id','left');

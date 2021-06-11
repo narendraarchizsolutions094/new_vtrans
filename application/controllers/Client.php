@@ -2666,7 +2666,13 @@ public function all_update_expense_status()
             }
 			
 			if($colsall || in_array(8,$cols)){
-                $sub[] = $res->created_date??'NA';
+				if($res->tag_date==date('Y-m-d')){
+				    $tag =	'<a class="tag">NEW</a>';
+				}else{
+					$tag = '';
+				}
+				$create_dt = $res->created_date.' '.$tag;
+                $sub[] = $create_dt??'NA';
                 $header[8] = 'create At';
             }
 

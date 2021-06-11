@@ -946,6 +946,12 @@ class Report extends CI_Controller
     $i = 1;
     $data = array();
     foreach ($rep_details as  $repdetails) {
+		
+    $department = $this->db->select('fvalue')->from('extra_enquery')->where('parent',$repdetails->enquiry_id)->where('input','4452')->get()->row();
+	$country_code = $this->db->select('fvalue')->from('extra_enquery')->where('parent',$repdetails->enquiry_id)->where('input','4453')->get()->row();
+	$std_code = $this->db->select('fvalue')->from('extra_enquery')->where('parent',$repdetails->enquiry_id)->where('input','4454')->get()->row();
+	$website = $this->db->select('fvalue')->from('extra_enquery')->where('parent',$repdetails->enquiry_id)->where('input','4505')->get()->row();
+	$pincode = $this->db->select('fvalue')->from('extra_enquery')->where('parent',$repdetails->enquiry_id)->where('input','4536')->get()->row();
 
       $no++;
       $row = array();
@@ -1053,6 +1059,45 @@ class Report extends CI_Controller
       }
       if (in_array('Enquiry Id', $this->session->userdata('post_report_columns'))) {
         $row[] = (!empty($repdetails->Enquery_id)) ? $repdetails->Enquery_id : 'NA';
+      }
+	  if (in_array('Client Name', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->client_name)) ? $repdetails->client_name : 'NA';
+      }
+	  if (in_array('Expected Closer Date', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->lead_expected_date)) ? $repdetails->lead_expected_date : 'NA';
+      }
+	  if (in_array('Conversion Probability', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->lscore_name)) ? $repdetails->lscore_name : 'NA';
+      }
+	  if (in_array('Designation', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->desi_name)) ? $repdetails->desi_name : 'NA';
+      }
+	  if (in_array('Address', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->address)) ? $repdetails->address : 'NA';
+      }
+	  if (in_array('Client Type', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->client_type)) ? $repdetails->client_type : 'NA';
+      }
+	  if (in_array('Type Of Load / Business', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->business_load)) ? $repdetails->business_load : 'NA';
+      }
+	  if (in_array('Industries', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($repdetails->industries)) ? $repdetails->industries : 'NA';
+      }
+	  if (in_array('Department', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($department->fvalue)) ? $department->fvalue : 'NA';
+      }
+	  if (in_array('Country Code', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($country_code->fvalue)) ? $country_code->fvalue : 'NA';
+      }
+	  if (in_array('STD Code', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($std_code->fvalue)) ? $std_code->fvalue : 'NA';
+      }
+	  if (in_array('Website', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($website->fvalue)) ? $website->fvalue : 'NA';
+      }
+	  if (in_array('Pincode', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($pincode->fvalue)) ? $pincode->fvalue : 'NA';
       }
       if (!empty($dfields)) {
         foreach ($dfields as $ind => $dfld) {

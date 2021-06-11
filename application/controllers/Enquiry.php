@@ -3869,6 +3869,8 @@ echo  $details1;
             $sub[] = $value->id;
 			
 			$sub[] = $value->quatation_number;
+			
+			$sub[] = (int)(($value->qotation_amt*100))/100;;
 
              if(!empty($_POST['view_all']))
              {

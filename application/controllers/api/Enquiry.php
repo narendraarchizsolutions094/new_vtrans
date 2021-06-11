@@ -3316,7 +3316,7 @@ public function get_enq_list_post(){
 
         	$all_reporting_ids  = $this->common_model->get_categories($user_id);
 
-	    	$this->db->select('concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as create_name,enquiry.status,tbl_comment.created_date,tbl_comment.comm_id,enquiry.enquiry_id,enquiry.phone,tbl_comment.comment_msg,tbl_comment.remark,comp.company_name,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.client_name');
+	    	$this->db->select('enquiry.created_date as tag_date,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as create_name,enquiry.status,tbl_comment.call_timestamp as created_date,tbl_comment.comm_id,enquiry.enquiry_id,enquiry.phone,tbl_comment.comment_msg,tbl_comment.remark,comp.company_name,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.client_name');
             $this->db->from('tbl_comment');
             $this->db->join('enquiry','enquiry.Enquery_id=tbl_comment.lead_id','inner');
 		    $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
