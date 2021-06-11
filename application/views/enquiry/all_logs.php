@@ -29,8 +29,9 @@
                 <th id="th-4" style="width: 20%;">Email ID</th>
 				<th id="th-5" style="width: 20%;">Log Header</th>
                 <th id="th-6" style="width: 20%;">Log Details</th>
-                <th id="th-7" style="width: 20%;">Created At</th>
-                <th id="th-8" style="width: 50px;">Action</th>
+                <th id="th-7" style="width: 20%;">Created By</th>
+				<th id="th-8" style="width: 20%;">Created At</th>
+                <th id="th-9" style="width: 50px;">Action</th>
   	         </tr>
 					</thead>
 					<tbody>
@@ -112,11 +113,14 @@ function deletelog(t)
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="6"> Log Details</label>
             </div>
-            <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="7"> Created At</label>
+			<div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="7"> Created By</label>
             </div>
             <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="8"> Action</label>
+              <label class=""><input type="checkbox" class="choose-col" value="8"> Created At</label>
+            </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="9"> Action</label>
             </div>
           </div>
         </div>

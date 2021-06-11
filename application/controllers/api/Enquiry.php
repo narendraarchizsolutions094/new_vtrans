@@ -3303,4 +3303,55 @@ public function get_enq_list_post(){
         ], REST_Controller::HTTP_OK);
 	}		
   }
+ //CALL LOG DATA API FOR VINAY START
+   public function get_log_data_post()
+  {    
+
+        $comp_id = $this->input->post('company_id');
+    	$user_id = $this->input->post('user_id');
+    	$this->form_validation->set_rules('company_id','company_id','required|trim');
+    	$this->form_validation->set_rules('user_id','user_id','required|trim');
+        if($this->form_validation->run()==true)
+        {
+
+        	$all_reporting_ids  = $this->common_model->get_categories($user_id);
+
+	    	$this->db->select('concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as create_name,enquiry.status,tbl_comment.created_date,tbl_comment.comm_id,enquiry.enquiry_id,enquiry.phone,tbl_comment.comment_msg,tbl_comment.remark,comp.company_name,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.client_name');
+            $this->db->from('tbl_comment');
+            $this->db->join('enquiry','enquiry.Enquery_id=tbl_comment.lead_id','inner');
+		    $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
+			$this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_comment.created_by','left');
+	        $this->db->where("tbl_comment.coment_type",'5');
+
+	        $where="";
+	        $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+	        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+	        $this->db->where($where);
+	        $res = $this->db->get()->result();
+
+         	if(!empty($res))
+            {
+            	
+            	$this->set_response([
+                  'status' => true,
+                  'data' =>$res,
+               ], REST_Controller::HTTP_OK);
+			       }
+            else
+            {
+				$this->set_response([
+                  'status' => FALSE,
+                  'message' =>'No data.',
+               ], REST_Controller::HTTP_OK);
+            }
+    	}
+  		else 
+        {		     
+  		     $this->set_response([
+                  'status' => false,
+                  'message' =>strip_tags(validation_errors())
+               ], REST_Controller::HTTP_OK);
+  		}
+  }
+ //CALL LOG DATA API FOR VINAY END 
 }

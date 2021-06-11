@@ -2632,7 +2632,7 @@ public function all_update_expense_status()
                 if($colsall || in_array(1,$cols))
                     //$sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
                 $sub[] = '<a href="'.$url.'">'.$res->client_name.'</a>'??'NA';
-                $header[1] = 'Name';
+                $header[1] = 'Client Name';
             }
            
             if($colsall || in_array(2,$cols)){
@@ -2661,11 +2661,16 @@ public function all_update_expense_status()
             }
 
             if($colsall || in_array(7,$cols)){
-                $sub[] = $res->emailid??'NA';
+                $sub[] = $res->create_name??'NA';
                 $header[7] = 'create By';
             }
+			
+			if($colsall || in_array(8,$cols)){
+                $sub[] = $res->created_date??'NA';
+                $header[8] = 'create At';
+            }
 
-            if($colsall || in_array(8,$cols))
+            if($colsall || in_array(9,$cols))
             {
                 $html = '';
                 $html.='<td style="width:50px;">
@@ -2677,7 +2682,7 @@ public function all_update_expense_status()
                     </button>';
                   }
                 $sub[]=$html;
-                $header[8] = 'Action';
+                $header[9] = 'Action';
             }
             $data[] =$sub;
         }

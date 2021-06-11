@@ -225,7 +225,20 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                               'State',
                                               'City',
                                               'Product',
-                                              'Enquiry Id'
+                                              'Enquiry Id',
+											  'Client Name',
+											  'Expected Closer Date',
+											  'Conversion Probability',
+											  'Designation',
+											  'Address',
+											  'Client Type',
+											  'Type Of Load / Business',
+											  'Industries',
+											  'Department',
+											  'Country Code',
+											  'STD Code',
+											  'Website',
+											  'Pincode'
                                             );
                            // $this->session->set_userdata($report_columns);             
                         ?>
@@ -329,6 +342,33 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                     <option
                                     <?php if(!empty(set_value('report_columns'))){if (in_array('Enquiry Id',set_value('report_columns'))) {echo 'selected';}}?>>
                                     Enquiry Id</option>
+									
+								<option <?php if(!empty(set_value('report_columns'))){if (in_array('Client Name',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Client Name</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Expected Closer Date',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Expected Closer Date</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Conversion Probability',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Conversion Probability</option> 
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Designation',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Designation</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Address',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Address</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Client Type',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Client Type</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Type Of Load / Business',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Type Of Load / Business</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Industries',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Industries</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Department',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Department</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Country Code',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Country Code</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('STD Code',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    STD Code</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Website',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Website</option>
+                                <option <?php if(!empty(set_value('report_columns'))){if (in_array('Pincode',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Pincode</option>
                                     
 
                                 <?php if(!empty($dfields)) { 

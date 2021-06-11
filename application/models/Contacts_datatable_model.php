@@ -251,10 +251,11 @@ $where1='';
         $where1 .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
 
 
-        $this->db->select('enquiry.status,tbl_comment.created_date,tbl_comment.comm_id,enquiry.enquiry_id,enquiry.phone,tbl_comment.comment_msg,tbl_comment.remark,comp.company_name,enquiry.enquiry_id,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.client_name');
+        $this->db->select('concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as create_name,enquiry.status,tbl_comment.created_date,tbl_comment.comm_id,enquiry.enquiry_id,enquiry.phone,tbl_comment.comment_msg,tbl_comment.remark,comp.company_name,concat_ws(" ",name_prefix,name,lastname) as enq_name,enquiry.client_name');
         $this->db->from('tbl_comment');
         $this->db->join('enquiry','enquiry.Enquery_id=tbl_comment.lead_id','inner');
 		$this->db->join('tbl_company comp','comp.id=enquiry.company','left');
+		$this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_comment.created_by','left');
         $where.=" and ";
         $where.="tbl_comment.coment_type = '5'";
         if($where!='')
