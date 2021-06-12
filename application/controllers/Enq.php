@@ -432,6 +432,12 @@ class Enq extends CI_Controller
 
 		$this->session->set_userdata('enquiry_filters_sess', $_POST);
 	}
+	
+	public function log_set_filters_session()
+	{
+
+		$this->session->set_userdata('log_filters_sess', $_POST);
+	}
 	public function set_process_session()
 	{
 		$this->session->set_userdata('process', $this->input->post('process'));

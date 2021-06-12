@@ -4167,6 +4167,17 @@ echo  $details1;
         $res=$this->db->get('enquiry');
         $enq_id=$res->row();
 		
+		$this->db->select('client_id,c_name,contact_number,emailid');
+		if($parameter=='mobile'){
+		$this->db->where('contact_number',$type);
+		}
+		if($parameter=='email'){
+		$this->db->where('emailid',$type);
+		}
+		$this->db->where('comp_id',$company);
+        $res=$this->db->get('tbl_client_contacts');
+        $contact_id=$res->row();
+		
         if(!empty($enq_id->enquiry_id)){
 			if($enq_id->status==1){
 				$url = 'enquiry/view/'.$enq_id->enquiry_id.'/'.base64_encode($enq_id->status);
@@ -4186,11 +4197,28 @@ echo  $details1;
                             <td>'.$enq_id->name_prefix.' '.$enq_id->name.' '.$enq_id->lastname.'</td>
 							<td>'.$enq_id->email.'</td>
 							<td>'.$enq_id->phone.'</td>
-                            <td><a href="'.base_url($url).'">View details</a></td>
+                            <td><a href="'.base_url($url).'">View Lead</a></td>
                         </tr>
                     </table>';
 			echo $html;
-        }else{
+        }else if(!empty($contact_id->client_id)){
+			$url = 'client/contacts';
+			$html = '<table class="table table-bordered table-hover">
+			            <tr>
+                            <th>Name</th>
+							<th>Email</th>
+							<th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td>'.$contact_id->c_name.'</td>
+							<td>'.$contact_id->emailid.'</td>
+							<td>'.$contact_id->contact_number.'</td>
+                            <td><a href="'.base_url($url).'" target="_blank">View Contact</a></td>
+                        </tr>
+                    </table>';
+			echo $html;
+		}else{
 			echo 0;
 		}			
     }

@@ -466,9 +466,40 @@ class Client extends CI_Controller {
     {
         $this->load->model(array('Client_Model','Enquiry_Model'));
         $data['title'] = 'Logs';
+		$data['created_bylist'] = $this->User_model->read();
+		$data['filterData'] = $this->Ticket_Model->get_filterData('log');
         $data['content'] = $this->load->view('enquiry/all_logs', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
+	
+	public function log_dashboard_count()
+	{
+		$this->load->model('contacts_datatable_model');
+		$this->contacts_datatable_model->_get_datatables_query_log(0);
+		$data['all_call'] = $this->db->count_all_results();
+//echo $this->db->last_query();die;
+
+		$this->contacts_datatable_model->_get_datatables_query_log(0); 
+		$this->db->where('tbl_comment.comment_msg LIKE','%Incoming%');
+		$data['all_incoming'] = $this->db->count_all_results();
+
+	
+
+		$this->contacts_datatable_model->_get_datatables_query_log(0);
+		$this->db->where('tbl_comment.comment_msg LIKE','%Outgoing%');
+		$data['all_outgoing']= $this->db->count_all_results();
+
+		$this->contacts_datatable_model->_get_datatables_query_log(0);
+		$this->db->where('enquiry.created_date LIKE', date('Y-m-d')); //anyhow updated
+		$data['all_new']=$this->db->count_all_results();
+
+
+		$this->contacts_datatable_model->_get_datatables_query_log(0);	
+		$this->db->where('enquiry.created_date NOT LIKE', date('Y-m-d'));
+		$data['all_existing']=$this->db->count_all_results();
+
+		echo json_encode($data);
+	}
 
     public function company_list()
     {
@@ -2602,13 +2633,19 @@ public function all_update_expense_status()
     { 
         $this->load->model('contacts_datatable_model');
         $result = $this->contacts_datatable_model->getRows_log($_POST);
-        $colsall  = true;
-        $cols = array();
-        if(!empty($_POST['allow_cols']))
-        {
-            $cols  = explode(',',$_POST['allow_cols']);
-            $colsall = false;
-        }
+        $acolarr = $dacolarr = array();
+		if (isset($_COOKIE["allowcols"])) {
+			$showall = false;
+			$acolarr  = explode(",", trim($_COOKIE["allowcols"], ","));
+		} else {
+			$showall = true;
+		}
+		if (isset($_COOKIE["dallowcols"])) {
+			$dshowall = false;
+			$dacolarr  = explode(",", trim($_COOKIE["dallowcols"], ","));
+		}
+		if (!empty($enqarr) and !empty($dacolarr)) {
+		}
         $data = array();
         $header = array();
         $i=1;
@@ -2618,8 +2655,8 @@ public function all_update_expense_status()
 
             $sub[] = $i++;
             $header[0] = '#';
-            if(!empty($_POST['view_all']))
-            {
+            //if(!empty($_POST['view_all']))
+           // {
                 if($res->status=='1')
                     $url = base_url('enquiry/view/').$res->enquiry_id;
                 else if($res->status=='2')
@@ -2629,44 +2666,45 @@ public function all_update_expense_status()
                 else
                     $url = base_url('client/view/').$res->enquiry_id;
 
-                if($colsall || in_array(1,$cols))
-                    //$sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
+                if($showall || in_array(1,$acolarr)){
+                //$sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
                 $sub[] = '<a href="'.$url.'">'.$res->client_name.'</a>'??'NA';
                 $header[1] = 'Client Name';
-            }
+				}
+            //}
            
-            if($colsall || in_array(2,$cols)){
+            if($showall || in_array(2,$acolarr)){
                 $sub[] = trim($res->company_name)??'NA';
                 $header[2] = 'Company Name';
             }
 
-            if($colsall || in_array(3,$cols)){
+            if($showall || in_array(3,$acolarr)){
                 $sub[] = trim($res->phone)?$res->phone:'NA';
                 $header[3] = 'Mobile Number';
             }
             
-            if($colsall || in_array(4,$cols)){
+            if($showall || in_array(4,$acolarr)){
                 $sub[] = $res->emailid??'NA';
                 $header[4] = 'Email ID';
             }
 			
-			if($colsall || in_array(5,$cols)){
+			if($showall || in_array(5,$acolarr)){
                 $sub[] = trim($res->comment_msg)?$res->comment_msg:'NA';
                 $header[5] = 'Log Header';
             }
 
-            if($colsall || in_array(6,$cols)){
+            if($showall || in_array(6,$acolarr)){
                 $sub[] = trim($res->remark)?$res->remark:'NA';
                 $header[6] = 'Log Details';
             }
 
-            if($colsall || in_array(7,$cols)){
+            if($showall || in_array(7,$acolarr)){
                 $sub[] = $res->create_name??'NA';
                 $header[7] = 'create By';
             }
 			
-			if($colsall || in_array(8,$cols)){
-				if($res->tag_date==date('Y-m-d')){
+			if($showall || in_array(8,$acolarr)){
+				if(stripos($res->tag_date,date('Y-m-d')) !== FALSE){
 				    $tag =	'<a class="tag">NEW</a>';
 				}else{
 					$tag = '';
@@ -2676,7 +2714,7 @@ public function all_update_expense_status()
                 $header[8] = 'create At';
             }
 
-            if($colsall || in_array(9,$cols))
+            if($showall || in_array(9,$acolarr))
             {
                 $html = '';
                 $html.='<td style="width:50px;">

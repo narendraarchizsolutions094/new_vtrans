@@ -3269,7 +3269,7 @@ public function get_enq_list_post(){
   	    $type = $this->input->post('type_data');
         $parameter = $this->input->post('parameter');
 		$company = $this->input->post('company_id');
-	
+// In enquiry table	
         $this->db->select('enquiry_id');
 		if($parameter=='mobile'){
 		$this->db->where('phone',$type);
@@ -3279,8 +3279,20 @@ public function get_enq_list_post(){
 		}
 		$this->db->where('comp_id',$company);
         $res=$this->db->get('enquiry');
-        $enq_id=$res->row();	
-    if(!empty($enq_id->enquiry_id))
+        $enq_id=$res->row();
+//In contact table
+        $this->db->select('client_id');
+		if($parameter=='mobile'){
+		$this->db->where('contact_number',$type);
+		}
+		if($parameter=='email'){
+		$this->db->where('emailid',$type);
+		}
+		$this->db->where('comp_id',$company);
+        $res=$this->db->get('tbl_client_contacts');
+        $contact_id=$res->row();
+		
+    if(!empty($enq_id->enquiry_id || $contact_id->client_id))
     {
 		if($parameter=='mobile'){
 		$msg = 'This Mobile Already Exist'; 

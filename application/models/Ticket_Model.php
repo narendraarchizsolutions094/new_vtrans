@@ -150,13 +150,16 @@ class Ticket_Model extends CI_Model
 					'sales_region' =>$value->sales_region??NULL,
                     'sales_area' =>$value->sales_area??NULL,
                     'sales_branch' =>$value->sales_branch??NULL,
+					'call_type' =>$value->call_type??NULL,
+					'client_name' =>$value->client_name??NULL,
+					'call_status' =>$value->call_status??NULL,
 		];
 	}
 	}else{
 		if($type==1){
 			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
 		}else{
-			$pdata=[ 'cust_problam' =>'','from_created' =>'','to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
+			$pdata=[ 'call_type' =>'','client_name' =>'','call_status' =>'','cust_problam' =>'','from_created' =>'','to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
 	       }
 	}
 	return $pdata;

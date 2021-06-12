@@ -364,7 +364,7 @@ function manage_filters()
                <tr>                              
                   <th>S.N.</th>
 				  <th id="th-24">Quatation number</th>
-				  <th id="th-24">Quatation Amount</th>
+				  <th id="th-25">Quatation Amount</th>
                   <th id="th-1">Name</th>
                   <th id="th-21">Company</th>
                   <th id="th-22">Client Name</th>
@@ -480,6 +480,28 @@ $(document).ready(function(){
                     return d;
               }
           },
+		  <?php if(user_access('dexport')) { ?>
+          dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",         
+        buttons: [  
+            {extend: 'copy', className: 'btn-xs btn',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }}, 
+            {extend: 'csv', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }}, 
+            {extend: 'excel', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn', title: 'exportTitle',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }}, 
+            {extend: 'pdf', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }}, 
+            {extend: 'print', className: 'btn-xs btn',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }} 
+        ] ,
+        <?php
+        }
+        ?>
           "drawCallback":function(settings ){
             update_top_filter();
 			refresh_table_exs();

@@ -2004,6 +2004,15 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                             </li>
                             <?php
                             }
+							if(user_access('drep'))
+                            {
+                            ?>
+                            <li
+                                class="<?php echo (($segment1 == "report") && $segment2=='deal_report' ? "active" : null) ?>">
+                                <a href="<?=base_url("report/deal_report") ?>">Deals Report </a>
+                            </li>
+                            <?php
+                            }
                             if(user_access('122'))
                             {
                             ?>

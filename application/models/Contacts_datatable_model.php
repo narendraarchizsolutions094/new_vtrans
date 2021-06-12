@@ -12,8 +12,7 @@ class Contacts_datatable_model extends CI_Model{
         // Set searchable column fields
 
         $this->column_search = array('enquiry.name','comp.company_name','contacts.designation','contacts.c_name','contacts.contact_number','contacts.emailid','contacts.other_detail');
-        $this->column_search1 = array('enquiry.name','comp.company_name','contacts.designation','contacts.c_name','contacts.contact_number','contacts.emailid','contacts.other_detail');
-        // $this->column_search = array('tck.ticketno','tck.id','tck.category','tck.name','tck.email','tck.product','tck.message','tck.issue','tck.solution','tck.sourse','tck.ticket_stage','tck.review','tck.status','tck.priority','tck.complaint_type','tck.coml_date','tck.last_update','tck.send_date','tck.client','tck.assign_to','tck.company','tck.added_by','enq.phone','enq.gender','prd.country_name');
+        $this->column_search1 = array('enquiry.client_name');
         
         // Set default order
         $this->order = array('sr_no' => 'desc');
@@ -245,6 +244,15 @@ foreach($res as $val){
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
 $where1='';
+$log_filters_sess   =   $this->session->log_filters_sess;
+        $top_filter             =   !empty($log_filters_sess['top_filter'])?$log_filters_sess['top_filter']:'';        
+        $from_created           =   !empty($log_filters_sess['from_created'])?$log_filters_sess['from_created']:'';       
+        $to_created             =   !empty($log_filters_sess['to_created'])?$log_filters_sess['to_created']:'';
+        $createdby              =   !empty($log_filters_sess['createdby'])?$log_filters_sess['createdby']:'';
+        $calltype               =   !empty($log_filters_sess['calltype'])?$log_filters_sess['calltype']:'';
+        $clientname             =   !empty($log_filters_sess['clientname'])?$log_filters_sess['clientname']:'';
+		$callstatus             =   !empty($log_filters_sess['callstatus'])?$log_filters_sess['callstatus']:'';
+//print_r($clientname);exit;
         $where = 'enquiry.comp_id='.$this->session->companey_id;
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         $where1 .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
@@ -259,6 +267,65 @@ $where1='';
         $where.=" and ";
         $where.="tbl_comment.coment_type = '5'";
         if($where!='')
+			
+		if($top_filter=='all')
+        {
+            $where.=" AND tbl_comment.coment_type = '5'";
+        }
+        else if($top_filter=='new')
+        {            
+            $today = date('Y-m-d');          
+            $where .= " AND enquiry.created_date LIKE  '%$today%'";
+			
+        }else if($top_filter=='existing'){
+			
+            $today = date('Y-m-d');          
+            $where .= " AND enquiry.created_date NOT LIKE  '%$today%'";
+			
+        }else if($top_filter=='incoming'){
+			$calltype = 'incoming';
+            $where .= " AND tbl_comment.comment_msg LIKE  '%$calltype%'";
+			
+        }else if($top_filter=='outgoing'){
+            
+            $calltype = 'outgoing';
+            $where .= " AND tbl_comment.comment_msg LIKE  '%$calltype%'";
+			
+        }
+		
+		$log_date_fld = 'created_date';
+		if(!empty($from_created) && !empty($to_created)){
+            $from_created = date("Y-m-d",strtotime($from_created));
+            $to_created = date("Y-m-d",strtotime($to_created));
+            $where .= " AND DATE(tbl_comment.".$log_date_fld.") >= '".$from_created."' AND DATE(tbl_comment.".$log_date_fld.") <= '".$to_created."'";
+        }
+        if(!empty($from_created) && empty($to_created)){
+            $from_created = date("Y-m-d",strtotime($from_created));
+            $where .= " AND DATE(tbl_comment.".$log_date_fld.") >=  '".$from_created."'";                        
+        }
+        if(empty($from_created) && !empty($to_created)){            
+            $to_created = date("Y-m-d",strtotime($to_created));
+            $where .= " AND DATE(tbl_comment.".$log_date_fld.") <=  '".$to_created."'";                                    
+        }
+		if(!empty($createdby)){            
+           
+            $where .= " AND tbl_comment.created_by =  '".$createdby."'";                                    
+        }
+		if(!empty($calltype)){            
+           
+            $where .= " AND tbl_comment.comment_msg LIKE  '%$calltype%'";                                    
+        }
+		if(!empty($clientname)){            
+           
+            $where .= " AND enquiry.client_name LIKE  '%$clientname%'";                                    
+        }
+		if(!empty($callstatus==1)){
+            $today = date('Y-m-d');          
+            $where .= " AND enquiry.created_date LIKE  '%$today%'";                                    
+        }else if(!empty($callstatus==2)){
+			$today = date('Y-m-d');          
+            $where .= " AND enquiry.created_date NOT LIKE  '%$today%'";
+		}
         $this->db->where($where);
  
         $i = 0;
