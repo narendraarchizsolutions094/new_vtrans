@@ -3115,7 +3115,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                 }
             },
             error: function(xhr, desc, err) {
-                alert("mark attendance error");
+                console.log("mark attendance error");
             }
         });
     });
