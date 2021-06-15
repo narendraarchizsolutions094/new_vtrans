@@ -1632,13 +1632,13 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                 <a href="<?php echo base_url("customer"); ?>"><?php echo display('company_list'); ?></a>
                             </li>
 
-                            <li class="<?php echo (in_array($segment2,array('backupDatabase')) ?"active":'') ?>"> <a
+                            <!-- <li class="<?php echo (in_array($segment2,array('backupDatabase')) ?"active":'') ?>"> <a
                                     href="<?php echo base_url("dashboard/backupDatabase"); ?>">Backup Databse</a>
                             </li>
 
                             <li class="<?php echo (in_array($segment2,array('backupfiles')) ?"active":'') ?>"> <a
                                     href="<?php echo base_url("dashboard/backupfiles"); ?>">Backup Files</a>
-                            </li>
+                            </li> -->
                             <li class="<?php echo (in_array($segment2,array('user_type')) ?"active":'') ?>"> <a
                                     href="<?php echo base_url('user/user_type'); ?>"><?php echo display('user_function') ?></a>
                             </li>
