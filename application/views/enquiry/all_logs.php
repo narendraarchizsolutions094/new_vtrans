@@ -360,27 +360,39 @@ input[name=lead_stages]{
                   <th>Client Name</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(2, $acolarr)) {  ?>
-                  <th>Company</th>
+                  <th>Company Name</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(3, $acolarr)) {  ?>
-                  <th>Mobile number</th>
+                  <th>Customer Name</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(4, $acolarr)) {  ?>
-                  <th>Email ID</th>
+                  <th>Customer Mobile</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(5, $acolarr)) {  ?>
-                  <th>Call Type</th>
+                  <th>Customer Email ID</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(6, $acolarr)) {  ?>
-                  <th>Duration</th>
+                  <th>Call Type</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(7, $acolarr)) {  ?>
-                  <th>Created By</th>
+                  <th>Duration</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(8, $acolarr)) {  ?>
-                  <th>Created At</th>
+                  <th>Purpose</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(9, $acolarr)) {  ?>
+                  <th>Description </th>
+             <?php } ?>
+			 <?php if ($showall == true or in_array(10, $acolarr)) {  ?>
+                  <th>Remarks </th>
+             <?php } ?>
+			 <?php if ($showall == true or in_array(11, $acolarr)) {  ?>
+                  <th>Created By</th>
+             <?php } ?>
+			 <?php if ($showall == true or in_array(12, $acolarr)) {  ?>
+                  <th>Created At</th>
+             <?php } ?>
+			 <?php if ($showall == true or in_array(13, $acolarr)) {  ?>
                   <th>Action</th>
              <?php } ?>
           </tr>
@@ -414,28 +426,40 @@ input[name=lead_stages]{
           <label class=""><input type="checkbox" class="choose-col" id="choose-col" value = "1" <?php echo ($showall == true or in_array(1, $acolarr)) ? "checked" : ""; ?>> Client Name</label>
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>> Company</label> 
+          <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>> Company Name</label> 
+          </div>
+		  <div class = "col-md-4">  
+          <label class=""><input type="checkbox" class="choose-col"  value = "3"  <?php echo ($showall == true or in_array(3, $acolarr)) ? "checked" : ""; ?>> Customer Name</label> 
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "3"  <?php echo ($showall == true or in_array(3, $acolarr)) ? "checked" : ""; ?>> Mobile number</label> 
+          <label class=""><input type="checkbox" class="choose-col"  value = "4"  <?php echo ($showall == true or in_array(4, $acolarr)) ? "checked" : ""; ?>> Customer Mobile</label> 
           </div>
           <div class = "col-md-4">  
-          <label  class=""><input type="checkbox" class="choose-col"  value = "4"  <?php echo ($showall == true or in_array(4, $acolarr)) ? "checked" : ""; ?>> Email Id</label>
+          <label  class=""><input type="checkbox" class="choose-col"  value = "5"  <?php echo ($showall == true or in_array(5, $acolarr)) ? "checked" : ""; ?>> Customer Email Id</label>
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "5"  <?php echo ($showall == true or in_array(5 , $acolarr)) ? "checked" : ""; ?>> Call Type </label>
+          <label class=""><input type="checkbox" class="choose-col"  value = "6"  <?php echo ($showall == true or in_array(6 , $acolarr)) ? "checked" : ""; ?>> Call Type </label>
           </div>
 		  <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "6"  <?php echo ($showall == true or in_array(6 , $acolarr)) ? "checked" : ""; ?>> Duration</label>
+          <label class=""><input type="checkbox" class="choose-col"  value = "7"  <?php echo ($showall == true or in_array(7 , $acolarr)) ? "checked" : ""; ?>> Duration</label>
           </div>
 		  <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "7"  <?php echo ($showall == true or in_array(7 , $acolarr)) ? "checked" : ""; ?>> Created By</label>
+          <label class=""><input type="checkbox" class="choose-col"  value = "8"  <?php echo ($showall == true or in_array(8 , $acolarr)) ? "checked" : ""; ?>> Purpose</label>
           </div>
 		  <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "8"  <?php echo ($showall == true or in_array(8 , $acolarr)) ? "checked" : ""; ?>> Created At</label>
+          <label class=""><input type="checkbox" class="choose-col"  value = "9"  <?php echo ($showall == true or in_array(9 , $acolarr)) ? "checked" : ""; ?>> Description</label>
           </div>
 		  <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "9"  <?php echo ($showall == true or in_array(9 , $acolarr)) ? "checked" : ""; ?>> Action</label>
+          <label class=""><input type="checkbox" class="choose-col"  value = "10"  <?php echo ($showall == true or in_array(10 , $acolarr)) ? "checked" : ""; ?>> Remarks</label>
+          </div>
+		  <div class = "col-md-4">  
+          <label class=""><input type="checkbox" class="choose-col"  value = "11"  <?php echo ($showall == true or in_array(11 , $acolarr)) ? "checked" : ""; ?>> Created By</label>
+          </div>
+		  <div class = "col-md-4">  
+          <label class=""><input type="checkbox" class="choose-col"  value = "12"  <?php echo ($showall == true or in_array(12 , $acolarr)) ? "checked" : ""; ?>> Created At</label>
+          </div>
+		  <div class = "col-md-4">  
+          <label class=""><input type="checkbox" class="choose-col"  value = "13"  <?php echo ($showall == true or in_array(13 , $acolarr)) ? "checked" : ""; ?>> Action</label>
           </div>
                 
             <div class="col-12" style="padding: 0px;">

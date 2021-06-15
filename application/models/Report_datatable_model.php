@@ -176,6 +176,98 @@ class Report_datatable_model extends CI_Model {
                 $this->db->order_by('enquiry.enquiry_id,tbl_comment.created_date','DESC');                    
             }        
     }
+	
+	public function deal_get_datatables_query(){
+        $employe = $this->session->userdata('employe1');
+        if ($this->session->hier_wise && $employe) {
+           $uid = $employe[0];
+           $employe    =    $this->common_model->get_categories($uid);                  
+        }else{
+           $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+        }
+        $from = $this->session->userdata('from1');
+        $to= $this->session->userdata('to1');       
+        $updated_from = $this->session->userdata('updated_from1');
+        $updated_to = $this->session->userdata('updated_to1');
+        $state = $this->session->userdata('state1');
+        $all = $this->session->userdata('all1');
+        $companey_id= $this->session->userdata('companey_id');  
+  
+        if($all){
+                $select = 'commercial_info.stage_id,(select SUM(expected_amount) from deal_data where deal_data.deal_id=commercial_info.id) as qotation_amount,commercial_info.quatation_number,commercial_info.deal_type,commercial_info.booking_type,commercial_info.business_type,
+				commercial_info.insurance,commercial_info.status,commercial_info.edit_remark,commercial_info.creation_date,commercial_info.updation_date,
+				concat_ws(" ",enquiry.name_prefix,enquiry.name,enquiry.lastname) as deal_name,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as createdby,enquiry.client_name';
+            }else{
+                $select = 'commercial_info.stage_id,(select SUM(expected_amount) from deal_data where deal_data.deal_id=commercial_info.id) as qotation_amount,commercial_info.quatation_number,commercial_info.deal_type,commercial_info.booking_type,commercial_info.business_type,
+				commercial_info.insurance,commercial_info.status,commercial_info.edit_remark,commercial_info.creation_date,commercial_info.updation_date,
+				concat_ws(" ",enquiry.name_prefix,enquiry.name,enquiry.lastname) as deal_name,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as createdby,enquiry.client_name';
+            }
+            $select .= ',commercial_info.comp_id';
+            $this->db->select($select);                    
+            $where = "commercial_info.id > 0";      
+            if ($from && $to) {
+                $to = str_replace('/', '-', $to);
+                $from = str_replace('/', '-', $from);            
+                $from = date('Y-m-d', strtotime($from));
+                $to = date('Y-m-d', strtotime($to));            
+                $where .= " AND Date(commercial_info.creation_date) >= '$from' AND Date(commercial_info.creation_date) <= '$to'";
+            } else if ($from && !$to) {
+                $from = str_replace('/', '-', $from);            
+                $from = date('Y-m-d', strtotime($from));
+                $where .= " AND Date(commercial_info.creation_date) = '$from'";
+            } else if (!$from && $to) {            
+                $to = str_replace('/', '-', $to);
+                $to = date('Y-m-d', strtotime($to));
+                $where .= " AND Date(commercial_info.creation_date) = '$to'";
+            }            
+            
+           if($employe!=''){                        
+                $where .= " AND ( commercial_info.createdby IN (".implode(',', $employe).')';
+                $where .= " OR commercial_info.updatedby IN (".implode(',', $employe).'))';           
+            }else{
+                $where .= " AND ( commercial_info.createdby IN (".implode(',', $all_reporting_ids).')';
+                $where .= " OR commercial_info.updatedby IN (".implode(',', $all_reporting_ids).'))';  
+            }    
+            
+            if($state!=''){
+               $where .= " AND commercial_info.stage_id IN (".implode(',', $state).')';  
+            }
+            
+            if($all!='' || $updated_from || $updated_to){
+                if ($updated_from && $updated_to) {
+                    $updated_to = str_replace('/', '-', $updated_to);
+                    $updated_from = str_replace('/', '-', $updated_from);            
+                    $updated_from = date('Y-m-d', strtotime($updated_from));
+                    $updated_to = date('Y-m-d', strtotime($updated_to));            
+                    $where .= " AND Date(commercial_info.updation_date) >= '$updated_from' AND Date(commercial_info.updation_date) <= '$updated_to'";
+                } else if ($updated_from && !$updated_to) {
+                    $updated_from = str_replace('/', '-', $updated_from);            
+                    $updated_from = date('Y-m-d', strtotime($updated_from));
+                    $where .= " AND Date(commercial_info.updation_date) LIKE '%$updated_from%'";
+                } else if (!$updated_from && $updated_to) {            
+                    $updated_to = str_replace('/', '-', $updated_to);           
+                     $updated_to = date('Y-m-d', strtotime($updated_to));
+                    $where .= " AND Date(commercial_info.updation_date) LIKE '%$updated_to%'";
+                }
+            }
+            
+            if($this->session->companey_id==''){
+                $comp_id=$companey_id;
+            }else{
+                $comp_id=$this->session->companey_id;
+
+            }
+			$this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby','left');
+            $this->db->join('deal_data','deal_data.deal_id=commercial_info.id','left');
+            $this->db->join('enquiry','enquiry.enquiry_id=commercial_info.enquiry_id','left');			
+            $this->db->where($where);        
+            if(!$all){
+                $this->db->group_by('commercial_info.id');        
+            }else{
+                $this->db->order_by('commercial_info.id','ASC');                    
+            }        
+    }
+	
     function get_datatables(){              
         $this->_get_datatables_query();
         if($_POST['length'] != -1)
@@ -184,9 +276,23 @@ class Report_datatable_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->result();
     }
+	function deal_get_datatables(){              
+        $this->deal_get_datatables_query();
+        if($_POST['length'] != -1)
+        $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get('commercial_info');
+        //echo $this->db->last_query();
+        return $query->result();
+    }
     function count_filtered(){
         $this->_get_datatables_query();
         $query = $this->db->get($this->table);
+        return $query->num_rows();
+    }
+	
+	function count_filtered_deal(){
+        $this->deal_get_datatables_query();
+        $query = $this->db->get('commercial_info');
         return $query->num_rows();
     }
 
@@ -203,6 +309,22 @@ class Report_datatable_model extends CI_Model {
         $where = "";                        
         $where .= " (enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
+        $this->db->where($where);
+        return $this->db->count_all_results();
+    }
+	
+	public function count_all_deal(){
+        $employe = $this->session->userdata('employe1');
+        if ($this->session->hier_wise && $employe) {
+           $uid = $employe[0];
+           $all_reporting_ids    =    $this->common_model->get_categories($uid);                  
+        }else{
+           $all_reporting_ids    =    $this->common_model->get_categories($this->session->user_id);      
+        }
+        $this->db->from('commercial_info');        
+        $where = "";                        
+        $where .= " (commercial_info.createdby IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR commercial_info.updatedby IN (".implode(',', $all_reporting_ids).'))';          
         $this->db->where($where);
         return $this->db->count_all_results();
     }

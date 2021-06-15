@@ -363,8 +363,8 @@ function manage_filters()
 				     <thead class="thead-light">
                <tr>                              
                   <th>S.N.</th>
-				  <th id="th-24">Quatation number</th>
-				  <th id="th-25">Quatation Amount</th>
+				  <th id="th-24">Quatation No</th>
+				  <th id="th-25">Quatation Amt</th>
                   <th id="th-1">Name</th>
                   <th id="th-21">Company</th>
                   <th id="th-22">Client Name</th>
@@ -681,6 +681,12 @@ $(window).load(function(){
           <div class="row">
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="1"> Name</label>
+            </div>
+			<div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="24"> Quatation Number</label>
+            </div>
+			<div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="25"> Quatation Amount</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="21"> Company name</label>

@@ -3868,9 +3868,11 @@ echo  $details1;
 
             $sub[] = $value->id;
 			
-			$sub[] = $value->quatation_number;
-			
-			$sub[] = (int)(($value->qotation_amt*100))/100;;
+			if($colsall || in_array(24,$cols))
+            $sub[] =$value->quatation_number??'NA';
+		
+		     if($colsall || in_array(25,$cols))
+            $sub[] =(int)(($value->qotation_amt*100))/100??'NA';
 
              if(!empty($_POST['view_all']))
              {
@@ -3885,7 +3887,8 @@ echo  $details1;
 
                 if($colsall || in_array(1,$cols))
                     $sub[] = '<a href="'.$url.'">'.$value->name.'</a>'??'NA';
-            }
+            }			
+			
 
             if($colsall || in_array(21,$cols))
             $sub[] =$value->company_name??'NA';  

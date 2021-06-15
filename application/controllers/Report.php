@@ -84,6 +84,25 @@ class Report extends CI_Controller
     $data['content'] = $this->load->view('reports/report_view', $data, true);
     $this->load->view('layout/main_wrapper', $data);
   }
+  
+  public function deal_view($id)
+  {
+
+    $data['rid'] = $id;
+    $this->session->set_userdata('reportid', $id);
+    $this->db->where('id', $id);
+    $report_row =   $this->db->where('type', 8)->get('reports')->row_array();
+
+    $filters = json_decode($report_row['filters'], true);
+    $from = $this->session->set_userdata('fromdt', $this->input->post("from"));
+    $to =  $this->session->set_userdata('todt', $this->input->post("to"));
+    $data['title'] = 'View Report';
+    $data['filters'] = $filters;
+    $data['report_columns'] = $filters['report_columns'];
+
+    $data['content'] = $this->load->view('reports/deal_report_view', $data, true);
+    $this->load->view('layout/main_wrapper', $data);
+  }
   public function send_sales_view($id)
   {
    // $this->session->sess_destroy();
@@ -703,6 +722,181 @@ class Report extends CI_Controller
     );
     echo json_encode($output);
   }
+  
+  public function deal_report_view_data()
+  {
+
+    $this->load->model('report_datatable_model');
+    $no = $_POST['start'];
+    $this->db->where('id', $this->session->userdata('reportid'));
+    $report_row =   $this->db->get('reports')->row_array();
+    $filters = json_decode($report_row['filters'], true);
+    $filters1 = $filters;
+    $report_columns = $filters1['report_columns'];
+
+    $data['from'] = '';
+    $data['to'] = '';
+
+    $from = $this->session->userdata('fromdt');
+    $to =  $this->session->userdata('todt');
+
+    if ($from && $to) {
+      $from = date("d/m/Y", strtotime($from));
+      $to = date("d/m/Y", strtotime($to));
+    } else {
+      if (empty($filters['from_exp'])) {
+        $from = '';
+      } else {
+        $dfrom = $filters['from_exp'];
+        $from = date("d/m/Y", strtotime($dfrom));
+        $from1 = $filters['from_exp'];
+        $data['from'] = $from1;
+      }
+      if (empty($filters['to_exp'])) {
+        $to = '';
+      } else {
+        $tto = $filters['to_exp'];
+        $to = date("d/m/Y", strtotime($tto));
+        $to1 = $filters['to_exp'];
+        $data['to'] = $to1;
+      }
+    }
+    $updated_from = $this->session->userdata('updated_from1');
+    $updated_to =  $this->session->userdata('updated_to1');
+
+    if ($updated_from && $updated_to) {
+      $updated_from = date("d/m/Y", strtotime($updated_from));
+      $updated_to = date("d/m/Y", strtotime($updated_to));
+    } else {
+      if (empty($filters['updated_from_exp'])) {
+        $updated_from = '';
+      } else {
+        $updated_dfrom = $filters['updated_from_exp'];
+        $updated_from = date("d/m/Y", strtotime($updated_dfrom));
+        $updated_from1 = $filters['updated_from_exp'];
+        $data['updated_from'] = $updated_from1;
+      }
+      if (empty($filters['updated_to_exp'])) {
+        $updated_to = '';
+      } else {
+        $updated_tto = $filters['updated_to_exp'];
+        $updated_to = date("d/m/Y", strtotime($updated_tto));
+        $updated_to1 = $filters['updated_to_exp'];
+        $data['updated_to'] = $updated_to1;
+      }
+    }
+    if (empty($filters['employee'])) {
+      $employe = '';
+    } else {
+      $employe = $filters['employee'];
+    }
+
+    if (empty($filters['state'])) {
+      $state = '';
+    } else {
+      $state = $filters['state'];
+    }
+    
+    if (empty($filters['all'])) { // follow up report
+      $all = '';
+    } else {
+      $all = $filters['all'];
+    }
+    $deal_details = $this->report_datatable_model->deal_get_datatables($from, $to, $updated_from, $updated_to, $employe, $all);
+    $i = 1;
+    $data = array();
+    foreach ($deal_details as  $dealdetails) {
+
+      $no++;
+      $row = array();
+
+      if (in_array('S.No', $this->session->userdata('post_report_columns'))) {
+        $row[] = $i++;
+      }
+      if (in_array('Quatation No', $this->session->userdata('post_report_columns'))) {
+		$row[] = (!empty($dealdetails->quatation_number)) ? $dealdetails->quatation_number : 'NA';
+      }
+	  
+	  if (in_array('Quatation Amt', $this->session->userdata('post_report_columns'))) {
+		$row[] = (!empty($dealdetails->qotation_amount)) ? (int)(($dealdetails->qotation_amount*100))/100 : 'NA';
+      }
+	  
+	  if (in_array('Name', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->deal_name)) ? $dealdetails->deal_name : 'NA';
+      }
+	  
+	  if (in_array('Client Name', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->client_name)) ? $dealdetails->client_name : 'NA';
+      }
+	  
+	  if (in_array('Business Type', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->business_type)) ? $dealdetails->business_type : 'NA';
+      }
+	  
+	  if (in_array('Booking Type', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->booking_type)) ? $dealdetails->booking_type : 'NA';
+      }
+	  
+	  if (in_array('Deal Type', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->deal_type)) ? $dealdetails->deal_type : 'NA';
+      }
+	  
+	  if (in_array('Deal Insurance', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->insurance)) ? $dealdetails->insurance : 'NA';
+      }
+
+      if (in_array('Deal Stage', $this->session->userdata('post_report_columns'))) {
+         if ($dealdetails->stage_id == 1) {
+           $stage = 'Lead';
+         } else if ($dealdetails->stage_id == 2) {
+           $stage = 'Approach';
+         } else if ($dealdetails->stage_id == 3){
+           $stage = 'Negotiation';
+         }else if ($dealdetails->stage_id == 4){
+           $stage = 'Closer';
+         }else if ($dealdetails->stage_id == 5){
+           $stage = 'Order';
+         }else if ($dealdetails->stage_id == 6){
+           $stage = 'Future Oppotunities';
+         }
+        $row[] = (!empty($stage)) ? $stage : 'NA';
+      }
+	  
+	  if (in_array('Deal Status', $this->session->userdata('post_report_columns'))) {
+		  if ($dealdetails->status == 1) {
+           $status = 'Done';
+         } else {
+           $status = 'Pending';
+         }
+        $row[] = (!empty($status)) ? $status : 'NA';
+      }
+	  
+	  if (in_array('Created By', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->createdby)) ? $dealdetails->createdby : 'NA';
+      }
+	  
+	  if (in_array('Created Date', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->creation_date)) ? $dealdetails->creation_date : 'NA';
+      }
+	  
+	  if (in_array('Updated Date', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->updation_date)) ? $dealdetails->updation_date : 'NA';
+      }
+	  
+	  if (in_array('Edit Remark', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->edit_remark)) ? $dealdetails->edit_remark : 'NA';
+      }
+	  
+      $data[] = $row;
+    } 
+    $output = array(
+      "draw" => $_POST['draw'],
+      "recordsTotal" => $this->report_datatable_model->count_all_deal(),
+      "recordsFiltered" => $this->report_datatable_model->count_filtered_deal(),
+      "data" => $data,
+    );
+    echo json_encode($output);
+  }
 
   public function delete_report_row()
   {
@@ -914,6 +1108,76 @@ class Report extends CI_Controller
     $data['content'] = $this->load->view('all_report', $data, true);
     $this->load->view('layout/main_wrapper', $data);
   }
+  
+  public function deal_report_panel()
+  {
+    if ($this->input->post('from_exp') == '') {
+      $from = '';
+    } else {
+      $dfrom = $this->input->post('from_exp');
+      $from = date("d/m/Y", strtotime($dfrom));
+    }
+
+    if ($this->input->post('to_exp') == '') {
+      $to = '';
+    } else {
+      $tto = $this->input->post('to_exp');
+      $to = date("d/m/Y", strtotime($tto));
+    }
+
+    if ($this->input->post('updated_from_exp') == '') {
+      $updated_from = '';
+    } else {
+      $updated_dfrom = $this->input->post('updated_from_exp');
+      $updated_from = date("d/m/Y", strtotime($updated_dfrom));
+    }
+	
+    if ($this->input->post('updated_to_exp') == '') {
+      $updated_to = '';
+    } else {
+      $updated_tto = $this->input->post('updated_to_exp');
+      $updated_to = date("d/m/Y", strtotime($updated_tto));
+    }
+	
+    if ($this->input->post('employee') == '') {
+      $employe = '';
+    } else {
+      $employe = $this->input->post('employee');
+    }
+	
+    if ($this->input->post('state') == '') {
+      $state = '';
+    } else {
+      $state = $this->input->post('state');
+    }
+
+    $data['post_report_columns'] = $this->input->post('report_columns');
+    // print_r($data['post_report_columns']);
+    // die();
+    $post_report_columns = $this->input->post('report_columns');
+    if ($this->input->post('all') == '') {
+      $all = '';
+    } else {
+      $all = $this->input->post('all');
+    }
+    $data_arr = array(
+      'from1'           =>  $from,
+      'to1'             =>  $to,
+      'updated_from1'   =>  $updated_from,
+      'updated_to1'     =>  $updated_to,
+      'employe1'        =>  $employe,
+      'state1'          =>  $state,
+	  'post_report_columns' => $post_report_columns
+    );
+    $this->session->set_userdata($data_arr);
+
+    $data['title'] = 'Deal report';
+    $this->load->model('User_model');
+    $data['employee'] = $this->User_model->read();
+    $data['content'] = $this->load->view('deal_report', $data, true);
+    $this->load->view('layout/main_wrapper', $data);
+  }
+  
   public function all_report_filterdata()
   {
     $dfields    = $this->report_model->get_dynfields();
@@ -1129,6 +1393,114 @@ class Report extends CI_Controller
     );
     echo json_encode($output);
   }
+  
+  public function deal_report_filterdata()
+  {
+    $this->load->model('report_datatable_model');
+    $no = $_POST['start'];
+    $from = $this->session->userdata('from1');
+    $to = $this->session->userdata('to1');
+	$u_from = $this->session->userdata('updated_from1');
+    $u_to = $this->session->userdata('updated_to1');
+    $employe = $this->session->userdata('employe1');
+	$state = $this->session->userdata('state1');
+    $all = $this->session->userdata('all1');
+    $deal_details = $this->report_datatable_model->deal_get_datatables();
+   // echo $this->db->last_query();
+    $i = 1;
+    $data = array();
+    foreach ($deal_details as  $dealdetails) {
+
+      $no++;
+      $row = array();
+
+      if (in_array('S.No', $this->session->userdata('post_report_columns'))) {
+        $row[] = $i++;
+      }
+      if (in_array('Quatation No', $this->session->userdata('post_report_columns'))) {
+		$row[] = (!empty($dealdetails->quatation_number)) ? $dealdetails->quatation_number : 'NA';
+      }
+	  
+	  if (in_array('Quatation Amt', $this->session->userdata('post_report_columns'))) {
+		$row[] = (!empty($dealdetails->qotation_amount)) ? (int)(($dealdetails->qotation_amount*100))/100 : 'NA';
+      }
+	  
+	  if (in_array('Name', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->deal_name)) ? $dealdetails->deal_name : 'NA';
+      }
+	  
+	  if (in_array('Client Name', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->client_name)) ? $dealdetails->client_name : 'NA';
+      }
+	  
+	  if (in_array('Business Type', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->business_type)) ? $dealdetails->business_type : 'NA';
+      }
+	  
+	  if (in_array('Booking Type', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->booking_type)) ? $dealdetails->booking_type : 'NA';
+      }
+	  
+	  if (in_array('Deal Type', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->deal_type)) ? $dealdetails->deal_type : 'NA';
+      }
+	  
+	  if (in_array('Deal Insurance', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->insurance)) ? $dealdetails->insurance : 'NA';
+      }
+
+      if (in_array('Deal Stage', $this->session->userdata('post_report_columns'))) {
+         if ($dealdetails->stage_id == 1) {
+           $stage = 'Lead';
+         } else if ($dealdetails->stage_id == 2) {
+           $stage = 'Approach';
+         } else if ($dealdetails->stage_id == 3){
+           $stage = 'Negotiation';
+         }else if ($dealdetails->stage_id == 4){
+           $stage = 'Closer';
+         }else if ($dealdetails->stage_id == 5){
+           $stage = 'Order';
+         }else if ($dealdetails->stage_id == 6){
+           $stage = 'Future Oppotunities';
+         }
+        $row[] = (!empty($stage)) ? $stage : 'NA';
+      }
+	  
+	  if (in_array('Deal Status', $this->session->userdata('post_report_columns'))) {
+		  if ($dealdetails->status == 1) {
+           $status = 'Done';
+         } else {
+           $status = 'Pending';
+         }
+        $row[] = (!empty($status)) ? $status : 'NA';
+      }
+	  
+	  if (in_array('Created By', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->createdby)) ? $dealdetails->createdby : 'NA';
+      }
+	  
+	  if (in_array('Created Date', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->creation_date)) ? $dealdetails->creation_date : 'NA';
+      }
+	  
+	  if (in_array('Updated Date', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->updation_date)) ? $dealdetails->updation_date : 'NA';
+      }
+	  
+	  if (in_array('Edit Remark', $this->session->userdata('post_report_columns'))) {
+        $row[] = (!empty($dealdetails->edit_remark)) ? $dealdetails->edit_remark : 'NA';
+      }
+	  
+      $data[] = $row;
+    } 
+    $output = array(
+      "draw" => $_POST['draw'],
+      "recordsTotal" => $this->report_datatable_model->count_all_deal(),
+      "recordsFiltered" => $this->report_datatable_model->count_filtered_deal(),
+      "data" => $data,
+    );
+    echo json_encode($output);
+  }
  
     public function create_report(){
       parse_str($_POST['filters'], $filters);
@@ -1227,23 +1599,17 @@ class Report extends CI_Controller
 	
 	  public function deal_report()
     {
-        $this->load->model(array('Ticket_Model','Datasource_model','dash_model','enquiry_model','report_model','Leads_Model','User_model'));
-    
-        if (isset($_SESSION['deal_filters_sess']) && empty($_POST))
-          unset($_SESSION['deal_filters_sess']);
-        $data['sourse'] = $this->report_model->all_source();
-        $data['title'] = "Deal Report";
-        $data['created_bylist'] = $this->User_model->read();
-        $data['products'] = $this->dash_model->get_user_product_list();
-        $data['prodcntry_list'] = $this->enquiry_model->get_user_productcntry_list();
-        $data['problem'] = $this->Ticket_Model->get_sub_list();        
-        $data['stage'] =  $this->Leads_Model->stage_by_type(4);
-        $data['sub_stage'] = $this->Leads_Model->find_description();
-        $data['ticket_status'] = $this->Ticket_Model->ticket_status()->result();        
-        $data['dfields'] = $this->enquiry_model->getformfield(2);        
-        $data['issues'] = $this->Ticket_Model->get_issue_list();     
-        $data['content'] = $this->load->view('reports/deal_report', $data, true);
-        $this->load->view('layout/main_wrapper', $data);
+		
+    $data['title'] = 'Deal report list';
+    if ($this->session->companey_id == 65 && $this->session->user_right == 215) {
+      $data['created_bylist'] = $this->user_model->read(147, false);
+    } else {
+      $data['created_bylist'] = $this->user_model->read();
+    }
+    $data['reports'] = $this->report_model->get_all_reports('8');
+    $data['content'] = $this->load->view('reports/deal_index', $data, true);
+    $this->load->view('layout/main_wrapper', $data);
+	
     }
 
     public function report_analitics($for){

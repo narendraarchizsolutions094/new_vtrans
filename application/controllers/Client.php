@@ -2667,7 +2667,6 @@ public function all_update_expense_status()
                     $url = base_url('client/view/').$res->enquiry_id;
 
                 if($showall || in_array(1,$acolarr)){
-                //$sub[] = '<a href="'.$url.'">'.$res->enq_name.'</a>'??'NA';
                 $sub[] = '<a href="'.$url.'">'.$res->client_name.'</a>'??'NA';
                 $header[1] = 'Client Name';
 				}
@@ -2677,33 +2676,53 @@ public function all_update_expense_status()
                 $sub[] = trim($res->company_name)??'NA';
                 $header[2] = 'Company Name';
             }
+			
+			if($showall || in_array(3,$acolarr)){
+                $sub[] = trim($res->enq_name)??'NA';
+                $header[3] = 'Customer Name';
+            }
 
-            if($showall || in_array(3,$acolarr)){
+            if($showall || in_array(4,$acolarr)){
                 $sub[] = trim($res->phone)?$res->phone:'NA';
-                $header[3] = 'Mobile Number';
+                $header[4] = 'Customer Mobile';
             }
             
-            if($showall || in_array(4,$acolarr)){
+            if($showall || in_array(5,$acolarr)){
                 $sub[] = $res->emailid??'NA';
-                $header[4] = 'Email ID';
+                $header[5] = 'Customer Email ID';
             }
 			
-			if($showall || in_array(5,$acolarr)){
+			if($showall || in_array(6,$acolarr)){
                 $sub[] = trim($res->comment_msg)?$res->comment_msg:'NA';
-                $header[5] = 'Log Header';
-            }
-
-            if($showall || in_array(6,$acolarr)){
-                $sub[] = trim($res->remark)?$res->remark:'NA';
-                $header[6] = 'Log Details';
+                $header[6] = 'Call Type';
             }
 
             if($showall || in_array(7,$acolarr)){
-                $sub[] = $res->create_name??'NA';
-                $header[7] = 'create By';
+                $sub[] = trim($res->remark)?$res->remark:'NA';
+                $header[7] = 'Duration';
             }
 			
 			if($showall || in_array(8,$acolarr)){
+                $sub[] = trim($res->lead_stage_name)?$res->lead_stage_name:'NA';
+                $header[8] = 'Purpose';
+            }
+			
+			if($showall || in_array(9,$acolarr)){
+                $sub[] = trim($res->description)?$res->description:'NA';
+                $header[9] = 'Description';
+            }
+			
+			if($showall || in_array(10,$acolarr)){
+                $sub[] = trim($res->lead_discription_reamrk)?$res->lead_discription_reamrk:'NA';
+                $header[10] = 'Remarks';
+            }
+
+            if($showall || in_array(11,$acolarr)){
+                $sub[] = $res->create_name??'NA';
+                $header[11] = 'create By';
+            }
+			
+			if($showall || in_array(12,$acolarr)){
 				if(stripos($res->tag_date,date('Y-m-d')) !== FALSE){
 				    $tag =	'<a class="tag">NEW</a>';
 				}else{
@@ -2711,10 +2730,10 @@ public function all_update_expense_status()
 				}
 				$create_dt = $res->created_date.' '.$tag;
                 $sub[] = $create_dt??'NA';
-                $header[8] = 'create At';
+                $header[12] = 'create At';
             }
 
-            if($showall || in_array(9,$acolarr))
+            if($showall || in_array(13,$acolarr))
             {
                 $html = '';
                 $html.='<td style="width:50px;">
@@ -2726,7 +2745,7 @@ public function all_update_expense_status()
                     </button>';
                   }
                 $sub[]=$html;
-                $header[9] = 'Action';
+                $header[13] = 'Action';
             }
             $data[] =$sub;
         }
