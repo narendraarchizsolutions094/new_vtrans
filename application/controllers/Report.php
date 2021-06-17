@@ -321,6 +321,7 @@ class Report extends CI_Controller
   public function analaytics_mail()
   {
     //fetch all schedule data
+    //$this->db->where('type',1);
     $variable = $this->db->where('schedule_status', 1)->get('reports')->result();
     foreach ($variable as $key => $value) {
       $schid = $value->id;
@@ -339,23 +340,68 @@ class Report extends CI_Controller
       $rdate = date('Y-m-d', strtotime('-1 day'));
 
       if ($type == 1) {
-        $subject = 'Sales Report : ' . date("F jS, Y", strtotime($schdate));
-        $data['created'] =  $this->db->where(array('comp_id' => $comp_id, 'Date(created_date)' => $rdate))->count_all_results('enquiry');
-        $data['assigned'] =   $this->db->where(array('enquiry.comp_id' => $comp_id, 'Date(tbl_comment.created_date)' => $rdate, 'tbl_comment.comment_msg' => 'Enquiry Assigned'))
+
+          $subject = 'Sales Report : ' . date("F jS, Y", strtotime($schdate));
+     
+          if(!empty($filters['enq_product'])){
+            $this->db->where_in('enquiry.product_id',$filters['enq_product']);
+          }
+
+          $data['created'] =  $this->db->where(array('comp_id' => $comp_id, 'Date(created_date)' => $rdate))->count_all_results('enquiry');
+          //echo 'created '.$this->db->last_query();
+     
+          if(!empty($filters['enq_product'])){
+            $this->db->where_in('enquiry.product_id',$filters['enq_product']);
+          }
+          $data['assigned'] =   $this->db->where(array('enquiry.comp_id' => $comp_id, 'Date(tbl_comment.created_date)' => $rdate, 'tbl_comment.comment_msg' => 'Enquiry Assigned'))
           ->join('tbl_comment', 'tbl_comment.lead_id=enquiry.Enquery_id')->count_all_results('enquiry');
-        $data['updated'] =   $this->db->where(array('comp_id' => $comp_id, 'Date(update_date)' => $rdate))->count_all_results('enquiry');
-        $data['followups'] =   $this->db->where(array('comp_id' => $comp_id, 'Date(created_date)' => $rdate))->count_all_results('tbl_comment');
-        $data['all_closed'] =   $this->db->where(array('comp_id' => $comp_id, 'status' => 3, 'Date(update_date)' => $rdate))->count_all_results('enquiry');
-        $data['pending'] =   $this->db->where(array('comp_id' => $comp_id, 'created_date = update_date', 'Date(update_date)' => $rdate))->count_all_results('enquiry');
+     
+          //echo '<br>assigned '.$this->db->last_query();
+
+          if(!empty($filters['enq_product'])){
+            $this->db->where_in('enquiry.product_id',$filters['enq_product']);
+          }
+          $data['updated'] =   $this->db->where(array('comp_id' => $comp_id, 'Date(update_date)' => $rdate))->count_all_results('enquiry');
+     
+          //echo '<br>updated '.$this->db->last_query();
+
+          if(!empty($filters['enq_product'])){
+            $this->db->where_in('enquiry.product_id',$filters['enq_product']);
+          }
+          $data['followups'] =   $this->db->where(array('tbl_comment.comp_id' => $comp_id, 'Date(tbl_comment.created_date)' => $rdate))->join('enquiry','enquiry.Enquery_id=tbl_comment.lead_id')->count_all_results('tbl_comment');
+      
+          //echo '<br>followuos '.$this->db->last_query();
+
+          if(!empty($filters['enq_product'])){
+            $this->db->where_in('enquiry.product_id',$filters['enq_product']);
+          }
+          $data['all_closed'] =   $this->db->where(array('comp_id' => $comp_id, 'status' => 3, 'Date(update_date)' => $rdate))->count_all_results('enquiry');
+     
+          //echo '<br>Closed '.$this->db->last_query();
+
+          if(!empty($filters['enq_product'])){
+            $this->db->where_in('enquiry.product_id',$filters['enq_product']);
+          }
+          $data['pending'] =   $this->db->where(array('comp_id' => $comp_id, 'created_date = update_date', 'Date(update_date)' => $rdate))->count_all_results('enquiry');
+
+          //echo '<br>Pending '.$this->db->last_query();
       } else {
+        
         $subject = 'Ticket Report : ' . date("F jS, Y", strtotime($schdate));
+
         $data['created'] =  $this->db->where(array('company' => $comp_id, 'Date(coml_date)' => $rdate,'process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
+        
         $data['assigned'] =   $this->db->where(array('tbl_ticket.company' => $comp_id, 'Date(tbl_ticket_conv.send_date)' => $rdate, 'tbl_ticket_conv.subj' => 'Ticked Assigned','tbl_ticket.process_id'=>$filters['process_id']))
           ->join('tbl_ticket_conv', 'tbl_ticket_conv.tck_id=tbl_ticket.id')->count_all_results('tbl_ticket');
+        
         $data['updated'] =   $this->db->where(array('company' => $comp_id, 'Date(last_update)' => $rdate,'tbl_ticket.process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
+        
         $data['followups'] =   $this->db->where(array('comp_id' => $comp_id, 'Date(tbl_ticket_conv.send_date)' => $rdate,'tbl_ticket.process_id'=>$filters['process_id']))->join('tbl_ticket', 'tbl_ticket_conv.tck_id=tbl_ticket.id')->count_all_results('tbl_ticket_conv');
+        
         $data['all_closed'] =   $this->db->where(array('company' => $comp_id, 'ticket_status' => 3, 'Date(last_update)' => $rdate,'tbl_ticket.process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
+        
         $data['pending'] =   $this->db->where(array('company' => $comp_id, 'last_update = coml_date', 'Date(last_update)' => $rdate,'tbl_ticket.process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
+
       }
       $encrypted_string = $this->encryption->encrypt($schid);
       $schid  = str_replace(array('+', '/', '='), array('-', '_', '~'),  $encrypted_string);
@@ -402,6 +448,7 @@ class Report extends CI_Controller
             $to = $userdata->s_user_email;
             $data['userName']=$userdata->s_display_name;
             $view_load = $this->load->view('mail-temps/report-mail', $data, true);
+            //echo $view_load;
 
             $this->email->set_newline("\r\n");
             $this->email->clear(TRUE);
@@ -1206,7 +1253,7 @@ class Report extends CI_Controller
     $branch = $this->session->userdata('branch');
     $region = $this->session->userdata('region');
     $rep_details = $this->report_datatable_model->get_datatables();
-   // echo $this->db->last_query();
+    //echo $this->db->last_query();
     $i = 1;
     $data = array();
     foreach ($rep_details as  $repdetails) {

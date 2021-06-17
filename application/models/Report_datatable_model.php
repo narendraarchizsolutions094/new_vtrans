@@ -168,7 +168,7 @@ class Report_datatable_model extends CI_Model {
             $this->db->join('tbl_drop','tbl_drop.d_id=enquiry.drop_status','left');
             $this->db->join('lead_score','lead_score.sc_id=enquiry.lead_score','left');
             $this->db->join('enquiry_status','enquiry_status.id=enquiry.status','inner');
-			$this->db->join('tbl_designation','tbl_designation.id=enquiry.designation','inner');
+			$this->db->join('tbl_designation','tbl_designation.id=enquiry.designation','left');
             $this->db->where($where);        
             if(!$all){
                 $this->db->group_by('enquiry.enquiry_id');        
