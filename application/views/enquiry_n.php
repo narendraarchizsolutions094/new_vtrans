@@ -233,9 +233,9 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="city" id="citycheckbox" name="filter_checkbox"> City</label>
                     </li> 
-                     <li>
+                    <li>
                       <label>
-                      <input type="checkbox" value="stage" id="stageheckbox" name="filter_checkbox"> Stage</label>
+                      <input type="checkbox" value="stage" id="stagecheckbox" name="filter_checkbox"> Stage</label>
                     </li>
                     <li>
                       <label>
@@ -288,6 +288,11 @@ input[name=lead_stages]{
                       <label>                    
                         <input type="checkbox" value="visit_wise" id="visit_wisecheckbox" name="filter_checkbox"> Visit Wise
                       </label>
+                    </li>
+					
+					<li>
+                      <label>
+                      <input type="checkbox" value="list_data" id="list_datacheckbox" name="filter_checkbox"> List Data</label>
                     </li>
                     
                     <li class="text-center">
@@ -784,6 +789,19 @@ display: block;
                             <option value="">--Select --</option>
                             <option value="1"> Visited </option>
                             <option value="2"> Non Visited </option>
+                        </select>
+                      </div>
+					  
+					  <div class="form-group col-md-3" id="list_datafilter">
+ 						            <label for="">List Data</label>
+                        <select class="form-control" name="list_data">
+                            <option value="">--Select List--</option>
+                            <option value="1"> Lead </option>
+                            <option value="2"> Approach </option>
+							<option value="3"> Negotiation </option>
+							<option value="4"> Closure </option>
+							<option value="5"> Order </option>
+							<option value="6"> Future Opportunities </option>
                         </select>
                       </div>
 
@@ -2353,21 +2371,21 @@ if (!enq_filters.includes('assign_to')) {
   $("input[value='assign_to']").prop('checked', true);
 }
 if (!enq_filters.includes('state')) {
-  $('#state').hide();
+  $('#statefilter').hide();
 }else{
   $('#statefilter').show();
 
   $("input[value='state']").prop('checked', true);
 }
 if (!enq_filters.includes('city')) {
-  $('#city').hide();
+  $('#cityfilter').hide();
 }else{
   $('#cityfilter').show();
 
   $("input[value='city']").prop('checked', true);
 }
 if (!enq_filters.includes('stage')) {
-  $('#stage').hide();
+  $('#stagefilter').hide();
 }else{
   $('#stagefilter').show();
 
@@ -2395,6 +2413,13 @@ if (!enq_filters.includes('visit_wise')) {
 }else{
   $('#visit_wisefilter').show();
   $("input[value='visit_wise']").prop('checked', true);
+}
+
+if (!enq_filters.includes('list_data')) {
+  $('#list_datafilter').hide();
+}else{
+  $('#list_datafilter').show();
+  $("input[value='list_data']").prop('checked', true);
 }
 
 if (!enq_filters.includes('sales_region')) {
@@ -2449,11 +2474,11 @@ $('input[name="filter_checkbox"]').click(function(){
   if($('#datecheckbox').is(":checked")||$('#empcheckbox').is(":checked") ||$('#tagcheckbox').is(":checked")|| $('#sourcecheckbox').is(":checked")||
   $('#subsourcecheckbox').is(":checked")||$('#emailcheckbox').is(":checked")||$('#companycheckbox').is(":checked")||
   $('#phonecheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||$('#addcheckbox').is(":checked")||
-  $('#stageheckbox').is(":checked")||$('#prodcheckbox').is(":checked")||$('#statecheckbox').is(":checked")||
+  $('#stagecheckbox').is(":checked")||$('#prodcheckbox').is(":checked")||$('#statecheckbox').is(":checked")||
   $('#citycheckbox').is(":checked")||$('#datasrccheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||
   $('#proccheckbox').is(":checked") || $('#regioncheckbox').is(":checked") || $('#areacheckbox').is(":checked") ||
   $('#branchcheckbox').is(":checked") || $('#ctypecheckbox').is(":checked") || $('#loadcheckbox').is(":checked") ||
-  $('#industriescheckbox').is(":checked") || $('#vist_wisecheckbox').is(":checked") ||
+  $('#industriescheckbox').is(":checked") || $('#visit_wisecheckbox').is(":checked") || $('#list_datacheckbox').is(":checked") ||
   $('#agingRulecheckbox').is(":checked")){ 
     $('#save_filterbutton').show();
     $('#filter_pannel').show();          
@@ -2566,7 +2591,7 @@ $('#buttongroup').hide();
           $('#addfilter').hide();
         }
 
-       if($('#stageheckbox').is(":checked")){
+       if($('#stagecheckbox').is(":checked")){
           $('#stagefilter').show();
        }
        else{
@@ -2653,7 +2678,13 @@ if($('#visit_wisecheckbox').is(":checked")){
         $('#visit_wisefilter').show();
       }
       else{
-       $('#vist_wisefilter').hide();
+       $('#visit_wisefilter').hide();
+      }
+if($('#list_datacheckbox').is(":checked")){
+        $('#list_datafilter').show();
+      }
+      else{
+       $('#list_datafilter').hide();
       }	  
 
             

@@ -71,6 +71,8 @@ class Enquiry_datatable_model extends CI_Model {
         $aging_rule             =   !empty($enquiry_filters_sess['aging_rule'])?$enquiry_filters_sess['aging_rule']:'';
        
         $visit_wise             =   !empty($enquiry_filters_sess['visit_wise'])?$enquiry_filters_sess['visit_wise']:'';
+		
+		$list_data             =   !empty($enquiry_filters_sess['list_data'])?$enquiry_filters_sess['list_data']:'';
         
 		
 		$sales_region = !empty($enquiry_filters_sess['sales_region'])?$enquiry_filters_sess['sales_region']:'';
@@ -80,7 +82,7 @@ class Enquiry_datatable_model extends CI_Model {
 		$business_load = !empty($enquiry_filters_sess['business_load'])?$enquiry_filters_sess['business_load']:'';
 		$industries = !empty($enquiry_filters_sess['industries'])?$enquiry_filters_sess['industries']:'';
 		
-		//print_r($company);exit;
+		//print_r($list_data);exit;
 
         $select = "lead_stage.lead_stage_name,tbl_company.company_name,enquiry.status,enquiry.name_prefix,enquiry.enquiry_id,tbl_subsource.subsource_name,enquiry.created_by,enquiry.aasign_to,enquiry.Enquery_id,enquiry.score,enquiry.enquiry,enquiry.company,tbl_product_country.country_name,enquiry.org_name,enquiry.name,enquiry.lastname,enquiry.email,enquiry.phone,enquiry.address,enquiry.reference_name,enquiry.created_date,enquiry.enquiry_source,lead_source.icon_url,lead_source.lsid,lead_source.score_count,lead_source.lead_name,lead_stage.lead_stage_name,tbl_datasource.datasource_name,tbl_product.product_name as product_name,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name,lead_score.score_name,lead_score.probability,tbl_company.company_name,enquiry.client_name,visit_tbl.visit_count,enquiry_tags.tag_ids";
 
@@ -122,7 +124,12 @@ class Enquiry_datatable_model extends CI_Model {
         $this->db->join('commercial_info','commercial_info.enquiry_id = enquiry.enquiry_id','left');		
         
     // echo $top_filter; exit();
-
+	
+//FOR ALL CLIENT DATA LIST FILTER START
+	if(!empty($list_data)){
+                $where .= " enquiry.status ='".$list_data."' AND ";
+        }
+//FOR ALL CLIENT DATA LIST FILTER START
         if($top_filter=='all')
         {
             $where.="  (enquiry.status IN ($data_type) ";
