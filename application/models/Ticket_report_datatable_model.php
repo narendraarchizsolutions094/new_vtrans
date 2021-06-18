@@ -393,7 +393,7 @@ if($for == 'region_chart'){
             }
             $process	=	$this->session->userdata('process')[0];			
             $where = " tbl_ticket.company=".$comp_id."";
-            //$this->db->where('tbl_ticket.process_id IN ('.$process.')');			
+            $this->db->where('tbl_ticket.process_id IN ('.$process.')');			
             if ($from && $to) {
                 $to = str_replace('/', '-', $to);
                 $from = str_replace('/', '-', $from);            
