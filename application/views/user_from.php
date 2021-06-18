@@ -309,7 +309,7 @@
                                             <option value="<?= $user->pk_i_admin_id ?>" <?php if($user->pk_i_admin_id==$department->sibling_id ){echo 'selected';}?>><?= $user->s_display_name." ".$user->last_name ?></option>                                        
                                         <?php } ?>
                                     </select>
-                                    <small>Note - if this user has any sibling user then Nighter this user report to anyone nor anyone should report to this user</small>                                    
+                                    <small>Note - if this user has any sibling user then Neither this user report to anyone nor anyone should report to this user</small>                                    
                                 </div>
 
 
