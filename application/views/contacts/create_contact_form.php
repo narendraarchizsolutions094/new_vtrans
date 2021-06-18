@@ -1,10 +1,10 @@
 <?php
-$ci = &get_instance();
+//$ci = &get_instance();
 
-$ci->load->model(array('Client_Model','Enquiry_Model','Leads_Model'));
-$company_list= $ci->Client_Model->getCompanyList()->result();
-$enquiry_list = $ci->Enquiry_Model->all_enqueries();
-$all_designation = $ci->Leads_Model->desi_select(); 
+//$ci->load->model(array('Client_Model','Enquiry_Model','Leads_Model'));
+//$company_list= $ci->Client_Model->getCompanyList()->result();
+//$enquiry_list = $ci->Enquiry_Model->all_enqueries();
+//$all_designation = $ci->Leads_Model->desi_select(); 
 ?>
 <form action="<?=base_url('client/create_newcontact/')?>" method="post" class="form-inner"> 
 

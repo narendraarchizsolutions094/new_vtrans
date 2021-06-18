@@ -449,13 +449,10 @@ class Client extends CI_Controller {
         }
         $this->load->model(array('Client_Model','Enquiry_Model'));
         $data['title'] = display('contacts');
-        $data['contact_list'] = $this->Client_Model->getContactList();//contacts.*,enquiry.---
+        $data['contact_list'] = $this->Client_Model->getContactList();
         //print_r($data['contact_list']->result_array()); exit();
         $r =$data['company_list'] = $this->Client_Model->getCompanyList()->result();
-        //print_r($r);exit();
-       // $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
-        // print_r($data['enquiry_list']);
-        // die();
+        $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
         $data['all_designation'] = $this->Leads_Model->desi_select();
         $data['contact_create_form'] = $this->load->view('contacts/create_contact_form',array(),true);
         $data['content'] = $this->load->view('enquiry/contacts', $data, true);
