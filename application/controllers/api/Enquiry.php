@@ -3263,7 +3263,7 @@ public function get_enq_list_post(){
       ],REST_Controller::HTTP_OK);
     } 
   }
-  
+//ALREADY EXIST DATA API FOR VINAY START  
   public function exist_check_post()
   {      
   	    $type = $this->input->post('type_data');
@@ -3315,6 +3315,7 @@ public function get_enq_list_post(){
         ], REST_Controller::HTTP_OK);
 	}		
   }
+ //ALREADY EXIST DATA API FOR VINAY END
  //CALL LOG DATA API FOR VINAY START
    public function get_log_data_post()
   {    
