@@ -453,7 +453,7 @@ class Client extends CI_Controller {
         //print_r($data['contact_list']->result_array()); exit();
         $r =$data['company_list'] = $this->Client_Model->getCompanyList()->result();
         //print_r($r);exit();
-        $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
+       // $data['enquiry_list'] = $this->Enquiry_Model->all_enqueries();
         // print_r($data['enquiry_list']);
         // die();
         $data['all_designation'] = $this->Leads_Model->desi_select();
