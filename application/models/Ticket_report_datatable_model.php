@@ -391,8 +391,7 @@ if($for == 'region_chart'){
                 $comp_id=$this->session->companey_id;
 
             }
-            $process	=	$this->session->userdata('process')[0];	
-print_r($process);exit;			
+            $process	=	$this->session->userdata('process')[0];			
             $where = " tbl_ticket.company=".$comp_id."";
             $this->db->where('tbl_ticket.process_id IN ('.$process.')');			
             if ($from && $to) {
