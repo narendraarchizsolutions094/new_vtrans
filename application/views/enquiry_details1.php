@@ -4587,15 +4587,19 @@ function deleteContact(t)
             $(".details-column").addClass('col-md-9');
         });
         $(this).data('vis','0');
-        $(this).find('i').removeClass('fa-caret-right');
-        $(this).find('i').addClass('fa-caret-left');
+        //$(this).find('i').removeClass('fa-caret-right');
+        //$(this).find('i').addClass('fa-caret-left');
+		$("#toggle_timeline").addClass('fa-angle-left');
+        $("#toggle_timeline").removeClass('fa-angle-right');
 	}else{
 	    $(".timeline").show(500);
         $(this).data('vis','1');
         $(".details-column").addClass('col-md-6');
         $(".details-column").removeClass('col-md-9');
-        $(this).find('i').addClass('fa-caret-right');
-        $(this).find('i').removeClass('fa-caret-left');	
+        //$(this).find('i').addClass('fa-caret-right');
+        //$(this).find('i').removeClass('fa-caret-left');
+        $("#toggle_timeline").removeClass('fa-angle-left');
+        $("#toggle_timeline").addClass('fa-angle-right');		
 	}
   })
 
