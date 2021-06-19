@@ -886,7 +886,7 @@ if(!empty($comp)){
               }
 }
 
-            if($exp_date = $this->input->post('expected_closure_date'))
+            if($exp_date = $this->input->post('expected_date'))
                 $this->db->set('lead_expected_date', $exp_date);
 
 if(!empty($mobile)){

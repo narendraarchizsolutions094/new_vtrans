@@ -50,6 +50,11 @@
                             <th><?php echo display('user_function') ?></th>
                             <th>Email</th>
                             <th><?php echo display('mobile') ?></th>
+							<th>Sales Region</th>
+							<th>Sale Area</th>
+							<th>Sales Branch</th>
+							<th>Gread</th>
+							<th>Department</th>
                             <th><?php echo display("proccess"); ?></th>
                             <th>Start Billing Date</th> 
                             <th>Valid upto</th> 
