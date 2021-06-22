@@ -3264,59 +3264,77 @@ public function get_enq_list_post(){
       ],REST_Controller::HTTP_OK);
     } 
   }
-//ALREADY EXIST DATA API FOR VINAY START  
-  public function exist_check_post()
-  {      
-  	    $type = $this->input->post('type_data');
-        $parameter = $this->input->post('parameter');
-		$company = $this->input->post('company_id');
+  
+ //ALREADY EXIST DATA API FOR VINAY START  
+ public function exist_check_post()
+ {      
+       $type = $this->input->post('type_data');
+       $parameter = $this->input->post('parameter');
+       $company = $this->input->post('company_id');
+       $data_row = array();
 // In enquiry table	
-        $this->db->select('enquiry_id');
-		if($parameter=='mobile'){
-		$this->db->where('phone',$type);
-		}
-		if($parameter=='email'){
-		$this->db->where('email',$type);
-		}
-		$this->db->where('comp_id',$company);
-        $res=$this->db->get('enquiry');
-        $enq_id=$res->row();
+       $this->db->select("enquiry_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.created_by,enquiry.aasign_to,enquiry.aasign_to as assign_to,lead_stage,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name");
+   if($parameter=='mobile'){
+   $this->db->where('phone',$type);
+   }
+   if($parameter=='email'){
+   $this->db->where('email',$type);
+   }
+   $this->db->where('comp_id',$company);
+    $this->db->join('tbl_admin as tbl_admin', 'tbl_admin.pk_i_admin_id = enquiry.created_by', 'left');
+    $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left'); 
+       $res=$this->db->get('enquiry');
+       $enq_id=$res->row();
 //In contact table
-        $this->db->select('client_id');
-		if($parameter=='mobile'){
-		$this->db->where('contact_number',$type);
-		}
-		if($parameter=='email'){
-		$this->db->where('emailid',$type);
-		}
-		$this->db->where('comp_id',$company);
-        $res=$this->db->get('tbl_client_contacts');
-        $contact_id=$res->row();
-		
-    if(!empty($enq_id->enquiry_id || $contact_id->client_id))
-    {
-		if($parameter=='mobile'){
-		$msg = 'This Mobile Already Exist'; 
-		}else if($parameter=='email'){
-		$msg = 'This Email Already Exist';
-		}
-        $this->set_response([
-        'status'      => TRUE,           
-        'msg'     => $msg,
-        ], REST_Controller::HTTP_OK);
-    }else{
-		if($parameter=='mobile'){
-		$msg = 'No Mobile Exist'; 
-		}else if($parameter=='email'){
-		$msg = 'No Email Exist';
-		}
-        $this->set_response([
-        'status'      => FALSE,           
-        'msg'     => $msg,
-        ], REST_Controller::HTTP_OK);
-	}		
-  }
- //ALREADY EXIST DATA API FOR VINAY END
+       $this->db->select("tbl_client_contacts.client_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.created_by,enquiry.aasign_to,enquiry.aasign_to as aasign_to,lead_stage,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name");
+   if($parameter=='mobile'){
+   $this->db->where('contact_number',$type);
+   }
+   if($parameter=='email'){
+   $this->db->where('emailid',$type);
+   }
+   $this->db->where('tbl_client_contacts.comp_id',$company);
+       $res=$this->db->join('enquiry','enquiry.enquiry_id=tbl_client_contacts.client_id');
+       $this->db->join('tbl_admin as tbl_admin', 'tbl_admin.pk_i_admin_id = enquiry.created_by', 'left');
+       $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left'); 
+       $res=$this->db->get('tbl_client_contacts');
+       $contact_id=$res->row();
+   
+   if(!empty($enq_id->enquiry_id) || !empty($contact_id->client_id))
+   {
+    if($parameter=='mobile'){
+    $msg = 'This Mobile Already Exist'; 
+    }else if($parameter=='email'){
+    $msg = 'This Email Already Exist';
+    }
+    if(empty($enq_id->enquiry_id)){
+      $enq_id = $contact_id;
+    }
+      $data_row = array(
+      'name'=>$enq_id->name_prefix.' '.$enq_id->name.' '.$enq_id->lastname,
+      'created_by'=>$enq_id->created_by_name,
+      'assign_to'=>$enq_id->assign_to_name,
+      'stage'=>$enq_id->lead_stage
+      );
+       $this->set_response([
+       'status'      => TRUE,           
+       'msg'     => $msg,
+       'data' => $data_row
+       ], REST_Controller::HTTP_OK);
+   }else{
+   if($parameter=='mobile'){
+   $msg = 'No Mobile Exist'; 
+   }else if($parameter=='email'){
+   $msg = 'No Email Exist';
+   }
+       $this->set_response([
+       'status'      => FALSE,           
+       'msg'     => $msg,
+       'data' => array()
+       ], REST_Controller::HTTP_OK);
+ }		
+ }
+//ALREADY EXIST DATA API FOR VINAY END
  //CALL LOG DATA API FOR VINAY START
    public function get_log_data_post()
   {    
@@ -3368,4 +3386,42 @@ public function get_enq_list_post(){
   		}
   }
  //CALL LOG DATA API FOR VINAY END 
+ 
+//ADD DESIGNATION API FOR VINAY SIR END
+public function add_designation_post(){
+  $designationName = $this->input->post('designationName');
+  $compId          = $this->input->post('compId');
+  $createdBy       = $this->input->post('userId');
+  $this->form_validation->set_rules('designationName','designationName','required|trim');
+  $this->form_validation->set_rules('compId','compId','required|trim');
+  $this->form_validation->set_rules('userId','userId','required|trim');
+  $res = $this->db->get_where('tbl_designation',array('desi_name' => $designationName,'comp_id' => $compId,'created_by' => $createdBy,'status' => 1))->row_array();
+  if(!empty($res)){
+    $getRes = $res['id'];
+  }else{
+    $insertDesignation = array(
+      'comp_id'     => $compId,
+      'created_by'  => $createdBy,
+      'status'      => 1,
+      'desi_name'   => $designationName
+    );
+    $this->db->insert('tbl_designation',$insertDesignation);
+    $getRes = $this->db->insert_id();
+  }
+
+  if($getRes > 0){
+    $this->set_response([
+      'status'      => TRUE,           
+      'msg'     => $getRes,
+      ], REST_Controller::HTTP_OK);
+  }else{
+    $this->set_response([
+      'status'      => FALSE,           
+      'msg'     => $getRes,
+      ], REST_Controller::HTTP_OK);
+  }
+
+}
+//END ADD DESIGNATION API FOR VINAY SIR END
+
 }
