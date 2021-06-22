@@ -2142,7 +2142,7 @@ class Enquiry_model extends CI_Model {
         $datatype = $type;
         //$where .= " enquiry.status=$datatype ";
         $where.="  (enquiry.status = '".$datatype. "'";
-			  $where.=" OR commercial_info.stage_id='".$datatype."')";
+	    $where.=" OR commercial_info.stage_id='".$datatype."')";
         $user_id   = $id;
         $user_role = $user_role;
 

@@ -2082,6 +2082,7 @@ public function updateEnquiryTab_post()
 				$expected_date 	= $this->input->post('expected_date');
 				$user_id 	= $this->input->post('user_id');
     //            $assign_to=$this->session->user_id;
+	            $expected_date = date('Y-m-d',strtotime($expected_date));
                 
                 if(empty($lead_score)){
                    $lead_score='';              
@@ -2141,7 +2142,7 @@ public function updateEnquiryTab_post()
             $this->db->where('Enquery_id',$key);
             $this->db->update('enquiry');
                   	
-                  	$this->Leads_Model->add_comment_for_events_stage_api(display('move_to_lead',$enq->comp_id),$enq->Enquery_id,'','','',$assigner_user_id);
+                  	$this->Leads_Model->add_comment_for_events_stage_api(display('move_to_lead'),$enq->Enquery_id,'','','',$assigner_user_id,'',$enq->comp_id);
                   	
                   	//$this->Leads_Model->('Enquiry Moved ',$enq->Enquery_id,'','','',$assigner_user_id);             
                      /*
