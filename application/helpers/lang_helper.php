@@ -71,7 +71,7 @@ if (!function_exists('display')) {
     }
      function user_role($text = null){  
         $ci =& get_instance();
-        $ci->load->database();
+        $ci->load->database();       
         
         if($ci->session->companey_id == 57 && ($ci->session->app_type == 'buyer' || $ci->session->app_type == 'seller')){            
             if($ci->session->app_type == 'buyer'){
@@ -94,12 +94,12 @@ if (!function_exists('display')) {
 
 
         if (!empty($panel_menu->user_permissions)) {
-             $module=explode(',',$panel_menu->user_permissions);
-	    if (in_array($text,$module)){
-	         return true;
-		}else{
-		  redirect('restrected');   
-		}
+                $module=explode(',',$panel_menu->user_permissions);
+            if (in_array($text,$module)){
+                return true;
+            }else{
+                redirect('restrected');   
+            }
         } else {
            redirect('restrected'); 
         } 
@@ -107,32 +107,24 @@ if (!function_exists('display')) {
     function user_access($text = null)
     {  
         $ci =& get_instance();
-        $ci->load->database();
-        if($ci->session->companey_id == 57 && ($ci->session->app_type == 'buyer' || $ci->session->app_type == 'seller')){            
-            if($ci->session->app_type == 'buyer'){
-                $user_right = 201;
-            }elseif($ci->session->app_type == 'seller'){
-                $user_right = 200;
-            }
+        if(empty($ci->session->permission_ids)){
+            $ci->load->database();
             $panel_menu = $ci->db->select("tbl_user_role.user_permissions")
-             ->where('tbl_user_role.use_id',$user_right)
-             //->join('tbl_user_role','tbl_user_role.use_id=tbl_admin.user_permissions')
-             ->get('tbl_user_role')
-             ->row();
-        }else{            
-            $panel_menu = $ci->db->select("tbl_user_role.user_permissions")
-             ->where('pk_i_admin_id',$ci->session->user_id)
-             ->join('tbl_user_role','tbl_user_role.use_id=tbl_admin.user_permissions')
-             ->get('tbl_admin')
-             ->row();
+                ->where('pk_i_admin_id',$ci->session->user_id)
+                ->join('tbl_user_role','tbl_user_role.use_id=tbl_admin.user_permissions')
+                ->get('tbl_admin')
+                ->row();
+            $user_permissions = $panel_menu->user_permissions;
+        }else{
+            $user_permissions = $ci->session->permission_ids;
         }
-        if (!empty($panel_menu->user_permissions)) {
-             $module=explode(',',$panel_menu->user_permissions);
-	    if (in_array($text,$module)){
-	        return true;
-		} else{
-		    return false;  
-		}
+        if (!empty($user_permissions)) {
+             $module=explode(',',$user_permissions);
+            if (in_array($text,$module)){
+                return true;
+            } else{
+                return false;  
+            }
         } else {
             return false; 
         } 

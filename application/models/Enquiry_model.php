@@ -945,7 +945,7 @@ class Enquiry_model extends CI_Model {
   }
   public function get_user_city_list(){
 
-    $this->db->select('*');
+    $this->db->select('id,city');
     $this->db->from('city');
     $this->db->where('comp_id',$this->session->companey_id);
     $this->db->order_by('city','ASC');
@@ -953,16 +953,15 @@ class Enquiry_model extends CI_Model {
   }
   /****************************************csv work*********************************/   
       public function all_list_colmn($pid){
-                    $this->db->select('*');
-                    $this->db->from('tbl_product');
-                    $this->db->where('product_name',$pid);
-                    $q= $this->db->get()->row();
-        
-                    $this->db->select('*');
-                    $this->db->from('tbl_input');
+          $this->db->select('*');
+          $this->db->from('tbl_product');
+          $this->db->where('product_name',$pid);
+          $q= $this->db->get()->row();        
+          $this->db->select('*');
+          $this->db->from('tbl_input');
           $this->db->where('process_id',$q->sb_id);
           $this->db->order_by('input_id', 'asc');
-                    return $this->db->get()->result();
+          return $this->db->get()->result();
       }
       
     public function update_tblextra($lid,$code,$enq_no) {
@@ -982,17 +981,17 @@ class Enquiry_model extends CI_Model {
   
     $this->db->select('*');
     $this->db->where('page_id',$for);
-        $this->db->where(array("company_id"=> $this->session->companey_id, "status" => 1));
-        if(!empty($this->session->process)){
-            $this->db->group_start();
-            foreach ($this->session->process as $key => $value) {
-                if($key==0)
-                    $this->db->where('(FIND_IN_SET ('.$value.',process_id) >0)');
-                else
-                    $this->db->or_where('(FIND_IN_SET ('.$value.',process_id) >0)');
-            }
+    $this->db->where(array("company_id"=> $this->session->companey_id, "status" => 1));
+    if(!empty($this->session->process)){
+        $this->db->group_start();
+        foreach ($this->session->process as $key => $value) {
+            if($key==0)
+                $this->db->where('(FIND_IN_SET ('.$value.',process_id) >0)');
+            else
+                $this->db->or_where('(FIND_IN_SET ('.$value.',process_id) >0)');
         }
         $this->db->group_end();
+    }
     return $this->db->get("tbl_input")->result();
         
   }

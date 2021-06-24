@@ -624,9 +624,10 @@ $this->load->library('zip');
                       }else{
                          $menu=2;
                         }
-                        $login_token= random_string('alnum', 30);
+                        $login_token= random_string('alnum', 30);                    
+                        
                         $data = $this->session->set_userdata([
-                'menu'                  => $menu,
+                            'menu'                  => $menu,
                             'isLogIn'               => true,
                             'user_id'               =>$user_data->pk_i_admin_id,
 							'timline_sts'           =>$user_data->timline_access,
@@ -655,12 +656,18 @@ $this->load->library('zip');
                             'availability'          => $user_data->availability,
                             'validity_status'       => $validity_status,
                             'validity_msg'          => $validity_msg,
-              'dept_name'            => $user_data->dept_name,
-              'sales_region'         => $user_data->sales_region,
-              'sales_area'           => $user_data->sales_area,
-              'branch_name'          => $user_data->sales_branch,
-                            'login_token'=>$login_token,
+                            'dept_name'            => $user_data->dept_name,
+                            'sales_region'         => $user_data->sales_region,
+                            'sales_area'           => $user_data->sales_area,
+                            'branch_name'          => $user_data->sales_branch,
+                            'login_token'=>$login_token,                            
                         ]);
+                        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+                        $user_role_row = $this->db->select('user_permissions')->where('use_id',$user_data->user_permissions)->get('tbl_user_role')->row_array();
+                        $user_permissions = $user_role_row['user_permissions'];
+
+                        $this->session->set_userdata('user_tree',$all_reporting_ids);
+                        $this->session->set_userdata('permission_ids',$user_permissions);
                             // check device login right
                             if(user_access(133))
                             {

@@ -137,7 +137,13 @@ class Customer extends CI_Controller
                         'login_token'=>$login_token,
 
                     ]);
-
+                    $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+                    
+                    $user_role_row = $this->db->select('user_permissions')->where('use_id',$user_data->user_permissions)->get('tbl_user_role')->row_array();
+                    $user_permissions = $user_role_row['user_permissions'];                    
+                    $this->session->set_userdata('permission_ids',$user_permissions);
+                            
+                    $this->session->set_userdata('user_tree',$all_reporting_ids);
                     if(user_access(133))
                     {
                     $this->user_model->updateLoginToken($user_data->pk_i_admin_id,$login_token);

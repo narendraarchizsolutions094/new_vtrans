@@ -21,8 +21,7 @@ class Common_model extends CI_Model {
         return $this->list;
     
     }
-    public function get_right_ids(){
-        $user_right    =   $this->session->user_right;         
+    public function get_right_ids($user_right){               
         $query    =   $this->db->query(
                         "SELECT GROUP_CONCAT(lv SEPARATOR ',') as rids FROM (
                             SELECT @pv:=(SELECT GROUP_CONCAT(use_id SEPARATOR ',') FROM tbl_user_role 
@@ -40,37 +39,62 @@ class Common_model extends CI_Model {
         array_push($arr, $user_right);        
         return $arr;
     }
-    public function get_categories($user_id){           
-        $user_row  = $this->db->where('pk_i_admin_id',$user_id)->get('tbl_admin')->row_array();
-        $sibling_id = 0;
-        if(!empty($user_row['sibling_id'])){
-            $user_id = $user_row['sibling_id'];
-            $sibling_id = $user_row['sibling_id'];
+
+    public function get_user_ids($uid){               
+        $query    =   $this->db->query(
+                        "SELECT GROUP_CONCAT(lv SEPARATOR ',') as uids FROM (
+                            SELECT @pv:=(SELECT GROUP_CONCAT(pk_i_admin_id SEPARATOR ',') FROM tbl_admin 
+                            WHERE FIND_IN_SET(report_to, @pv)) AS lv FROM tbl_admin 
+                            JOIN
+                            (SELECT @pv:=$uid) tmp
+                            ) a;"                        
+                        );
+        $res    =   $query->row_array();
+        $arr = array();
+        if (!empty($res['uids'])) {
+            $res = $res['uids'];
+            $arr = explode(',', $res);            
         }
-
-        $this->list = array();
-        $categories = array();
-        $this->db->select('pk_i_admin_id');
-        $this->db->from('tbl_admin');
-        $this->db->where('report_to',$user_id);
-        $parent = $this->db->get();       
-
-        $categories = $parent->result();
-
-        $i=0;
-        foreach($categories as $p_cat){
-            $categories[$i]->sub = $this->sub_categories($p_cat->pk_i_admin_id);
-            $i++;
-        }
-        
-        $categories    =   $this->fetch_recursive($categories);
-
-        array_push($categories, $user_id);
-        if($sibling_id){
-            array_push($categories, $sibling_id);
-        }
-        
-        return array_unique($categories);
+        array_push($arr, $uid);        
+        return $arr;
+    }
+    
+    public function get_categories($user_id){  
+        if(!empty($this->session->user_tree)){
+            return $this->session->user_tree;
+        }else{
+            $this->db->select('pk_i_admin_id,sibling_id');
+            $user_row  = $this->db->where('pk_i_admin_id',$user_id)->get('tbl_admin')->row_array();
+            $sibling_id = 0;
+            if(!empty($user_row['sibling_id'])){
+                $user_id = $user_row['sibling_id'];
+                $sibling_id = $user_row['sibling_id'];
+            }
+            
+            $this->list = array();
+            $categories = array();
+            $this->db->select('pk_i_admin_id');
+            $this->db->from('tbl_admin');
+            $this->db->where('report_to',$user_id);
+            $parent = $this->db->get();       
+            
+            $categories = $parent->result();
+            
+            $i=0;
+            foreach($categories as $p_cat){
+                $categories[$i]->sub = $this->sub_categories($p_cat->pk_i_admin_id);
+                $i++;
+            }
+            
+            $categories    =   $this->fetch_recursive($categories);
+            
+            array_push($categories, $user_id);
+            if($sibling_id){
+                array_push($categories, $sibling_id);
+            }
+            
+            return array_unique($categories);
+        }         
     }
 
 

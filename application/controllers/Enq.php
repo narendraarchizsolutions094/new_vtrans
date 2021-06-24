@@ -17,12 +17,22 @@ class Enq extends CI_Controller
 			redirect('login');
 		}
 	}
-	// public function test(){
-	// 	print_r($this->session->process);
-	// }
+	public function test(){
+		$res = $this->common_model->get_user_ids($this->session->user_id);
+		print_r($res);
+		echo '<br>'.count($res).'<br>';
+
+		$res = $this->common_model->get_categories($this->session->user_id);
+		print_r($res);
+		echo '<br>'.count($res);
+
+
+	}
+
+
 	public function index($all = '')
 	{
-		//print_r($all);exit;
+		//$this->output->enable_profiler(TRUE);
 		if (user_role('60') == true) {
 		}
 		$this->load->model('Datasource_model');
@@ -89,6 +99,7 @@ class Enq extends CI_Controller
 
 	public function enq_load_data()
 	{
+		//$this->output->enable_profiler(TRUE);
 		//print_r($_POST['data_type']);exit();	
 		$this->load->model('enquiry_datatable_model');
 		$list = $this->enquiry_datatable_model->get_datatables();

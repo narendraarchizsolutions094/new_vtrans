@@ -430,6 +430,7 @@ class Enquiry_datatable_model extends CI_Model {
  
     public function count_all()
     {
+        $this->db->select('count(enquiry_id) as c');
         $this->db->from($this->table);        
         $where = "";
         $datatype = $_POST['data_type'];
@@ -442,8 +443,7 @@ class Enquiry_datatable_model extends CI_Model {
             $where.=' AND enquiry.enquiry_id IN ('.$_POST['specific_list'].')';
         }
 
-        $this->db->where($where);        
-        $this->db->group_by('enquiry.Enquery_id');
+        $this->db->where($where);                
         return $this->db->count_all_results();
     }
  
