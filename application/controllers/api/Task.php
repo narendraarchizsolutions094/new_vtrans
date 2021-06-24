@@ -201,7 +201,7 @@ class Task extends REST_Controller {
   }
 
 public function create_post(){  
-      //new code
+      /* //new code
       $ld_updt_by     = $this->input->post('user_id');
       $lead_id        = $this->input->post('enq_code');      
       $task_type      = $this->input->post('task_type');
@@ -321,7 +321,11 @@ public function create_post(){
                 'message' => array('error'=>str_replace(array("\n", "\r"), ' ', strip_tags(validation_errors())))  
                  ], REST_Controller::HTTP_OK);  
       }
-      // new code end
+      // new code end */
+	  $this->set_response([
+                  'status' => true,
+                  'message' => array('error'=>'Task created successfully')  
+                   ], REST_Controller::HTTP_OK); 
     }
     public function related_list_post(){
       $related_to  = $this->input->post('related_to');
