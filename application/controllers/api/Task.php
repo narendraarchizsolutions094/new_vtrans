@@ -201,7 +201,7 @@ class Task extends REST_Controller {
   }
 
 public function create_post(){  
-      /* //new code
+      //new code
       $ld_updt_by     = $this->input->post('user_id');
       $lead_id        = $this->input->post('enq_code');      
       $task_type      = $this->input->post('task_type');
@@ -220,6 +220,8 @@ public function create_post(){
       $related_to     = $this->input->post('related_to');
       $task_status    = trim($this->input->post('task_status'));
       $update_task    = $this->input->post('update_task');
+	  
+	  $company_id    = $this->input->post('comp_id');
       
       $this->form_validation->set_rules('enq_code', 'Enquiry Code', 'trim|required');
       
@@ -277,7 +279,7 @@ public function create_post(){
           $this->db->where('resp_id',$update_task);
           $this->db->update('query_response');
 
-          $this->Leads_Model->add_comment_for_events_stage_api('Task Updated',$lead_id,'','','',$ld_updt_by);
+          $this->Leads_Model->add_comment_for_events_stage_api('Task Updated',$lead_id,'','','',$ld_updt_by,'',$company_id);
 
           $this->db->select('notification_id');
           $this->db->where('resp_id',$update_task);          
@@ -295,7 +297,7 @@ public function create_post(){
           $tid = $this->db->insert_id();
           $res  = $this->Notification_model->add_task_reminder($ld_updt_by,$lead_id,$rem_date,$rem_time,$subject);
 
-          $this->Leads_Model->add_comment_for_events_stage_api('Task Created',$lead_id,'','','',$ld_updt_by);
+          $this->Leads_Model->add_comment_for_events_stage_api('Task Created',$lead_id,'','','',$ld_updt_by,'',$company_id);
 
           //print_r($res);
           $res = json_decode($res,true);
@@ -321,11 +323,7 @@ public function create_post(){
                 'message' => array('error'=>str_replace(array("\n", "\r"), ' ', strip_tags(validation_errors())))  
                  ], REST_Controller::HTTP_OK);  
       }
-      // new code end */
-	  $this->set_response([
-                  'status' => true,
-                  'message' => array('error'=>'Task created successfully')  
-                   ], REST_Controller::HTTP_OK); 
+      // new code end
     }
     public function related_list_post(){
       $related_to  = $this->input->post('related_to');
