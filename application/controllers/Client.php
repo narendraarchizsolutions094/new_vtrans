@@ -114,93 +114,85 @@ class Client extends CI_Controller {
         //$data['state_city_list'] = $this->location_model->get_city_by_state_id($data['details']->enquiry_state_id);
         //$data['state_city_list'] = $this->location_model->ecity_list();
         $compid = $this->session->userdata('companey_id');
-        $data['allleads'] = $this->Leads_Model->get_leadList();
+        //$data['allleads'] = $this->Leads_Model->get_leadList();
         if (!empty($data['details'])) {
             $lead_code = $data['details']->Enquery_id;
         }        
-        $data['check_status'] = $this->Leads_Model->get_leadListDetailsby_code($lead_code);       
-        $data['all_drop_lead'] = $this->Leads_Model->all_drop_lead();
-        $data['products'] = $this->dash_model->get_user_product_list(); 
-        $data['bank_list'] = $this->dash_model->get_bank_list(); 
-        $data['allcountry_list'] = $this->Taskstatus_model->countrylist();
-        $data['allstate_list'] = $this->Taskstatus_model->statelist();
-        $data['allcity_list'] = $this->Taskstatus_model->citylist();
-        $data['personel_list'] = $this->Taskstatus_model->peronellist($enquiry_id);        
-        $data['kyc_doc_list'] = $this->Kyc_model->kyc_doc_list($lead_code);        
-        $data['education_list'] = $this->Education_model->education_list($lead_code);
-        $data['social_profile_list'] = $this->SocialProfile_model->social_profile_list($lead_code);        
-        $data['close_femily_list'] = $this->Closefemily_model->close_femily_list($lead_code);
-        $data['all_country_list'] = $this->location_model->country();
-        $data['all_contact_list'] = $this->location_model->contact($enquiry_id);                
-        $data['subsource_list'] = $this->Datasource_model->subsourcelist();
-        $data['drops'] = $this->Leads_Model->get_drop_list();
-        $data['name_prefix'] = $this->enquiry_model->name_prefix_list();
-        $data['leadsource'] = $this->Leads_Model->get_leadsource_list();
+        //$data['check_status'] = $this->Leads_Model->get_leadListDetailsby_code($lead_code);       
+        // $data['all_drop_lead'] = $this->Leads_Model->all_drop_lead();
+        // $data['products'] = $this->dash_model->get_user_product_list(); 
+        // $data['bank_list'] = $this->dash_model->get_bank_list(); 
+        // $data['allcountry_list'] = $this->Taskstatus_model->countrylist();
+        // $data['allstate_list'] = $this->Taskstatus_model->statelist();
+        // $data['allcity_list'] = $this->Taskstatus_model->citylist();
+        // $data['personel_list'] = $this->Taskstatus_model->peronellist($enquiry_id);        
+        // $data['kyc_doc_list'] = $this->Kyc_model->kyc_doc_list($lead_code);        
+        // $data['education_list'] = $this->Education_model->education_list($lead_code);
+        // $data['social_profile_list'] = $this->SocialProfile_model->social_profile_list($lead_code);        
+        // $data['close_femily_list'] = $this->Closefemily_model->close_femily_list($lead_code);
+        // $data['all_country_list'] = $this->location_model->country();
+        // $data['all_contact_list'] = $this->location_model->contact($enquiry_id);                
+        // $data['subsource_list'] = $this->Datasource_model->subsourcelist();
+        // $data['drops'] = $this->Leads_Model->get_drop_list();
+        // $data['name_prefix'] = $this->enquiry_model->name_prefix_list();
+        // $data['leadsource'] = $this->Leads_Model->get_leadsource_list();
         $data['enquiry'] = $this->enquiry_model->enquiry_by_id($enquiry_id);
-        $data['lead_stages'] = $this->Leads_Model->get_leadstage_list();
+        //$data['lead_stages'] = $this->Leads_Model->get_leadstage_list();
         $data['lead_score'] = $this->Leads_Model->get_leadscore_list();
         $enquiry_code = $data['enquiry']->Enquery_id;
         $phone_id = '91'.$data['enquiry']->phone;        
         $data['recent_tasks'] = $this->Task_Model->get_recent_taskbyID($enquiry_code);        
         $data['comment_details'] = $this->Leads_Model->comment_byId($enquiry_code);        
         $user_role    =   $this->session->user_role;
-        $data['country_list'] = $this->location_model->productcountry();
-        $data['institute_list'] = $this->Institute_model->institutelist_by_country($data['details']->enq_country);
+        //$data['country_list'] = $this->location_model->productcountry();
+        //$data['institute_list'] = $this->Institute_model->institutelist_by_country($data['details']->enq_country);
         
-        $data['institute_app_status'] = $this->Institute_model->get_institute_app_status();
+        //$data['institute_app_status'] = $this->Institute_model->get_institute_app_status();
         
-          $data['prod_list'] = $this->Doctor_model->product_list($compid); 
-        $data['amc_list'] = $this->Doctor_model->amc_list($compid,$enquiry_id); 
-        $data['datasource_list'] = $this->Datasource_model->datasourcelist();
+        // $data['prod_list'] = $this->Doctor_model->product_list($compid); 
+        // $data['amc_list'] = $this->Doctor_model->amc_list($compid,$enquiry_id); 
+        // $data['datasource_list'] = $this->Datasource_model->datasourcelist();
         $data['taskstatus_list'] = $this->Taskstatus_model->taskstatuslist();
-        $data['state_list'] = $this->location_model->estate_list();
-        $data['city_list'] = $this->location_model->ecity_list();
-        $data['product_contry'] = $this->location_model->productcountry();
-        $data['get_message'] = $this->Message_models->get_chat($phone_id);
-        $data['all_stage_lists'] = $this->Leads_Model->find_stage();
+        // $data['state_list'] = $this->location_model->estate_list();
+        // $data['city_list'] = $this->location_model->ecity_list();
+        // $data['product_contry'] = $this->location_model->productcountry();
+        // $data['get_message'] = $this->Message_models->get_chat($phone_id);
+        //$data['all_stage_lists'] = $this->Leads_Model->find_stage();
         //$data['all_estage_lists'] = $this->Leads_Model->find_estage($enquiry_id);
         $data['all_estage_lists'] = $this->Leads_Model->find_estage($data['details']->product_id,3);
         
-        $data['institute_data'] = $this->enquiry_model->institute_data($data['details']->Enquery_id);
-        $data['dynamic_field']  = $this->enquiry_model->get_dyn_fld($enquiry_id);
+        //$data['institute_data'] = $this->enquiry_model->institute_data($data['details']->Enquery_id);
+        //$data['dynamic_field']  = $this->enquiry_model->get_dyn_fld($enquiry_id);
         
         $data['tab_list'] = $this->form_model->get_tabs_list($this->session->companey_id,$data['details']->product_id,0);
         $this->load->helper('custom_form_helper');
         $data['all_description_lists']    =   $this->Leads_Model->find_description();
         $data['leadid']     = $data['details']->Enquery_id;
         $data['compid']     =  $data['details']->comp_id;
-        $data['ins_list'] = $this->location_model->get_ins_list($data['details']->Enquery_id);
+        //$data['ins_list'] = $this->location_model->get_ins_list($data['details']->Enquery_id);
         //$data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id);
 		$data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id,base64_decode($this->uri->segment(4)));
         $data['enquiry_id'] = $enquiry_id;
-        $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
-        if ($this->session->companey_id=='67') { 
-        $data['qualification_data'] = $this->enquiry_model->quali_data($data['details']->Enquery_id);
-        $data['english_data'] = $this->enquiry_model->eng_data($data['details']->Enquery_id);
-        }
-        if ($this->session->companey_id=='67') { 
-            $data['discipline'] = $this->location_model->find_discipline();
-            $data['level'] = $this->location_model->find_level();
-            $data['length'] = $this->location_model->find_length();
-        }
-
+        //$this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
+        
          if (user_access('1000') || user_access('1001') || user_access('1002')) {
-            $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
-            $data['CommercialInfo'] = $this->enquiry_model->getComInfo($enquiry_id);
+            // $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
+            // $data['CommercialInfo'] = $this->enquiry_model->getComInfo($enquiry_id);
             //fetch last entry
-            $comm_data=$this->db->where(array('enquiry_id'=>$enquiry_id))->order_by('id',"desc")
-            ->limit(1)->get('commercial_info');
-            $data['commInfoCount']=$comm_data->num_rows();
-            $data['commInfoData']=$comm_data->row();
+            // $comm_data=$this->db->where(array('enquiry_id'=>$enquiry_id))->order_by('id',"desc")
+            // ->limit(1)->get('commercial_info');
+            // $data['commInfoCount']=$comm_data->num_rows();
+            // $data['commInfoData']=$comm_data->row();
         } 
         else
-        {    $data['CommercialInfo'] =array();
-             $data['branch'] =array();
-             $data['commInfoCount']=0;
-             $data['commInfoData']=array();
+         {
+        //         $data['CommercialInfo'] =array();
+        //      $data['branch'] =array();
+        //      $data['commInfoCount']=0;
+        //      $data['commInfoData']=array();
         }
         
-        $data['course_list'] = $this->Leads_Model->get_course_list();
+        //$data['course_list'] = $this->Leads_Model->get_course_list();
         $data['data_type'] = base64_decode($this->uri->segment(4)); 
         $enquiry_separation  = get_sys_parameter('enquiry_separation','COMPANY_SETTING');                  
         if (!empty($enquiry_separation) && !empty($data['data_type'])) {                    
@@ -215,9 +207,9 @@ class Client extends CI_Controller {
         }else{
             $data['created_bylist'] = $this->User_model->readone();
         } 
-        $this->load->model('Branch_model');
-        $data['branch_lists']=$this->Branch_model->all_sales_branch();
-        $data['region_lists']=$this->Branch_model->all_sales_region();
+        //$this->load->model('Branch_model');
+        //$data['branch_lists']=$this->Branch_model->all_sales_branch();
+        //$data['region_lists']=$this->Branch_model->all_sales_region();
         //$data['dept_lists']=$this->User_model->all_sales_dept();  
         $enq['enquiry_id'] = $enquiry_id;
         $data['all_contact']= $this->Client_Model->getContactList()->result();

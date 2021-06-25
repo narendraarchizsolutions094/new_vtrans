@@ -130,37 +130,44 @@ class Telephony extends CI_Controller {
     }
     
     public function get_in_status($uid=''){
-        $newdata = array( 
-        'uid_call'  =>str_replace('_','.',base64_decode($uid)), 
-        );
-        $where=' uid="'.str_replace('_','.',base64_decode($uid)).'" AND users!="" AND status=0 AND (cll_state=5 OR cll_state=3)';
-        $this->db->select('users,json_data');
-        $this->db->from('tbl_col_log');
-        $this->db->where($where);
-        $this->db->order_by('id','DESC');
-        $res=$this->db->get()->row();
-        if(!empty($res)){
-         $array_users= json_decode($res->users);
-         $user_id='91'.$this->session->phone;
-        $call_json = !empty($res->json_data)?json_decode($res->json_data,true):array();
-        $inbound = 0;
-        if(!empty($call_json['event']) && $call_json['event'] ==1){
-            $inbound = 1;
+        if($this->session->uuid != $uid){
+            echo 1;
+            $this->session->set_userdata('uuid',$uid);
+        }else{
+            echo 0;
         }
-        if(in_array($user_id,$array_users)){
-         echo $inbound;
-        $this->session->set_userdata($newdata);   
-        $this->db->set('status',1);
-        //$this->db->set('enq_id',$this->session->enq_id);
-        $this->db->where('uid',str_replace('_','.',base64_decode($uid)));
-        $this->db->update('tbl_col_log');
-        }else{echo '2';  
-        $this->session->unset_userdata($newdata);
-       }
-        }else{  
-        $this->session->unset_userdata($newdata);
-            echo '2';
-        }
+
+    //     $newdata = array(   
+    //     'uid_call'  =>str_replace('_','.',base64_decode($uid)), 
+    //     );
+    //     $where=' uid="'.str_replace('_','.',base64_decode($uid)).'" AND users!="" AND status=0 AND (cll_state=5 OR cll_state=3)';
+    //     $this->db->select('users,json_data');
+    //     $this->db->from('tbl_col_log');
+    //     $this->db->where($where);
+    //     $this->db->order_by('id','DESC');  
+    //     $res=$this->db->get()->row();
+    //     if(!empty($res)){
+    //      $array_users= json_decode($res->users);
+    //      $user_id='91'.$this->session->phone;
+    //     $call_json = !empty($res->json_data)?json_decode($res->json_data,true):array();
+    //     $inbound = 0;
+    //     if(!empty($call_json['event']) && $call_json['event'] ==1){
+    //         $inbound = 1;
+    //     }
+    //     if(in_array($user_id,$array_users)){
+    //      echo $inbound;
+    //     $this->session->set_userdata($newdata);   
+    //     $this->db->set('status',1);
+    //     //$this->db->set('enq_id',$this->session->enq_id);
+    //     $this->db->where('uid',str_replace('_','.',base64_decode($uid)));
+    //     $this->db->update('tbl_col_log');
+    //     }else{echo '2';  
+    //     $this->session->unset_userdata($newdata);
+    //    }
+    //     }else{  
+    //     $this->session->unset_userdata($newdata);
+    //         echo '2';
+    //     }
     }
     
     

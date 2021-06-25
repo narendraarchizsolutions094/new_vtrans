@@ -660,7 +660,8 @@ $this->load->library('zip');
                             'sales_region'         => $user_data->sales_region,
                             'sales_area'           => $user_data->sales_area,
                             'branch_name'          => $user_data->sales_branch,
-                            'login_token'=>$login_token,                            
+                            'login_token'          => $login_token,
+                            'uuid'                 => ''
                         ]);
                         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
                         $user_role_row = $this->db->select('user_permissions')->where('use_id',$user_data->user_permissions)->get('tbl_user_role')->row_array();

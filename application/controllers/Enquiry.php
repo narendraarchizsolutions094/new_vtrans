@@ -1097,164 +1097,127 @@ class Enquiry extends CI_Controller
    
     public function view($enquiry_id = null)
     {
-
+        
         $compid = $this->session->userdata('companey_id');
         $this->load->model('Client_Model');
         if (user_role('61') == true) {
         }
         $data['title'] = display('information');
-        if (!empty($_POST)) {
-            $name = $this->input->post('enquirername');
-            $email = $this->input->post('email');
-            $mobile = $this->input->post('mobileno');
-            $lead_source = $this->input->post('lead_source');
-            $enquiry = $this->input->post('enquiry');
-            $en_comments = $this->input->post('enqCode');
-            $company = $this->input->post('company');
-            $address = $this->input->post('address');
-            $pin_code = $this->input->post('pin_code');
-            $name_prefix = $this->input->post('name_prefix');
-            $this->db->set('country_id', $this->input->post('country_id'));
-            $this->db->set('product_id', $this->input->post('product_id'));
-            $this->db->set('institute_id', $this->input->post('institute_id'));
-            $this->db->set('datasource_id', $this->input->post('datasource_id'));
-            $this->db->set('phone', $mobile);
-            $this->db->set('enquiry_subsource', $this->input->post('sub_source'));
-            $this->db->set('email', $email);
-            $this->db->set('company', $company);
-			$this->db->set('sales_branch', $sales_branch);
-			$this->db->set('client_name', $client_name);
-            $this->db->set('address', $address);
-            $this->db->set('pin_code', $pin_code);
-            $this->db->set('name_prefix', $name_prefix);
-            $this->db->set('name', $name);
-            $this->db->set('enquiry_source', $lead_source);
-            $this->db->set('enquiry', $enquiry);
-            $this->db->set('coment_type', 1);
-            $this->db->set('lastname', $this->input->post('lastname'));
-            $this->db->where('enquiry_id', $enquiry_id);
-            $this->db->update('enquiry');
-            $this->Leads_Model->add_comment_for_events(display('enquiry').' Updated', $en_comments);
-            $this->session->set_flashdata('message', 'Save successfully');
-            redirect('enquiry/view/' . $enquiry_id);
-        }
         
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
-		//print_r($data['details']);exit;
-        $data['data_type']  = $data['details']->status;
+		
+       $data['data_type']  = $data['details']->status;
        $data['region_name'] = 0; 
-       if(!empty($data['details']))
-       {
-            $dd = $this->db->where('region_id',$data['details']->region_id)->get('tbl_region')->row();
-            if(!empty($dd))
-            {
-                $data['region_name'] = $dd->region_name;
-            }
-        }
-        if (!empty($data['details'])) {
-            $lead_code = $data['details']->Enquery_id;
-        }
-        $data['check_status'] = $this->Leads_Model->get_leadListDetailsby_code($lead_code);
-        $data['all_drop_lead'] = $this->Leads_Model->all_drop_lead();
-        $data['products'] = $this->dash_model->get_user_product_list();
-        $data['bank_list'] = $this->dash_model->get_bank_list();
-        $data['allcountry_list'] = $this->Taskstatus_model->countrylist();
-        $data['allstate_list'] = $this->Taskstatus_model->statelist();
-        $data['allcity_list'] = $this->Taskstatus_model->citylist();
-        $data['personel_list'] = $this->Taskstatus_model->peronellist($enquiry_id);
-        $data['kyc_doc_list'] = $this->Kyc_model->kyc_doc_list($lead_code);
-        $data['education_list'] = $this->Education_model->education_list($lead_code);
-        $data['social_profile_list'] = $this->SocialProfile_model->social_profile_list($lead_code);
-        $data['close_femily_list'] = $this->Closefemily_model->close_femily_list($lead_code);
-        $data['all_country_list'] = $this->location_model->country();
-        // $data['all_contact_list'] = $this->location_model->contact($enquiry_id);
-        $data['all_contact_list'] = $this->Client_Model->getContactWhere(array('comp_id'=>$this->session->companey_id,'client_id'=>$enquiry_id))->result();
+       
+    //    if(!empty($data['details']))
+    //    {
+    //         $dd = $this->db->where('region_id',$data['details']->region_id)->get('tbl_region')->row();
+    //         if(!empty($dd))
+    //         {
+    //             $data['region_name'] = $dd->region_name;
+    //         }
+    //     }
+        // if (!empty($data['details'])) {
+        //     $lead_code = $data['details']->Enquery_id;
+        // }
+        //$data['check_status'] = $this->Leads_Model->get_leadListDetailsby_code($lead_code);
+        //$data['all_drop_lead'] = $this->Leads_Model->all_drop_lead();
+       // $data['products'] = $this->dash_model->get_user_product_list();
+        // $data['bank_list'] = $this->dash_model->get_bank_list();
+        // $data['allcountry_list'] = $this->Taskstatus_model->countrylist();
+        // $data['allstate_list'] = $this->Taskstatus_model->statelist();
+        // $data['allcity_list'] = $this->Taskstatus_model->citylist();
+        // $data['personel_list'] = $this->Taskstatus_model->peronellist($enquiry_id);
+        // $data['kyc_doc_list'] = $this->Kyc_model->kyc_doc_list($lead_code);
+        // $data['education_list'] = $this->Education_model->education_list($lead_code);
+        // $data['social_profile_list'] = $this->SocialProfile_model->social_profile_list($lead_code);
+        // $data['close_femily_list'] = $this->Closefemily_model->close_femily_list($lead_code);
+        // $data['all_country_list'] = $this->location_model->country();
+        // // $data['all_contact_list'] = $this->location_model->contact($enquiry_id);
+        // 
+       // $data['all_contact_list'] = $this->Client_Model->getContactWhere(array('comp_id'=>$this->session->companey_id,'client_id'=>$enquiry_id))->result();
 
-        $data['subsource_list'] = $this->Datasource_model->subsourcelist();
-        $data['drops'] = $this->Leads_Model->get_drop_list();
-        $data['name_prefix'] = $this->enquiry_model->name_prefix_list();
-        $data['leadsource'] = $this->Leads_Model->get_leadsource_list();
+        //$data['subsource_list'] = $this->Datasource_model->subsourcelist();
+        //$data['drops'] = $this->Leads_Model->get_drop_list();
+        //$data['name_prefix'] = $this->enquiry_model->name_prefix_list();
+        //$data['leadsource'] = $this->Leads_Model->get_leadsource_list();
         $data['enquiry'] = $this->enquiry_model->enquiry_by_id($enquiry_id);
-        $data['lead_stages'] = $this->Leads_Model->get_leadstage_list();
+        //$data['lead_stages'] = $this->Leads_Model->get_leadstage_list();
         $data['lead_score'] = $this->Leads_Model->get_leadscore_list();
         $enquiry_code = $data['enquiry']->Enquery_id;
         $phone_id = '91' . $data['enquiry']->phone;
         $data['recent_tasks'] = $this->Task_Model->get_recent_taskbyID($enquiry_code);
         $user_role    =   $this->session->user_role;
-        $data['country_list'] = $this->location_model->productcountry();
-        $data['institute_list'] = $this->Institute_model->institutelist_by_country($data['details']->enq_country);
-        $data['course_list'] = $this->Leads_Model->get_course_list();
-        $data['institute_app_status'] = $this->Institute_model->get_institute_app_status();
-        $data['prod_list'] = $this->Doctor_model->product_list($compid);
-        $data['amc_list'] = $this->Doctor_model->amc_list($compid, $enquiry_id);
-        $data['comission_data'] = $this->enquiry_model->comission_data($data['details']->Enquery_id);
+        //$data['country_list'] = $this->location_model->productcountry();
+        //$data['institute_list'] = $this->Institute_model->institutelist_by_country($data['details']->enq_country);
+        //$data['course_list'] = $this->Leads_Model->get_course_list();
+        //$data['institute_app_status'] = $this->Institute_model->get_institute_app_status();
+      //  $data['prod_list'] = $this->Doctor_model->product_list($compid);
+        //$data['amc_list'] = $this->Doctor_model->amc_list($compid, $enquiry_id);
+        //$data['comission_data'] = $this->enquiry_model->comission_data($data['details']->Enquery_id);
 
-        $data['login_user_id'] = $this->user_model->get_user_by_email($data['details']->email);
-        if (!empty($data['login_user_id']->pk_i_admin_id)) {
-            $data['login_details'] = $this->Leads_Model->logdata_select($data['login_user_id']->pk_i_admin_id);
-        }
-        $data['datasource_list'] = $this->Datasource_model->datasourcelist();
+        //$data['login_user_id'] = $this->user_model->get_user_by_email($data['details']->email);
+        // if (!empty($data['login_user_id']->pk_i_admin_id)) {
+        //     $data['login_details'] = $this->Leads_Model->logdata_select($data['login_user_id']->pk_i_admin_id);
+        // }
+        //$data['datasource_list'] = $this->Datasource_model->datasourcelist();
         $data['taskstatus_list'] = $this->Taskstatus_model->taskstatuslist();
-        $data['state_list'] = $this->location_model->estate_list();
-        $data['city_list'] = $this->location_model->ecity_list();
-        $data['product_contry'] = $this->location_model->productcountry();
-        $data['get_message'] = $this->Message_models->get_chat($phone_id);
-        $data['all_stage_lists'] = $this->Leads_Model->find_stage();
+        // $data['state_list'] = $this->location_model->estate_list();
+        // $data['city_list'] = $this->location_model->ecity_list();
+        //$data['product_contry'] = $this->location_model->productcountry();
+        //$data['get_message'] = $this->Message_models->get_chat($phone_id);
+       // $data['all_stage_lists'] = $this->Leads_Model->find_stage();
         $data['all_estage_lists'] = $this->Leads_Model->find_estage($data['details']->product_id, 1);
         //print_r( $data['all_estage_lists']);
-        $data['institute_data'] = $this->enquiry_model->institute_data($data['details']->Enquery_id);
-        $data['dynamic_field']  = $this->enquiry_model->get_dyn_fld($enquiry_id);
-        $data['ins_list'] = $this->location_model->get_ins_list($data['details']->Enquery_id);
+        //$data['institute_data'] = $this->enquiry_model->institute_data($data['details']->Enquery_id);
+        //$data['dynamic_field']  = $this->enquiry_model->get_dyn_fld($enquiry_id);
+        //$data['ins_list'] = $this->location_model->get_ins_list($data['details']->Enquery_id);
         //$data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id);
-		$data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id,base64_decode($this->uri->segment(4)));
+		//$data['aggrement_list'] = $this->location_model->get_agg_list($data['details']->Enquery_id,base64_decode($this->uri->segment(4)));
         $data['tab_list'] = $this->form_model->get_tabs_list($this->session->companey_id, $data['details']->product_id,0); //0 for Sales Tab 
         //print_r($data['tab_list']); exit;
         $this->load->helper('custom_form_helper');
         $data['leadid']     = $data['details']->Enquery_id;
         $data['enquiry_id'] = $enquiry_id;
         $data['compid']     =  $data['details']->comp_id;
-        $data['all_description_lists']    =   $this->Leads_Model->find_description();
-        if ($this->session->companey_id == '67') {
-            $data['discipline'] = $this->location_model->find_discipline();
-            $data['level'] = $this->location_model->find_level();
-            $data['length'] = $this->location_model->find_length();
-        } 
-        if (user_access('1000') || user_access('1001') || user_access('1002')) {
-            $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
-            $data['CommercialInfo'] = $this->enquiry_model->getComInfo($enquiry_id);
+        //$data['all_description_lists']    =   $this->Leads_Model->find_description();
+        //if (user_access('1000') || user_access('1001') || user_access('1002')) {
+           // $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
+            //$data['CommercialInfo'] = $this->enquiry_model->getComInfo($enquiry_id);
             //fetch last entry
-            $comm_data=$this->db->where(array('enquiry_id'=>$enquiry_id))->order_by('id',"desc")
-            ->limit(1)->get('commercial_info');
-            $data['commInfoCount']=$comm_data->num_rows();
-            $data['commInfoData']=$comm_data->row();
-        } 
-        else
-        {    $data['CommercialInfo'] =array();
-             $data['branch'] =array();
-            $data['commInfoCount']=0;
-            $data['commInfoData']=array();
-        }
+            //$comm_data=$this->db->where(array('enquiry_id'=>$enquiry_id))->order_by('id',"desc")
+            //->limit(1)->get('commercial_info');
+            //$data['commInfoCount']=$comm_data->num_rows();
+           // $data['commInfoData']=$comm_data->row();
+        // } 
+        // else
+        // {   
+            //  $data['CommercialInfo'] =array();
+            //  $data['branch'] =array();
+            // $data['commInfoCount']=0;
+            // $data['commInfoData']=array();
+        //}
         if($this->session->companey_id == 65 && $this->session->user_right == 215){
 			$data['created_bylist'] = $this->User_model->readone(147,false);
 		}else{
 			$data['created_bylist'] = $this->User_model->readone();
 		}
 			
-        $data['all_designation'] = $this->Leads_Model->desi_select();		
-        $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
+        //$data['all_designation'] = $this->Leads_Model->desi_select();		
+        //$this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
 
         $data['all_contact']= $this->Client_Model->getContactList()->result();
 
         //echo"<pre>";print_r($data);die;
-		$this->load->model('Branch_model');
-		$data['branch_lists']=$this->Branch_model->all_sales_branch();
-		$data['region_lists']=$this->Branch_model->all_sales_region();
+		//$this->load->model('Branch_model');
+		//$data['branch_lists']=$this->Branch_model->all_sales_branch();
+		//$data['region_lists']=$this->Branch_model->all_sales_region();
         $enq['enquiry_id'] = $enquiry_id;
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
         $data['data_type'] = base64_decode($this->uri->segment(4));
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',array(),true);
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
-        $this->enquiry_model->assign_notification_update($enquiry_code);
+        //$this->enquiry_model->assign_notification_update($enquiry_code);
         $this->load->view('layout/main_wrapper', $data);
     }
  

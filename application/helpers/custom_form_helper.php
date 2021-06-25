@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         $data['state_list'] 	= $ci->location_model->estate_list();
         $data['city_list'] 			= $ci->location_model->ecity_list();
-        $data['all_country_list'] 	= $ci->location_model->country();
+        //$data['all_country_list'] 	= $ci->location_model->country();
         $data['name_prefix'] 		= $ci->enquiry_model->name_prefix_list();
         $data['tabname'] = $tabname;       
         
