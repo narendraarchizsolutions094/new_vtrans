@@ -3103,6 +3103,15 @@ public function all_update_expense_status()
                 ';
                 
                 $i=1;
+
+//For Booking Table Diffrence Count Start
+if(!empty($deal_data->copy_id)){
+$old_chk = $this->db->where('deal_id',$deal_data->copy_id)
+       ->order_by('id','ASC')
+       ->get('deal_data')->result();
+}
+//For Booking Table Diffrence Count End
+
                 foreach ($query as $key => $row)
                 {
                     $rate=$row->rate;
@@ -3116,6 +3125,7 @@ public function all_update_expense_status()
                     $pamnt=0;
                     $vid=0;
                     $invoice=0;
+					$capacity=0;
                     $chk = $this->db->where('deal_id',$deal_id)
                                         ->where('booking_branch',$row->booking_branch)
                                         ->where('delivery_branch',$row->delivery_branch)
@@ -3135,28 +3145,61 @@ public function all_update_expense_status()
                         $capacity = $chk->carrying_capacity;
                         $invoice = $chk->invoice_value;   
                     }
+					
+					if(!empty($old_chk))
+                    {
+						$old_b_branch= $old_chk[$key]->booking_branch??$row->booking_branch;
+						$old_d_branch= $old_chk[$key]->delivery_branch??$row->delivery_branch;
+                        $old_rate= $old_chk[$key]->rate??$row->rate; 
+                        $old_discount=$old_chk[$key]->discount??$discount;
+						$old_final_rate= $old_chk[$key]->final_rate??$final_rate;
+                        $old_paymode=$old_chk[$key]->paymode??$paymode;
+                        $old_insurance=$old_chk[$key]->insurance??$insurance;
+                        $old_eton=$old_chk[$key]->expected_tonnage??$eton;
+                        $old_eamnt=$old_chk[$key]->expected_amount??$eamnt;
+                        $old_pton=$old_chk[$key]->potential_tonnage??$pton;
+                        $old_pamnt=$old_chk[$key]->potential_amount??$pamnt;
+                        $old_vid=$old_chk[$key]->vehicle_type??$vid;
+                        $old_capacity = $old_chk[$key]->carrying_capacity??$capacity;
+                        $old_invoice = $old_chk[$key]->invoice_value??$invoice;   
+                    }else{
+						$old_b_branch= $row->booking_branch;
+						$old_d_branch= $row->delivery_branch;
+                        $old_rate= $row->rate; 
+                        $old_discount=$discount;
+						$old_final_rate= $final_rate;
+                        $old_paymode=$paymode;
+                        $old_insurance=$insurance;
+                        $old_eton=$eton;
+                        $old_eamnt=$eamnt;
+                        $old_pton=$pton;
+                        $old_pamnt=$pamnt;
+                        $old_vid=$vid;
+                        $old_capacity = $capacity;
+                        $old_invoice = $invoice;
+					}
                     //'.($row->btype=='area'?'<br>'.$row->bzname:'').'
 
                     echo'<tr>
                             <td>'.$i++.'</td>
-                            <td><input type="hidden" name="bid['.$row->id.']" value="'.$row->booking_branch.'">'.$row->from.'</td>
-                            <td><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->to.'</td>';
+                            <td '.(($row->booking_branch!=$old_b_branch)?"style='background:#ffbaba;'":"").'><input type="hidden" name="bid['.$row->id.']" value="'.$row->booking_branch.'">'.$row->from.'</td>
+                            <td '.(($row->delivery_branch!=$old_d_branch)?"style='background:#ffbaba;'":"").'><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->to.'</td>';
                     if($booking_type=='sundry')
                     {
-                        echo'<td><input type="number" id="rate_'.$row->id.'" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
-                        <td class="disc-box"><input type="number" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
-						<td><input type="text" id="final_rate_'.$row->id.'" class="final_rate" name="final_rate['.$row->id.']" data-id="'.$row->id.'" value="'.$final_rate.'"></td>';
+                        echo'<td '.(($row->rate!=$old_rate)?"style='background:#ffbaba;'":"").'><input type="number" id="rate_'.$row->id.'" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
+                        <td class="disc-box" '.(($discount!=$old_discount)?"style='background:#ffbaba;'":"").'><input type="number" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
+						<td '.(($old_final_rate!=$final_rate)?"style='background:#ffbaba;'":"").'><input type="text" id="final_rate_'.$row->id.'" class="final_rate" name="final_rate['.$row->id.']" data-id="'.$row->id.'" value="'.$final_rate.'"></td>';
                     }
 
                     if($booking_type=='ftl')
                     {
-                            echo'<td>
+                            echo'<td '.(($vid!=$old_vid)?"style='background:#ffbaba;'":"").'>
                             <select name="vtype['.$row->id.']" class="vtype_ip">';
                             foreach($vehicles as $ve => $vehicle)
                                 echo'<option value="'.$vehicle->vehicle_type_id.'" '.($vid==$vehicle->vehicle_type_id?'selected':'').'>'.$vehicle->type_name.'</option>';
                             echo'
                             </select></td>
-                            <td><input name="capacity['.$row->id.']" type="number" class="capacity_ip" value="'.$capacity.'"></td>';
+                            <td '.(($capacity!=$old_capacity)?"style='background:#ffbaba;'":"").'><input name="capacity['.$row->id.']" type="number" class="capacity_ip" value="'.$capacity.'"></td>';
                     }
                         echo'
                              <!--<td>
@@ -3165,7 +3208,7 @@ public function all_update_expense_status()
                                 <option value="owner" '.($insurance=='owner'?'selected':'').'>Owner risk</option>
                                 </select>
                             </td>-->
-                            <td><select name="paymode['.$row->id.']" data-id="'.$row->id.'"  class="paymode_ip">
+                            <td '.(($paymode!=$old_paymode)?"style='background:#ffbaba;'":"").'><select name="paymode['.$row->id.']" data-id="'.$row->id.'"  class="paymode_ip">
                                 <option value="paid" '.($paymode=='paid'?'selected':'').'>Paid</option>
                                 <option value="topay" '.($paymode=='topay'?'selected':'').'>To-Pay</option>
                                 <option value="tbb" '.($paymode=='tbb'?'selected':'').'>TBB</option>
@@ -3176,20 +3219,20 @@ public function all_update_expense_status()
                             </td>';
 
                  if($booking_type=='sundry')
-                    echo' <td><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>';
+                    echo' <td '.(($pton!=$old_pton)?"style='background:#ffbaba;'":"").'><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>';
 
-                    echo'<td><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').'></td>';
+                    echo'<td '.(($pamnt!=$old_pamnt)?"style='background:#ffbaba;'":"").'><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').'></td>';
 
 
                 if($booking_type=='sundry')
-                    echo'<td>
+                    echo'<td '.(($eton!=$old_eton)?"style='background:#ffbaba;'":"").'>
                         <input type="number" name="eton['.$row->id.']" data-id="'.$row->id.'" value="'.$eton.'" class="eton_ip"></td>';
 
-                    echo'<td><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" '.($booking_type=='sundry'?'readonly':'').'></td>';
+                    echo'<td '.(($eamnt!=$old_eamnt)?"style='background:#ffbaba;'":"").'><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" '.($booking_type=='sundry'?'readonly':'').'></td>';
 
                 
                 if($booking_type=='ftl')
-                    echo'<td><input name="invoice['.$row->id.']" type="number" class="invoice_ip" value="'.$invoice.'"></td>
+                    echo'<td '.(($invoice!=$old_invoice)?"style='background:#ffbaba;'":"").'><input name="invoice['.$row->id.']" type="number" class="invoice_ip" value="'.$invoice.'"></td>
                         
                         ';
 
@@ -3204,9 +3247,9 @@ public function all_update_expense_status()
                  <label>Other Charges: &nbsp; </label>';
                  if(!empty($deal_id))
                  { 
-                    echo'<span id="edit_charge" style="float:right;">
+                /* echo'<span id="edit_charge" style="float:right;">
                     <i class="fa fa-edit"></i> Edit
-                 </span>';
+                 </span>'; */
 				 echo'<script>
                     $(".disc-box").find("input:not(.exip)").attr("readonly","readonly");
                     </script>';

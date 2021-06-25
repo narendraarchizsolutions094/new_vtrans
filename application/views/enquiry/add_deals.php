@@ -384,7 +384,7 @@ return;
 	if(discount>max_discount)
 	{
 		Swal.fire({
-			title:'You are allowed to give discount upto '+max_discount+'% only.',
+			title:'You are authorized to give discount upto '+max_discount+'% only. Please send this quotation to your reporting manager for further approval.',
 			icon:'warning',
 			type:'warning',
 			showConfirmButton:false,

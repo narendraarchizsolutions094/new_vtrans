@@ -252,6 +252,7 @@ $did++;
 <div class="row">
 	<div class="col-lg-12" align="right">
 		<button class="btn btn-primary" onclick="make_clone()"><i class="fa fa-plus"></i> Add</button>
+		<button class="btn btn-info" id="edit_charge"><i class="fa fa-edit"></i> Edit</button>
 			<!-- <button class="btn btn-primary" onclick="generate_table()">Go</button> -->
 	</div>
 </div>
@@ -260,6 +261,7 @@ $did++;
 		<div class="col-lg-12 tablebox">
 		</div>
 </div>
+
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.panel-box').find('select').select2();
@@ -514,6 +516,39 @@ function include_branch(t)
 
 var max_discount = <?=$max_discount?>;
 $(document).on('change keyup click','#data-box input',function(e){
+	var f = $(".tablebox");
+
+var type = $("select[name=booking_type]").val();
+if(type=='ftl')
+return;	
+
+	var qid = $(this).data('id');
+		if(this.value!='' && (this.value<0 || this.value ===NaN))
+			this.value=0;
+
+	var rate = $(f).find("input[name='rate["+qid+"]']").val();
+	var discount = $(f).find("input[name='discount["+qid+"]']").val();
+	var eton = $(f).find("input[name='eton["+qid+"]']").val();
+	var pton = $(f).find("input[name='pton["+qid+"]']").val();
+	rate = parseFloat(rate);
+	discount = parseFloat(discount);
+	eton = parseInt(eton);
+	pton = parseInt(pton);
+
+	var cal_rate = rate.toFixed(2) - ((rate*discount)/100).toFixed(2);
+	var cal_eamnt = cal_rate * eton * 1000; 
+	var cal_pamnt = cal_rate * pton * 1000; 
+	
+	var in_lakh_eamnt = (cal_eamnt/100000).toFixed(6);
+	var in_lakh_pamnt = (cal_pamnt/100000).toFixed(6);
+	in_lakh_pamnt = parseFloat(in_lakh_pamnt);
+	in_lakh_eamnt = parseFloat(in_lakh_eamnt);
+	
+	$(f).find("input[name='eamnt["+qid+"]']").val(in_lakh_eamnt);
+	$(f).find("input[name='pamnt["+qid+"]']").val(in_lakh_pamnt);
+});
+
+$(document).on('change keyup click','.discount_ip',function(e){
 	var f = $(".tablebox");
 
 var type = $("select[name=booking_type]").val();

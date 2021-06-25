@@ -3926,6 +3926,7 @@ echo  $details1;
 
             if($colsall || in_array(19,$cols))
             {
+			if($value->original=='1'){
                 $this->db->where('deal_id',$value->id);
                 $this->db->where('request_from_uid',$this->session->user_id);
                 $req_log = $this->db->get('deal_approval_history')->row_array();
@@ -4007,9 +4008,12 @@ echo  $details1;
                 //         </select>';
                 // }
             
-            }
+            }else{
+			$sub[] ='None';	
+			}
+			}
             $part2 = "";
-            if(user_access('1002'))
+            if(user_access('1002') && $value->original=='1')
             {
 				if(!empty($_POST['curr_stg'])){
 				$current_stg = base64_encode($_POST['curr_stg']);
