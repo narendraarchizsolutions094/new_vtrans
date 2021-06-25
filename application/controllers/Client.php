@@ -3136,7 +3136,7 @@ public function all_update_expense_status()
                     if($booking_type=='sundry')
                     {
                         echo'<td><input type="number" id="rate_'.$row->id.'" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
-                        <td><input type="number" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
+                        <td class="disc-box"><input type="number" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
 						<td><input type="text" id="final_rate_'.$row->id.'" class="final_rate" name="final_rate['.$row->id.']" data-id="'.$row->id.'" value="'.$final_rate.'"></td>';
                     }
 
@@ -3199,6 +3199,9 @@ public function all_update_expense_status()
                     echo'<span id="edit_charge" style="float:right;">
                     <i class="fa fa-edit"></i> Edit
                  </span>';
+				 echo'<script>
+                    $(".disc-box").find("input:not(.exip)").attr("readonly","readonly");
+                    </script>';
 
                  }				 
 

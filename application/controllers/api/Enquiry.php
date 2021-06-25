@@ -3273,7 +3273,7 @@ public function get_enq_list_post(){
        $company = $this->input->post('company_id');
        $data_row = array();
 // In enquiry table	
-       $this->db->select("enquiry_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.created_by,enquiry.aasign_to,enquiry.aasign_to as assign_to,lead_stage,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name");
+       $this->db->select("enquiry_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.created_by,enquiry.aasign_to,enquiry.aasign_to as assign_to,enquiry.status,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name");
    if($parameter=='mobile'){
    $this->db->where('phone',$type);
    }
@@ -3286,7 +3286,7 @@ public function get_enq_list_post(){
        $res=$this->db->get('enquiry');
        $enq_id=$res->row();
 //In contact table
-       $this->db->select("tbl_client_contacts.client_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.created_by,enquiry.aasign_to,enquiry.aasign_to as aasign_to,lead_stage,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name");
+       $this->db->select("tbl_client_contacts.client_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.created_by,enquiry.aasign_to,enquiry.aasign_to as aasign_to,enquiry.status,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name");
    if($parameter=='mobile'){
    $this->db->where('contact_number',$type);
    }
@@ -3310,11 +3310,24 @@ public function get_enq_list_post(){
     if(empty($enq_id->enquiry_id)){
       $enq_id = $contact_id;
     }
+	if($enq_id->status=='1'){
+      $status = 'Lead'; 
+    }else if($enq_id->status=='2'){
+      $status = 'Approach';
+    }else if($enq_id->status=='3'){
+      $status = 'Negotiation';
+    }else if($enq_id->status=='4'){
+      $status = 'Closure';
+    }else if($enq_id->status=='5'){
+    $status = 'Order';
+    }else if($enq_id->status=='6'){
+    $status = 'Future Apportunities';
+    }
       $data_row = array(
       'name'=>$enq_id->name_prefix.' '.$enq_id->name.' '.$enq_id->lastname,
       'created_by'=>$enq_id->created_by_name,
       'assign_to'=>$enq_id->assign_to_name,
-      'stage'=>$enq_id->lead_stage
+      'stage'=>$status
       );
        $this->set_response([
        'status'      => TRUE,           

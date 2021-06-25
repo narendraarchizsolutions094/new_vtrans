@@ -537,12 +537,12 @@ return;
 	if(discount > max_discount)
 	{
 		Swal.fire({
-			title:'You are allowed to give discount upto '+max_discount+'% only.',
+			title:'You are authorized to give discount upto '+max_discount+'% only. Please send this quotation to your reporting manager for further approval.',
 			icon:'warning',
 			type:'warning',
 			showConfirmButton:false,
 		});
-		$(f).find("input[name='discount["+qid+"]']").val(max_discount);
+		//$(f).find("input[name='discount["+qid+"]']").val(max_discount);
 		return false;
 	}
 	var cal_rate = rate.toFixed(2) - ((rate*discount)/100).toFixed(2);
@@ -586,6 +586,8 @@ $(document).on('click','#edit_charge',function(){
 	$('#data_table').find("input[name=edited]").val('1');
 	$('#oc-box').find('input').removeAttr('readonly');
 	$('#oc-box').find('input:first').focus();
+	$('.disc-box').find('input').removeAttr('readonly');
+	$('.disc-box').find('input:first').focus();
 	$(".edit_remark").show();
 });
 

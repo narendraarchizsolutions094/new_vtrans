@@ -364,7 +364,7 @@ function manage_filters()
                <tr>                              
                   <th>S.N.</th>
 				  <th id="th-24">Quatation No</th>
-				  <th id="th-25">Quatation Amt</th>
+				  <th id="th-25">Quatation Amt (In Lakhs)</th>
                   <th id="th-1">Name</th>
                   <th id="th-21">Company</th>
                   <th id="th-22">Client Name</th>
