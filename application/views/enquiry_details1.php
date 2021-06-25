@@ -22,6 +22,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
 <!-- Time line css start -->
 
 <style>
+
   .hide-timeline{
     display: none;
   }
@@ -30,23 +31,6 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
     top: 94px;
     right: 0;
   }
-  <?php if($this->session->companey_id == 29) {        
-    $c = 0;
-    if ($enquiry->partner_id && $enquiry->status == 3) {
-      $this->db->from('enquiry');
-      $this->db->where('reference_name',$enquiry->partner_id);        
-      $c = $this->db->count_all_results();      
-    }            
-    if($c == 0){ ?>
-      a[href$="amount"],[href$="Payout_Preference"]{
-        display: none !important;
-      }
-    <?php
-    }          
-
-  }
-
-  ?>
   .col-height{
     min-height: 700px;
     max-height: 700px;
@@ -363,34 +347,11 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
    <div class="col-md-12 mobile-center" style="background-color: #fff;border-bottom: 1px solid #C8CED3;">
       <div class="col-md-6" > 
         <p style="margin-top: 6px;">
-        <?php
-        //print_r($enquiry);
-      /*  $back_url = "javascript:void(0)";
-        if (!empty($enquiry)) {
-          if($enquiry->status == 1){
-            echo "Enquiry Details";
-            $back_url = base_url().'enq/index';
-          }else if($enquiry->status == 2){
-            echo "Lead Details";          
-            $back_url = base_url().'led/index';  
-          }else if ($enquiry->status == 3) {
-            echo "Client Details";     
-            $back_url = base_url().'client/index';                                 
-          }
-        }*/
-        ?>
       </p>
         <!-- Enquiry / Update Enquiry -->
       </div>
       <div class="col-md-6" >
          <div style="float:right">
-          <?php  if($enquiry->status==2) { if($this->session->userdata('companey_id')==29){ ?>
-
-            <div class="btn-group" role="group" aria-label="Button group">
-               <a class="dropdown-toggle btn btn-xs btn-success" href="#" data-toggle="modal" data-target="#addbanknewdeal">New Deal</a>&nbsp;&nbsp;&nbsp;
-            </div>
-
-            <?php } }?>
            
          </div>
       </div>
@@ -469,80 +430,11 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
 <!-- END -->
 <!-- For pasia EXpo -->
 
-  <div id="addbanknewdeal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-   <form action="<?php echo base_url(); ?>client/re_oreder1" method="post" class="form-inner">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Create New Deals</h4>
-      </div>
-      <div class="modal-body">
-        
-          <div class="row">
-            <div class="form-group col-sm-6">  
-            <label>Expected Closure Date</label>                  
-            <input class="form-control"  name="expected_date" type="date" readonly>               
-            </div>
-            
-            <div class="form-group col-sm-6">
-            <label class="col-form-label">Conversion Probability</label>
-            
-            <select class="form-control" id="LeadScore" name="lead_score">
-            <option value="">Select</option>                                               
-            <?php foreach ($lead_score as $score) {  ?>
-                <option value="<?= $score->sc_id?>"><?= $score->score_name?>&nbsp;<?= $score->probability?></option>
-                <?php } ?>                       
-            </select>
-            </div>
-
-            <div class="form-group col-sm-6">
-            <label class="col-form-label">Bank applied with</label>
-            <input type="text" class="form-control" id="bankname" name="bankname">
-            </div>
-
-            <div class="form-group col-sm-6">
-            <label class="col-form-label">Product Name</label>
-            
-            <input type="text" class="form-control" id="proname" name="proname" readonly="" value="<?= $details->country_name ?>">
-                            
-            </div>
-
-            <div class="form-group col-sm-6">  
-            <label>Add Comment</label>                  
-            <input class="form-control" id="LastCommentGen" name="comment" type="text">
-            <input class="form-control" value="<?php echo $leadid; ?>" name="child_id" type="hidden">                
-            </div>
-                                    
-                </div>
-      
-    </div>
-      <div class="modal-footer">
-        <input  class="btn btn-success" type="submit" value="Create New Deals " > 
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-     </form>
-  </div>
-</div>
-<!-- END -->
+  
 
    <div  class="row" id="ThreadEnq">
       <div class="col-md-3 col-xs-12 col-sm-12 col-height" style="text-align:center;background:#fff;">
-         <?php
-            $string =  $enquiry->name." ".$enquiry->lastname;            
-            function initials($str) {     
-                $ret = '';
-                foreach (explode(' ', $str) as $word)
-                $ret .= strtoupper(substr($word,0,1));
-                return $ret; 
-            }       
-            ?>
-         <!-- <div class="avatar" style="margin-top:5%;margin-left:-15%;">
-            <p data-lettersbig="<?php echo initials($string);?>"> </p>
-         </div> -->
-
+      
          <h5 style="text-align:center"><br><?=ucwords($enquiry->name_prefix." ".$enquiry->name." ".$enquiry->lastname); ?>
             <br><?php if($enquiry->gender == 1) { echo 'Male<br>'; }else if($enquiry->gender == 2){ echo 'Female<br>'; }else if($enquiry->gender == 3){ echo 'Other<br>';} 
             $p = $enquiry->phone;
@@ -576,37 +468,8 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                        </div>
                    <?php }
                }
-           }
-            
-            ?>  
-
-
-            
-                      
-            <br><?php if(!empty($enquiry->reference_name)) {               
-              $this->db->where('TRIM(partner_id)',trim($enquiry->reference_name));
-              $this->db->where('comp_id',$this->session->companey_id);
-              $ref_row  = $this->db->get('enquiry')->row_array();
-              $src = '';
-              if ($ref_row['product_id'] == 95) {
-                $src = '(Customer)';
-              }else if ($ref_row['product_id'] == 91) {
-                $src = '(Patner)';
-              }
-              echo 'Referred by : <a href="'.base_url().'enquiry/view/'.$ref_row['enquiry_id'].'">'.$ref_row['name_prefix'].' '.$ref_row['name'].' '.$ref_row['lastname'].$src.'</a>'; 
-            }
-
-            if ($this->session->companey_id==29) {               
-               $this->db->where('enquiry_code',$details->Enquery_id);
-               $meta_row  = $this->db->get('paisa_expo_enquiry_meta')->row_array();
-                if (!empty($meta_row)) { ?>
-                  <div class="form-group col-md-12" >
-                    PaisaExpo Reference Id : <?=$meta_row['paisaexpo_requestid']?>
-                  </div>
-                  <?php
-                }
-              }  
-            ?>            
+           }            
+         ?>        
          </h5>
          <div class="row">
             <?php if($enquiry->drop_status>0){ ?>
@@ -900,11 +763,8 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             <span class="scrollTab" style="position: absolute; left: 0; font-size: 22px; line-height: 40px; z-index: 999"><i class="fa fa-caret-left" onclick="tabScroll('left')"></i></span>            
               <li class="active" href="#basic" data-toggle="tab" >Basic</li>  
               
-             <?php if($this->session->userdata('companey_id')==292) { 
-                        if($enquiry->status==3) {?>
-                            <li href="#followup" data-toggle="tab" >AMC</li>
-
-                  <?php } } if($enquiry->status==3) { 
+             <?php 
+                  if($enquiry->status==3) { 
 
                  if(in_array(300,$module) || in_array(301,$module) || in_array(302,$module) || in_array(303,$module)){ 
                 ?>
@@ -927,26 +787,12 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                 }
               }
               ?>
-      <?php
-              if (user_access('240')===true) { ?>
-               <li href="#institute" id="institute-tab" data-toggle="tab" >Institute</li>
-        <?php } ?>
-      <?php if ($this->session->companey_id=='67' || $this->session->companey_id=='83') { ?>
-              <!--<li><a href="#qalification" data-toggle="tab" style="padding: 10px 10px; font-size:12px;">Qualifications</a></li>
-              <li><a href="#english" data-toggle="tab" style="padding: 10px 10px; font-size:12px;">English Language</a></li>-->       
-          <li href="#payment" data-toggle="tab" >Payment</li>
-              <li  href="#aggrement" data-toggle="tab" >Aggrement</li>
-      <?php } ?>
-           <li href="#task" data-toggle="tab" >Task</li>
+           <li href="#task" data-toggle="tab" >Task</li>           
+           
             
-           <!--  <li href="#related_enquiry" data-toggle="tab">Related Data</li> -->
-            <?php if($this->session->companey_id=='83'){ ?>
-            <li href="#login-tab" data-toggle="tab" >Login Trail</li>
-            <?php } ?>
             <?php 
             if(user_access('1000') && $details->status!='1') //
-            {  ?>
-            <!-- <li href="#COMMERCIAL_INFORMATION" data-toggle="tab" >Commercial Information</li> -->
+            {  ?>            
             <li href="#COMMERCIAL_INFORMATION" data-toggle="tab">Deals</li>
             <?php
             }
@@ -1020,7 +866,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
 
                
                <div class="tab-pane" id="order">
-                <table class="table table-striped table-bordered" cellspacing="0" width="100%">
+                  <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th style="width:20px;"><?php echo display('serial') ?></th>
@@ -1035,107 +881,9 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                       
                     </tbody>
                    </table>
-                   </div>
+               </div>
 
-
-<div class="tab-pane" id="followup">
-<div class="action-btn">
-<a href="" class="btn btn-xs btn-success" data-toggle="modal" data-target="#addamc">Add AMC</a>                       
-</div>
-                <table class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th style="width:20px;"><?php echo display('serial') ?></th>
-                            <th>Product Name</th>
-                           
-                            <th>From Date</th> 
-                            <th>To Date</th> 
-                                                    
-                       
-                        </tr>
-                    </thead>
-                    <tbody>
-                       <?php if(!empty($amc_list)){
-                         $sl=1;
-                        foreach($amc_list as $amclist){?>
-                          <tr>
-                            <td><?= $sl; ?></td>
-                            <td><?= ucwords($amclist['country_name']); ?></td>
-                            <td><?= $amclist['amc_fromdate']?></td>
-                            <td><?= $amclist['amc_todate']?></td>
-
-                          </tr>
-
-                        <?php }  $sl++;
-
-                      } ?>
-                    </tbody>
-                  </table>
- <div id="addamc" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    
-    <div class="modal-content">
-       <?php echo form_open_multipart('client/add_amc'); ?>
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add AMC</h4>
-      </div>
-     
-      <div class="modal-body">
-            
-              <div class="row">
-                  
-            <input type="hidden" name="enqid" value="<?= $enquiry_id?>">
-            <div class="form-group col-md-12">  
-            <label>Select Product</label> 
-            <select class="form-control"  name="productlist" id="productlist">   
-            <option value="">Select</option>
-            <?php if(!empty($prod_list)){
-
-              foreach($prod_list as $prodlist){ ?>
-
-             <option value="<?= $prodlist['id'] ?>"><?= $prodlist['country_name']?></option>
-
-         <?php  }
-             }  
-             ?>                                                          
-            </select> 
-            </div>
-
-            <div class="form-group col-md-6">  
-            <label>From Date</label>    
-            <input  name="fromdate" class="form-control form-date" id="fromdate">       
-            </div>
-
-            <div class="form-group col-md-6">  
-            <label>To Date</label>    
-            <input   name="todate" class="form-control form-date" id="todate">       
-            </div>
-
-            <div class="form-group col-md-12" style="display: none">  
-            <label>Attach PO</label>    
-            <input type="file" name="po" class="form-control" id="po">       
-            </div>
-            
-            <input type="hidden" value="<?= $compid; ?>" class="" name="compid" id="compid">  
-            
-     
-            </div>
-            
-         <div class="modal-footer">
-           <button class="btn btn-success" type="submit">Add</button>   
-           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-               
-            <?php echo form_close(); ?>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+ 
 
     <!-- comission  -->
 
@@ -1272,597 +1020,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                        </form>
                     </div>                                                
                </div>
-               <!-- END -->
-
-               <div class="tab-pane" id="institute">
-                  <hr>
-                  <div class="card card-body" style="overflow-y: scroll;">
-                        <table class="table table-bordered">                          
-                          <thead>
-                            <tr>
-                              <th>
-                                Institute Name
-                              </th>
-                              <?php if ($this->session->companey_id=='67') { ?>
-                               <th>
-                                Course Name
-                              </th>
-                               <th>
-                                Program Lavel
-                              </th>
-                                <th>
-                                Program Length
-                              </th>
-                               <th>
-                                Program Discipline
-                              </th>
-                              
-                              <th>
-                                Tuition Fee
-                              </th>
-                           <?php } if ($this->session->companey_id!='67') { ?>
-                               <th>
-                                Offer letter fee
-                              </th>
-                                Application URL
-                              </th>
-                              <th>
-                              <th>
-                                Major
-                              </th>
-                              <th>
-                                Username                                
-                              </th>
-                              <th>
-                                Password
-                              </th>
-                           <?php } ?>
-                              <th>
-                                App status
-                              </th>
-                              <th>
-                                App Fee
-                              </th>
-                           <?php if ($this->session->companey_id!='67') { ?>                              
-                              <th>
-                                Transcripts
-                              </th>
-                              <th>
-                                LORs
-                              </th>
-                              <th>
-                                SOP
-                              </th>
-                              <th>
-                                CV                           
-                              </th>                          
-                              <th>
-                                GRE/GMAT
-                              </th>
-                              <th>
-                                TOEFL/IELTS /PTE
-                              </th>
-                           <?php } ?>
-                              <th>
-                                Remarks
-                              </th>
-                              <th>
-                                Followup Comments
-                              </th>
-                              <th>
-                                Actions
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php
-                            if (!empty($institute_data)) {
-                              foreach ($institute_data as $key => $value) { ?>
-                                <tr>
-                                    <td><?=$value['institute_name']?></td>
-                                  <?php if ($this->session->companey_id=='67') { ?>
-                                    <td><?php echo $value['course_name_str'];?></td>
-                                    <td><?php foreach($level as $lvl){if($lvl->id==$value['p_lvl']){echo $lvl->level;}}?></td>
-                                    <td><?php foreach($length as $lg){if($lg->id==$value['p_length']){echo $lg->length;}}?></td>
-                                    <td><?php foreach($discipline as $dc){if($dc->id==$value['p_disc']){echo $dc->discipline;}}?></td>                                  
-
-                                    <td><?=$value['t_fee']?></td>
-                                  <?php
-                                  }
-                                  ?>
-                                 <?php if ($this->session->companey_id!='67') { ?>
-                                    <td><?=$value['ol_fee']?></td>                                    
-                                    <td><?=$value['application_url']?></td>
-                                    <td><?=$value['major']?></td>
-                                    <td><?=$value['user_name']?></td>
-                                    <td><?=$value['password']?></td>
-                                 <?php } ?>
-                                    <td><?=$value['app_status_title']?></td>
-                                    <td><?=$value['app_fee']?></td>
-                                 <?php if ($this->session->companey_id!='67') { ?>
-                                    <td><?=$value['transcript']?></td>
-                                    <td><?=$value['lors']?></td>
-                                    <td><?=$value['sop']?></td>
-                                    <td><?=$value['cv']?></td>
-                                    <td><?=$value['gre_gmt']?></td>
-                                    <td><?=$value['toefl']?></td>
-                                 <?php } ?>
-                                    <td><?=$value['remark']?></td>
-                                    <td><?=$value['followup_comment']?></td>
-                                    <td>
-                                      <a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="delete_institute(<?=$value['id']?>)"><i class="fa fa-trash" ></i></a>
-                                      <a href="javascript:void(0)" class="btn btn-primary btn-sm " onclick="open_institute_modal(<?=$value['id']?>)"><i class="fa fa-pencil" ></i></a>
-                                    </td>
-                                </tr>                                
-                              <?php
-                              }
-                            }else{ ?>
-                              <tr style="text-align: center;">
-                                <td colspan=16>No record found</td>
-                              </tr>
-                              <?php
-                            }
-                            ?>
-                          </tbody>
-                            
-                        </table>
-                     </div>
-
-
-                  <div class="card card-body">
-                    <?php echo form_open_multipart('enquiry/add_enquery_institute/'.base64_encode($details->Enquery_id),array('class'=>"form-inner",'id'=>'add_institute_form')) ?>                      
-                      <div class="row">                                          
-                       <div class="form-group col-sm-4"> 
-                          <label>Institute Name <i class="text-danger">*</i></label>
-                          <select class="form-control" name='institute_id' id='institute_id' required>
-                          <option value="">Please Select</option>
-              <?php
-                          if(!empty($institute_list)){
-                            foreach ($institute_list as $key => $value) { ?>
-                              <option value="<?=$value->institute_id?>"><?=$value->institute_name?></option>
-                            <?php
-                            }
-                          }
-                          ?>
-                          </select>                        
-                       </div>
- 
-<?php if ($this->session->companey_id=='67') { ?>
-
-<div class="form-group col-sm-4">                         
-                          <label><?php echo display('program_discipline')?> </label>                          
-                          <select name="p_disc" id="p_disc" class="form-control" onchange="">
-                  <option value="">Select</option>
-                             <?php foreach($discipline as $dc){ ?>                                   
-                        <option value="<?php echo $dc->id; ?>"><?php echo $dc->discipline; ?></option>
-                    <?php } ?>
-                    </select>               
-                          </select>                          
-</div>
-<div class="form-group col-sm-4">                         
-                          <label>Program Lavel </label>                          
-                          <select name="p_lvl" id="p_lvl" class="form-control" onchange="find_level()">
-                  <option value="">Select</option>
-                             <?php foreach($level as $lc){ ?>                                   
-                        <option value="<?php echo $lc->id; ?>"><?php echo $lc->level; ?></option>
-                    <?php } ?>                
-                          </select>                          
-</div>
-<div class="form-group col-sm-4">                         
-                          <label>Program Length </label>                          
-                          <select name="p_length" id="p_length" class="form-control" onchange="find_app_crs()">
-                
-                          </select>                          
-</div>
-
-<div class="form-group col-sm-4"> 
-                        
-                          <label>Select Course </label>                          
-                          <select name="app_course" id="app_course" class="form-control">
-                                                     
-                          </select>                          
-                       </div>
-
-<div class="form-group col-sm-4"> 
-                          <label>Tuition fee</label>
-                          <input class="form-control" name="t_fee" type="text" placeholder="Tuition fee" >  
-</div>
-<!-- <div class="form-group col-sm-4"> 
-                          <label>Offer letter fee</label>
-                          <input class="form-control" name="ol_fee" type="text" placeholder="O.letter fee" >  
-</div> -->
-<?php } ?>             
-<?php if ($this->session->companey_id!='67') { ?>
-                       <div class="form-group col-sm-4"> 
-                          <label>Application URL </label>
-                          <input class="form-control" name="application_url" type="text" placeholder="Application Url" >  
-                       </div>
-                       <div class="form-group col-sm-4"> 
-                          <label>Major </label>
-                          <input class="form-control" name="major" type="text" placeholder="Major" >  
-                       </div>
-            
-                       <div class="form-group col-sm-4"> 
-                          <label>User Name </label>
-                          <input class="form-control" name="username" type="text" placeholder="Username" >  
-                       </div>
-                                                               
-                       <div class="form-group col-sm-4"> 
-                          <label>Password </label>
-                          <input class="form-control" name="password" type="text" placeholder="Password" >  
-                       </div>
-<?php } ?>
-                       <div class="form-group col-sm-4"> 
-                        
-                          <label>App Status </label>                          
-                          <select name="app_status" class="form-control" >
-                          <?php                                                    
-                          if (!empty($institute_app_status)) {
-                            foreach ($institute_app_status as $key => $value) {
-                              ?>
-                              <option value="<?=$value['id']?>"><?=$value['title']?></option>
-                              <?php
-                            }
-                          }
-                          ?>                            
-                          </select>                          
-                       </div>
-                     
-                       <div class="form-group col-sm-4"> 
-                          <label>App Fee </label>
-                          <input class="form-control" name="app_fee" type="text" placeholder="App Fee" >  
-                       </div>
-                      
-                      <?php if ($this->session->companey_id!='67') { ?>
-                      
-                       <div class="form-group col-sm-4"> 
-                          <label>Transcript </label>
-                          <input class="form-control" name="transcript" type="text" placeholder="Transcript" >  
-                       </div>
-
-                       <div class="form-group col-sm-4"> 
-                          <label>LORs </label>
-                          <input class="form-control" name="lors" type="text" placeholder="Lors" >  
-                       </div>
-                      
-                       <div class="form-group col-sm-4"> 
-                          <label>SOP </label>
-                          <input class="form-control" name="sop" type="text" placeholder="SOP" >  
-                       </div>
-
-                                                             
-                       <div class="form-group col-sm-4"> 
-                          <label>CV </label>
-                          <input class="form-control" name="cv" type="text" placeholder="cv" >  
-                       </div>
-
-                       <div class="form-group col-sm-4"> 
-                          <label>GRE/GMAT </label>
-                          <input class="form-control" name="gre_gmt" type="text" placeholder="GRE/GMAT" >  
-                       </div>
-                      
-                       <div class="form-group col-sm-4"> 
-                          <label>TOEFL/IELTS/PTS </label>
-                          <input class="form-control" name="tofel_ielts_pts" type="text" placeholder="TOEFL/IELTS/PTS" >  
-                       </div>
-<?php } ?>
-
-                                                              
-                       <div class="form-group col-sm-4"> 
-                          <label>Remarks </label>
-                          <textarea class="form-control" placeholder="Remark" name="remark"></textarea>
-                       </div>
-
-                       <div class="form-group col-sm-4"> 
-                          <label>Followup Comments </label>
-                          <textarea class="form-control" placeholder="Followup comments" name="followup_comment"></textarea>
-                       </div>
-                     
- <?php if ($this->session->companey_id!='67') { ?>                        
-                       <div class="form-group col-sm-4"> 
-                          <label>Reference No </label>
-                          <input class="form-control" name="reference_no" type="text" placeholder="Reference No" >  
-                       </div>
-                                                           
-                       <div class="form-group col-sm-4"> 
-                          <label>Courier Status </label>
-                          <input class="form-control" name="courier_status" type="text" placeholder="Courier Status" >  
-                       </div>
- <?php } ?>
-                     </div>                                     
-                       <br>
-                           <div class=""  id="save_button">                                                
-                              <div class="col-md-12">                                                
-                                    <button class="btn btn-primary" type="submit" >Save</button>            
-                              </div>
-                            </div>
-                       </form>
-                    </div>                                                
-               </div>
-
-               <div class="tab-pane" id="personaltab">
-                  <hr>
-                  <?php echo form_open_multipart('client/updateclientpersonel/'.$details->enquiry_id,'class="form-inner"') ?>  
-                  <input type="hidden" name="form" value="client">
-                    <!--------------------------------------------------start----------------------------->
-                    <?php if(!empty($personel_list)){ ?>
-                    <?php foreach($personel_list as $alldetails){ ?>
-                        <input class="form-control" name="unique_number" type="hidden" value="<?php echo $alldetails->unique_number; ?>">                      
-                     <div class="form-group col-sm-4"> 
-                        <label>Date of Birth</label>
-                        <input class="form-control form-date" name="date_of_birth"   value="<?php echo $alldetails->date_of_birth; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Marital status</label>
-                        <select class="form-control" name="marital_status" id="marital_status">
-                            <option value="">-Select Marital Status-</option>
-                            <option value="Single" <?php if(!empty($personel_list)){if($alldetails->marital_status=='Single'){echo 'selected';}} ?>>Single</option>
-                            <option value="Married" <?php if(!empty($personel_list)){if($alldetails->marital_status=='Married'){echo 'selected';}} ?>>Married</option>
-                            <option value="Widowed" <?php if(!empty($personel_list)){if($alldetails->marital_status=='Widowed'){echo 'selected';}} ?>>Widowed</option>
-                            <option value="Separated" <?php if(!empty($personel_list)){if($alldetails->marital_status=='Separated'){echo 'selected';}} ?>>Separated</option>
-                            <option value="Divorced" <?php if(!empty($personel_list)){if($alldetails->marital_status=='Divorced'){echo 'selected';}} ?>>Divorced</option>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Last Communication</label>
-                        <input class="form-control form-date" name="last_comm"   value="<?php echo $alldetails->last_comm; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Mode Of Communication</label>
-                        <input class="form-control" name="mode_of_comm" type="text" value="<?php echo $alldetails->mode_of_comm; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Remark</label>
-                        <input class="form-control" name="remark" type="text" value="<?php echo $alldetails->remark; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Mother Toung</label>
-                        <input class="form-control" name="mother_tongue" type="text" value="<?php echo $alldetails->mother_tongue; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Other Language</label>
-                        <input class="form-control" name="other_language" type="text" value="<?php echo $alldetails->other_language; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Address Line 1</label>
-                        <input class="form-control" name="corres_add_line1" type="text" value="<?php echo $alldetails->corres_add_line1; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Address Line 2</label>
-                        <input class="form-control" name="corres_add_line2" type="text" value="<?php echo $alldetails->corres_add_line2; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Address Line 3</label>
-                        <input class="form-control" name="corres_add_line3" type="text" value="<?php echo $alldetails->corres_add_line3; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Country</label>
-                        <select class="form-control" name="corres_country_id" id="country_id" onchange="find_state()">
-                            <option value="">-Select Country-</option>
-                            <?php foreach($allcountry_list as $country){ ?>
-                            <option value="<?php echo $country->id_c; ?> " <?php if(!empty($allcountry_list)){if($alldetails->corres_country_id==$country->id_c){echo 'selected';}} ?>><?php echo $country->country_name; ?> </option>
-                            <?php } ?>
-                        </select>
-
-
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence State</label>
-                        <select class="form-control" name="corres_state_id" id="state_id">
-                            <option value="">-Select State-</option>
-                            <?php foreach($allstate_list as $state){ ?>
-                            <option value="<?php echo $state->id; ?> " <?php if(!empty($allstate_list)){if($alldetails->corres_state_id==$state->id){echo 'selected';}} ?>><?php echo $state->state; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence District</label>
-                        <select class="form-control" name="corres_district_id" id="corres_district_id">
-                            <option value="">-Select District-</option>
-                            <?php foreach($allcity_list as $city){ ?>
-                            <option value="<?php echo $city->id; ?> " <?php if(!empty($allcity_list)){if($alldetails->corres_district_id==$city->id){echo 'selected';}} ?>><?php echo $city->city; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Pincode</label>
-                        <input class="form-control" name="corres_pincode" type="text" value="<?php echo $alldetails->corres_pincode; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Landmark</label>
-                        <input class="form-control" name="corres_landmark" type="text" value="<?php echo $alldetails->corres_landmark; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Address Line 1</label>
-                        <input class="form-control" name="perm_add_line1" type="text" value="<?php echo $alldetails->perm_add_line1; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Address Line 2</label>
-                        <input class="form-control" name="perm_add_line2" type="text" value="<?php echo $alldetails->perm_add_line2; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Address Line 3</label>
-                        <input class="form-control" name="perm_add_line3" type="text" value="<?php echo $alldetails->perm_add_line3; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Country</label>
-                        <select class="form-control" name="perm_country_id" id="perm_country_id">
-                            <option value="">-Select Country-</option>
-                            <?php foreach($allcountry_list as $country){ ?>
-                            <option value="<?php echo $country->id_c; ?> " <?php if(!empty($allcountry_list)){if($alldetails->perm_country_id==$country->id_c){echo 'selected';}} ?>><?php echo $country->country_name; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent State</label>
-                      <select class="form-control" name="perm_state_id" id="perm_state_id">
-                          <option value="">-Select State-</option>
-                          <?php foreach($allstate_list as $state){ ?>
-                          <option value="<?php echo $state->id; ?> " <?php if(!empty($allstate_list)){if($alldetails->perm_state_id==$state->id){echo 'selected';}} ?>><?php echo $state->state; ?> </option>
-                          <?php } ?>
-                      </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent District</label>
-                        <select class="form-control" name="perm_district_id" id="perm_district_id">
-                            <option value="">-Select District-</option>
-                            <?php foreach($allcity_list as $city){ ?>
-                            <option value="<?php echo $city->id; ?> " <?php if(!empty($allcity_list)){if($alldetails->perm_district_id==$city->id){echo 'selected';}} ?>><?php echo $city->city; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Pincode</label>
-                        <input class="form-control" name="perm_pincode" type="text" value="<?php echo $alldetails->perm_pincode; ?>" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Landmark</label>
-                        <input class="form-control" name="perm_landmark" type="text" value="<?php echo $alldetails->perm_landmark; ?>" >  
-                     </div>
-                      <?php } ?>
-                      <?php }else{ ?>
-                      <!-----------------------------------------------start-------------------------------------------->
-                       <input class="form-control" name="unique_number" type="hidden" value="">  
-                    
-                     <div class="form-group col-sm-4"> 
-                        <label>Date of Birth</label>
-                        <input class="form-control form-date" name="date_of_birth"   value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Marital status</label>
-                        <select class="form-control" name="marital_status" id="marital_status">
-                            <option value="">-Select Marital Status-</option>
-                            <option value="Single">Single</option>
-                            <option value="Married">Married</option>
-                            <option value="Widowed">Widowed</option>
-                            <option value="Separated">Separated</option>
-                            <option value="Divorced">Divorced</option>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Last Communication</label>
-                        <input class="form-control form-date" name="last_comm" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Mode Of Communication</label>
-                        <input class="form-control" name="mode_of_comm" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Remark</label>
-                        <input class="form-control" name="remark" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Mother Toung</label>
-                        <input class="form-control" name="mother_tongue" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Other Language</label>
-                        <input class="form-control" name="other_language" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Address Line 1</label>
-                        <input class="form-control" name="corres_add_line1" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Address Line 2</label>
-                        <input class="form-control" name="corres_add_line2" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Address Line 3</label>
-                        <input class="form-control" name="corres_add_line3" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Country</label>
-                        <select class="form-control" name="corres_country_id" id="corres_country_id1">
-                          <option value="">-Select Country-</option>
-                          <?php foreach($allcountry_list as $country){ ?>
-                          <option value="<?php echo $country->id_c; ?> "><?php echo $country->country_name; ?> </option>
-                          <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence State</label>
-                        <select class="form-control" name="corres_state_id" id="corres_state_id1">
-                            <option value="">-Select State-</option>
-                            <?php foreach($allstate_list as $state){ ?>
-                            <option value="<?php echo $state->id; ?> "><?php echo $state->state; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence District</label>
-                        <select class="form-control" name="corres_district_id" id="corres_district_id">
-                            <option value="">-Select District-</option>
-                            <?php foreach($allcity_list as $city){ ?>
-                            <option value="<?php echo $city->id; ?> "><?php echo $city->city; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Pincode</label>
-                        <input class="form-control" name="corres_pincode" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Correspondence Landmark</label>
-                        <input class="form-control" name="corres_landmark" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Address Line 1</label>
-                        <input class="form-control" name="perm_add_line1" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Address Line 2</label>
-                        <input class="form-control" name="perm_add_line2" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Address Line 3</label>
-                        <input class="form-control" name="perm_add_line3" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Country</label>
-                        <select class="form-control" name="perm_country_id" id="perm_country_id">
-                            <option value="">-Select Country-</option>
-                            <?php foreach($allcountry_list as $country){ ?>
-                            <option value="<?php echo $country->id_c; ?> "><?php echo $country->country_name; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent State</label>
-                        <select class="form-control" name="perm_state_id" id="perm_state_id">
-                            <option value="">-Select State-</option>
-                            <?php foreach($allstate_list as $state){ ?>
-                            <option value="<?php echo $state->id; ?> "><?php echo $state->state; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent District</label>
-                        <select class="form-control" name="perm_district_id" id="perm_district_id">
-                            <option value="">-Select District-</option>
-                            <?php foreach($allcity_list as $city){ ?>
-                            <option value="<?php echo $city->id; ?>"><?php echo $city->city; ?> </option>
-                            <?php } ?>
-                        </select>
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Pincode</label>
-                        <input class="form-control" name="perm_pincode" type="text" value="" >  
-                     </div>
-                     <div class="form-group col-sm-4"> 
-                        <label>Permanent Landmark</label>
-                        <input class="form-control" name="perm_landmark" type="text" value="" >  
-                     </div>
-                     <?php } ?>
-                     <div class="col-md-6"  id="save_button">
-                        <div class="row">
-                           <div class="col-md-12">                                                
-                              <button class="btn btn-primary" type="submit" >Save</button>            
-                           </div>
-                        </div>
-                     </div>
-                  </form>
-               </div>
+               <!-- END -->                              
                <?php if(user_access('1000'))//
                { ?>
               <div class="tab-pane" id="COMMERCIAL_INFORMATION" >
@@ -1951,23 +1109,10 @@ function update_info_status(id,status)
 <script>
 
 function quotation_pdf(info_id) {
-
-    // $(".data_value").html('<center><i class="fa fa-spinner fa-spin" style="font-size:34px;"></i></center>');
-    // $(".data_value").html('<embed src="<?=base_url();?>dashboard/pdf_gen/'+info_id+'" type="application/pdf">');
-   // var elem = document.getElementById('view_sdatas');
    window.open('<?=base_url();?>dashboard/quotation_preview/'+info_id,'Quotation','fullscreen=yes');
-    // $.ajax({
-    //         type: 'POST',
-    //         url: '<?php echo base_url();?>dashboard/printPdf_gen',
-    //         data: {info_id:info_id},
-    //         success:function(res){
-    //             $(".data_value").html(res);
-    //         }
-    //   });
 }
 
 var c = getCookie('deals_allowcols');
-//alert(c);
 specific_list ='';
 
 var TempData = {};
@@ -1988,35 +1133,11 @@ $(document).ready(function(){
               "url": "<?=base_url().'enquiry/deals_load_data'?>",
               "type": "POST",
               "data":function(d){
-                     //  var obj = $(".v_filter:input").serializeArray();
-
-                     // d.top_filter = $("input[name=top_filter]:checked").val();
-                     // d.date_from = $("input[name=d_from_date]").val();
-                     // d.date_to = $("input[name=d_to_date]").val();
-                      d.enq_for = "<?=$details->enquiry_id?>";
-            d.curr_stg = "<?=$data_type?>";
-                     // d.booking_type = $("select[name=d_booking_type]").val();
-                     // d.booking_branch  =  $("select[name=d_booking_branch]").val();
-                     // d.delivery_branch  =  $("select[name=d_delivery_branch]").val();
-                     // d.paymode  =  $("select[name=d_paymode]").val();
-                     // d.p_amnt_from  =  $("input[name=d_p_amnt_from]").val();
-                     // d.p_amnt_to =  $("input[name=d_p_amnt_to]").val();
-                     
-                     // d.from_date = obj[0]['value'];
-                     // d.from_time = '';//obj[1]["value"];
-                     // d.enquiry_id =obj[2]["value"];
-                     // d.rating = obj[3]["value"];
-                     // d.to_date = obj[1]['value'];
-                     // d.to_time = '';//obj[5]['value'];
-                     
-                     d.specific_list = specific_list;
-                     TempData = d;
-
-                      // if(c && c!='')
-                      // d.allow_cols = ;
-
-                     console.log(JSON.stringify(d));
-                    return d;
+                  d.enq_for = "<?=$details->enquiry_id?>";
+                  d.curr_stg = "<?=$data_type?>";
+                  d.specific_list = specific_list;
+                  TempData = d;                     
+                  return d;
               }
           },
           columnDefs: [
@@ -2348,26 +1469,8 @@ $(document).ready(function(){
            "order": [[ 1, "desc" ]],
   });
 });
-//   $(document).delegate('.visit-delete', 'click', function() {    
-//         vid =  $(this).data('id');      
-//         if(confirm('Are you sure?')){      
-//            $.ajax({
-//            url:"<?=base_url('enquiry/delete_visit')?>",
-//            type:"post",
-//            data:{
-//               vid:vid,
-//               enq_code:"<?=$details->Enquery_id?>",
-//             },
-//            success:function(res)
-//            { 
-//               $("#visit_table").DataTable().ajax.reload(); 
-//               Swal.fire('Visit Deleted!', '', 'success');
-//            }
-//            });
-//         }
-//      });  
-     function checkvisit(visitid){
-        $(".visit_id_id").val(visitid);                
+function checkvisit(visitid){
+   $(".visit_id_id").val(visitid);                
 }
 
 
@@ -2382,15 +1485,6 @@ $(function() {
       var tr = $(this).parent().parent();
     });
   });
-//   $( "#amount" ).keypress(function() {
-//     var t = 0;
-//     $('#amount').each(function(i, e) {
-//       var amount = $(this).val() - 0;
-//       t += amount;
-//     });
-//     $('#total').html(t);
-//     alert(t);
-// });
 
   function total() {
     var t = 0;
@@ -2415,8 +1509,7 @@ $(function() {
     var s = n + 3
     var r = n + 1
     var tr = '<tr>' + '<td width="30%"><select name="expense[]" class="form-control"><?php foreach ($expenselist as $key => $value) { ?><option value="<?= $value->id ?>"><?= $value->title ?></option><?php } ?></select></td>'+'<td width="30%"><input id="amount'+n+'" class="form-control amount" name="amount[]"  onkeyup="total()"></td>'+'<td width="30%"><input name="imagefile[]" class="form-control " onchange="Filevalidation(this)"  id="file'+n+'" type="file"  ></td>'+'<td width="10%"><a href="javascript:void(0)" class="remove btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>' + '</tr>';
-    $('.detail').append(tr);
-    // $.getScript("https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js");
+    $('.detail').append(tr);    
     document.getElementById('amount' + n).addEventListener('keydown', function(e) {
       var key = e.keyCode ? e.keyCode : e.which;
       if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
@@ -2611,21 +1704,7 @@ function find_agreement_doc(doc) {
               </select>           
           </div>
       </div>
-      <!-- <div class="col-md-4">
-          <label>Zone</label>
-          <select name="zone_id" class="form-control">
-          <?php
-          // $zones = $ci->Branch_model->zone_list()->result();
-          // if(!empty($zones))
-          // {
-          //     foreach ($zones as $key => $z) 
-          //     {
-          //       echo'<option value="'.$z->zone_id.'">'.$z->name.'</option>';
-          //     }
-          // }
-          ?>
-          </select>
-      </div> -->
+      
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -2723,235 +1802,7 @@ if (document.getElementById('agg_same').checked)
      <?php } ?>
      
 
-               <div class="tab-pane" id="kyctab">
-                  <hr>
-                  <div class="row">
-                     <table class="table table-responsive-sm" style="background: #fff;">
-                        <thead class="thead-light">
-                           <tr>                              
-                              <th>S.N.</th>
-                              <th>Document Name</th>
-                              <th>Document Number</th>
-                              <th>Valid Up To</th>
-                              <th>Created On</th>
-                              <th>Action</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <?php $sl = 1;
-                              if(!empty($kyc_doc_list)){
-                              foreach ($kyc_doc_list as $kycDoc) { 
-                              ?>
-                           <tr>
-                              <td><?php echo $sl;?></td>
-                              <td><?php echo $kycDoc->doc_name; ?></td>
-                              <td><?php echo $kycDoc->doc_number; ?></td>
-                              <td><?php echo ($kycDoc->doc_validity !='')?$kycDoc->doc_validity:'N/A'; ?></td>
-                              <td><?php echo $kycDoc->created_date; ?></td>
-                              <td><a href="<?php echo base_url($kycDoc->doc_file);?>" target="_blank"><i class="fa fa-eye" style="color:green;"></i></a></td>
-                           </tr>
-                           <?php $sl++; }} ?>
-                        </tbody>
-                     </table>
-                     <br>
-                     <center>
-                        <h5><a style="cursor: pointer;" data-toggle="modal" data-target="#createnewKyc" class="btn btn-primary">Add new</a></h5>
-                     </center>
-                     <br>              
-                  </div>
-               </div>
-               <div class="tab-pane" id="workhistorytab">
-                  <hr>
-                  <div class="row">
-                     <table class="table table-responsive-sm" style="background: #fff;">
-                        <thead class="thead-light">
-                           <tr>                              
-                              <th>S.N.</th>
-                              <th>Company Name</th>
-                              <th>Designation</th>
-                              <th>Start Date</th>
-                              <th>End Date</th>
-                              <th>Current CTC <small>(Lac)</small></th>
-                              <th>Created On</th>
-                              <th></th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <?php $sl = 1;
-                              if(!empty($work_history_list)){
-                              foreach ($work_history_list as $itemObj) { 
-                              ?>
-                           <tr>
-                              <td><?php echo $sl;?></td>
-                              <td><?php echo $itemObj->company; ?></td>
-                              <td><?php echo $itemObj->designation; ?></td>
-                              <td><?php echo date('d-m-Y',strtotime($itemObj->start_date)); ?></td>
-                              <td><?php echo date('d-m-Y',strtotime($itemObj->end_date)); ?></td>
-                              <td><?php echo $itemObj->current_ctc; ?></td>
-                              <td><?php echo $itemObj->created_date; ?></td>
-                              <td></td>
-                           </tr>
-                           <?php $sl++; }} ?>
-                        </tbody>
-                     </table>
-                     <br>
-                     <center>
-                        <h5><a style="cursor: pointer;" data-toggle="modal" data-target="#createnewWork" class="btn btn-primary">Add new</a></h5>
-                     </center>
-                     <br>              
-                  </div>
-               </div>
-               <div class="tab-pane" id="educationtab">
-                  <hr>
-                  <div class="row">
-                     <table class="table table-responsive-sm" style="background: #fff;">
-                        <thead class="thead-light">
-                           <tr>                              
-                              <th>S.N.</th>
-                              <th>Title</th>
-                              <th>University</th>
-                              <th>Year of Passing</th>
-                              <th>Created On</th>
-                              <th></th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <?php $sl = 1;
-                              if(!empty($education_list)){
-                              foreach ($education_list as $itemObj) { 
-                              ?>
-                           <tr>
-                              <td><?php echo $sl;?></td>
-                              <td><?php echo $itemObj->title; ?></td>
-                              <td><?php echo $itemObj->university; ?></td>
-                              <td><?php echo $itemObj->passing_year; ?></td>
-                              <td><?php echo $itemObj->created_date; ?></td>
-                           </tr>
-                           <?php $sl++; }} ?>
-                        </tbody>
-                     </table>
-                     <br>
-                     <center>
-                        <h5><a style="cursor: pointer;" data-toggle="modal" data-target="#createnewEducation" class="btn btn-primary">Add new</a></h5>
-                     </center>
-                     <br>              
-                  </div>
-               </div>
-                <div class="tab-pane" id="socialprofiletab">
-                  <hr>
-                  <div class="row">
-                     <table class="table table-responsive-sm" style="background: #fff;">
-                        <thead class="thead-light">
-                           <tr>                              
-                              <th>S.N.</th>
-                              <th>Social Media</th>
-                              <th>Profile URL</th>
-                              <th>Created On</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <?php $sl = 1;
-                              if(!empty($social_profile_list)){
-                              foreach ($social_profile_list as $itemObj) { 
-                              ?>
-                           <tr>
-                              <td><?php echo $sl;?></td>
-                              <td><?php echo $itemObj->title; ?></td>
-                              <td><?php echo $itemObj->profile; ?></td>
-                              <td><?php echo $itemObj->created_date; ?></td>
-                           </tr>
-                           <?php $sl++; }} ?>
-                        </tbody>
-                     </table>
-                     <br>
-                     <center>
-                        <h5><a style="cursor: pointer;" data-toggle="modal" data-target="#createnewSprofile" class="btn btn-primary">Add new</a></h5>
-                     </center>
-                     <br>              
-                  </div>
-               </div>
-                <div class="tab-pane" id="travelhistorytab">
-                  <hr>
-                  <div class="row">
-                     <table class="table table-responsive-sm" style="background: #fff;">
-                        <thead class="thead-light">
-                           <tr>                              
-                              <th>S.N.</th>
-                              <th>County</th>
-                              <th>Travel Date</th>
-                              <th>Visa Type</th>
-                              <th>Visa Duration</th>
-                              <th>Is Rejected</th>
-                              <th>Created On</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <?php $sl = 1;
-                              if(!empty($travel_history_list)){
-                              foreach ($travel_history_list as $itemObj) { 
-                              ?>
-                           <tr>
-                              <td><?php echo $sl;?></td>
-                              <td><?php echo $itemObj->country_name; ?></td>
-                              <td><?php echo date('d-m-Y',strtotime($itemObj->travel_date)); ?></td>
-                              <td><?php echo $itemObj->visa_type; ?></td>
-                              <td><?php echo date('d-m-Y',strtotime($itemObj->dfrom_date)).'-'.date('d-m-Y',strtotime($itemObj->dto_date)); ?></td>
-                              <td><?php echo ($itemObj->is_rejected ==1)?'Yes':'No'; ?></td>
-                              <td><?php echo $itemObj->created_date; ?></td>
-                           </tr>
-                           <?php $sl++; }} ?>
-                        </tbody>
-                     </table>
-                     <br>
-                     <center>
-                        <h5><a style="cursor: pointer;" data-toggle="modal" data-target="#createnewTravel" class="btn btn-primary">Add new</a></h5>
-                     </center>
-                     <br>              
-                  </div>
-               </div> 
-                <div class="tab-pane" id="familydetailtab">
-                  <hr>
-                  <div class="row">
-                     <table class="table table-responsive-sm" style="background: #fff;">
-                        <thead class="thead-light">
-                           <tr>                              
-                              <th>S.N.</th>
-                              <th>Name</th>
-                              <th>Contact</th>
-                              <th>Email</th>
-                              <th>County</th>
-                              <th>relationship</th>
-                              <th>Visa Status</th>
-                              <th>They Help</th>
-                              <th>Created On</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <?php $sl = 1;
-                              if(!empty($close_femily_list)){
-                              foreach ($close_femily_list as $itemObj) { 
-                              ?>
-                           <tr>
-                              <td><?php echo $sl;?></td>
-                              <td><?php echo $itemObj->name; ?></td>
-                              <td><?php echo $itemObj->contact_number; ?></td>
-                              <td><?php echo $itemObj->contact_email; ?></td>
-                              <td><?php echo $itemObj->country_name; ?></td>
-                              <td><?php echo $itemObj->relationship; ?></td>
-                              <td><?php echo ($itemObj->visa_status ==1)?'Valid':'Expired'; ?></td>
-                              <td><?php echo ($itemObj->they_help ==1)?'Yes':'No'; ?></td>
-                              <td><?php echo $itemObj->created_date; ?></td>
-                           </tr>
-                           <?php $sl++; }} ?>
-                        </tbody>
-                     </table>
-                     <br>
-                     <center>
-                        <h5><a style="cursor: pointer;" data-toggle="modal" data-target="#createnewMember" class="btn btn-primary">Add new</a></h5>
-                     </center>
-                     <br>              
-                  </div>
-               </div>
+               
                <div class="tab-pane" id="task">
                    <hr>
                 <div   style="overflow-x: hidden;overflow-y: auto;" onscroll="scrolled(this)">
@@ -3152,11 +2003,6 @@ if (document.getElementById('agg_same').checked)
                 }
               }
               ?>
-        <?php include('tab_payment.php'); ?>
-        <?php include('tab_aggriment.php'); ?>
-        <?php include('tab_qualification.php'); ?>
-        <?php include('tab_login_trail.php'); ?>
-        <?php include('tab_english.php'); ?>
             </div>
       </div>
       </div>
@@ -3221,110 +2067,8 @@ if (document.getElementById('agg_same').checked)
          text-align: inherit;
          }
       </style>
- <div id="createnewKyc" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add New KYC</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('lead/addnewkyc/'.$details->Enquery_id,'class="form-inner"') ?>
-               <div class="form-group col-md-6">
-                  <label>Document Name</label>
-                  <input class="form-control" id="doc_name" name="doc_name" placeholder="Document Name"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Document No.</label>
-                  <input class="form-control" id="doc_number" name="doc_number" placeholder="Document No."  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Upload File</label>
-                  <input class="form-control" name="doc_file" id="doc_file" placeholder="Upload File"  type="file" >
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Valid Up To</label>
-                  <input class="datepicker form-control" id="doc_validity" name="doc_validity" placeholder="Valid Up To"  type="text" >
-               </div>
-                <input type="hidden" id="kyc_unique_number" name="unique_number" value="<?php echo $details->Enquery_id;?>">
-                <input type="hidden" id="kyc_enquiry_id" name="kyc_enquiry_id" value="<?php echo $details->enquiry_id;?>">
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Submit" class="btn btn-primary"  name="Submit">
-                  </div>
-               </div>
-               <?php echo form_close()?>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-
-<div id="createnewWork" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add New Work History</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('lead/addnewwork/'.$details->Enquery_id,'class="form-inner"') ?>
-               <div class="form-group col-md-6">
-                  <label>Company Name</label>
-                  <input class="form-control" id="company" name="company" placeholder="Company Name"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Designation</label>
-                  <input class="form-control" id="designation" name="designation" placeholder="Designation"  type="text"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Start Date</label>
-                  <input class="datepicker form-control" id="start_date" name="start_date" placeholder="Start Date"  type="text"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>End Date</label>
-                  <input class="datepicker form-control" id="end_date" name="end_date" placeholder="End Date"  type="text">
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Current CTC <small>(In Lac)</small></label>
-                  <input class="form-control" id="current_ctc" name="current_ctc" placeholder="Current CTC"  type="text">
-               </div>
-                <input type="hidden" id="work_unique_number" name="work_unique_number" value="<?php echo $details->Enquery_id;?>">
-                <input type="hidden" id="work_enquiry_id" name="work_enquiry_id" value="<?php echo $details->enquiry_id;?>">
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Submit" class="btn btn-primary"  name="Submit">
-                  </div>
-               </div>
-               <?php echo form_close()?>
-            </div>
-         </div>
-      </div>
-   </div>
-
-</div>
-<button type="button" data-toggle="modal" data-target="#edit-institute-frm" id='institute_modal_btn' style="visibility: hidden;">  
-</button>
-<div id="edit-institute-frm" class="modal fade" role="dialog">
-   <div class="modal-dialog modal-lg">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Edit Institute</h4>
-         </div>
-         <div class="modal-body" id="edit-institute-content">
-            
-         </div>
-      </div>
-   </div>
 
 
-</div>
 <!-- comission -->
 <button type="button" data-toggle="modal" data-target="#edit-comission-frm" id='comission_modal_btn' style="visibility: hidden;">  
 </button>
@@ -3345,281 +2089,11 @@ if (document.getElementById('agg_same').checked)
 
 </div>
 <!-- END -->
-<div id="createnewEducation" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add New Education</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('lead/addnewedu/'.$details->Enquery_id,'class="form-inner"') ?>
-               <div class="form-group col-md-6">
-                  <label>Title of Education</label>
-                  <input class="form-control" id="title" name="title" placeholder="Title of Education"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>University Name</label>
-                  <input class="form-control" id="university" name="university" placeholder="University Name"  type="text"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Year of Passing</label>
-                  <input class="form-control" id="passing_year" name="passing_year" placeholder="Year of Passing"  type="text"  required>
-                </div>
-                <input type="hidden" id="edu_unique_number" name="edu_unique_number" value="<?php echo $details->Enquery_id;?>">
-                <input type="hidden" id="edu_enquiry_id" name="edu_enquiry_id" value="<?php echo $details->enquiry_id;?>">
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Submit" class="btn btn-primary"  name="Submit">
-                  </div>
-               </div>
-               <?php echo form_close()?>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-<div id="createnewSprofile" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add New Social Profile</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('lead/addnewsprof/'.$details->Enquery_id,'class="form-inner"') ?>
-               <div class="form-group col-md-6">
-                  <label>Name of Social Media</label>
-                  <input class="form-control" id="title" name="title" placeholder="Name of Social Media"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Profile URL</label>
-                  <input class="form-control" id="profile" name="profile" placeholder="Profile URL"  type="text"  required>
-               </div>
-                <input type="hidden" id="sprof_unique_number" name="sprof_unique_number" value="<?php echo $details->Enquery_id;?>">
-                <input type="hidden" id="sprof_enquiry_id" name="sprof_enquiry_id" value="<?php echo $details->enquiry_id;?>">
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Submit" class="btn btn-primary"  name="Submit">
-                  </div>
-               </div>
-               <?php echo form_close()?>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-<div id="createnewTravel" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add New Travel History</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('lead/addnewtravel/'.$details->Enquery_id,'class="form-inner"') ?>
-               <div class="form-group col-md-6">
-                  <label>County</label>
-                  <select name="country_id" class="form-control">
-                    <?php foreach($all_country_list as $product){?>
-                    <option value="<?=$product->id_c ?>"><?=$product->country_name ?></option>
-                    <?php } ?>
-                 </select>
-               </div>                
-               <div class="form-group col-md-6">
-                  <label>Travel Date</label>
-                  <input class="datepicker form-control" id="travel_date" name="travel_date" placeholder="Travel Date"  type="date" style="padding-top:0px;"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Visa Type</label>
-                  <input class="form-control" id="visa_type" name="visa_type" placeholder="Visa Type"  type="text"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>From Date</label>
-                  <input class="datepicker form-control" id="dfrom_date" name="dfrom_date" placeholder="From Date"  type="date" style="padding-top:0px;"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>To Date</label>
-                  <input class="datepicker form-control" id="dto_date" name="dto_date" placeholder="To Date"  type="date" style="padding-top:0px;"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Is Rejected</label>
-                  <select name="is_rejected" class="form-control">
-                    <option value="1">Yes</option>
-                    <option value="0" selected>No</option>
-                  </select>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Reject Remark</label>
-                  <input class="form-control" id="reject_reason" name="reject_reason" placeholder="Reject Remark"  type="text">
-               </div>
-                <input type="hidden" id="travel_unique_number" name="travel_unique_number" value="<?php echo $details->Enquery_id;?>">
-                <input type="hidden" id="travel_enquiry_id" name="travel_enquiry_id" value="<?php echo $details->enquiry_id;?>">
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Submit" class="btn btn-primary"  name="Submit">
-                  </div>
-               </div>
-               <?php echo form_close()?>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-<div id="createnewMember" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add New Member</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('lead/addnewmember/'.$details->Enquery_id,'class="form-inner"') ?>
-               <div class="form-group col-md-6">
-                  <label>County</label>
-                  <select name="country_id" class="form-control">
-                    <?php foreach($all_country_list as $product){?>
-                    <option value="<?=$product->id_c ?>"><?=$product->country_name ?></option>
-                    <?php } ?>
-                 </select>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Name</label>
-                  <input class="form-control" id="name" name="name" placeholder="Name"  type="text"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Contact Number</label>
-                  <input class="form-control" id="contact_number" name="contact_number" placeholder="Contact Number"  type="text"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Contact Email</label>
-                  <input class="form-control" id="contact_email" name="contact_email" placeholder="Contact Email"  type="text"  required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Relationship</label>
-                  <input class="form-control" id="relationship" name="relationship" placeholder="Relationship"  type="text"  required>
-               </div>
-                <div class="form-group col-md-6">
-                  <label>Visa Type</label>
-                  <select name="visa_status" class="form-control">
-                    <option value="1" selected>Valid</option>
-                    <option value="0">Expired</option>
-                  </select>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>They Help</label>
-                  <select name="they_help" class="form-control">
-                    <option value="0">No</option>
-                    <option value="1" selected>Yes</option>
-                  </select>
-               </div>
-                <input type="hidden" id="mem_unique_number" name="mem_unique_number" value="<?php echo $details->Enquery_id;?>">
-                <input type="hidden" id="mem_enquiry_id" name="mem_enquiry_id" value="<?php echo $details->enquiry_id;?>">
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Submit" class="btn btn-primary"  name="Submit">
-                  </div>
-               </div>
-               <?php echo form_close()?>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-<div id="createTicket<?php echo $details->enquiry_id;?>" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Create New Ticket</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row" >
-               <?php echo form_open_multipart('ticket/addticket','class="form-inner"') ?> 
-               <input class="form-control" name="clientid"  type="hidden" value="<?php echo $details->enquiry_id; ?>" required>
-               <div class="form-group col-md-6">
-                  <label>Name</label>
-                  <input class="form-control" name="name" placeholder="Name"  type="text" value="<?php echo $details->name; ?>" required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Mobile No.</label>
-                  <input class="form-control" name="mobile" placeholder="Mobile No."  type="text" value="<?php echo $details->phone; ?>"  maxlength='10' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Email</label>
-                  <input class="form-control" name="email" placeholder="Email"  type="text" value="<?php echo $details->email; ?>">
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Address</label>
-                  <input class="form-control" name="address" placeholder="Address"  type="text" value="<?php echo $details->address; ?>" required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Product</label>
-                  <input class="form-control" name="product" placeholder="Product"  type="text" value="" required>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Problem</label>
-                  <select class="form-control" name="problem">
-                     <option></option>
-                     <?php 
-                     if(!empty($problems))
-                     {
-                     foreach ($problems as $problem) { ?>
-                     <option value="<?php echo $problem->tp_id; ?>"><?php echo $problem->problem_name; ?></option>
-                     <?php } }?>
-                  </select>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Priority</label>
-                  <select class="form-control" name="priority">
-                     <option></option>
-                     <?php 
-                     if(!empty($ticketpriority))
-                     {
-                     foreach ($ticketpriority as $priority) { ?>
-                     <option value="<?php echo $priority->priority_id; ?>"><?php echo $priority->priority_name; ?></option>
-                     <?php } }?>
-                  </select>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Source</label>
-                  <select class="form-control" name="source">
-                     <option></option>
-                     <?php 
-                     if(!empty($ticketsource))
-                     {
-                     foreach ($ticketsource as $tsource) { ?>
-                     <option value="<?php echo $tsource->ts_id; ?>"><?php echo $tsource->ticket_source; ?></option>
-                     <?php } }?>
-                  </select>
-               </div>
-               <div class="form-group col-md-6">
-                  <label>Due Date</label>
-                  <input class="form-control" name="due_date" placeholder="Due Date"  type="date" value="" required>
-               </div>
-               <div class="sgnbtnmn form-group col-md-12">
-                  <div class="sgnbtn">
-                     <input id="signupbtn" type="submit" value="Add Ticket" class="btn btn-primary"  name="Add Ticket">
-                  </div>
-               </div>
-               <?php echo form_close()?>
-            </div>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         </div>
-      </div>
-   </div>
-</div>
+
+
+
+
+
 <div id="Save_Contact" class="modal fade" role="dialog">
    <div class="modal-dialog">
       <!-- Modal content-->
@@ -3880,108 +2354,7 @@ if (document.getElementById('agg_same').checked)
    }
 </style>
 <!-------------------------------------UPDATE DETAILS------------------------------------------------>
-<div id="updatedetails<?php echo $enquiry->enquiry_id ?>" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Update <?=display('enquiry')?> Details</h4>
-         </div>
-         <div class="modal-body">
-            <?php echo form_open_multipart('enquiry/view/'.$enquiry->enquiry_id,'class="form-inner"') ?>
-             <input type="hidden" name="enqCode" value="<?php echo $enquiry->Enquery_id ?>">
-            <div class="row">
-               <div class="form-group col-sm-6">
-                  <label>First Name <i class="text-danger">*</i> </label>
-                  <div class = "input-group">
-                     <span class = "input-group-addon" style="padding:0px !important;border:0px !important;width:28%;">
-                        <select class="form-control" name="name_prefix">
-                           <?php foreach($name_prefix as $n_prefix){?>
-                           <option value="<?= $n_prefix->prefix ?>" <?php if($n_prefix->prefix==$enquiry->name_prefix){ echo 'selected';} ?>><?= $n_prefix->prefix ?></option>
-                           <?php } ?>
-                        </select>
-                     </span>
-                     <input class="form-control" name="enquirername" type="text" value="<?php echo $enquiry->name ?>" placeholder="Enter First Name" style="width:100%;" required=""/>
-                  </div>
-               </div>
-               <div class="form-group col-sm-6"> 
-                  <label>Last Name <i class="text-danger">*</i></label>
-                  <input class="form-control" value="<?php echo $enquiry->lastname ?>" name="lastname" type="text" placeholder="Last Name" >  
-               </div>
-               <div class="form-group col-sm-6"> 
-                  <label><?php echo display('mobile') ?></label>
-                  <input class="form-control" name="mobileno" type="text" maxlength='10' value="<?php echo $enquiry->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >  
-               </div>
-               <div class="form-group col-sm-6"> 
-                  <label><?php echo display('email') ?></label>
-                  <input class="form-control" name="email" type="email" value="<?php echo $enquiry->email ?>">  
-               </div>
 
-            <div class="form-group col-sm-6">
-               <label><?php echo display('lead_source') ?></label>
-               <select class="form-control" name="lead_source">
-                  <option value=""><?php echo display('lead_source') ?></option>
-                  <?php foreach ($leadsource as $post){ ?>
-                  <option value="<?= $post->lsid?>" <?php if($enquiry->enquiry_source==$post->lsid){echo 'selected';}?>><?= $post->lead_name?></option>
-                  <?php } ?>
-               </select>
-            </div>   
-            <div class="form-group col-sm-6">
-              <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
-              <input class="form-control" name="company" type="company" value="<?php echo $enquiry->company; ?>"> 
-            </div>
-           <div class="form-group col-sm-6">
-              <label><?php echo display('address') ?> <i class="text-danger">*</i></label>
-              <input class="form-control" name="address" type="address" value="<?php echo $enquiry->address; ?>">
-           </div>
-
-            <div class="form-group col-sm-12"> 
-            <label>Remarks</label>
-            <textarea class="form-control" rows="3" id="remarks"  name="enquiry" placeholder="Remarks"><?php  echo set_value('remarks');?><?php echo $enquiry->enquiry?></textarea>
-            </div>
-               <br>
-               <div id="task_create1" style="display:none;">
-                  <div class="form-group col-md-6">  
-                     <label>Task Detail</label>                  
-                     <input class="form-control"  name="task_detail" type="text" placeholder="Enter Task Details">                
-                  </div>
-                  <div class="form-group col-md-6">  
-                     <label>Task Date</label>                  
-                     <input class="form-control date" name="task_date" type="text" placeholder="Enter Task Date" readonly>                
-                  </div>
-               </div>
-               <div class="col-md-6"  id="save_button">
-                  <div class="row">
-                     <div class="col-md-12">                                                
-                        <button class="btn btn-primary" type="submit" >Save</button>            
-                     </div>
-                  </div>
-               </div>
-               <div class="form-group col-md-6" id="curcit_add3" style="display:none;">
-                  <div class="col-12" >
-                     <div class="row">
-                        <div class="col-md-6">                                                
-                           <button class="btn btn-primary" type="submit" >Create Circuit Sheet</button>            
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="form-group col-md-6" id="add_po3" style="display:none;">
-                  <div class="col-12" >
-                     <div class="row">
-                        <div class="col-md-12">                                                
-                           <button class="btn btn-primary" type="submit" >Attached Po</button>            
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               </form>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
 <div id="sendsms<?php echo $enquiry->enquiry_id ?>" class="modal fade" role="dialog">
    <div class="modal-dialog modal-lg">
       <!-- Modal content-->
@@ -4039,7 +2412,7 @@ if (document.getElementById('agg_same').checked)
 .bootstrap-datetimepicker-widget table td span:hover {
     background: none;
 }
-/* --o-- */</style>
+</style>
             <label class="radio-inline">
       <input value="1" style="margin-top:25px" class="form-control" type="radio" onclick="handleClick(this);" name="schedule" checked>Send Now
     </label>
@@ -4243,200 +2616,6 @@ $(function () {
 </div>
 
 
-<!----------------------------------------------------------chat section ---------------------------------------------------------->
-     
-     <!--chat start---->
-
-<style>
-.chat-window{
-    bottom:0;
-    position:fixed;
-
-    right:0;
-    margin-left:10px;z-index:9999999;
-}
-.chat-window > div > .panel{
-    border-radius: 5px 5px 0 0;
-}
-.icon_minim{
-    padding:2px 10px;
-}
-.msg_container_base{background-color:#fff;
-  background: #e5e5e5;
-  margin: 0;
-  padding: 0 10px 10px;
-  max-height:300px;
-  overflow-x:hidden;
-}
-.top-bar {
-  background: #666;
-  color: white;
-  padding: 10px;
-  position: relative;
-  overflow: hidden;
-}
-.msg_receive{
-    padding-left:0;
-    margin-left:0;
-}
-.msg_sent{
-    padding-bottom:20px !important;
-    margin-right:0;
-}
-.messages {
-  background: white;
-  padding: 10px;
-  border-radius: 2px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  max-width:100%;
-}
-.messages > p {
-    font-size: 13px;
-    margin: 0 0 0.2rem 0;
-  }
-.messages > time {
-    font-size: 11px;
-    color: #ccc;
-}
-.msg_container {
-    padding: 10px;
-    overflow: hidden;
-    display: flex;
-}
-
-.avatar {
-    position: relative;
-}
-.base_receive > .avatar:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border: 5px solid #FFF;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
-}
-
-.base_sent {
-  justify-content: flex-end;
-  align-items: flex-end;
-}
-.base_sent > .avatar:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border: 5px solid white;
-    border-right-color: transparent;
-    border-top-color: transparent;
-    box-shadow: 1px 1px 2px rgba(black, 0.2); // not quite perfect but close
-}
-
-.msg_sent > time{
-    float: right;
-}
-
-
-
-.msg_container_base::-webkit-scrollbar-track
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    background-color: #F5F5F5;
-}
-
-.msg_container_base::-webkit-scrollbar
-{
-    width: 12px;
-    background-color: #F5F5F5;
-}
-
-.msg_container_base::-webkit-scrollbar-thumb
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    background-color: #555;
-}
-
-.btn-group.dropup{
-    position:fixed;
-    left:0px;
-    bottom:0;
-}
-</style>
-
-<div class="container">
-    <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1" style="display: none;">
-        <div class="col-xs-12 col-md-12">
-          <div class="panel panel-default">
-                <div class="panel-heading top-bar">
-                    <div class="col-md-8 col-xs-8">
-                        <h5  style="font-size:9px;"><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;<?php echo  $enquiry->name." ".$enquiry->lastname ?></h5>
-                    </div>
-                    <div class="col-md-4 col-xs-4" style="text-align: right;">
-                        <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
-                        <a href="#"><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a>
-                    </div>
-                </div>
-                <div class="panel-body msg_container_base" id="chat_window">
-        <?php
-        if($get_message!='ERROR')
-        {     
-        //echo $get_message; exit();      
-        foreach(json_decode($get_message) as $msg){
-        if($msg->type!='OUT'){?>
-        <div class="row msg_container base_sent">
-                        <div class="col-md-2 col-xs-2 avatar">
-                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
-                        </div>
-                        <div class="col-md-10 col-xs-10">
-                            <div class="messages msg_receive">
-                                <p><?php echo $msg->text;  ?></p>
-                                <time datetime="2009-11-13T20:00"><?php echo $msg->creation_date; ?></time>
-                            </div>
-                        </div>
-                    </div>
-          
-        <?php }else{ ?>
-         <div class="row msg_container base_receive ">
-                        <div class="col-md-10 col-xs-10">
-                            <div class="messages msg_sent">
-                                <p><?php echo $msg->text;  ?></p>
-                                <time datetime="2009-11-13T20:00"><?php echo $msg->creation_date; ?></time>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-xs-2 avatar">
-                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
-                        </div>
-                    </div>
-        
-        <?php } }
-
-      }?>
-                    
-
-                 </div>
-         <form   id="chat_start">
-                <div class="panel-footer">
-                    <div class="input-group">
-          
-           <input value="<?php echo $enquiry->phone; ?>" name="phone" type="hidden"  placeholder="Write your message here..." />
-                      <input id="btn-input" type="text" name="message" class="form-control input-sm chat_input" placeholder="Write your message here..." />
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary btn-sm" id="send_message" onclick="chat_start()" o>Send</button>
-                        </span>
-           
-                    </div>
-                </div>
-         </form>
-        </div>
-        </div>
-    </div>
-    
-  
-</div>
 
 
 
@@ -4512,7 +2691,7 @@ $(function () {
 function edit_contact(t)
 {
   var contact_id = $(t).data('cc-id');
-  //alert(contact_id);
+  
   $.ajax({
         url:"<?=base_url('client/edit_contact/')?>",
         type:"post",
@@ -4525,15 +2704,7 @@ function edit_contact(t)
         $("#update_content").html(res);
         $("#update_content select").select2();
       }
-          /* Swal.fire({
-                title:'Edit Contact',
-                html:res,
-                with:'100%',
-                showConfirmButton:false,
-                showCancelButton:true,
-                cancelButtonText:'Close',
-                cancelButtonColor:'#E5343D'
-              }); */
+       
         },
         error:function(u,v,w)
         {
@@ -4555,7 +2726,7 @@ function deleteContact(t)
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
-       // alert(JSON.stringify(result));
+       
         if (result.value) {
             $.ajax({
                         url:"<?=base_url('client/delete_contact/')?>",
@@ -4587,8 +2758,6 @@ function deleteContact(t)
             $(".details-column").addClass('col-md-9');
         });
         $(this).data('vis','0');
-        //$(this).find('i').removeClass('fa-caret-right');
-        //$(this).find('i').addClass('fa-caret-left');
 		$("#toggle_timeline").addClass('fa-angle-left');
         $("#toggle_timeline").removeClass('fa-angle-right');
 	}else{
@@ -4596,8 +2765,6 @@ function deleteContact(t)
         $(this).data('vis','1');
         $(".details-column").addClass('col-md-6');
         $(".details-column").removeClass('col-md-9');
-        //$(this).find('i').addClass('fa-caret-right');
-        //$(this).find('i').removeClass('fa-caret-left');
         $("#toggle_timeline").removeClass('fa-angle-left');
         $("#toggle_timeline").addClass('fa-angle-right');		
 	}
@@ -4687,24 +2854,6 @@ $(".toogle-timeline").click(function(){
        var html='<div class="form-group col-sm-6 col-md-6"><label>Other No </label><input class="form-control"  name="other_no[]" type="text" placeholder="Other Number"   ></div>';
         $('#'+add_more_phone).append(html);          
     }
-  function delete_institute(id){
-    //alert(id);    
-    var url = "<?=base_url().'Enquiry/delete_institute'?>";
-    $.ajax({
-         type: "POST",
-         url: url,
-         data: {inst_id:id}, // serializes the form's elements.
-         success: function(data)
-         {              
-            data = JSON.parse(data);
-            alert(data.msg);
-            if(data.status == true){
-              window.location.reload();
-            }
-         }
-    });
-
-  }
    function delete_comission(id){
     //alert(id);    
     var url = "<?=base_url().'Enquiry/delete_comission'?>";
@@ -4834,80 +2983,14 @@ $(".toogle-timeline").click(function(){
        });     
        }
        
-       function  chat_start(){
-       $.ajax({            
-           type: 'POST',
-           url: '<?php echo base_url();?>message/chat_start',
-           data: $('#chat_start').serialize()
-           })
-           .done(function(data){               
-               alert(data);
-              location.reload();
-           })
-           .fail(function() {
-           alert( "fail!" );
-       });  
-      }
        
-       $(document).ready(function(){
-       $('#chat_window').animate({
-        scrollTop: $('#chat_window')[0].scrollHeight}, 2000);
-       });
-
-    document.getElementById('chat_start').addEventListener('keypress', function(event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-          $.ajax({
-           type: 'POST',
-           url: '<?php echo base_url();?>message/chat_start',
-           data: $('#chat_start').serialize()
-           })
-           .done(function(data){               
-              alert(data);
-              location.reload();
-           })
-           .fail(function() {
-           alert( "fail!" );
-       });
-      }
-    });
        
-   $( "#service1" ).click(function() {     
-       if($('#another-element1:visible').length)
-           $('#another-element1').hide();
-       else
-           $('#another-element1').show();        
-   });   
    $( "#task_create_div1" ).click(function() {     
        if($('#task_create1:visible').length)
            $('#task_create1').hide();
        else
            $('#task_create1').show();        
    });   
-   function check_stage3(id){
-       if(id==5){
-          document.getElementById('curcit_add3').style.display='block'; 
-           document.getElementById('add_po3').style.display='none';
-       }else if(id==8){
-           document.getElementById('add_po3').style.display='block'; 
-           document.getElementById('curcit_add3').style.display='none';
-       }else{
-          document.getElementById('add_po3').style.display='none';
-         document.getElementById('curcit_add3').style.display='none';
-       }       
-       }
-      function check_stage(id){
-       if(id==5){
-          document.getElementById('curcit_add').style.display='block'; 
-           document.getElementById('add_po').style.display='none';
-       }else if(id==8){
-           document.getElementById('add_po').style.display='block'; 
-           document.getElementById('curcit_add').style.display='none';
-       }else{
-          document.getElementById('add_po').style.display='none';
-         document.getElementById('curcit_add').style.display='none';
-       }       
-       }
    
     function closedmodel(){
      $("#range").attr("style", "display:none");
@@ -5038,19 +3121,6 @@ function edit_dynamic_query(t)
             type:'post',
             success:function(res)
             {
-              // Swal.fire({
-              //   title:'Edit '+tabname,
-              //   html:res,
-              //   with:'100%',
-              //   showConfirmButton:false,
-              //   showCancelButton:true,
-              //   cancelButtonText:'Close',
-              //   cancelButtonColor:'#E5343D',
-              //   onOpen:function(){
-              //       $('.multiple-select').select2();  
-
-              //   }
-              // });
               $("#edit_dynamic_query .modal-title").html(tabname);
               $("#edit_dynamic_query_data").html(res);
             },
@@ -5109,27 +3179,7 @@ function edit_dynamic_query(t)
          },
          <?php endforeach; ?>        
        ],
-      /* dayClick:function(date,isEvent,view,resourseobj){
-         $('td').dblclick(function(){             
-              $("#range").attr("style", "display:block");           
-        });         
-                     $.ajax({
-                      type: 'POST',
-                      url: '<?php echo base_url();?>enquiry/search_comment_and_task/'+date.format()+'/<?php echo $enquiry->Enquery_id ?>',
-                     })
-                     .done(function(data){
-                          $("#comment_div").attr("style", "display:none");
-                         $("#comment_div1").attr("style", "display:block");
-                        
-                         $("#task_div").attr("style", "display:none");
-                         $("#task_div1").attr("style", "display:block");
-                         $("#comment_div1").html(data.details);
-                         $("#task_div1").html(data.details1);
-                     })
-                     .fail(function() {
-                     alert( "fail!" );                     
-                     });        
-       }*/  
+     
      })
 
 
@@ -5164,19 +3214,7 @@ function edit_dynamic_query(t)
     }
        ,
        dayClick:function(date,isEvent,view,resourseobj){
-        /* $('td').dblclick(function(){           
-        }); 
-         
-         ser_date = date.format();
-                     $.ajax({
-                      type: 'POST',
-                      url: '<?php echo base_url();?>task/search_comment_and_task/'+ser_date,
-                     })
-                     .done(function(data){
-                       
-                         $("#task_div1").html(data);
-                     })*/
-   
+    
         
        },
    
@@ -5226,20 +3264,6 @@ function edit_dynamic_query(t)
 
 <script type="text/javascript">
   
-  function open_institute_modal(id){
-    //alert(id);
-    var enquiry_id = "<?=$enquiry->Enquery_id?>";
-    //alert(enquiry_id);
-    $.ajax({
-        type: 'POST',
-        url: '<?php echo base_url();?>enquiry/get_update_enquery_institute_content',
-        data: {id:id,Enquiry_id:enquiry_id},            
-        success:function(data){              
-          $("#edit-institute-content").html(data);
-          $("#institute_modal_btn").click();
-        }
-    });
-  }
    function find_description(f=0) { 
         auto_followup();
            if(f==0){
@@ -5252,16 +3276,12 @@ function edit_dynamic_query(t)
             success:function(data){
                 //alert(data);
                 var html='';
-                var obj = JSON.parse(data);
-                
+                var obj = JSON.parse(data);                
                 html +='<option value="" style="display:none">---Select---</option>';
-      //   html +='<option value="new" style="">New</option>';
-      //   html +='<option value="updt" style="">Update</option>';
                 for(var i=0; i <(obj.length); i++){
                     
                     html +='<option value="'+(obj[i].id)+'">'+(obj[i].description)+'</option>';
-                }
-                
+                }                
                 $("#lead_description").html(html);
                 
             }
@@ -5309,25 +3329,17 @@ function edit_dynamic_query(t)
   }
 
   function find_description1(f=0) { 
-
            if(f==0){
             var l_stage = $("select[name='move_lead_stage']").val();
-            //console.log('l_stage'+l_stage);
             $.ajax({
             type: 'POST',
             url: '<?php echo base_url();?>lead/select_des_by_stage',
-            data: {lead_stage:l_stage},
-            
+            data: {lead_stage:l_stage},            
             success:function(data){
-               // alert(data);
                 var html='';
-                var obj = JSON.parse(data);
-                
+                var obj = JSON.parse(data);                
                 html +='<option value="" style="display:none">---Select---</option>';
-      //   html +='<option value="new" style="">New</option>';
-      //   html +='<option value="updt" style="">Update</option>';
                 for(var i=0; i <(obj.length); i++){
-                    
                     html +='<option value="'+(obj[i].id)+'">'+(obj[i].description)+'</option>';
                 }
                 
@@ -5342,7 +3354,6 @@ function edit_dynamic_query(t)
             }
             set_default_disposition();
             function set_default_disposition(){
-              //$("#lead_stage_change").change();
               var lead_stage = $("#lead_stage_change").val();
               var unique_no = $("input[name='unique_no']").val();           
                $.ajax({
@@ -5388,7 +3399,6 @@ function edit_dynamic_query(t)
             }
           });
         }else{
-         //document.getElementById("otherTypev").style.display = "none"; 
           $("input[name='c_date']").val('');
           $("input[name='c_time']").val('');                
           $("input[name='latest_task_id']").val('');
@@ -5450,26 +3460,8 @@ function edit_dynamic_query(t)
       }
   });
 
-  $(document).on('focus', '.panel-footer input.chat_input', function (e) {
-      var $this = $(this);
-      if ($('#minim_chat_window').hasClass('panel-collapsed')) {
-          $this.parents('.panel').find('.panel-body').slideDown();
-          $('#minim_chat_window').removeClass('panel-collapsed');
-          $('#minim_chat_window').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-      }
-  });
-
-  $(document).on('click', '#new_chat', function (e) {
-      var size = $( ".chat-window:last-child" ).css("margin-left");
-       size_total = parseInt(size) + 400;
-      alert(size_total);
-      var clone = $( "#chat_window_1" ).clone().appendTo( ".container" );
-      clone.css("margin-left", size_total);
-  });
-  $(document).on('click', '.icon_close', function (e) {
-      //$(this).parent().parent().parent().parent().remove();
-      $( "#chat_window_1" ).remove();
-  });
+  
+  
 </script>
 <script src="<?php echo base_url();?>assets/js/fullcalendar.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/moment.js"></script>
@@ -5525,334 +3517,16 @@ function edit_dynamic_query(t)
           dataType: 'html',
           success: function(data) {
           var obj=JSON.parse(data);
-          console.log(obj);
-            //$('#fstate option[value="'+obj.state_id+'"]').attr("selected","selected");
             $('#fstate').val(obj.state_id);
             $('#myList').select2("val", obj.state_id);
-
-            //$('#fstate').trigger('change');
-          }
+        }
         })
       } 
     });
 
 </script>
 
-
-    <?php
-    if ($this->session->companey_id==51) {
-    ?>
-
-<script type="text/javascript">
-    function hide_all_dependent_field(){
-      $(".service_related_issue_type").hide();                       
-      $(".service_related_issue_sub_type").hide();                       
-      $(".detail_of_issue").hide();                       
-      $(".error_coming").hide();                       
-      $(".dnd_sender_id").hide();                       
-      $(".issue_date").hide();                       
-      $(".promotional_sms_call_date_for_dnd").hide(); 
-
-      $(".balace_deduction_issue_type").hide();            
-      $(".balance_deduction_issue_sub_type").hide();            
-      $(".amount_deducted").hide();            
-      $(".date_of_deduction").hide();            
-      $(".waiver_required").hide();            
-      $(".blacklist_consent").hide(); 
-
-      $(".recharge_issue_type").hide();
-      $(".recharge_issue_sub_type").hide();
-      $(".recharge_denomination").hide();
-      $(".mode_of_recharge").hide();
-      $(".date_of_recharge").hide(); 
-
-
-      $(".network_issue_type").hide();
-      $(".network_issue_sub_type").hide();
-      $(".technology").hide();     
-
-      $(".alt_number").hide();            
-      $(".sim_service_issue_type").hide();            
-      $(".sim_service_issue_sub_type").hide();            
-      $(".date_of_simex").hide();            
-      $(".vms_name").hide();     
-
-      
-      $(".self_help_issue_type").hide();            
-      $(".self_help_issue_sub_type").hide();            
-      $(".date_of_problem").hide();
-
-      $(".other-issue-type").hide();
-      $(".voc").hide();
-    }
-
-    function show_dependent_field(service){
-      
-      hide_all_dependent_field();
-
-      if (service==103) {
-        $(".network_issue_type").show();
-        $(".network_issue_sub_type").show();
-        $(".technology").show();
-
-
-      }else if (service==104) {
-        $(".recharge_issue_type").show();
-        $(".recharge_issue_sub_type").show();
-        $(".recharge_denomination").show();
-        $(".mode_of_recharge").show();
-        $(".date_of_recharge").show(); 
-
-       
-      }else if (service==105) {
-        $(".balace_deduction_issue_type").show();            
-        $(".balance_deduction_issue_sub_type").show();            
-        $(".amount_deducted").show();            
-        $(".date_of_deduction").show();            
-        $(".waiver_required").show();            
-        $(".blacklist_consent").show(); 
-        
-      }else if (service==106) {
-        $(".alt_number").show();            
-        $(".sim_service_issue_type").show();            
-        $(".sim_service_issue_sub_type").show();            
-        $(".date_of_simex").show();            
-        $(".vms_name").show();   
-
-
-      }else if (service==107) {
-        $(".self_help_issue_type").show();            
-        $(".self_help_issue_sub_type").show();            
-        $(".date_of_problem").show(); 
-
-      }else if (service==108) {
-        $(".service_related_issue_type").show();                       
-        $(".service_related_issue_sub_type").show();                       
-        $(".detail_of_issue").show();                       
-        $(".error_coming").show();                       
-        $(".dnd_sender_id").show();                       
-        $(".issue_date").show();                       
-        $(".promotional_sms_call_date_for_dnd").show(); 
-      }
-      else if (service==110) {
-        $(".other-issue-type").show();
-        $(".voc").show();
-      }
-
-    }
-      
-  $("#sub_source").on('change',function(){
-    var service  = $("#sub_source").val();
-    show_dependent_field(service);
-  });
-  var service  = $("#sub_source").val();
-  show_dependent_field(service);
-
-</script>
-<?php
-}else if($this->session->companey_id == 29){ ?>
-  <script type="text/javascript">
-      function hide_all_dependent_field(){
-        $(".desired-loan-amount").hide();
-        $(".net-monthly-income").hide();
-        $(".bank-name").hide();
-        $(".personal-details").hide();        
-
-        $(".gross-annual-turnover").hide();
-        $(".net-profit-after-tax").hide();
-        
-        $(".company-name").hide();
-        $(".company-type").hide();
-        $(".occupation-type").hide();
-        $(".credit-card-name").hide();        
-
-        $(".profession").hide();
-        $(".years-in-occupation").hide();
-        $(".years-in-occupation").hide();
-        $(".annual-income").hide();
-
-      }
-
-      function show_dependent_field(service){        
-        hide_all_dependent_field();
-        if (service == 83) {
-          $(".desired-loan-amount").show();
-          $(".net-monthly-income").show();
-          $(".bank-name").show();
-          $(".personal-details").show();
-        
-        }else if (service == 84) {
-          $(".desired-loan-amount").show();          
-          $(".gross-annual-turnover").show();
-          $(".net-profit-after-tax").show();
-          $(".company-name").show();
-          $(".company-type").show();
-          $(".bank-name").show();
-
-        }else if (service == 111) {
-          $(".occupation-type").show();
-          $(".net-monthly-income").show();          
-          $(".bank-name").show();
-          $(".credit-card-name").show();
-
-        }else if (service == 112) {
-          $(".desired-loan-amount").show();          
-          $(".profession").show();
-          $(".years-in-occupation").show();
-          $(".bank-name").show();   
-          $(".annual-income").show();
-        }        
-      }
-        
-    $("#sub_source").on('change',function(){
-      var service  = $("#sub_source").val();
-      show_dependent_field(service);
-    });  
-    var service  = $("#sub_source").val();
-    show_dependent_field(service);
-  </script>
-<?php
-}
-?>
-
-<script type="text/javascript">
-$('div.ieltsappeard').hide();
-  $('div.ieltsnappeard').hide();
-  $('div.ieltsdt').hide();
-  $('div.ieltslisten').hide();
-  $('div.ieltsread').hide();
-  $('div.ieltswrite').hide();
-  $('div.ieltsspeak').hide();
-  $('div.ieltsfinal').hide();
-  
-  $('div.pteappeard').hide();
-  $('div.ptenappeard').hide();
-  $('div.ptedt').hide();
-  $('div.ptelisten').hide();
-  $('div.pteread').hide();
-  $('div.ptewrite').hide();
-  $('div.ptespeak').hide();
-  $('div.ptefinal').hide();
-  
-  
-$('#ielts').change(function(){
-  if($(this).prop("checked")) {
-    $('div.ieltsappeard').show();
-
-  } else {
-    $('div.ieltsappeard').hide();
-  $('div.ieltsnappeard').hide();
-  $('div.ieltsdt').hide();
-  $('div.ieltslisten').hide();
-  $('div.ieltsread').hide();
-  $('div.ieltswrite').hide();
-  $('div.ieltsspeak').hide();
-  $('div.ieltsfinal').hide();
-  }
-}); 
- 
-
-$("input[id=ieltsappeard]").on( "click", function() {
-
-var test = $(this).val();
-  if(test=='Appeared'){
-    $('div.ieltsdt').show();
-  $('div.ieltslisten').show();
-  $('div.ieltsread').show();
-  $('div.ieltswrite').show();
-  $('div.ieltsspeak').show();
-  $('div.ieltsfinal').show();
-     }else{
-  $('div.ieltsdt').hide();
-  $('div.ieltslisten').hide();
-  $('div.ieltsread').hide();
-  $('div.ieltswrite').hide();
-  $('div.ieltsspeak').hide();
-  $('div.ieltsfinal').hide();    
-     }
-    } );
- 
-
-$('#pte').change(function(){
-  if($(this).prop("checked")) {
-    $('div.pteappeard').show();
-
-  } else {
-    $('div.pteappeard').hide();
-  $('div.ptenappeard').hide();
-  $('div.ptedt').hide();
-  $('div.ptelisten').hide();
-  $('div.pteread').hide();
-  $('div.ptewrite').hide();
-  $('div.ptespeak').hide();
-  $('div.ptefinal').hide();
-  }
-}); 
-
-$("input[id=pteappeard]").on( "click", function() {
-
-var test = $(this).val();
-  if(test=='Appeared'){
-    $('div.ptedt').show();
-  $('div.ptelisten').show();
-  $('div.pteread').show();
-  $('div.ptewrite').show();
-  $('div.ptespeak').show();
-  $('div.ptefinal').show();
-     }else{
-  $('div.ptedt').hide();
-  $('div.ptelisten').hide();
-  $('div.pteread').hide();
-  $('div.ptewrite').hide();
-  $('div.ptespeak').hide();
-  $('div.ptefinal').hide();    
-     }
-    } ); 
-</script>
 <script>
-function find_app_crs() { 
-            var c_stage = $("#institute_id").val();
-      var l_stage = $("#p_lvl").val();
-      var lg_stage = $("#p_length").val();
-      var d_stage = $("#p_disc").val();
-      //alert(c_stage);
-            $.ajax({
-            type: 'POST',
-            url: '<?php echo base_url();?>lead/select_app_by_ins',
-            data: {c_course:c_stage,c_lvl:l_stage,c_length:lg_stage,c_disc:d_stage},
-            
-            success:function(data){                
-                var html='';
-                var obj = JSON.parse(data);                
-                html +='<option value="" style="display:none">---Select---</option>';
-                for(var i=0; i <(obj.length); i++){                    
-                    html +='<option value="'+(obj[i].crs_id)+'">'+(obj[i].course_name_str)+'</option>';
-                }                
-                $("#app_course").html(html);                
-            }            
-            });
-
-    }
-
-</script>
-<script>
-function find_level() { 
-  var l_stage = $("#p_lvl").val();
-  $.ajax({
-  type: 'POST',
-  url: '<?php echo base_url();?>lead/select_length_lvl',
-  data: {lead_stage:l_stage},  
-  success:function(data){
-      var html='';
-      var obj = JSON.parse(data);      
-      html +='<option value="" style="display:none">---Select length---</option>';
-      for(var i=0; i <(obj.length); i++){          
-          html +='<option value="'+(obj[i].id)+'">'+(obj[i].length)+'</option>';
-      }
-      $("#p_length").html(html);
-  }
-  });
-} 
 
 $("a[href$='#related_enquiry']").on('click',function(){
   var phone = "<?=$details->phone?>";
@@ -5867,21 +3541,6 @@ $("a[href$='#related_enquiry']").on('click',function(){
   });
 });
 
-// $("#toggle_timeline").on('click',function(){
-//   $(".activitytimelinediv").toggleClass('hide-timeline');
-//   if ($(".activitytimelinediv ").hasClass('hide-timeline')) {
-//     $("#toggle_timeline").removeClass('fa-angle-right');
-//     $("#toggle_timeline").addClass('fa-angle-left');
-//     $(".details-column").removeClass('col-md-6');
-//     $(".details-column").addClass('col-md-9');
-//   }else{
-//     $("#toggle_timeline").removeClass('fa-angle-left');
-//     $("#toggle_timeline").addClass('fa-angle-right');
-//     $(".details-column").removeClass('col-md-9');
-//     $(".details-column").addClass('col-md-6');
-//   }
-
-// });
 
   $("input[name='submit_and_next']").on('click',function(){
     $(this).next().val('save_and_new');
@@ -5955,107 +3614,6 @@ $("a[href$='#related_enquiry']").on('click',function(){
     $("#institute").load("<?=base_url().'enquiry/get_institute_tab_content/'.$enquiry_id?>");
   })
 </script>
-<?php
-  if ($this->session->companey_id == 79) {
-?>
-<script>
-    $('#vertex-course').on('change',function(){
-      subcourse();
-    });    
-    function subcourse(){    
-        var options = '';
-        vertexsubcourse  = $("#vertex-sub-course").val();
-        course = $("#vertex-course").val();
-        if(course == 'SCIENCE & DEVELOPMENT'){
-            options = `<option>WEB DEVELOPMENT 
-                        <option>DATA SCIENCE</option> 
-                        <option>MOBILE APPS</option> 
-                        <option>CODINGS</option> 
-                        <option>GAMING</option> 
-                        <option>DATABASES</option>
-                        <option>SOFTWARE TESTING</option> 
-                        <option>ECOMMERCE</option> 
-                        <option>TOOLS FOR WEBSITE</option> 
-                        <option>ALGORITHMS</option> 
-                        <option>SOFTWARE DEVELOPMENT</option> 
-                        <option>SECURITY AND NETWORKS</option>`;
-        }else if(course == 'DESIGN'){
-            options = `<option>WEB DESIGN</option> 
-                        <option>GRAPHIC DESIGN</option> 
-                        <option>GAME DESIGN</option> 
-                        <option>3D AND ANIMATION</option>
-                        <option>FASHION DESIGNING</option> 
-                        <option>ARCHITECHTURE</option> 
-                        <option>INTERIOR DESIGN</option>`;
-            
-        }else if(course == 'BUSINESS'){
-            options = `<option>FINANCE</option> 
-                        <option>MANAGEMENT</option> 
-                        <option>SALES</option>
-                        <option>HUMAN RESOUCE</option> 
-                        <option>COMMUNICATION</option> 
-                        <option>PROJECT MANAGEMENT</option> 
-                        <option>DIGITAL MARKETING</option> 
-                        <option>MARKETING</option> 
-                        <option>MEDIA</option> 
-                        <option>ENTREPRENUERSHIP</option> 
-                        <option>BUSINESS STARTERGY</option>  
-                        <option>OPERATIONS</option> 
-                        <option>DATA AND ANALYTICS</option> 
-                        <option>BUSINESS LAW</option>
-                        <option>REAL ESTATE</option> 
-                        <option>DATA MANAGEMENT</option>`;
-        }else if(course == 'LIFESTYLE'){
-            options = `<option>ARTS</option> 
-                        <option>PHOTOGRAPHY</option>
-                        <option>GAMING</option> 
-                        <option>MUSIC</option> 
-                        <option>COOKING</option>`;
-        }else if(course == 'ACADEMICS'){
-            options = `<option>ENGINEERING</option> 
-                        <option>HUMANITIES</option> 
-                        <option>SOCIAL STUDIES</option> 
-                        <option>SCIENCE</option> 
-                        <option>MATHEMATICS</option> 
-                        <option>LANGUAGES</option>`;
-        }else if(course == 'PROFESSIONAL'){
-            options = `<option>LEADERSHIP</option> 
-                        <option>STRESS MANAGEMENT</option> 
-                        <option>MOTIVATION</option> 
-                        <option>CAREER DEVELOPMENT</option> 
-                        <option>SOFT SKILLS</option>`;
-
-        }else if(course == 'TECHNOLOGY & DATA'){
-            options = `<option>CLOUD COMPUTING</option> 
-                        <option>NETWORKING</option> 
-                        <option>DATA ANALYTICS</option>
-                        <option>PROBABILITY AND STATISTICS</option>
-                        <option>MACHINES LEARNING</option>`; 
-
-        }else if(course == 'LANGUAGES'){
-            options = `<option>ENGLISH</option> 
-                        <option>FRENCH</option> 
-                        <option>SPANISH</option> 
-                        <option>JAPANESE</option>
-                        <option>GERMAN</option>
-                        <option>CHINESE</option>`;
-
-        }else if(course == 'Fitness'){
-            options = `<option>Yoga</option>
-                        <option>Zumba</option>
-                        <option>Diet</option>`;
-        }else if(course == 'Other'){
-            
-        }
-        console.log(course);
-        $("#vertex-sub-course").html(options);
-        $("#vertex-sub-course").val(vertexsubcourse);        
-    }
-    subcourse();   
-</script>
-<?php
-}
-?>
 
 
  <script>
@@ -6081,18 +3639,9 @@ jQuery(document).ready(function(){
    }else{
       $('li[href="' + hash + '"]').click();
    } 
-   /* $('form').submit(function(e){
-      if(!$(this).find("input[name='redirect_url']").val()){
-         e.preventDefault();
-         var l = window.location;   
-         $(this).append('<input type="hidden" name="redirect_url" value="'+l+'" />');
-         $(this).submit();
-      }
-   }) */
 });
 
 if("<?=$this->session->companey_id?>"==65){
-   //$(".designation").insertAfter(".enq-last-name");
    $(".enq-remark").insertAfter(".website");
 }
 
@@ -6162,8 +3711,7 @@ $(".nav-tabs li").on('click',function(){
                         );
                         location.reload();
                     },
-                    error: function (err) {
-                        // console.log('err');
+                    error: function (err) {          
                         Swal.fire(
                             'Error!',
                             'Something Was Worng!',
@@ -6175,7 +3723,5 @@ $(".nav-tabs li").on('click',function(){
 
             }
         })
-
-        // alert("asdfghj");
     });
 </script>
