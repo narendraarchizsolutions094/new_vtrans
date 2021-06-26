@@ -207,9 +207,9 @@ class Client extends CI_Controller {
         }else{
             $data['created_bylist'] = $this->User_model->readone();
         } 
-        //$this->load->model('Branch_model');
-        //$data['branch_lists']=$this->Branch_model->all_sales_branch();
-        //$data['region_lists']=$this->Branch_model->all_sales_region();
+        $this->load->model('Branch_model');
+        $data['branch_lists']=$this->Branch_model->all_sales_branch();
+        $data['region_lists']=$this->Branch_model->all_sales_region();
         //$data['dept_lists']=$this->User_model->all_sales_dept();  
         $enq['enquiry_id'] = $enquiry_id;
         $data['all_contact']= $this->Client_Model->getContactList()->result();
