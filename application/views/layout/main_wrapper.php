@@ -1411,6 +1411,12 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                <?php echo 'Designation Master';?>                             
                                </a>
                              </li>
+							 
+							 <li class="<?php echo (in_array($segment2,array('industries','add_industries','edit_industries')) ?"active":'') ?>" style="">
+                               <a href="<?php echo base_url() ?>lead/industries">
+                               <?php echo 'Industries Master';?>                             
+                               </a>
+                             </li>
 
                             </ul>
                     </li>

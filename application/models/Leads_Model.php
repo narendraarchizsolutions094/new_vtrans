@@ -78,6 +78,29 @@ class Leads_Model extends CI_Model {
     }
     /***************************************************Designation section End************************************/
 	
+	/***************************************************Industries Master section start************************************/
+    public function indus_add($data) {
+        $this->db->insert('tbl_industries', $data);
+    }
+
+    public function indus_select() {
+        $this->db->select("*");
+        $this->db->from('tbl_industries');
+        $this->db->where('comp_id', $this->session->userdata('companey_id'));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function delete_indus($desi_id = null) {
+        $this->db->where('id', $desi_id)->delete('tbl_industries');
+        if ($this->db->affected_rows()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /***************************************************Industries section End************************************/
+	
 public function all_course($course,$lvl,$length,$disc) {
 
         $this->db->select("tbl_course.*,tbl_crsmaster.course_name as course_name_str");

@@ -145,6 +145,57 @@ public function get_all_stage_deals() {
 
     ///////////////// Designation SECTION END////////////////////
 	
+	///////////////// Industries SECTION START////////////////////
+    public function industries() {
+        $data['nav1'] = 'nav2';
+        if (!empty($_POST)) {
+
+            $indus_name = $this->input->post('indus_name');
+
+            $data = array(
+                'indus_name'   => $indus_name,
+                'comp_id' => $this->session->userdata('companey_id'),
+                'created_by' => $this->session->userdata('user_id'),
+                'status' => '1'
+            );
+
+            $insert_id = $this->Leads_Model->indus_add($data);
+            $this->session->set_flashdata('SUCCESSMSG', 'Industries Add Successfully');
+            redirect('lead/industries');
+        }
+
+
+        $data['all_industries'] = $this->Leads_Model->indus_select();
+        $data['title'] = 'Industries master';
+        $data['content'] = $this->load->view('setting/industries_list', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+
+    public function update_industries() {
+        if (!empty($_POST)) {
+            $indus_name = $this->input->post('indus_name');
+            $indus_id = $this->input->post('indus_id');            
+            $this->db->set('indus_name', $indus_name);
+            $this->db->where('id', $indus_id);
+            $this->db->update('tbl_industries');
+            $this->session->set_flashdata('SUCCESSMSG', 'Update Successfully');
+            redirect('lead/industries');
+        }
+    }
+
+    public function delete_industries($indus_id = null) {
+        if ($this->Leads_Model->delete_indus($indus_id)) {
+            #set success message
+            $this->session->set_flashdata('message', display('delete_successfully'));
+        } else {
+            #set exception message
+            $this->session->set_flashdata('exception', display('please_try_again'));
+        }
+        redirect('lead/industries');
+    }
+
+    ///////////////// Industries SECTION END////////////////////
+	
     public function view_datasource_data($did)
     {
         
