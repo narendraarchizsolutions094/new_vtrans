@@ -30,7 +30,7 @@
                 <tbody>
 			
                 <?php if (!empty($datasource_list)) { 
-                    $sl = 1;$j=0;foreach ($datasource_list as $datasource) {?>
+                    $sl = 1;$j=0;foreach ($datasource_list as $datasource) { ?>
                         <tr class="<?php echo ($sl & 1)?"odd gradeX":"even gradeC" ?>">
                             <td><?php echo $sl; ?></td>
                             <td><?php echo $datasource->datasource_name; ?></td> 
@@ -84,8 +84,8 @@
                 </div>				
       </div>
       
-        <div class="col-md-6">                                                               
-				  <label> For Download sample Please Select Process <i class="text-danger"></i></label>
+                <div class="col-md-6">                                                               
+				    <label> For Download sample Please Select Process <i class="text-danger"></i></label>
                         <select name="product_id" id="pid" onchange="allcsv()" class="form-control">
                            <option value="" style="display:none;">Select</option>
                            <?php foreach($products as $product){?>

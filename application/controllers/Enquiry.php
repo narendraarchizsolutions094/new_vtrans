@@ -1978,8 +1978,8 @@ Array
                 $count++;
                 if ($count == 1) {
                 } else {
-                    if (!empty($filesop[8]) && !empty($this->location_model->get_city_by_name($filesop[8]))) {
-                        $res = $this->location_model->get_city_by_name($filesop[8]);
+                    if (!empty($filesop[15]) && !empty($this->location_model->get_city_by_name($filesop[15]))) {
+                        $res = $this->location_model->get_city_by_name($filesop[15]);
                         $country_id = !empty($res->country_id) ? $res->country_id : '';
                         $region_id = !empty($res->region_id) ? $res->region_id : '';
                         $territory_id = !empty($res->territory_id) ? $res->territory_id : '';
@@ -1993,7 +1993,7 @@ Array
                         $city_id = '';
                     }
                     $product_name = '';
-                    $product_row    =   !empty($filesop[10]) ? $this->enquiry_model->name_product_list_byname($filesop[10]) : '';   // process                  
+                    $product_row    =   !empty($filesop[13]) ? $this->enquiry_model->name_product_list_byname($filesop[13]) : '';   // process                  
                     if (!empty($product_row)) {
                         $sb_id =  $product_row->sb_id;
                     }
@@ -2002,119 +2002,212 @@ Array
                     } else {
                         $product_name = '';
                     }
-                    $enquiry_source = !empty($filesop[11]) ? $this->enquiry_model->enquiry_source_byname($filesop[11]) : '';       //     source         
+                    $enquiry_source = !empty($filesop[12]) ? $this->enquiry_model->enquiry_source_byname($filesop[12]) : '';       //     source         
 
                     $enquiry_source_id = '';
                     if (!empty($enquiry_source)) {
                         $enquiry_source_id =  $enquiry_source->lsid;
                     }
-                    $service_row    =   !empty($filesop[14]) ? $this->enquiry_model->name_services_list_byname($filesop[14]) : '';
-                    if (!empty($service_row)) {
-                        $ser_id =  $service_row->id;
-                    }
-                    if (!empty($ser_id)) {
-                        $service_name = $ser_id;
-                    } else {
-                        $service_name = '';
-                    }
+
                     if (!empty($filesop[0])) {
                         $zero = $filesop[0];
                     } else {
                         $zero = '';
-                    } // Company name
+                    } // Mobile No
+					
                     if (!empty($filesop[1])) {
                         $one = $filesop[1];
                     } else {
                         $one = '';
-                    } // Name prefixed
+                    } // Other_number
+					
                     if (!empty($filesop[2])) {
                         $two = $filesop[2];
                     } else {
                         $two = '';
-                    } // First Name
-                    if (!empty($filesop[3])) {
-                        $three = $filesop[3];
+                    } // Email Address
+					
+    $this->db->where('company_name', $filesop[3]);
+    $this->db->where('comp_id', $this->session->companey_id);
+    $id = $this->db->get('tbl_company');
+    $id1 = $id->num_rows();
+if ($id1 > 0) {
+    $company_id = $id->row()->id;
+} else {
+    $this->db->set('company_name', $filesop[3]);
+	$this->db->set('process_id', $product_name);
+    $this->db->set('comp_id', $this->session->userdata('companey_id'));
+    $this->db->insert('tbl_company');
+    $company_id = $this->db->insert_id();
+}
+                    if (!empty($company_id)) {
+                        $three = $company_id;
                     } else {
                         $three = '';
-                    } //Last Name
-                    if (!empty($filesop[4])) {
-                        $phone_no = $filesop[4];
+                    } // Company name
+
+$this->db->where('branch_name', $filesop[4]);
+$this->db->where('comp_id', $this->session->companey_id);
+$id2 = $this->db->get('branch');
+$id3 = $id2->num_rows();
+if ($id3 > 0) {
+    $branch_id = $id2->row()->branch_id;
+}					
+                    if (!empty($branch_id)) {
+                        $four = $branch_id;
                     } else {
-                        $phone_no = 0;
-                    } //Mobile No
+                        $four = 0;
+                    } //Sales Branch
+					
                     if (!empty($filesop[5])) {
                         $five = $filesop[5];
                     } else {
                         $five = '';
-                    } //other_number
+                    } //Client Name
+					
                     if (!empty($filesop[6])) {
                         $six = $filesop[6];
                     } else {
                         $six = '';
-                    } // Email Address
-                    // 7 state
-                    // 8 city
-                    if (!empty($filesop[9])) {
+                    } // Contact
+
+                    if (!empty($filesop[7])) {
+                        $seven = $filesop[7];
+                    } else {
+                        $seven = '';
+                    } // Name prefixed
+
+                    if (!empty($filesop[8])) {
+                        $eaight = $filesop[8];
+                    } else {
+                        $eaight = '';
+                    } // First Name
+					
+					if (!empty($filesop[9])) {
                         $nine = $filesop[9];
                     } else {
                         $nine = '';
-                    } // address
-                    //10 process
-                    //11 source
-                    // 12 datasource
-                    //if(!empty($filesop[11])){$eleven=$filesop[11];}else{$eleven='';}
-                    if (!empty($filesop[13])) {
-                        $therteen = $filesop[13];
+                    } // Last Name
+
+    $this->db->where('desi_name', $filesop[10]);
+    $this->db->where('comp_id', $this->session->companey_id);
+    $id4 = $this->db->get('tbl_designation');
+    $id5 = $id4->num_rows();
+if ($id5 > 0) {
+    $designation_id = $id4->row()->id;
+} else {
+    $this->db->set('desi_name', $filesop[10]);
+	$this->db->set('status', '1');
+	$this->db->set('created_by', $this->session->userdata('user_id'));
+    $this->db->set('comp_id', $this->session->userdata('companey_id'));
+    $this->db->insert('tbl_designation');
+    $designation_id = $this->db->insert_id();
+}
+					
+					if (!empty($designation_id)) {
+                        $ten = $designation_id;
+                    } else {
+                        $ten = '';
+                    } // Designation
+					
+					if (!empty($filesop[11])) {
+if($filesop[11]=='Male'){
+   $gender = '1'; 
+}else if($filesop[11]=='Female'){
+   $gender = '2'; 
+}else{
+   $gender = '3'; 
+}
+                        $eleven = $gender;
+                    } else {
+                        $eleven = '';
+                    } // Gender
+					
+					if (!empty($enquiry_source_id)) {
+                        $twelve = $enquiry_source_id;
+                    } else {
+                        $twelve = '';
+                    } // Lead Source
+					
+					if (!empty($product_name)) {
+                        $therteen = $product_name;
                     } else {
                         $therteen = '';
-                    } // remark
-                    // $product_country_id = '';                    
-                    /*if($fourteen){
-                        $this->db->select('id');    
-                        $this->db->where('TRIM(country_name)',$fourteen);
-                        $product_contry_row    =   $this->db->get('tbl_product_country')->row_array();                        
-                        if(!empty($product_contry_row)){
-                            $product_country_id    =  $product_contry_row['id'];
-                        }
-                    }
-                    */
-                    //$phone=preg_match('/^[0-9]{10}+$/', $phone_no);                    
-                    //$phone=preg_replace('/[^0-9]/i', '',$phone_no);
-                    $phone = $phone_no;
+                    } // Process
+					
+					if (!empty($state_id)) {
+                        $forteen = $state_id;
+                    } else {
+                        $forteen = '';
+                    } // State
+					
+					if (!empty($city_id)) {
+                        $fifteen = $city_id;
+                    } else {
+                        $fifteen = '';
+                    } // City
+					
+					if (!empty($filesop[16])) {
+                        $sixteen = $filesop[16];
+                    } else {
+                        $sixteen = '';
+                    } // Address
+					
+					if (!empty($filesop[17])) {
+                        $seventeen = $filesop[17];
+                    } else {
+                        $seventeen = '';
+                    } // Client Type
+					
+					if (!empty($filesop[18])) {
+                        $eighteen = $filesop[18];
+                    } else {
+                        $eighteen = '';
+                    } // Type Of Load / Business
+					
+					if (!empty($filesop[19])) {
+                        $nineteen = $filesop[19];
+                    } else {
+                        $nineteen = '';
+                    } // Industries
+					
+					if (!empty($filesop[20])) {
+                        $twenty = $filesop[20];
+                    } else {
+                        $twenty = '';
+                    } // Remark
+					
+                    $phone = $zero;
                     $this->db->where('phone', $phone);
                     $this->db->where('comp_id', $this->session->companey_id);
-                    if (!empty($product_name)) {
-                        $this->db->where('product_id', $product_name);
+                    if (!empty($therteen)) {
+                        $this->db->where('product_id', $therteen);
                     }
-                    $res_phone = $this->db->get('enquiry2')->num_rows();
-                    //echo $this->db->last_query().'<br>';
-                    //$encode=$this->get_enquery_code();                    
+                    $res_phone = $this->db->get('enquiry2')->num_rows();                    
                     if ($res_phone == 0) {
                         $dat_array = array(
                             'Enquery_id' => 'as',
-                            'email' => $six,
-                            'comp_id' => $this->session->companey_id,
-                            'phone' => $phone_no,
-                            'other_no' => $five,
-                            'org_name' => $zero,
-                            'name_prefix' => $one,
-                            'name' => $two,
-                            'lastname' => $three,
-                            'enquiry' => $therteen,
-                            'product_id' => $product_name,
-                            'enquiry_subsource' => $service_name,
-                            'datasource_id' => $datasource_name,
-                            'enquiry_source' => $enquiry_source_id,
-                            'address' => trim($nine),
-                            'user_role' => $this->session->user_role,
+                            'phone' => $zero,
+                            'other_no' => $one,
+                            'email' => $two,
+                            'company' => $three,
+                            'sales_branch' => $four,
+                            'client_name' => $five,
+                            'name_prefix' => $seven,
+                            'name' => $eaight,
+                            'lastname' => $nine,
+                            'designation' => $ten,
+                            'gender' => $eleven,
+                            'enquiry_source' => $twelve,
+                            'product_id' => $therteen,
+                            'state_id' => $forteen,
+                            'city_id' => $fifteen,
+                            'address' => $sixteen,
+                            'client_type' => $seventeen,
+                            'business_load' => $eighteen,
+                            'industries' => $nineteen,
+                            'enquiry' => $twenty,
                             'status' => 1,
-                            'country_id' => $country_id,
-                            'region_id' => $region_id,
-                            'territory_id' => $territory_id,
-                            'state_id' => $state_id,
-                            'city_id' => $city_id,
-                            'created_by' => $this->session->user_id,
-                            //'created_date'=>date('Y-m-d')
                         );
                         $record++;
                     } else {
@@ -2125,10 +2218,10 @@ Array
                         $l_id = $this->db->insert_id();
                         //print_r($l_id);exit;
                         /**************************************daynamic fields inserts****************************/
-                        if (!empty($filesop[10])) {
-                            $colmn_data    =   $this->enquiry_model->all_list_colmn($filesop[10]);
+                        if (!empty($filesop[13])) {
+                            $colmn_data    =   $this->enquiry_model->all_list_colmn($filesop[13]);
                             if (!empty($colmn_data)) {
-                                $j = 15;
+                                $j = 21;
                                 foreach ($colmn_data as $cdata) {
                                     $column_id =  $cdata->input_id;
                                     $biarr = array(
