@@ -255,21 +255,26 @@ class Enquiry extends CI_Controller
                             'name' => $res->name,
                             'lastname' => $res->lastname,
                             'enquiry' =>  $res->enquiry,
-                            'enquiry_source' =>  $res->enquiry_source,
-                            'enquiry_subsource' =>  $res->enquiry_subsource,
-                            'address' =>  $res->address,
-                            'company' =>  $res->org_name,
+                            'enquiry_source' =>  $res->enquiry_source,							
+							'company' => $res->company,
+                            'sales_branch' => $res->sales_branch,
+                            'client_name' => $res->client_name,
+							'designation' => $res->designation,
+                            'gender' => $res->gender,
+                            'enquiry_source' => $res->enquiry_source,
+                            'product_id' => $res->product_id,
+							'country_id' => $res->country_id,
+							'region_id' => $res->region_id,
+							'territory_id' => $res->territory_id,
+                            'state_id' => $res->state_id,
+                            'city_id' => $res->city_id,
+                            'address' => $res->address,
+                            'client_type' => $res->client_type,
+                            'business_load' => $res->business_load,
+                            'industries' => $res->industries,
                             'checked' => 0,
-                            'product_id' =>  $res->product_id,
-                            'institute_id' => $res->institute_id,
                             'datasource_id' => $res->datasource_id,
-                            'ip_address' =>  $res->ip_address,
                             'created_by' =>  $res->created_by,
-                            'city_id' =>  $res->city_id,
-                            'country_id'  => $res->country_id,
-                            'state_id'  => $res->state_id,
-                            'territory_id' => $res->territory_id,
-                            'region_id' => $res->region_id,
                             'created_date' =>  $res->created_date,
                             'aasign_to' => $assign_employee,
                             'assign_by' => $this->session->user_id,
@@ -1209,9 +1214,9 @@ class Enquiry extends CI_Controller
         $data['all_contact']= $this->Client_Model->getContactList()->result();
 
         //echo"<pre>";print_r($data);die;
-		//$this->load->model('Branch_model');
-		//$data['branch_lists']=$this->Branch_model->all_sales_branch();
-		//$data['region_lists']=$this->Branch_model->all_sales_region();
+		$this->load->model('Branch_model');
+		$data['branch_lists']=$this->Branch_model->all_sales_branch();
+		$data['region_lists']=$this->Branch_model->all_sales_region();
         $enq['enquiry_id'] = $enquiry_id;
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
         $data['data_type'] = base64_decode($this->uri->segment(4));
@@ -1953,6 +1958,7 @@ Array
             'remove_spaces' => TRUE,
             'file_name' => $filename
         );
+
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         if (empty($this->input->post('datasource_name'))) {
@@ -2187,6 +2193,7 @@ if($filesop[11]=='Male'){
                     if ($res_phone == 0) {
                         $dat_array = array(
                             'Enquery_id' => 'as',
+							'datasource_id' => $datasource_name,
                             'phone' => $zero,
                             'other_no' => $one,
                             'email' => $two,
@@ -2200,6 +2207,9 @@ if($filesop[11]=='Male'){
                             'gender' => $eleven,
                             'enquiry_source' => $twelve,
                             'product_id' => $therteen,
+							'country_id' => $country_id,
+							'region_id' => $region_id,
+							'territory_id' => $territory_id,
                             'state_id' => $forteen,
                             'city_id' => $fifteen,
                             'address' => $sixteen,
@@ -2207,6 +2217,7 @@ if($filesop[11]=='Male'){
                             'business_load' => $eighteen,
                             'industries' => $nineteen,
                             'enquiry' => $twenty,
+							'created_by' => $this->session->user_id,
                             'status' => 1,
                         );
                         $record++;

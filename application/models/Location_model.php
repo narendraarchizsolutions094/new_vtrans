@@ -193,7 +193,7 @@ public function contact($lead_code) {
     }
     
      public function get_city_by_name($name) {
-        return $this->db->select("*")
+        return $this->db->select("*,city.id as cid")
                         ->from("city")
                         ->join('tbl_country', 'tbl_country.id_c = city.country_id')
                         ->join('tbl_region', 'tbl_region.region_id = city.region_id')

@@ -150,10 +150,10 @@ window.location.href='<?php echo base_url();?>lead/createcsv/'+pd;
             </select> 
             </div>
           
-           <div class="form-group col-md-12 text-center">            
+           <!--<div class="form-group col-md-12 text-center">            
            <label>Automated Call scheduling</label>	<br>	   
             <input type="checkbox" value=1 name="automated_call" class="form-control" >
-          </div>
+          </div>-->
 
             <div class="form-group col-sm-12"> 
            			
