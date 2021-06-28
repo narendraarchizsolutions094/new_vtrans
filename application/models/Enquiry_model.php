@@ -89,6 +89,18 @@ class Enquiry_model extends CI_Model {
 	$this->db->insert('tbl_designation', $desiins); 
    return $desiid = $this->db->insert_id();  
   }
+  
+   public function create_industries($industries='') {
+	  $indusins = array( 
+
+                  "comp_id"  => $this->session->companey_id,
+                  "indus_name"   => $industries,
+                  "created_by"  => $this->session->user_id, 
+                  "status"  => '1'
+                 );
+	$this->db->insert('tbl_industries', $indusins); 
+   return $desiid = $this->db->insert_id();  
+  }
 
 
   public function enquiry_all_tab_api($companey_id,$enquiry_id)

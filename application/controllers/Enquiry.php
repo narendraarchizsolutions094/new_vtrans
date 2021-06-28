@@ -550,6 +550,13 @@ class Enquiry extends CI_Controller
 			}else{
 				$designation = $this->input->post('designation');
 			}
+			
+			if(!empty($this->input->post('new_industry'))){
+				$indus_id    =   $this->enquiry_model->create_industries($this->input->post('new_industry'));
+				$industry = $indus_id;
+			}else{
+				$industry = $this->input->post('industries');
+			}
 			//print_r($designation);exit;
            
             $postData = [
@@ -591,7 +598,7 @@ class Enquiry extends CI_Controller
                 'sales_area' => $sales_area,
                 'client_type'=>$this->input->post('client_type'),
                 'business_load'=>$this->input->post('business_load'),
-                'industries'=>$this->input->post('industries'),
+                'industries'=>$industry,
                 'status' => $status
             ];
             

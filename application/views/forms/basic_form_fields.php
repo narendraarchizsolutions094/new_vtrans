@@ -30,7 +30,7 @@
                                  <?php } ?>
                               </select>
                            </span>
-                           <input class="form-control" name="enquirername" type="text" value="<?php  echo set_value('enquirername');?>" placeholder="Enter First Name" style="width:100%;" <?php if($this->session->companey_id==65){echo'required';}?>/>
+                           <input class="form-control" name="enquirername" type="text" value="<?php  echo set_value('enquirername');?>" placeholder="Enter First Name" style="width:130%;" <?php if($this->session->companey_id==65){echo'required';}?>/>
                         </div>
                      </div>
                      <?php
@@ -235,20 +235,27 @@
                     
                     <div class="form-group col-md-4">
                               <label class="control-label" for="industries"><?php echo 'Industries';?><i class="text-danger">*</i></label>                  
-                          <select class="form-control" name="industries" id="industries" required>
-                                  <option value="">--Select industries--</option>
-                          <option value="FMCG">FMCG</option>
-                                  <option value="Auto &amp; Auto Ancillaries" > Auto &amp; Auto Ancillaries</option>
-                                  <option value="Heavy Engineering"> Heavy Engineering</option>
-                                  <option value="Retail"> Retail</option>
-                                  <option value="E-Commerce"> E-Commerce</option>
-                                  <option value="Telecom &amp; IT"> Telecom &amp; IT</option>
-                                  <option value="Clothing"> Clothing</option>
-                                  <option value="Chemicals"> Chemicals</option>
-                                  <option value="Pharmaceuticals"> Pharmaceuticals</option>
-                                  <option value="Others"> Others</option>
+                          <select class="form-control" name="industries" id="industries">
+                                <option value="">--Select industry--</option>
+                        <?php
+                            $indus=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_industries')->result();
+                            if(!empty($indus))
+                            {
+                              foreach ($indus as $key => $value)
+                              {
+                                echo'<option value="'.$value->id.'">'.$value->indus_name.'</option>';
+                              }
+                            }
+                        ?>
                           </select>
-                      </div>
+                      <i class="fa fa-plus" onclick="showDivAttidind('1')" style="color:red"></i>
+                     </div>
+					 
+					 <div class="form-group col-sm-4 col-md-4" id="new_industry" style="display:none;"> 
+                        <label><?php echo "New industry"; ?> <i class="text-danger"></i></label>
+                        <input class="form-control" name="new_industry" type="text" placeholder="industry Name">
+                        <i class="fa fa-times" onclick="showDivAttidind('0')" style="color:red"></i>						
+                     </div>
 
                      <?php 
                    }                    
@@ -561,6 +568,18 @@ function clientname() {
         else
         {
             document.getElementById("new_designation").style.display = 'none';
+        }
+    }
+	
+	function showDivAttidind(x){
+
+        if(x==1) {
+
+            document.getElementById("new_industry").style.display = 'block';
+        }
+        else
+        {
+            document.getElementById("new_industry").style.display = 'none';
         }
     }
 

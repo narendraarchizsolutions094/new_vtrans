@@ -225,16 +225,16 @@ foreach($basic_fields as $row)
             <label class="control-label" for="industries"><?php echo 'Industries';?><i class="text-danger">*</i></label>                  
         <select class="form-control" name="industries" id="industries" required>
                 <option value="">--Select industries--</option>
-        <option value="FMCG" <?php if($details->industries=='FMCG'){ echo "selected";} ?>>FMCG</option>
-                <option value="Auto &amp; Auto Ancillaries" <?php if($details->industries=='Auto & Auto Ancillaries'){ echo "selected";} ?>> Auto &amp; Auto Ancillaries</option>
-                <option value="Heavy Engineering" <?php if($details->industries=='Heavy Engineering'){ echo "selected";} ?>> Heavy Engineering</option>
-                <option value="Retail" <?php if($details->industries=='Retail'){ echo "selected";} ?>> Retail</option>
-                <option value="E-Commerce" <?php if($details->industries=='E-Commerce'){ echo "selected";} ?>> E-Commerce</option>
-                <option value="Telecom &amp; IT" <?php if($details->industries=='Telecom &amp; IT'){ echo "selected";} ?>> Telecom &amp; IT</option>
-                <option value="Clothing" <?php if($details->industries=='Clothing'){ echo "selected";} ?>> Clothing</option>
-                <option value="Chemicals" <?php if($details->industries=='Chemicals'){ echo "selected";} ?>> Chemicals</option>
-                <option value="Pharmaceuticals" <?php if($details->industries=='Pharmaceuticals'){ echo "selected";} ?>> Pharmaceuticals</option>
-                <option value="Others" <?php if($details->industries=='Others'){ echo "selected";} ?>> Others</option>
+        <?php
+            $indus=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_industries')->result();
+            if(!empty($indus))
+            {
+                foreach ($indus as $key => $value)
+                {
+                echo'<option value="'.$value->id.'" '.($details->industries==$value->id?'selected':'').'>'.$value->indus_name.'</option>';
+                }
+            }
+        ?>
         </select>
     </div>
 
