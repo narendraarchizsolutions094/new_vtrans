@@ -1558,7 +1558,7 @@ if(user_access('1004'))
     <th class="th-sm">PO File</th>
     <th class="th-sm">Signed Agreement</th>
   <th class="th-sm">Attach PO</th>
-  <th class="th-sm">Agreement Doc</th>
+  <th class="th-sm">Agreement Uploaded Docs</th>
 <?php } ?>
     </tr>
   </thead>
