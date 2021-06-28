@@ -3192,7 +3192,10 @@ public function get_enq_list_post(){
        ], REST_Controller::HTTP_OK);
   }
   public function industries_post(){
-    $data = array(
+	$comp_id = $this->input->post('comp_id');
+    $this->db->where('comp_id',$comp_id);
+    $res = $this->db->get('tbl_industries')->result_array();
+    /* $data = array(
       'Auto & Auto Ancillaries',
       'Heavy Engineering',
       'Retail',
@@ -3202,10 +3205,10 @@ public function get_enq_list_post(){
       'Chemicals',
       'Pharmaceuticals',
       'Others'
-    );
+    ); */ 
     $this->set_response([
       'status' => TRUE,
-      'msg' =>$data
+      'msg' =>$res
        ], REST_Controller::HTTP_OK);
   }
   public function client_type_post(){
@@ -3435,6 +3438,43 @@ public function add_designation_post(){
   }
 
 }
-//END ADD DESIGNATION API FOR VINAY SIR END
+//END ADD DESIGNATION API FOR VINAY END
+
+//ADD INDUSTRIES API FOR VINAY END
+public function add_industries_post(){
+  $industriesName = $this->input->post('industriesName');
+  $compId          = $this->input->post('compId');
+  $createdBy       = $this->input->post('userId');
+  $this->form_validation->set_rules('industriesName','industriesName','required|trim');
+  $this->form_validation->set_rules('compId','compId','required|trim');
+  $this->form_validation->set_rules('userId','userId','required|trim');
+  $res = $this->db->get_where('tbl_industries',array('indus_name' => $industriesName,'comp_id' => $compId,'created_by' => $createdBy,'status' => 1))->row_array();
+  if(!empty($res)){
+    $getRes = $res['id'];
+  }else{
+    $insertIndustries = array(
+      'comp_id'     => $compId,
+      'created_by'  => $createdBy,
+      'status'      => 1,
+      'indus_name'   => $industriesName
+    );
+    $this->db->insert('tbl_industries',$insertIndustries);
+    $getRes = $this->db->insert_id();
+  }
+
+  if($getRes > 0){
+    $this->set_response([
+      'status'      => TRUE,           
+      'msg'     => $getRes,
+      ], REST_Controller::HTTP_OK);
+  }else{
+    $this->set_response([
+      'status'      => FALSE,           
+      'msg'     => $getRes,
+      ], REST_Controller::HTTP_OK);
+  }
+
+}
+//END ADD INDUSTRIES API FOR VINAY END
 
 }
