@@ -386,6 +386,32 @@ function clientname() {
             }           
             });
 }
+
+ function find_branch() { 
+var fill_id = '<?=$details->enq_salebrach;?>';
+            var reg_id = $("select[name='sales_region']").val();
+			var area_id = $("select[name='sales_area']").val();
+            $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url();?>user/select_branch_by_arearegion',
+            data: {region:reg_id,area:area_id},
+            
+            success:function(data){
+               // alert(data);
+                var html='';
+                var obj = JSON.parse(data);
+                
+                html +='<option value="" style="display:none">---Select---</option>';;
+                for(var i=0; i <(obj.length); i++){
+                    
+                    html +='<option value="'+(obj[i].branch_id)+'" '+((fill_id==obj[i].branch_id)?"selected":"")+'>'+(obj[i].branch_name)+'</option>';
+                }
+                
+                $("#sales_branch").html(html);
+                
+            }           
+            });
+}
 </script>
    <script type="text/javascript">
    $(function() {
