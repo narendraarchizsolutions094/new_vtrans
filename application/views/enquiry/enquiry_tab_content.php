@@ -324,7 +324,7 @@ foreach($basic_fields as $row)
         <label><?php echo 'Client Name'; ?> <i class="text-danger">*</i></label>
         <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name" required> 
     </div>
-	
+<?php if($data_type!=1){ ?>	
 	<div class="form-group col-sm-6 col-md-6">
         <label><?php echo 'Expected Closer Date'; ?></label>
         <input class="form-control" name="expected_date" type="date" id="expected_date" value="<?php echo $details->lead_expected_date; ?>" placeholder="Expected Closer Date"> 
@@ -339,7 +339,7 @@ foreach($basic_fields as $row)
         <?php } ?>
         </select>
     </div>
-	
+<?php } ?>	
    
 <script>
 $("#sales_branch").trigger("change");
@@ -594,7 +594,7 @@ var fill_id = '<?=$details->enq_salebrach;?>';
    <div class="col-md-12 text-center">                                                      
       <input type="submit" name="submit_only" class="btn btn-primary" value="Save" >
       <input type="submit" name="submit_and_next" class="btn btn-primary" value="Save And Next">
-	  <input class="btn btn-success" onclick="disableField();" value="Enable Edit">
+	  <input type="button" class="btn btn-success" onclick="disableField();" value="Enable Edit">
       <input type="hidden" name="go_new_tab">           
    </div>
 </div>

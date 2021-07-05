@@ -2716,9 +2716,9 @@ public function all_update_expense_status()
 			
 			if($showall || in_array(12,$acolarr)){
 				if(stripos($res->tag_date,date('Y-m-d')) !== FALSE){
-				    $tag =	'<a class="tag">NEW</a>';
+				    $tag =	'<a class="tag">NEW DATA</a>';
 				}else{
-					$tag = '';
+					$tag = '<a class="tag">OLD DATA</a>';
 				}
 				$create_dt = $res->created_date.' '.$tag;
                 $sub[] = $create_dt??'NA';
