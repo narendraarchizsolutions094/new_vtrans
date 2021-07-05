@@ -2835,8 +2835,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                 $("#bell_notifications_count").html(i);*/
         });
 
-        starCountRef1.on('value', function(res) {
-            console.log(res.val());
+        starCountRef1.on('value', function(res) {            
             var myVar = res.val();
             if (typeof myVar !== 'undefined') {
                 var phone = Object.values(res.val());
