@@ -2200,6 +2200,7 @@ if($filesop[11]=='Male'){
                     if ($res_phone == 0) {
                         $dat_array = array(
                             'Enquery_id' => 'as',
+							'comp_id' => $this->session->companey_id,
 							'datasource_id' => $datasource_name,
                             'phone' => $zero,
                             'other_no' => $one,
