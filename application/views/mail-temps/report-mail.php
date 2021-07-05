@@ -37,15 +37,27 @@
                                  </tbody>
                               </table>
                            </td>
-                        </tr> -->
+                        </tr> --> 
                         <!-- end@Preheader --> <!-- end@ row 1 --> <!-- header -->
                         <tr>
                            <td valign="top" style="text-align: center; padding: 20px 50px;
                               background-color: #ffffff;">
                               <!-- Intro content -->
                               <p style="font-family: 'Open Sans', sans-serif; color: #333333; font-size:
-                                 19px; font-weight: 500; width: 90%; margin: 0 auto;"><img
-                                 src="https://v-trans.thecrm360.com/assets/images/apps/e398f3b0b2d11cbe6726f2b4c9d6777e.jpg"
+                                 19px; font-weight: 500; width: 90%; margin: 0 auto;">
+                                 <?php
+                                 if(!empty($filters['process_id'])){
+                                    if($filters['process_id'] == 198){
+                                       $logo_url = 'https://v-trans.thecrm360.com/assets/images/v-xpress-logo.png';                                       
+                                    }else{
+                                       $logo_url = 'https://v-trans.thecrm360.com/assets/images/vtrans_logo.png';
+                                    }
+                                 }else{
+                                    $logo_url = 'https://v-trans.thecrm360.com/assets/images/vtrans_logo.png';
+                                 }
+                                 ?>
+                                 <img
+                                 src="<?=$logo_url?>"
                                  alt="" style="height: 100px; width: auto;" /></p>
                            </td>
                         </tr>

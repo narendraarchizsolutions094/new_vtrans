@@ -341,7 +341,7 @@ class Report extends CI_Controller
 
       if ($type == 1) {
 
-          $subject = 'Sales Report : ' . date("F jS, Y", strtotime($schdate));
+          $subject = 'Daily CRM Report';//'Sales Report : ' . date("F jS, Y", strtotime($schdate));
      
           if(!empty($filters['enq_product'])){
             $this->db->where_in('enquiry.product_id',$filters['enq_product']);
@@ -387,7 +387,7 @@ class Report extends CI_Controller
           //echo '<br>Pending '.$this->db->last_query();
       } else {
         
-        $subject = 'Ticket Report : ' . date("F jS, Y", strtotime($schdate));
+        $subject = 'Daily CRM Report';//'Ticket Report : ' . date("F jS, Y", strtotime($schdate));
 
         $data['created'] =  $this->db->where(array('company' => $comp_id, 'Date(coml_date)' => $rdate,'process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
         
@@ -449,7 +449,6 @@ class Report extends CI_Controller
             $data['userName']=$userdata->s_display_name;
             $view_load = $this->load->view('mail-temps/report-mail', $data, true);
             //echo $view_load;
-
             $this->email->set_newline("\r\n");
             $this->email->clear(TRUE);
             $this->email->from($from);

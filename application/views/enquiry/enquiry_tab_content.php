@@ -39,6 +39,7 @@ $type="text";
 <?php echo form_open_multipart('client/updateclient/'.$details->enquiry_id,'class="form-inner tabbed_form" autocomplete="off"') ?>  
 <input type="hidden" name="form" value="client">  
 <input name="en_comments" type="hidden" value="<?=$details->Enquery_id?>" >    
+<input name="enqCode" type="hidden" value="<?=$details->Enquery_id?>" >    
 <div class="row">
    <?php                    
    $process_id = $details->product_id; 
