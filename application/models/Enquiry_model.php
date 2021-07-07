@@ -2434,6 +2434,32 @@ $cpny_id=$this->session->companey_id;
                         ->result();
                         // print_r($this->db->last_query());
     }
+	
+	public function all_enqueries_clients($status=0) {
+$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+$cpny_id=$this->session->companey_id;
+        $where = "";
+    $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+        $where.=" AND enquiry.comp_id=$cpny_id";
+
+        $process = $this->session->userdata('process');
+      
+      if($status){
+        if(is_array($status))
+          $status = implode(',', $status);
+        $this->db->where('status IN ('.$status.')');
+      }
+
+        return $this->db->select('client_name')
+                        ->from('enquiry')
+                        ->where($where)
+                        ->where_in('product_id',$process)
+                        ->group_by('enquiry.client_name')
+                        ->get()
+                        ->result();
+                        // print_r($this->db->last_query());
+    }
     
     
     // public function all_enqueries_api($userid,$companyid)

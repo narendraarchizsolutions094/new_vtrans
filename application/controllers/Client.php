@@ -1908,7 +1908,8 @@ public function view_editable_aggrement()
             $data['created_bylist'] = $this->User_model->read();
         }  
        // print_r($data['contact_list']->result_array()); exit();
-        $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
+        //$data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
+		$data['all_enquiry'] = $this->Enquiry_Model->all_enqueries_clients('1,2,3');
         
         $data['company_list'] = $this->Client_Model->getCompanyList()->result();
         $this->load->model('Branch_model');

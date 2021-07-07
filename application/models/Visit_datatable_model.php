@@ -75,7 +75,7 @@ class Visit_datatable_model extends CI_Model{
     public function _get_datatables_query($postData){
 
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-        // print_r($_POST);
+        // print_r($_POST['company']);exit;
         $this->db->select($this->table.'.*,tbl_visit.created_at,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.company, tbl_visit.id as vids,tbl_company.company_name,enquiry.client_name,contact.c_name as contact_person,sales_region.name as region_name,branch.branch_name as branch_name,sales_area.area_name as area_name,enquiry_status.title as enquiry_status_title,city.city');
         $this->db->select('(SELECT sum(amount) from tbl_expense  where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="2") as visit_otexpSum');
         //$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1" AND tbl_expense.approve_status = "2" ) as visit_expSum');
@@ -114,16 +114,18 @@ class Visit_datatable_model extends CI_Model{
 
         if(!empty($_POST['from_date']))
         {
-            $where.=" AND tbl_visit.visit_date >= '".$_POST['from_date']."'";
+			$from_created = date("Y-m-d",strtotime($_POST['from_date']));
+            $where.=" AND tbl_visit.visit_date >= '".$from_created."'";
             $and =1;
         }
 
         if(!empty($_POST['to_date']))
-        {   
+        {  
+            $to_created = date("Y-m-d",strtotime($_POST['to_date']));	
             if($and)
                 $where.=" and ";
 
-            $where.=" tbl_visit.visit_date <= '".$_POST['to_date']."'";
+            $where.=" tbl_visit.visit_date <= '".$to_created."'";
             $and =1;
         }
 
@@ -151,7 +153,7 @@ class Visit_datatable_model extends CI_Model{
             if($and)
                 $where.=" and ";
 
-            $where.=" tbl_visit.enquiry_id = '".$_POST['enquiry_id']."'";
+            $where.=" enquiry.client_name = '".$_POST['enquiry_id']."'";
             $and =1;
         }
         if(!empty($_POST['createdby']))
