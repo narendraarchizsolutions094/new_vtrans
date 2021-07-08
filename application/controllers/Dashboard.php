@@ -1460,7 +1460,6 @@ if (!empty($enquiry_separation)) {
             if(is_numeric($email) == 1)
             {
               $data = $this->dashboard_model->getUserDataByPhone($email,$ecode);
-        print_r($data);exit;
               //$this->load->library('email');
               if(!empty($data))
               {
@@ -1475,6 +1474,7 @@ if (!empty($enquiry_separation)) {
             else
             {
               $data = $this->dashboard_model->change_pass($email,$ecode);
+			  
         if(!empty($data))
               {
               $this->load->library('email');
@@ -1488,7 +1488,7 @@ if (!empty($enquiry_separation)) {
             
             if(!empty($data))
               {
-            if(empty($email_row) && $data->companey_id != 81){ 
+            if(empty($email_row) && $data->companey_id != 65){ 
                 echo "4";die;                
             }else{
                 if(is_numeric($email) == 1)
@@ -1509,6 +1509,7 @@ if (!empty($enquiry_separation)) {
                 }
                 else
                 {
+					
                     $config['smtp_auth']    = true;
                     $config['protocol']     = $email_row['protocol'];
                     $config['smtp_host']    = $email_row['smtp_host'];
@@ -1527,6 +1528,7 @@ if (!empty($enquiry_separation)) {
                    $this->email->to($email);
                    $this->email->subject('Change password');
                    $msg = $this->load->view('templates/forgot_password_email',$email_data,true);
+				   //print_r($msg);exit;
                    $this->email->message($msg);
                 }
                 
