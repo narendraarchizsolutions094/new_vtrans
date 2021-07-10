@@ -5028,7 +5028,10 @@ public function insertComInfo($data)
                         //   $fld = 'lead_created_date';
                         // else if($type=='3')
                         //   $fld = 'client_created_date';
-
+                        
+						if($key=='stageId')
+                          $this->db->where('info.stage_id',$value);
+						
                         if($key=='date_from')
                           $this->db->where($fld.'>=',$value);
 

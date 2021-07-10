@@ -3375,6 +3375,7 @@ public function get_enq_list_post(){
 	        $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
 	        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
 	        $this->db->where($where);
+			$this->db->order_by("comm_id", "desc");
 	        $res = $this->db->get()->result();
 
          	if(!empty($res))
