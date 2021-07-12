@@ -352,7 +352,8 @@ $log_filters_sess   =   $this->session->log_filters_sess;
             }
             $i++;
         }
-        $this->db->order_by('tag_date', "desc");
+		$this->db->order_by("comm_id", "desc");
+        //$this->db->order_by('tag_date', "desc");
         if(isset($postData['order'])){
             $this->db->order_by($this->column_order1[$postData['order']['0']['column']], $postData['order']['0']['dir']);
         }else if(isset($this->order)){
