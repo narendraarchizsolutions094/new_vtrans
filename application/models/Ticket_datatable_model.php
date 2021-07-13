@@ -102,7 +102,7 @@ class Ticket_datatable_model extends CI_Model{
      */
     public function getRows($postData){
         $this->_get_datatables_query($postData);
-        if($postData['length'] != -1){
+        if(!empty($postData['length']) && $postData['length'] != -1){
             $this->db->limit($postData['length'], $postData['start']);
         }
         $query = $this->db->get();
@@ -603,7 +603,7 @@ $CHK = 0;
         // loop searchable columns 
         foreach($this->column_search as $item){
             // if datatable send POST for search
-            if($postData['search']['value']){
+            if(!empty($postData['search']) && $postData['search']['value']){
                 // first loop
                 if($i===0){
                     // open bracket

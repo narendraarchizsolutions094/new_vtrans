@@ -1639,6 +1639,9 @@ class Report extends CI_Controller
        // // setcookie('ticket_dallowcols',implode(',', $common),86400*30,'/');
 
        // $data['table_config_list'] = $list;
+       if(!empty($this->session->ticket_filters_sess['export_only']) && $this->session->ticket_filters_sess['export_only'] == 1){         
+          redirect('ticket/ticket_load_data');
+       }
         $data['content'] = $this->load->view('reports/ticket_report', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
