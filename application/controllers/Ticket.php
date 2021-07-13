@@ -143,8 +143,7 @@ class Ticket extends CI_Controller
 		$this->db->where('tbl_ticket.tracking_no',$tracking_no);
 		echo $this->db->get('tbl_ticket')->num_rows();
 	}
-	public function ticket_set_filters_session()
-	{
+	public function ticket_set_filters_session(){
 		$this->session->set_userdata('ticket_filters_sess', $_POST);
 		//print_r($_SESSION);
 	}
@@ -543,6 +542,11 @@ class Ticket extends CI_Controller
 	}
 	public function ticket_load_data()
 	{
+		//$this->output->enable_profiler(true);
+		$export_only = 0;
+		if(!empty($this->session->ticket_filters_sess['export_only'])){
+			$export_only = 1;
+		}
 		// $_POST = array('search'=>array('value'=>''),'length'=>10,'start'=>0);
 		$this->load->model('Ticket_datatable_model');
 		$this->load->model('enquiry_model');
@@ -568,86 +572,125 @@ class Ticket extends CI_Controller
 		$fieldval =  $this->enquiry_model->getfieldvalue(0,2); //2 for ticket
 		foreach ($res as $point) {
 			$sub = array();
-			$sub[] = '<input type="checkbox" class="checkbox1" onclick="event.stopPropagation();" value="' . $point->id . '">';
-			$sub[] = $point->id;
-			if ($showall or in_array(1, $acolarr)) {
-				$sub[] = '<a href="' . base_url('ticket/view/' . $point->ticketno) . '">' . $point->ticketno . '</a>';
+			$colums = array();
+			
+
+			if(!$export_only){
+				$sub[] = '<input type="checkbox" class="checkbox1" onclick="event.stopPropagation();" value="' . $point->id . '">';
 			}
+			$sub[] = $point->id;
+
+			$colums[]  = 'ID';
+			if (!$export_only && ($showall or in_array(1, $acolarr))) {
+				$sub[] = '<a href="' . base_url('ticket/view/' . $point->ticketno) . '">' . $point->ticketno . '</a>';
+			}else{
+				$sub[] = $point->ticketno;
+			}
+			$colums[]  = 'Ticket No';
         if($this->session->companey_id==65)
         {
 			if ($showall or in_array(15, $acolarr)) {
 				$sub[] = $point->tracking_no == '' ? 'NA' : $point->tracking_no;
+				$colums[]  = 'Tracking no';
 			}
 		}
 			if ($showall or in_array(7, $acolarr)) {
 				$sub[] = $point->created_by_name ?? "NA";
+				$colums[]  = 'Created By';
 			}
 			if ($showall or in_array(9, $acolarr)) {
 				$sub[] = $point->coml_date ?? 'NA';
+				$colums[]  = 'Created Date';
+
 			}
 			if ($showall or in_array(18, $acolarr)) {
 				$sub[] = $point->last_update ?? 'NA';
+				$colums[]  = 'Last Updated';
+
 			}
 			if ($showall or in_array(20, $acolarr)) {
 				$sub[] = $point->name ?? 'NA';
+				$colums[]  = 'Name';
+
 			}
 			if ($showall or in_array(2, $acolarr)) {
 				if($point->company_name){
 					$sub[] = $point->company_name??($point->company_name ?? "NA");
+					$colums[]  = 'Company';
 				}else{
 					$sub[] = $point->org_name??($point->org_name ?? "NA");
+					$colums[]  = 'Company';
 				}
 			}
 			if ($showall or in_array(3, $acolarr)) {
 				$sub[] = $point->email ?? "NA";
+				$colums[]  = 'Email';
 			}
 			if ($showall or in_array(4, $acolarr)) {
-				if (user_access(220) && !empty($point->phone)) {
+				if (user_access(220) && !empty($point->phone && !$export_only)) {
 					$sub[] = "<a href='javascript:void(0)' onclick='send_parameters(".$point->phone.")'>" . $point->phone . " <button class='btn btn-xs btn-success'><i class='fa fa-phone' aria-hidden='true'></i></button></a>";
+					$colums[]  = 'Phone';
 				} else {
 					$sub[] = $point->phone ?? "NA";
+					$colums[]  = 'Phone';
 				}
 			}
 			//$sub[] = $point->phone??"NA";
 			if ($showall or in_array(5, $acolarr)) {
 				$sub[] = $point->country_name ?? "NA";
+				$colums[]  = 'Country';
 			}
 			if ($showall or in_array(6, $acolarr)) {
 				$assign_to = $point->assign_to_name ?? "NA";
 				$assign_to .=	!empty($point->last_esc)?' (<small style="color:red;">'.$point->last_esc.'</small>)':"";
 				$sub[] = $assign_to;
+				$colums[]  = 'Assign To';
 			}
 			if ($showall or in_array(17, $acolarr)) {
 				$sub[] = $point->assigned_by_name ?? "NA";
+				$colums[]  = 'Assign By';
 			}
 			
 			if ($showall or in_array(8, $acolarr)) {
-				$sub[] = '<span class="label label-' . ($point->priority == 1 ? 'success">Low' : ($point->priority == 2 ? 'warning">Medium' : ($point->priority == 3 ? 'danger">High' :'primary">NA'))) . '</span>';
+				if(!$export_only){
+					$sub[] = '<span class="label label-' . ($point->priority == 1 ? 'success">Low' : ($point->priority == 2 ? 'warning">Medium' : ($point->priority == 3 ? 'danger">High' :'primary">NA'))) . '</span>';
+				}else{
+					$sub[] = $point->priority==1?'Low':($point->priority==2?'Medium':($point->priority==3?'High':'NA'));
+				}
+				$colums[]  = 'Priority';
+
 			}
 			
 			
 			if ($showall or in_array(19, $acolarr)) {
 				$sub[] = $point->subject_title ?? 'NA';
+				$colums[]  = 'Subject';
 			}
 			
 			if ($showall or in_array(10, $acolarr)) {
 				$sub[] = $point->referred_name ?? 'NA';
+				$colums[]  = 'Refferred By';
 			}
 			if ($showall or in_array(11, $acolarr)) {
 				$sub[] = $point->source_name ?? 'NA';
+				$colums[]  = 'Source';
 			}
 			if ($showall or in_array(12, $acolarr)) {
 				$sub[] = $point->lead_stage_name ?? 'NA';
+				$colums[]  = 'Lead Stage';
 			}
 			if ($showall or in_array(13, $acolarr)) {
 				$sub[] = $point->description ?? 'NA';
+				$colums[]  = 'Lead Sub Stage';
 			}
 			if ($showall or in_array(14, $acolarr)) {
 				$sub[] = $point->message == '' ? 'NA' : $point->message;
+				$colums[]  = 'Remark';
 			}
 			
 			if ($showall or in_array(16, $acolarr)) {
 				$sub[] = $point->status_name == '' ? 'Open' : $point->status_name;
+				$colums[]  = 'Status';
 			}
 			//dynamic fields
 			$enqid = $point->id;
@@ -671,6 +714,7 @@ class Ticket extends CI_Controller
 						{
 						$sub[] = (!empty($fieldval[$enqid][$flds->input_id])) ? $fieldval[$enqid][$flds->input_id]->fvalue : "NA";
 						}
+						$colums[]  = $flds->input_name;
 					}
 				}
 			}
@@ -683,20 +727,42 @@ class Ticket extends CI_Controller
 				$sub[] = $point->tck_sub_stage??'NA';
 				$sub[] = $point->tck_msg??'NA';
 			}
-
+			if($export_only){
+				$data[0] = $colums;
+			}
 			$data[] = $sub;
 		}
 		//print_r($res);
-		$countAll = $this->Ticket_datatable_model->countAll();
-		$output = array(
-			"draw" => $_POST['draw'],
-			"recordsTotal" => $countAll,
-			"recordsFiltered" => $countAll,
-			"data" => $data,
-		);
-		echo json_encode($output);
+		if($export_only == 0){
+			$countAll = $this->Ticket_datatable_model->countAll();
+			$output = array(
+				"draw" => $_POST['draw'],
+				"recordsTotal" => $countAll,
+				"recordsFiltered" => $countAll,
+				"data" => $data,
+			);
+			echo json_encode($output);
+		}else{						
+			$this->array_to_csv_download($data,"numbers.csv");
+		}
 	}
-	
+	function array_to_csv_download($array, $filename = "export.csv", $delimiter=",") {
+		// open raw memory as file so no temp files needed, you might run out of memory though
+		$f = fopen('php://memory', 'w'); 
+		// loop over the input array
+		foreach ($array as $line) { 
+			// generate csv lines from the inner arrays
+			fputcsv($f, $line, $delimiter); 
+		}
+		// reset the file pointer to the start of the file
+		fseek($f, 0);
+		// tell the browser it's going to be a csv file
+		header('Content-Type: application/csv');
+		// tell the browser we want to save it instead of displaying it
+		header('Content-Disposition: attachment; filename="'.$filename.'";');
+		// make php send the generated csv lines to the browser
+		fpassthru($f);
+	}
 	public function feedback_load_data()
 	{
 		$this->load->model('Feedback_datatable_model');

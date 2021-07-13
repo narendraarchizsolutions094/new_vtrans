@@ -273,10 +273,10 @@
                     <div class="form-group col-md-3"><br>
                     <label for="follow_up">Followup Report</label>  
                       <input type="checkbox" name="followup" value="1" <?=$followup?'checked':''?>>
-                    </div> 
-
+                    </div>
                     </div>
                   <div class="col-md-12" style="border-top: 1px solid #f4f4f4; padding: 8px;">
+                    <button class="btn btn-success pull-right" type="button" id="export_only">Export</button>
                     <button class="btn btn-success pull-right" type="button" id="go_filter">Filter</button>
                     <button class="btn btn-primary pull-right" type="button" id="filter_and_save">Filter & Save</button>
                 </div>
@@ -772,16 +772,19 @@ var run = 0 ;
 $(document).ready(function() {
 
 
-  $('#go_filter').click(function(e) {
+  $('#go_filter,#export_only').click(function(e) {
         e.preventDefault();
         var form_data = $("#ticket_filter").serialize();       
+        if($(this).attr("id") == 'export_only'){
+          form_data +=  "&export_only=1";
+        }
         //alert(form_data);
         $.ajax({
-        url: '<?=base_url()?>ticket/ticket_set_filters_session',
+        url: '<?=base_url()?>ticket/ticket_set_filters_session/1',
         type: 'post',
         data: form_data,
         success: function(responseData){
-          $("#ticket_filter").submit();
+         $("#ticket_filter").submit();
         }
         });
         
@@ -835,7 +838,7 @@ $("#filter_and_save").on("click", function(e) {
 </script>
 <script type="text/javascript">
   <?php  
-  if(!empty($_POST)){
+  if(!empty($_POST) && empty($this->session->ticket_filters_sess['export_only'])){
   ?>
   $(document).ready(function() {
     var table = $('#ticket_table').DataTable({         
