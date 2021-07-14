@@ -2808,7 +2808,7 @@ $cpny_id=$this->session->companey_id;
         }
         $tab_list = $new_tab;
 
-        $query7 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.lead_score FROM `enquiry` WHERE $where GROUP BY enquiry.lead_score");
+        /* $query7 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.lead_score FROM `enquiry` WHERE $where GROUP BY enquiry.lead_score");
 
 
         $result7 = $query7->result();
@@ -2826,9 +2826,9 @@ $cpny_id=$this->session->companey_id;
             {
                 $cold = (!empty($r->counter)) ? $r->counter : 0;
             }
-        }
+        } */
 
-        foreach ($all_status as $key => $stts) 
+        /* foreach ($all_status as $key => $stts) 
         {
           $month_list[$stts['status']] = array(  'status'=>$stts['status'],
                                 'title'=>$stts['title'],
@@ -2904,9 +2904,9 @@ $cpny_id=$this->session->companey_id;
               }
           }
                  
-        }
+        } */
 
-        $new_month = array();
+        /* $new_month = array();
         foreach($month_list as $key=>$value)
         {
           $new_month[] = $value; 
@@ -3152,10 +3152,10 @@ $cpny_id=$this->session->companey_id;
               $pending_amnt = $value->total??0;
             if($value->info_status==2)
               $deffered_amnt = $value->total??0;
-        }
-
-        $funnelchartAry = array('tabs'=>$tab_list,'hot'=>$hot,'warm'=>$warm,'cold'=>$cold,'month_wise'=>$month_list,'raw'=>$raw,'indiamap'=>$indiamap,'disposition'=>$dispo,'source'=>$src,'process_wise'=>$process_wise,'drop_wise'=>$drop_data);
-        $funnelchartAry['followup'] = $followup;
+        } */
+        //$funnelchartAry = array('tabs'=>$tab_list,'hot'=>$hot,'warm'=>$warm,'cold'=>$cold,'month_wise'=>$month_list,'raw'=>$raw,'indiamap'=>$indiamap,'disposition'=>$dispo,'source'=>$src,'process_wise'=>$process_wise,'drop_wise'=>$drop_data);
+        $funnelchartAry = array('tabs'=>$tab_list);
+        /* $funnelchartAry['followup'] = $followup;
         $funnelchartAry['deals'] = array('all'=>$alldeals,
                                           'done'=>$done_deals,
                                           'pending'=>$pending_deals,
@@ -3163,7 +3163,7 @@ $cpny_id=$this->session->companey_id;
                                           'done_amnt'=>$done_amnt,
                                           'pending_amnt'=>$pending_amnt,
                                           'deffered_amnt'=>$deffered_amnt,
-                                        );
+                                        ); */
         return $funnelchartAry;
     }
 
