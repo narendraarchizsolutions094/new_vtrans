@@ -12,7 +12,7 @@ class Notifications extends REST_Controller {
         $user_id  = $this->input->post('user_id');        
         $this->form_validation->set_rules('user_id', 'User Id', 'required');                   
         if ($this->form_validation->run() == TRUE) {
-          $this->db->from('query_response');                        
+          /* $this->db->from('query_response');                        
           $this->db->select("query_response.resp_id,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,tbl_admin.s_display_name as user_name,");      
           $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=query_response.create_by', 'left');
           $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
@@ -21,7 +21,15 @@ class Notifications extends REST_Controller {
           $where = " ((enquiry.created_by=$user_id OR enquiry.aasign_to=$user_id OR visit.user_id=$user_id) OR query_response.create_by=$user_id OR query_response.related_to=$user_id)  AND query_response.noti_read=0 AND CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) <= NOW() ORDER BY CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) DESC";          
         
           $this->db->where($where);
-          $msg =  $this->db->get()->num_rows();          
+          $msg =  $this->db->get()->num_rows(); */
+		  
+          $this->db->from('query_response');                        
+          $this->db->select("query_response.resp_id");      
+          $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
+          $where = " ((enquiry.created_by=$user_id OR enquiry.aasign_to=$user_id) OR query_response.create_by=$user_id OR query_response.related_to=$user_id)  AND query_response.noti_read=0 AND CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) <= NOW() ORDER BY CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) DESC";          
+        
+          $this->db->where($where);
+          $msg =  $this->db->get()->num_rows();		  
           $this->set_response([
                 'status' => TRUE,
                 'message' => $msg
