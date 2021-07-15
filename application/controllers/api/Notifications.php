@@ -41,9 +41,9 @@ class Notifications extends REST_Controller {
              ], REST_Controller::HTTP_OK);
         }
     }
-    public function get_bell_notification_content_post($nos=''){      
+    public function get_bell_notification_content_post(){      
         $user_id  = $this->input->post('user_id');
-        $page = ($nos) ? $nos : 0;
+        $page = $this->input->post('nos') ? $this->input->post('nos') : 0;
         $per_page = '10';        
         $this->form_validation->set_rules('user_id', 'User Id', 'required');                   
         if ($this->form_validation->run() == TRUE) {     
