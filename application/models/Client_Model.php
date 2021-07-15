@@ -278,6 +278,31 @@ class Client_Model extends CI_Model
         //echo $this->db->last_query(); exit();
     }
 	
+	public function getCompanyList_visit()
+    {
+		
+        $process = !empty($process)?$process:$this->session->process;
+        $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
+        $user_id  = empty($user_id)?$this->session->user_id:$user_id;
+
+        $where="comp.comp_id=".$comp_id;
+		$where .= " AND ( enq.created_by = (".$user_id.')';
+        $where .= " OR enq.aasign_to = (".$user_id.'))';
+		$this->db->select('comp.id,comp.company_name');
+        $this->db->from('tbl_company comp');
+        $this->db->join('enquiry enq','enq.company=comp.id','left');
+        $this->db->group_by('comp.id');
+        $this->db->where($where);
+
+        if(is_array($process)){
+            $this->db->where_in('comp.process_id',$process);
+        }else{ 
+            $this->db->where(' comp.process_id IN ('.$process.') ');
+		}
+        $res =  $this->db->get();
+        return $res;
+    }
+	
 	public function filter_getCompanyList($id =0,$where=array(),$comp_id=0,$user_id=0,$process=0,$keyword=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
     {
 

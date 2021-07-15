@@ -3975,6 +3975,9 @@ echo  $details1;
             $sub[] =strtoupper(($value->booking_type))??'NA';
             if($colsall || in_array(4,$cols))
             $sub[] = ucwords($value->business_type).'ward'??'NA';
+		
+		    if($colsall || in_array(26,$cols))
+            $sub[] = ucwords($value->cre_to)??'NA';
             
             if($colsall || in_array(18,$cols)){    
                 $creation_ago = !empty($value->creation_date)?'<span class="badge">'.get_time_ago(strtotime($value->creation_date)).'</span>':'';

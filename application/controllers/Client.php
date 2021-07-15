@@ -1911,7 +1911,8 @@ public function view_editable_aggrement()
         //$data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
 		$data['all_enquiry'] = $this->Enquiry_Model->all_enqueries_clients('1,2,3');
         
-        $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+        $data['company_list'] = $this->Client_Model->getCompanyList_visit()->result();
+		//print_r(count($data['company_list']));exit;
         $this->load->model('Branch_model');
         $data['region_list']=$this->Branch_model->sales_region_list()->result();
         $data['area_list']=$this->Branch_model->sales_area_list()->result();

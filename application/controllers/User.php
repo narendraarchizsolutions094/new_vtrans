@@ -86,9 +86,10 @@ class User extends CI_Controller
                 }
             }            
         }
-        $this->db->select("user.valid_upto,user.user_id,tbl_admin.*,tbl_user_role.user_role as user_role_title,sales_region.name as region,sales_area.area_name as area,branch.branch_name as branch,tbl_department.dept_name as department,discount_matrix.name as grade");
+        $this->db->select("CONCAT(tadmin.s_display_name, tadmin.last_name) as rep_to,user.valid_upto,user.user_id,tbl_admin.*,tbl_user_role.user_role as user_role_title,sales_region.name as region,sales_area.area_name as area,branch.branch_name as branch,tbl_department.dept_name as department,discount_matrix.name as grade");
         $this->db->from('tbl_admin');
         $this->db->join('user', 'user.user_id = tbl_admin.companey_id');
+		$this->db->join('tbl_admin tadmin', 'tadmin.pk_i_admin_id = tbl_admin.report_to','left');
 		$this->db->join('tbl_user_role', 'tbl_user_role.use_id=tbl_admin.user_type', 'left');
         $this->db->join('sales_region', 'sales_region.region_id=tbl_admin.sales_region', 'left');
 		$this->db->join('sales_area', 'sales_area.area_id=tbl_admin.sales_area', 'left');
@@ -154,6 +155,7 @@ class User extends CI_Controller
             $sub[] = '<a   href="' . base_url('user/edit/' . $department->pk_i_admin_id . '') . '">' . $department->employee_id . '</a>';
             $sub[] = '<a   href="' . base_url('user/edit/' . $department->pk_i_admin_id . '') . '">' . $department->s_display_name . ' ' . $department->last_name . '</a>';
             $sub[] = $department->user_role_title ?? "NA";
+			$sub[] = $department->rep_to ?? "NA";
             $sub[] = '<a   href="' . base_url('user/edit/' . $department->pk_i_admin_id . '') . '">' . $department->s_user_email . '</a>';
             $sub[] = $department->s_phoneno ?? "NA";
 			$sub[] = $department->region ?? "NA";
