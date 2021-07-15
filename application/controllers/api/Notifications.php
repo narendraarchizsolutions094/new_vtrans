@@ -41,8 +41,10 @@ class Notifications extends REST_Controller {
              ], REST_Controller::HTTP_OK);
         }
     }
-    public function get_bell_notification_content_post(){      
-        $user_id  = $this->input->post('user_id');        
+    public function get_bell_notification_content_post($nos=''){      
+        $user_id  = $this->input->post('user_id');
+        $page = ($nos) ? $nos : 0;
+        $per_page = '10';        
         $this->form_validation->set_rules('user_id', 'User Id', 'required');                   
         if ($this->form_validation->run() == TRUE) {     
           $this->db->from('query_response');       
@@ -57,6 +59,7 @@ class Notifications extends REST_Controller {
           $where = " ((enquiry.created_by=$user_id OR enquiry.aasign_to=$user_id OR ticket.assign_to=$user_id OR ticket.assigned_by=$user_id OR visit.user_id=$user_id) OR query_response.create_by=$user_id OR query_response.related_to=$user_id)  AND CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) <= NOW() ORDER BY CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) DESC";
 
           $this->db->where($where);
+		  $this->db->limit($per_page, $page);
           $res  = $this->db->get()->result_array();     
 
 
