@@ -131,8 +131,7 @@
                     ?>
                      <div class="form-group col-sm-4 col-md-4">
                         <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
-                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)" required> 
-						<!--<i class="fa fa-search" onclick="find_company_list()" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>-->
+                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)" required>
                      </div>
 					 
 					    <div class="form-group col-md-4">

@@ -4180,11 +4180,12 @@ echo  $details1;
     public function suggest_company()
     {
         $key = $this->input->post('search');
+		$key = ltrim($key);
         $this->load->model('Client_Model');
         $company_id = $this->session->companey_id;
         $user_id = -1; //$this->session->user_id;
         $process = $this->session->process;
-        $where = 'tbl_company.company_name LIKE "%'.$key.'%" ';
+        $where = 'comp.company_name LIKE "%'.$key.'%"';
         $res = $this->Client_Model->getCompanyList(0,$where,$company_id,$user_id,$process,'data',10,0)->result_array();
        // echo $this->db->last_query();exit();
         $abc = array_column($res,'company_name');

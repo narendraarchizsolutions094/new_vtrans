@@ -209,7 +209,7 @@ class Client_Model extends CI_Model
         //echo $this->db->last_query(); exit();
     }
 
-    public function getCompanyList($id =0,$where=array(),$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
+    public function getCompanyList($id =0,$where_arr=array(),$comp_id=0,$user_id=0,$process=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
     {
 
         $process = !empty($process)?$process:$this->session->process;
@@ -247,7 +247,9 @@ class Client_Model extends CI_Model
 
         if(!empty($where))
             $this->db->where($where);
-
+        
+		if(!empty($where_arr))
+            $this->db->where($where_arr);
 
         if(is_array($process))
             $this->db->where_in('comp.process_id',$process);
