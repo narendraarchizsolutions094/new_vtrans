@@ -829,6 +829,7 @@ class Enquiry extends REST_Controller {
     if($this->form_validation->run() == true)
     {
       $data  = $this->Enquiry_model->enquiry_all_tab_api($company_id,$enquiry_id);
+	  //print_r($data);exit;
       if(!empty($data))
       {
         $this->set_response([

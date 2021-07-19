@@ -281,6 +281,7 @@ class Enquiry_model extends CI_Model {
           $sa = $this->db->where('area_id',$enquiry->sales_area)->get('sales_area')->row();
           $sr = $this->db->where('region_id',$enquiry->sales_region)->get('sales_region')->row();
           $sb = $this->db->where('branch_id',$enquiry->sales_branch)->get('branch')->row();
+		  $eb = $this->db->where('id',$enquiry->industries)->get('tbl_industries')->row();
           $self_created1 = array(
                         array(
                               "id"=> -8,
@@ -511,7 +512,7 @@ class Enquiry_model extends CI_Model {
                                                                 ),
                                                       ),
                                   "parameter_name"=> "industries",
-                                  "current_value"=> $enquiry->industries,
+                                  "current_value"=> !empty($eb)?$eb->indus_name:'',
                                 ),
 
                            );
