@@ -1051,6 +1051,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                           <th id="th-15">Vehicle Type</th>
                           <th id="th-16">Vehicle Carrying Capacity</th>
                           <th id="th-17">Invoice Value</th> -->
+						  <th id="th-18">Created By</th>
                           <th id="th-18">Create Date</th>
                           <th id="th-23">No Action</th>
                           <th id="th-19">Status</th>
