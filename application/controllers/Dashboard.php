@@ -3386,10 +3386,24 @@ public function set_layout_to_session() {
 
               foreach ($result as $key => $rows)
               {
-                $freight_table.='
+                
+
+              if($deal->btype=='branch')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,branch.branch_name as dname,deal.rate,deal.discount from deal_data deal left join branch on branch.branch_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+              else if($deal->btype=='zone')
+              {
+              $cols = $this->db->query("SELECT deal.delivery_branch as did ,zones.name as dname,deal.rate,deal.discount from deal_data deal left join zones on zones.zone_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
+              }
+$allcol = count($cols);
+if($allcol > 6){
+	$split_array = array_chunk($cols, 6);
+	foreach($split_array as $splarr){
+	$freight_table.='
                 <table border="1" width="100%">
                       <thead>
-                      <tr>
+                      <tr style="font-size:12px;">
                         <th style="background:#00b0f0;">
                         <div style="display:inline-block;">
                       To<br>
@@ -3401,34 +3415,62 @@ public function set_layout_to_session() {
                     </div>
                         </th>';
 
-              if($deal->btype=='branch')
-              {
-              $cols = $this->db->query("SELECT deal.delivery_branch as did ,branch.branch_name as dname,deal.rate,deal.discount from deal_data deal left join branch on branch.branch_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
-              }
-              else if($deal->btype=='zone')
-              {
-              $cols = $this->db->query("SELECT deal.delivery_branch as did ,zones.name as dname,deal.rate,deal.discount from deal_data deal left join zones on zones.zone_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
-              }
-
-                foreach ($cols as $key2 => $value2)
+                foreach ($splarr as $key2 => $value2)
                 {
-                    $freight_table.='<th style="background:#00b0f0;">'.$value2->dname.'</th>';
+                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$value2->dname.'</th>';
                 }
                 $freight_table.='</tr>
                 <tr>
-                <th style="background:#00b0f0;">'.$rows->bname.'</th>';
+                <th style="background:#00b0f0;font-size:12px;">'.$rows->bname.'</th>';
+
+                foreach ($splarr as $key2 => $value2)
+                {
+                    $r = $value2->rate;
+                    $d = $value2->discount;
+                    $price = $r*(1-round(($d/100),2));
+                    $freight_table.='<td style="font-size:12px;">'.$price.'/'.$oc['rate_type'].'</td>';
+                }
+
+              $freight_table.='</tr>
+
+            </tbody></table>';
+	}	
+}else{	
+			  $freight_table.='
+                <table border="1" width="100%">
+                      <thead>
+                      <tr style="font-size:12px;">
+                        <th style="background:#00b0f0;">
+                        <div style="display:inline-block;">
+                      To<br>
+                      From 
+                    </div>
+                    <div style="display:inline-block; width:50px;">
+                      <i class="fa fa-arrow-right"></i><br>
+                      <i class="fa fa-arrow-down"></i>
+                    </div>
+                        </th>';
+
+                foreach ($cols as $key2 => $value2)
+                {
+                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$value2->dname.'</th>';
+                }
+                $freight_table.='</tr>
+                <tr>
+                <th style="background:#00b0f0;font-size:12px;">'.$rows->bname.'</th>';
 
                 foreach ($cols as $key2 => $value2)
                 {
                     $r = $value2->rate;
                     $d = $value2->discount;
                     $price = $r*(1-round(($d/100),2));
-                    $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
+                    $freight_table.='<td style="font-size:12px;">'.$price.'/'.$oc['rate_type'].'</td>';
                 }
 
               $freight_table.='</tr>
 
-            </tbody></table>';                   
+            </tbody></table>';
+}			
               }
       
             }//ifend
