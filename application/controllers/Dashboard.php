@@ -3397,19 +3397,21 @@ public function set_layout_to_session() {
               $cols = $this->db->query("SELECT deal.delivery_branch as did ,zones.name as dname,deal.rate,deal.discount from deal_data deal left join zones on zones.zone_id=deal.delivery_branch where deal.deal_id=$info_id and deal.booking_branch = ".$rows->bid)->result();
               }
 $allcol = count($cols);
-if($allcol > 6){
-	$split_array = array_chunk($cols, 6);
+$spancall = $allcol+1;
+if($allcol > 14){
+	$split_array = array_chunk($cols, 14);
 	foreach($split_array as $splarr){
 	$freight_table.='
                 <table border="1" width="100%">
                       <thead>
+					  <tr><th style="background:#00b0f0;font-size:12px;" colspan="'.$spancall.'">V-Trans Commercial Rate Per Kg.</th></tr>
                       <tr style="font-size:12px;">
                         <th style="background:#00b0f0;">
                         <div style="display:inline-block;">
                       To<br>
                       From 
                     </div>
-                    <div style="display:inline-block; width:50px;">
+                    <div style="display:inline-block; width:20px;">
                       <i class="fa fa-arrow-right"></i><br>
                       <i class="fa fa-arrow-down"></i>
                     </div>
@@ -3417,7 +3419,21 @@ if($allcol > 6){
 
                 foreach ($splarr as $key2 => $value2)
                 {
-                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$value2->dname.'</th>';
+$strArr = explode("\r\n", $value2->dname);
+$max =max(array_map('strlen', $strArr));
+
+for($i=0; $i< $max;$i++)
+{
+    for($x=0;$x < count($strArr); $x++)
+    {
+        $strVal = $strArr[$x];
+        $y = $i -($max -  strlen($strVal));
+        $vertical .= strlen(trim($strVal[$y]))<> 0 ? $strVal[$y]." " : "  ";
+    } 
+    $vertical .="\n";
+}
+                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$vertical.'</th>';
+$vertical ='';
                 }
                 $freight_table.='</tr>
                 <tr>
@@ -3428,7 +3444,9 @@ if($allcol > 6){
                     $r = $value2->rate;
                     $d = $value2->discount;
                     $price = $r*(1-round(($d/100),2));
-                    $freight_table.='<td style="font-size:12px;">'.$price.'/'.$oc['rate_type'].'</td>';
+					$price = round($price, 2);
+					$freight_table.='<td style="font-size:12px;text-align:center;">'.$price.'</td>';
+                    //$freight_table.='<td style="font-size:12px;">'.$price.'/'.$oc['rate_type'].'</td>';
                 }
 
               $freight_table.='</tr>
@@ -3439,13 +3457,14 @@ if($allcol > 6){
 			  $freight_table.='
                 <table border="1" width="100%">
                       <thead>
+					  <tr><th style="background:#00b0f0;" colspan="'.$spancall.'">V-Trans Commercial Rate Per Kg.</th></tr>
                       <tr style="font-size:12px;">
                         <th style="background:#00b0f0;">
                         <div style="display:inline-block;">
                       To<br>
                       From 
                     </div>
-                    <div style="display:inline-block; width:50px;">
+                    <div style="display:inline-block; width:20px;">
                       <i class="fa fa-arrow-right"></i><br>
                       <i class="fa fa-arrow-down"></i>
                     </div>
@@ -3453,7 +3472,21 @@ if($allcol > 6){
 
                 foreach ($cols as $key2 => $value2)
                 {
-                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$value2->dname.'</th>';
+$strArr = explode("\r\n", $value2->dname);
+$max =max(array_map('strlen', $strArr));
+
+for($i=0; $i< $max;$i++)
+{
+    for($x=0;$x < count($strArr); $x++)
+    {
+        $strVal = $strArr[$x];
+        $y = $i -($max -  strlen($strVal));
+        $vertical .= strlen(trim($strVal[$y]))<> 0 ? $strVal[$y]." " : "  ";
+    } 
+    $vertical .="\n";
+}
+                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$vertical.'</th>';
+$vertical ='';
                 }
                 $freight_table.='</tr>
                 <tr>
@@ -3464,7 +3497,9 @@ if($allcol > 6){
                     $r = $value2->rate;
                     $d = $value2->discount;
                     $price = $r*(1-round(($d/100),2));
-                    $freight_table.='<td style="font-size:12px;">'.$price.'/'.$oc['rate_type'].'</td>';
+					$price = round($price, 2);
+					$freight_table.='<td style="font-size:12px;text-align:center;">'.$price.'</td>';
+                    //$freight_table.='<td style="font-size:12px;">'.$price.'/'.$oc['rate_type'].'</td>';
                 }
 
               $freight_table.='</tr>
