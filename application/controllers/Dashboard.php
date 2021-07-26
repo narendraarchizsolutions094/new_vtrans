@@ -826,7 +826,7 @@ public function login_in_process(){
         else
         {
             $data['counts'] = $this->enquiry_model->enquiryLeadClientCount($this->session->user_id,$this->session->companey_id);
-            // print_r($data);die;
+             //print_r($data);die;
             $data['msg']='';
             $data['state']   = $this->enquiry_model->get_state();
             $data['products'] = $this->dash_model->product_list_graph();
@@ -4402,4 +4402,18 @@ public function process_Monthwise()
         echo json_encode(array('status'=>'fail'));
     }
 }
+
+  /// Auto Check Out ////
+
+  public function auto_check_out()
+  {
+    $get_current_date_users = $this->db->get_where('tbl_attendance',array('DATE(check_in_time)' => date('Y-m-d')))->result_array();
+    if(!empty($get_current_date_users)){
+      $this->db->where('DATE(check_in_time)',date('Y-m-d'))->update('tbl_attendance',array('check_out_time' => date('Y-m-d H:i:s')));
+	  $this->session->set_flashdata('message','Mark Attendance Out Successfully!');
+	  redirect('logout');
+  }
+  }
+  //////////////////////
+  
 }

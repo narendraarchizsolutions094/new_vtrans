@@ -346,21 +346,25 @@ class Enq extends CI_Controller
 	public function short_dashboard_count()
 	{
 		$this->common_query_short_dashboard(0);
+		$this->db->group_by('enquiry.Enquery_id');
 		$data['all_enquery_num'] = $this->db->count_all_results();
 
 
 		$this->common_query_short_dashboard(0); 
 		$this->db->where('enquiry.drop_status>0');
+		$this->db->group_by('enquiry.Enquery_id');
 		$data['all_drop_num'] = $this->db->count_all_results();
 
 	
 
 		$this->common_query_short_dashboard();
 		$this->db->where(' enquiry.drop_status=0');
+		$this->db->group_by('enquiry.Enquery_id');
 		$data['all_active_num']= $this->db->count_all_results();
 
 		$this->common_query_short_dashboard();
 		$this->db->where('enquiry.update_date is not NULL'); //anyhow updated
+		$this->db->group_by('enquiry.Enquery_id');
 		$data['all_update_num']=$this->db->count_all_results();
 
 
@@ -368,16 +372,19 @@ class Enq extends CI_Controller
 	
 		$this->db->where('enquiry.lead_stage',0);
 		//now check empty dispositon
+		$this->db->group_by('enquiry.Enquery_id');
 		$data['all_no_activity_num']=$this->db->count_all_results();
 
 		$this->common_query_short_dashboard();
 		//$date=date('Y-m-d');
 		$this->db->where('enquiry.aasign_to is not NULL ');
+		$this->db->group_by('enquiry.Enquery_id');
 		$data['all_assigned_num']=$this->db->count_all_results();
 
 		$this->common_query_short_dashboard();
 		//$date=date('Y-m-d');
 		$this->db->where('enquiry.aasign_to is NULL ');
+		$this->db->group_by('enquiry.Enquery_id');
 		$data['all_unassigned_num']=$this->db->count_all_results();
 
 		echo json_encode($data);
@@ -614,7 +621,10 @@ class Enq extends CI_Controller
         $this->db->join('tbl_admin as tbl_admin', 'tbl_admin.pk_i_admin_id = enquiry.created_by', 'left');
         $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left');        
 	
-		$where.="  enquiry.status=$data_type";
+	    $this->db->join('commercial_info','commercial_info.enquiry_id = enquiry.enquiry_id','left');
+		//$where.="  enquiry.status=$data_type";
+		$where.="  (enquiry.status IN ($data_type) ";
+		$where.=" OR commercial_info.stage_id='".$data_type."')";
 		if($drop==1)
 			$where.=" AND enquiry.drop_status=0";
 

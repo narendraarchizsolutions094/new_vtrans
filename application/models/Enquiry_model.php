@@ -2712,7 +2712,7 @@ $cpny_id=$this->session->companey_id;
         //$where = "enquiry.is_delete=1";
       $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
       $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
-      $where .=" AND product_id IN ($process)";
+      $where .=" AND enquiry.product_id IN ($process)";
         $where.=" AND enquiry.comp_id=$cpny_id";
 
         $enquiry_separation = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING',$companyid);
@@ -2728,7 +2728,9 @@ $cpny_id=$this->session->companey_id;
                                 'title'=>display('client',$companyid),
                               ),
                       );
-
+        $stage_ids[] = 1;
+        $stage_ids[] = 2;
+        $stage_ids[] = 3;
         if(!empty($enquiry_separation))
         {
           $enquiry_separation = json_decode($enquiry_separation, true);
@@ -2738,6 +2740,7 @@ $cpny_id=$this->session->companey_id;
               $all_status[] = array('status'=>$key,
                                     'title'=>$value['title'],
                                   );
+			$stage_ids[] = $key;
           }
         }
 
@@ -2753,12 +2756,19 @@ $cpny_id=$this->session->companey_id;
                             );
         }
         
-        $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
+        /* $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
         $result = $query->result();
 
         foreach($result as $key=> $r)
         {
           $tab_list[$r->status]['all'] = !empty($r->counter)?$r->counter:0;
+        } */
+		
+		foreach ($stage_ids as $key => $value){
+            $query = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND (commercial_info.stage_id=$value OR enquiry.status=$value)");
+            $result = $query->row();
+			//echo $this->db->last_query();die;
+            $tab_list[$value]['all'] = !empty($result->counter)?$result->counter:0;
         }
         
         $query2 = $this->db->query("SELECT count(enquiry_id)counter,enquiry.status FROM `enquiry` WHERE $where AND DATE(created_date) = CURRENT_DATE GROUP BY enquiry.status");
@@ -3283,22 +3293,31 @@ $cpny_id=$this->session->companey_id;
 
         $enquiry = $lead = $client = $enq_ct = $lead_ct = $client_ct = $enq_ut = $lead_ut = $client_ut = $enq_drp = $lead_drp = $client_drp = $enq_active = $lead_active = $client_active = $enq_assign = $lead_assign = $client_assign = 0;
 
-        $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
+        $query = $this->db->query("SELECT enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
         $result = $query->result();
         
         foreach($result as $r)
         {
             if($r->status == 1)
             {
-                $enquiry = (!empty($r->counter)) ? $r->counter : 0;
+			$one = $r->status;
+			$query = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND (commercial_info.stage_id=$one OR enquiry.status=$one)");
+            $result = $query->row();
+                $enquiry = (!empty($result->counter)) ? $result->counter : 0;
             }
             if($r->status == 2)
             {
-                $lead = (!empty($r->counter)) ? $r->counter : 0;
+			$two = $r->status;
+			$query2 = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND (commercial_info.stage_id=$two OR enquiry.status=$two)");
+            $result2 = $query2->row();
+                $lead = (!empty($result2->counter)) ? $result2->counter : 0;
             }
             if($r->status == 3)
             {
-                $client = (!empty($r->counter)) ? $r->counter : 0;
+			$three = $r->status;
+			$query3 = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND (commercial_info.stage_id=$three OR enquiry.status=$three)");
+            $result3 = $query3->row();
+                $client = (!empty($result3->counter)) ? $result3->counter : 0;
             }
         }
 
@@ -3453,14 +3472,21 @@ $cpny_id=$this->session->companey_id;
 
         $enquiry = $lead = $client = $enq_ct = $lead_ct = $client_ct = $enq_ut = $lead_ut = $client_ut = $enq_drp = $lead_drp = $client_drp = $enq_active = $lead_active = $client_active = $enq_assign = $lead_assign = $client_assign = 0;
 
-        $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
+        /* $query = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
+        $result = $query->result(); */
+		$query = $this->db->query("SELECT enquiry.status FROM enquiry WHERE $where GROUP BY enquiry.status");
         $result = $query->result();
         
         foreach($result as $r)
         {
             if($r->status == $status)
             {
-                $enquiry = (!empty($r->counter)) ? $r->counter : 0;
+			///new code///
+			$query = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND (commercial_info.stage_id=$status OR enquiry.status=$status)");
+            $result = $query->row();
+			/////
+			//$enquiry = (!empty($r->counter)) ? $r->counter : 0;
+            $enquiry = (!empty($result->counter)) ? $result->counter : 0;
             }
           
         }

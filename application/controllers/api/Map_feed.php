@@ -52,31 +52,44 @@ class Map_feed extends REST_Controller {
              ], REST_Controller::HTTP_OK);
     }
   }
-  public function mark_attendance_post(){
+public function mark_attendance_post(){
     $this->form_validation->set_rules('user_id','User id','required');
     $this->form_validation->set_rules('punchout','Punchout','required');
     if ($this->form_validation->run() == TRUE) {
       
       $user_id  = $this->input->post('user_id');
       $punchout = $this->input->post('punchout');
-      $insert_array    =  array('uid'=>$user_id,'status'=>$punchout);
-      $where = " uid=$user_id AND status='$punchout' AND DATE(created_date)=CURDATE()";
-      $this->db->where($where);    
-      $res_row  = $this->db->get('map_attendance')->row_array();      
+      $insert_array    =  array('uid'=>$user_id,'check_in_time'=>Date("Y-m-d H:i:s"));
+      $insert_array2    =  array('uid'=>$user_id,'check_out_time'=>Date("Y-m-d H:i:s"));
+      $where = " uid=$user_id AND DATE(check_in_time)=CURDATE()";
+      $this->db->where($where);
+      $res_row  = $this->db->order_by('id','desc')->get('tbl_attendance')->row_array();      
       //if(empty($res_row)){
-      if(1){
-        $att_arr  = array('message'=>'Mark attendance successfully');
-        $this->db->insert('map_attendance',$insert_array);
+      if($punchout == 'in'){
+        $where = " uid=$user_id AND DATE(check_in_time)=CURDATE()";
+        $this->db->where($where);
+        $this->db->update('tbl_attendance',$insert_array2);
+        $att_arr  = array('message'=>'Mark In attendance successfully');
+        $this->db->insert('tbl_attendance',$insert_array);
         $this->set_response([
                     'status' => true,
                     'att_data' =>$att_arr
                      ], REST_Controller::HTTP_OK);
-      }else{
-        $att_arr  = array('message'=>'You can not mark again!');
+      }else if($punchout == 'out'){
+        $att_arr  = array('message'=>'Mark Out attendance successfully');
+        $where = " uid=$user_id";//AND DATE(check_in_time)=CURDATE() AND id = ". $res_row['id']
+        $this->db->where($where);
+        $this->db->update('tbl_attendance',$insert_array2);
         $this->set_response([
-                    'status' => false,
+                    'status' => true,
                     'att_data' =>$att_arr
                      ], REST_Controller::HTTP_OK);      
+      }else{
+        $att_arr  = array('message'=>'Fields are required');
+        $this->set_response([
+              'status' => false,
+              'message' =>$att_arr   
+               ], REST_Controller::HTTP_OK); 
       }
     } else {
         $att_arr  = array('message'=>'Fields are required');
@@ -86,33 +99,30 @@ class Map_feed extends REST_Controller {
              ], REST_Controller::HTTP_OK); 
     }
   }
-  public function check_attendance_status_post(){
+ public function check_attendance_status_post(){
   	$this->form_validation->set_rules('user_id','User id','required');
     if ($this->form_validation->run() == TRUE) {      
       
-      $user_id  = $this->input->post('user_id');      
-      $where = " uid=$user_id AND status='in' AND DATE(created_date)=CURDATE() order by created_date desc limit 1";      
+      $user_id  = $this->input->post('user_id');
+      //$where = " uid=$user_id AND DATE(check_in_time)=CURDATE() AND  check_out_time = '0000-00-00 00:00:00' order by id desc limit 1";
+      $where = " uid=$user_id";      
       $this->db->where($where);   
-      $res_row  = $this->db->get('map_attendance')->row_array();      
+      $res_row  = $this->db->order_by('id','desc')->limit(1,0)->get('tbl_attendance')->row_array();
+     // echo $this->db->last_query();die;      
       if(!empty($res_row)){
-        $in_row = $res_row;
-      	$where = " uid=$user_id AND status='out' AND DATE(created_date)=CURDATE() order by created_date desc limit 1";      
-      	$this->db->where($where);    
-      	$res_row  = $this->db->get('map_attendance')->row_array();      
-      	
-      	if(empty($res_row)){
-        	$att_arr  = array('message'=>'in');
-      	}else{
-          if($in_row['id'] > $res_row['id'])
-              $att_arr  = array('message'=>'in');
-          else
-        	   $att_arr  = array('message'=>'out');
-
-      	}
-        $this->set_response([
+        if($res_row['check_in_time'] != '0000-00-00 00:00:00' && $res_row['check_out_time'] != '0000-00-00 00:00:00'){
+          $att_arr  = array('message'=>'out');
+          $this->set_response([
                     'status' => true,
                     'att_data' =>$att_arr
                      ], REST_Controller::HTTP_OK);
+        }else{
+          $att_arr  = array('message'=>'in');
+          $this->set_response([
+                    'status' => true,
+                    'att_data' =>$att_arr
+                     ], REST_Controller::HTTP_OK);
+        }
       }else{
        	$att_arr  = array('message'=>'out');
         $this->set_response([
