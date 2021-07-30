@@ -9,6 +9,8 @@
                         <th><?php echo display('serial') ?></th>
                         <th>Emp Id</th>
                         <th><?php echo ucfirst(display('disolay_name')) ?></th>
+						<th>Designation</th>
+						<th>Region</th>
                         <th>Check In Time</th>
                         <th>Check Out Time</th>
                         <th>Break</th>
@@ -25,6 +27,8 @@
                                 <td><?php echo $sl; ?></td>
                                 <td><?php echo $user->employee_id; ?></td>
                                 <td><?php echo $user->s_display_name;echo '&nbsp;';echo $user->last_name; ?></td>
+								<td><?php echo $user->designation;?></td>
+								<td><?php echo $user->sale_region;?></td>
                                 <td><?php echo $user->check_in;?></td>                                     
                                 <td><?php echo $user->check_out;?></td>
                                 <td>

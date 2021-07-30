@@ -466,7 +466,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-28">Remark</th>
 				          <th id="th-7">Employee</th>
 				          <th id="th-11" >Difference (%)</th>
-				          <th  id="th-8">Travel Expense</th>
+				          <th id="th-8">Travel Expense</th>
 				          <th id="th-18">Other Expense</th>
 				          <th id="th-19">Total Expense</th>
 				          <th id="th-20">Expense Staus</th>
@@ -976,7 +976,7 @@ $("select").select2();
               <label class=""><input type="checkbox" class="choose-col" value="11"> Diffrence</label>
             </div>
             <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="12"> Expense</label>
+              <label class=""><input type="checkbox" class="choose-col" value="8"> Expense</label>
             </div>
 
             <div class="col-md-4">
