@@ -1073,4 +1073,53 @@ return $sum;
                ], REST_Controller::HTTP_OK);
       }
    }
+   
+/*******************************Attendence List Start**************************/
+public function attendence_list_post()
+    {
+      $company_id = $this->input->post('company_id');
+	  $employee_id = $this->input->post('user_id');
+      $offset = $this->input->post('offset')??0;
+      $limit = $this->input->post('limit')??10;
+	  
+        $total = $this->enquiry_model->attendence_list_api($company_id,$employee_id)->num_rows();
+$result =array();
+        $data['result'] = $this->enquiry_model->attendence_list_api($company_id,$employee_id,$limit,$offset);
+        /*  echo "<pre>";
+         print_r($total);
+         print_r($data['result']->result_array());
+         echo $this->db->last_query();
+         exit; */
+foreach($data['result']->result() as $key=> $value)
+{
+   $result[$key]=(array)$value;
+   /* $result[$key]['diff']=$percentChange;
+   $result[$key]['status'] = $expstatus;
+   $result[$key]['visit_status'] = $value->visit_status; */
+} 
+
+if(!empty($result))
+{
+   $res= array();
+   
+   $res['offset'] = $offset;
+            $res['limit'] = $limit;
+            $res['total'] = $total;
+            $res['list'] = $result;
+
+            $this->set_response([
+                'status' => TRUE,
+                'data' =>$res
+                 ], REST_Controller::HTTP_OK);
+          }   
+		    else
+         {
+	    
+	        $this->set_response([
+	          'status' => false,
+	          'msg' =>'not found'
+	          ], REST_Controller::HTTP_OK);
+	      }
+    }
+/*******************************Attendence List End**************************/
 }
