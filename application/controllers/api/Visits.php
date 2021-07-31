@@ -1075,6 +1075,22 @@ return $sum;
    }
    
 /*******************************Attendence List Start**************************/
+public function attendence_user_list_post(){
+		$company_id = $this->input->post('company_id');
+	    $employee_id = $this->input->post('user_id');
+		$this->load->model('report_model');
+        $user_list=$this->report_model->all_company_employee($company_id,$employee_id);
+        $user_list_array = array();
+        //print_r($area_list);exit;
+        foreach ($user_list as $users) { 
+            $user_list_array[] = array('user_id'=>$users->pk_i_admin_id,'user_name'=>$users->s_display_name.' '.$users->last_name);            
+        }
+        $this->set_response([
+                'status' => true,
+                'users' => $user_list_array  
+                 ], REST_Controller::HTTP_OK);
+      
+      }
 public function attendence_list_post()
     {
       $company_id = $this->input->post('company_id');

@@ -1026,9 +1026,13 @@ class Report_model extends CI_Model {
         return $query = $this->db->get()->result();
     }
 
-    public function all_company_employee($company_id)
+    public function all_company_employee($company_id,$employee_id='')
     {   $this->load->model('common_model');
+	if(empty($employee_id)){
         $users    =   $this->common_model->get_categories($this->session->user_id);
+	}else{
+		$users    =   $this->common_model->get_categories($employee_id);
+	}
         $this->db->select('pk_i_admin_id,s_display_name,last_name,companey_id,b_status');
         $this->db->from('tbl_admin');
         $this->db->where('companey_id',$company_id);

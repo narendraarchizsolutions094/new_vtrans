@@ -91,7 +91,7 @@ class Lead extends REST_Controller {
       
       }
 	  
-	  public function all_user_list_post(){
+	 public function all_user_list_post(){
 		$comp_id= $this->input->post('comp_id');
 		$department= $this->input->post('dept_id');
 		$region= $this->input->post('region_id');
