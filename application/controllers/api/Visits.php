@@ -278,15 +278,35 @@ if(!empty($result))
       $visit_date = $this->input->post('visit_date');
       $visit_time = $this->input->post('visit_time');
       $m_purpose = $this->input->post('m_purpose');
+	  $end_point = $this->input->post('end_point')??'';
 
     	$this->form_validation->set_rules('company_id','company_id','required|trim');
     	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
-      $this->form_validation->set_rules('contact_id','contact_id','required|trim');
+     // $this->form_validation->set_rules('contact_id','contact_id','required|trim');
     	$this->form_validation->set_rules('user_id','user_id','required|trim');
       $this->form_validation->set_rules('m_purpose','m_purpose','required|trim');
 
     	if($this->form_validation->run()==true)
     	{
+//FIND START POINT START			
+		$where = " user_id=$user_id AND enquiry_id=$enquiry_id AND DATE(created_at)=CURDATE()";
+		$this->db->select('end_waypoints');
+        $this->db->where($where); 
+        $this->db->order_by('id','DESC');		
+        $visit_row  = $this->db->get('tbl_visit')->row_array();
+		if(empty($visit_row['end_waypoints'])){			
+		$where = " uid=$user_id AND DATE(created_date)=CURDATE()";
+		$this->db->select('waypoints');
+        $this->db->where($where);    
+        $res_row  = $this->db->get('map_location_feed')->row_array();
+		$start_point = explode(']',$res_row['waypoints']); 
+        $start_point = $start_point[0].']]';		
+		}else{
+		$start_point = $visit_row['end_waypoints'];	
+		}
+//FIND START POINT END		
+		
+	  
     		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
 
     		$data = array(
@@ -295,6 +315,8 @@ if(!empty($result))
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>$this->input->post('visit_time'),
 							'm_purpose'=>$this->input->post('m_purpose'),
+							'start_waypoints'=>$start_point,
+							'end_waypoints'=>$end_point,
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,
                         );
