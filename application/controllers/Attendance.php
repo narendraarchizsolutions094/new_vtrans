@@ -109,34 +109,22 @@ class Attendance extends CI_Controller {
  		$this->load->model('report_model');
  		$data['title'] = 'Team Visits';
 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
-		$content = $this->load->view('loginfo/attendance__filter',$data,true);	 		
+		$content = $this->load->view('loginfo/visits__filter',$data,true);	 		
  		if ($_POST) {			
 			$from		=	$this->input->post('att_date_from');
 			$to			=	$this->input->post('att_date_to');			
 			$employee	=	$this->input->post('employee');			
-			$from = new DateTime($from);
-			$to	  =	new DateTime($to);
-			$to	  =	$to->modify('+1 day');
- 			$period = new DatePeriod(
-				$from,     
-		     	new DateInterval('P1D'),
-		     	$to
-			);				
-			//$period	=	array_reverse($period);
-			if (!empty($period)) {
-				foreach ($period as $value) {
-			        $date = $value->format('Y-m-d');
+			        $date = date("Y-m-d");
 			        $data['att_date'] = $date;
-		 			$data['users'] = $this->attendance_model->attendance_logs($date,$employee);	
-					$content .= $this->load->view('loginfo/attendance_logs',$data,true);	
-				}
-			}
-			$data['content']	= $content;					
+		 			$data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from,$to);
+                    $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
+					$content .= $this->load->view('loginfo/visit_logs',$data,true);
+                    $data['content'] = $content;					
  		}else{
  			$date = date("Y-m-d"); 			 			
  			$employee = array();
  			$data['att_date'] = $date;
-	 		$data['users'] = $this->attendance_model->attendance_logs($date,$employee);	
+	 		$data['users'] = $this->attendance_model->myteam_logs($date,$employee);			
 	 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
 			$content .= $this->load->view('loginfo/visit_logs',$data,true);
 			$data['content'] = $content;

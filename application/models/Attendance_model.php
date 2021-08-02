@@ -26,6 +26,35 @@ class Attendance_model extends CI_Model {
 		return $this->db->get()->result();     
 	}
 	
+/***********************My team Visit Start*********************/	
+	public function myteam_logs($att_date,$employee,$from='',$to=''){	
+        if (empty($employee)) {
+            $this->load->model('common_model');
+            $employee    =   $this->common_model->get_categories($this->session->user_id);
+        }
+		$user_id   = $this->session->user_id;
+		$this->db->select("tbl_visit.visit_date,tbl_visit.visit_time,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name");
+		$this->db->from('tbl_admin');
+		$this->db->join('tbl_visit','tbl_visit.user_id = tbl_admin.pk_i_admin_id','left');
+		$this->db->join('sales_region','sales_region.region_id = tbl_admin.sales_region','left');
+		if (!empty($from && $to)) {
+			$this->db->where('tbl_visit.visit_date >= ', $from);
+            $this->db->where('tbl_visit.visit_date <= ', $to);		
+		}else{
+			$filter_date = $att_date;
+			$this->db->where('tbl_visit.visit_date',$filter_date);
+		}
+		$this->db->where('tbl_admin.companey_id', $this->session->companey_id);		
+		if (!empty($employee)) {
+			$this->db->where_in('tbl_admin.pk_i_admin_id', $employee);		
+		}else{
+            $this->db->where_in('tbl_admin.pk_i_admin_id', $employee);
+        }
+		$this->db->group_by('tbl_visit.id');
+		return $this->db->get()->result();     
+	}
+/***********************My team Visit End*********************/	
+
 	public function attendance_logs_by_uid($uid){
 		$this->db->select("tbl_attendance.*,TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time) as dif");
 		$this->db->where('uid',$uid);

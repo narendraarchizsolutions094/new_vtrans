@@ -282,7 +282,7 @@ if(!empty($result))
 
     	$this->form_validation->set_rules('company_id','company_id','required|trim');
     	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
-     // $this->form_validation->set_rules('contact_id','contact_id','required|trim');
+        $this->form_validation->set_rules('contact_id','contact_id','required|trim');
     	$this->form_validation->set_rules('user_id','user_id','required|trim');
       $this->form_validation->set_rules('m_purpose','m_purpose','required|trim');
 

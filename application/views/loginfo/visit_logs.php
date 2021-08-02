@@ -2,8 +2,8 @@
     <!--  table area -->
     <div class="col-sm-12">        
         <div class="panel-body">
-            <h2><?=$att_date?></h2>
-            <table class="datatable table table-striped table-bordered" cellspacing="0" width="100%">
+            <!--<h2><?=$att_date?></h2>-->
+            <table id="vistbl" class="datatable table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th><?php echo display('serial') ?></th>
@@ -11,11 +11,8 @@
                         <th><?php echo ucfirst(display('disolay_name')) ?></th>
 						<th>Designation</th>
 						<th>Region</th>
-                        <th>Check In Time</th>
-                        <th>Check Out Time</th>
-                        <th>Break</th>
-                        <th>Total</th>
-                        <th>Action</th>
+                        <th>Visit Date</th>
+                        <th>Visit Time</th>
 						<th>Map</th>
                     </tr>
                 </thead>
@@ -29,29 +26,8 @@
                                 <td><?php echo $user->s_display_name;echo '&nbsp;';echo $user->last_name; ?></td>
 								<td><?php echo $user->designation;?></td>
 								<td><?php echo $user->sale_region;?></td>
-                                <td><?php echo $user->check_in;?></td>                                     
-                                <td><?php echo $user->check_out;?></td>
-                                <td>
-                                    <?php
-                                    $time1 = new DateTime($user->check_in);
-                                    $time2 = new DateTime($user->check_out);
-                                    $timediff = $time1->diff($time2);
-                                    
-                                    $time1 = new DateTime($timediff->format('%H:%i:%S'));
-                                    $time2 = new DateTime($user->total);
-                                    $diff        =   $time2->diff($time1);
-                                    
-                                    if($user->total){
-                                        echo $diff->format('%H:%i:%S');
-                                    }
-                                    ?>
-                                </td>
-                                <td>
-                                    <?php                                     
-                                    echo $user->total;
-                                    ?>
-                                </td>
-                                <td><a class="btn btn-primary btn-sm" href="<?=base_url().'attendance/view/'.$user->pk_i_admin_id?>">View</a></td>
+                                <td><?php echo $user->visit_date;?></td>                                     
+                                <td><?php echo $user->visit_time;?></td>
 								<td><a href="javascript:void(0)" onclick="get_modal_content(<?=$user->pk_i_admin_id?>)" class="btn btn-sm btn-success"><i class="fa fa-map-marker" aria-hidden="true"></i></a></td>
                             </tr>                                
                             <?php $sl++; ?>
@@ -64,6 +40,13 @@
 </div>
 <button type="button" id='modal_btn' data-toggle="modal" data-target="#myModal" style="visibility: hidden;"></button>
 <script type="text/javascript">
+// Basic example
+$(document).ready(function () {
+  $('#vistbl').DataTable({
+    "paging": false // false to disable pagination (or any other option)
+  });
+  $('.dataTables_length').addClass('bs-select');
+});
 
     $("#att_date").on('change',function(){
         var date_f = $(this).val();
