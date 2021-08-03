@@ -1950,6 +1950,26 @@ public function view_editable_aggrement()
         }
        
     }
+	
+	public function visit_live()
+    {
+        
+$id=$this->uri->segment('3');
+$where = " uid=$user_id AND DATE(created_date)=CURDATE()";
+$this->db->select('id');
+$this->db->where($where);    
+$res_rowsss  = $this->db->get('map_location_feed')->row_array();
+        if($res_rowsss->num_rows()!=0){
+			$data['title'] = 'Visit Map';
+            $data['content'] = $this->load->view('loginfo/live_map', $data, true);
+            $this->load->view('layout/main_wrapper', $data);
+        }else{
+            $this->session->set_flashdata('message', 'Travel History not found');
+
+            redirect('attendance/myteam');
+        }
+       
+    }
     
 
     
