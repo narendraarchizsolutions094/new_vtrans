@@ -30,14 +30,16 @@ class Map_feed extends REST_Controller {
         $waypoints  = json_decode($res_row['waypoints'],true);        
         array_push($waypoints, $new_waypoint);
         $update_array = array(        
-          'waypoints'  => json_encode($waypoints)
+          'waypoints'  => json_encode($waypoints),
+		  'one_lead'  => json_encode($waypoints)
         );      
         $this->db->where('id',$res_row['id']);
         $this->db->update('map_location_feed',$update_array);
       }else{      
         $insert_array = array(
           'uid'       => $uid,
-          'waypoints'  => json_encode(array($new_waypoint))
+          'waypoints'  => json_encode(array($new_waypoint)),
+		  'one_lead'  => json_encode(array($new_waypoint))
         );      
         $this->db->insert('map_location_feed',$insert_array);
       }

@@ -290,13 +290,13 @@ if(!empty($result))
     	{
 //FIND START POINT START			
 		$where = " user_id=$user_id AND enquiry_id=$enquiry_id AND DATE(created_at)=CURDATE()";
-		$this->db->select('end_waypoints');
+		$this->db->select('end_waypoints','id');
         $this->db->where($where); 
         $this->db->order_by('id','DESC');		
         $visit_row  = $this->db->get('tbl_visit')->row_array();
 		if(empty($visit_row['end_waypoints'])){			
 		$where = " uid=$user_id AND DATE(created_date)=CURDATE()";
-		$this->db->select('waypoints');
+		$this->db->select('waypoints','id','one_lead');
         $this->db->where($where);    
         $res_row  = $this->db->get('map_location_feed')->row_array();
 		$start_point = explode(']',$res_row['waypoints']); 
@@ -304,7 +304,19 @@ if(!empty($result))
 		}else{
 		$start_point = $visit_row['end_waypoints'];	
 		}
-//FIND START POINT END		
+//FIND START POINT END	
+//FIND All POINTS START
+$where = " uid=$user_id AND DATE(created_date)=CURDATE()";
+$this->db->select('id','one_lead');
+$this->db->where($where);    
+$res_rowsss  = $this->db->get('map_location_feed')->row_array();
+$clear_id = $res_rowsss['id'];
+$waypoints = $res_rowsss['one_lead'];
+$new_waypoint = array($end_point);
+$waypoints  = json_decode($waypoints);   
+array_push($waypoints, $new_waypoint);
+$this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
+//FIND ALL POINTS END	
 		
 	  
     		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
@@ -316,7 +328,8 @@ if(!empty($result))
                             'visit_time'=>$this->input->post('visit_time'),
 							'm_purpose'=>$this->input->post('m_purpose'),
 							'start_waypoints'=>$start_point,
-							'end_waypoints'=>$end_point,
+							'end_waypoints'=>'[['.$end_point.']]',
+							'all_waypoints'=>$waypoints,
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,
                         );
@@ -332,7 +345,22 @@ if(!empty($result))
 	            }
 	            else
 	            {	$data['enquiry_id'] = $enquiry_id;
-	            	$this->Client_Model->add_visit($data);
+	            	$last_id = $this->Client_Model->add_visit($data);
+					
+					$this->db->where('id',$clear_id);
+                    $this->db->set('one_lead','');
+                    $this->db->update('map_location_feed');
+					
+					$this->db->where('id',$last_id);
+                    $this->db->set('start_time',date('Y-m-d H:i:s'));
+                    $this->db->update('tbl_visit');
+					
+					/* $visit_details = $this->db->where(array('id'=>$vd_id))->get('visit_details')->row();
+					$waypoints  = json_decode($visit_details->way_points);   
+                    array_push($waypoints, $new_waypoint);
+                    $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id); */
+				   
+				   
 	            	$this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
       
                   $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', '', '', '', $visit_time, $res->Enquery_id, '', 'Visit -'.$m_purpose,1,3,$user_id,$comp_id);
@@ -485,8 +513,13 @@ if(!empty($result))
                  ], REST_Controller::HTTP_OK);
                }
               }elseif($status==3){
-               $data=['meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s')];
-               $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
+/********************new code***************/
+$data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>json_encode(array($new_waypoint))];
+$this->db->insert('visit_details',$data);
+$insertid=$this->db->insert_id();
+/********************new code***************/
+               //$data=['meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s')];
+               //$this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
                $res=['message'=>'Meeting Started'];
                $this->set_response([
                   'status' => true,
