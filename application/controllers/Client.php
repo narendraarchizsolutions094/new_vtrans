@@ -1955,18 +1955,17 @@ public function view_editable_aggrement()
     {
         
 $id=$this->uri->segment('3');
-$where = " uid=$user_id AND DATE(created_date)=CURDATE()";
-$this->db->select('id');
+$where = " uid=$id AND DATE(created_date)=CURDATE()";
+$this->db->select('id,uid');
 $this->db->where($where);    
 $res_rowsss  = $this->db->get('map_location_feed')->row_array();
-        if($res_rowsss->num_rows()!=0){
+        if(!empty($res_rowsss['id'])){
 			$data['title'] = 'Visit Map';
-            $data['content'] = $this->load->view('loginfo/live_map', $data, true);
-            $this->load->view('layout/main_wrapper', $data);
+			$data['att_id'] = $res_rowsss['uid'];
+            $content = $this->load->view('loginfo/live_map', $data, true);
+			echo json_encode(array('status'=>true,'data'=>$content));
         }else{
-            $this->session->set_flashdata('message', 'Travel History not found');
-
-            redirect('attendance/myteam');
+            echo json_encode(array('status'=>false,'msg'=>validation_error()));
         }
        
     }

@@ -1,7 +1,7 @@
 <div class="row">
 <div class="row">
     <?php
-        $visittable=$this->db->where(array('visit_id'=>$details->visit_id))->get('visit_details')->result();
+        $visittable=$this->db->where(array('uid'=>$att_id))->get('map_location_feed')->result();
     ?>
 <div class="col-md-12">
 <?php 
@@ -9,7 +9,7 @@ $i=1;
 $waypoints=[];
 foreach ($visittable as $key => $value) { ?>
 <?php
-$waypoints[]=$value->way_points;
+$waypoints[]=$value->waypoints;
 //  array_push(, json_decode($value->way_points));  
 // print_r($way_points);
 } 
@@ -34,14 +34,18 @@ $secondpoint=$newpoints[$lastKey];
 
 ?>
 </div>
-
-<br>
-<br>
-
-<hr>
-
-<div id="map" style="width: 100%; height: 800px;"></div>
-
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal">&times;</button>
+  <h4 class="modal-title">Modal Header</h4>
+</div>
+<div class="modal-body">    
+  <p>
+  	<div id="map" style="width: 100%; height: 400px;"></div>
+  </p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
 <script>
  
     var distance;
@@ -137,171 +141,3 @@ $secondpoint=$newpoints[$lastKey];
     </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s&callback=initMap"
   type="text/javascript"></script>
-
-<script>
- document.getElementById("vdate").disabled = true;  
-  document.getElementById("vtime").disabled = true; 
-function handleClick(myRadio) {
-  var valuer= myRadio.value;
-  if(valuer==1){
-  document.getElementById("vdate").disabled = true;  
-  document.getElementById("vtime").disabled = true;  
-  }else{
-    document.getElementById("vdate").disabled = false;  
-  document.getElementById("vtime").disabled = false;  
-  } 
-}
-
-$(function() {
-    $('#add').click(function() {
-      addnewrow();
-    });
-    $('body').delegate('.remove', 'click', function() {
-      $(this).parent().parent().remove();
-    });
-    $('body').delegate('.qtys,.price', 'keyup', function() {
-      var tr = $(this).parent().parent();
-    });
-  });
-//   $( "#amount" ).keypress(function() {
-//     var t = 0;
-//     $('#amount').each(function(i, e) {
-//       var amount = $(this).val() - 0;
-//       t += amount;
-//     });
-//     $('#total').html(t);
-//     alert(t);
-// });
-
-  function total() {
-    var t = 0;
-    $('.amount').each(function(i, e) {
-      var amount = $(this).val() - 0;
-      t += amount;
-    });
-    $('.total').html(t);
-  }
-  function Filevalidation(t)  {
-    var filesize =t.files[0].size;
-    filesize=filesize/1024;
-   var filesizeinkb= filesize.toFixed(0);
-    // alert(filesizeinkb);
-
-    if(filesizeinkb > 1024){
-   alert('File Size not exceed ');
-    }
-	}
-  function addnewrow() {
-    var n = ($('.detail tr').length - 0) + 1;
-    var s = n + 3
-    var r = n + 1
-    var tr = '<tr>' + '<td width="30%"><select name="expense[]" class="form-control"><?php foreach ($expenselist as $key => $value) { ?><option value="<?= $value->id ?>"><?= $value->title ?></option><?php } ?></select></td>'+'<td width="30%"><input id="amount'+n+'" class="form-control amount" name="amount[]"  onkeyup="total()"></td>'+'<td width="30%"><input name="imagefile[]" class="form-control " onchange="Filevalidation(this)"  id="file'+n+'" type="file"  ></td>'+'<td width="10%"><a href="javascript:void(0)" class="remove btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>' + '</tr>';
-    $('.detail').append(tr);
-    // $.getScript("https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js");
-    document.getElementById('amount' + n).addEventListener('keydown', function(e) {
-      var key = e.keyCode ? e.keyCode : e.which;
-      if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
-          (key == 65 && (e.ctrlKey || e.metaKey)) ||
-          (key >= 35 && key <= 40) ||
-          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
-          (key >= 96 && key <= 105)
-        )) e.preventDefault();
-    });
-     
-
-  }
-  document.getElementById('amount').addEventListener('keydown', function(e) {
-      var key = e.keyCode ? e.keyCode : e.which;
-      if (!([8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
-          (key == 65 && (e.ctrlKey || e.metaKey)) ||
-          (key >= 35 && key <= 40) ||
-          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
-          (key >= 96 && key <= 105)
-        )) e.preventDefault();
-    });
-
-    function expense_status(){
-      var x = new Array(); 
-      
-      $($(".checkbox1:checked")).each(function(k,v){
-        x.push($(v).val());
-      });
-      //alert(x.toString()); return;
-       approve_status = document.getElementById("approve_status").value;
-       remarks = document.getElementById("remarks").value;
-      $.ajax({
-              type: 'POST',
-              url: '<?= base_url('client/update_expense_status') ?>',
-              data: {exp_ids:x,status:approve_status,remarks:remarks},
-              success:function(data){
-              //  alert(data);
-               location.reload();
-              } 
-              });
-
-    }
-    function checkallexpense_status(){
-      approve_status = document.getElementById("approve_status").value;
-       remarks = document.getElementById("remarks").value;
-       visit_id = document.getElementById("visit_id").value;
-      $.ajax({
-              type: 'POST',
-              url: '<?= base_url('client/all_update_expense_status') ?>',
-              data: {status:approve_status,remarks:remarks,visit_id:visit_id},
-              success:function(data){
-              //  alert(data);
-               location.reload();
-              } 
-              });
-    }
-    function select_all(){
-
-var select_all = document.getElementById("selectall"); //select all checkbox
-var checkboxes = document.getElementsByClassName("choose-col"); //checkbox items
-
-//select all checkboxes
-select_all.addEventListener("change", function(e){
-  for (i = 0; i < checkboxes.length; i++) { 
-    checkboxes[i].checked = select_all.checked;
-  }
-});
-
-
-for (var i = 0; i < checkboxes.length; i++) {
-  checkboxes[i].addEventListener('change', function(e){ //".checkbox" change 
-    //uncheck "select all", if one of the listed checkbox item is unchecked
-    if(this.checked == false){
-      select_all.checked = false;
-    }
-    //check "select all" if all checkbox items are checked
-    if(document.querySelectorAll('.choose-col:checked').length == checkboxes.length){
-      select_all.checked = true;
-    }
-  });
-}
-
-}
-function filter_related_to(v)
-{
-      $.ajax({
-            url:"<?=base_url('client/account_by_company')?>",
-            type:'get',
-            data:{comp_id:v},
-            success:function(q){
-              $("select[name=enq_id]").html(q);
-               $("select[name=enq_id]").trigger('change');
-            }
-      });
-    
-       $.ajax({
-            url:"<?=base_url('client/contact_by')?>",
-            type:'get',
-            data:{key:v,by:'company'},
-            success:function(q){
-              $("select[name=contact_id]").html(q);
-               $("select[name=contact_id]").trigger('change');
-            }
-      });
-  }
-
-  </script>
