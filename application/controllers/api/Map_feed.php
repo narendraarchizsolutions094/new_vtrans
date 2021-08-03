@@ -27,11 +27,13 @@ class Map_feed extends REST_Controller {
       
       $new_waypoint = array($latitude,$longitude);
       if(!empty($res_row)){
-        $waypoints  = json_decode($res_row['waypoints'],true);        
+        $waypoints  = json_decode($res_row['waypoints'],true); 
+        $waypoints_one  = json_decode($res_row['one_lead'],true);		
         array_push($waypoints, $new_waypoint);
+		array_push($waypoints_one, $new_waypoint);
         $update_array = array(        
           'waypoints'  => json_encode($waypoints),
-		  'one_lead'  => json_encode($waypoints)
+		  'one_lead'  => json_encode($waypoints_one)
         );      
         $this->db->where('id',$res_row['id']);
         $this->db->update('map_location_feed',$update_array);

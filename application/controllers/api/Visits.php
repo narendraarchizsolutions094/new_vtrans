@@ -329,7 +329,7 @@ $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
 							'm_purpose'=>$this->input->post('m_purpose'),
 							'start_waypoints'=>$start_point,
 							'end_waypoints'=>'[['.$end_point.']]',
-							'all_waypoints'=>$waypoints,
+							'all_waypoints'=>json_encode($waypoints),
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,
                         );
@@ -348,7 +348,7 @@ $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
 	            	$last_id = $this->Client_Model->add_visit($data);
 					
 					$this->db->where('id',$clear_id);
-                    $this->db->set('one_lead','');
+                    $this->db->set('one_lead','[['.$end_point.']]');
                     $this->db->update('map_location_feed');
 					
 					$this->db->where('id',$last_id);
