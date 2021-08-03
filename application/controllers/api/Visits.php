@@ -514,7 +514,8 @@ $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
                }
               }elseif($status==3){
 /********************new code***************/
-$data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>json_encode(array($new_waypoint))];
+$visit_waypoints = $this->db->where(array('id'=>$visit_id))->get('tbl_visit')->row();
+$data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>$visit_waypoints->all_waypoints)];
 $this->db->insert('visit_details',$data);
 $insertid=$this->db->insert_id();
 /********************new code***************/
