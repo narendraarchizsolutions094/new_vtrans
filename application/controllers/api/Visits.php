@@ -290,13 +290,13 @@ if(!empty($result))
     	{
 //FIND START POINT START			
 		$where = " user_id=$user_id AND enquiry_id=$enquiry_id AND DATE(created_at)=CURDATE()";
-		$this->db->select('end_waypoints','id');
+		$this->db->select('end_waypoints,id');
         $this->db->where($where); 
         $this->db->order_by('id','DESC');		
         $visit_row  = $this->db->get('tbl_visit')->row_array();
 		if(empty($visit_row['end_waypoints'])){			
 		$where = " uid=$user_id AND DATE(created_date)=CURDATE()";
-		$this->db->select('waypoints','id','one_lead');
+		$this->db->select('waypoints,id,one_lead');
         $this->db->where($where);    
         $res_row  = $this->db->get('map_location_feed')->row_array();
 		$start_point = explode(']',$res_row['waypoints']); 
@@ -307,7 +307,7 @@ if(!empty($result))
 //FIND START POINT END	
 //FIND All POINTS START
 $where = " uid=$user_id AND DATE(created_date)=CURDATE()";
-$this->db->select('id','one_lead');
+$this->db->select('id,one_lead');
 $this->db->where($where);    
 $res_rowsss  = $this->db->get('map_location_feed')->row_array();
 $clear_id = $res_rowsss['id'];
