@@ -315,7 +315,6 @@ $waypoints = $res_rowsss['one_lead'];
 $new_waypoint = array($end_point);
 $waypoints  = json_decode($waypoints);   
 array_push($waypoints, $new_waypoint);
-$this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
 //FIND ALL POINTS END	
 		
 	  
@@ -350,6 +349,8 @@ $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id);
 					$this->db->where('id',$clear_id);
                     $this->db->set('one_lead','[['.$end_point.']]');
                     $this->db->update('map_location_feed');
+					$visit_id = $last_id;
+					$this->calculate_distance_post($visit_id,$waypoints,$comp_id,$user_id);
 					
 					$this->db->where('id',$last_id);
                     $this->db->set('start_time',date('Y-m-d H:i:s'));
