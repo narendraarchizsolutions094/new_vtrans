@@ -50,7 +50,7 @@ class Attendance_model extends CI_Model {
 		}else{
             $this->db->where_in('tbl_admin.pk_i_admin_id', $employee);
         }
-		$this->db->group_by('tbl_visit.id');
+		$this->db->group_by('tbl_admin.pk_i_admin_id');
 		return $this->db->get()->result();     
 	}
 /***********************My team Visit End*********************/	

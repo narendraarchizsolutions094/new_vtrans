@@ -351,15 +351,6 @@ array_push($waypoints, $new_waypoint);
                     $this->db->update('map_location_feed');
 					$visit_id = $last_id;
 					$this->calculate_distance_post($visit_id,$waypoints,$comp_id,$user_id);
-					
-					$this->db->where('id',$last_id);
-                    $this->db->set('start_time',date('Y-m-d H:i:s'));
-                    $this->db->update('tbl_visit');
-					
-					/* $visit_details = $this->db->where(array('id'=>$vd_id))->get('visit_details')->row();
-					$waypoints  = json_decode($visit_details->way_points);   
-                    array_push($waypoints, $new_waypoint);
-                    $this->calculate_distance_post($visit_id,$waypoints,$company_id,$user_id); */
 				   
 				   
 	            	$this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
