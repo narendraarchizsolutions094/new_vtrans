@@ -11,8 +11,8 @@
                         <th><?php echo ucfirst(display('disolay_name')) ?></th>
 						<th>Designation</th>
 						<th>Region</th>
-                        <th>Visit Date</th>
-                        <th>Visit Time</th>
+                        <!--<th>Visit Date</th>
+                        <th>Visit Time</th>-->
 						<th>Map</th>
                     </tr>
                 </thead>
@@ -26,8 +26,8 @@
                                 <td><?php echo $user->s_display_name;echo '&nbsp;';echo $user->last_name; ?></td>
 								<td><?php echo $user->designation;?></td>
 								<td><?php echo $user->sale_region;?></td>
-                                <td><?php echo $user->visit_date;?></td>                                     
-                                <td><?php echo $user->visit_time;?></td>
+                                <!--<td><?php echo $user->visit_date;?></td>                                     
+                                <td><?php echo $user->visit_time;?></td>-->
 								<td><a href="javascript:void(0)" onclick="get_modal_content(<?=$user->pk_i_admin_id?>)" class="btn btn-sm btn-success"><i class="fa fa-map-marker" aria-hidden="true"></i></a></td>
 								<!--<td><a href="<?php echo base_url('visits/visit_live/').$user->pk_i_admin_id; ?>" class="btn btn-sm btn-success"><i class="fa fa-map-marker" aria-hidden="true"></i></a></td>-->
                             </tr>                                
