@@ -26,7 +26,8 @@ class Dashboard extends CI_Controller {
   public function visit_map_only()
     {
         $id=$this->uri->segment('3');
-      $visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
+      //$visitdata= $this->db->where('visit_id',$id)->join('tbl_visit','tbl_visit.id=visit_details.visit_id')->get('visit_details');
+	  $visitdata= $this->db->where('id',$id)->get('tbl_visit');
         if($visitdata->num_rows()!=0){
             $data['details'] =$visitdata->row();
             $this->load->model('Client_Model');

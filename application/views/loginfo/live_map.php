@@ -1,7 +1,7 @@
 <div class="row">
 <div class="row">
     <?php
-        $visittable=$this->db->where(array('uid'=>$att_id))->get('map_location_feed')->result();
+        $visittable=$this->db->where(array('id'=>$att_id))->get('map_location_feed')->result();
     ?>
 <div class="col-md-12">
 <?php 

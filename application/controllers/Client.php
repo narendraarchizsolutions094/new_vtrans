@@ -1961,7 +1961,7 @@ $this->db->where($where);
 $res_rowsss  = $this->db->get('map_location_feed')->row_array();
         if(!empty($res_rowsss['id'])){
 			$data['title'] = 'Visit Map';
-			$data['att_id'] = $res_rowsss['uid'];
+			$data['att_id'] = $res_rowsss['id'];
             $content = $this->load->view('loginfo/live_map', $data, true);
 			echo json_encode(array('status'=>true,'data'=>$content));
         }else{

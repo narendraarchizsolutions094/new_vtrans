@@ -1,5 +1,6 @@
 <?php
-    $visittable=$this->db->where(array('visit_id'=>$details->visit_id))->get('visit_details')->result();     
+    //$visittable=$this->db->where(array('visit_id'=>$details->visit_id))->get('visit_details')->result(); 
+    $visittable=$this->db->where(array('id'=>$details->id))->get('tbl_visit')->result();     
 ?>
 
 <?php 
@@ -7,7 +8,7 @@ $i=1;
 $waypoints=[];
 foreach ($visittable as $key => $value) { ?>
 <?php
-$waypoints[]=$value->way_points;
+$waypoints[]=$value->all_waypoints;
 //  array_push(, json_decode($value->way_points));  
 // print_r($way_points);
 } 
