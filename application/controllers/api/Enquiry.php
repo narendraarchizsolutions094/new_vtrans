@@ -388,11 +388,13 @@ class Enquiry extends REST_Controller {
             //      );   
             //   }
             // }
+		//print_r($e_row['Enquery_id']);exit;
           $this->load->model('rule_model');
         	$this->rule_model->execute_rules($encode,array(1,2,3,6,7),$comp_id,$user_id);  
 				  $this->set_response([
                 'status' => TRUE,
-                'message' => $msg
+                'message' => $msg,
+				'data' => $e_row['Enquery_id'],
             ], REST_Controller::HTTP_OK);
   			} 
   		  else 
@@ -403,7 +405,36 @@ class Enquiry extends REST_Controller {
                ], REST_Controller::HTTP_OK);
   		  }
 	}
-	
+
+// For return the enq detail Start
+  public function get_enq_ccc_post()
+  {  
+    $enquiry_id = $this->input->post('enquiry_id');  
+    
+	$this->db->select('company,company_name,client_name');
+	$this->db->from('enquiry');
+	$this->db->join('tbl_company','tbl_company.id=enquiry.company','left');
+    $this->db->where('enquiry.Enquery_id',$enquiry_id);
+	$q = $this->db->get()->result_array();
+
+    $enqdetails = array();
+    foreach($q  as $value){
+      array_push($enqdetails,array('company_id'=>$value['company'],'company_name' => $value['company_name'],'client_name' => $value['client_name']));
+    }
+
+    if(empty($enqdetails)){
+      $this->set_response([
+          'status' => false,
+          'message' =>'No Template',
+           ], REST_Controller::HTTP_OK);
+    }else{      
+      $this->set_response([
+          'status' => TRUE,
+          'enqdetails' => $enqdetails,
+           ], REST_Controller::HTTP_OK);
+    }
+  }
+// For return the enq detail Start  
 	public function createEnquiryForm_post()
   	{
     $this->load->model(array('Enquiry_model','Leads_Model'));
