@@ -2204,7 +2204,7 @@ body{
 
 	@oda_table
 
-	<p class="c21"><span class="c22 c79 c85">Dynamic Fuel Surcharge</span><span class="c62 c66">:</span></p>
+	<p class="c21" style="page-break-before: always;"><span class="c22 c79 c85">Dynamic Fuel Surcharge</span><span class="c62 c66">:</span></p>
 	<p class="c72"><span class="c23">The fuel surcharge shall be calculated on basic freight based on average fuel price of four metro cities. Fuel surcharge will Increase /Decrease by 1% with every Increase/ Decrease of Rs.3 /- in average fuel price of four Metro cities; minimum 12% fuel surcharge shall be applicable.</span></p>
 	<p class="c1 c44"><span class="c42 c25"></span></p>
 	<p class="c72"><span class="c22 c79 c85">Fuel surcharge calculator:</span><span class="c14">&nbsp;</span></p>

@@ -52,7 +52,7 @@
 							<th>Sales Region</th>
 							<th>Sale Area</th>
 							<th>Sales Branch</th>
-							<th>Gread</th>
+							<th>Grade</th>
 							<th>Department</th>
                             <th><?php echo display("proccess"); ?></th>
                             <th>Start Billing Date</th> 
