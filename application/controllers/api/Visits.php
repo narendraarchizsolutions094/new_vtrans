@@ -354,6 +354,36 @@ array_push($waypoints, $new_waypoint);
                     $this->db->update('map_location_feed');
 					$visit_id = $last_id;
 					$this->calculate_distance_post($visit_id,$waypoints,$comp_id,$user_id);
+
+  //finalizeing start and end location
+
+                $start_end = $this->db->where(array('id'=>$visit_id))->get('tbl_visit')->row();
+
+                if(!empty($start_end))
+                {
+
+                      if(!empty($start_end->start_waypoints))
+                      {
+                          $sjson = (array)json_decode($start_end->start_waypoints);
+                          $s_latlong = $sjson[0];
+                      }
+                      if(!empty($start_end->end_waypoints))
+                      {
+                          $ejson = (array)json_decode($start_end->end_waypoints);
+                          $e_latlong = end($ejson);
+                      }
+                      if(!empty($s_latlong) && !empty($e_latlong))
+                      {
+                          $start_name = location_name_by_longlat($s_latlong[1],$s_latlong[0]);
+                          $end_name = location_name_by_longlat($e_latlong[1],$e_latlong[0]);
+
+                          $loc = array(
+                                'start_location'=>$start_name,
+                                'end_location'=>$end_name,
+                          );
+                          $this->db->where('id',$visit_id)->update('tbl_visit',$loc);
+                      }
+                }
 				   
 				   
 	            	$this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
@@ -527,9 +557,9 @@ $insertid=$this->db->insert_id();
                $res=['message'=>'Meeting Ended'];
 
                
-               $this->db->where('id',$visit_id);
+               /* $this->db->where('id',$visit_id);
                $this->db->set('end_time',date('Y-m-d H:i:s'));
-               $this->db->update('tbl_visit');
+               $this->db->update('tbl_visit'); */
 
                $this->set_response([
                   'status' => true,
