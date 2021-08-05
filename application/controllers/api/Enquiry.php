@@ -411,7 +411,7 @@ class Enquiry extends REST_Controller {
   {  
     $enquiry_id = $this->input->post('enquiry_id');  
     
-	$this->db->select('company,company_name,client_name');
+	$this->db->select('company,company_name,client_name,enquiry_id');
 	$this->db->from('enquiry');
 	$this->db->join('tbl_company','tbl_company.id=enquiry.company','left');
     $this->db->where('enquiry.Enquery_id',$enquiry_id);
@@ -419,7 +419,7 @@ class Enquiry extends REST_Controller {
 
     $enqdetails = array();
     foreach($q  as $value){
-      array_push($enqdetails,array('company_id'=>$value['company'],'company_name' => $value['company_name'],'client_name' => $value['client_name']));
+      array_push($enqdetails,array('company_id'=>$value['company'],'company_name' => $value['company_name'],'client_name' => $value['client_name'],'enq_id' => $value['enquiry_id']));
     }
 
     if(empty($enqdetails)){

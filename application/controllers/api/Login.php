@@ -80,6 +80,7 @@ class Login extends REST_Controller {
                         'token'             => $check_user->row()->telephony_token,
                         'phone_no'          => $check_user->row()->s_phoneno,
                         'availability'      => $check_user->row()->availability,
+						'branch_id'         => $check_user->row()->sales_branch,
                         'permissions'       => $permission_list,
                         'login_token'       =>$login_token
                     );

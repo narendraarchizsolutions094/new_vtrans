@@ -245,9 +245,15 @@ class Contacts extends REST_Controller {
                 $data['comp_id'] = $comp_id;
                 $data['client_id'] = $enquiry_id;
                 $this->db->insert('tbl_client_contacts',$data);
+				$insert_id = $this->db->insert_id();
 	            	$this->Leads_Model->add_comment_for_events('Contact Added',$res->Enquery_id,0,$user_id);
 	            }
 	            $done = 1;
+				if(!empty($insert_id)){
+				$cdata = $this->db->where(array('cc_id'=>$insert_id))->get('tbl_client_contacts')->row();
+                $contact_id = $cdata->cc_id;
+                $contact_name = $cdata->c_name;				
+				}
             }	
 
             if($done)
@@ -256,6 +262,8 @@ class Contacts extends REST_Controller {
             	$this->set_response([
                   'status' => true,
                   'message' =>'Saved Successfully.',
+				  'contact_id' =>$contact_id,
+				  'contact_name' =>$contact_name,
                ], REST_Controller::HTTP_OK);
 			       }
             else
