@@ -70,6 +70,12 @@ class Login extends REST_Controller {
                             $this->user_model->updateLoginToken($check_user->row()->pk_i_admin_id,$login_token,1);
                         };
                     }
+					if(!empty($check_user->row()->sales_branch)){
+					$bdata = $this->db->where(array('branch_id'=>$check_user->row()->sales_branch))->get('branch')->row();
+					$branch_id = $bdata->branch_name;
+					}else{
+					$branch_id = '';	
+					}
                     $data=array(
                         'isLogIn'           => true,
                         'user_id'           => $check_user->row()->pk_i_admin_id,
@@ -81,6 +87,7 @@ class Login extends REST_Controller {
                         'phone_no'          => $check_user->row()->s_phoneno,
                         'availability'      => $check_user->row()->availability,
 						'branch_id'         => $check_user->row()->sales_branch,
+						'branch_name'       => $branch_id,
                         'permissions'       => $permission_list,
                         'login_token'       =>$login_token
                     );
