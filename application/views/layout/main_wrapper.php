@@ -895,11 +895,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                         <?php } 
           if (user_access(200)) { ?>
-                        <li class="dropdown dropdown-user">
+                        <!--<li class="dropdown dropdown-user">
                             <button title="<?=display("mark_attendence")?>" class="btn btn-primary"
                                 style="margin-top: 20px; border-radius: 50%;" id="mark_attendance"><i
                                     class="fa fa-clock-o"></i> </button>&nbsp;
-                        </li>
+                        </li>-->
                         <?php
           }
           ?>

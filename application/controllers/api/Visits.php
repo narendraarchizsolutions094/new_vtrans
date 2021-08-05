@@ -312,11 +312,14 @@ $this->db->where($where);
 $res_rowsss  = $this->db->get('map_location_feed')->row_array();
 $clear_id = $res_rowsss['id'];
 $waypoints = $res_rowsss['one_lead'];
-$new_waypoint = array($end_point);
+$l_lvalues = explode(',',$end_point);
+$latitude   = (float)$l_lvalues[0];
+$longitude  = (float)$l_lvalues[1];
+$new_waypoint = array($latitude,$longitude);
 $waypoints  = json_decode($waypoints);   
 array_push($waypoints, $new_waypoint);
 //FIND ALL POINTS END	
-		
+//print_r($waypoints);exit;		
 	  
     		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
 

@@ -2314,6 +2314,7 @@ public function all_update_expense_status()
         $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('2,3,4,5,6,7,8');
 
         $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
+		$data['region']=$this->db->where('comp_id',$this->session->companey_id)->get('sales_region')->result();
 
         $data['company_list'] = $this->Client_Model->getCompanyList()->result();
 

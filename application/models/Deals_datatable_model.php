@@ -81,11 +81,12 @@ class Deals_datatable_model extends CI_Model{
 //print_r($_POST['curr_stg']);exit;
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
-        $this->db->select('info.*,enq.name,enq.Enquery_id,enq.status as enq_type,enq.client_name,comp.company_name,(SELECT SUM(expected_amount) FROM deal_data WHERE deal_data.deal_id = info.id) as qotation_amt,CONCAT(tbl_admin.s_display_name, tbl_admin.last_name) as cre_to,');
+        $this->db->select('info.*,enq.name,sales_region.name as region_name,enq.Enquery_id,enq.status as enq_type,enq.client_name,comp.company_name,(SELECT SUM(expected_amount) FROM deal_data WHERE deal_data.deal_id = info.id) as qotation_amt,CONCAT(tbl_admin.s_display_name, tbl_admin.last_name) as cre_to,');
         $this->db->from($this->table.' info');
         $this->db->join('enquiry enq','enq.enquiry_id=info.enquiry_id','left');
         $this->db->join('tbl_company comp','enq.company=comp.id','left');
 		$this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=info.createdby','left');
+		$this->db->join('sales_region','sales_region.region_id=tbl_admin.sales_region','left');
         $this->db->where("info.comp_id",$this->session->companey_id);
 
        // $where="info.original=1 AND";
@@ -152,6 +153,15 @@ class Deals_datatable_model extends CI_Model{
                 $where.=" and ";
 
             $where.=" (info.booking_type ='".$_POST['booking_type']."' ) ";
+            $and =1;
+        }
+		
+		if(!empty($_POST['region_type']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (tbl_admin.sales_region ='".$_POST['region_type']."' ) ";
             $and =1;
         }
 

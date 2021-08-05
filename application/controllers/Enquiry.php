@@ -3976,6 +3976,9 @@ echo  $details1;
             if($colsall || in_array(4,$cols))
             $sub[] = ucwords($value->business_type).'ward'??'NA';
 		
+		    if($colsall || in_array(27,$cols))
+            $sub[] = ucwords($value->region_name)??'NA';
+		
 		    if($colsall || in_array(26,$cols))
             $sub[] = ucwords($value->cre_to)??'NA';
             

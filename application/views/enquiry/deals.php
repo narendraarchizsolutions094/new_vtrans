@@ -80,6 +80,11 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                       <label>
                       <input type="checkbox" value="booking_type_filter" id="branchcheckbox" name="filter_checkbox" <?php if(in_array('booking_type_filter',$variable)){echo'checked';} ?>> Booking Type</label>
                     </li>
+					
+					<li>
+                      <label>
+                      <input type="checkbox" value="region_type_filter" id="regioncheckbox" name="filter_checkbox" <?php if(in_array('region_type_filter',$variable)){echo'checked';} ?>> Region Name</label>
+                    </li>
                    
                     <!--  <li>
                       <label>
@@ -183,6 +188,19 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                     <option value="" selected>-Select-</option>
                     <option value="sundry">Sundry</option>
                     <option value="ftl" >FTL</option>
+                </select>
+        </div>
+    </div>
+	
+	<div class="col-lg-3" id="region_type_filter" style="<?php if(!in_array('region_type_filter',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label>Region Name</label>
+           <select class="d_filter form-control" name="d_region_type">
+                    <option value="" selected>-Select-</option>
+                <?php 
+                foreach($region as $dregion){ ?>
+                      <option value="<?= $dregion->region_id ?>"><?= $dregion->name ?></option>
+                     <?php }  ?>
                 </select>
         </div>
     </div>
@@ -371,6 +389,7 @@ function manage_filters()
                 <!--<th id="th-2">Branch Type</th> -->
                   <th id="th-3">Business Type</th>
                   <th id="th-4">Booking Type</th>
+				  <th id="th-27">Region Name</th>
                 <!--<th id="th-5">Booking Branch</th>
                   <th id="th-6">Delivery Branch</th>
                   <th id="th-7">Rate</th>
@@ -463,6 +482,7 @@ $(document).ready(function(){
                      d.date_to = $("input[name=d_to_date]").val();
                      d.enq_for = $("select[name=d_enquiry_id]").val();
                      d.booking_type = $("select[name=d_booking_type]").val();
+					 d.region_type = $("select[name=d_region_type]").val();
                      d.company = $("select[name=d_company]").val();
                      // d.from_date = obj[0]['value'];
                      // d.from_time = '';//obj[1]["value"];
@@ -712,6 +732,9 @@ $(window).load(function(){
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="19"> Status</label>
+            </div>
+			<div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="27"> Region Name</label>
             </div>
 			<div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="26"> Created By</label>
