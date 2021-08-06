@@ -3380,6 +3380,7 @@ public function set_layout_to_session() {
               }
              
               $freight_table ='';
+			  $coverage_table ='';
 
               if(!empty($query))
               {
@@ -3508,6 +3509,55 @@ $vertical ='';
             </tbody></table>';
 }			
               }
+
+//For Area Coverage.............
+if($deal->btype=='zone')
+{
+$booking_zones = $this->db->select('booking_branch')->where(array('deal_id'=>$info_id))->get('deal_data')->result();
+$delivery_zones = $this->db->select('delivery_branch')->where(array('deal_id'=>$info_id))->get('deal_data')->result();
+$coverage_table.='
+                <table border="1" width="100%">
+                      <thead>
+					  <tr><th style="background:#00b0f0;" colspan="4"> Area Demarcation</th></tr>
+                      <tr style="font-size:12px;">
+                      <th style="background:#00b0f0;font-size:12px;">Zone</th>
+			          <th style="background:#00b0f0;font-size:12px;">Area Coverage</th>
+			          <th style="background:#00b0f0;font-size:12px;">Zone</th>
+			          <th style="background:#00b0f0;font-size:12px;">Area Coverage</th>';
+$booking_zone = array();
+$delivery_zone = array();
+                foreach ($booking_zones as $key1 => $value1)
+                {
+$booking_zone[] = $value1->booking_branch;
+                }
+				foreach ($delivery_zones as $key2 => $value2)
+                {
+$delivery_zone[] = $value2->delivery_branch;
+                } 
+$all_merge = array_merge($booking_zone,$delivery_zone);
+$all_zones = array_unique($all_merge);
+$all_zones = array_chunk($all_zones,2);
+//print_r($all_zones);exit;
+                $coverage_table.='</tr>';
+
+                foreach ($all_zones as $key => $value)
+                {
+				$coverage_table.='<tr>';
+				foreach($value as $n => $val){
+					$zone_data = $this->db->select('name,area_coverage')->where(array('zone_id'=>$val))->get('zones')->row();
+					$coverage_table.='<td style="font-size:12px;text-align:center;">'.$zone_data->name.'</td>';
+					$coverage_table.='<td style="font-size:12px;text-align:center;">'.$zone_data->area_coverage.'</td>';
+				}
+                $coverage_table.='</tr>';
+				}
+
+            $coverage_table.='</tbody></table>';				  
+}else{
+	$coverage_table='';
+}
+
+//For Area Coverage.............End
+
       
             }//ifend
             else
@@ -3739,6 +3789,7 @@ $vertical ='';
   $oc_table.='</tbody>
       </table>';
         //echo $freight_table;
+		$content = str_replace('@coverage_table', $coverage_table,$content);
         $content = str_replace('@freight_table', $freight_table,$content);
         $content = str_replace('@oc_table', $oc_table,$content);
         $content = str_replace('@area_table', $area_table,$content);

@@ -2179,6 +2179,10 @@ body{
 	<p class="c9"><span class="c22 c79">Freight Charges (IN INR):</span><span class="c66 c79">- &nbsp;</span></p>
 	<a id="t.b882eaace525279cc79cc0cb72fa0b52ebb13879"></a>
 @freight_table
+
+<br>
+<br>
+@coverage_table
 	<p class="c21 c44"><span class="c23"></span></p>
 	<a id="t.ffa63e318986c00808b4dba271e72d8b8f394f6b"></a>
 	<a id="t.1"></a>
