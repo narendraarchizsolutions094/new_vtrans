@@ -517,6 +517,7 @@ public function zone_list()
 	{
 		$data = array('comp_id'=>$this->session->companey_id,
 						'name'=>$this->input->post('zone_name'),
+						'area_coverage'=>$this->input->post('area_coverage'),
 					);
 		$this->Branch_model->save_zone($data);
 		$this->session->set_flashdata('message','Zone Added Successfully.');
@@ -547,13 +548,18 @@ public function edit_zone()
 	              <label>Zone Name </label>
 	              <input type="text" name="zone_name" value="'.$res->name.'" class="form-control">
 	            </div>
+				<div class="form-group">
+	              <label>Area Coverage </label>
+	              <input type="text" name="area_coverage" value="'.$res->area_coverage.'" class="form-control">
+	            </div>
           </div>';
 	}
 	else if($this->input->post('task')=='save')
 	{
 		$id = $this->input->post('vid');
-		$data = array(	'name'=>$this->input->post('zone_name'),
-				
+		$data = array(	
+		'name'=>$this->input->post('zone_name'),
+		'area_coverage'=>$this->input->post('area_coverage'),		
 					);
 		$this->Branch_model->save_zone($data,$id);
 		$this->session->set_flashdata('message','Saved Successfully');

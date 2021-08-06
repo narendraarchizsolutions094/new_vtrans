@@ -37,6 +37,7 @@
             <tr>
               <th>S No.</th>
               <th>Zone Name</th>
+			  <th>Area Coverage</th>
               <th>Created At</th>
               <th>Action</th>
             </tr>
@@ -47,6 +48,7 @@
               <tr>
                 <td><?php echo $sl; ?></td>
                 <td width=""><?= $zone->name ?></td>
+				<td width=""><?= $zone->area_coverage ?></td>
                 <td width=""><?= $zone->created_at ?></td>
                 <td class="center">
 <?php   //if (user_access('d36')) { ?>
@@ -98,6 +100,11 @@
             <div class="form-group">
               <label>Zone Name </label>
               <input type="text" name="zone_name" class="form-control">
+            </div>
+			
+			<div class="form-group">
+              <label>Area Coverage </label>
+              <input type="text" name="area_coverage" class="form-control">
             </div>
            
           <!--   <div class="form-group">

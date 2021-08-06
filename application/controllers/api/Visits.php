@@ -353,9 +353,11 @@ array_push($waypoints, $new_waypoint);
                     $this->db->set('one_lead','[['.$end_point.']]');
                     $this->db->update('map_location_feed');
 					$visit_id = $last_id;
+
+//finalizeing Expence and destination					
 					$this->calculate_distance_post($visit_id,$waypoints,$comp_id,$user_id);
 
-  //finalizeing start and end location
+//finalizeing start and end location
 
                 $start_end = $this->db->where(array('id'=>$visit_id))->get('tbl_visit')->row();
 
@@ -784,8 +786,8 @@ $insertid=$this->db->insert_id();
 
 
 	            	if(!empty($enquiry_id)){
-                    $this->Client_Model->add_visit($data);
-	                $this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
+                    //$this->Client_Model->add_visit($data);
+	                //$this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
                     }
 	            $done = 1;
             }	
