@@ -125,7 +125,7 @@ class Attendance extends CI_Controller {
  			$employee = array();
  			$data['att_date'] = $date;
 	 		$data['users'] = $this->attendance_model->myteam_logs($date,$employee);	
-//echo '<pre>';print_r($data['users']);exit;			
+echo '<pre>';print_r($data['users']);exit;			
 	 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
 			$content .= $this->load->view('loginfo/visit_logs',$data,true);
 			$data['content'] = $content;

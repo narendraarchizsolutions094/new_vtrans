@@ -158,7 +158,11 @@ $vis_row  = $this->db->get('tbl_visit')->row();
    // $result[$key]['meeting_status'] = $meeting_status;
    //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
    $result[$key]['visit_status'] = $value->visit_status;
+   if(!empty($vis_row->id)){
    $result[$key]['last_visit'] = $vis_row->id;
+   }else{
+   $result[$key]['last_visit'] = '';   
+   }
 } 
 
 if(!empty($result))
