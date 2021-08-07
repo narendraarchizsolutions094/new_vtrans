@@ -76,7 +76,7 @@ class Visit_datatable_model extends CI_Model{
 
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         // print_r($_POST['company']);exit;
-        $this->db->select($this->table.'.*,tbl_visit.created_at,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.company, tbl_visit.id as vids,tbl_company.company_name,enquiry.client_name,contact.c_name as contact_person,sales_region.name as region_name,branch.branch_name as branch_name,sales_area.area_name as area_name,enquiry_status.title as enquiry_status_title,city.city');
+        $this->db->select($this->table.'.*,s_r.name as emp_region,tbl_visit.created_at,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.company, tbl_visit.id as vids,tbl_company.company_name,enquiry.client_name,contact.c_name as contact_person,sales_region.name as region_name,branch.branch_name as branch_name,sales_area.area_name as area_name,enquiry_status.title as enquiry_status_title,city.city');
         $this->db->select('(SELECT sum(amount) from tbl_expense  where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="2") as visit_otexpSum');
         //$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1" AND tbl_expense.approve_status = "2" ) as visit_expSum');
 		$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1") as visit_expSum');
@@ -87,6 +87,7 @@ class Visit_datatable_model extends CI_Model{
         $this->db->join('city','enquiry.city_id=city.id','left');
         $this->db->join('branch','branch.branch_id=enquiry.sales_branch','left');
         $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region','left');
+		$this->db->join('sales_region as s_r','s_r.region_id=tbl_admin.sales_region','left');
         $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area','left');
         $this->db->join('tbl_company','tbl_company.id=enquiry.company','left');
         $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id','left');
@@ -106,7 +107,11 @@ class Visit_datatable_model extends CI_Model{
 
         if(!empty($_POST['region'])){
             $where .= " AND  sales_region.region_id='".$_POST['region']."'";
-        }   
+        }
+
+        if(!empty($_POST['emp_region'])){
+            $where .= " AND  tbl_admin.sales_region='".$_POST['emp_region']."'";
+        }		
 
         if(!empty($_POST['branch'])){
             $where .= " AND  branch.branch_id='".$_POST['branch']."'";

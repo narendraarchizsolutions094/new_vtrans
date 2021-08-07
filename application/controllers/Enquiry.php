@@ -3836,6 +3836,10 @@ echo  $details1;
         if($colsall || in_array(28,$cols)){
             $sub[] = $res->remarks;
         }
+		
+		if($colsall || in_array(29,$cols))
+            $sub[] = ucwords($res->emp_region)??'NA';
+		
         if($colsall || in_array(7,$cols)){
             $sub[] = $res->employee;
         }

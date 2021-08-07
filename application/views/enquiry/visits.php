@@ -75,7 +75,12 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                     <li>
                       <label>
                       <input type="checkbox" value="branch" id="branchcheckbox" name="filter_checkbox" <?php if(in_array('branch',$variable)){echo'checked';} ?>> Branch</label>
-                    </li>        
+                    </li> 
+                    
+                    <li>
+                      <label>
+                      <input type="checkbox" value="emp_region" id="empregioncheckbox" name="filter_checkbox" <?php if(in_array('emp_region',$variable)){echo'checked';} ?>> Employee Region</label>
+                    </li>					
 
 
                     <li class="text-center">
@@ -285,6 +290,19 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
           </select>
         </div>
     </div>
+	
+	<div class="col-lg-3" id="empregionfilter" style="<?php if(!in_array('emp_region',$variable)){echo'display:none';} ?>">
+        <div class="form-group">
+          <label> Employee Region</label>
+           <select class="v_filter form-control" name="emp_region">
+                    <option value="" selected>-Select-</option>
+                <?php 
+                foreach($region_list as $dregion){ ?>
+                      <option value="<?= $dregion->region_id ?>"><?= $dregion->name ?></option>
+                     <?php }  ?>
+                </select>
+        </div>
+    </div>
 
 
 </div>
@@ -360,7 +378,7 @@ $(document).ready(function(){
       });
 });
 $('input[name="filter_checkbox"]').click(function(){  
-  if($('#createdbycheckbox').is(":checked")||$('#companycheckbox').is(":checked")||$('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")||$('#ratingcheckbox').is(":checked")||$('#differencecheckbox').is(":checked")||$('#regioncheckbox').is(":checked")||$('#areacheckbox').is(":checked")||$('#branchcheckbox').is(":checked")){ 
+  if($('#createdbycheckbox').is(":checked")||$('#companycheckbox').is(":checked")||$('#datecheckbox').is(":checked")||$('#forcheckbox').is(":checked")||$('#ratingcheckbox').is(":checked")||$('#differencecheckbox').is(":checked")||$('#regioncheckbox').is(":checked")||$('#empregioncheckbox').is(":checked")||$('#areacheckbox').is(":checked")||$('#branchcheckbox').is(":checked")){ 
     $('#filter_pannel').show();
   }else{
     $('#filter_pannel').hide();
@@ -416,6 +434,13 @@ $('input[name="filter_checkbox"]').click(function(){
         else{
           $('#regionfilter').hide();
     }
+	
+	if($('#empregioncheckbox').is(":checked")){
+        $('#empregionfilter').show();
+            }
+        else{
+          $('#empregionfilter').hide();
+    }
 
     if($('#areacheckbox').is(":checked")){
         $('#areafilter').show();
@@ -464,6 +489,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-5">Actual Distance</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-28">Remark</th>
+						  <th id="th-29">Employee Region</th>
 				          <th id="th-7">Employee</th>
 				          <th id="th-11" >Difference (%)</th>
 				          <th id="th-8">Travel Expense</th>
@@ -683,6 +709,7 @@ var table2  = $('#datatable').DataTable({
                      d.region = obj[8]['value'];
                      d.area = obj[9]['value'];
                      d.branch = obj[10]['value'];
+					 d.emp_region = obj[11]['value'];
                      d.to_time = '';//obj[5]['value'];
                      d.view_all=true;
                     if(c && c!='')
@@ -966,6 +993,10 @@ $("select").select2();
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="28">  Remark</label>
+            </div>
+			
+			<div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="29">  Employee Region</label>
             </div>
 
             <div class="col-md-4">
