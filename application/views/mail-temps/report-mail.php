@@ -50,10 +50,10 @@
                                     if($filters['process_id'] == 198){
                                        $logo_url = 'https://v-trans.thecrm360.com/assets/images/v-xpress-logo.png';                                       
                                     }else{
-                                       $logo_url = 'https://v-trans.thecrm360.com/assets/images/vtrans_logo.png';
+                                       $logo_url = 'https://v-trans.thecrm360.com/assets/images/V-Trans_NewLogo.png';
                                     }
                                  }else{
-                                    $logo_url = 'https://v-trans.thecrm360.com/assets/images/vtrans_logo.png';
+                                    $logo_url = 'https://v-trans.thecrm360.com/assets/images/V-Trans_NewLogo.png';
                                  }
                                  ?>
                                  <img
