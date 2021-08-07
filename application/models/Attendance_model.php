@@ -27,17 +27,18 @@ class Attendance_model extends CI_Model {
 	}
 	
 /***********************My team Visit Start*********************/	
-	public function myteam_logs($att_date,$employee,$from=''){	
+	public function myteam_logs($att_date,$employee,$from='',$desi='',$region=''){		
         if (empty($employee)) {
             $this->load->model('common_model');
             $employee    =   $this->common_model->get_categories($this->session->user_id);
         }
 		$user_id   = $this->session->user_id;
-		$this->db->select("COUNT(DISTINCT(enquiry.enquiry_id)) as t_enq,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name,GROUP_CONCAT(CONCAT('(',tbl_attendance.id,',',tbl_attendance.uid,',',tbl_attendance.check_in_time,',',tbl_attendance.check_out_time,',',TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time),')') separator ',') as attendance_row,MIN(tbl_attendance.check_in_time) as check_in,MAX(tbl_attendance.check_out_time) as check_out,SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time)))) as total");
+		$this->db->select("tbl_user_role.user_role,curr_location.waypoints as l_end,COUNT(DISTINCT(deal_info.id)) as t_deal,COUNT(DISTINCT(tbl_vis.id)) as t_vis,COUNT(DISTINCT(enquiry.enquiry_id)) as t_enq,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name,GROUP_CONCAT(CONCAT('(',tbl_attendance.id,',',tbl_attendance.uid,',',tbl_attendance.check_in_time,',',tbl_attendance.check_out_time,',',TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time),')') separator ',') as attendance_row,MIN(tbl_attendance.check_in_time) as check_in,MAX(tbl_attendance.check_out_time) as check_out,SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time)))) as total");
 		//$this->db->select("tbl_visit.visit_date,tbl_visit.visit_time,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name");
 		$this->db->from('tbl_admin');
 		//$this->db->join('tbl_visit','tbl_visit.user_id = tbl_admin.pk_i_admin_id','left');
 		$this->db->join('sales_region','sales_region.region_id = tbl_admin.sales_region','left');
+		$this->db->join('tbl_user_role','tbl_user_role.use_id = tbl_admin.user_permissions','left');
 		/* if (!empty($from && $to)) {
 			$this->db->where('tbl_visit.visit_date >= ', $from);
             $this->db->where('tbl_visit.visit_date <= ', $to);		
@@ -48,10 +49,22 @@ class Attendance_model extends CI_Model {
 		if (!empty($from)) {
 			$filter_date = $from;
 			$this->db->join('(select * from tbl_attendance where tbl_attendance.check_out_time!="0000-00-00 00:00:00" AND DATE(tbl_attendance.check_in_time) = "'.$filter_date.'" ORDER BY tbl_attendance.id asc) as tbl_attendance','tbl_attendance.uid = tbl_admin.pk_i_admin_id','left');
-            $this->db->join('(select enquiry_id,created_by from enquiry where enquiry.created_date!="0000-00-00 00:00:00" AND DATE(enquiry.created_date) = "'.$filter_date.'" ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');			
+            $this->db->join('(select enquiry_id,created_by from enquiry where enquiry.created_date!="0000-00-00 00:00:00" AND DATE(enquiry.created_date) = "'.$filter_date.'" ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select id,user_id from tbl_visit where tbl_visit.created_at!="0000-00-00 00:00:00" AND DATE(tbl_visit.created_at) = "'.$filter_date.'" ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select id,createdby from commercial_info where commercial_info.creation_date!="0000-00-00 00:00:00" AND DATE(commercial_info.creation_date) = "'.$filter_date.'" ORDER BY commercial_info.id asc) as deal_info','deal_info.createdby = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select waypoints,uid from map_location_feed where map_location_feed.created_date!="0000-00-00 00:00:00" AND DATE(map_location_feed.created_date) = "'.$filter_date.'" ORDER BY map_location_feed.id asc) as curr_location','curr_location.uid = tbl_admin.pk_i_admin_id','left');			
 		}else{
 			$this->db->join('(select * from tbl_attendance where tbl_attendance.check_out_time!="0000-00-00 00:00:00" AND DATE(tbl_attendance.check_in_time) = CURDATE() ORDER BY tbl_attendance.id asc) as tbl_attendance','tbl_attendance.uid = tbl_admin.pk_i_admin_id','left');	
-            $this->db->join('(select enquiry_id,created_by from enquiry where enquiry.created_date!="0000-00-00 00:00:00" AND DATE(enquiry.created_date) = CURDATE() ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');				
+            $this->db->join('(select enquiry_id,created_by from enquiry where enquiry.created_date!="0000-00-00 00:00:00" AND DATE(enquiry.created_date) = CURDATE() ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select id,user_id from tbl_visit where tbl_visit.created_at!="0000-00-00 00:00:00" AND DATE(tbl_visit.created_at) = CURDATE() ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select id,createdby from commercial_info where commercial_info.creation_date!="0000-00-00 00:00:00" AND DATE(commercial_info.creation_date) = CURDATE() ORDER BY commercial_info.id asc) as deal_info','deal_info.createdby = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select waypoints,uid from map_location_feed where map_location_feed.created_date!="0000-00-00 00:00:00" AND DATE(map_location_feed.created_date) = CURDATE() ORDER BY map_location_feed.id asc) as curr_location','curr_location.uid = tbl_admin.pk_i_admin_id','left');			
+		}
+		if (!empty($desi)) {
+			$this->db->where('tbl_user_role.use_id',$desi);
+		}
+		if (!empty($region)) {
+			$this->db->where('sales_region.region_id',$region);
 		}
 		$this->db->where('tbl_admin.companey_id', $this->session->companey_id);		
 		if (!empty($employee)) {

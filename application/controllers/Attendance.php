@@ -108,15 +108,19 @@ class Attendance extends CI_Controller {
 	public function myteam(){
  		$this->load->model('report_model');
  		$data['title'] = 'Team Visits';
-		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
+		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));
+        $data['user_roles'] = $this->db->select('use_id,user_role')->where(array('comp_id'=>$this->session->userdata('companey_id')))->get('tbl_user_role')->result();
+        $data['user_region'] = $this->db->select('region_id,name')->where(array('comp_id'=>$this->session->userdata('companey_id')))->get('sales_region')->result();		
 		$content = $this->load->view('loginfo/visits__filter',$data,true);	 		
  		if ($_POST) {			
 			$from		=	$this->input->post('att_date_from');
+			$desi		=	$this->input->post('designation');
+			$region		=	$this->input->post('region');
 			//$to			=	$this->input->post('att_date_to');			
 			$employee	=	$this->input->post('employee');			
 			        $date = date("Y-m-d");
 			        $data['att_date'] = $date;
-		 			$data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from);
+		 			$data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from,$desi,$region);
                     $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
 					$content .= $this->load->view('loginfo/visit_logs',$data,true);
                     $data['content'] = $content;					
@@ -125,7 +129,7 @@ class Attendance extends CI_Controller {
  			$employee = array();
  			$data['att_date'] = $date;
 	 		$data['users'] = $this->attendance_model->myteam_logs($date,$employee);	
-echo '<pre>';print_r($data['users']);exit;			
+//print_r($data['users']);exit;			
 	 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
 			$content .= $this->load->view('loginfo/visit_logs',$data,true);
 			$data['content'] = $content;
