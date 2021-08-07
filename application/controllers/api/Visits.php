@@ -48,6 +48,17 @@ $result =array();
        //exit;
 		foreach($data['result']->result() as $key=> $value)
     {
+		
+//FOR FIND LAST VISIT FOR TODAY START
+$uid = $value->user_id;
+$where = " user_id=$uid AND DATE(visit_date)=CURDATE()";
+$this->db->select('id');
+$this->db->where($where);
+$this->db->order_by('id','DESC'); 
+$this->db->limit('1');   
+$vis_row  = $this->db->get('tbl_visit')->row();
+//FOR FIND LAST VISIT FOR TODAY END
+		
 			$ades = $value->actualDistance;
 			$ides = $value->idealDistance;
 		
@@ -147,6 +158,7 @@ $result =array();
    // $result[$key]['meeting_status'] = $meeting_status;
    //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
    $result[$key]['visit_status'] = $value->visit_status;
+   $result[$key]['last_visit'] = $vis_row->id;
 } 
 
 if(!empty($result))

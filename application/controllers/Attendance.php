@@ -112,11 +112,11 @@ class Attendance extends CI_Controller {
 		$content = $this->load->view('loginfo/visits__filter',$data,true);	 		
  		if ($_POST) {			
 			$from		=	$this->input->post('att_date_from');
-			$to			=	$this->input->post('att_date_to');			
+			//$to			=	$this->input->post('att_date_to');			
 			$employee	=	$this->input->post('employee');			
 			        $date = date("Y-m-d");
 			        $data['att_date'] = $date;
-		 			$data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from,$to);
+		 			$data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from);
                     $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
 					$content .= $this->load->view('loginfo/visit_logs',$data,true);
                     $data['content'] = $content;					
@@ -124,7 +124,8 @@ class Attendance extends CI_Controller {
  			$date = date("Y-m-d"); 			 			
  			$employee = array();
  			$data['att_date'] = $date;
-	 		$data['users'] = $this->attendance_model->myteam_logs($date,$employee);			
+	 		$data['users'] = $this->attendance_model->myteam_logs($date,$employee);	
+//echo '<pre>';print_r($data['users']);exit;			
 	 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
 			$content .= $this->load->view('loginfo/visit_logs',$data,true);
 			$data['content'] = $content;

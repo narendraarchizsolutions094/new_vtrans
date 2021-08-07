@@ -13,6 +13,13 @@
 						<th>Region</th>
                         <!--<th>Visit Date</th>
                         <th>Visit Time</th>-->
+						<th>Day In</th>
+                        <th>Day Out</th>
+						<th>Active Hours</th>
+						<th>Today Leads</th>
+						<th>Today Deals</th>
+						<th>Today Visits</th>
+						<th>Current Location</th>
 						<th>Map</th>
                     </tr>
                 </thead>
@@ -28,6 +35,13 @@
 								<td><?php echo $user->sale_region;?></td>
                                 <!--<td><?php echo $user->visit_date;?></td>                                     
                                 <td><?php echo $user->visit_time;?></td>-->
+								<td><?php echo $user->check_in;?></td>                                     
+                                <td><?php echo $user->check_out;?></td>
+								<td><?php echo $user->total;?></td>
+								<td><?php echo $user->check_out;?></td>
+								<td><?php echo $user->check_out;?></td>
+								<td><?php echo $user->check_out;?></td>
+								<td><?php echo $user->check_out;?></td>
 								<td><a href="javascript:void(0)" onclick="get_modal_content(<?=$user->pk_i_admin_id?>)" class="btn btn-sm btn-success"><i class="fa fa-map-marker" aria-hidden="true"></i></a></td>
 								<!--<td><a href="<?php echo base_url('visits/visit_live/').$user->pk_i_admin_id; ?>" class="btn btn-sm btn-success"><i class="fa fa-map-marker" aria-hidden="true"></i></a></td>-->
                             </tr>                                
@@ -44,7 +58,7 @@
 // Basic example
 $(document).ready(function () {
   $('#vistbl').DataTable({
-    "paging": false // false to disable pagination (or any other option)
+    "paging": true // false to disable pagination (or any other option)
   });
   $('.dataTables_length').addClass('bs-select');
 });
@@ -68,7 +82,7 @@ $(document).ready(function () {
         
       </div>
     </div>
-  </div>
+</div>
  <script type="text/javascript">
       function get_modal_content(id){        
             $.ajax({

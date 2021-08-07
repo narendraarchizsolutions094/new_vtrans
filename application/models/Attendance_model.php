@@ -27,22 +27,29 @@ class Attendance_model extends CI_Model {
 	}
 	
 /***********************My team Visit Start*********************/	
-	public function myteam_logs($att_date,$employee,$from='',$to=''){	
+	public function myteam_logs($att_date,$employee,$from=''){	
         if (empty($employee)) {
             $this->load->model('common_model');
             $employee    =   $this->common_model->get_categories($this->session->user_id);
         }
 		$user_id   = $this->session->user_id;
-		$this->db->select("tbl_visit.visit_date,tbl_visit.visit_time,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name");
+		$this->db->select("tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name,GROUP_CONCAT(CONCAT('(',tbl_attendance.id,',',tbl_attendance.uid,',',tbl_attendance.check_in_time,',',tbl_attendance.check_out_time,',',TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time),')') separator ',') as attendance_row,MIN(tbl_attendance.check_in_time) as check_in,MAX(tbl_attendance.check_out_time) as check_out,SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time)))) as total");
+		//$this->db->select("tbl_visit.visit_date,tbl_visit.visit_time,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name");
 		$this->db->from('tbl_admin');
-		$this->db->join('tbl_visit','tbl_visit.user_id = tbl_admin.pk_i_admin_id','left');
+		//$this->db->join('tbl_visit','tbl_visit.user_id = tbl_admin.pk_i_admin_id','left');
 		$this->db->join('sales_region','sales_region.region_id = tbl_admin.sales_region','left');
-		if (!empty($from && $to)) {
+		/* if (!empty($from && $to)) {
 			$this->db->where('tbl_visit.visit_date >= ', $from);
             $this->db->where('tbl_visit.visit_date <= ', $to);		
 		}else{
 			$filter_date = $att_date;
 			$this->db->where('tbl_visit.visit_date',$filter_date);
+		} */
+		if (!empty($from)) {
+			$filter_date = $from;
+			$this->db->join('(select * from tbl_attendance where tbl_attendance.check_out_time!="0000-00-00 00:00:00" AND DATE(tbl_attendance.check_in_time) = "'.$filter_date.'" ORDER BY tbl_attendance.id asc) as tbl_attendance','tbl_attendance.uid = tbl_admin.pk_i_admin_id','left');		
+		}else{
+			$this->db->join('(select * from tbl_attendance where tbl_attendance.check_out_time!="0000-00-00 00:00:00" AND DATE(tbl_attendance.check_in_time) = CURDATE() ORDER BY tbl_attendance.id asc) as tbl_attendance','tbl_attendance.uid = tbl_admin.pk_i_admin_id','left');					
 		}
 		$this->db->where('tbl_admin.companey_id', $this->session->companey_id);		
 		if (!empty($employee)) {
