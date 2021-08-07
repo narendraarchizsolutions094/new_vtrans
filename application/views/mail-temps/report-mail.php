@@ -58,7 +58,7 @@
                                  ?>
                                  <img
                                  src="<?=$logo_url?>"
-                                 alt="" style="height: 100px; width: auto;" /></p>
+                                 alt="" style="height: 100px; width: 400px;" /></p>
                            </td>
                         </tr>
                         <tr>
