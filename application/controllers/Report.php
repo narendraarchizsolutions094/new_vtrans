@@ -445,7 +445,7 @@ class Report extends CI_Controller
           $userdata = $this->db->select('s_user_email,pk_i_admin_id,s_display_name')->where(array('pk_i_admin_id' => $value_id, 'b_status' => 1))->get('tbl_admin')->row();
 
           if(!empty($userdata)){
-            $to = $userdata->s_user_email;
+            $to = $userdata->s_user_email;            
             $data['userName']=$userdata->s_display_name;
             $view_load = $this->load->view('mail-temps/report-mail', $data, true);
             //echo $view_load;
@@ -453,13 +453,28 @@ class Report extends CI_Controller
             $this->email->clear(TRUE);
             $this->email->from($from);
             $this->email->to($to);
+            $cc = 'dheeraj@archizsolutions.com';
+            $this->email->cc($cc);
             $this->email->subject($subject);
             $this->email->message($view_load);
             if ($this->email->send()) {
+              $insert_array = array(
+                'email_to'=>$to,
+                'cc'=>$cc,
+                'content'=>'Status : success Report_id: '.$value->id.' Report Title : '.$value->name.' Type'.$value->type,                
+              );
               echo 'Your Email has successfully been sent.';
             } else {
-              show_error($this->email->print_debugger());
+              $error = $this->email->print_debugger();
+              $insert_array = array(
+                'email_to'=>$to,
+                'cc'=>$cc,
+                'content'=>'Status : success Report_id: '.$value->id.' Report Title : '.$value->name.' Type'.$value->type.' error : '.$error,                
+              );
+              //show_error($error);
+              echo "error<br>";
             }
+            $this->db->insert('report_email_log',$insert_array);
           }else{
             echo 'User is inactive';
           }
