@@ -84,7 +84,7 @@ class Deals extends REST_Controller {
             
             foreach($data['result']->result() as $value)
             {
-              array_push($res['list'],array('original'=>$value->original,'name'=>$value->name,'enquery_id'=>$value->enquiry_id,'booking_type'=>$value->booking_type,'business_type'=>$value->business_type.'ward','deal_type'=>$value->deal_type,'company'=>$value->company_name,'client_name'=>$value->client_name,'status'=>$value->status,'creation_date'=>$value->creation_date,'quotation_url'=>base_url('uploads/quotations/quotations_').$value->id.'.pdf','edited'=>$value->edited));  
+              array_push($res['list'],array('id'=>$value->id,'original'=>$value->original,'name'=>$value->name,'enquery_id'=>$value->enquiry_id,'booking_type'=>$value->booking_type,'business_type'=>$value->business_type.'ward','deal_type'=>$value->deal_type,'company'=>$value->company_name,'client_name'=>$value->client_name,'status'=>$value->status,'creation_date'=>$value->creation_date,'quotation_url'=>base_url('uploads/quotations/quotations_').$value->id.'.pdf','edited'=>$value->edited));  
             } 
             $this->set_response([
                 'status' => TRUE,
