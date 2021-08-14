@@ -323,7 +323,7 @@ class Report extends CI_Controller
 
   public function send_sales_view($id)
   {
-    $this->output->enable_profiler(TRUE);
+    //$this->output->enable_profiler(TRUE);
 
    // $this->session->sess_destroy();
    session_unset();   
@@ -567,6 +567,7 @@ class Report extends CI_Controller
   }
 
   public function get_last_month_data(){
+    //$this->output->enable_profiler(TRUE);
     $date1 = date('Y-m-d', strtotime('today - 30 days'));
     $date2 = date('Y-m-d', strtotime('today - 1 days'));
     $sales_region = $this->db->get_where('sales_region')->result_array();
@@ -601,11 +602,11 @@ class Report extends CI_Controller
     $s = 1;
     $grand_total = array();
     foreach($sales_region as $key => $region){
-      $get_user = $this->db->get_where('tbl_admin',array('dept_name' => 1,'sales_region' => $region['region_id']))->result_array();
-      array_push($total_users,count($get_user));
+      $get_user = $this->db->where(array('dept_name' => 1,'b_status'=>1,'sales_region' => $region['region_id']))->from('tbl_admin')->count_all_results();
+      array_push($total_users,$get_user);
       $html .='<tr>
                  <th style="text-align:center;font-size:8px;">'.$region['name'].'</th>
-                 <th style="text-align:center;font-size:8px;">'.count($get_user).'</th>';
+                 <th style="text-align:center;font-size:8px;">'.$get_user.'</th>';
 
       $total_data = array(); 
       $total = 0;
@@ -614,8 +615,8 @@ class Report extends CI_Controller
         $date_new = date('Y-m-d', strtotime($date1 . ' -1 day'));
         $date = date('Y-m-d', strtotime($date_new . ' +'.$z.' day'));
         $get_visit = $this->db->query("SELECT tbl_visit.* FROM `tbl_visit` INNER JOIN enquiry ON tbl_visit.enquiry_id= enquiry.enquiry_id WHERE enquiry.sales_region=".$region['region_id']." AND DATE(tbl_visit.created_at)=".'"'.$date.'"')->result_array();
-        $get_nad = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->result_array();
-        $get_sinings = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->result_array();
+        $get_nad = $this->db->where(array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->from('enquiry')->count_all_results();
+        $get_sinings = $this->db->where(array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->from('enquiry')->count_all_results();
 
         if(count($get_visit) > 0){
           $visit_color = "background:#F9B1A5";
@@ -623,26 +624,26 @@ class Report extends CI_Controller
           $visit_color = "";
         }
 
-        if(count($get_nad) > 0){
+        if($get_nad > 0){
           $nad_color = "background:#F2F751";
         }else{
           $nad_color = "";
         }
 
-        if(count($get_sinings) > 0){
+        if($get_sinings > 0){
           $sinings_color = "background:#51F797";
         }else{
           $sinings_color = "";
         }
 
-        $total = (count($get_visit)+count($get_nad)+count($get_sinings));
+        $total = (count($get_visit)+$get_nad+$get_sinings);
         array_push($total_data,$total);
 
         $html .='<th id="visit'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$visit_color.'">'.count($get_visit).'</th>
-                <th  id="nad'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$nad_color.'">'.count($get_nad).'</th>
-                <th  id="sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.count($get_sinings).'</th>';
+                <th  id="nad'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$nad_color.'">'.$get_nad.'</th>
+                <th  id="sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.$get_sinings.'</th>';
       }
-      array_push($total_data,count($get_user));
+      array_push($total_data,$get_user);
       $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_data).'</th></tr>';
       array_push($grand_total,array_sum($total_data));
       $s++;
@@ -683,6 +684,8 @@ class Report extends CI_Controller
   // } 
 
   public function get_last_month_avg_data(){
+    //$this->output->enable_profiler(TRUE);
+
     $date1 = date('Y-m-d', strtotime('today - 30 days'));
     $date2 = date('Y-m-d', strtotime('today - 1 days'));
     $sales_region = $this->db->get_where('sales_region')->result_array();
@@ -717,11 +720,11 @@ class Report extends CI_Controller
     $s = 1;
     $grand_total = array();
     foreach($sales_region as $key => $region){
-      $get_user = $this->db->get_where('tbl_admin',array('dept_name' => 1,'sales_region' => $region['region_id']))->result_array();
-      array_push($total_users,count($get_user));
+      $get_user = $this->db->where(array('dept_name' => 1,'b_status'=>1,'sales_region' => $region['region_id']))->from('tbl_admin')->count_all_results();
+      array_push($total_users,$get_user);
       $html .='<tr>
                  <th style="text-align:center;font-size:8px;">'.$region['name'].'</th>
-                 <th style="text-align:center;font-size:8px;">'.count($get_user).'</th>';
+                 <th style="text-align:center;font-size:8px;">'.$get_user.'</th>';
 
       
       $total_data = array(); 
@@ -731,8 +734,8 @@ class Report extends CI_Controller
         $date_new = date('Y-m-d', strtotime($date1 . ' -1 day'));
         $date = date('Y-m-d', strtotime($date_new . ' +'.$z.' day'));
         $get_visit = $this->db->query("SELECT tbl_visit.* FROM `tbl_visit` INNER JOIN enquiry ON tbl_visit.enquiry_id= enquiry.enquiry_id WHERE enquiry.sales_region=".$region['region_id']." AND DATE(tbl_visit.created_at)=".'"'.$date.'"')->result_array();
-        $get_nad = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->result_array();
-        $get_sinings = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->result_array();
+        $get_nad = $this->db->where(array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->from('enquiry')->count_all_results();
+        $get_sinings = $this->db->where(array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->from('enquiry')->count_all_results();
         
         if(count($get_visit) > 0){
           $visit_color = "background:#F9B1A5";
@@ -740,27 +743,27 @@ class Report extends CI_Controller
           $visit_color = "";
         }
 
-        if(count($get_nad) > 0){
+        if($get_nad > 0){
           $nad_color = "background:#F2F751";
         }else{
           $nad_color = "";
         }
 
-        if(count($get_sinings) > 0){
+        if($get_sinings > 0){
           $sinings_color = "background:#51F797";
         }else{
           $sinings_color = "";
         }
         
-        $total = (count($get_visit)+count($get_nad)+count($get_sinings));
+        $total = (count($get_visit)+$get_nad+$get_sinings);
         array_push($total_data,$total);
 
         $html .='<th id="avg_visit'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$visit_color.'">'.count($get_visit).'</th>
-                <th  id="avg_nad'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$nad_color.'">'.count($get_nad).'</th>
-                <th  id="avg_sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.count($get_sinings).'</th>';
+                <th  id="avg_nad'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$nad_color.'">'.$get_nad.'</th>
+                <th  id="avg_sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.$get_sinings.'</th>';
       }
 
-      array_push($total_data,count($get_user));
+      array_push($total_data,$get_user);
       $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_data).'</th></tr>';
       array_push($grand_total,array_sum($total_data));
       $html .='</tr>';
@@ -787,6 +790,7 @@ class Report extends CI_Controller
 
   public function analaytics_mail()
   {
+    
     //fetch all schedule data
     //$this->db->where('type',1);
     $variable = $this->db->where('schedule_status', 1)->get('reports')->result();
@@ -1766,35 +1770,34 @@ class Report extends CI_Controller
 
     $lastMonth = date("m", strtotime("first day of previous month"));
 
-    $get_all_call = $this->db->get_where('tbl_comment',array('coment_type' => 5))->num_rows();
-    $get_today_call = $this->db->get_where('tbl_comment',array('coment_type' => 5,'created_date' => $todays))->num_rows();
-    $get_yesterday_call = $this->db->get_where('tbl_comment',array('coment_type' => 5,'created_date' => $yesterday))->num_rows();
+    $get_all_call = $this->db->where(array('coment_type' => 5))->from('tbl_comment')->count_all_results();
+    $get_today_call = $this->db->where(array('coment_type' => 5,'date(created_date)' => $todays))->from('tbl_comment')->count_all_results();
+    $get_yesterday_call = $this->db->where(array('coment_type' => 5,'date(created_date)' => $yesterday))->from('tbl_comment')->count_all_results();
     $this->db->where('MONTH(created_date)', $this_month);
-    $get_this_month_call = $this->db->get_where('tbl_comment',array('coment_type' => 5))->num_rows();
-    //echo $this->db->last_query();die;
-    $get_last_month_call = $this->db->get_where('tbl_comment',array('coment_type' => 5,'created_date' => $lastMonth))->num_rows();
-    $this->db->where('created_date >=', $this_week_sd);
-    $this->db->where('created_date <=', $this_week_ed);
-    $get_this_week_call = $this->db->get_where('tbl_comment',array('coment_type' => 5))->num_rows();
+    $get_this_month_call = $this->db->where(array('coment_type' => 5))->from('tbl_comment')->count_all_results();    
+    $get_last_month_call = $this->db->where(array('coment_type' => 5,'MONTH(created_date)' => $lastMonth))->from('tbl_comment')->count_all_results();
+    $this->db->where('date(created_date) >=', $this_week_sd);
+    $this->db->where('date(created_date) <=', $this_week_ed);
+    $get_this_week_call = $this->db->where(array('coment_type' => 5))->from('tbl_comment')->count_all_results();
 
-    $this->db->where('created_date >=', $start_week);
-    $this->db->where('created_date <=', $end_week);
-    $get_last_week_call = $this->db->get_where('tbl_comment',array('coment_type' => 5))->num_rows();
+    $this->db->where('date(created_date) >=', $start_week);
+    $this->db->where('date(created_date) <=', $end_week);
+    $get_last_week_call = $this->db->where(array('coment_type' => 5))->from('tbl_comment')->count_all_results();
 
-    $all_users = $this->db->get_where('tbl_admin',array('user_type' => 1))->num_rows();
+    $all_users = $this->db->where(array('dept_name' => 1,'b_status'=>1))->from('tbl_admin')->count_all_results();
 
-    $this->db->where('created_date >=', $this_week_sd);
-    $this->db->where('created_date <=', $this_week_ed);
-    $av_daily_call_this_week = $this->db->get_where('tbl_comment',array('coment_type' => 5))->num_rows();
+    $this->db->where('date(created_date) >=', $this_week_sd);
+    $this->db->where('date(created_date) <=', $this_week_ed);
+    $av_daily_call_this_week = $this->db->where(array('coment_type' => 5))->from('tbl_comment')->count_all_results();
 
-    $this->db->where('created_date >=', $this_month_sd);
-    $this->db->where('created_date <=', $this_month_ed);
-    $av_daily_call_this_month = $this->db->get_where('tbl_comment',array('coment_type' => 5))->num_rows();
+    $this->db->where('date(created_date) >=', $this_month_sd);
+    $this->db->where('date(created_date) <=', $this_month_ed);
+    $av_daily_call_this_month = $this->db->where(array('coment_type' => 5))->from('tbl_comment')->count_all_results();;
     
 
-    $this->db->where('created_date >=', $last_month_sd);
-    $this->db->where('created_date <=', $last_month_ed);
-    $av_daily_call_last_month = $this->db->get_where('tbl_comment',array('coment_type' => 5))->num_rows();
+    $this->db->where('date(created_date) >=', $last_month_sd);
+    $this->db->where('date(created_date) <=', $last_month_ed);
+    $av_daily_call_last_month = $this->db->where(array('coment_type' => 5))->from('tbl_comment')->count_all_results();;
 
     $av_daily_call_today_data = $get_today_call/$all_users;
     $av_daily_call_per_yesterday_data = $get_yesterday_call/$all_users;
@@ -1867,33 +1870,34 @@ class Report extends CI_Controller
 
     $lastMonth = date("m", strtotime("first day of previous month"));
 
-    $get_all_call = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
-    $get_today_call = $this->db->get_where('enquiry',array('status' => 1,'created_date' => $todays))->num_rows();
-    $get_yesterday_call = $this->db->get_where('enquiry',array('status' => 1,'created_date' => $yesterday))->num_rows();
+    $get_all_call = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
+    $get_today_call = $this->db->where(array('status' => 1,'created_date' => $todays))->from('enquiry')->count_all_results();
+    $get_yesterday_call = $this->db->where(array('status' => 1,'created_date' => $yesterday))->from('enquiry')->count_all_results();
     $this->db->where('MONTH(created_date)', $this_month);
-    $get_this_month_call = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
-    $get_last_month_call = $this->db->get_where('enquiry',array('status' => 1,'created_date' => $lastMonth))->num_rows();
-    $this->db->where('created_date >=', $this_week_sd);
-    $this->db->where('created_date <=', $this_week_ed);
-    $get_this_week_call = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
+    $get_this_month_call = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
 
-    $this->db->where('created_date >=', $start_week);
-    $this->db->where('created_date <=', $end_week);
-    $get_last_week_call = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
+    $get_last_month_call = $this->db->where(array('status' => 1,'created_date' => $lastMonth))->from('enquiry')->count_all_results();
+    $this->db->where('date(created_date) >=', $this_week_sd);
+    $this->db->where('date(created_date) <=', $this_week_ed);
+    $get_this_week_call = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
 
-    $all_users = $this->db->get_where('tbl_admin',array('user_type' => 1))->num_rows();
+    $this->db->where('date(created_date) >=', $start_week);
+    $this->db->where('date(created_date) <=', $end_week);
+    $get_last_week_call = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
 
-    $this->db->where('created_date >=', $this_week_sd);
-    $this->db->where('created_date <=', $this_week_ed);
-    $av_daily_call_this_week = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
+    $all_users = $this->db->where(array('dept_name' => 1,'b_status'=>1))->from('tbl_admin')->count_all_results();
 
-    $this->db->where('created_date >=', $this_month_sd);
-    $this->db->where('created_date <=', $this_month_ed);
-    $av_daily_call_this_month = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
+    $this->db->where('date(created_date) >=', $this_week_sd);
+    $this->db->where('date(created_date) <=', $this_week_ed);
+    $av_daily_call_this_week = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
 
-    $this->db->where('created_date >=', $last_month_sd);
-    $this->db->where('created_date <=', $last_month_ed);
-    $av_daily_call_last_month = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
+    $this->db->where('date(created_date) >=', $this_month_sd);
+    $this->db->where('date(created_date) <=', $this_month_ed);
+    $av_daily_call_this_month = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
+
+    $this->db->where('date(created_date) >=', $last_month_sd);
+    $this->db->where('date(created_date) <=', $last_month_ed);
+    $av_daily_call_last_month = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
 
     $av_daily_call_today_data = $get_today_call/$all_users;
     $av_daily_call_per_yesterday_data = $get_yesterday_call/$all_users;
@@ -1966,33 +1970,33 @@ class Report extends CI_Controller
 
     $lastMonth = date("m", strtotime("first day of previous month"));
 
-    $get_all_call = $this->db->get_where('tbl_visit')->num_rows();
-    $get_today_call = $this->db->get_where('tbl_visit',array('created_at' => $todays))->num_rows();
-    $get_yesterday_call = $this->db->get_where('tbl_visit',array('created_at' => $yesterday))->num_rows();
-    $this->db->where('MONTH(created_at)', $this_month);
-    $get_this_month_call = $this->db->get_where('tbl_visit')->num_rows();
-    $get_last_month_call = $this->db->get_where('tbl_visit',array('created_at' => $lastMonth))->num_rows();
+    $get_all_call = $this->db->from('tbl_visit')->count_all_results();
+
+    $get_today_call = $this->db->where(array('date(created_at)'=>$todays))->from('tbl_visit')->count_all_results();
+
+    $get_yesterday_call = $this->db->where(array('date(created_at)'=>$yesterday))->from('tbl_visit')->count_all_results();
+    
+    $get_this_month_call = $this->db->where('MONTH(created_at)', $this_month)->from('tbl_visit')->count_all_results();
+    $get_last_month_call = $this->db->where(array('MONTH(created_at)' => $lastMonth))->from('tbl_visit')->count_all_results();
+    
+    
+    $get_this_week_call = $this->db->where('date(created_at)>=', $this_week_sd)->where('date(created_at) <=', $this_week_ed)->from('tbl_visit')->count_all_results();
+
+    $get_last_week_call = $this->db->where('date(created_at) >=', $start_week)->where('created_at <=', $end_week)->from('tbl_visit')->count_all_results();
+
+    $all_users = $this->db->where('b_status',1)->from('tbl_admin')->count_all_results();
+
     $this->db->where('created_at >=', $this_week_sd);
     $this->db->where('created_at <=', $this_week_ed);
-    $get_this_week_call = $this->db->get_where('tbl_visit')->num_rows();
-
-    $this->db->where('created_at >=', $start_week);
-    $this->db->where('created_at <=', $end_week);
-    $get_last_week_call = $this->db->get_where('tbl_visit')->num_rows();
-
-    $all_users = $this->db->get_where('tbl_admin')->num_rows();
-
-    $this->db->where('created_at >=', $this_week_sd);
-    $this->db->where('created_at <=', $this_week_ed);
-    $av_daily_call_this_week = $this->db->get_where('tbl_visit')->num_rows();
+    $av_daily_call_this_week = $this->db->from('tbl_visit')->count_all_results();
 
     $this->db->where('created_at >=', $this_month_sd);
     $this->db->where('created_at <=', $this_month_ed);
-    $av_daily_call_this_month = $this->db->get_where('tbl_visit')->num_rows();
+    $av_daily_call_this_month = $this->db->from('tbl_visit')->count_all_results();
 
     $this->db->where('created_at >=', $last_month_sd);
     $this->db->where('created_at <=', $last_month_ed);
-    $av_daily_call_last_month = $this->db->get_where('tbl_visit')->num_rows();
+    $av_daily_call_last_month = $this->db->from('tbl_visit')->count_all_results();
 
     $av_daily_call_today_data = $get_today_call/$all_users;
     $av_daily_call_per_yesterday_data = $get_yesterday_call/$all_users;
@@ -2065,33 +2069,33 @@ class Report extends CI_Controller
 
     $lastMonth = date("m", strtotime("first day of previous month"));
 
-    $get_all_call = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
-    $get_today_call = $this->db->get_where('enquiry',array('status' => 5,'created_date' => $todays))->num_rows();
-    $get_yesterday_call = $this->db->get_where('enquiry',array('status' => 5,'created_date' => $yesterday))->num_rows();
+    $get_all_call = $this->db->where('status',5)->from('enquiry')->count_all_results();
+    $get_today_call = $this->db->where(array('status' => 5,'date(created_date)' => $todays))->from('enquiry')->count_all_results();
+    $get_yesterday_call = $this->db->where(array('status' => 5,'date(created_date)' => $yesterday))->from('enquiry')->count_all_results();
     $this->db->where('MONTH(created_date)', $this_month);
-    $get_this_month_call = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
-    $get_last_month_call = $this->db->get_where('enquiry',array('status' => 5,'created_date' => $lastMonth))->num_rows();
-    $this->db->where('created_date >=', $this_week_sd);
-    $this->db->where('created_date <=', $this_week_ed);
-    $get_this_week_call = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
+    $get_this_month_call = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
+    $get_last_month_call = $this->db->where(array('status' => 5,'MONTH(created_date)' => $lastMonth))->from('enquiry')->count_all_results();
+    $this->db->where('date(created_date) >=', $this_week_sd);
+    $this->db->where('date(created_date) <=', $this_week_ed);
+    $get_this_week_call = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
 
-    $this->db->where('created_date >=', $start_week);
-    $this->db->where('created_date <=', $end_week);
-    $get_last_week_call = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
+    $this->db->where('date(created_date) >=', $start_week);
+    $this->db->where('date(created_date) <=', $end_week);
+    $get_last_week_call = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
 
-    $all_users = $this->db->get_where('tbl_admin',array('user_type' => 1))->num_rows();
+    $all_users = $this->db->where(array('dept_name' => 1,'b_status'=>1))->from('tbl_admin')->count_all_results();
 
-    $this->db->where('created_date >=', $this_week_sd);
-    $this->db->where('created_date <=', $this_week_ed);
-    $av_daily_call_this_week = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
+    $this->db->where('date(created_date) >=', $this_week_sd);
+    $this->db->where('date(created_date) <=', $this_week_ed);
+    $av_daily_call_this_week = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
 
-    $this->db->where('created_date >=', $this_month_sd);
-    $this->db->where('created_date <=', $this_month_ed);
-    $av_daily_call_this_month = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
+    $this->db->where('date(created_date) >=', $this_month_sd);
+    $this->db->where('date(created_date) <=', $this_month_ed);
+    $av_daily_call_this_month = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
 
-    $this->db->where('created_date >=', $last_month_sd);
-    $this->db->where('created_date <=', $last_month_ed);
-    $av_daily_call_last_month = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
+    $this->db->where('date(created_date) >=', $last_month_sd);
+    $this->db->where('date(created_date) <=', $last_month_ed);
+    $av_daily_call_last_month = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
 
     $av_daily_call_today_data = $get_today_call/$all_users;
     $av_daily_call_per_yesterday_data = $get_yesterday_call/$all_users;

@@ -46,6 +46,12 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script> -->
 </head>
 <style>
+    td{
+        text-align: center;
+    }
+    th{
+        text-align: center;
+    }
 .card-graph{
     min-height:250px;
     max-height:800px;
@@ -90,16 +96,10 @@
                     ?>       
                 </div>
                 <hr>
-
-
-                <!-- <div class="form-group col-md-12 table-responsive" id="new_data">
-                    
+                <div class="form-group col-md-12 table-responsive" id="new_data">                    
                 </div>
-
                 <div class="form-group col-md-12 table-responsive" id="new_data2">
-                    
-                </div> -->
-
+                </div>
                 <!-- <div class="form-group col-md-12 table-responsive" id="showResult1">
                     <table id="example1" class="table table-striped table-bordered" style="width:100%">
                         <thead>
@@ -583,7 +583,7 @@ $dataPoints1 = array(
 $lead_source = $this->db->get_where('lead_source')->result_array();
 $dataPoints2 = array();
     foreach($lead_source as $key => $source){
-        $lead_data = $this->db->get_where('enquiry',array('enquiry_source' => $source['lsid']))->num_rows();
+        $lead_data = $this->db->where(array('enquiry_source' => $source['lsid']))->from('enquiry')->count_all_results();
         array_push($dataPoints2,array("y" => $lead_data, "label" => $source['lead_name'] ));
     }
 ?>
@@ -594,19 +594,17 @@ $this->db->where_not_in('stage_for',$ignore);
 $lead_stage = $this->db->get_where('lead_stage')->result_array();
 $dataPoints3 = array();
     foreach($lead_stage as $key => $stage){
-        $lead_stage = $this->db->get_where('enquiry',array('lead_stage' => $stage['stg_id']))->num_rows();
+        $lead_stage = $this->db->where(array('lead_stage' => $stage['stg_id']))->from('enquiry')->count_all_results();
         array_push($dataPoints3,array("label" => $stage['lead_stage_name'], "symbol" => substr($stage['lead_stage_name'], 0, 2),"y" => $lead_stage));
     }
 ?>
 
 
 <?php
-$user_data = $this->db->get_where('tbl_admin',array('dept_name !=' => 6))->result_array();
+$user_data = $this->db->get_where('tbl_admin',array('dept_name'=>1))->result_array();
 $dataPoints4 = array();
     foreach($user_data as $key => $user){
-        $this->db->where('created_by',$user['pk_i_admin_id']);
-        $this->db->or_where('aasign_to',$user['pk_i_admin_id']);
-        $lead_emp_data = $this->db->get('enquiry')->num_rows();
+        $lead_emp_data = $this->db->where('created_by',$user['pk_i_admin_id'])->or_where('aasign_to',$user['pk_i_admin_id'])->from('enquiry')->count_all_results();
         array_push($dataPoints4,array("label" => $user['s_display_name'].' '.$user['last_name'],"y" => $lead_emp_data));
     }
 ?>
@@ -711,7 +709,7 @@ var chart4 = new CanvasJS.Chart("chartContainer4", {
 		type: "pie",
 		yValueFormatString: "#,##0\"\"",
 		indexLabel: "{label} ({y})",
-        neckHeight: "0%",
+        neckHeight: "10%",
         neckWidth: "100%",
 		showInLegend: false,
         legendText: "{label} : {y}",
@@ -719,8 +717,6 @@ var chart4 = new CanvasJS.Chart("chartContainer4", {
 	}]
 });
 chart4.render();
-
-
 }
 </script>
 
@@ -908,29 +904,29 @@ $(document).ready(function() {
 // });
 
 
-// $(document).ready(function(){
-//     $.ajax({
-//             url: '<?= base_url('report/get_last_month_data');?>',
-//             type: 'POST',
-//             dataType: 'html',
-//             success: function (data) {
-//                 $('#new_data').html(data);
-//                 getSum();
-//             }
-//         });
-//   });
+$(document).ready(function(){
+    $.ajax({
+            url: '<?= base_url('report/get_last_month_data');?>',
+            type: 'POST',
+            dataType: 'html',
+            success: function (data) {
+                $('#new_data').html(data);
+                getSum();
+            }
+        });
+  });
 
-//   $(document).ready(function(){
-//     $.ajax({
-//             url: '<?= base_url('report/get_last_month_avg_data');?>',
-//             type: 'POST',
-//             dataType: 'html',
-//             success: function (data) {
-//                 $('#new_data2').html(data);
-//                 getSum2();
-//             }
-//         });
-//   });
+  $(document).ready(function(){
+    $.ajax({
+            url: '<?= base_url('report/get_last_month_avg_data');?>',
+            type: 'POST',
+            dataType: 'html',
+            success: function (data) {
+                $('#new_data2').html(data);
+                getSum2();
+            }
+        });
+  });
 
 
   function getSum(){
@@ -990,7 +986,7 @@ $(document).ready(function() {
     <!---- new js file added by pp ------------->
     <script src="<?= base_url() ?>assets/js/dashboard_js.js" type="text/javascript"></script>
     <!----------------------------------------------------------------------------------------------->
-    <!-- bootstrap js -->
+    <!-- bootstrap js -->   
     <script src="<?= base_url() ?>assets/js/bootstrap.min.js" type="text/javascript"></script>
 
     <!-- bootstrap timepicker -->
