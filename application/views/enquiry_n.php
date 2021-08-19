@@ -149,6 +149,13 @@ input[name=lead_stages]{
 </style>
 
 <form method="post" id="enq_filter" >
+  <?php  
+  if(!empty($_GET['employee'])){
+			$this->session->set_userdata('enquiry_filters_sess',array('user_id'=>$_GET['employee'])); ?>
+      <input name='user_id' type="hidden" value="<?=$_GET['employee']?>">
+  <?php   
+  }
+  ?>
 <div class="row">
  <div class="row" style="background-color: #fff;padding:7px;border-bottom: 1px solid #C8CED3;">  
         <div class="col-md-4 col-sm-4 col-xs-4" > 
@@ -517,7 +524,7 @@ display: block;
                         </div>
                         <div class="form-group col-md-3" id="todatefilter">
                           <label for="to-date"><?php echo display("to_date"); ?></label>
-                          <input   class="form-control form-date" id="to-date" name="to_created" style="padding-top:0px;" value="<?=$filterData['to_created']=='' || $filterData['from_created']=='0000-00-00'?'':$filterData['from_created'] ?>">
+                          <input   class="form-control form-date" id="to-date" name="to_created" style="padding-top:0px;" value="<?=$filterData['to_created']=='' || $filterData['to_created']=='0000-00-00'?'':$filterData['to_created'] ?>">
                         </div> 
                          <div class="form-group col-md-3" id="sourcefilter">
                           <label for="source"><?php echo display("source"); ?></label>

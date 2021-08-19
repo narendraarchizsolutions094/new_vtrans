@@ -166,7 +166,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th>Number of New Closure</th>
+                                <th>Number of New Order</th>
                                 <th><?= round($signings_data['today_call']);?></th>
                                 <th><?= round($signings_data['yesterday_call']);?></th>
                                 <th><?= round($signings_data['this_week']);?></th>
@@ -176,7 +176,7 @@
                                 <th><?= round($signings_data['all_call']);?></th>
                             </tr>
                             <tr>
-                                <th>Average Daily New Closure</th>
+                                <th>Average Daily New Order</th>
                                 <th><?= round($signings_data['av_daily_call_today_data']);?></th>
                                 <th><?= round($signings_data['av_daily_call_per_yesterday_data']);?></th>
                                 <th><?= round($signings_data['av_daily_call_this_week_data']);?></th>
@@ -186,7 +186,7 @@
                                 <th><?= round($signings_data['av_daily_call_total_data']);?></th>
                             </tr>
                             <tr>
-                                <th>Average Daily New Closure Per Person</th>
+                                <th>Average Daily New Order Per Person</th>
                                 <th><?= round($signings_data['av_daily_call_per_person_today']);?></th>
                                 <th><?= round($signings_data['av_daily_call_per_person_yesterday']);?></th>
                                 <th><?= round($signings_data['av_daily_call_per_person_this_week']);?></th>
@@ -530,7 +530,7 @@
                         </div>
                         
                         <div class='col-md-4 card-graph' style="width: 100%;">
-                            <div id='chartContainer4' style="height: 500px; width: 100%;">
+                            <div id='chartContainer4' style="height: 800px; width: 100%;">
                             </div>                        
                         </div>
                         
@@ -601,12 +601,17 @@ $dataPoints3 = array();
 
 
 <?php
-$user_data = $this->db->get_where('tbl_admin',array('dept_name'=>1))->result_array();
+$user_data = $this->db->get_where('tbl_admin',array('dept_name'=>1,'b_status'=>1))->result_array();
 $dataPoints4 = array();
     foreach($user_data as $key => $user){
         $lead_emp_data = $this->db->where('created_by',$user['pk_i_admin_id'])->or_where('aasign_to',$user['pk_i_admin_id'])->from('enquiry')->count_all_results();
-        array_push($dataPoints4,array("label" => $user['s_display_name'].' '.$user['last_name'],"y" => $lead_emp_data));
+        array_push($dataPoints4,array("name" => $user['s_display_name'].' '.$user['last_name'],"y" => (int)$lead_emp_data));
     }
+    $dataPoints4[0]['sliced'] = 'true';
+    $dataPoints4[0]['selected'] = 'true';
+    // echo "<pre>";
+    // print_r($dataPoints4);
+    // echo "</pre>";
 ?>
 
 <script>
@@ -695,28 +700,80 @@ var chart3 = new CanvasJS.Chart("chartContainer3", {
 chart3.render();
 
 
-var chart4 = new CanvasJS.Chart("chartContainer4", {
-	animationEnabled: true,
-	title: {
-		text: "Sales Employee Wise Data",
-        fontSize: 12,
-        fontColor: "#666666",
-        fontFamily:"Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif",
-	},
-    exportFileName: "Source Wise Chart",  //Give any name accordingly
-    exportEnabled: true,
-	data: [{
-		type: "pie",
-		yValueFormatString: "#,##0\"\"",
-		indexLabel: "{label} ({y})",
-        neckHeight: "10%",
-        neckWidth: "100%",
-		showInLegend: false,
-        legendText: "{label} : {y}",
-		dataPoints: <?php echo json_encode($dataPoints4, JSON_NUMERIC_CHECK); ?>
-	}]
+// var chart4 = new CanvasJS.Chart("chartContainer4", {
+// 	animationEnabled: true,
+// 	title: {
+// 		text: "Sales Employee Wise Data",
+//         fontSize: 12,
+//         fontColor: "#666666",
+//         fontFamily:"Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif",
+// 	},
+//     exportFileName: "Source Wise Chart",  //Give any name accordingly
+//     exportEnabled: true,
+// 	data: [{
+// 		type: "pie",
+// 		yValueFormatString: "#,##0\"\"",
+// 		indexLabel: "{label} ({y})",
+//         neckHeight: "10%",
+//         neckWidth: "100%",
+// 		showInLegend: false,
+//         legendText: "{label} : {y}",
+// 		dataPoints: <?php echo json_encode($dataPoints4); ?>
+// 	}]
+// });
+// chart4.render();
+
+
+
+
+
+Highcharts.chart('chartContainer4', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Sales Employee Wise Data'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },    
+    credits: {
+     enabled: false
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.y} '
+            },
+            showInLegend: true            
+        }
+    },
+    series: [{
+        name: 'Employees',
+        colorByPoint: true,
+        data: <?php echo json_encode($dataPoints4); ?>
+    }]
 });
-chart4.render();
+              
+
+
+
+
+
+
+
+
 }
 </script>
 
@@ -916,17 +973,17 @@ $(document).ready(function(){
         });
   });
 
-  $(document).ready(function(){
-    $.ajax({
-            url: '<?= base_url('report/get_last_month_avg_data');?>',
-            type: 'POST',
-            dataType: 'html',
-            success: function (data) {
-                $('#new_data2').html(data);
-                getSum2();
-            }
-        });
-  });
+//   $(document).ready(function(){
+//     $.ajax({
+//             url: '<?= base_url('report/get_last_month_avg_data');?>',
+//             type: 'POST',
+//             dataType: 'html',
+//             success: function (data) {
+//                 $('#new_data2').html(data);
+//                 getSum2();
+//             }
+//         });
+//   });
 
 
   function getSum(){
@@ -1007,7 +1064,10 @@ $(document).ready(function(){
     <script src="<?= base_url() ?>assets/js/frame.js?v=1.0?v=1.0" type="text/javascript"></script>
     <!-- Custom Theme JavaScript -->
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-  
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 </body>
 
 </html>

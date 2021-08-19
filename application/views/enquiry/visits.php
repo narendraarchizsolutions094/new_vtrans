@@ -108,7 +108,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 	<div class="col-lg-3"  >
         <div class="form-group">
           <label>From</label>
-          <input class="v_filter form-control form-date" name="from_date" >
+          <input class="v_filter form-control form-date" name="from_date" value="<?php if(!empty($_GET['from'])){ echo $_GET['from'];} ?>">
        
         </div>
     </div>
@@ -116,7 +116,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
       <div class="col-lg-3" id="tofilter">
         <div class="form-group">
           <label>To</label>
-           <input  class="v_filter form-control form-date" name="to_date" >
+           <input  class="v_filter form-control form-date" name="to_date" value="<?php if(!empty($_GET['to'])){ echo $_GET['to'];} ?>">
         </div>
       </div>
 </div>
@@ -219,7 +219,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                          <?php 
                           if (!empty($created_bylist)) {
                               foreach ($created_bylist as $createdbylist) {?>
-                              <option value="<?=$createdbylist->pk_i_admin_id;?>"  ><?=$createdbylist->s_display_name.' '.$createdbylist->last_name;?> -  <?=$createdbylist->s_user_email?$createdbylist->s_user_email:$createdbylist->s_phoneno;?>                               
+                              <option value="<?=$createdbylist->pk_i_admin_id;?>" <?php if(!empty($_GET['employee']) && $createdbylist->pk_i_admin_id == $_GET['employee']){ echo "selected=selected"; } ?>  ><?=$createdbylist->s_display_name.' '.$createdbylist->last_name;?> -  <?=$createdbylist->s_user_email?$createdbylist->s_user_email:$createdbylist->s_phoneno;?>                               
                               </option>
                               <?php }}?>    
                          </select>                       
@@ -489,7 +489,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-5">Actual Distance</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-28">Remark</th>
-						  <th id="th-29">Employee Region</th>
+						      <th id="th-29">Employee Region</th>
 				          <th id="th-7">Employee</th>
 				          <th id="th-11" >Difference (%)</th>
 				          <th id="th-8">Travel Expense</th>
@@ -939,7 +939,7 @@ $("select").select2();
 
 
 <div id="table-col-conf" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg" style="width: 96%;">
+  <div class="modal-dialog modal-lg" >
  
     <!-- Modal content-->
     <div class="modal-content">

@@ -1951,22 +1951,26 @@ public function view_editable_aggrement()
        
     }
 	
-	public function visit_live()
-    {
-        
-$id=$this->uri->segment('3');
-$where = " uid=$id AND DATE(created_date)=CURDATE()";
-$this->db->select('id,uid');
-$this->db->where($where);    
-$res_rowsss  = $this->db->get('map_location_feed')->row_array();
+	public function visit_live(){                
+        $id=$this->uri->segment('3');
+        if($this->input->post('curr_date')){
+            $curr_date = $this->input->post('curr_date');
+            $where = " uid=$id AND DATE(created_date)='$curr_date'";
+        }else{
+            $where = " uid=$id AND DATE(created_date)=CURDATE()";
+        }
+        $this->db->select('id,uid');
+        $this->db->where($where);    
+        $res_rowsss  = $this->db->get('map_location_feed')->row_array();
         if(!empty($res_rowsss['id'])){
 			$data['title'] = 'Visit Map';
 			$data['att_id'] = $res_rowsss['id'];
             $content = $this->load->view('loginfo/live_map', $data, true);
 			echo json_encode(array('status'=>true,'data'=>$content));
         }else{
-            echo json_encode(array('status'=>false,'msg'=>validation_error()));
+            echo json_encode(array('status'=>false,'msg'=>validation_errors()));
         }
+        //echo $this->db->last_query();
        
     }
     

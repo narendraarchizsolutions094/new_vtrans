@@ -3847,8 +3847,8 @@ echo  $details1;
             
 
                 
-                if($colsall || in_array(11,$cols))
-                $sub[] = '<span class="diff">'.round(abs($percentChange)).'</span>';
+        if($colsall || in_array(11,$cols))
+        $sub[] = '<span class="diff">'.round(abs($percentChange)).'</span>';
 
         if($colsall || in_array(8,$cols)){
             $sub[] = round(abs($res->visit_expSum));

@@ -2,22 +2,37 @@
 <div class="row">
     <div class="col-md-12">        
         <div class="panel-body">
-            <form action="<?=base_url().'attendance/myteam'?>" method="post">
+            <form action="<?=base_url().'attendance/myteam/'.$current_user?>" method="post">
             <div class="row ">
 			<br>
                 <div class="col-md-2">
-                    <label>Filter By Date<i class="text-danger">*</i></label>                    
+                    <label>Filter By From Date<i class="text-danger">*</i></label>                    
                     <?php
-                    if (set_value('att_date_from')) {
-                        $from =   set_value('att_date_from');                     
-                        $to =   set_value('att_date_to');                     
+                    if (set_value('att_date_from') || $from || $to) {
+                        $from =   !empty($from) ? $from :set_value('att_date_from');                     
+                        $to =   !empty($to) ? $to :set_value('att_date_to');                     
                     }else{
                         $from =  date('Y-m-d');
                         $to =  date('Y-m-d');
-                    }                                        
+                    }                                                            
                     ?>
                     <input type="date" name="att_date_from" class="form-control" value="<?=$from?>" required>
                 </div>
+                <div class="col-md-2">
+                    <label>To Date<i class="text-danger">*</i></label>                    
+                    <?php
+                    if (set_value('att_date_to') || $from || $to) {
+                        $from =   !empty($from) ? $from :set_value('att_date_from');                     
+                        $to =   !empty($to) ? $to :set_value('att_date_to');                     
+                    }else{
+                        $from =  date('Y-m-d');
+                        $to =  date('Y-m-d');
+                    }                        
+                    //echo $to;                
+                    ?>
+                    <input type="date" name="att_date_to" class="form-control" value="<?=$to?>" required>
+                </div>
+
                 <!--<div class="col-md-3 ">
                     <label>To Date<i class="text-danger">*</i></label>                    
                     <input type="date" name="att_date_to" class="form-control" value="<?=$to?>" required>

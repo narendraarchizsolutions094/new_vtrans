@@ -26,7 +26,6 @@ class Deals_datatable_model extends CI_Model{
      * @param $_POST filter data based on the posted parameters
      */
     public function getRows($postData){
-
         $this->_get_datatables_query($postData);
         if($postData['length'] != -1){
             $this->db->limit($postData['length'], $postData['start']);
@@ -91,8 +90,14 @@ class Deals_datatable_model extends CI_Model{
 
        // $where="info.original=1 AND";
 	    $where="(info.original=1 OR info.original=0) AND";
-        $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
+        if(!empty($this->input->post('emp_filter'))){
+            $filter_emp = $this->input->post('emp_filter');
+            $where .= "( enq.created_by = $filter_emp";
+            $where .= " OR enq.aasign_to = $filter_emp)";   
+        }else{
+            $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+            $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
+        }
         $and =1;
 		
 		if(!empty($_POST['curr_stg']))

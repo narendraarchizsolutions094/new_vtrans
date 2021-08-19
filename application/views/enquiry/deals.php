@@ -122,22 +122,24 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 
 
 <div class="row" style=" padding: 5px 0px; <?=!empty($this->uri->segment(3))?'display: none;':''?> <?php if(empty($_COOKIE['deals_filter_setting'])){ echo'display:none'; }  ?>" id="filter_pannel">
+
+<input name='filter_emp' type='hidden' value="<?php if(!empty($_GET['employee'])){ echo $_GET['employee'];  } ?>">
  <div id="datefilter" style="<?php if(!in_array('datefilter',$variable)){echo'display:none';} ?>" >
 	<div class="col-lg-3">
         <div class="form-group">
           <label>From</label>
-          <input class="d_filter form-control form-date" name="d_from_date">
+          <input class="d_filter form-control form-date" name="d_from_date" value="<?php if(!empty($_GET['from'])){ echo $_GET['from'];} ?>">
         </div>
     </div>
 
       <div class="col-lg-3">
         <div class="form-group">
           <label>To</label>
-           <input  class="d_filter form-control form-date" name="d_to_date">
+           <input  class="d_filter form-control form-date" name="d_to_date" value="<?php if(!empty($_GET['to'])){ echo $_GET['to'];} ?>">
         </div>
       </div>
  </div>
- <div class="col-lg-3"  id="companyfilter" style="<?php if(!in_array('companyfilter',$variable)){echo'display:none';} ?>">
+ <div class="col-lg-3"  id="companyfilter" style="<?php if(!in_array('companyfilter',$variable)){ echo 'display:none'; } ?>">
         <div class="form-group">
           <label>Company</label>
           <select class="d_filter form-control" name="d_company">
@@ -465,8 +467,7 @@ $(".d_filter").on('change',function(){
 });
 $(document).ready(function(){
 
-  $('#deals_table').DataTable({ 
-
+  $('#deals_table').DataTable({           
           "processing": true,
           "scrollX": true,
           "serverSide": true,          
@@ -482,8 +483,9 @@ $(document).ready(function(){
                      d.date_to = $("input[name=d_to_date]").val();
                      d.enq_for = $("select[name=d_enquiry_id]").val();
                      d.booking_type = $("select[name=d_booking_type]").val();
-					 d.region_type = $("select[name=d_region_type]").val();
+					           d.region_type = $("select[name=d_region_type]").val();
                      d.company = $("select[name=d_company]").val();
+                     d.emp_filter = $("input[name=filter_emp]").val();
                      // d.from_date = obj[0]['value'];
                      // d.from_time = '';//obj[1]["value"];
                      // d.enquiry_id =obj[2]["value"];

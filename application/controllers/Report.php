@@ -16,6 +16,7 @@ class Report extends CI_Controller
 	  'ticket_report_datatable_model'
     ));
     $this->load->library('pagination');
+    $this->crumb_user = array();
   }
 
   public function index()
@@ -593,8 +594,8 @@ class Report extends CI_Controller
                 <th id="sales_region" style="text-align:center;font-size:8px;display:none;">'.count($sales_region).'</th>';
     for ($y=1; $y <= 30; $y++) { 
       $html .='<th style="text-align:center;font-size:8px;background:#F9B1A5;">Visits</th>
-              <th style="text-align:center;font-size:8px;background:#F2F751;">NAD</th>
-              <th style="text-align:center;font-size:8px;background:#51F797;">New Signings</th>';
+              <th style="text-align:center;font-size:8px;background:#F2F751;">Lead</th>
+              <th style="text-align:center;font-size:8px;background:#51F797;">Order</th>';
     }
     $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">Grand Total</th></tr>';
 
@@ -711,8 +712,8 @@ class Report extends CI_Controller
                 <th id="avg_sales_region" style="text-align:center;font-size:8px;display:none;">'.count($sales_region).'</th>';
     for ($y=1; $y <= 30; $y++) { 
       $html .='<th style="text-align:center;font-size:8px;background:#F9B1A5;">Visits</th>
-              <th style="text-align:center;font-size:8px;background:#F2F751;">NAD</th>
-              <th style="text-align:center;font-size:8px;background:#51F797;">New Signings</th>';
+              <th style="text-align:center;font-size:8px;background:#F2F751;">Lead</th>
+              <th style="text-align:center;font-size:8px;background:#51F797;">Order</th>';
     }
     $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">Grand Total</th></tr>';
 
@@ -787,7 +788,33 @@ class Report extends CI_Controller
     echo $html;
   }
 
-
+  public function get_breadcrumb($user_id){   
+    $current_user = $this->session->user_id;
+    if($user_id != $current_user){
+      $this->db->select('report_to');
+      $this->db->where('pk_i_admin_id',$user_id);
+      $user_row = $this->db->get('tbl_admin')->row_array();
+      $this->crumb_user[] = $user_row['report_to'];
+      $this->get_breadcrumb($user_row['report_to']);
+    }else{
+      //$this->crumb_user[] = $user_id;
+    }
+    return array_unique($this->crumb_user);
+  }
+  public function report_summary($user_id=0){    
+    if(empty($user_id)){
+      $user_id = $this->session->user_id;
+    }
+    $crumb  = $this->get_breadcrumb($user_id);    
+    $data['crumb'] = $crumb;    
+    //exit;
+    $data['current_user'] = $user_id;
+    $data['title'] = 'Report Summary';    
+    $this->db->where('report_to',$user_id);    
+    $data['employee'] = $this->db->get('tbl_admin')->result_array();    
+    $data['content'] = $this->load->view('reports/report_summary', $data, true);
+    $this->load->view('layout/main_wrapper', $data);
+  }
   public function analaytics_mail()
   {
     
@@ -1972,30 +1999,30 @@ class Report extends CI_Controller
 
     $get_all_call = $this->db->from('tbl_visit')->count_all_results();
 
-    $get_today_call = $this->db->where(array('date(created_at)'=>$todays))->from('tbl_visit')->count_all_results();
+    $get_today_call = $this->db->where(array('date(visit_date)'=>$todays))->from('tbl_visit')->count_all_results();
 
-    $get_yesterday_call = $this->db->where(array('date(created_at)'=>$yesterday))->from('tbl_visit')->count_all_results();
+    $get_yesterday_call = $this->db->where(array('date(visit_date)'=>$yesterday))->from('tbl_visit')->count_all_results();
     
-    $get_this_month_call = $this->db->where('MONTH(created_at)', $this_month)->from('tbl_visit')->count_all_results();
-    $get_last_month_call = $this->db->where(array('MONTH(created_at)' => $lastMonth))->from('tbl_visit')->count_all_results();
+    $get_this_month_call = $this->db->where('MONTH(visit_date)', $this_month)->from('tbl_visit')->count_all_results();
+    $get_last_month_call = $this->db->where(array('MONTH(visit_date)' => $lastMonth))->from('tbl_visit')->count_all_results();
     
     
-    $get_this_week_call = $this->db->where('date(created_at)>=', $this_week_sd)->where('date(created_at) <=', $this_week_ed)->from('tbl_visit')->count_all_results();
+    $get_this_week_call = $this->db->where('date(visit_date)>=', $this_week_sd)->where('date(visit_date) <=', $this_week_ed)->from('tbl_visit')->count_all_results();
 
-    $get_last_week_call = $this->db->where('date(created_at) >=', $start_week)->where('created_at <=', $end_week)->from('tbl_visit')->count_all_results();
+    $get_last_week_call = $this->db->where('date(visit_date) >=', $start_week)->where('visit_date <=', $end_week)->from('tbl_visit')->count_all_results();
 
     $all_users = $this->db->where('b_status',1)->from('tbl_admin')->count_all_results();
 
-    $this->db->where('created_at >=', $this_week_sd);
-    $this->db->where('created_at <=', $this_week_ed);
+    $this->db->where('visit_date >=', $this_week_sd);
+    $this->db->where('visit_date <=', $this_week_ed);
     $av_daily_call_this_week = $this->db->from('tbl_visit')->count_all_results();
 
-    $this->db->where('created_at >=', $this_month_sd);
-    $this->db->where('created_at <=', $this_month_ed);
+    $this->db->where('visit_date >=', $this_month_sd);
+    $this->db->where('visit_date <=', $this_month_ed);
     $av_daily_call_this_month = $this->db->from('tbl_visit')->count_all_results();
 
-    $this->db->where('created_at >=', $last_month_sd);
-    $this->db->where('created_at <=', $last_month_ed);
+    $this->db->where('visit_date >=', $last_month_sd);
+    $this->db->where('visit_date <=', $last_month_ed);
     $av_daily_call_last_month = $this->db->from('tbl_visit')->count_all_results();
 
     $av_daily_call_today_data = $get_today_call/$all_users;

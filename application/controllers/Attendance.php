@@ -14,6 +14,7 @@ class Attendance extends CI_Controller {
 		if(empty($this->session->user_id)){
 		 redirect('login');   
 		}
+		$this->crumb_user = array();
 	}
  	
  	public function att_load_data(){
@@ -104,37 +105,136 @@ class Attendance extends CI_Controller {
  		}
 		$this->load->view('layout/main_wrapper',$data);
  	}
+
+	 public function get_breadcrumb($user_id){   
+		$current_user = $this->session->user_id;
+		if($user_id != $current_user){
+		  $this->db->select('report_to');
+		  $this->db->where('pk_i_admin_id',$user_id);
+		  $user_row = $this->db->get('tbl_admin')->row_array();
+		  $this->crumb_user[] = $user_row['report_to'];
+		  $this->get_breadcrumb($user_row['report_to']);
+		}else{
+		  //$this->crumb_user[] = $user_id;
+		}
+		return array_unique($this->crumb_user);
+	  }
+
+	  function displayDates($date1, $date2, $format = 'Y-m-d' ) {
+		$dates = array();
+		$current = strtotime($date1);
+		$date2 = strtotime($date2);
+		$stepVal = '+1 day';
+		while($current <= $date2) {
+		   $dates[] = date($format, $current);
+		   $current = strtotime($stepVal, $current);
+		}
+		return array_reverse($dates);
+	 } 
+	 public function visit_activity($user_id=0){
+		if(empty($user_id)){
+			$user_id = $this->session->user_id;
+	  	}
+	  	$crumb  = $this->get_breadcrumb($user_id);    
+	  	$data['crumb'] = $crumb;        
+	  	$data['current_user'] = $user_id;
+
+	   	$this->load->model('report_model');
+	   	$data['title'] = 'Team Visits';
+	   	if ($_POST) {	
+		  	$from		=	$this->input->post('att_date_from');
+		  	$to		=	$this->input->post('att_date_to');
+		  
+		  	$data['range_arr'] = $this->displayDates($from,$to);		
+
+			$desi		=	$this->input->post('designation');
+			$region		=	$this->input->post('region');
+		  
+		  	$employee	=	$this->input->post('employee');			
+				  $date = date("Y-m-d");
+				  $data['att_date'] = $date;
+				   $data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from,$desi,$region,$user_id,$to);
+			  }else{
+				  $date = date("Y-m-d"); 			 			
+				  $to = date("Y-m-d"); 			 			
+				  $employee = array();
+				  $data['att_date'] = $date;
+				  $data['users'] = $this->attendance_model->myteam_logs($date,$employee,'','','',$user_id,$to);					  
+				  $data['content'] = $content;
+			  }
+			  $content = $this->load->view('loginfo/visit_activity',$data,true);			  
+			  $data['content'] = $content;					
+		  	$this->load->view('layout/main_wrapper',$data);
+	 }
+
 /***********************My Team Start***************************/	
-	public function myteam(){
+	public function myteam($user_id=0){		
+		if(empty($user_id)){
+      		$user_id = $this->session->user_id;
+    	}
+    	$crumb  = $this->get_breadcrumb($user_id);    
+    	$data['crumb'] = $crumb;        
+    	$data['current_user'] = $user_id;
+
  		$this->load->model('report_model');
  		$data['title'] = 'Team Visits';
 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));
         $data['user_roles'] = $this->db->select('use_id,user_role')->where(array('comp_id'=>$this->session->userdata('companey_id')))->get('tbl_user_role')->result();
         $data['user_region'] = $this->db->select('region_id,name')->where(array('comp_id'=>$this->session->userdata('companey_id')))->get('sales_region')->result();		
-		$content = $this->load->view('loginfo/visits__filter',$data,true);	 		
- 		if ($_POST) {			
-			$from		=	$this->input->post('att_date_from');
-			$desi		=	$this->input->post('designation');
-			$region		=	$this->input->post('region');
+		$desi		=	$this->input->post('designation');
+		$region		=	$this->input->post('region');
+		$from	= $data['from']	=	$this->input->post('att_date_from');
+		$to	= $data['to']	=	$this->input->post('att_date_to');
+		
+		if(!empty($_GET['fdate']) && !empty($_GET['tdate'])){
+			$from	= $data['from']	= $_GET['fdate'];
+			$to	= $data['to']	= $_GET['tdate'];
+		}
+		//echo $to;
+		$content = $this->load->view('loginfo/visits__filter',$data,true);
+ 		if ($_POST || $from || $to) {	
+			
+			$data['range_arr'] = $range_arr = $this->displayDates($from,$to);		
+
 			//$to			=	$this->input->post('att_date_to');			
 			$employee	=	$this->input->post('employee');			
 			        $date = date("Y-m-d");
 			        $data['att_date'] = $date;
-		 			$data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from,$desi,$region);
+		 			$data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from,$desi,$region,$user_id,$to);
                     $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
-					$content .= $this->load->view('loginfo/visit_logs',$data,true);
-                    $data['content'] = $content;					
- 		}else{
- 			$date = date("Y-m-d"); 			 			
- 			$employee = array();
- 			$data['att_date'] = $date;
-	 		$data['users'] = $this->attendance_model->myteam_logs($date,$employee);	
-//print_r($data['users']);exit;			
-	 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
-			$content .= $this->load->view('loginfo/visit_logs',$data,true);
-			$data['content'] = $content;
- 		}
-		$this->load->view('layout/main_wrapper',$data);
+					//$content .= $this->load->view('loginfo/visit_logs',$data,true);
+				}else{
+					$date = date("Y-m-d"); 			 			
+					$to = date("Y-m-d"); 			 			
+					$employee = array();
+					$data['att_date'] = $date;
+					$data['users'] = $this->attendance_model->myteam_logs($date,$employee,'','','',$user_id,$to);	
+					$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));	
+					$data['content'] = $content;
+				}
+				$data['i'] = 0;
+				$visit_activity = '';
+				if(!empty($range_arr)){
+					$data['is_end'] = end($range_arr);
+					$i = 0;
+					foreach($range_arr as $rdate){
+						$data['i'] = $i;
+						$data['current_date'] = $rdate;						
+						$data['users_activity'] = $this->attendance_model->myteam_logs($rdate,$user_id,$rdate,'',$region,$user_id);
+						$visit_activity .= $this->load->view('loginfo/visit_activity',$data,true);
+						$i++;
+					}
+				}else{
+					$data['is_end'] = date('Y-m-d');
+					$data['current_date'] = $rdate = date('Y-m-d');						
+					$data['users_activity'] = $this->attendance_model->myteam_logs($rdate,$user_id,$rdate,'',$region,$user_id);
+					$visit_activity .= $this->load->view('loginfo/visit_activity',$data,true);
+				}
+				$data['visit_activity'] = $visit_activity;
+
+				$content .= $this->load->view('loginfo/visit_logs',$data,true);
+				$data['content'] = $content;					
+			$this->load->view('layout/main_wrapper',$data);
  	}
 /***********************My Team End***************************/	
 	public function deletes($type = ""){

@@ -65,6 +65,8 @@ class Enquiry_datatable_model extends CI_Model {
         $state                  =   !empty($enquiry_filters_sess['state'])?$enquiry_filters_sess['state']:'';
         $city                   =   !empty($enquiry_filters_sess['city'])?$enquiry_filters_sess['city']:'';
         
+        $filter_user_id         =   !empty($enquiry_filters_sess['user_id'])?$enquiry_filters_sess['user_id']:'';
+        
         $tags                   =   !empty($enquiry_filters_sess['tag'])?$enquiry_filters_sess['tag']:'';
 
         $probability            =   !empty($enquiry_filters_sess['probability'])?$enquiry_filters_sess['probability']:'';
@@ -189,8 +191,11 @@ class Enquiry_datatable_model extends CI_Model {
             $stage  =   $enquiry_filters_sess['lead_stages'];
             $where .= " AND enquiry.lead_stage=$stage";
         }  
-        $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
+        //echo $filter_user_id.'hello';
+        if(empty($filter_user_id)){
+            $where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+            $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';          
+        }
 
         if(!empty($this->session->process) && empty($product_filter)){              
             $arr = $this->session->process;           
@@ -292,14 +297,22 @@ class Enquiry_datatable_model extends CI_Model {
            
             $where .= " AND enquiry.phone =  '".$phone."'";                                    
         }
-        if(!empty($createdby)){            
-           
-            $where .= " AND enquiry.created_by =  '".$createdby."'";                                    
+        // echo $filter_user_id.'hekk';
+        // exit;
+        if(!empty($filter_user_id)){
+            $where .= " AND (enquiry.created_by =  '".$filter_user_id."'";                                    
+            $where .= " OR enquiry.aasign_to =  '".$filter_user_id."')";                                    
+        }else{
+            if(!empty($createdby)){          
+                $where .= " AND enquiry.created_by =  '".$createdby."'";                                    
+            }
+             if(!empty($assign)){                           
+                $where .= " AND enquiry.aasign_to =  '".$assign."'";                                    
+            }
         }
-         if(!empty($assign)){            
-           
-            $where .= " AND enquiry.aasign_to =  '".$assign."'";                                    
-        }
+
+
+
         if(!empty($address)){            
            
             $where .= " AND enquiry.address LIKE  '%$address%'";                                    
@@ -401,8 +414,8 @@ class Enquiry_datatable_model extends CI_Model {
         $this->db->group_by('enquiry.Enquery_id');        
         $query = $this->db->get();
         return $query->result();
-        //  $query->result();
-        //  echo $this->db->last_query();
+        //   $query->result();
+        //   echo $this->db->last_query();
     }
  
     function count_filtered()

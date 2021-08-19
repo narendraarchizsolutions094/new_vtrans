@@ -75,6 +75,18 @@ class Enq extends CI_Controller
 		$data['state_list'] = $this->enquiry_model->get_user_state_list();
 		$data['city_list'] = $this->enquiry_model->get_user_city_list();
 		$data['filterData'] = $this->Ticket_Model->get_filterData(1);
+
+
+		if(!empty($_GET['from'])){
+			$data['filterData']['from_created'] = $_GET['from'];
+		}
+
+		if(!empty($_GET['to'])){
+			$data['filterData']['to_created'] = $_GET['to'];
+		}
+
+
+
 		$data['aging_rule'] = $this->rule_model->get_rules(array(11));	
 
 		// $list =  $this->db->select('input_id')->where(array('process_id'=>$this->session->process[0],'company_id'=>$this->session->companey_id,'status'=>'1','page_id'=>'2'))->get('tbl_input')->result();
