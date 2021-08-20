@@ -849,6 +849,8 @@ public function login_in_process(){
         //client
         $data['clientCount2']=$this->dashboard_model->countLead(3);
        $data['clientsum']=$this->dashboard_model->dataLead(3);
+       $data['visit_counts'] = $this->dashboard_model->visit_counts();
+       $data['visit_counts_today'] = $this->dashboard_model->visit_counts(array('from_date'=>date('Y-m-d')));
 
         $data['state_list'] = $this->location_model->estate_list();
         $data['city_list'] = $this->location_model->city_list();

@@ -320,10 +320,172 @@ class Report extends CI_Controller
     }
   }
 
+  public function get_region_wise_data($region_id)
+  {
+    $res = array();
+    $html1 = "";
+    $html2 = "";
+    $html3 = "";
+    $get_visit = $this->all_visit_report_filterdata($region_id);
+    $signings_data = $this->all_signings_report_filterdata($region_id);
+    $prospect_data = $this->all_prospect_report_filterdata($region_id);
+
+    $html1 ='<table id="example1" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th  style="text-align:center;">#</th>
+            <th  style="text-align:center;">Today</th>
+            <th  style="text-align:center;">Yesterday</th>
+            <th  style="text-align:center;">This Week</th>
+            <th  style="text-align:center;">Last Week</th>
+            <th  style="text-align:center;">This Month</th>
+            <th  style="text-align:center;">Last Month</th>
+            <th  style="text-align:center;">Total - Till Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th  style="text-align:center;">Number of Visit</th>
+            <th  style="text-align:center;">'.round($get_visit['today_call']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['yesterday_call']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['this_week']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['last_week']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['this_month_call']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['last_month_call']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['all_call']).'</th>
+        </tr>
+        <tr>
+            <th  style="text-align:center;">Average Daily Visit</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_today_data']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_per_yesterday_data']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_this_week_data']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_last_week_data']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_this_month_data']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_last_month_data']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_total_data']).'</th>
+        </tr>
+        <tr>
+            <th  style="text-align:center;">Average Daily Visit Per Person</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_per_person_today']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_per_person_yesterday']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_per_person_this_week']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_per_person_last_week']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_per_person_this_month']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_per_person_last_month']).'</th>
+            <th  style="text-align:center;">'.round($get_visit['av_daily_call_per_person_total']).'</th>
+        </tr>
+    </tbody>
+</table>';
+
+$html2 ='<table id="example1" class="table table-striped table-bordered" style="width:100%">
+<thead>
+    <tr>
+        <th  style="text-align:center;">#</th>
+        <th  style="text-align:center;">Today</th>
+        <th  style="text-align:center;">Yesterday</th>
+        <th  style="text-align:center;">This Week</th>
+        <th  style="text-align:center;">Last Week</th>
+        <th  style="text-align:center;">This Month</th>
+        <th  style="text-align:center;">Last Month</th>
+        <th  style="text-align:center;">Total - Till Date</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <th  style="text-align:center;">Number of New Signings</th>
+        <th  style="text-align:center;">'.round($signings_data['today_call']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['yesterday_call']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['this_week']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['last_week']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['this_month_call']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['last_month_call']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['all_call']).'</th>
+    </tr>
+    <tr>
+        <th  style="text-align:center;">Average Daily New Signings</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_today_data']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_per_yesterday_data']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_this_week_data']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_last_week_data']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_this_month_data']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_last_month_data']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_total_data']).'</th>
+    </tr>
+    <tr>
+        <th  style="text-align:center;">Average Daily New Signings Per Person</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_per_person_today']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_per_person_yesterday']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_per_person_this_week']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_per_person_last_week']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_per_person_this_month']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_per_person_last_month']).'</th>
+        <th  style="text-align:center;">'.round($signings_data['av_daily_call_per_person_total']).'</th>
+    </tr>
+</tbody>
+</table>';
+
+$html3 ='<table id="example1" class="table table-striped table-bordered" style="width:100%">
+<thead>
+    <tr>
+        <th  style="text-align:center;">#</th>
+        <th  style="text-align:center;">Today</th>
+        <th  style="text-align:center;">Yesterday</th>
+        <th  style="text-align:center;">This Week</th>
+        <th  style="text-align:center;">Last Week</th>
+        <th  style="text-align:center;">This Month</th>
+        <th  style="text-align:center;">Last Month</th>
+        <th  style="text-align:center;">Total - Till Date</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <th  style="text-align:center;">Number of NAD</th>
+        <th  style="text-align:center;">'.round($prospect_data['today_call']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['yesterday_call']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['this_week']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['last_week']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['this_month_call']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['last_month_call']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['all_call']).'</th>
+    </tr>
+    <tr>
+        <th  style="text-align:center;">Average Daily NAD</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_today_data']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_per_yesterday_data']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_this_week_data']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_last_week_data']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_this_month_data']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_last_month_data']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_total_data']).'</th>
+    </tr>
+    <tr>
+        <th  style="text-align:center;">Average Daily NAD Per Person</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_per_person_today']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_per_person_yesterday']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_per_person_this_week']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_per_person_last_week']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_per_person_this_month']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_per_person_last_month']).'</th>
+        <th  style="text-align:center;">'.round($prospect_data['av_daily_call_per_person_total']).'</th>
+    </tr>
+</tbody>
+</table>';
+
+$res['html1'] = $html1;
+$res['html2'] = $html2;
+$res['html3'] = $html3;
+
+echo json_encode($res);die;
+
+  }
 
 
   public function send_sales_view($id)
   {
+    $currentURL = current_url();
+    $params   = $_SERVER['QUERY_STRING'];
+    $fullURL = $currentURL . '?' . $params; 
+    echo $fullURL;   
     //$this->output->enable_profiler(TRUE);
 
    // $this->session->sess_destroy();
@@ -538,6 +700,7 @@ class Report extends CI_Controller
       $data['order_count'] = $this->db->get_where('enquiry',array('status' => 6))->num_rows();
       $data['future_count'] = $this->db->get_where('enquiry',array('status' => 7))->num_rows();
 
+      $data['emp_region'] = $this->db->get_where('sales_region',array('type'=>1))->result_array();
       //$data['new_data'] = $this->get_last_month_data();
       $this->load->view('reports/send_sales_view', $data);
       
@@ -563,28 +726,144 @@ class Report extends CI_Controller
 	    $data['ticket_users']  = $this->ticket_report_datatable_model->report_employee_wise($data['fromdate'],$data['todate'],'','');
 	  //print_r($data['ticket_users']);exit;
       $data['ticket_stages'] = $this->Leads_Model->stage_by_type(4); // 4 = ticket
+      
       $this->load->view('reports/send_ticket_views', $data);
     }
   }
 
-  public function get_last_month_data(){
-    //$this->output->enable_profiler(TRUE);
-    $date1 = date('Y-m-d', strtotime('today - 30 days'));
-    $date2 = date('Y-m-d', strtotime('today - 1 days'));
-    $sales_region = $this->db->get_where('sales_region')->result_array();
+  // public function get_last_month_data(){
+  //   //$this->output->enable_profiler(TRUE);
+  //   $date1 = date('Y-m-d', strtotime('today - 30 days'));
+  //   $date2 = date('Y-m-d', strtotime('today - 1 days'));
+  //   $sales_region = $this->db->get_where('sales_region')->result_array();
 
-    $html = ' <div class="widget-title text-center">Last 30 Days Report '.date('d-m-Y',strtotime($date1)).' From To '.date('d-m-Y',strtotime($date2)).'</div><hr>
+  //   $html = ' <div class="widget-title text-center">Last 30 Days Report '.date('d-m-Y',strtotime($date1)).' From To '.date('d-m-Y',strtotime($date2)).'</div><hr>
+  //               <table id="example1" class="table table-striped table-bordered" style="width:100%;">
+  //                   <thead>
+  //                       <tr>
+  //                           <th style="text-align:center;font-size:8px;">Region</th>
+  //                           <th style="text-align:center;font-size:8px;">Sales Persons</th>';
+  //   for ($i=1; $i <= 30; $i++) {
+  //     $date_new = date('Y-m-d', strtotime($date1 . ' -1 day'));
+  //     $date = date('Y-m-d', strtotime($date_new . ' +'.$i.' day'));
+  //     $html .= '<th style="text-align:center;font-size:8px;" colspan="3" style="text-align:center;">'.date('d-m-Y',strtotime($date)).'</th>';
+  //   }
+  //   $html .= '<th style="text-align:center;font-size:8px;" style="text-align:center;">-</th>
+  //           </tr>
+  //           </thead>
+  //           <tbody>
+  //               <tr>
+  //               <th style="text-align:center;font-size:8px;"></th>
+  //               <th style="text-align:center;font-size:8px;"></th>
+  //               <th id="sales_region" style="text-align:center;font-size:8px;display:none;">'.count($sales_region).'</th>';
+  //   for ($y=1; $y <= 30; $y++) { 
+  //     $html .='<th style="text-align:center;font-size:8px;background:#F9B1A5;">Visits</th>
+  //             <th style="text-align:center;font-size:8px;background:#F2F751;">Lead</th>
+  //             <th style="text-align:center;font-size:8px;background:#51F797;">Order</th>';
+  //   }
+  //   $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">Grand Total</th></tr>';
+
+  //   $total_users = array();
+  //   $s = 1;
+  //   $grand_total = array();
+  //   foreach($sales_region as $key => $region){
+  //     $get_user = $this->db->where(array('dept_name' => 1,'b_status'=>1,'sales_region' => $region['region_id']))->from('tbl_admin')->count_all_results();
+  //     array_push($total_users,$get_user);
+  //     $html .='<tr>
+  //                <th style="text-align:center;font-size:8px;">'.$region['name'].'</th>
+  //                <th style="text-align:center;font-size:8px;">'.$get_user.'</th>';
+
+  //     $total_data = array(); 
+  //     $total = 0;
+  //     for ($z=1; $z <=30 ; $z++) {
+
+  //       $date_new = date('Y-m-d', strtotime($date1 . ' -1 day'));
+  //       $date = date('Y-m-d', strtotime($date_new . ' +'.$z.' day'));
+  //       $get_visit = $this->db->query("SELECT tbl_visit.* FROM `tbl_visit` INNER JOIN enquiry ON tbl_visit.enquiry_id= enquiry.enquiry_id WHERE enquiry.sales_region=".$region['region_id']." AND DATE(tbl_visit.created_at)=".'"'.$date.'"')->result_array();
+  //       $get_nad = $this->db->where(array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->from('enquiry')->count_all_results();
+  //       $get_sinings = $this->db->where(array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->from('enquiry')->count_all_results();
+
+  //       if(count($get_visit) > 0){
+  //         $visit_color = "background:#F9B1A5";
+  //       }else{
+  //         $visit_color = "";
+  //       }
+
+  //       if($get_nad > 0){
+  //         $nad_color = "background:#F2F751";
+  //       }else{
+  //         $nad_color = "";
+  //       }
+
+  //       if($get_sinings > 0){
+  //         $sinings_color = "background:#51F797";
+  //       }else{
+  //         $sinings_color = "";
+  //       }
+
+  //       $total = (count($get_visit)+$get_nad+$get_sinings);
+  //       array_push($total_data,$total);
+
+  //       $html .='<th id="visit'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$visit_color.'">'.count($get_visit).'</th>
+  //               <th  id="nad'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$nad_color.'">'.$get_nad.'</th>
+  //               <th  id="sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.$get_sinings.'</th>';
+  //     }
+  //     array_push($total_data,$get_user);
+  //     $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_data).'</th></tr>';
+  //     array_push($grand_total,array_sum($total_data));
+  //     $s++;
+  //   }
+  
+  //   $html .='<tr style="background:#AFFF33;"><th style="text-align:center;font-size:8px;">Grand Total</th> <th style="text-align:center;font-size:8px;">'.array_sum($total_users).'</th>';
+
+  //       $c = 0;
+  //       for ($x=1; $x <= 30; $x++) {
+  //         $html .='<th id="res_visit'.$x.'" style="text-align:center;font-size:8px;"></th>
+  //                 <th id="res_nad'.$x.'" style="text-align:center;font-size:8px;"></th>
+  //                 <th id="res_signings'.$x.'" style="text-align:center;font-size:8px;"></th>';
+  //         $c++;
+  //       }
+
+  //   $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_total).'</th></tr>';
+  //   $html .='</tbody>
+  //         </table>';
+
+  //   echo $html;
+  // }
+
+  
+  public function get_last_month_data(){
+    // $date1 = date('Y-m-d', strtotime('today - 30 days'));
+    $date1 =  date('Y-m-01');   
+    $date2 = date('Y-m-d', strtotime('today'));
+
+    $diff = abs(strtotime($date2) - strtotime($date1));
+
+    $years = floor($diff / (365*60*60*24));
+    $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+    $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+    $sales_region = $this->db->get_where('sales_region',array('type' => 1))->result_array();
+
+    //$sales_region = $this->db->get_where('tbl_emp_region')->result_array();
+
+
+    $html = ' <div class="widget-title text-center">Last '.$days.' Days Report From '.date('d-m-Y',strtotime($date2)).' To '.date('d-m-Y',strtotime($date1)).'</div><hr>
                 <table id="example1" class="table table-striped table-bordered" style="width:100%;">
                     <thead>
                         <tr>
                             <th style="text-align:center;font-size:8px;">Region</th>
                             <th style="text-align:center;font-size:8px;">Sales Persons</th>';
-    for ($i=1; $i <= 30; $i++) {
-      $date_new = date('Y-m-d', strtotime($date1 . ' -1 day'));
-      $date = date('Y-m-d', strtotime($date_new . ' +'.$i.' day'));
+    $a = 2;
+    for ($i=1; $i <= $days; $i++) {
+      $date_new = date('Y-m-d', strtotime($date2 . ' +1 day'));
+      $date = date('Y-m-d', strtotime($date_new . ' -'.$a.' day'));
       $html .= '<th style="text-align:center;font-size:8px;" colspan="3" style="text-align:center;">'.date('d-m-Y',strtotime($date)).'</th>';
+      $a++;
     }
     $html .= '<th style="text-align:center;font-size:8px;" style="text-align:center;">-</th>
+              <th style="text-align:center;font-size:8px;" style="text-align:center;">-</th>
+              <th style="text-align:center;font-size:8px;" style="text-align:center;">-</th>
             </tr>
             </thead>
             <tbody>
@@ -592,32 +871,44 @@ class Report extends CI_Controller
                 <th style="text-align:center;font-size:8px;"></th>
                 <th style="text-align:center;font-size:8px;"></th>
                 <th id="sales_region" style="text-align:center;font-size:8px;display:none;">'.count($sales_region).'</th>';
-    for ($y=1; $y <= 30; $y++) { 
+    for ($y=1; $y <= $days; $y++) { 
       $html .='<th style="text-align:center;font-size:8px;background:#F9B1A5;">Visits</th>
               <th style="text-align:center;font-size:8px;background:#F2F751;">Lead</th>
               <th style="text-align:center;font-size:8px;background:#51F797;">Order</th>';
     }
-    $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">Grand Total</th></tr>';
+    $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">Visit Grand Total</th>
+              <th style="text-align:center;font-size:8px;background:#AFFF33;">Lead Grand Total</th>
+              <th style="text-align:center;font-size:8px;background:#AFFF33;">Order Grand Total</th>
+            </tr>';
 
     $total_users = array();
     $s = 1;
     $grand_total = array();
+    $grand_visit = array();
+    $grand_nad = array();
+    $grand_sinings = array();
+
     foreach($sales_region as $key => $region){
-      $get_user = $this->db->where(array('dept_name' => 1,'b_status'=>1,'sales_region' => $region['region_id']))->from('tbl_admin')->count_all_results();
-      array_push($total_users,$get_user);
+      $get_user = $this->db->get_where('tbl_admin',array('dept_name' => 1,'sales_region' => $region['region_id']))->result_array();
+      array_push($total_users,count($get_user));
       $html .='<tr>
                  <th style="text-align:center;font-size:8px;">'.$region['name'].'</th>
-                 <th style="text-align:center;font-size:8px;">'.$get_user.'</th>';
+                 <th style="text-align:center;font-size:8px;">'.count($get_user).'</th>';
 
-      $total_data = array(); 
+      $total_data = array();
+      $total_visit_data = array();
+      $total_nad_data = array(); 
+      $total_sinings_data = array(); 
+
       $total = 0;
-      for ($z=1; $z <=30 ; $z++) {
+      $a = 2;
+      for ($z=1; $z <=$days ; $z++) {
 
-        $date_new = date('Y-m-d', strtotime($date1 . ' -1 day'));
-        $date = date('Y-m-d', strtotime($date_new . ' +'.$z.' day'));
+        $date_new = date('Y-m-d', strtotime($date2 . ' +1 day'));
+        $date = date('Y-m-d', strtotime($date_new . ' -'.$a.' day'));
         $get_visit = $this->db->query("SELECT tbl_visit.* FROM `tbl_visit` INNER JOIN enquiry ON tbl_visit.enquiry_id= enquiry.enquiry_id WHERE enquiry.sales_region=".$region['region_id']." AND DATE(tbl_visit.created_at)=".'"'.$date.'"')->result_array();
-        $get_nad = $this->db->where(array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->from('enquiry')->count_all_results();
-        $get_sinings = $this->db->where(array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->from('enquiry')->count_all_results();
+        $get_nad = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->result_array();
+        $get_sinings = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->result_array();
 
         if(count($get_visit) > 0){
           $visit_color = "background:#F9B1A5";
@@ -625,42 +916,56 @@ class Report extends CI_Controller
           $visit_color = "";
         }
 
-        if($get_nad > 0){
+        if(count($get_nad) > 0){
           $nad_color = "background:#F2F751";
         }else{
           $nad_color = "";
         }
 
-        if($get_sinings > 0){
+        if(count($get_sinings) > 0){
           $sinings_color = "background:#51F797";
         }else{
           $sinings_color = "";
         }
 
-        $total = (count($get_visit)+$get_nad+$get_sinings);
+        $total = (count($get_visit)+count($get_nad)+count($get_sinings));
         array_push($total_data,$total);
+        array_push($total_visit_data,count($get_visit));
+        array_push($total_nad_data,count($get_nad));
+        array_push($total_sinings_data,count($get_sinings));
 
         $html .='<th id="visit'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$visit_color.'">'.count($get_visit).'</th>
-                <th  id="nad'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$nad_color.'">'.$get_nad.'</th>
-                <th  id="sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.$get_sinings.'</th>';
+                <th  id="nad'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$nad_color.'">'.count($get_nad).'</th>
+                <th  id="sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.count($get_sinings).'</th>';
+        $a++;
       }
-      array_push($total_data,$get_user);
-      $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_data).'</th></tr>';
+      array_push($total_data,count($get_user));
+      $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_visit_data).'</th>
+                <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_nad_data).'</th>
+                <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_sinings_data).'</th>
+              </tr>';
       array_push($grand_total,array_sum($total_data));
+      array_push($grand_visit,array_sum($total_visit_data));
+      array_push($grand_nad,array_sum($total_nad_data));
+      array_push($grand_sinings,array_sum($total_sinings_data));
+
       $s++;
     }
   
     $html .='<tr style="background:#AFFF33;"><th style="text-align:center;font-size:8px;">Grand Total</th> <th style="text-align:center;font-size:8px;">'.array_sum($total_users).'</th>';
 
         $c = 0;
-        for ($x=1; $x <= 30; $x++) {
+        for ($x=1; $x <= $days; $x++) {
           $html .='<th id="res_visit'.$x.'" style="text-align:center;font-size:8px;"></th>
                   <th id="res_nad'.$x.'" style="text-align:center;font-size:8px;"></th>
                   <th id="res_signings'.$x.'" style="text-align:center;font-size:8px;"></th>';
           $c++;
         }
 
-    $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_total).'</th></tr>';
+    $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_visit).'</th>
+            <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_nad).'</th>
+            <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_sinings).'</th>
+            </tr>';
     $html .='</tbody>
           </table>';
 
@@ -1870,7 +2175,7 @@ class Report extends CI_Controller
     return $getData;
   }
 
-  public function all_prospect_report_filterdata()
+  public function all_prospect_report_filterdata($region_id=0)
   {
     $todays = date('Y-m-d');
     $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
@@ -1970,7 +2275,7 @@ class Report extends CI_Controller
     return $getData;
   }
 
-  public function all_visit_report_filterdata()
+  public function all_visit_report_filterdata($region_id=0)
   {
     $todays = date('Y-m-d');
     $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
@@ -2069,7 +2374,7 @@ class Report extends CI_Controller
     return $getData;
   }
 
-  public function all_signings_report_filterdata()
+  public function all_signings_report_filterdata($region_id=0)
   {
     $todays = date('Y-m-d');
     $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($todays)));

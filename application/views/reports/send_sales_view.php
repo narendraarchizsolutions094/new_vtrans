@@ -96,61 +96,14 @@
                     ?>       
                 </div>
                 <hr>
-                <div class="form-group col-md-12 table-responsive" id="new_data">                    
-                </div>
-                <div class="form-group col-md-12 table-responsive" id="new_data2">
-                </div>
-                <!-- <div class="form-group col-md-12 table-responsive" id="showResult1">
-                    <table id="example1" class="table table-striped table-bordered" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Today</th>
-                                <th>Yesterday</th>
-                                <th>This Week</th>
-                                <th>Last Week</th>
-                                <th>This Month</th>
-                                <th>Last Month</th>
-                                <th>Total - Till Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>Number of Calls</th>
-                                <th><?php // round($call_data['today_call']); ?></th>
-                                <th><?php //round($call_data['yesterday_call']);?></th>
-                                <th><?php //round($call_data['this_week']);?></th>
-                                <th><?php //round($call_data['last_week']);?></th>
-                                <th><?php //round($call_data['this_month_call']);?></th>
-                                <th><?php //round($call_data['last_month_call']);?></th>
-                                <th><?php //round($call_data['all_call']);?></th>
-                            </tr>
-                            <tr>
-                                <th>Average Daily Calls</th>
-                                <th><?php //round($call_data['av_daily_call_today_data']);?></th>
-                                <th><?php //round($call_data['av_daily_call_per_yesterday_data']);?></th>
-                                <th><?php //round($call_data['av_daily_call_this_week_data']);?></th>
-                                <th><?php //round($call_data['av_daily_call_last_week_data']);?></th>
-                                <th><?php //round($call_data['av_daily_call_this_month_data']);?></th>
-                                <th><?php //round($call_data['av_daily_call_last_month_data']);?></th>
-                                <th><?php //round($call_data['av_daily_call_total_data']);?></th>
-                            </tr>
-                            <tr>
-                                <th>Average Daily Calls Per Person</th>
-                                <th><?php //round($call_data['av_daily_call_per_person_today']);?></th>
-                                <th><?php //round($call_data['av_daily_call_per_person_yesterday']);?></th>
-                                <th><?php //round($call_data['av_daily_call_per_person_this_week']);?></th>
-                                <th><?php //round($call_data['av_daily_call_per_person_last_week']);?></th>
-                                <th><?php //round($call_data['av_daily_call_per_person_this_month']);?></th>
-                                <th><?php //round($call_data['av_daily_call_per_person_last_month']);?></th>
-                                <th><?php //round($call_data['av_daily_call_per_person_total']);?></th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> -->
-
-
-                <div class="form-group col-md-12 table-responsive" id="showResult1">
+                
+                <div class="form-group col-md-12 row">
+                    <a href="" class="btn btn-primary btn-sm change-color" style="margin-bottom:4px"><div class="col-sm-1" style="font-size:8px;">All</div></a>
+                    <?php foreach($emp_region as $key => $region){?>
+                        <a onclick="get_region_wise_data(<?= $region['region_id'];?>)" style="margin-bottom:4px" id="change-color-<?= $region['region_id'];?>" class="btn btn-primary btn-sm"><div class="col-sm-1" style="font-size:8px;"><?= $region['name'];?></div></a>
+                    <?php }?>
+                </div> 
+                <div class="form-group col-md-12 table-responsive signings" id="showResult1">
                     <table id="example1" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
@@ -199,7 +152,7 @@
                     </table>
                 </div>
 
-                <div class="form-group col-md-12 table-responsive" id="showResult1">
+                <div class="form-group col-md-12 table-responsive nad" id="showResult1">
                     <table id="example1" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
@@ -248,7 +201,7 @@
                     </table>
                 </div>
 
-                <div class="form-group col-md-12 table-responsive" id="showResult1">
+                <div class="form-group col-md-12 table-responsive visit_data" id="showResult1">
                     <table id="example1" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
@@ -297,270 +250,32 @@
                     </table>
                 </div>
 
-                <!-- <div class="form-group col-md-12 table-responsive" id="showResult1">
-                    <table id="example1" class="table table-striped table-bordered" style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th>Region</th>
-                                <th>Sales Persons</th>
-                                <th colspan="3" style="text-align:center;">1</th>
-                                <th colspan="3" style="text-align:center;">2</th>
-                                <th colspan="3" style="text-align:center;">3</th>
-                                <th colspan="3" style="text-align:center;">4</th>
-                                <th colspan="3" style="text-align:center;">5</th>
-                                <th colspan="3" style="text-align:center;">6</th>
-                                <th colspan="3" style="text-align:center;">7</th>
-                                <th colspan="3" style="text-align:center;">8</th>
-                                <th colspan="3" style="text-align:center;">9</th>
-                                <th colspan="3" style="text-align:center;">10</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th style="text-align:center;font-size:8px;"></th>
-                                <th style="text-align:center;font-size:8px;"></th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                                <th style="text-align:center;font-size:8px;">Visits</th>
-                                <th style="text-align:center;font-size:8px;">NAD</th>
-                                <th style="text-align:center;font-size:8px;">New Signings</th>
-                            </tr>
-                            <tr>
-                                <th>Gujrat</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <th>Mumbai</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <th>Chennai</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <th>Karnataka</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> -->
-
                 
-
-                
-                    <div class='row'>
-                        
-                        <div class='col-md-4 card-graph' style="height: 400px; width: 100%;">
-                            <div id='chartContainer2'>
+                    <div class='row'>                        
+                        <div class='col-md-4 card-graph' style="height: 400px; width: 50%;">
+                            <div id='chartContainer2' style="height: 400px; width: 100%;">
                             </div>
                         </div>
-                        <!-- <div class='col-md-4 card-graph'>
-                            <div id='source_chart' >
-                            </div>
-                        </div> -->
-                        <!-- <div class='col-md-4 card-graph'>
-                            <div id='process_chart' >
-                            </div>                
-                        </div> -->
-                        <!-- <div class='col-md-4 card-graph'>
-                            <div id='stage_chart' >
-                            </div>                        
-                        </div>
-                        <div class='col-md-4 card-graph'>
-                            <div id='status_chart' >
-                            </div>
-                            <div id='user_chart' >
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class='row'>
-                        <div class='col-md-4 card-graph' style="width: 50%;">
-                            <div id='chartContainer1' style="height: 500px; width: 100%;">
-                            </div>
-                        </div>
-                        
                         <div class='col-md-4 card-graph' style="width: 49%;">
-                            <div id='chartContainer3' style="height: 500px; width: 100%;">
-                            </div>                        
-                        </div>
-                        
+                            <div id='chartContainer1' style="height: 400px; width: 100%;">
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class='row'>                        
                         <div class='col-md-4 card-graph' style="width: 100%;">
                             <div id='chartContainer4' style="height: 800px; width: 100%;">
                             </div>                        
                         </div>
-                        
-
-                        <!-- <div class='col-md-4 card-graph'>
-                            <div id='product_chart' >
-                            </div>
-                        </div> -->
                     </div>
-<!--              
-                <div class="form-group col-md-12 table-responsive" id="showResult">
-                    <table id="example" class=" table table-striped table-bordered" style="width:100%">
-                        <thead>
-                            <tr>
-                                <?php
-                                  if (!empty($report_columns)) {
-                                    foreach ($report_columns as $value) { ?>
-                                <th><?=ucfirst($value)?></th>
-                                <?php
-                                    }
-                                  } 
-                                ?>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div> -->
 
-            </div>
+                    
+                </div>
+                <div class='row'>
+                    <div class="form-group col-md-12 table-responsive" id="new_data">                    
+                    </div>
+                    <div class="form-group col-md-12 table-responsive" id="new_data2">
+                    </div>
+                </div>
         </div>
     </div>
 </div>
@@ -569,23 +284,28 @@
 <!---------------------------->
 <?php
 $dataPoints1 = array( 
-	array("label" => "Lead", "y" => $nad_count),
-	array("label" => "Approach", "y" => $prospect_count),
-	array("label" => "Negotiations", "y" => $approach_count),
-	array("label" => "Closure", "y" => $negotiations_count),
-	array("label" => "Order", "y" => $closure_count),
-	array("label" => "Future Opportunities", "y" => $order_count)
+	array("Lead",$nad_count),
+	array("Approach",$prospect_count),
+	array("Negotiations",$approach_count),
+	array("Closure",$negotiations_count),
+	array("Order",$closure_count),
+	array("Future Opportunities",$order_count)
 	
 );
 ?>
 
 <?php
 $lead_source = $this->db->get_where('lead_source')->result_array();
-$dataPoints2 = array();
-    foreach($lead_source as $key => $source){
-        $lead_data = $this->db->where(array('enquiry_source' => $source['lsid']))->from('enquiry')->count_all_results();
-        array_push($dataPoints2,array("y" => $lead_data, "label" => $source['lead_name'] ));
-    }
+$dataPoints2_source = array();
+$dataPoints2_value = array();
+foreach($lead_source as $key => $source){
+    $lead_data = $this->db->where(array('enquiry_source' => $source['lsid']))->from('enquiry')->count_all_results();
+    array_push($dataPoints2_source,$source['lead_name']);
+    array_push($dataPoints2_value,$lead_data);
+}
+    // echo "<pre>";
+    // print_r($dataPoints2);
+    // echo "</pre>";
 ?>
 
 <?php
@@ -615,89 +335,161 @@ $dataPoints4 = array();
 ?>
 
 <script>
-window.onload = function() {
-var chart1 = new CanvasJS.Chart("chartContainer1", {
-	theme: "light",
-	animationEnabled: true, 
-    animationDuration: 2000,  
-	title: {
-		text: "Sales Pipeline Wise",
-        fontSize: 12,
-        fontColor: "#666666",
-        fontFamily:"Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif",
-	},
-    axisY: {
-		title: "Total Leads"
-	},
-    axisX: {
-		title: "Data Source"
-	},
-    exportFileName: "Sales Pipeline Wise",  //Give any name accordingly
-	exportEnabled: true,
-	data: [{
-		type: "funnel",
-		indexLabel: "{label} - {y}",
-        neckHeight: "0%",
-        neckWidth: "15%",
-		yValueFormatString: "#,##0",
-		showInLegend: true,
-		legendText: "{label}",
-		dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
-	}]
+ window.onload = function() {
+// var chart1 = new CanvasJS.Chart("chartContainer1", {
+// 	theme: "light",
+// 	animationEnabled: true, 
+//     animationDuration: 2000,  
+// 	title: {
+// 		text: "Sales Pipeline Wise",
+//         fontSize: 12,
+//         fontColor: "#666666",
+//         fontFamily:"Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif",
+// 	},
+//     axisY: {
+// 		title: "Total Leads"
+// 	},
+//     axisX: {
+// 		title: "Data Source"
+// 	},
+//     exportFileName: "Sales Pipeline Wise",  //Give any name accordingly
+// 	exportEnabled: true,
+// 	data: [{
+// 		type: "funnel",
+// 		indexLabel: "{label} - {y}",
+//         neckHeight: "0%",
+//         neckWidth: "15%",
+// 		yValueFormatString: "#,##0",
+// 		showInLegend: true,
+// 		legendText: "{label}",
+// 		dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
+// 	}]
+// });
+// chart1.render();
+
+
+
+Highcharts.chart('chartContainer1', {
+    chart: {
+        type: 'funnel'
+    },
+    title: {
+        text: 'Sales funnel'
+    },
+    plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b> ({point.y:,.0f})',
+                softConnector: true
+            },
+            center: ['40%', '50%'],
+            neckWidth: '30%',
+            neckHeight: '25%',
+            width: '80%'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    credits: {
+     enabled: false
+    },
+    series: [{
+        name: 'Unique users',
+        data: <?php echo json_encode($dataPoints1); ?>
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            inside: true
+                        },
+                        center: ['50%', '50%'],
+                        width: '100%'
+                    }
+                }
+            }
+        }]
+    }
 });
-chart1.render();
+           
 
-
-
-
-var chart2 = new CanvasJS.Chart("chartContainer2", {
-	theme: "light",
-	animationEnabled: true, 
-    animationDuration: 2000,  
-	title: {
-		text: "Source Wise Chart",
-        fontSize: 12,
-        fontColor: "#666666",
-        fontFamily:"Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif",
-	},
+// var chart2 = new CanvasJS.Chart("chartContainer2", {
+// 	theme: "light",
+// 	animationEnabled: true, 
+//     animationDuration: 2000,  
+// 	title: {
+// 		text: "Source Wise Chart",
+//         fontSize: 12,
+//         fontColor: "#666666",
+//         fontFamily:"Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif",
+// 	},
    
-    exportFileName: "Source Wise Chart",  //Give any name accordingly
-    exportEnabled: true,
-	data: [{
-		type: "column",
-		yValueFormatString: "#,##0.## leads",
-        neckHeight: "0%",
-        neckWidth: "100%",
-		showInLegend: false,
-		dataPoints: <?php echo json_encode($dataPoints2, JSON_NUMERIC_CHECK); ?>
-	}]
-});
-chart2.render();
+//     exportFileName: "Source Wise Chart",  //Give any name accordingly
+//     exportEnabled: true,
+// 	data: [{
+// 		type: "column",
+// 		yValueFormatString: "#,##0.## leads",
+//         neckHeight: "0%",
+//         neckWidth: "100%",
+// 		showInLegend: false,
+// 		dataPoints: <?php// echo json_encode($dataPoints2, JSON_NUMERIC_CHECK); ?>
+// 	}]
+// });
+// chart2.render();
 
 
-var chart3 = new CanvasJS.Chart("chartContainer3", {
-	theme: "light2",
-	animationEnabled: true,
-	title: {
-		text: "Stage Wise Data",
-        fontSize: 12,
-        fontColor: "#666666",
-        fontFamily:"Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif",
-	},
-    exportFileName: "Source Wise Chart",  //Give any name accordingly
-    exportEnabled: true,
-	data: [{
-		type: "doughnut",
-		indexLabel: "{symbol} - {y}",
-		yValueFormatString: "#,##0\"\"",
-        neckHeight: "0%",
-        neckWidth: "100%",
-		showInLegend: true,
-		legendText: "{label} : {y}",
-		dataPoints: <?php echo json_encode($dataPoints3, JSON_NUMERIC_CHECK); ?>
-	}]
+
+const chart = Highcharts.chart('chartContainer2', {
+    title: {
+        text: 'Source Wise Chart'
+    },
+    subtitle: {
+        text: 'Plain'
+    },
+    xAxis: {
+        categories: <?=json_encode($dataPoints2_source)?>
+    },
+    credits: {
+     enabled: false
+    },
+    series: [{
+        type: 'column',
+        colorByPoint: true,
+        data: <?=json_encode($dataPoints2_value)?>,
+        showInLegend: false
+    }]
 });
-chart3.render();
+// var chart3 = new CanvasJS.Chart("chartContainer3", {
+// 	theme: "light2",
+// 	animationEnabled: true,
+// 	title: {
+// 		text: "Stage Wise Data",
+//         fontSize: 12,
+//         fontColor: "#666666",
+//         fontFamily:"Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif",
+// 	},
+//     exportFileName: "Source Wise Chart",  //Give any name accordingly
+//     exportEnabled: true,
+// 	data: [{
+// 		type: "doughnut",
+// 		indexLabel: "{symbol} - {y}",
+// 		yValueFormatString: "#,##0\"\"",
+//         neckHeight: "0%",
+//         neckWidth: "100%",
+// 		showInLegend: true,
+// 		legendText: "{label} : {y}",
+// 		dataPoints: <?php echo json_encode($dataPoints3, JSON_NUMERIC_CHECK); ?>
+// 	}]
+// });
+// chart3.render();
 
 
 // var chart4 = new CanvasJS.Chart("chartContainer4", {
@@ -1031,6 +823,22 @@ $(document).ready(function(){
   }
   
 
+function get_region_wise_data(region_id){
+    $.ajax({
+            url: '<?= base_url('report/get_region_wise_data/');?>'+region_id,
+            type: 'POST',
+            dataType: 'html',
+            success: function (data) {
+                $("a").removeClass("change-color");
+                $("#change-color-"+region_id).addClass("change-color");
+                var obj = JSON.parse(data);
+                $('.visit_data').html(obj.html1);
+                $('.signings').html(obj.html2);
+                $('.nad').html(obj.html3);
+
+            }
+        });
+}
 
 </script>
 <script>
@@ -1066,6 +874,8 @@ $(document).ready(function(){
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/funnel.js"></script>
+
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 </body>

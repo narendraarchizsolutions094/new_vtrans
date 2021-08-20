@@ -130,82 +130,94 @@
     </div>
     </br>
     <div class="row"  style="margin-top: 15px;">
-    <form method="POST" >
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                      <div class="form-row" style="padding: 10px;">
-	<div class="col-lg-2">
-        <div class="form-group">
-          <label>From</label>
-          <input  class="d_filter form-control form-date" name="from_date" id="from_date" value="<?php if(!empty($fdata['from_date'])){echo $fdata['from_date'];} ?>">
-        
-        </div>
+        <form method="POST" >
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="form-row" style="padding: 10px;">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                            <label>From</label>
+                            <input  class="d_filter form-control form-date" name="from_date" id="from_date" value="<?php if(!empty($fdata['from_date'])){echo $fdata['from_date'];} ?>">
+                            </div>
+                        </div>
+                    
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                            <label>To</label>
+                            <input  class="d_filter form-control form-date" name="to_date" value="<?php if(!empty($fdata['to_date'])){echo $fdata['to_date'];} ?>">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Region</label>                                
+                                <select name="region" class="form-control">
+                                    <option value="" >--Select--</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>User</label>
+                                <?php 
+                            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+                                $where = "pk_i_admin_id IN (".implode(',', $all_reporting_ids).")";
+                                $users =$this->db->where($where)->get('tbl_admin');
+                                ?>
+                                <select name="users" class="form-control">
+                                <option value="" >--Select--</option>
+
+                                    <?php   foreach ($users->result() as $key => $value) {  ?>
+                                        <option value="<?= $value->pk_i_admin_id ?>" <?php if(!empty($fdata['users'])){ if($fdata['users']==$value->pk_i_admin_id ){echo'selected';}} ?>><?= $value->s_display_name ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <!-- <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>State</label>
+                                <label> <?php echo display("state"); ?> <i class="text-danger"></i></label>
+                                <select name="state_id" class="form-control" id="fstate">
+                                    <option value="" >--Select--</option>
+                                    <?php foreach($state_list as $state){?>
+                                    <option  value="<?php echo $state->id ?>" <?php if(!empty($fdata['state_id'])){ if($fdata['state_id']==$state->id ){echo'selected';}} ?>><?php echo $state->state; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class=" col-lg-2">
+                            <div class="form-group">
+                                <label><?php echo display("city"); ?> <i class="text-danger"></i></label>
+                                <select name="city_id" class="form-control" id="fcity">
+                                    <option value="" style="display:none;">--Select--</option>
+                                    <?php if($_POST['city_id']){?>
+                                        <?php foreach($city_list as $city){?>
+                                    <option  value="<?php echo $city->id ?>" <?php if(!empty($fdata['city_id'])){ if($fdata['city_id']==$city->id ){echo'selected';}} ?>><?php echo $city->city; ?></option>
+                                    <?php } ?>
+                                        
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div> -->
+                        <div class=" col-lg-2">
+                            <div class="form-group" style="padding:20px;">
+                                <button name="submit" type="submit" class="btn btn-primary" >Filter</button>
+                            </div>
+                        </div>
+                    </div>                      
+                </div>            
+            </div>        
+        </form>
     </div>
- 
-      <div class="col-lg-2">
-        <div class="form-group">
-          <label>To</label>
-           <input  class="d_filter form-control form-date" name="to_date" value="<?php if(!empty($fdata['to_date'])){echo $fdata['to_date'];} ?>">
-        </div>
-      </div>
-
-    <div class="col-lg-2">
-        <div class="form-group">
-            <label>User</label>
-            <?php 
-        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-            $where = "pk_i_admin_id IN (".implode(',', $all_reporting_ids).")";
-               $users =$this->db->where($where)->get('tbl_admin');
-            ?>
-            <select name="users" class="form-control">
-            <option value="" >--Select--</option>
-
-                <?php   foreach ($users->result() as $key => $value) {  ?>
-                    <option value="<?= $value->pk_i_admin_id ?>" <?php if(!empty($fdata['users'])){ if($fdata['users']==$value->pk_i_admin_id ){echo'selected';}} ?>><?= $value->s_display_name ?></option>
-                <?php } ?>
-            </select>
-        </div>
-    </div>
-     <div class="col-lg-2">
-        <div class="form-group">
-
-        	<label>State</label>
-                        <label> <?php echo display("state"); ?> <i class="text-danger"></i></label>
-                        <select name="state_id" class="form-control" id="fstate">
-                           <option value="" >--Select--</option>
-                           <?php foreach($state_list as $state){?>
-                           <option  value="<?php echo $state->id ?>" <?php if(!empty($fdata['state_id'])){ if($fdata['state_id']==$state->id ){echo'selected';}} ?>><?php echo $state->state; ?></option>
-                           <?php } ?>
-                        </select>
-                     </div>
-                      </div>
-                      <div class=" col-lg-2">
-                          <div class="form-group">
-                        <label><?php echo display("city"); ?> <i class="text-danger"></i></label>
-                        <select name="city_id" class="form-control" id="fcity">
-                           <option value="" style="display:none;">--Select--</option>
-                            <?php if($_POST['city_id']){?>
-                                <?php foreach($city_list as $city){?>
-                           <option  value="<?php echo $city->id ?>" <?php if(!empty($fdata['city_id'])){ if($fdata['city_id']==$city->id ){echo'selected';}} ?>><?php echo $city->city; ?></option>
-                           <?php } ?>
-                                
-                            <?php } ?>
-                        </select>
-                     </div>
-                     </div>
-                     <div class=" col-lg-2">
-                          <div class="form-group" style="padding:20px;">
-                         <button name="submit" type="submit" class="btn btn-primary" >Filter</button>
-                     </div>
-                     </div>
-                      </div>
-                      
-            </div>
-            
-        </div>
-        
-    </form>
-</div>
     <div class="content">
         <?php 
       
@@ -244,22 +256,22 @@
                             <div class="box box-widget widget-user-2">
                                 <div class="box-footer no-padding">
                                     <ul class="nav nav-stacked">
-                                        <li><a href="#"><?php echo display("all_enquiry"); ?> <span
+                                        <li><a href="<?php echo base_url().'enq/index'; ?>"><?php echo display("all_enquiry"); ?> <span
                                                     class="pull-right badge bg-blue"><?php if(!empty($counts['enquiry'])){ echo $counts['enquiry'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("created_today"); ?> <span
+                                        <li><a href="<?php echo base_url().'enq/index'; ?>"><?php echo display("created_today"); ?> <span
                                                     class="pull-right badge bg-aqua"><?php if(!empty($counts['enq_ct'])){ echo $counts['enq_ct'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("updated_today"); ?> <span
+                                        <li><a href="<?php echo base_url().'enq/index'; ?>"><?php echo display("updated_today"); ?> <span
                                                     class="pull-right badge bg-green"><?php if(!empty($counts['enq_ut'])){ echo $counts['enq_ut'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("active"); ?> <span
+                                        <li><a href="<?php echo base_url().'enq/index'; ?>"><?php echo display("active"); ?> <span
                                                     class="pull-right badge bg-red"><?php if(!empty($counts['enquiry'])){ echo ($counts['enquiry']-$counts['enq_drp']);}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("droped"); ?> <span
+                                        <li><a href="<?php echo base_url().'enq/index'; ?>"><?php echo display("droped"); ?> <span
                                                     class="pull-right badge bg-purple"><?php if(!empty($counts['enq_drp'])){ echo $counts['enq_drp'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("unassigned"); ?> <span
+                                        <li><a href="<?php echo base_url().'enq/index'; ?>"><?php echo display("unassigned"); ?> <span
                                                     class="pull-right badge bg-maroon"><?php if(!empty($counts['enq_assign'])){ echo $counts['enq_assign'];}else{ echo '0';}; ?></span></a>
                                         </li>
                                     </ul>
@@ -277,22 +289,22 @@
                             <div class="box box-widget widget-user-2">
                                 <div class="box-footer no-padding">
                                     <ul class="nav nav-stacked">
-                                        <li><a href="#"><?php echo display("all_leads"); ?> <span
+                                        <li><a href="<?php echo base_url().'led/index'; ?>"><?php echo display("all_leads"); ?> <span
                                                     class="pull-right badge bg-blue"><?php if(!empty($counts['lead'])){ echo $counts['lead'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("created_today"); ?> <span
+                                        <li><a href="<?php echo base_url().'led/index'; ?>"><?php echo display("created_today"); ?> <span
                                                     class="pull-right badge bg-aqua"><?php if(!empty($counts['lead_ct'])){ echo $counts['lead_ct'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("updated_today"); ?> <span
+                                        <li><a href="<?php echo base_url().'led/index'; ?>"><?php echo display("updated_today"); ?> <span
                                                     class="pull-right badge bg-green"><?php if(!empty($counts['lead_ut'])){ echo $counts['lead_ut'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("active"); ?> <span
+                                        <li><a href="<?php echo base_url().'led/index'; ?>"><?php echo display("active"); ?> <span
                                                     class="pull-right badge bg-red"><?php if(!empty($counts['lead'])){ echo ($counts['lead']-$counts['lead_drp']);}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("droped"); ?> <span
+                                        <li><a href="<?php echo base_url().'led/index'; ?>"><?php echo display("droped"); ?> <span
                                                     class="pull-right badge bg-purple"><?php if(!empty($counts['lead_drp'])){ echo $counts['lead_drp'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("unassigned"); ?> <span
+                                        <li><a href="<?php echo base_url().'led/index'; ?>"><?php echo display("unassigned"); ?> <span
                                                     class="pull-right badge bg-maroon"><?php if(!empty($counts['lead_assign'])){ echo $counts['lead_assign'];}else{ echo '0';}; ?></span></a>
                                         </li>
                                     </ul>
@@ -312,22 +324,22 @@
                                 <div class="box-footer no-padding">
 
                                     <ul class="nav nav-stacked">
-                                        <li><a href="#"><?php echo display("all_clients"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index'; ?>"><?php echo display("all_clients"); ?> <span
                                                     class="pull-right badge bg-blue"><?php if(!empty($counts['client'])){ echo $counts['client'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("created_today"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index'; ?>"><?php echo display("created_today"); ?> <span
                                                     class="pull-right badge bg-aqua"><?php if(!empty($counts['client_ct'])){ echo $counts['client_ct'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("updated_today"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index'; ?>"><?php echo display("updated_today"); ?> <span
                                                     class="pull-right badge bg-green"><?php if(!empty($counts['client_ut'])){ echo $counts['client_ut'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("active"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index'; ?>"><?php echo display("active"); ?> <span
                                                     class="pull-right badge bg-red"><?php if(!empty($counts['client'])){ echo ($counts['client']-$counts['client_drp']);}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("droped"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index'; ?>"><?php echo display("droped"); ?> <span
                                                     class="pull-right badge bg-purple"><?php if(!empty($counts['client_drp'])){ echo $counts['client_drp'];}else{ echo '0';}; ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("unassigned"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index'; ?>"><?php echo display("unassigned"); ?> <span
                                                     class="pull-right badge bg-maroon"><?php if(!empty($counts['client_assign'])){ echo $counts['client_assign'];}else{ echo '0';}; ?></span></a>
                                         </li>
                                     </ul>
@@ -358,22 +370,22 @@ if (!empty($enquiry_separation)) {
                                 <div class="box-footer no-padding">
 
                                     <ul class="nav nav-stacked">
-                                        <li><a href="#">All <?php echo $ctitle ?> <span
+                                        <li><a href="<?php echo base_url().'client/index?stage='.$key; ?>">All <?php echo $ctitle ?> <span
                                                     class="pull-right badge bg-blue"><?= $data_s['enquiry'] ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("created_today"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index?stage='.$key; ?>"><?php echo display("created_today"); ?> <span
                                                     class="pull-right badge bg-aqua"><?= $data_s['enq_ct'] ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("updated_today"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index?stage='.$key; ?>"><?php echo display("updated_today"); ?> <span
                                                     class="pull-right badge bg-green"><?= $data_s['enq_ut'] ?></span></a>
                                         </li>
-                                        <li><a href="#"><?php echo display("active"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index?stage='.$key; ?>"><?php echo display("active"); ?> <span
                                                     class="pull-right badge bg-red"><?php if(!empty($counts['enquiry'])){ echo $data_s['enquiry']-$data_s['enq_drp']; }else{echo '0';} ?>
                                                 </span></a></li>
-                                        <li><a href="#"><?php echo display("droped"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index?stage='.$key; ?>"><?php echo display("droped"); ?> <span
                                                     class="pull-right badge bg-purple"><?= $data_s['enq_drp'] ?>
                                                 </span></a></li>
-                                        <li><a href="#"><?php echo display("unassigned"); ?> <span
+                                        <li><a href="<?php echo base_url().'client/index?stage='.$key; ?>"><?php echo display("unassigned"); ?> <span
                                                     class="pull-right badge bg-maroon"><?= $data_s['enq_assign'] ?></span></a>
                                         </li>
                                     </ul>
@@ -388,6 +400,40 @@ if (!empty($enquiry_separation)) {
                 <?php } ?>
 
             </div>
+
+
+
+
+        <!-- visit card dashboard start-->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-aqua">
+                <span class="info-box-icon"><i class="fa fa-car icon-class" style="color:#fff;"></i></span>
+                <div class="info-box-content1">
+                    <div class="box box-widget widget-user-2">
+                        <div class="box-footer no-padding">
+
+                            <ul class="nav nav-stacked">
+                                <li><a href="<?php echo base_url().'client/visits' ?>">All Visit<span
+                                            class="pull-right badge bg-blue"><?php if(!empty($visit_counts)){ echo $visit_counts; }else{ echo "0";} ?></span></a>
+                                </li>
+                                <li><a href="<?php echo base_url().'client/visits' ?>"><?php echo display("created_today"); ?> <span
+                                            class="pull-right badge bg-aqua"><?php if(!empty($visit_counts_today)){ echo $visit_counts_today;}else{ echo '0';}; ?></span></a>
+                                </li>
+                                <!-- <li><a href="#">Approved <span
+                                            class="pull-right badge bg-green"><?php if(!empty($counts['client_ut'])){ echo $counts['client_ut'];}else{ echo '0';}; ?></span></a>
+                                </li>
+                                <li><a href="#">Rejected <span
+                                            class="pull-right badge bg-red"><?php if(!empty($counts['client'])){ echo ($counts['client']-$counts['client_drp']);}else{ echo '0';}; ?></span></a>
+                                </li>                                 -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- visit card dashbaord end -->
+
+
 
             <!-------------------------------------html widget End--------------------------->
 

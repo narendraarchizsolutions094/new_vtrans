@@ -13,6 +13,40 @@ class Dashboard_model extends CI_Model {
 		$user=$this->db->where(array('user_id'=>$user_id,'user_role'=>2))->get('user');
 		return $user;
 	}
+	public function visit_counts($filter=array()){
+		$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);       
+        $this->db->from('tbl_visit');
+        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id');        
+        // $this->db->join('branch','branch.branch_id=tbl_admin.sales_branch','left');
+        // $this->db->join('sales_region','sales_region.region_id=tbl_admin.sales_region','left');
+        // $this->db->join('sales_area','sales_area.area_id=tbl_admin.sales_area','left');                
+        $where="";
+        $where .= "tbl_admin.pk_i_admin_id IN (".implode(',', $all_reporting_ids).")";
+        $and =1;
+
+		if(!empty($filter['from_date'])){
+            $where.=" AND tbl_visit.visit_date = '".$filter['from_date']."'";
+            $and =1;
+        }
+
+
+        // if(!empty($filter['from_date']))
+        // {
+        //     $where.=" AND tbl_visit.visit_date >= '".$filter['from_date']."'";
+        //     $and =1;
+        // }
+
+        // if(!empty($filter['to_date']))
+        // {   
+        //     if($and)
+        //         $where.=" and ";
+
+        //     $where.=" tbl_visit.visit_date <= '".$filter['to_date']."'";
+        //     $and =1;
+        // }
+        $this->db->where($where);                
+        return $this->db->count_all_results();
+	}
 	public function check_userByMAIL($email)
 	{
 		$check_user=  $this->db->select("*")
