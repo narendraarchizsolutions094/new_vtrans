@@ -37,13 +37,6 @@
 }
 </script>
 
-<!-- <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-<script src="https://code.highcharts.com/modules/cylinder.js"></script>
-<script src="https://code.highcharts.com/modules/funnel3d.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script> -->
 </head>
 <style>
     td{
@@ -79,11 +72,7 @@
 }
 
 </style>
-<?php
-// echo "<pre>";
-// print_r($_SESSION);
-// echo "</pre>";
-?>
+
 <!------ Filter Div ---------->
 <div class="row">
     <div class="col-lg-12">
@@ -98,108 +87,19 @@
                 <hr>
                 
                 <div class="form-group col-md-12 row">
-                    <a href="" class="btn btn-primary btn-sm change-color" style="margin-bottom:4px"><div class="col-sm-1" style="font-size:8px;">All</div></a>
-                    <?php foreach($emp_region as $key => $region){?>
-                        <a onclick="get_region_wise_data(<?= $region['region_id'];?>)" style="margin-bottom:4px" id="change-color-<?= $region['region_id'];?>" class="btn btn-primary btn-sm"><div class="col-sm-1" style="font-size:8px;"><?= $region['name'];?></div></a>
+                    <a href="<?=$fullURL?>" class="btn btn-primary btn-sm change-color" style="margin-bottom:4px"><div class="col-sm-1" style="font-size:8px;">All</div></a>
+                    <?php foreach($emp_region as $key => $region){
+                        $selected_class = '';
+                        if(!empty($_GET['region']) && $region['region_id'] == $_GET['region']){
+                            $selected_class = '';
+                        }
+                        ?>
+
+                        <a  style="margin-bottom:4px" href="<?=$fullURL.'?region='.$region['region_id'] ?>" class="btn btn-primary btn-sm"><div class="col-sm-1" style="font-size:8px;"><?= $region['name'];?></div></a>
                     <?php }?>
                 </div> 
-                <div class="form-group col-md-12 table-responsive signings" id="showResult1">
-                    <table id="example1" class="table table-striped table-bordered" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Today</th>
-                                <th>Yesterday</th>
-                                <th>This Week</th>
-                                <th>Last Week</th>
-                                <th>This Month</th>
-                                <th>Last Month</th>
-                                <th>Total - Till Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>Number of New Order</th>
-                                <th><?= round($signings_data['today_call']);?></th>
-                                <th><?= round($signings_data['yesterday_call']);?></th>
-                                <th><?= round($signings_data['this_week']);?></th>
-                                <th><?= round($signings_data['last_week']);?></th>
-                                <th><?= round($signings_data['this_month_call']);?></th>
-                                <th><?= round($signings_data['last_month_call']);?></th>
-                                <th><?= round($signings_data['all_call']);?></th>
-                            </tr>
-                            <tr>
-                                <th>Average Daily New Order</th>
-                                <th><?= round($signings_data['av_daily_call_today_data']);?></th>
-                                <th><?= round($signings_data['av_daily_call_per_yesterday_data']);?></th>
-                                <th><?= round($signings_data['av_daily_call_this_week_data']);?></th>
-                                <th><?= round($signings_data['av_daily_call_last_week_data']);?></th>
-                                <th><?= round($signings_data['av_daily_call_this_month_data']);?></th>
-                                <th><?= round($signings_data['av_daily_call_last_month_data']);?></th>
-                                <th><?= round($signings_data['av_daily_call_total_data']);?></th>
-                            </tr>
-                            <tr>
-                                <th>Average Daily New Order Per Person</th>
-                                <th><?= round($signings_data['av_daily_call_per_person_today']);?></th>
-                                <th><?= round($signings_data['av_daily_call_per_person_yesterday']);?></th>
-                                <th><?= round($signings_data['av_daily_call_per_person_this_week']);?></th>
-                                <th><?= round($signings_data['av_daily_call_per_person_last_week']);?></th>
-                                <th><?= round($signings_data['av_daily_call_per_person_this_month']);?></th>
-                                <th><?= round($signings_data['av_daily_call_per_person_last_month']);?></th>
-                                <th><?= round($signings_data['av_daily_call_per_person_total']);?></th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
 
-                <div class="form-group col-md-12 table-responsive nad" id="showResult1">
-                    <table id="example1" class="table table-striped table-bordered" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Today</th>
-                                <th>Yesterday</th>
-                                <th>This Week</th>
-                                <th>Last Week</th>
-                                <th>This Month</th>
-                                <th>Last Month</th>
-                                <th>Total - Till Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>Number of Lead</th>
-                                <th><?= round($prospect_data['today_call']);?></th>
-                                <th><?= round($prospect_data['yesterday_call']);?></th>
-                                <th><?= round($prospect_data['this_week']);?></th>
-                                <th><?= round($prospect_data['last_week']);?></th>
-                                <th><?= round($prospect_data['this_month_call']);?></th>
-                                <th><?= round($prospect_data['last_month_call']);?></th>
-                                <th><?= round($prospect_data['all_call']);?></th>
-                            </tr>
-                            <tr>
-                                <th>Average Daily Lead</th>
-                                <th><?= round($prospect_data['av_daily_call_today_data']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_per_yesterday_data']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_this_week_data']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_last_week_data']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_this_month_data']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_last_month_data']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_total_data']);?></th>
-                            </tr>
-                            <tr>
-                                <th>Average Daily Lead Per Person</th>
-                                <th><?= round($prospect_data['av_daily_call_per_person_today']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_per_person_yesterday']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_per_person_this_week']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_per_person_last_week']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_per_person_this_month']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_per_person_last_month']);?></th>
-                                <th><?= round($prospect_data['av_daily_call_per_person_total']);?></th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+
 
                 <div class="form-group col-md-12 table-responsive visit_data" id="showResult1">
                     <table id="example1" class="table table-striped table-bordered" style="width:100%">
@@ -217,7 +117,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th>Number of Visit</th>
+                                <th>Visits</th>
                                 <th><?= round($visit_data['today_call']);?></th>
                                 <th><?= round($visit_data['yesterday_call']);?></th>
                                 <th><?= round($visit_data['this_week']);?></th>
@@ -227,29 +127,68 @@
                                 <th><?= round($visit_data['all_call']);?></th>
                             </tr>
                             <tr>
-                                <th>Average Daily Visit</th>
-                                <th><?= round($visit_data['av_daily_call_today_data']);?></th>
-                                <th><?= round($visit_data['av_daily_call_per_yesterday_data']);?></th>
-                                <th><?= round($visit_data['av_daily_call_this_week_data']);?></th>
-                                <th><?= round($visit_data['av_daily_call_last_week_data']);?></th>
-                                <th><?= round($visit_data['av_daily_call_this_month_data']);?></th>
-                                <th><?= round($visit_data['av_daily_call_last_month_data']);?></th>
-                                <th><?= round($visit_data['av_daily_call_total_data']);?></th>
+                                <th>Lead</th>
+                                <th><?= round($prospect_data['today_call']);?></th>
+                                <th><?= round($prospect_data['yesterday_call']);?></th>
+                                <th><?= round($prospect_data['this_week']);?></th>
+                                <th><?= round($prospect_data['last_week']);?></th>
+                                <th><?= round($prospect_data['this_month_call']);?></th>
+                                <th><?= round($prospect_data['last_month_call']);?></th>
+                                <th><?= round($prospect_data['all_call']);?></th>
                             </tr>
                             <tr>
-                                <th>Average Daily Visit Per Person</th>
-                                <th><?= round($visit_data['av_daily_call_per_person_today']);?></th>
-                                <th><?= round($visit_data['av_daily_call_per_person_yesterday']);?></th>
-                                <th><?= round($visit_data['av_daily_call_per_person_this_week']);?></th>
-                                <th><?= round($visit_data['av_daily_call_per_person_last_week']);?></th>
-                                <th><?= round($visit_data['av_daily_call_per_person_this_month']);?></th>
-                                <th><?= round($visit_data['av_daily_call_per_person_last_month']);?></th>
-                                <th><?= round($visit_data['av_daily_call_per_person_total']);?></th>
+                                <th>Approach</th>
+                                <th><?= round($approach_data['today_call']);?></th>
+                                <th><?= round($approach_data['yesterday_call']);?></th>
+                                <th><?= round($approach_data['this_week']);?></th>
+                                <th><?= round($approach_data['last_week']);?></th>
+                                <th><?= round($approach_data['this_month_call']);?></th>
+                                <th><?= round($approach_data['last_month_call']);?></th>
+                                <th><?= round($approach_data['all_call']);?></th>
+                            </tr>
+                            <tr>
+                                <th>Negotiation</th>
+                                <th><?= round($negotiation_data['today_call']);?></th>
+                                <th><?= round($negotiation_data['yesterday_call']);?></th>
+                                <th><?= round($negotiation_data['this_week']);?></th>
+                                <th><?= round($negotiation_data['last_week']);?></th>
+                                <th><?= round($negotiation_data['this_month_call']);?></th>
+                                <th><?= round($negotiation_data['last_month_call']);?></th>
+                                <th><?= round($negotiation_data['all_call']);?></th>
+                            </tr>
+                            <tr>
+                                <th>Closure</th>
+                                <th><?= round($closure_data['today_call']);?></th>
+                                <th><?= round($closure_data['yesterday_call']);?></th>
+                                <th><?= round($closure_data['this_week']);?></th>
+                                <th><?= round($closure_data['last_week']);?></th>
+                                <th><?= round($closure_data['this_month_call']);?></th>
+                                <th><?= round($closure_data['last_month_call']);?></th>
+                                <th><?= round($closure_data['all_call']);?></th>
+                            </tr>
+                            <tr>
+                                <th>Order</th>
+                                <th><?= round($signings_data['today_call']);?></th>
+                                <th><?= round($signings_data['yesterday_call']);?></th>
+                                <th><?= round($signings_data['this_week']);?></th>
+                                <th><?= round($signings_data['last_week']);?></th>
+                                <th><?= round($signings_data['this_month_call']);?></th>
+                                <th><?= round($signings_data['last_month_call']);?></th>
+                                <th><?= round($signings_data['all_call']);?></th>
+                            </tr>
+                            <tr>
+                                <th>Future opportunities</th>
+                                <th><?= round($future_opp_data['today_call']);?></th>
+                                <th><?= round($future_opp_data['yesterday_call']);?></th>
+                                <th><?= round($future_opp_data['this_week']);?></th>
+                                <th><?= round($future_opp_data['last_week']);?></th>
+                                <th><?= round($future_opp_data['this_month_call']);?></th>
+                                <th><?= round($future_opp_data['last_month_call']);?></th>
+                                <th><?= round($future_opp_data['all_call']);?></th>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
                 
                     <div class='row'>                        
                         <div class='col-md-4 card-graph' style="height: 400px; width: 50%;">
