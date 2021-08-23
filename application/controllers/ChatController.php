@@ -307,40 +307,42 @@ class ChatController extends CI_Controller {
 	}
 	
 	public function getunread(){
-		
-		$user_id = $this->session->user_id; 
-		
-		$updarr = array("last_log" => date("Y-m-d h:i:s"));
-		$this->db->where("pk_i_admin_id", $user_id)
-					->update("tbl_admin", $updarr);
-		
-		 $this->db->select('sender_id,receiver_id, COUNT(sender_id) as total');
-		 $this->db->where(array("receiver_id"=> $user_id));
-		 $this->db->where("sender_id != '$user_id'");
-		 $this->db->where("status != 2");
-		 $this->db->group_by('sender_id'); 
-		 //$this->db->order_by('message_date_time','DESC'); 
-		 $unread = $this->db->get('chat')->result();
-		//echo $this->db->last_query();
-		$chtarr = array();	
-		
-		if(!empty($unread)){
-			$total = 0;
-			foreach($unread as $ind => $rcvr){
-				
-				$chtarr["users"][$rcvr->sender_id] = $rcvr->total; 
-				$total = $total + $rcvr->total;		
+		if(!empty($_SESSION) && !empty($this->session->user_id)){
+			$user_id = $this->session->user_id;
+			$updarr = array("last_log" => date("Y-m-d h:i:s"));
+			$this->db->where("pk_i_admin_id", $user_id)
+			->update("tbl_admin", $updarr);
+			
+			$this->db->select('sender_id,receiver_id, COUNT(sender_id) as total');
+			$this->db->where(array("receiver_id"=> $user_id));
+			$this->db->where("sender_id != '$user_id'");
+			$this->db->where("status != 2");
+			$this->db->group_by('sender_id'); 
+			//$this->db->order_by('message_date_time','DESC'); 
+			$unread = $this->db->get('chat')->result();
+			//echo $this->db->last_query();
+			$chtarr = array();	
+			
+			if(!empty($unread)){
+				$total = 0;
+				foreach($unread as $ind => $rcvr){
+					
+					$chtarr["users"][$rcvr->sender_id] = $rcvr->total; 
+					$total = $total + $rcvr->total;		
+				}
+				$chtarr["total"] = $total;
+			}else{
+				$chtarr["total"] = 0; 
 			}
-			$chtarr["total"] = $total;
-		}else{
-			$chtarr["total"] = 0; 
+			die(json_encode($chtarr));
+			
+			// $unread =  $this->db->where(array("receiver_id"=> $user_id))->where("sender_id != '$user_id'")->where("status != 2")->get('chat')->result();
+			
+			}else{
+				die(json_encode(array('redirect'=>1)));
+			}
 		}
-		die(json_encode($chtarr));
 		
-		// $unread =  $this->db->where(array("receiver_id"=> $user_id))->where("sender_id != '$user_id'")->where("status != 2")->get('chat')->result();
-		
-	}
-	
 	
 	public function chat_clear_client_cs(){
 		$receiver_id = $this->OuthModel->Encryptor('decrypt', $this->input->get('receiver_id') );

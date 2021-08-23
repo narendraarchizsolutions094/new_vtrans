@@ -484,15 +484,26 @@ echo json_encode($res);die;
   {
     $currentURL = current_url();
     $params   = $_SERVER['QUERY_STRING'];
-    $fullURL = $currentURL . '?' . $params; 
-    echo $fullURL;   
+    $fullURL = $currentURL; 
+    $data['fullURL'] = $fullURL;   
     //$this->output->enable_profiler(TRUE);
-
+    $data['region_filter_id'] = '';
+    if(!empty($_GET['region'])){
+      $data['region_filter_id'] = $_GET['region'];
+    }
    // $this->session->sess_destroy();
    session_unset();   
     // if (user_role('120') == true) {}
     $todays = date('Y-m-d');
     // $todays = '2021-02-16';
+    
+    $get_ids = array();
+    if(!empty($_GET['region'])){
+      $region_id = $_GET['region'];
+      $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = ".$region_id."")->result_array();
+      $get_ids = $this->array_flatten($get_user);
+    }
+    $data['get_ids'] = $get_ids;
 
     $cids = $this->uri->segment(2);
     // echo $this->encryption->encrypt($cids);die;
@@ -687,17 +698,43 @@ echo json_encode($res);die;
         'companey_id' => $comp_id,
         'user_id' => $user_id,
       );
-      $this->session->set_userdata($data_arr);
-      $data['call_data'] = $this->all_call_log_report_filterdata();
-      $data['signings_data'] = $this->all_signings_report_filterdata();
-      $data['prospect_data'] = $this->all_prospect_report_filterdata();
-      $data['visit_data'] = $this->all_visit_report_filterdata();
+      $this->session->set_userdata($data_arr);     
+      
+      $data['visit_data'] = $this->all_visit_report_filterdata(); // visit data
+      $data['prospect_data'] = $this->all_prospect_report_filterdata(1); // lead data      
+      $data['approach_data'] = $this->all_prospect_report_filterdata(2); // approach data      
+      $data['negotiation_data'] = $this->all_prospect_report_filterdata(3); // regotition data
+      $data['signings_data'] = $this->all_signings_report_filterdata(4); // order data
+      $data['closure_data'] = $this->all_prospect_report_filterdata(5); // closer data
+      $data['future_opp_data'] = $this->all_prospect_report_filterdata(6); // future opportunities data
+
+      if(!empty($region_id)){
+        $this->db->where_in('created_by',$get_ids);
+      }
       $data['nad_count'] = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
+      if(!empty($region_id)){
+        $this->db->where_in('created_by',$get_ids);
+      }
       $data['prospect_count'] = $this->db->get_where('enquiry',array('status' => 2))->num_rows();
+      if(!empty($region_id)){
+        $this->db->where_in('created_by',$get_ids);
+      }
       $data['approach_count'] = $this->db->get_where('enquiry',array('status' => 3))->num_rows();
+      if(!empty($region_id)){
+        $this->db->where_in('created_by',$get_ids);
+      }
       $data['negotiations_count'] = $this->db->get_where('enquiry',array('status' => 4))->num_rows();
+      if(!empty($region_id)){
+        $this->db->where_in('created_by',$get_ids);
+      }
       $data['closure_count'] = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
+      if(!empty($region_id)){
+        $this->db->where_in('created_by',$get_ids);
+      }
       $data['order_count'] = $this->db->get_where('enquiry',array('status' => 6))->num_rows();
+      if(!empty($region_id)){
+        $this->db->where_in('created_by',$get_ids);
+      }
       $data['future_count'] = $this->db->get_where('enquiry',array('status' => 7))->num_rows();
 
       $data['emp_region'] = $this->db->get_where('sales_region',array('type'=>1))->result_array();
@@ -906,7 +943,9 @@ echo json_encode($res);die;
 
         $date_new = date('Y-m-d', strtotime($date2 . ' +1 day'));
         $date = date('Y-m-d', strtotime($date_new . ' -'.$a.' day'));
-        $get_visit = $this->db->query("SELECT tbl_visit.* FROM `tbl_visit` INNER JOIN enquiry ON tbl_visit.enquiry_id= enquiry.enquiry_id WHERE enquiry.sales_region=".$region['region_id']." AND DATE(tbl_visit.created_at)=".'"'.$date.'"')->result_array();
+        
+        $get_visit = $this->db->query("SELECT tbl_visit.* FROM `tbl_visit` INNER JOIN enquiry ON tbl_visit.enquiry_id= enquiry.enquiry_id WHERE enquiry.sales_region=".$region['region_id']." AND DATE(tbl_visit.visit_date)=".'"'.$date.'"')->result_array();
+
         $get_nad = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->result_array();
         $get_sinings = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->result_array();
 
@@ -2175,8 +2214,16 @@ echo json_encode($res);die;
     return $getData;
   }
 
-  public function all_prospect_report_filterdata($region_id=0)
+  public function all_prospect_report_filterdata($enq_status=1)
   {
+    $region_id='';
+    $get_ids = array();
+    if(!empty($_GET['region'])){
+      $region_id = $_GET['region'];
+      $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = ".$region_id."")->result_array();
+      $get_ids = $this->array_flatten($get_user);
+    }
+    $data['get_ids'] = $get_ids;
     $todays = date('Y-m-d');
     $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
     $this_month = date('m');
@@ -2201,35 +2248,69 @@ echo json_encode($res);die;
     $last_month_ed = Date("Y-m-d", strtotime("last day of previous month"));
 
     $lastMonth = date("m", strtotime("first day of previous month"));
-
-    $get_all_call = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
-    $get_today_call = $this->db->where(array('status' => 1,'created_date' => $todays))->from('enquiry')->count_all_results();
-    $get_yesterday_call = $this->db->where(array('status' => 1,'created_date' => $yesterday))->from('enquiry')->count_all_results();
+    
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
+    $get_all_call = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
+    
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
+    $get_today_call = $this->db->where(array('status' => $enq_status,'created_date' => $todays))->from('enquiry')->count_all_results();
+    
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
+    $get_yesterday_call = $this->db->where(array('status' => $enq_status,'created_date' => $yesterday))->from('enquiry')->count_all_results();
+    
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('MONTH(created_date)', $this_month);
-    $get_this_month_call = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
+    $get_this_month_call = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
 
-    $get_last_month_call = $this->db->where(array('status' => 1,'created_date' => $lastMonth))->from('enquiry')->count_all_results();
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
+    $get_last_month_call = $this->db->where(array('status' => $enq_status,'created_date' => $lastMonth))->from('enquiry')->count_all_results();
+    
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $this_week_sd);
     $this->db->where('date(created_date) <=', $this_week_ed);
-    $get_this_week_call = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
+    $get_this_week_call = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
 
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $start_week);
     $this->db->where('date(created_date) <=', $end_week);
-    $get_last_week_call = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
+    $get_last_week_call = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
 
     $all_users = $this->db->where(array('dept_name' => 1,'b_status'=>1))->from('tbl_admin')->count_all_results();
 
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $this_week_sd);
     $this->db->where('date(created_date) <=', $this_week_ed);
-    $av_daily_call_this_week = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
+    $av_daily_call_this_week = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
 
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $this_month_sd);
     $this->db->where('date(created_date) <=', $this_month_ed);
-    $av_daily_call_this_month = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
+    $av_daily_call_this_month = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
 
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $last_month_sd);
     $this->db->where('date(created_date) <=', $last_month_ed);
-    $av_daily_call_last_month = $this->db->where(array('status' => 1))->from('enquiry')->count_all_results();
+    $av_daily_call_last_month = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
 
     $av_daily_call_today_data = $get_today_call/$all_users;
     $av_daily_call_per_yesterday_data = $get_yesterday_call/$all_users;
@@ -2271,61 +2352,89 @@ echo json_encode($res);die;
       'av_daily_call_last_month_data'       => ($av_daily_call_last_month_data>=0)?$av_daily_call_last_month_data:0,
       'av_daily_call_total_data'            => ($av_daily_call_total_data>=0)?$av_daily_call_total_data:0,
     );
-
     return $getData;
   }
+  public function all_visit_report_filterdata($region_id=0){    
+    
+    $get_ids = array();
+    if(!empty($_GET['region'])){
+      $region_id = $_GET['region'];
+      $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = ".$region_id."")->result_array();
+      $get_ids = $this->array_flatten($get_user);
+    }
 
-  public function all_visit_report_filterdata($region_id=0)
-  {
-    $todays = date('Y-m-d');
-    $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
-    $this_month = date('m');
-
-    $monday = strtotime("last monday");
-    $monday = date('w', $monday)==date('w') ? $monday+7*86400 : $monday;
-    $sunday = strtotime(date("Y-m-d",$monday)." +6 days");
-    $this_week_sd = date("Y-m-d",$monday);
-    $this_week_ed = date("Y-m-d",$sunday);
-
-    $previous_week = strtotime("-1 week +1 day");
-    $start_week = strtotime("last sunday midnight",$previous_week);
-    $end_week = strtotime("next saturday",$start_week);
-    $start_week = date("Y-m-d",$start_week);
-    $end_week = date("Y-m-d",$end_week);
-    // echo $start_week.' '.$end_week ;
-
-    $this_month_sd = date('Y-m-01');
+    $todays         = date('Y-m-d');
+    $yesterday      = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
+    $this_month     = date('m');
+    $monday         = strtotime("last monday");
+    $monday         = date('w', $monday)==date('w') ? $monday+7*86400 : $monday;
+    $sunday         = strtotime(date("Y-m-d",$monday)." +6 days");
+    $this_week_sd   = date("Y-m-d",$monday);
+    $this_week_ed   = date("Y-m-d",$sunday);
+    $previous_week  = strtotime("-1 week +1 day");
+    $start_week     = strtotime("last sunday midnight",$previous_week);
+    $end_week       = strtotime("next saturday",$start_week);
+    $start_week     = date("Y-m-d",$start_week);
+    $end_week       = date("Y-m-d",$end_week);
+    $this_month_sd  = date('Y-m-01');
     $this_month_ed  = date('Y-m-t');
+    $last_month_sd  = Date("Y-m-d", strtotime("first day of previous month"));
+    $last_month_ed  = Date("Y-m-d", strtotime("last day of previous month"));
+    $lastMonth      = date("m", strtotime("first day of previous month"));
 
-    $last_month_sd = Date("Y-m-d", strtotime("first day of previous month"));
-    $last_month_ed = Date("Y-m-d", strtotime("last day of previous month"));
-
-    $lastMonth = date("m", strtotime("first day of previous month"));
-
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }
     $get_all_call = $this->db->from('tbl_visit')->count_all_results();
 
-    $get_today_call = $this->db->where(array('date(visit_date)'=>$todays))->from('tbl_visit')->count_all_results();
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }
+    $get_today_call = $this->db->where(array('visit_date'=>$todays))->from('tbl_visit')->count_all_results();
 
-    $get_yesterday_call = $this->db->where(array('date(visit_date)'=>$yesterday))->from('tbl_visit')->count_all_results();
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }    
+    $get_yesterday_call = $this->db->where(array('visit_date'=>$yesterday))->from('tbl_visit')->count_all_results();    
+
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }
+    $get_this_month_call = $this->db->where('MONTH(visit_date)', $this_month)->from('tbl_visit')->count_all_results();    
+
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }    
+    $get_last_month_call = $this->db->where(array('MONTH(visit_date)' => $lastMonth))->from('tbl_visit')->count_all_results();    
+
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }
+    $get_this_week_call = $this->db->where('visit_date >=', $this_week_sd)->where('visit_date <=', $this_week_ed)->from('tbl_visit')->count_all_results();    
     
-    $get_this_month_call = $this->db->where('MONTH(visit_date)', $this_month)->from('tbl_visit')->count_all_results();
-    $get_last_month_call = $this->db->where(array('MONTH(visit_date)' => $lastMonth))->from('tbl_visit')->count_all_results();
-    
-    
-    $get_this_week_call = $this->db->where('date(visit_date)>=', $this_week_sd)->where('date(visit_date) <=', $this_week_ed)->from('tbl_visit')->count_all_results();
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }
+    $get_last_week_call = $this->db->where('visit_date >=', $start_week)->where('visit_date <=', $end_week)->from('tbl_visit')->count_all_results();
 
-    $get_last_week_call = $this->db->where('date(visit_date) >=', $start_week)->where('visit_date <=', $end_week)->from('tbl_visit')->count_all_results();
-
-    $all_users = $this->db->where('b_status',1)->from('tbl_admin')->count_all_results();
-
+    $all_users = $this->db->where('b_status',1)->from('tbl_admin')->count_all_results();        
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }
     $this->db->where('visit_date >=', $this_week_sd);
     $this->db->where('visit_date <=', $this_week_ed);
     $av_daily_call_this_week = $this->db->from('tbl_visit')->count_all_results();
-
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }
+    
     $this->db->where('visit_date >=', $this_month_sd);
     $this->db->where('visit_date <=', $this_month_ed);
-    $av_daily_call_this_month = $this->db->from('tbl_visit')->count_all_results();
+    $av_daily_call_this_month = $this->db->from('tbl_visit')->count_all_results();    
 
+    if(!empty($region_id)){
+      $this->db->where_in('user_id',$get_ids);
+    }
     $this->db->where('visit_date >=', $last_month_sd);
     $this->db->where('visit_date <=', $last_month_ed);
     $av_daily_call_last_month = $this->db->from('tbl_visit')->count_all_results();
@@ -2335,17 +2444,15 @@ echo json_encode($res);die;
     $av_daily_call_this_week_data = $av_daily_call_this_week/$all_users;
     $av_daily_call_last_week_data = $get_last_week_call/$all_users;
     $av_daily_call_this_month_data = $av_daily_call_this_month/$all_users;
-    $av_daily_call_last_month_data = $av_daily_call_last_month/$all_users;
+    $av_daily_call_last_month_data = $av_daily_call_last_month/$all_users;  
     $av_daily_call_total_data = $get_all_call/$all_users;
-
-
     $av_daily_call_per_person_today = $get_today_call/$all_users;
     $av_daily_call_per_person_yesterday = $get_yesterday_call/$all_users;
     $av_daily_call_per_person_this_week = $get_this_week_call/$all_users;
     $av_daily_call_per_person_last_week = $get_last_week_call/$all_users;
     $av_daily_call_per_person_this_month = $get_this_month_call/$all_users;
     $av_daily_call_per_person_last_month = $get_last_month_call/$all_users;
-    $av_daily_call_per_person_total = $get_all_call/$all_users;
+    $av_daily_call_per_person_total = $get_all_call/$all_users;    
 
     $getData = array(
       'all_call'                            => $get_all_call,
@@ -2370,12 +2477,34 @@ echo json_encode($res);die;
       'av_daily_call_last_month_data'       => ($av_daily_call_last_month_data>=0)?$av_daily_call_last_month_data:0,
       'av_daily_call_total_data'            => ($av_daily_call_total_data>=0)?$av_daily_call_total_data:0,
     );
-
     return $getData;
   }
 
-  public function all_signings_report_filterdata($region_id=0)
+  function array_flatten($array) { 
+    if (!is_array($array)) { 
+      return FALSE; 
+    } 
+    $result = array(); 
+    foreach ($array as $key => $value) { 
+      if (is_array($value)) { 
+        $result = array_merge($result, $this->array_flatten($value)); 
+      } 
+      else { 
+        $result[$key] = $value; 
+      } 
+    } 
+    return $result; 
+  }
+
+  public function all_signings_report_filterdata()
   {
+    $region_id='';
+    $get_ids = array();
+    if(!empty($_GET['region'])){
+      $region_id = $_GET['region'];
+      $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = ".$region_id."")->result_array();
+      $get_ids = $this->array_flatten($get_user);
+    }
     $todays = date('Y-m-d');
     $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
     $this_month = date('m');
@@ -2387,7 +2516,7 @@ echo json_encode($res);die;
     $this_week_ed = date("Y-m-d",$sunday);
 
     $previous_week = strtotime("-1 week +1 day");
-    $start_week = strtotime("last sunday midnight",$previous_week);
+    $start_week = strtotime("last sunday midnight",$previous_week); 
     $end_week = strtotime("next saturday",$start_week);
     $start_week = date("Y-m-d",$start_week);
     $end_week = date("Y-m-d",$end_week);
@@ -2400,13 +2529,36 @@ echo json_encode($res);die;
     $last_month_ed = Date("Y-m-d", strtotime("last day of previous month"));
 
     $lastMonth = date("m", strtotime("first day of previous month"));
-
+    
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $get_all_call = $this->db->where('status',5)->from('enquiry')->count_all_results();
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $get_today_call = $this->db->where(array('status' => 5,'date(created_date)' => $todays))->from('enquiry')->count_all_results();
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $get_yesterday_call = $this->db->where(array('status' => 5,'date(created_date)' => $yesterday))->from('enquiry')->count_all_results();
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('MONTH(created_date)', $this_month);
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $get_this_month_call = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
+    
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $get_last_month_call = $this->db->where(array('status' => 5,'MONTH(created_date)' => $lastMonth))->from('enquiry')->count_all_results();
+    
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $this_week_sd);
     $this->db->where('date(created_date) <=', $this_week_ed);
     $get_this_week_call = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
@@ -2417,14 +2569,23 @@ echo json_encode($res);die;
 
     $all_users = $this->db->where(array('dept_name' => 1,'b_status'=>1))->from('tbl_admin')->count_all_results();
 
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $this_week_sd);
     $this->db->where('date(created_date) <=', $this_week_ed);
     $av_daily_call_this_week = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
 
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $this_month_sd);
     $this->db->where('date(created_date) <=', $this_month_ed);
     $av_daily_call_this_month = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();
 
+    if(!empty($region_id)){
+      $this->db->where_in('created_by',$get_ids);
+    }
     $this->db->where('date(created_date) >=', $last_month_sd);
     $this->db->where('date(created_date) <=', $last_month_ed);
     $av_daily_call_last_month = $this->db->where(array('status' => 5))->from('enquiry')->count_all_results();

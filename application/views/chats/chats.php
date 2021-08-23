@@ -1034,6 +1034,8 @@
                                   .text(msg + " New");
                                   $("#" + ind).prependTo("#chat-user-box");  
                           });
+                      }else if(jresp.redirect){
+                        window.location.href = "<?=base_url();?>";
                       }
 
                   },

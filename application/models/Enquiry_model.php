@@ -3240,7 +3240,21 @@ $cpny_id=$this->session->companey_id;
 
         return $dataAry;
     }
-
+    function array_flatten($array) { 
+      if (!is_array($array)) { 
+        return FALSE; 
+      } 
+      $result = array(); 
+      foreach ($array as $key => $value) { 
+        if (is_array($value)) { 
+          $result = array_merge($result, $this->array_flatten($value)); 
+        } 
+        else { 
+          $result[$key] = $value; 
+        } 
+      } 
+      return $result; 
+    }
     public function enquiryLeadClientCount($userid,$companyid)
     { 
       $all_reporting_ids    =   $this->common_model->get_categories($userid);
@@ -3249,6 +3263,12 @@ $cpny_id=$this->session->companey_id;
       // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         // $where.=" AND enquiry.comp_id=$cpny_id";
         $where="enquiry.comp_id=$cpny_id";
+        $get_ids = array();
+			if(!empty($_POST['region'])){
+        $region_id = $_POST['region'];
+        $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = '".$region_id."'")->result_array();
+        $get_ids = $this->array_flatten($get_user);
+			}
         if($_POST){
             // $filter=json_encode(array(
             //     'from_date'=>$_POST['from_date'],
@@ -3268,9 +3288,17 @@ $cpny_id=$this->session->companey_id;
                 $users=$_POST['users'];
                  $where.=" AND (enquiry.created_by=$users";
                  $where.=" OR enquiry.aasign_to=$users)";
+                 if(!empty($get_ids) && count($get_ids) > 0){
+                  $where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+                } 
             }else{
+              if(!empty($get_ids) && count($get_ids) > 0){
+                $where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+              }else{
                 $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+              } 
+                
             }
             if(!empty($_POST['state_id'])){
                 $state_id=$_POST['state_id'];
@@ -3429,6 +3457,11 @@ $cpny_id=$this->session->companey_id;
       // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         // $where.=" AND enquiry.comp_id=$cpny_id";
         $where="enquiry.comp_id=$cpny_id";
+        if(!empty($_POST['region'])){
+          $region_id = $_POST['region'];
+          $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = '".$region_id."'")->result_array();
+          $get_ids = $this->array_flatten($get_user);
+        }
         if($_POST){
             // $filter=json_encode(array(
             //     'from_date'=>$_POST['from_date'],
@@ -3446,11 +3479,20 @@ $cpny_id=$this->session->companey_id;
             }
             if(!empty($_POST['users'])){
                 $users=$_POST['users'];
-                 $where.=" AND enquiry.created_by=$users";
-                 $where.=" OR enquiry.aasign_to=$users";
+                 $where.=" AND (enquiry.created_by=$users";
+                 $where.=" OR enquiry.aasign_to=$users)";
+                 if(!empty($get_ids) && count($get_ids) > 0){
+                  $where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+                } 
+                 
             }else{
+              if(!empty($get_ids) && count($get_ids) > 0){
+                $where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+              }else{
+
                 $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+              } 
             }
             if(!empty($_POST['state_id'])){
                 $state_id=$_POST['state_id'];
