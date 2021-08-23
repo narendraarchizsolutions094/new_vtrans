@@ -148,12 +148,24 @@
                             <input  class="d_filter form-control form-date" name="to_date" value="<?php if(!empty($fdata['to_date'])){echo $fdata['to_date'];} ?>">
                             </div>
                         </div>
-
+                        <?php
+                        $this->db->where('type',1);
+                        $region_arr = $this->db->get('sales_region')->result_array();
+                        ?>
                         <div class="col-lg-2">
                             <div class="form-group">
                                 <label>Region</label>                                
                                 <select name="region" class="form-control">
                                     <option value="" >--Select--</option>
+                                    <?php
+                                    if(!empty($region_arr)){
+                                        foreach($region_arr as $key=>$value){
+                                            ?>                                            
+                                            <option value="<?=$value['region_id']?>"   <?php if(!empty($fdata['region'])){ if($fdata['region']==$value['region_id']){echo'selected';}} ?> ><?=$value['name']?></option>";
+                                            <?php
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>

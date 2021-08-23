@@ -183,8 +183,8 @@ class Attendance extends CI_Controller {
         $data['user_region'] = $this->db->select('region_id,name')->where(array('comp_id'=>$this->session->userdata('companey_id')))->get('sales_region')->result();		
 		$desi		=	$this->input->post('designation');
 		$region		=	$this->input->post('region');
-		$from	= $data['from']	=	$this->input->post('att_date_from');
-		$to	= $data['to']	=	$this->input->post('att_date_to');
+		$from	= $data['from']	=	$this->input->post('att_date_from')??date('Y-m-d');
+		$to	= $data['to']	=	$this->input->post('att_date_to')??date('Y-m-d');
 		
 		if(!empty($_GET['fdate']) && !empty($_GET['tdate'])){
 			$from	= $data['from']	= $_GET['fdate'];

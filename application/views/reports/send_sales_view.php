@@ -70,6 +70,9 @@
   width: 100%;
   height: 500px;
 }
+.selected_region{
+    padding:10px 10px;
+}
 
 </style>
 
@@ -77,7 +80,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-          
+           
             <div class="panel-body">
                 <div class="widget-title text-center">             
                     <?php
@@ -91,11 +94,11 @@
                     <?php foreach($emp_region as $key => $region){
                         $selected_class = '';
                         if(!empty($_GET['region']) && $region['region_id'] == $_GET['region']){
-                            $selected_class = '';
+                            $selected_class = 'selected_region';
                         }
                         ?>
 
-                        <a  style="margin-bottom:4px" href="<?=$fullURL.'?region='.$region['region_id'] ?>" class="btn btn-primary btn-sm"><div class="col-sm-1" style="font-size:8px;"><?= $region['name'];?></div></a>
+                        <a  style="margin-bottom:4px" href="<?=$fullURL.'?region='.$region['region_id'] ?>" class="btn btn-primary btn-sm <?=$selected_class?>"><div class="col-sm-1" style="font-size:8px;"><?= $region['name'];?></div></a>
                     <?php }?>
                 </div> 
 
@@ -238,6 +241,9 @@ $lead_source = $this->db->get_where('lead_source')->result_array();
 $dataPoints2_source = array();
 $dataPoints2_value = array();
 foreach($lead_source as $key => $source){
+    if(!empty($get_ids)){                            
+        $this->db->where_in('created_by',$get_ids);
+    }
     $lead_data = $this->db->where(array('enquiry_source' => $source['lsid']))->from('enquiry')->count_all_results();
     array_push($dataPoints2_source,$source['lead_name']);
     array_push($dataPoints2_value,$lead_data);
@@ -253,6 +259,9 @@ $this->db->where_not_in('stage_for',$ignore);
 $lead_stage = $this->db->get_where('lead_stage')->result_array();
 $dataPoints3 = array();
     foreach($lead_stage as $key => $stage){
+        if(!empty($get_ids)){                            
+            $this->db->where_in('created_by',$get_ids);
+        }
         $lead_stage = $this->db->where(array('lead_stage' => $stage['stg_id']))->from('enquiry')->count_all_results();
         array_push($dataPoints3,array("label" => $stage['lead_stage_name'], "symbol" => substr($stage['lead_stage_name'], 0, 2),"y" => $lead_stage));
     }
@@ -260,6 +269,9 @@ $dataPoints3 = array();
 
 
 <?php
+if(!empty($region_filter_id)){    
+    $this->db->where('sales_region',$region_filter_id);
+}
 $user_data = $this->db->get_where('tbl_admin',array('dept_name'=>1,'b_status'=>1))->result_array();
 $dataPoints4 = array();
     foreach($user_data as $key => $user){

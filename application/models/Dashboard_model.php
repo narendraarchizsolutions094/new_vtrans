@@ -14,14 +14,23 @@ class Dashboard_model extends CI_Model {
 		return $user;
 	}
 	public function visit_counts($filter=array()){
-		$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);       
+		$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);   
+		if(!empty($_POST['region'])){
+			$region_id = $_POST['region'];
+			$get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = '".$region_id."'")->result_array();
+			$get_ids = $this->array_flatten($get_user);
+		  }    
         $this->db->from('tbl_visit');
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id');        
         // $this->db->join('branch','branch.branch_id=tbl_admin.sales_branch','left');
         // $this->db->join('sales_region','sales_region.region_id=tbl_admin.sales_region','left');
         // $this->db->join('sales_area','sales_area.area_id=tbl_admin.sales_area','left');                
         $where="";
-        $where .= "tbl_admin.pk_i_admin_id IN (".implode(',', $all_reporting_ids).")";
+		if(!empty($get_ids) && count($get_ids) > 0){
+			$where .= "tbl_admin.pk_i_admin_id IN (".implode(',', $get_ids).")";
+		}else{
+			$where .= "tbl_admin.pk_i_admin_id IN (".implode(',', $all_reporting_ids).")";
+		}
         $and =1;
 
 		if(!empty($filter['from_date'])){
@@ -387,6 +396,21 @@ class Dashboard_model extends CI_Model {
 
 		return $this->db->select_sum('time')->where(array('comp_id' =>$comp_id,'type'=>$type))->get('tbl_followupAvgtime');
 	}
+	function array_flatten($array) { 
+        if (!is_array($array)) { 
+          return FALSE; 
+        } 
+        $result = array(); 
+        foreach ($array as $key => $value) { 
+          if (is_array($value)) { 
+            $result = array_merge($result, $this->array_flatten($value)); 
+          } 
+          else { 
+            $result[$key] = $value; 
+          } 
+        } 
+        return $result; 
+      }
     public function countLead($type,$comp_id=0,$user_id=0,$process=0)
     {
 		$userid= !empty($user_id)?$user_id:$this->session->user_id;
@@ -402,9 +426,21 @@ class Dashboard_model extends CI_Model {
                 'from_date'=>$_POST['from_date']??'',
                 'to_date'=>$_POST['to_date']??'',
                 'users'=>$_POST['users']??'',
-                'state_id'=>$_POST['state_id']??'',
-                'city_id'=>$_POST['city_id']??'',
+                'region'=>$_POST['region']??''
                               ));
+
+			$get_ids = array();
+			if(!empty($_POST['region'])){
+			$region_id = $_POST['region'];
+			$get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = '".$region_id."'")->result_array();
+			$get_ids = $this->array_flatten($get_user);
+			}
+			//echo $this->db->last_query();
+			//print_r($get_user);
+			//print_r($get_ids);
+
+ 
+
             if(!empty($_POST['from_date']) AND !empty($_POST['to_date'])){
                 $from_date=$_POST['from_date'];
                 $to_date=$_POST['to_date'];
@@ -414,11 +450,18 @@ class Dashboard_model extends CI_Model {
             }
             if(!empty($_POST['users'])){
                 $users=$_POST['users'];
-                 $where.=" AND enquiry.created_by=$users";
-                 $where.=" OR enquiry.aasign_to=$users";
+                 $where.=" AND (enquiry.created_by=$users";
+                 $where.=" OR enquiry.aasign_to=$users)";
+				if(!empty($get_ids) && count($get_ids) > 0){
+					$where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+				} 
             }else{
-                $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-                $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+                if(!empty($get_ids) && count($get_ids) > 0){
+					$where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+				}else{
+					$where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+					$where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+				}
             }
             if(!empty($_POST['state_id'])){
                 $state_id=$_POST['state_id'];
