@@ -3489,7 +3489,7 @@ for($i=0; $i< $max;$i++)
     } 
     $vertical .="\n";
 }
-                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$vertical.'</th>';
+                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$value2->dname.'</th>';
 $vertical ='';
                 }
                 $freight_table.='</tr>
@@ -3754,12 +3754,12 @@ $all_zones = array_chunk($all_zones,2);
               <td>Dynamic Fuel Surcharge in %</td>
               <td>'.$oc[17].'</td>
               <td>% of basic freight</td>
-          </tr>
-      <tr>
+          </tr>';
+/*       <tr>
               <td>Levy- in %</td>
               <td>'.$oc[18].'</td>
               <td>% of basic freight</td>
-          </tr>';
+          </tr>'; */
       }
       $oc_table.='<tr>
               <td>E-way bill charge</td>
