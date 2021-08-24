@@ -797,7 +797,7 @@ public function login_in_process(){
         $data['content'] = $this->load->view('home', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
-    
+  
   public function home() 
     {      
          
@@ -836,7 +836,7 @@ public function login_in_process(){
         }
         // $data['filterData']=json_encode(array()); 
         if(!empty($_POST)){
-            $filterData=array( 'from_date'=>$_POST['from_date'], 'to_date'=>$_POST['to_date'], 'users'=>$_POST['users'],'region'=>$_POST['region']);
+            $filterData=array( 'from_date'=>$_POST['from_date'], 'to_date'=>$_POST['to_date'], 'users'=>$_POST['users'],'state_id'=>$_POST['state_id'],'city_id'=>$_POST['city_id']);
             $data['filterData']=json_encode($filterData);
             $this->session->set_userdata('filter',$filterData);
             }else{   $data['filterData']=json_encode(array()); }

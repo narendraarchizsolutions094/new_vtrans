@@ -1033,7 +1033,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                        <tr>                              
                           <th>S.N.</th>
 						  <th id="th-24">Quatation number</th>
-						  <th id="th-25">Quatation Amt</th>
+						  <th id="th-25">Quatation Amt (In Lakhs)</th>
                           <th id="th-21">Company</th>
                           <th id="th-22">Client Name</th>
                           <th id="th-3">Business Type</th>
@@ -1051,7 +1051,8 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                           <th id="th-15">Vehicle Type</th>
                           <th id="th-16">Vehicle Carrying Capacity</th>
                           <th id="th-17">Invoice Value</th> -->
-						  <th id="th-18">Created By</th>
+						  <th id="th-27">Region Name</th>
+						  <th id="th-26">Created By</th>
                           <th id="th-18">Create Date</th>
                           <th id="th-23">No Action</th>
                           <th id="th-19">Status</th>
