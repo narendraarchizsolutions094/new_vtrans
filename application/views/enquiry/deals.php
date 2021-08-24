@@ -328,23 +328,32 @@ function manage_filters()
 </script>
 
 <div class="row row text-center short_dashboard" id="active_class" style="<?=!empty($this->uri->segment(3))?'display: none;':''?>">
-    <div class="wd-14 col-sm-3" style="">
-        <div  class="col-12 border_bottom border_bottom_active" >
+<div class="wd-14 col-sm-3" style="">
+        <div  class="col-12 border_bottom_active" >
             <p style="margin-top: 2vh;font-weight:bold;">
-              <input id='all_deals_radio' value="all" type="radio" name="top_filter" class="d_filter " checked="checked"><i class="fa fa-list" ></i><label for="all_deals_radio">&nbsp;&nbsp;<?php echo display('all_deals'); ?></label>
+              <input id='active_deals_radio' value="active" type="radio" name="top_filter" class="d_filter" checked="checked"><i class="fa fa-fire" ></i><label for="active_deals_radio">&nbsp;&nbsp;<?php echo 'Active Deals'; ?></label>
+              <span  style="float:right;" class="badge badge-pill badge-info" id="all_active_deals"><i class="fa fa-spinner fa-spin"></i></span>
+            </p>
+        </div>
+    </div>
+    <div class="wd-14 col-sm-2" style="">
+        <div  class="col-12 border_bottom" >
+            <p style="margin-top: 2vh;font-weight:bold;">
+              <input id='all_deals_radio' value="all" type="radio" name="top_filter" class="d_filter"><i class="fa fa-list" ></i><label for="all_deals_radio">&nbsp;&nbsp;<?php echo display('all_deals'); ?></label>
               <span  style="float:right;" class="badge badge-pill badge-primary " id="all_deals"><i class="fa fa-spinner fa-spin"></i></span>
             </p>
         </div>
     </div>
-   <div class="wd-14 col-sm-3">
+   <div class="wd-14 col-sm-2">
       <div  class="col-12 border_bottom" >
             <p style="margin-top: 2vh;font-weight:bold;"  title="<?php echo display('done_deals'); ?>"> 
-              <input type="radio" name="top_filter" value="done" class="d_filter" id="done_deals_radio"><i class="fa fa-check" ></i><label for="done_deals_radio">&nbsp;&nbsp;<?php echo display('done_deals'); ?></label><span style="float:right;" class="badge badge-pill badge-success " id="all_done"><i class="fa fa-spinner fa-spin"></i></span>
+              <input type="radio" name="top_filter" value="done" class="d_filter" id="done_deals_radio"><i class="fa fa-check" ></i><label for="done_deals_radio">&nbsp;&nbsp;<?php echo display('done_deals'); ?></label>
+			  <span style="float:right;" class="badge badge-pill badge-success " id="all_done"><i class="fa fa-spinner fa-spin"></i></span>
             </p>
         </div>
     </div>
    
-    <div class="wd-14 col-sm-3" style="">
+    <div class="wd-14 col-sm-2" style="">
             <div  class="col-12 border_bottom" >
                 <p style="margin-top: 2vh;font-weight:bold;">
                   <input id='pending_radio' value="pending" type="radio" name="top_filter" class="d_filter"><i class="fa fa-times" ></i><label for="pending_radio">&nbsp;&nbsp;<?php echo display('pending_deals'); ?></label>
@@ -551,6 +560,7 @@ function update_top_filter()
         success: function(responseData){
           console.log(responseData);
        //alert(JSON.stringify(responseData));
+	   $('#all_active_deals').html(responseData.active_deals_num);
         $('#all_deals').html(responseData.all_deals_num);
         $('#all_done').html(responseData.all_done_num);
         $('#all_pending').html(responseData.all_pending_num);

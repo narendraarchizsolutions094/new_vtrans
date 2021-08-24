@@ -2328,6 +2328,10 @@ public function all_update_expense_status()
     public function short_dashboard_count_deals()
     {
         //print_r($_POST); exit();
+		$this->common_query_short_dashboard_deals();
+		$this->db->where('info.original=1');
+        $data['active_deals_num'] = $this->db->count_all_results();
+		
         $this->common_query_short_dashboard_deals();
         $data['all_deals_num'] = $this->db->count_all_results();
 
@@ -3461,8 +3465,13 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     </table>';
                 if($booking_type=='sundry')
                 {
-                echo'<p>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" class="exip" style="width: 100px !important;">. per Ltr.
-                    </p>';
+					echo'<p '.(($oc[21]!=$uc[21])?"style='background:#ffbaba;'":"").'>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" class="exip" style="width: 100px !important;">. per Ltr.';
+        
+		if(!empty($deal_id)){
+                echo'&nbsp;&nbsp;&nbsp;To &nbsp;&nbsp;&nbsp;<input type="number" name="uc[21]" value="'.$uc[21].'" class="exip" style="width: 100px !important;">. per Ltr.';
+                    
+		}
+		echo'</p>';
                 }
                 $d_edited = 0;
                 if(!empty($deal_data->edited) && $deal_data->edited=='1')

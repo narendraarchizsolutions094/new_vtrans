@@ -655,7 +655,8 @@ function final_rate_calculate(uid)
 		var final_rate =	$("#final_rate_"+uid).val();
 		var dis_rate = rate/100*discount;
 		var finalrate = rate-dis_rate;
-		var finalrate = finalrate.toFixed(2);
+		var finalrate = finalrate.toFixed(1);
+		var finalrate = finalrate+'0';
 		$("#final_rate_"+uid).val(finalrate);
 }
 
