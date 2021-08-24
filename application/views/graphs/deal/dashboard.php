@@ -1,19 +1,45 @@
 <form action="" method="get">
 <br>
 <div class="row">
-    <div class="col-md-3">
+    
+    <div class="col-md-1">
     </div>
+    
     <div class="col-md-2">
         <label>From Date</label>
         <input type="date" name="from_date" class="form-control" value= <?php if(!empty($_GET['from_date'])){ echo $_GET['from_date']; } ?>>
     </div>
+    
     <div class="col-md-2">
         <label>To Date</label>
         <input type="date" name="to_date" class="form-control" value= <?php if(!empty($_GET['to_date'])){ echo $_GET['to_date']; } ?>>      
     </div>
-    <div class="col-md-2">
-        <label>Employee</label>
-        
+
+    <?php
+    $this->db->where('type',1);
+    $region_arr = $this->db->get('sales_region')->result_array();
+    ?>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label>Region</label>                                
+            <select name="region" class="form-control">
+                <option value="" >--Select--</option>
+                <?php
+                if(!empty($region_arr)){
+                    foreach($region_arr as $key=>$value){
+                        ?>                                            
+                        <option value="<?=$value['region_id']?>" <?php if(!empty($fdata['region'])){ if($fdata['region']==$value['region_id']){echo'selected';}} ?> ><?=$value['name']?></option>";
+                        <?php
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <label>Employee</label>        
         <select name="employee" class="form-control">
         <?php            
         if(!empty($user_list)){
@@ -28,8 +54,10 @@
         ?>
         </select>
     </div>
+
     <div class="col-md-2">
     <br>    
+    
     <button type="submit" class='btn btn-primary btn-sm'>Filter</button>
     <a href="<?=base_url('deal_dashboard/dashboard')?>" class='btn btn-default btn-sm'>Reset</a>
     </div>
@@ -47,12 +75,6 @@
     <div class="col-md-4">
         <iframe src="<?=$urls['product_feed']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
     </div>
-    <!-- <div class="col-md-4">
-        <iframe src="<?=$urls['approaval_status']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
-    </div> -->    
-    <!-- <div class="col-md-4">
-        <iframe src="<?=$urls['country_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
-    </div> -->
     <div class="col-md-4">
         <iframe src="<?=$urls['region_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
     </div>

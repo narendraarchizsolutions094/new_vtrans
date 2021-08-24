@@ -138,14 +138,14 @@
                         <div class="col-lg-2">
                             <div class="form-group">
                             <label>From</label>
-                            <input  class="d_filter form-control form-date" name="from_date" id="from_date" value="<?php if(!empty($fdata['from_date'])){echo $fdata['from_date'];} ?>">
+                            <input  class="d_filter form-control" type='date' name="from_date" id="from_date" value="<?php if(!empty($fdata['from_date'])){echo $fdata['from_date'];} ?>">
                             </div>
                         </div>
                     
                         <div class="col-lg-2">
                             <div class="form-group">
                             <label>To</label>
-                            <input  class="d_filter form-control form-date" name="to_date" value="<?php if(!empty($fdata['to_date'])){echo $fdata['to_date'];} ?>">
+                            <input  class="d_filter form-control" type='date' name="to_date" value="<?php if(!empty($fdata['to_date'])){echo $fdata['to_date'];} ?>">
                             </div>
                         </div>
                         <?php
@@ -161,7 +161,7 @@
                                     if(!empty($region_arr)){
                                         foreach($region_arr as $key=>$value){
                                             ?>                                            
-                                            <option value="<?=$value['region_id']?>"   <?php if(!empty($fdata['region'])){ if($fdata['region']==$value['region_id']){echo'selected';}} ?> ><?=$value['name']?></option>";
+                                            <option value="<?=$value['region_id']?>" <?php if(!empty($fdata['region'])){ if($fdata['region']==$value['region_id']){echo'selected';}} ?> ><?=$value['name']?></option>";
                                             <?php
                                         }
                                     }
@@ -175,13 +175,16 @@
                             <div class="form-group">
                                 <label>User</label>
                                 <?php 
-                            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+                                $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
                                 $where = "pk_i_admin_id IN (".implode(',', $all_reporting_ids).")";
+                                $where .= " AND b_status = 1";
+                                if(!empty($fdata['region'])){
+                                    $where .= " AND sales_region = ".$fdata['region'];
+                                }
                                 $users =$this->db->where($where)->get('tbl_admin');
                                 ?>
                                 <select name="users" class="form-control">
                                 <option value="" >--Select--</option>
-
                                     <?php   foreach ($users->result() as $key => $value) {  ?>
                                         <option value="<?= $value->pk_i_admin_id ?>" <?php if(!empty($fdata['users'])){ if($fdata['users']==$value->pk_i_admin_id ){echo'selected';}} ?>><?= $value->s_display_name ?></option>
                                     <?php } ?>
@@ -231,8 +234,7 @@
         </form>
     </div>
     <div class="content">
-        <?php 
-      
+    <?php       
      $user_id   = $this->session->user_id;
      $user_role = $this->session->user_role;
      $region_id = $this->session->region_id;
@@ -240,9 +242,8 @@
      $assign_region = $this->session->region_id;
      $assign_territory = $this->session->territory_id;
      $assign_state = $this->session->state_id;
-     $assign_city = $this->session->city_id;
-     
-     ?>
+     $assign_city = $this->session->city_id;     
+    ?>
         </br>
 
 
@@ -451,7 +452,7 @@ if (!empty($enquiry_separation)) {
                                             class="pull-right badge bg-blue"><?php if(!empty($deal_total_count)){ echo $deal_total_count; }else{ echo "0";} ?></span></a>
                                 </li>
                                 <li><a href="<?php echo base_url().'client/deals' ?>">Deal Amount <span
-                                            class="pull-right badge bg-aqua"><?php if(!empty($get_deal_count_amount)){ echo $get_deal_count_amount;}else{ echo '0';}; ?></span></a>
+                                            class="pull-right badge bg-aqua"><?php if(!empty($get_deal_count_amount)){ echo $get_deal_count_amount;}else{ echo '0';}; ?> Lacs</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -2240,6 +2241,17 @@ $.ajax({
                     }
                 })
             })
+            $("select[name='region']").on('change', function(){
+                var region = $(this).val();                
+                $.ajax({
+                    url:'<?=base_url('dashboard/get_user_by_region')?>',
+                    type:'post',
+                    data:{region_id:region},
+                    success:function(q){
+                        
+                    }
+                });
+            });
             </script>
 
             <script src="<?php echo base_url()?>custom_dashboard/assets/js/amcharts/moment.min.js"></script>

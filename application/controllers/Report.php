@@ -485,18 +485,13 @@ echo json_encode($res);die;
     $currentURL = current_url();
     $params   = $_SERVER['QUERY_STRING'];
     $fullURL = $currentURL; 
-    $data['fullURL'] = $fullURL;   
-    //$this->output->enable_profiler(TRUE);
+    $data['fullURL'] = $fullURL;       
     $data['region_filter_id'] = '';
     if(!empty($_GET['region'])){
       $data['region_filter_id'] = $_GET['region'];
     }
-   // $this->session->sess_destroy();
    session_unset();   
-    // if (user_role('120') == true) {}
     $todays = date('Y-m-d');
-    // $todays = '2021-02-16';
-    
     $get_ids = array();
     if(!empty($_GET['region'])){
       $region_id = $_GET['region'];
@@ -504,40 +499,24 @@ echo json_encode($res);die;
       $get_ids = $this->array_flatten($get_user);
     }
     $data['get_ids'] = $get_ids;
-
     $cids = $this->uri->segment(2);
-    // echo $this->encryption->encrypt($cids);die;
-    // echo $cids.'<br>';
     $sch_date = $this->uri->segment(3);
     $cidss  = str_replace(array('-', '_', '~'), array('+', '/', '='), $cids);
     $sch_dates  = str_replace(array('-', '_', '~'), array('+', '/', '='), $sch_date);
     $schid = $this->encryption->decrypt($cidss);
     $sch_dates = $this->encryption->decrypt($sch_dates);
-   // $sch_dates = "2021-02-15";
-    //echo $sch_dates;die;
-    // $encrypted_string = $this->encryption->encrypt($schid);
-    
-    // $schid  = str_replace(array('+', '/', '='), array('-', '_', '~'),  $encrypted_string);
-    // echo $schid;die;
     $id = $schid;
     $data['rid'] = $schid;
     $this->session->set_userdata('reportid', $id);
     $this->db->where('id',$id);
     $report_row =   $this->db->get('reports')->row_array();
-    // echo $id;
-    //  print_r($report_row);die; 
     if ($report_row['type'] == '1') {
-       //echo "sdfsd"; exit;
       $report_row['type'];
       $datetime1 = new DateTime($sch_dates);
       $datetime2 = new DateTime($todays);
       $difference = $datetime1->diff($datetime2);
       $diffdate = $difference->d;
-
       $filters = json_decode($report_row['filters'], true);
-
-      // $from = $this->session->set_userdata('fromdt',$this->input->post("from"));
-      // $to =  $this->session->set_userdata('todt',$this->input->post("to"));                                         
       $data['title'] = 'View Report';
       $data['filters'] = $filters;
       $data['report_columns'] = $filters['report_columns'];
@@ -549,33 +528,24 @@ echo json_encode($res);die;
         $from = '';
         $from = date('d/m/Y', strtotime('-1 day', strtotime($todays)));
       } else {
-        // $dfrom= $this->input->post('from_exp');
         $from = date('d/m/Y', strtotime('-1 day', strtotime($todays)));
-        // $from = date("d/m/Y", strtotime($dfrom));
-
       }
       if ($this->input->post('to_exp') == '') {
         $to = '';
         $to = date('d/m/Y', strtotime('-1 day', strtotime($todays)));
       } else {
-        // $tto= $this->input->post('to_exp');
-        // $to = date("d/m/Y", strtotime($tto)); 
         $to = date('d/m/Y', strtotime('-1 day', strtotime($todays)));
       }
       if ($this->input->post('updated_from_exp') == '') {
         $updated_from = '';
       } else {
         $updated_from = '';
-        //  $updated_dfrom= $this->input->post('updated_from_exp');
-        //  $updated_from = date("d/m/Y", strtotime($updated_dfrom));
       }
 
       if ($this->input->post('updated_to_exp') == '') {
         $updated_to = '';
       } else {
         $updated_to = '';
-        //  $updated_tto= $this->input->post('updated_to_exp');
-        //  $updated_to = date("d/m/Y", strtotime($updated_tto)); 
       }
       if ($this->input->post('employee') == '') {
         $employe = '';
@@ -2361,7 +2331,9 @@ echo json_encode($res);die;
       $region_id = $_GET['region'];
       $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = ".$region_id."")->result_array();
       $get_ids = $this->array_flatten($get_user);
+      $get_ids = explode(',',$get_ids['ids']);
     }
+    
 
     $todays         = date('Y-m-d');
     $yesterday      = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
@@ -2438,6 +2410,7 @@ echo json_encode($res);die;
     $this->db->where('visit_date >=', $last_month_sd);
     $this->db->where('visit_date <=', $last_month_ed);
     $av_daily_call_last_month = $this->db->from('tbl_visit')->count_all_results();
+    //echo $this->db->last_query();
 
     $av_daily_call_today_data = $get_today_call/$all_users;
     $av_daily_call_per_yesterday_data = $get_yesterday_call/$all_users;

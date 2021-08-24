@@ -802,7 +802,8 @@ public function login_in_process(){
 
 
 
-    public function home() {               
+    public function home() {          
+        $filterData     = array();
         if ($this->session->userdata('isLogIn') == false)
         redirect('login');
      
@@ -826,7 +827,9 @@ public function login_in_process(){
         }
         else
         {
-            $data['counts'] = $this->enquiry_model->enquiryLeadClientCount($this->session->user_id,$this->session->companey_id);        
+            $data['counts'] = $this->enquiry_model->enquiryLeadClientCount($this->session->user_id,$this->session->companey_id);  
+            //echo $this->db->last_query();
+
             $data['msg']='';
             $data['state']   = $this->enquiry_model->get_state();
             $data['products'] = $this->dash_model->product_list_graph();
@@ -835,18 +838,23 @@ public function login_in_process(){
         }
         
         if(!empty($_POST)){
-            $filterData=array( 'from_date'=>$_POST['from_date'], 'to_date'=>$_POST['to_date'], 'users'=>$_POST['users'],'state_id'=>$_POST['state_id'],'city_id'=>$_POST['city_id']);
+            $filterData=array( 'from_date'=>$_POST['from_date'], 'to_date'=>$_POST['to_date'],'region'=>$_POST['region'],'users'=>$_POST['users']);
             $data['filterData']=json_encode($filterData);
             $this->session->set_userdata('filter',$filterData);
-            }else{   $data['filterData']=json_encode(array()); }
+        }else{
+            unset($_SESSION['filter']);
+            $data['filterData']=json_encode(array()); 
+        }
                 
         
         $data['leadCount']=$this->dashboard_model->countLead(2);
         $data['leadSum']=$this->dashboard_model->dataLead(2);
       
         $data['clientCount2']=$this->dashboard_model->countLead(3);
+
         $data['clientsum']=$this->dashboard_model->dataLead(3);
-        $data['visit_counts'] = $this->dashboard_model->visit_counts();
+        $data['visit_counts'] = $this->dashboard_model->visit_counts($filterData);
+        //echo $this->db->last_query();
         $data['visit_counts_today'] = $this->dashboard_model->visit_counts(array('from_date'=>date('Y-m-d')));
 
         $data['state_list'] = $this->location_model->estate_list();
@@ -863,10 +871,17 @@ public function login_in_process(){
         $this->load->view('layout/main_wrapper', $data);
     }
 
+    public function get_user_by_region(){
+        $region_id = $this->input->post('region_id');
+        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        $where = " pk_i_admin_id IN (".implode(',', $all_reporting_ids).') ';
+        $where .= " AND sales_region = $region_id";
+        $this->db->where($where);
+        $this->db->get('tbl_admin')->result_array();
+    }
 
     public function get_deal_count(){        
         if(!empty($_POST['users'])){
-            //echo $_POST['users'];
             $all_reporting_ids    =   $this->common_model->get_categories($_POST['users']);
         }else{
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);

@@ -248,9 +248,16 @@ foreach($lead_source as $key => $source){
     array_push($dataPoints2_source,$source['lead_name']);
     array_push($dataPoints2_value,$lead_data);
 }
-    // echo "<pre>";
-    // print_r($dataPoints2);
-    // echo "</pre>";
+
+if(!empty($get_ids)){                            
+    $this->db->where_in('created_by',$get_ids);
+}
+$this->db->where('enquiry_source ',NULL);
+$lead_data = $this->db->from('enquiry')->count_all_results();
+//echo $this->db->last_query();
+array_push($dataPoints2_source,'NA');
+array_push($dataPoints2_value,$lead_data);
+
 ?>
 
 <?php
@@ -280,9 +287,6 @@ $dataPoints4 = array();
     }
     $dataPoints4[0]['sliced'] = 'true';
     $dataPoints4[0]['selected'] = 'true';
-    // echo "<pre>";
-    // print_r($dataPoints4);
-    // echo "</pre>";
 ?>
 
 <script>
@@ -403,7 +407,7 @@ const chart = Highcharts.chart('chartContainer2', {
         text: 'Source Wise Chart'
     },
     subtitle: {
-        text: 'Plain'
+        text: ''
     },
     xAxis: {
         categories: <?=json_encode($dataPoints2_source)?>

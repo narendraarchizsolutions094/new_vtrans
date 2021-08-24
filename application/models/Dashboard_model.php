@@ -37,8 +37,14 @@ class Dashboard_model extends CI_Model {
 		}
         $and =1;
 
-		if(!empty($filter['from_date'])){
+		if(!empty($filter['from_date']) && empty($filter['to_date'])){
             $where.=" AND tbl_visit.visit_date = '".$filter['from_date']."'";
+            $and =1;
+        }
+
+		if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $where.= " AND tbl_visit.visit_date >= '".$filter['from_date']."'";
+            $where.= " AND tbl_visit.visit_date <= '".$filter['to_date']."'";
             $and =1;
         }
 
