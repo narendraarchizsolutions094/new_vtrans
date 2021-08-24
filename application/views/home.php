@@ -419,11 +419,10 @@ if (!empty($enquiry_separation)) {
         <!-- visit card dashboard start-->
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="info-box bg-aqua">
-                <span class="info-box-icon"><i class="fa fa-car icon-class" style="color:#fff;"></i></span>
+                <span class="info-box-icon"><i class="fa fa-car" style="color:#fff;"></i></span>
                 <div class="info-box-content1">
                     <div class="box box-widget widget-user-2">
                         <div class="box-footer no-padding">
-
                             <ul class="nav nav-stacked">
                                 <li><a href="<?php echo base_url().'client/visits' ?>">All Visit<span
                                             class="pull-right badge bg-blue"><?php if(!empty($visit_counts)){ echo $visit_counts; }else{ echo "0";} ?></span></a>
@@ -431,12 +430,6 @@ if (!empty($enquiry_separation)) {
                                 <li><a href="<?php echo base_url().'client/visits' ?>"><?php echo display("created_today"); ?> <span
                                             class="pull-right badge bg-aqua"><?php if(!empty($visit_counts_today)){ echo $visit_counts_today;}else{ echo '0';}; ?></span></a>
                                 </li>
-                                <!-- <li><a href="#">Approved <span
-                                            class="pull-right badge bg-green"><?php if(!empty($counts['client_ut'])){ echo $counts['client_ut'];}else{ echo '0';}; ?></span></a>
-                                </li>
-                                <li><a href="#">Rejected <span
-                                            class="pull-right badge bg-red"><?php if(!empty($counts['client'])){ echo ($counts['client']-$counts['client_drp']);}else{ echo '0';}; ?></span></a>
-                                </li>                                 -->
                             </ul>
                         </div>
                     </div>
@@ -444,6 +437,29 @@ if (!empty($enquiry_separation)) {
             </div>
         </div>
         <!-- visit card dashbaord end -->
+
+
+        <!-- Deal card dashboard start-->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-aqua">
+                <span class="info-box-icon"><i class="fa fa-handshake-o" style="color:#fff;"></i></span>
+                <div class="info-box-content1">
+                    <div class="box box-widget widget-user-2">
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-stacked">
+                                <li><a href="<?php echo base_url().'client/deals' ?>">All Deals<span
+                                            class="pull-right badge bg-blue"><?php if(!empty($deal_total_count)){ echo $deal_total_count; }else{ echo "0";} ?></span></a>
+                                </li>
+                                <li><a href="<?php echo base_url().'client/deals' ?>">Deal Amount <span
+                                            class="pull-right badge bg-aqua"><?php if(!empty($get_deal_count_amount)){ echo $get_deal_count_amount;}else{ echo '0';}; ?></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Deal card dashbaord end -->
 
 
 

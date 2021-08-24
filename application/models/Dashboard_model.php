@@ -14,12 +14,16 @@ class Dashboard_model extends CI_Model {
 		return $user;
 	}
 	public function visit_counts($filter=array()){
-		$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);   
+		if(!empty($_POST['users'])){
+			$all_reporting_ids    =   $this->common_model->get_categories($_POST['users']);  
+		}else{
+			$all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);   
+		}
 		if(!empty($_POST['region'])){
 			$region_id = $_POST['region'];
 			$get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = '".$region_id."'")->result_array();
 			$get_ids = $this->array_flatten($get_user);
-		  }    
+		}    
         $this->db->from('tbl_visit');
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id');        
         // $this->db->join('branch','branch.branch_id=tbl_admin.sales_branch','left');

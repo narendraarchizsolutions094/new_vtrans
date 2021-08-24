@@ -50,9 +50,9 @@
     <!-- <div class="col-md-4">
         <iframe src="<?=$urls['approaval_status']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
     </div> -->    
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
         <iframe src="<?=$urls['country_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
-    </div>
+    </div> -->
     <div class="col-md-4">
         <iframe src="<?=$urls['region_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
     </div>

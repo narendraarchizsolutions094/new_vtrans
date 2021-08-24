@@ -60,7 +60,7 @@ class Common_model extends CI_Model {
     }
     
     public function get_categories($user_id){  
-        if(!empty($this->session->user_tree)){
+        if(!empty($this->session->user_tree) && $user_id == $this->session->user_id){
             return $this->session->user_tree;
         }else{
             $this->db->select('pk_i_admin_id,sibling_id');

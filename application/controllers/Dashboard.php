@@ -798,9 +798,11 @@ public function login_in_process(){
         $this->load->view('layout/main_wrapper', $data);
     }
     
-  public function home() 
-    {      
-         
+    
+
+
+
+    public function home() {               
         if ($this->session->userdata('isLogIn') == false)
         redirect('login');
      
@@ -813,8 +815,6 @@ public function login_in_process(){
         if(user_access('541') && !user_access('540')){
             redirect('ticket/dashboard');
         }
-       
-       
         $data = array();
         $this->load->model('dash_model');
         if($this->session->userdata('user_right')==151 || $this->session->userdata('user_right')==180 || $this->session->userdata('user_right')==183)
@@ -826,43 +826,99 @@ public function login_in_process(){
         }
         else
         {
-            $data['counts'] = $this->enquiry_model->enquiryLeadClientCount($this->session->user_id,$this->session->companey_id);
-             //print_r($data);die;
+            $data['counts'] = $this->enquiry_model->enquiryLeadClientCount($this->session->user_id,$this->session->companey_id);        
             $data['msg']='';
             $data['state']   = $this->enquiry_model->get_state();
             $data['products'] = $this->dash_model->product_list_graph();
             $data['taskdata'] = $this->dash_model->task_list();
             $data['cmtdata'] = $this->dash_model->all_comments();
         }
-        // $data['filterData']=json_encode(array()); 
+        
         if(!empty($_POST)){
             $filterData=array( 'from_date'=>$_POST['from_date'], 'to_date'=>$_POST['to_date'], 'users'=>$_POST['users'],'region'=>$_POST['region']);
             $data['filterData']=json_encode($filterData);
             $this->session->set_userdata('filter',$filterData);
             }else{   $data['filterData']=json_encode(array()); }
                 
-        //lead
+        
         $data['leadCount']=$this->dashboard_model->countLead(2);
         $data['leadSum']=$this->dashboard_model->dataLead(2);
-      //  echo 'Count:'.$enq_count.'<br>value:';print_r($enq_Sum->result());
-      // exit();
-        //client
+      
         $data['clientCount2']=$this->dashboard_model->countLead(3);
-       $data['clientsum']=$this->dashboard_model->dataLead(3);
-       $data['visit_counts'] = $this->dashboard_model->visit_counts();
-       $data['visit_counts_today'] = $this->dashboard_model->visit_counts(array('from_date'=>date('Y-m-d')));
+        $data['clientsum']=$this->dashboard_model->dataLead(3);
+        $data['visit_counts'] = $this->dashboard_model->visit_counts();
+        $data['visit_counts_today'] = $this->dashboard_model->visit_counts(array('from_date'=>date('Y-m-d')));
 
         $data['state_list'] = $this->location_model->estate_list();
         $data['city_list'] = $this->location_model->city_list();
-
+        
         $data['enquiry_separation']  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
         $data['lead_score'] = $this->db->query('select * from lead_score limit 3')->result();
-        // $data['content'] = $this->load->view('msg-log-dashboard-enquiry', $data, true);
-    //    print_r($data['filterData']);
-    //    exit;
-     if($this->session->userdata('filter')){$data['fdata']=$this->session->userdata('filter'); }
+        $data['deal_total_count'] = $this->get_deal_count();
+        $data['get_deal_count_amount'] = $this->get_deal_count_amount();
+        if($this->session->userdata('filter')){
+            $data['fdata']=$this->session->userdata('filter'); 
+        }
         $data['content'] = $this->load->view('home', $data, true);       
         $this->load->view('layout/main_wrapper', $data);
+    }
+
+
+    public function get_deal_count(){        
+        if(!empty($_POST['users'])){
+            //echo $_POST['users'];
+            $all_reporting_ids    =   $this->common_model->get_categories($_POST['users']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($_POST['from_date']) && !empty($_POST['to_date'])){
+            $from_created = date("Y-m-d",strtotime($_POST['from_date']));
+            $to_created = date("Y-m-d",strtotime($_POST['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($_POST['from_date']) && empty($_POST['to_date'])){
+            $from_created = date("Y-m-d",strtotime($_POST['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($_POST['from_date']) && !empty($_POST['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($_POST['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }        
+        $this->db->where($where);
+        $this->db->from('commercial_info');
+        $result = $this->db->count_all_results();     
+        //echo $this->db->last_query();
+        return $result;   
+    }
+
+    public function get_deal_count_amount(){        
+        if(!empty($_POST['users'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($_POST['users']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+        }
+        $res = array();
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        if(!empty($_POST['from_date']) && !empty($_POST['to_date'])){
+            $from_created = date("Y-m-d",strtotime($_POST['from_date']));
+            $to_created = date("Y-m-d",strtotime($_POST['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($_POST['from_date']) && empty($_POST['to_date'])){
+            $from_created = date("Y-m-d",strtotime($_POST['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($_POST['from_date']) && !empty($_POST['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($_POST['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }        
+        $this->db->select("SUM(expected_amount) as c");
+        $this->db->where($where);
+        $this->db->from('commercial_info');
+        $result = $this->db->get()->row_array();     
+        return number_format((float)$result['c'], 2, '.', '');   
     }
     public function master()
     {
