@@ -835,7 +835,7 @@ public function login_in_process(){
         }
         
         if(!empty($_POST)){
-            $filterData=array( 'from_date'=>$_POST['from_date'], 'to_date'=>$_POST['to_date'], 'users'=>$_POST['users'],'region'=>$_POST['region']);
+            $filterData=array( 'from_date'=>$_POST['from_date'], 'to_date'=>$_POST['to_date'], 'users'=>$_POST['users'],'state_id'=>$_POST['state_id'],'city_id'=>$_POST['city_id']);
             $data['filterData']=json_encode($filterData);
             $this->session->set_userdata('filter',$filterData);
             }else{   $data['filterData']=json_encode(array()); }
@@ -3545,7 +3545,7 @@ for($i=0; $i< $max;$i++)
     } 
     $vertical .="\n";
 }
-                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$vertical.'</th>';
+                    $freight_table.='<th style="background:#00b0f0;font-size:12px;">'.$value2->dname.'</th>';
 $vertical ='';
                 }
                 $freight_table.='</tr>
@@ -3810,12 +3810,12 @@ $all_zones = array_chunk($all_zones,2);
               <td>Dynamic Fuel Surcharge in %</td>
               <td>'.$oc[17].'</td>
               <td>% of basic freight</td>
-          </tr>
-      <tr>
+          </tr>';
+/*       <tr>
               <td>Levy- in %</td>
               <td>'.$oc[18].'</td>
               <td>% of basic freight</td>
-          </tr>';
+          </tr>'; */
       }
       $oc_table.='<tr>
               <td>E-way bill charge</td>

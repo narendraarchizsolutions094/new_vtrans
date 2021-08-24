@@ -2123,7 +2123,7 @@ body{
 <body class="">
 	<p class="c72 c44"><span class="c36"></span></p>
 	<p class="c72 c44"><span class="c36"></span></p>
-	<p class="c72"><span class="c66">Ref No: </span><span class="c64">VT/HO/2019-20/<?=date('y')?>/001</span><span class="c66">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Date: </span><span class="c64"><?=date('d-M-Y')?></span></p>
+	<p class="c72"><span class="c66">Ref No: </span><span class="c64">VT/HO/<?=date('Y')?>-<?=date('y')+1;?>/001</span><span class="c66">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Date: </span><span class="c64"><?=date('d-M-Y')?></span></p>
 	<p class="c9 c44"><span class="c36"></span></p>
 	<p class="c9"><span class="c22">To,</span></p>
 	<p class="c9"><span class="c17">M/s. </span><span class="c12"><?=$enq_name?></span></p>
@@ -2203,7 +2203,7 @@ body{
 	
 	@oc_table
 
-	<p class="c1"><span class="c22 c79">ODA Matrix:</span></p>
+	<p class="c1" style="page-break-before: always;"><span class="c22 c79">ODA Matrix:</span></p>
 	<a id="t.ff9bb25f608643c8b4ff717247f08bf3c2ffad08"></a>
 
 	@oda_table
