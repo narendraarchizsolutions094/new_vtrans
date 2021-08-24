@@ -392,7 +392,7 @@ return;
 		$(f).find("input[name='discount["+qid+"]']").val(max_discount);
 		return false;
 	}
-	var cal_rate = rate.toFixed(2) - ((rate*discount)/100).toFixed(2);
+	var cal_rate = rate.toFixed(1) - ((rate*discount)/100).toFixed(1);
 	var cal_eamnt = cal_rate * eton * 1000; 
 	var cal_pamnt = cal_rate * pton * 1000; 
 
@@ -488,7 +488,8 @@ function final_rate_calculate(uid)
 		var dis_rate = rate/100*discount;
 		//var dis_rate = dis_rate.toFixed(2);
 		var finalrate = rate-dis_rate;
-		var finalrate = finalrate.toFixed(2);
+		var finalrate = finalrate.toFixed(1);
+		var finalrate = finalrate+'0';
 		//alert(finalrate);
 		$("#final_rate_"+uid).val(finalrate);
 }

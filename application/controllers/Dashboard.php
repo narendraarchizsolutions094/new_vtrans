@@ -2879,7 +2879,8 @@ public function set_layout_to_session() {
                     $deal= $this->Branch_model->get_deal($info_id);
 
                     $d_data =  $this->Branch_model->get_deal_data($info_id);
-                    $oc = (array)json_decode($deal->other_charges);
+                    //$oc = (array)json_decode($deal->other_charges);
+					$oc = (array)json_decode($deal->update_charges);
                     if(empty($deal))
                     {
                         echo'No data';exit();
@@ -3010,6 +3011,7 @@ public function set_layout_to_session() {
                                 $r = $value2->rate;
                                 $d = $value2->discount;
                                 $price = $r*(1-round(($d/100),2));
+								$price = round($price, 1);
                                 $freight_table.='<td>'.$price.'/'.$oc['rate_type'].'</td>';
                             }
 
@@ -3288,11 +3290,12 @@ public function set_layout_to_session() {
 
         $d_data =  $this->Branch_model->get_deal_data($info_id);
        // $oc = (array)json_decode($deal->other_charges);
-	   if($deal->status==0 && $deal->approval!='done'){
+	   /* if($deal->status==0 && $deal->approval!='done'){
         $oc = json_decode($deal->other_charges,true);
 	   }else{
 		$oc = json_decode($deal->update_charges,true);
-	   }
+	   } */
+	   $oc = json_decode($deal->update_charges,true);
         $enquiry_id = $deal->enquiry_id;
         $booking_type = $deal->booking_type;
         //$docTemplate=$this->db->where(array('comp_id'=>65,'title'=>$deal->booking_type))->get('tbl_doctemplate')->result();
@@ -3319,7 +3322,7 @@ public function set_layout_to_session() {
                   'user_deg'=>$usrarr->designation,
                   'user_mobile'=>$usrarr->s_phoneno,
                   'user_email'=>$usrarr->s_user_email,
-                  'avg_fule_price'=>$oc[22],
+                  'avg_fule_price'=>$oc[21],
           );
           $content=  $this->load->view('quotation_temp/part-load',$note,true);
       }
@@ -3448,7 +3451,7 @@ $vertical ='';
                     $r = $value2->rate;
                     $d = $value2->discount;
                     $price = $r*(1-round(($d/100),2));
-					$price = round($price, 2);
+					$price = round($price, 1);
 					$freight_table.='<td style="font-size:12px;text-align:center;">'.$price.'</td>';
                     //$freight_table.='<td style="font-size:12px;">'.$price.'/'.$oc['rate_type'].'</td>';
                 }
@@ -3501,7 +3504,7 @@ $vertical ='';
                     $r = $value2->rate;
                     $d = $value2->discount;
                     $price = $r*(1-round(($d/100),2));
-					$price = round($price, 2);
+					$price = round($price, 1);
 					$freight_table.='<td style="font-size:12px;text-align:center;">'.$price.'</td>';
                     //$freight_table.='<td style="font-size:12px;">'.$price.'/'.$oc['rate_type'].'</td>';
                 }

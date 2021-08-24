@@ -215,6 +215,7 @@ class Deals_datatable_model extends CI_Model{
             $and =1;
         }
         //.echo $where;exit();
+		//print_r($_POST['top_filter']);exit;
         if(!empty($_POST['top_filter']))
         {   
             if($and && $_POST['top_filter']!='all')
@@ -236,6 +237,11 @@ class Deals_datatable_model extends CI_Model{
             else if ($_POST['top_filter']=='deferred')
             {
                 $where.=" info.status = 2";
+                 $and =1;
+            }
+			else if ($_POST['top_filter']=='active')
+            {
+                $where.=" info.original = 1";
                  $and =1;
             }
             
