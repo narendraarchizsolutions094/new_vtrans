@@ -3770,10 +3770,17 @@ echo  $details1;
              $visit_otexpSum=round(abs($res->visit_otexpSum));
              $total_expSum=round(abs($res->visit_expSum+$res->visit_otexpSum));
              $percentChange=0;
-            $km_rate = $this->user_model->get_user_meta($res->user_id,array('km_rate'));
+            /*$km_rate = $this->user_model->get_user_meta($res->user_id,array('km_rate'));
             if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
               $rate=0;;
-              }
+              } */
+			  
+			  if(!empty($res->rate_km)){
+                $rate = $res->rate_km;
+                }else{
+                    $rate = 0;
+                }
+				
             $totalpay=($res->actualDistance)*$rate;
             $idealamt=($res->idealDistance)*$rate;
          if($idealamt > 0 && $totalpay > 0){
