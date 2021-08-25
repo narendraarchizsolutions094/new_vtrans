@@ -31,7 +31,7 @@ class Attendance_model extends CI_Model {
 	}
 	
 /***********************My team Visit Start*********************/	
-	public function myteam_logs($att_date,$employee,$from='',$desi='',$region='',$user_id=0,$to=''){				
+	public function myteam_logs($att_date,$employee,$from='',$desi='',$region='',$user_id=0,$to='',$comp_id=''){				
         if (empty($employee)) {            
 			$this->db->select('pk_i_admin_id');
 			if($user_id){
@@ -51,7 +51,7 @@ class Attendance_model extends CI_Model {
 		if(empty($employee)){
 			return false;
 		}
-		$user_id   = $this->session->user_id;
+		//$user_id   = $this->session->user_id;
 		$this->db->select("tbl_user_role.user_role,curr_location.waypoints as l_end,COUNT(DISTINCT(deal_info.id)) as t_deal,COUNT(DISTINCT(tbl_vis.id)) as t_vis,COUNT(DISTINCT(enquiry.enquiry_id)) as t_enq,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name,GROUP_CONCAT(CONCAT('(',tbl_attendance.id,',',tbl_attendance.uid,',',tbl_attendance.check_in_time,',',tbl_attendance.check_out_time,',',TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time),')') separator ',') as attendance_row,MIN(tbl_attendance.check_in_time) as check_in,MAX(tbl_attendance.check_out_time) as check_out,SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time)))) as total");
 		//$this->db->select("tbl_visit.visit_date,tbl_visit.visit_time,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name");
 		$this->db->from('tbl_admin');
@@ -103,7 +103,11 @@ class Attendance_model extends CI_Model {
 			$this->db->where('sales_region.region_id',$region);
 		}
 		$this->db->where('tbl_admin.b_status',1);
-		$this->db->where('tbl_admin.companey_id', $this->session->companey_id);		
+		if(!empty($comp_id)){
+			$this->db->where('tbl_admin.companey_id', $comp_id);		
+		}else{
+			$this->db->where('tbl_admin.companey_id', $this->session->companey_id);		
+		}
 		if (!empty($employee)) {
 			$this->db->where_in('tbl_admin.pk_i_admin_id', $employee);		
 		}else{

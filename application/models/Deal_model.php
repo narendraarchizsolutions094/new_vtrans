@@ -23,6 +23,7 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
+        $where .= " AND commercial_info.original = 1";                                    
         $this->db->select('count(status) as c,status');             
         $this->db->where($where);
         $this->db->group_by('status');
@@ -61,6 +62,7 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
+        $where .= " AND commercial_info.original = 1";                                    
         $this->db->select('count(business_type) as c,business_type');
         $this->db->where($where);
         $this->db->group_by('business_type');
@@ -97,6 +99,8 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
+        $where .= " AND commercial_info.original = 1";                                    
+
         $this->db->select('count(booking_type) as c,booking_type');
         $this->db->where($where);
         $this->db->group_by('booking_type');
@@ -140,8 +144,7 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
-
-
+        $where .= " AND commercial_info.original = 1";                                    
         $this->db->select('count(booking_type) as c');        
         $this->db->where($where);
         $this->db->where('FIND_IN_SET("domestic",deal_type)>',0);
@@ -202,7 +205,7 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
-
+        $where .= " AND commercial_info.original = 1";                                    
         $this->db->select('count(enquiry.sales_region) as c,sales_region.name');
         $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
@@ -238,6 +241,8 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
+        $where .= " AND commercial_info.original = 1";                                    
+
         $this->db->select('count(enquiry.sales_branch) as c,branch.branch_name as name');
         $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
@@ -273,6 +278,8 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
+        $where .= " AND commercial_info.original = 1";                                    
+
         $this->db->select('count(enquiry.sales_area) as c,sales_area.area_name as name');
         $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
@@ -309,6 +316,7 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
+        $where .= " AND commercial_info.original = 1";                                    
 
         $this->db->select('sum(deal_data.expected_tonnage) as c,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee');
         $this->db->where($where);
@@ -346,6 +354,7 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
+        $where .= " AND commercial_info.original = 1";                                    
 
         $this->db->select('sum(deal_data.expected_amount) as c,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee');
         $this->db->where($where);
@@ -385,10 +394,11 @@ class Deal_model extends CI_Model {
         }else{
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND commercial_info.original = 1 ';
         $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
         $this->db->select("count(id) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
+        
         $this->db->where($where);
         $this->db->where('FIND_IN_SET(business_type,"'.$type.'")>',0);
         $this->db->group_by('month(creation_date)');
@@ -427,7 +437,7 @@ class Deal_model extends CI_Model {
         }else{
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND commercial_info.original = 1 ';
         $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
         $this->db->select("count(id) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
@@ -469,7 +479,7 @@ class Deal_model extends CI_Model {
         }else{
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND commercial_info.original = 1 ';
         $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
         $this->db->select("count(id) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
@@ -512,7 +522,7 @@ class Deal_model extends CI_Model {
         }else{
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND commercial_info.original = 1 ';
         $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
         $this->db->select("sum(expected_tonnage) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
@@ -551,7 +561,7 @@ class Deal_model extends CI_Model {
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
         $res = array();
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND commercial_info.original = 1 ';
         $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
         $this->db->select("sum(expected_amount) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));

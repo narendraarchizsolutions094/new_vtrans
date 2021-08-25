@@ -82,7 +82,7 @@
         depth: 35,
         dataLabels: {
             enabled: true,
-            format: '{point.name} ({point.y})'
+            format: '{point.name} ({point.y} Lacs)'
         }
         }
     },

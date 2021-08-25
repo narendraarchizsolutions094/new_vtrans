@@ -38,20 +38,21 @@
     </div>
 
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label>Employee</label>        
         <select name="employee" class="form-control">
-        <?php            
-        if(!empty($user_list)){
-            foreach($user_list as $key=>$value){
-                ?>
-                <option value="<?=$value->pk_i_admin_id?>" <?php if(!empty($_GET['employee']) && $_GET['employee']==$value->pk_i_admin_id){ echo 'selected'; } ?>>
-                <?=$value->s_display_name.' '.$value->last_name?>
-                </option>
-                <?php
+            <option value="0"> --- Select --- </option>
+            <?php            
+            if(!empty($user_list)){
+                foreach($user_list as $key=>$value){
+                    ?>
+                    <option value="<?=$value->pk_i_admin_id?>" <?php if(!empty($_GET['employee']) && $_GET['employee']==$value->pk_i_admin_id){ echo 'selected'; } ?>>
+                    <?=$value->s_display_name.' '.$value->last_name?>
+                    </option>
+                    <?php
+                }
             }
-        }
-        ?>
+            ?>
         </select>
     </div>
 
@@ -94,3 +95,17 @@
         <iframe src="<?=$urls['deal_month_wise']?>"  width="100%"  height="440px" title="Iframe Example"></iframe>
     </div>
 </div>
+
+<script>
+    $("select[name='region']").on('change', function(){
+        var region = $(this).val();                
+        $.ajax({
+            url:'<?=base_url('dashboard/get_user_by_region')?>',
+            type:'post',
+            data:{region_id:region},
+            success:function(q){
+                
+            }
+        });
+    });
+</script>

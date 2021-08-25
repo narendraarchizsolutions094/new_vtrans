@@ -877,7 +877,11 @@ public function login_in_process(){
         $where = " pk_i_admin_id IN (".implode(',', $all_reporting_ids).') ';
         $where .= " AND sales_region = $region_id";
         $this->db->where($where);
-        $this->db->get('tbl_admin')->result_array();
+        $result  = $this->db->get('tbl_admin')->result_array();
+        if(!empty($result)){
+            
+        }
+
     }
 
     public function get_deal_count(){        
