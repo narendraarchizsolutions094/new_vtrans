@@ -6,12 +6,12 @@
             <label>From</label>
             <input name="fromdate"
                 value="<?php if($this->input->post('fromdate')){echo $this->input->post('fromdate');} ?>"
-                class="form-control form-date">
+                class="form-control " type="date">
         </div>
         <div class="col-md-4">
             <label>To</label>
             <input name="todate" value="<?php if($this->input->post('todate')){echo $this->input->post('todate');} ?>"
-                class="form-control form-date">
+                class="form-control " type="date">
         </div>
         <div class="col-md-4"><button style="margin-top:22px;" type="submit" class="form-control">Submit</button></div>
     </form>

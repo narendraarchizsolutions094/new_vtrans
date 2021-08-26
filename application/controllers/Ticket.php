@@ -1999,7 +1999,7 @@ class Ticket extends CI_Controller
 		if ($pst == "created_today") {
 			$where =  " tck.send_date = cast((now()) as date)";
 		} else if ($pst == "updated_today") {
-			$where =  " tck.last_update	 = cast((now()) as date)";
+			$where =  " date(tck.last_update)	 = cast((now()) as date)";
 		} else if ($pst == "droped") {
 			$where = array(" tck.status" => 3);
 		} else if ($pst == "unread") {
@@ -2778,8 +2778,8 @@ class Ticket extends CI_Controller
 		$this->db->where('tbl_ticket.process_id IN ('.$process.')');
 		$this->db->where('tbl_ticket.company',$comp_id);
 		if($fromdate!='all'){
-			$this->db->where('tbl_ticket.last_update >=', $fromdate);
-			$this->db->where('tbl_ticket.last_update <=', $todate);
+			$this->db->where('date(tbl_ticket.last_update) >=', $fromdate);
+			$this->db->where('date(tbl_ticket.last_update) <=', $todate);
 		}
 		$this->db->group_by('tbl_ticket.category');
 		$result = $this->db->get()->result_array();
@@ -3212,8 +3212,7 @@ class Ticket extends CI_Controller
 				echo json_encode($data);
 			}
 			public function short_dashboard()
-			{
-				
+			{				
 				$this->common_query_short_dashboard('created');
 				//$this->db->where('tck.added_by',$this->session->user_id);
         		$data['created'] = $this->db->count_all_results();

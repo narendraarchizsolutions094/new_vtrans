@@ -607,10 +607,10 @@ class Ticket_Model extends CI_Model
                         $this->db->where($fld.'<=',$value);
 
                     if($key=='update_from')
-                        $this->db->where('last_update>=',$value);
+                        $this->db->where('date(last_update)>=',$value);
 
                       if($key=='update_to')
-                        $this->db->where('last_update<=',$value);
+                        $this->db->where('date(last_update)<=',$value);
 
 
                       if($key=='phone')
@@ -916,8 +916,8 @@ class Ticket_Model extends CI_Model
 
 		if($fromdate!='all'){
 					
-			$data=$this->db->where('last_update >=', $fromdate);
-			$data=$this->db->where('last_update <=', $todate);
+			$data=$this->db->where('date(last_update) >=', $fromdate);
+			$data=$this->db->where('date(last_update) <=', $todate);
 		}
 	                 	// $where .= " DATE(tck.coml_date) <=  '".$to_created."' OR DATE(tck.last_update) <=  '".$to_created."'"; 
 						 $data= $this->db->count_all_results('tbl_ticket');
@@ -938,8 +938,8 @@ class Ticket_Model extends CI_Model
 		
 		if($fromdate!='all'){
 					
-			$data=$this->db->where('last_update >=', $fromdate);
-			$data=$this->db->where('last_update <=', $todate);
+			$data=$this->db->where('date(last_update) >=', $fromdate);
+			$data=$this->db->where('date(last_update) <=', $todate);
 	                     	}
 		$data = $this->db->count_all_results('tbl_ticket');
 		return $data;
@@ -956,7 +956,7 @@ class Ticket_Model extends CI_Model
 		}else{
 			$data = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'priority' => $type));
 		     }
-			$data=$this->db->where('last_update =', $fromdate);
+			$data=$this->db->where('date(last_update) =', $fromdate);
 		$data = $this->db->count_all_results('tbl_ticket');
 
 		return $data;
@@ -978,8 +978,8 @@ class Ticket_Model extends CI_Model
 		$data = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'complaint_type' => $type));
 		if($fromdate!='all'){
 					
-			$data=$this->db->where('last_update >=', $fromdate);
-			$data=$this->db->where('last_update <=', $todate);
+			$data=$this->db->where('date(last_update) >=', $fromdate);
+			$data=$this->db->where('date(last_update) <=', $todate);
 	                     	}
 						 $data = $this->db->count_all_results('tbl_ticket');
 		return $data;
@@ -1005,8 +1005,8 @@ class Ticket_Model extends CI_Model
 
 		$count = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'sourse' => $lsid));
 		if($fromdate!='all'){
-			$count=$this->db->where('last_update >=', $fromdate);
-			$count=$this->db->where('last_update <=', $todate);
+			$count=$this->db->where('date(last_update) >=', $fromdate);
+			$count=$this->db->where('date(last_update) <=', $todate);
 	                     	}
 							 $count=$this->db->count_all_results('tbl_ticket');
 		return $count;
@@ -1032,8 +1032,8 @@ class Ticket_Model extends CI_Model
 
 		$count = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'ticket_stage' => $stg_id));
 		if($fromdate!='all'){
-			$count=$this->db->where('last_update >=', $fromdate);
-			$count=$this->db->where('last_update <=', $todate);
+			$count=$this->db->where('date(last_update) >=', $fromdate);
+			$count=$this->db->where('date(last_update) <=', $todate);
 	                     	}
 							 $count=$this->db->count_all_results('tbl_ticket');
 		return $count;
@@ -1072,8 +1072,8 @@ class Ticket_Model extends CI_Model
 		$count = $this->db->where(array('tbl_ticket.process_id' => $process,'tbl_ticket.company' => $this->session->companey_id, 'tbl_ticket.ticket_substage' => $stg_id));
 		
 		if($fromdate!='all'){
-			$count=$this->db->where('last_update >=', $fromdate);
-			$count=$this->db->where('last_update <=', $todate);
+			$count=$this->db->where('date(last_update) >=', $fromdate);
+			$count=$this->db->where('date(last_update) <=', $todate);
 							 }
 							$count= $this->db->count_all_results('tbl_ticket');
 		return $count;
@@ -1113,8 +1113,8 @@ class Ticket_Model extends CI_Model
 
 		$count= $this->db->where('process_id IN ('.$process.')')->where(array('product'=>$id,'company'=>$comp_id));
 		if($fromdate!='all'){
-			$count=$this->db->where('last_update >=', $fromdate);
-			$count=$this->db->where('last_update <=', $todate);
+			$count=$this->db->where('date(last_update) >=', $fromdate);
+			$count=$this->db->where('date(last_update) <=', $todate);
 							 }
 			$count=$this->db->count_all_results('tbl_ticket');
 		return $count;
@@ -1854,7 +1854,7 @@ class Ticket_Model extends CI_Model
 		$where='';
 		$this->db->from("tbl_ticket");
 		$date=date('Y-m-d');
-		$where.=" tbl_ticket.last_update LIKE '%$date%'";
+		$where.=" date(tbl_ticket.last_update) LIKE '%$date%'";
         $where .= " AND ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))';  
         $ticekt_filters_sess    =   $this->session->ticket_filters_sess;        
@@ -1879,7 +1879,7 @@ class Ticket_Model extends CI_Model
 		$where='';
 		$this->db->from("tbl_ticket");
 		$date=date('Y-m-d');
-		$where.=" tbl_ticket.last_update LIKE '%$date%' and tbl_ticket.status=3";
+		$where.=" date(tbl_ticket.last_update) LIKE '%$date%' and tbl_ticket.status=3";
         $where .= " AND ( tbl_ticket.added_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR tbl_ticket.assign_to IN (".implode(',', $all_reporting_ids).'))';  
         $ticekt_filters_sess    =   $this->session->ticket_filters_sess;        

@@ -39,7 +39,7 @@ class Report extends REST_Controller {
         }
         $this->set_response([
             'status' => true,
-            'message' =>$res_arr
+            'data' =>$res_arr
              ], REST_Controller::HTTP_OK);         
     }
 
@@ -105,7 +105,7 @@ class Report extends REST_Controller {
 
         $this->set_response([
             'status' => true,
-            'message' =>$res_array
+            'data' =>$res_array
              ], REST_Controller::HTTP_OK);         
     }
 
