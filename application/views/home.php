@@ -177,7 +177,7 @@
                                 <?php 
                                 $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
                                 $where = "pk_i_admin_id IN (".implode(',', $all_reporting_ids).")";
-                                $where .= " AND b_status = 1";
+                                $where .= " AND b_status = 1 AND dept_name!=6";
                                 if(!empty($fdata['region'])){
                                     $where .= " AND sales_region = ".$fdata['region'];
                                 }
@@ -186,7 +186,7 @@
                                 <select name="users" class="form-control">
                                 <option value="" >--Select--</option>
                                     <?php   foreach ($users->result() as $key => $value) {  ?>
-                                        <option value="<?= $value->pk_i_admin_id ?>" <?php if(!empty($fdata['users'])){ if($fdata['users']==$value->pk_i_admin_id ){echo'selected';}} ?>><?= $value->s_display_name ?></option>
+                                        <option value="<?= $value->pk_i_admin_id ?>" <?php if(!empty($fdata['users'])){ if($fdata['users']==$value->pk_i_admin_id ){echo'selected';}} ?>><?= $value->s_display_name.' '.$value->last_name ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -199,7 +199,7 @@
 
                         <!-- <div class="col-lg-2">
                             <div class="form-group">
-                                <label>State</label>
+                                <label>State</label> 
                                 <label> <?php echo display("state"); ?> <i class="text-danger"></i></label>
                                 <select name="state_id" class="form-control" id="fstate">
                                     <option value="" >--Select--</option>
@@ -2248,7 +2248,7 @@ $.ajax({
                     type:'post',
                     data:{region_id:region},
                     success:function(q){
-                        
+                        $("select[name='users']").html(q);
                     }
                 });
             });

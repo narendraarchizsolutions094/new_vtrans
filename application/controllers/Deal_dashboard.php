@@ -55,7 +55,10 @@ class Deal_dashboard extends CI_Controller {
             'deal_month_wise'=> base_url().'deal_dashboard/deal_month_wise_feed'.$para
         );
         $this->load->model('User_model');
+
+        $this->db->where('dept_name!=',6);
         $data['user_list'] = $this->User_model->companey_users();
+        //echo $this->db->last_query();
         // $data['content'] = 
         $data['content'] = $this->load->view('graphs/deal/dashboard',$data,true);
         $this->load->view('layout/main_wrapper',$data);

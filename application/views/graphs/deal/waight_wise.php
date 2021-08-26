@@ -73,7 +73,7 @@
         }
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
     },
     plotOptions: {
         pie: {
@@ -82,7 +82,7 @@
         depth: 35,
         dataLabels: {
             enabled: true,
-            format: '{point.name} ({point.y})'
+            format: '{point.name} ({point.y:.2f} - tonnage)'
         }
         }
     },

@@ -364,7 +364,7 @@ class Deal_model extends CI_Model {
         $result = $this->db->get('commercial_info')->result_array();
         if (!empty($result)){
             foreach($result as $key=>$value){
-                $res[] = array($value['employee'],(int)$value['c']);                
+                $res[] = array($value['employee'],((int)$value['c'])/100000);                
             }
         }
         return $res;
@@ -552,7 +552,7 @@ class Deal_model extends CI_Model {
         }
        // print_r($month_res);
        
-        return array('name'=>'Weight','data'=>$month_res,"type"=>'spline');
+        return array('name'=>'Weight (in tons)','data'=>$month_res,"type"=>'spline');
     }
     public function get_frieght_type_feed($filter){
         if(!empty($filter['employee'])){
@@ -583,7 +583,7 @@ class Deal_model extends CI_Model {
                 if(!$dflag){
                     $month_res[] = 0;
                 }else{
-                    $month_res[] = (int)$dflag;
+                    $month_res[] = ((int)$dflag)/100000;
                 }
             }
         }else{
@@ -591,6 +591,6 @@ class Deal_model extends CI_Model {
         }
        // print_r($month_res);
        
-        return array('name'=>'Freight','data'=>$month_res,"type"=>'spline');
+        return array('name'=>'Freight (in lacks)','data'=>$month_res,"type"=>'spline');
     }
 }

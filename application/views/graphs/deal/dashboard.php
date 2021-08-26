@@ -28,7 +28,7 @@
                 if(!empty($region_arr)){
                     foreach($region_arr as $key=>$value){
                         ?>                                            
-                        <option value="<?=$value['region_id']?>" <?php if(!empty($fdata['region'])){ if($fdata['region']==$value['region_id']){echo'selected';}} ?> ><?=$value['name']?></option>";
+                        <option value="<?=$value['region_id']?>" <?php if(!empty($_GET['region'])){ if($_GET['region']==$value['region_id']){echo'selected';}} ?> ><?=$value['name']?></option>";
                         <?php
                     }
                 }
@@ -104,7 +104,7 @@
             type:'post',
             data:{region_id:region},
             success:function(q){
-                
+                $("select[name='employee']").html(q);
             }
         });
     });

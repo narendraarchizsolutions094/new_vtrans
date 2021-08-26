@@ -878,9 +878,13 @@ public function login_in_process(){
         $where .= " AND sales_region = $region_id";
         $this->db->where($where);
         $result  = $this->db->get('tbl_admin')->result_array();
+        $html = '<option value="">--- Select ---</option>';
         if(!empty($result)){
-            
+            foreach($result as $key=>$value){
+                $html .= "<option value=".$value['pk_i_admin_id'].">".$value['s_display_name'].' '.$value['last_name']."</option>";
+            }
         }
+        echo $html;
 
     }
 
