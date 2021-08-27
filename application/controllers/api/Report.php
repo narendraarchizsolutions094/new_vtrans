@@ -71,6 +71,7 @@ class Report extends REST_Controller {
                 $data['current_date'] = $rdate;						
                 $res = $this->attendance_model->myteam_logs($rdate,$user_id,$rdate,'','',$user_id,$rdate,$comp_id);                
                 if(!empty($res)){
+                    $res[0]->date = $rdate;
                     $res_arr[] = $res[0];
                 }
             }
@@ -79,12 +80,47 @@ class Report extends REST_Controller {
             $data['current_date'] = $rdate = date('Y-m-d');						
             $res = $this->attendance_model->myteam_logs($rdate,$user_id,$rdate,'','',$user_id,$rdate,$comp_id);
             if(!empty($res)){
+                $res[0]->date = $rdate;
                 $res_arr[] = $res[0];
             }            
         }
+        //print_r($res_arr);
         $res_array = array();
         if(!empty($res_arr)){
             foreach($res_arr as $key => $value){
+                $waypoints  = json_decode($value->l_end);
+                if(!empty($waypoints)){
+                    $last_waypoint = end($waypoints);
+                    $latitude=$last_waypoint[0]; 
+                    $longitude=$last_waypoint[1];
+                    $latlong = $latitude.','.$longitude;
+                        // set your API key here
+                    $api_key = "AIzaSyAaoGdhDoXMMBy1fC_HeEiT7GXPiCC0p1s";
+                    $request = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='.$latlong.'&key='.$api_key; 
+                    $file_contents = file_get_contents($request);
+                    $json_decode = json_decode($file_contents);
+                        if(isset($json_decode->results[0])) {
+                            $response = array();
+                            foreach($json_decode->results[0]->address_components as $addressComponet) {
+                                if(in_array('political', $addressComponet->types)) {
+                                        $response[] = $addressComponet->long_name; 
+                                }
+                            }
+                            if(isset($response[0])){ $first  =  $response[0];  } else { $first  = 'null'; }
+                            if(isset($response[1])){ $second =  $response[1];  } else { $second = 'null'; } 
+                            if(isset($response[2])){ $third  =  $response[2];  } else { $third  = 'null'; }
+                            if(isset($response[3])){ $fourth =  $response[3];  } else { $fourth = 'null'; }
+                            if(isset($response[4])){ $fifth  =  $response[4];  } else { $fifth  = 'null'; }
+                        $res = $first.', '.$second.', '.$third.', '.$fourth.', '.$fifth;
+                        $location = $res;
+                        }
+                        else{
+                            $location = ''; 
+                        }
+                }else{
+                    $location = 'NA';
+                }
+
                 $res_array[] = array(
                     'user_id'       => $value->pk_i_admin_id,
                     'designation'   => $value->designation,
@@ -93,10 +129,13 @@ class Report extends REST_Controller {
                     'employee_name' => $value->s_display_name.' '.$value->last_name,                    
                     'attendance_row'=> $value->attendance_row,
                     'check_in'      => $value->check_in,
-                    'check_in'      => $value->check_in,
+                    'check_out'      => $value->check_out,
+                    'current_location'=>$location,
                     'total'         => $value->total,
                     'waypoints'     => $value->l_end,
-                    'user_role'     => $value->user_role
+                    'user_role'     => $value->user_role,
+                    'date'          => $value->date,
+                    'map_url'       => base_url().'api/report/visit_live/'.$value->pk_i_admin_id.'/'.$value->date
                 );
             }
         }
@@ -109,10 +148,8 @@ class Report extends REST_Controller {
              ], REST_Controller::HTTP_OK);         
     }
 
-    public function visit_live_post(){                
-        $id=$this->input->post('user_id');
-        if($this->input->post('curr_date')){
-            $curr_date = $this->input->post('curr_date');
+    public function visit_live_get($id,$curr_date){                        
+        if($curr_date){            
             $where = " uid=$id AND DATE(created_date)='$curr_date'";
         }else{
             $where = " uid=$id AND DATE(created_date)=CURDATE()";
@@ -123,14 +160,10 @@ class Report extends REST_Controller {
         if(!empty($res_rowsss['id'])){
 			$data['title'] = 'Visit Map';
 			$data['att_id'] = $res_rowsss['id'];
-            $content = $this->load->view('loginfo/live_map', $data, true);
-			echo json_encode(array('status'=>true,'data'=>$content));
+            $content = $this->load->view('loginfo/live_map_app', $data, true);		
+            echo $content;
         }else{
-            echo json_encode(array('status'=>false,'msg'=>validation_errors()));
+            echo 'Map not found';
         }
-        //echo $this->db->last_query();
-       
     }
-
-
 }
