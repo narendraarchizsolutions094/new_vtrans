@@ -870,6 +870,12 @@ public function login_in_process(){
         $data['content'] = $this->load->view('home', $data, true);       
         $this->load->view('layout/main_wrapper', $data);
     }
+    
+    public function test(){
+        echo "<pre>";
+        print_r($_SESSION);
+        echo "</pre>";
+    }
 
     public function get_user_by_region(){
         $region_id = $this->input->post('region_id');

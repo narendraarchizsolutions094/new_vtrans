@@ -63,36 +63,32 @@ class Common_model extends CI_Model {
         if(!empty($this->session->user_tree) && $user_id == $this->session->user_id){
             return $this->session->user_tree;
         }else{
+            $current_user = $user_id;
             $this->db->select('pk_i_admin_id,sibling_id');
             $user_row  = $this->db->where('pk_i_admin_id',$user_id)->get('tbl_admin')->row_array();
             $sibling_id = 0;
             if(!empty($user_row['sibling_id'])){
                 $user_id = $user_row['sibling_id'];
                 $sibling_id = $user_row['sibling_id'];
-            }
-            
+            }            
             $this->list = array();
             $categories = array();
             $this->db->select('pk_i_admin_id');
             $this->db->from('tbl_admin');
             $this->db->where('report_to',$user_id);
-            $parent = $this->db->get();       
-            
-            $categories = $parent->result();
-            
+            $parent = $this->db->get();                   
+            $categories = $parent->result();            
             $i=0;
             foreach($categories as $p_cat){
                 $categories[$i]->sub = $this->sub_categories($p_cat->pk_i_admin_id);
                 $i++;
-            }
-            
-            $categories    =   $this->fetch_recursive($categories);
-            
+            }            
+            $categories    =   $this->fetch_recursive($categories);           
             array_push($categories, $user_id);
+            array_push($categories, $current_user);            
             if($sibling_id){
                 array_push($categories, $sibling_id);
             }
-            
             return array_unique($categories);
         }         
     }

@@ -3010,7 +3010,7 @@ public function get_enq_list_post(){
           'msg'     => $msg,//"Please provide a company id"
         ],REST_Controller::HTTP_OK);
       }
-  }
+  } 
 
   public function active_enquiry_page_post()
   {
