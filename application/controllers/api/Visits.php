@@ -556,12 +556,12 @@ array_push($waypoints, $new_waypoint);
                  ], REST_Controller::HTTP_OK);
                }
               }elseif($status==3){
-/********************new code***************/
-$visit_waypoints = $this->db->where(array('id'=>$visit_id))->get('tbl_visit')->row();
-$data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>$visit_waypoints->all_waypoints];
-$this->db->insert('visit_details',$data);
-$insertid=$this->db->insert_id();
-/********************new code***************/
+               /********************new code***************/
+               $visit_waypoints = $this->db->where(array('id'=>$visit_id))->get('tbl_visit')->row();
+               $data=['comp_id'=>$company_id,'visit_id'=>$visit_id,'meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s'),'created_by'=>$user_id,'way_points'=>$visit_waypoints->all_waypoints];
+               $this->db->insert('visit_details',$data);
+               $insertid=$this->db->insert_id();
+               /********************new code***************/
                //$data=['meeting_status'=>1,'start_time'=>date('Y-m-d H:i:s')];
                //$this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
                $res=['message'=>'Meeting Started'];
@@ -569,7 +569,9 @@ $insertid=$this->db->insert_id();
                   'status' => true,
                   'data' =>$res,
                ], REST_Controller::HTTP_OK);
-              }elseif($status==4){
+              
+            }elseif($status==4){
+               
                $data=['meeting_status'=>2,'end_time'=>date('Y-m-d H:i:s')];
                $this->db->where(array('id'=>$vd_id))->update('visit_details',$data);
                $res=['message'=>'Meeting Ended'];
