@@ -406,6 +406,26 @@ class Enquiry extends REST_Controller {
   		  }
 	}
 
+  public function create_account_post(){
+    $company_name = $this->input->post('company_name');
+    $company_id = $this->input->post('company_id');
+    $process_id = $this->input->post('process_id');
+    
+
+    $new_company = array(
+      'company_name'=>$company_name,
+      'comp_id'=>$company_id,
+      'process_id'=>$process_id, 
+    );
+    $this->db->insert('tbl_company',$new_company);
+    $comp_id =  $this->db->insert_id();
+    
+    $this->set_response([
+      'status' => true,
+      'data' => $comp_id
+      ], REST_Controller::HTTP_OK);
+  }
+
 // For return the enq detail Start
   public function get_enq_ccc_post()
   {  
@@ -436,14 +456,14 @@ class Enquiry extends REST_Controller {
   }
 // For return the enq detail Start  
 	public function createEnquiryForm_post()
-  	{
+  {
     $this->load->model(array('Enquiry_model','Leads_Model'));
     $company_id   = $this->input->post('company_id');
     $process_id   = $this->input->post('process_id');
-// $user_id      = $this->input->post('user_id');
+
     $this->session->companey_id = $company_id;
-    $this->form_validation->set_rules('company_id','Company ID','trim|required',array('required'=>'You have note provided %s'));
-    $this->form_validation->set_rules('process_id','Process ID','trim|required',array('required'=>'You have note provided %s'));
+    $this->form_validation->set_rules('company_id','Company ID','trim|required',array('required'=>'You have not provided %s'));
+    $this->form_validation->set_rules('process_id','Process ID','trim|required',array('required'=>'You have not provided %s'));
 
     if($this->form_validation->run() == true)
     {
@@ -884,6 +904,117 @@ class Enquiry extends REST_Controller {
         'msg'     => $msg,//"Please provide a company id"
       ],REST_Controller::HTTP_OK);
     } 
+  }
+  public function get_tab_fields_post(){
+    // "id": "424",
+    // "comp_id": "65",
+    // "field_id": "7",
+    // "form_id": "0",
+    // "process_id": "141,198",
+    // "status": "1",
+    // "fld_order": "35",
+    // "title": "Lead Source",
+    // "type": "Dropdown",
+    // "input_values": [
+    //     {
+    //         "key": "129",
+    //         "value": "Website"
+    //     },
+    //     {
+    //         "key": "131",
+    //         "value": "V-Trans"
+    //     },
+    //     {
+    //         "key": "132",
+    //         "value": "Reference"
+    //     },
+    //     {
+    //         "key": "133",
+    //         "value": "Direct Call"
+    //     },
+    //     {
+    //         "key": "134",
+    //         "value": "Helpline Number"
+    //     },
+    //     {
+    //         "key": "135",
+    //         "value": "Indiamart"
+    //     },
+    //     {
+    //         "key": "136",
+    //         "value": "Email"
+    //     },
+    //     {
+    //         "key": "137",
+    //         "value": "V-Xpress"
+    //     },
+    //     {
+    //         "key": "138",
+    //         "value": "Email Marketing"
+    //     }
+    // ],
+    // "parameter_name": "enquiry_source"
+    // }
+
+      $comp_id = 65;
+      $tid = 57;    
+      $this->db->select('*,input_types.title as input_type_title'); 		
+      $this->db->where('tbl_input.form_id',$tid);  			
+      $this->db->where('tbl_input.company_id',$comp_id);  			
+      $this->db->join('input_types','input_types.id=tbl_input.input_type');  			
+      $form_fields	= $this->db->get('tbl_input')->result_array();
+      //echo $this->db->last_query();
+      $arr = array();
+      if(!empty($form_fields)){
+        foreach($form_fields as $key => $value){
+          $ar = array(
+            "id"            =>  $value['input_id'],
+            "comp_id"       =>  $value['company_id'],
+            "field_id"      =>  $value['input_id'],
+            "form_id"       =>  $value['form_id'],
+            "process_id"    =>  $value['process_id'],
+            "status"        =>  $value['status'],
+            "fld_order"     =>  $value['fld_order'],
+            "title"         =>  $value['input_label'],
+            "type"          =>  $value['input_type']            
+          );
+          if($value['input_id'] == 4478){            
+            
+            $this->db->select('id,name');
+            $this->db->where('comp_id',65);
+            $this->db->where('status',0);
+            $result = $this->db->get('competitors')->result_array();
+            $fld_value = array();
+            
+            if(!empty($result)){
+              foreach($result as $k => $v){
+                $fld_value[] = array(                  
+                  'key' => $v['id'],
+                  'value' => $v['name']
+                );
+              }
+            }
+            
+            $ar['input_values'] = $fld_value;
+            $arr[] = $ar;
+          }else{            
+            $input_value = $value['input_values'];
+            $input_value = explode(',', $input_value);
+            $fld_value = array();
+            if(!empty($input_value)){
+              foreach($input_value as $k){
+                $fld_value[] = array( 
+                  'key'   => $k,
+                  'value' => $k
+                );
+              }
+            }
+            $ar['input_values'] = $fld_value;
+            $arr[] = $ar;
+          }
+        }
+      }
+      print_r($arr);
   }
 public function updateEnquiryTab_post()
 {      
@@ -1727,10 +1858,9 @@ public function updateEnquiryTab_post()
               }
 							array_push($res,array('enquery_id'=>$value->enquiry_id,'enquery_code'=>$value->Enquery_id,'org_name'=>$value->company,'customer_name'=>$value->name_prefix.' '.$value->name.' '.$value->lastname,'email'=>$value->email,'phone'=>$value->phone,'state'=>'','source'=>'test','type'=>$customer,'process_id'=>$value->product_id,'lead_stage'=>$value->lead_stage,
               'tag'=>$tags_row,
-              'lead_description'=>$value->lead_discription));  
+              'lead_description'=>$value->lead_discription));
 						} 
-					}
-               
+					}               
 					if(empty($res))
 					{
 						array_push($res,array('error'=>'enquiry not find'));
@@ -1741,10 +1871,10 @@ public function updateEnquiryTab_post()
 					array_push($res,array('error'=>'user not exist'));
 				}
          
-          		$this->set_response([
-                'status' => TRUE,
-                'enquiry' =>$res
-                 ], REST_Controller::HTTP_OK);
+          $this->set_response([
+            'status' => TRUE,
+            'enquiry' =>$res
+              ], REST_Controller::HTTP_OK);
         
 			}
 			else

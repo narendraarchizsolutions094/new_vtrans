@@ -183,7 +183,7 @@ class Telephony extends CI_Controller {
     if(!empty($res)){
     if(!empty($res->public_ivr_id)){    
     $curl = curl_init();
-    curl_setopt_array($curl, array(  CURLOPT_URL => "https://obd-api.myoperator.co/obd-api-v1",
+    curl_setopt_array($curl, array(CURLOPT_URL => "https://obd-api.myoperator.co/obd-api-v1",
     CURLOPT_RETURNTRANSFER => true,  CURLOPT_CUSTOMREQUEST => "POST", 
     CURLOPT_POSTFIELDS =>'{  "company_id": "'.$res->telephony_compid.'",
     "secret_token": "'.$res->telephony_comp_token.'", 
@@ -195,8 +195,8 @@ class Telephony extends CI_Controller {
     "region": "",
     "caller_id": "",  
     "group": ""   }', 
-    CURLOPT_HTTPHEADER => array(    "x-api-key:oomfKA3I2K6TCJYistHyb7sDf0l0F6c8AZro5DJh", 
-    "Content-Type: application/json"  ),));
+    CURLOPT_HTTPHEADER => array("x-api-key:oomfKA3I2K6TCJYistHyb7sDf0l0F6c8AZro5DJh", 
+    "Content-Type: application/json"),));
     $response = curl_exec($curl);
     print_r($response);
      }else{
