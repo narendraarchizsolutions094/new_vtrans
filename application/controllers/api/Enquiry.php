@@ -1014,7 +1014,11 @@ class Enquiry extends REST_Controller {
           }
         }
       }
-      print_r($arr);
+    //  print_r($arr);
+    $this->set_response([
+      'status'      => TRUE,           
+      'data'  => $arr,
+      ], REST_Controller::HTTP_OK);   
   }
 public function updateEnquiryTab_post()
 {      
