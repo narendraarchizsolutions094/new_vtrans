@@ -17,7 +17,7 @@ class Visits extends REST_Controller {
     }
 
   	public function visit_list_page_post()
-    {
+   {
 	  $visit_id= $this->input->post('visit_id')??0;
       $user_id= $this->input->post('user_id');
       $process_id= $this->input->post('process_id');
@@ -39,12 +39,12 @@ class Visits extends REST_Controller {
     
         $total = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id)->num_rows();
         $minus=0;
-$result =array();
+      $result =array();
         $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id,$limit,$offset);
-         //echo "<pre>";
-      //   print_r($_POST);
-      //   print_r($data['result']->result_array());
-       //echo $this->db->last_query();
+         echo "<pre>";
+        print_r($_POST);
+        print_r($data['result']->result_array());
+       echo $this->db->last_query();
        //exit;
 		foreach($data['result']->result() as $key=> $value)
     {
@@ -159,9 +159,9 @@ $vis_row  = $this->db->get('tbl_visit')->row();
    //$result[$key]['total_expence'] = $value->total_expence;//round(abs($value->visit_expSum+$value->visit_otexpSum));
    $result[$key]['visit_status'] = $value->visit_status;
    if(!empty($vis_row->id)){
-   $result[$key]['last_visit'] = $vis_row->id;
+      $result[$key]['last_visit'] = $vis_row->id;
    }else{
-   $result[$key]['last_visit'] = '';   
+      $result[$key]['last_visit'] = '';
    }
 } 
 
