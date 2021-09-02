@@ -345,6 +345,7 @@ function generate_pie_graph(elm, title) {
                                 color: '#000000',
                                 connectorColor: '#000000',
                                 useHTML:true,
+                                format: '<b>{point.name} </b>:<br> {point.y} ({point.percentage:.1f}) %',
                                 formatter: function() {
                                     //counter++;
                                     return this.point.name+'-'+this.point.y;
@@ -549,8 +550,12 @@ $(document).ready(function() {
                 series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
                 series.columns.template.strokeWidth = 0;
                 series.columns.template.showTooltipOn = "always";
-                series.columns.template.tooltipText =
-                    "{categoryX}: [bold]{valueY}[/]";
+                series.calculatePercent = true;
+
+                // series.columns.template.tooltipText =
+                //     "{categoryX}: [bold]{valueY}[/]";
+                    series.columns.template.tooltipText = "[bold]{categoryX}: [bold]{valueY.percent.formatNumber('#.0')}%[/] ({valueY})";
+
                 series.tooltip.pointerOrientation = "vertical";
                 series.columns.template.column.cornerRadiusTopLeft = 10;
                 series.columns.template.column.cornerRadiusTopRight = 10;
@@ -598,6 +603,7 @@ $(document).ready(function() {
                 pieSeries.hiddenState.properties.opacity = 1;
                 pieSeries.hiddenState.properties.endAngle = -90;
                 pieSeries.hiddenState.properties.startAngle = -90;
+                pieSeries.labels.template.text = "{name}: {value} ({value.percent.formatNumber('#.0')})%";
                 pieSeries.colors.list = [
                     new am4core.color('#b8182b'),
                     new am4core.color('#FBC02D'),
@@ -628,6 +634,7 @@ $(document).ready(function() {
                 chart.innerRadius = am4core.percent(50); // Add and configure Series
                 var pieSeries = chart.series.push(new am4charts.PieSeries());
                 pieSeries.dataFields.value = "value";
+                pieSeries.legendSettings.valueText = '{value}';
                 pieSeries.dataFields.category = "name";
                 pieSeries.slices.template.stroke = am4core.color("#fff");
                 pieSeries.slices.template.strokeWidth = 2;
@@ -636,6 +643,7 @@ $(document).ready(function() {
                 pieSeries.hiddenState.properties.opacity = 1;
                 pieSeries.hiddenState.properties.endAngle = -90;
                 pieSeries.hiddenState.properties.startAngle = -90;
+                pieSeries.labels.template.text = "{name}: {value} ({value.percent.formatNumber('#.0')})%";
                 pieSeries.colors.list = [
                     new am4core.color('#b8182b'),
                     new am4core.color('#388E3C'),
@@ -670,8 +678,8 @@ $(document).ready(function() {
                 pieSeries.hiddenState.properties.opacity = 1;
                 pieSeries.hiddenState.properties.endAngle = -90;
                 pieSeries.hiddenState.properties.startAngle = -90;
-                pieSeries.labels.template.text = "{name}: {value}";
-                pieSeries.slices.template.tooltipText = "{name}: {value}";
+                pieSeries.labels.template.text = "{name}: {value} ({value.percent.formatNumber('#.0')})%";
+                
             }); // end am4core.ready()
         }
     });
@@ -704,6 +712,7 @@ $(document).ready(function() {
                 pieSeries.hiddenState.properties.opacity = 1;
                 pieSeries.hiddenState.properties.endAngle = -90;
                 pieSeries.hiddenState.properties.startAngle = -90;
+                pieSeries.labels.template.text = "{name}: {value} ({value.percent.formatNumber('#.0')})%";
                 pieSeries.colors.list = [
                     new am4core.color('#b8182b'),
                     new am4core.color('#FBC02D'),
@@ -935,7 +944,10 @@ $(document).ready(function() {
 
 
 
-                series.columns.template.tooltipText = "{categoryX}\n[bold]{valueY}[/]";
+//                series.columns.template.tooltipText = "{categoryX}\n[bold]{valueY}[/]";
+                series.calculatePercent = true;
+                series.columns.template.tooltipText = "[bold]{categoryX}: [bold]{valueY.percent.formatNumber('#.0')}%[/] ({valueY})";
+
                 series.columns.template.showTooltipOn = "always";
 
                 series.columns.template.column.cornerRadiusTopLeft = 10;

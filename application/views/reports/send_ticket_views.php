@@ -72,7 +72,7 @@
         width: 100%;
         height: 500px;
     }
-    </style>
+    </style>    
 
     <div class="row">
         <div class="col-md-12">
@@ -124,20 +124,20 @@
 						<div style="height: 400px;">
 						<div class="col-md-8" style="height: 400px;overflow-y: scroll;">
                                 <center>
-                                    <h3><button onclick="exportTableToCSV('members.csv')">Export Employee Wise Added Data </button></h3>
+                                    <h3><button onclick="exportTableToCSV('members.csv')">Export CSO Wise Added Data </button></h3>
                                 </center>
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
-                        <thead>
-                            <tr>
-							    <th>S.No</th>
-                                <th>CS Name</th>
-								<th>Region Name</th>
-                                <th>Total Tickets</th>
-								<?php foreach($ticket_stages as $stage){ ?>
-                                <th><?php echo $stage->lead_stage_name; ?></th>
-                                <?php } ?>								
-                            </tr>
-                        </thead>
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>CS Name</th>
+                                    <th>Region Name</th>
+                                    <th>Total Tickets</th>
+                                    <?php foreach($ticket_stages as $stage){ ?>
+                                    <th><?php echo $stage->lead_stage_name; ?></th>
+                                    <?php } ?>								
+                                </tr>
+                            </thead>
                         <tbody>
                         <?php
 						// print_r($ticket_users);exit;
@@ -173,7 +173,7 @@
 						</div>
                     </div>
                     <div class="row pd-20" style="width:100%;">
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <div class="card card-graph_full2"><br>
                                 <center>
                                     <h3>Failure Point Area Wise Ticket</h3>
@@ -181,7 +181,7 @@
                                 <div id="chartdiv7"></div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="card card-graph_full2"><br>
                                 <center style="padding-bottom:30px;">
                                     <h3>Failure Point Region Wise Ticket</h3>
@@ -379,14 +379,7 @@ function downloadCSV(csv, filename) {
                     },
                     title: {
                         text: ''
-                    },
-                    exporting: {
-                        buttons: {
-                            contextButton: {
-                                menuItems: ["viewFullscreen", "printChart", "downloadPNG"]
-                            }
-                        }
-                    },
+                    },                    
                     subtitle: {
                         text: title
                     },
@@ -405,6 +398,7 @@ function downloadCSV(csv, filename) {
                                 color: '#000000',
                                 connectorColor: '#000000',
                                 useHTML:true,
+                                format: '<b>{point.name} </b>:<br> {point.y} ({point.percentage:.1f}) %',
                                 formatter: function() {
                                     //counter++;
                                     return this.point.name+'-'+this.point.y;
@@ -432,7 +426,6 @@ function downloadCSV(csv, filename) {
         data: JSON.parse(send_data),
         success: function(result) {
             result = JSON.parse(result);
-
             Highcharts.chart('container', {
                 chart: {
                     type: 'pie',
@@ -446,13 +439,27 @@ function downloadCSV(csv, filename) {
                     spacingLeft: 0,
                     spacingRight: 0
                 },
+                credits: {
+                        enabled: false
+                    },
                 title: {
                     text: 'Priority Wise'
                 },
                 plotOptions: {
                     pie: {
                        innerSize: 50,
-                        depth: 45
+                        depth: 45,
+                        dataLabels: {
+                            enabled: true,
+                            color: '#000000',
+                            connectorColor: '#000000',
+                            useHTML:true,
+                            format: '<b>{point.name} </b>:<br> {point.y} ({point.percentage:.1f}) %',
+                            formatter: function() {
+                                //counter++;
+                                return this.point.name+'-'+this.point.y;
+                            }
+                        }
                     }
                 },
                 series: [{

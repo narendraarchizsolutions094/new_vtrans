@@ -496,7 +496,6 @@ class Client extends CI_Controller {
     public function company_list()
     {
         if(user_role('1060')){}
-
         $this->load->model(array('Client_Model','Enquiry_Model'));
         $data['title'] = display('company_list');
         $data['content'] = $this->load->view('enquiry/company_list', $data, true);

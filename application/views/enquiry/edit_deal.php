@@ -95,10 +95,13 @@ $did=1;
 $type=$deal->btype;
 $this->load->model('Branch_model');
 $region_list = $this->Branch_model->sales_region_list()->result();
+
 $list = $this->db->query("SELECT deal_data.*,GROUP_CONCAT(deal_data.delivery_branch) as dlist, book.area_id barea, book.region_id bregion ,del.area_id darea, del.region_id dregion FROM `deal_data` left join branch book on book.branch_id=deal_data.booking_branch  left join branch del on del.branch_id=deal_data.delivery_branch where deal_id=".$deal->id." GROUP by deal_data.booking_branch")->result();
+
 /* echo '<pre>';
 print_r($list);exit;
 echo '</pre>'; */
+
 foreach($list as $row)
 {
     echo'<div class="row" style=" margin-bottom: 20px;
