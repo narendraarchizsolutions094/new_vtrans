@@ -41,10 +41,10 @@ class Visits extends REST_Controller {
         $minus=0;
       $result =array();
         $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id,$limit,$offset);
-         echo "<pre>";
+         /* echo "<pre>";
         print_r($_POST);
         print_r($data['result']->result_array());
-       echo $this->db->last_query();
+       echo $this->db->last_query(); */
        //exit;
 		foreach($data['result']->result() as $key=> $value)
     {
