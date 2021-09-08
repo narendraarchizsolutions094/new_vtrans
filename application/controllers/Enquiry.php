@@ -3723,7 +3723,7 @@ echo  $details1;
         foreach ($result as $res)
         {
 			//For update old rate after chenge in rate
-			                            $this->db->select('rate_km');
+			/*                             $this->db->select('rate_km');
 										$this->db->from('discount_matrix');
                                         $this->db->join('tbl_admin','tbl_admin.discount_id=discount_matrix.id','left'); 
                                         $this->db->where('tbl_admin.pk_i_admin_id',$res->user_id);										
@@ -3733,7 +3733,7 @@ echo  $details1;
             $this->db->set('user_rate',$rate->rate_km);
             $this->db->where('id', $res->vids);
             $this->db->update('tbl_visit');
-			}
+			} */
 		    //End								
             $visit_totalexp= $this->db->where(array('tbl_expense.visit_id'=> $res->vids))->count_all_results('tbl_expense');
             $visit_reject= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 1))->count_all_results('tbl_expense');
