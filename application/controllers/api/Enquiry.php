@@ -885,7 +885,7 @@ class Enquiry extends REST_Controller {
       {
         $this->set_response([
         'status'      => TRUE,           
-        'data'  => $data,
+        'data'        => $data,
         ], REST_Controller::HTTP_OK);   
       }
       else
