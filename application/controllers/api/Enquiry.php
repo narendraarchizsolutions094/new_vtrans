@@ -3641,4 +3641,73 @@ public function add_industries_post(){
 }
 //END ADD INDUSTRIES API FOR VINAY END
 
+//Start competitor tab save API for ankur
+public function save_competitor_info_post(){       
+        
+        $enquiry_id    =   $this->input->post('enq_no');
+        $enqarr = $this->db->select('Enquery_id,comp_id')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();
+        $en_comments = $enqarr->Enquery_id;
+		
+            if(isset($_POST['inputfieldno'])) {				
+                $inputno   = $this->input->post("inputfieldno", true);
+                $enqinfo   = $this->input->post("inputvalue", true);
+            $comment_msg = 'Competitor Information Created';   
+            $comment_id = $this->Leads_Model->add_comment_for_events($comment_msg, $en_comments,$enqarr->comp_id);   
+                foreach($inputno as $ind => $val){
+$stringdt = implode('|',$enqinfo[$ind]);
+					
+                        $biarr = array( "enq_no"  => $en_comments,
+                                      "input"   => $val,
+                                      "parent"  => $enquiry_id, 
+                                      "fvalue"  => $stringdt,
+                                      "cmp_no"  => $enqarr->comp_id,
+                                      "comment_id" => $comment_id
+                                     );                                 
+                       
+                            $this->db->insert('extra_enquery',$biarr);
+                        }//foreach loop end
+                    }
+
+    if($comment_id > 0){
+    $this->set_response([
+      'status'      => TRUE,           
+      'msg'     => 'Competitor information created successfully',
+      ], REST_Controller::HTTP_OK);
+    }else{
+    $this->set_response([
+      'status'      => FALSE,           
+      'msg'     => 'Something went wrong!',
+      ], REST_Controller::HTTP_OK);
+    }					
+}
+//End
+
+//Start competitor tab save API for ankur
+public function find_competitor_info_post(){       
+        
+        $enquiry_id    =   $this->input->post('enq_no');
+		$inputno   = $this->input->post("inputfieldno", true);
+		
+            if(isset($_POST['inputfieldno'])) {				
+                $this->db->select('id,enq_no as enq_id,parent as enq_no,input,fvalue,comment_id');
+		        $this->db->from('extra_enquery');
+				$this->db->where('parent',$enquiry_id);
+				$this->db->where_in('input',$inputno);
+				$res = $this->db->get()->result();
+                
+                    }
+print_r($res);exit;
+    if(!empty($res)){
+    $this->set_response([
+      'status'      => TRUE,           
+      'msg'     => $res,
+      ], REST_Controller::HTTP_OK);
+    }else{
+    $this->set_response([
+      'status'      => FALSE,           
+      'msg'     => 'Something went wrong!',
+      ], REST_Controller::HTTP_OK);
+    }					
+}
+//End
 }
