@@ -971,6 +971,13 @@ $fdistance=$this->distance_actual($actualurl);
     if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
       $rate=10;;
   }
+ if(!empty($visit_id)){
+ //Update rate in visit table
+ $this->db->set('user_rate',$rate);
+ $this->db->where('id', $visit_id);
+ $this->db->update('tbl_visit');
+ //end
+ }
     //add and update expense here
     $get_dis=$this->db->where(array('visit_id'=>$visit_id,'type'=>1,'created_by'=>$user_id,'comp_id'=>$comp_id))->get('tbl_expense');
       if($get_dis->num_rows()==0){
