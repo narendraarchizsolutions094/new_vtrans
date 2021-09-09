@@ -3644,4 +3644,44 @@ public function add_industries_post(){
 }
 //END ADD INDUSTRIES API FOR VINAY END
 
+//Start competitor tab save API for ankur
+public function save_copetitor_info_post(){       
+        
+        $enquiry_id    =   $this->input->post('enq_no');
+        $enqarr = $this->db->select('Enquery_id,comp_id')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();
+        $en_comments = $enqarr->Enquery_id;
+		
+            if(isset($_POST['inputfieldno'])) {				
+                $inputno   = $this->input->post("inputfieldno", true);
+                $enqinfo   = $this->input->post("inputvalue", true);
+            $comment_msg = 'Competitor Information Created';   
+            $comment_id = $this->Leads_Model->add_comment_for_events($comment_msg, $en_comments,$enqarr->comp_id);   
+                foreach($inputno as $ind => $val){
+$stringdt = implode('|',$enqinfo[$ind]);
+					
+                        $biarr = array( "enq_no"  => $en_comments,
+                                      "input"   => $val,
+                                      "parent"  => $enquiry_id, 
+                                      "fvalue"  => $stringdt,
+                                      "cmp_no"  => $enqarr->comp_id,
+                                      "comment_id" => $comment_id
+                                     );                                 
+                       
+                            $this->db->insert('extra_enquery',$biarr);
+                        }//foreach loop end
+                    }
+
+    if($comment_id > 0){
+    $this->set_response([
+      'status'      => TRUE,           
+      'msg'     => 'Competitor information created successfully',
+      ], REST_Controller::HTTP_OK);
+    }else{
+    $this->set_response([
+      'status'      => FALSE,           
+      'msg'     => 'Something went wrong!',
+      ], REST_Controller::HTTP_OK);
+    }					
+}
+//End
 }
