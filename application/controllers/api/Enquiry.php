@@ -3645,7 +3645,7 @@ public function add_industries_post(){
 //END ADD INDUSTRIES API FOR VINAY END
 
 //Start competitor tab save API for ankur
-public function save_copetitor_info_post(){       
+public function save_competitor_info_post(){       
         
         $enquiry_id    =   $this->input->post('enq_no');
         $enqarr = $this->db->select('Enquery_id,comp_id')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();
@@ -3675,6 +3675,35 @@ $stringdt = implode('|',$enqinfo[$ind]);
     $this->set_response([
       'status'      => TRUE,           
       'msg'     => 'Competitor information created successfully',
+      ], REST_Controller::HTTP_OK);
+    }else{
+    $this->set_response([
+      'status'      => FALSE,           
+      'msg'     => 'Something went wrong!',
+      ], REST_Controller::HTTP_OK);
+    }					
+}
+//End
+
+//Start competitor tab save API for ankur
+public function find_competitor_info_post(){       
+        
+        $enquiry_id    =   $this->input->post('enq_no');
+		$inputno   = $this->input->post("inputfieldno", true);
+		
+            if(isset($_POST['inputfieldno'])) {				
+                $this->db->select('id,enq_no as enq_id,parent as enq_no,input,fvalue,comment_id');
+		        $this->db->from('extra_enquery');
+				$this->db->where('parent',$enquiry_id);
+				$this->db->where_in('input',$inputno);
+				$res = $this->db->get()->result();
+                
+                    }
+print_r($res);exit;
+    if(!empty($res)){
+    $this->set_response([
+      'status'      => TRUE,           
+      'msg'     => $res,
       ], REST_Controller::HTTP_OK);
     }else{
     $this->set_response([
