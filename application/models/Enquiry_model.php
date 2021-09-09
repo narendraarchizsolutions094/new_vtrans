@@ -2190,12 +2190,12 @@ class Enquiry_model extends CI_Model {
                   {
                       if(in_array($key, $match_list))
                       {
-                          $fld = 'created_date';
+                          $fld = 'date(created_date)';
                           if($type=='2'){
-                            $fld = 'lead_created_date';
+                            $fld = 'date(lead_created_date)';
                           }
                           else if($type=='3'){
-                            $fld = 'client_created_date';
+                            $fld = 'date(client_created_date)';
                           }
 
                           if($key=='date_from'){

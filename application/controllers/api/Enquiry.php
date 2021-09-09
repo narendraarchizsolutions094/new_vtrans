@@ -4,25 +4,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 class Enquiry extends REST_Controller {
-    function __construct()  
-    { 
-        parent::__construct();
-           $this->load->database();
-           $this->load->library('form_validation');
-           	
-		$this->load->model(array(
-			'enquiry_model','Leads_Model','location_model','Task_Model','User_model','Message_models','common_model'
-		));
-		$this->load->model('api/sync_model');
-		$this->lang->load("activitylogmsg","english");
+    function __construct(){ 
+      parent::__construct();
+      $this->load->database();
+      $this->load->library('form_validation');           	
+		  $this->load->model(array(
+			  'enquiry_model','Leads_Model','location_model','Task_Model','User_model','Message_models','common_model'
+		  ));
+		  $this->load->model('api/sync_model');
+		  $this->lang->load("activitylogmsg","english");		
+		  $this->load->library('email'); 
+      // $this->lang->load('notifications_lang', 'english');   
 		
-		$this->load->library('email'); 
-   // $this->lang->load('notifications_lang', 'english');   
-		
-           $this->load->helper('url');
-           $this->methods['users_get']['limit'] = 500; 
-           $this->methods['users_post']['limit'] = 100; 
-           $this->methods['users_delete']['limit'] = 50; 
+      $this->load->helper('url');
+      $this->methods['users_get']['limit'] = 500; 
+      $this->methods['users_post']['limit'] = 100; 
+      $this->methods['users_delete']['limit'] = 50; 
     }
 
     public function lead_aging_rule_exec_get($comp_id,$lid){  
