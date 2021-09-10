@@ -3699,7 +3699,7 @@ public function find_competitor_info_post(){
 				$res = $this->db->get()->result();
                 
                     }
-print_r($res);exit;
+					
     if(!empty($res)){
     $this->set_response([
       'status'      => TRUE,           
