@@ -3686,21 +3686,50 @@ $stringdt = implode('|',$enqinfo[$ind]);
 public function find_competitor_info_post(){       
         
         $enquiry_id    =   $this->input->post('enq_no');
-		$inputno   = $this->input->post("inputfieldno", true);
+		$company_id    =   $this->input->post('comp_no');
 		
-            if(isset($_POST['inputfieldno'])) {				
+		$this->db->select('input_id');
+		        $this->db->from('tbl_input');
+				$this->db->where('form_id','57');
+				$this->db->where('company_id',$company_id);
+				$this->db->order_by('input_id','ASC');
+				$res = $this->db->get()->result();
+
+        if(!empty($res)) {
+            foreach($res as $ind => $val){				
                 $this->db->select('id,enq_no as enq_id,parent as enq_no,input,fvalue,comment_id');
 		        $this->db->from('extra_enquery');
 				$this->db->where('parent',$enquiry_id);
-				$this->db->where_in('input',$inputno);
-				$res = $this->db->get()->result();
+				$this->db->where('input',$val->input_id);
+				$result[$val->input_id] = $this->db->get()->result();
+            }                
+        }
+
+	if(!empty($result)) {
+		$count = count($res);
+				foreach($res as $key => $vals){
+					$nk = $key+1;
+					if($nk < $count){
+				foreach($result[$vals->input_id] as $ind => $value){
+					$loop = $result[$res[1]->input_id][$ind]->fvalue;
+                $biarr[$ind] = array( "enq_no"  => $value->enq_id,
+                                "parent"  => $value->enq_no, 
+                                "comptitor_name"  => $value->fvalue,
+                                "sensetive_to"  => $loop,
+                                "comment_id" => $value->comment_id
+                               );				
                 
-                    }
-					
+				$res_final[] = $biarr[$ind];
+				
+				}
+					}
+           }                
+        }
+		 				
     if(!empty($res)){
     $this->set_response([
       'status'      => TRUE,           
-      'msg'     => $res,
+      'msg'     => $res_final,
       ], REST_Controller::HTTP_OK);
     }else{
     $this->set_response([
