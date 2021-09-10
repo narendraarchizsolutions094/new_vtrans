@@ -10,8 +10,13 @@ class Report extends REST_Controller {
     public function team_report_post(){
         $user_id = $this->input->post('user_id');
         $this->load->model('attendance_model');        
+        
         $date = $this->input->post('from');
         $to   = $this->input->post('to');
+        
+        $region   = $this->input->post('region');
+        $designation   = $this->input->post('designation');
+
         if($date && $to){
         }else{
             $date = date('Y-m-d');
@@ -19,7 +24,7 @@ class Report extends REST_Controller {
         }        
         $employee = array();
         $comp_id = $this->input->post('comp_id');
-        $users = $this->attendance_model->myteam_logs($date,$employee,'','','',$user_id,$to,$comp_id);
+        $users = $this->attendance_model->myteam_logs($date,$employee,$date,$designation,$region,$user_id,$to,$comp_id);
         //echo $this->db->last_query();
         $res_arr = array();
         if(!empty($users)){
