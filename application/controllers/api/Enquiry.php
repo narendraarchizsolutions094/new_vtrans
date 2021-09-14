@@ -3645,13 +3645,15 @@ public function add_industries_post(){
 public function save_competitor_info_post(){       
         
         $enquiry_id    =   $this->input->post('enq_no');
+		$comment_id    =   $this->input->post('cmnt_id');
         $enqarr = $this->db->select('Enquery_id,comp_id')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();
         $en_comments = $enqarr->Enquery_id;
 		
             if(isset($_POST['inputfieldno'])) {				
                 $inputno   = $this->input->post("inputfieldno", true);
                 $enqinfo   = $this->input->post("inputvalue", true);
-            $comment_msg = 'Competitor Information Created';   
+		if(empty($comment_id)){
+            $comment_msg = 'Competitor Information Created successfully';   
             $comment_id = $this->Leads_Model->add_comment_for_events($comment_msg, $en_comments,$enqarr->comp_id);   
                 foreach($inputno as $ind => $val){
 //$stringdt = implode('|',$enqinfo[$ind]);
@@ -3667,12 +3669,27 @@ public function save_competitor_info_post(){
                        
                             $this->db->insert('extra_enquery',$biarr);
                         }//foreach loop end
+						
+			}else{
+				
+				$comment_msg = 'Competitor Information Updated successfully';   
+                $ucomment_id = $this->Leads_Model->add_comment_for_events($comment_msg, $en_comments,$enqarr->comp_id);   
+                foreach($inputno as $ind => $val){
+					
+					$this->db->set('fvalue',$enqinfo[$ind]);
+                    $this->db->where('parent',$enquiry_id);
+					$this->db->where('input',$val);
+					$this->db->where('comment_id',$comment_id);
+                    $this->db->update('extra_enquery');
+				}
+				
+			}
                     }
 
     if($comment_id > 0){
     $this->set_response([
       'status'      => TRUE,           
-      'msg'     => 'Competitor information created successfully',
+      'msg'     => $comment_msg,
       ], REST_Controller::HTTP_OK);
     }else{
     $this->set_response([
