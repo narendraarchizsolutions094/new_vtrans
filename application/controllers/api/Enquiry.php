@@ -3657,12 +3657,13 @@ public function save_competitor_info_post(){
             $comment_msg = 'Competitor Information Created';   
             $comment_id = $this->Leads_Model->add_comment_for_events($comment_msg, $en_comments,$enqarr->comp_id);   
                 foreach($inputno as $ind => $val){
-$stringdt = implode('|',$enqinfo[$ind]);
+//$stringdt = implode('|',$enqinfo[$ind]);
 					
                         $biarr = array( "enq_no"  => $en_comments,
                                       "input"   => $val,
                                       "parent"  => $enquiry_id, 
-                                      "fvalue"  => $stringdt,
+                                      //"fvalue"  => $stringdt,
+									  "fvalue"  =>$enqinfo[$ind]
                                       "cmp_no"  => $enqarr->comp_id,
                                       "comment_id" => $comment_id
                                      );                                 
