@@ -3660,7 +3660,7 @@ public function save_competitor_info_post(){
                                       "input"   => $val,
                                       "parent"  => $enquiry_id, 
                                       //"fvalue"  => $stringdt,
-									  "fvalue"  =>$enqinfo[$ind]
+									  "fvalue"  =>$enqinfo[$ind],
                                       "cmp_no"  => $enqarr->comp_id,
                                       "comment_id" => $comment_id
                                      );                                 
