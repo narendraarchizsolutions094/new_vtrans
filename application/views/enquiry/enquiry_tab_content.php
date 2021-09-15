@@ -286,6 +286,7 @@ foreach($basic_fields as $row)
 	  <div class="form-group col-md-6">
             <label class="control-label" for="sales_resion"><?=display('sales_resion')?><i class="text-danger">*</i></label> 									
             <select class="form-control" name="sales_region" id="sales_region" onchange="find_area();" required>
+			<option value="" >---Please Select---</option>
                 <?php
                     if (!empty($region_lists)) {
                         foreach ($region_lists as $key => $value) { ?>
@@ -300,6 +301,7 @@ foreach($basic_fields as $row)
 		<div class="form-group col-md-6">
             <label class="control-label" for="sales_area"><?=display('sales_area')?><i class="text-danger">*</i></label> 									
             <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();" required>
+			<option value="" >---Please Select---</option>
                 <?php  if (!empty($area_lists)) {
                 foreach ($area_lists as $key => $value) { ?>
             <option value="<?= $value->area_id;?>" <?php if($value->area_id == $details->enq_salearea){ echo "selected";} ?>><?= $value->area_name;?></option>
@@ -312,6 +314,7 @@ foreach($basic_fields as $row)
     <div class="form-group col-md-6">
             <label class="control-label" for="sales_branch"><?=display('sales_branch')?><i class="text-danger">*</i></label> 									
         <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()" required>
+		<option value="" >---Please Select---</option>
                 <?php  if (!empty($branch_lists)) {
                 foreach ($branch_lists as $key => $value) { ?>
                 <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $details->enq_salebrach){ echo "selected";} ?>><?= $value->branch_name;?></option>
