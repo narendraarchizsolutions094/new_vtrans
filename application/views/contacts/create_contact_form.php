@@ -16,7 +16,7 @@
 if(empty($enquiry_id))
 {?>
    <div class="form-group col-md-6">
-        <label>Company</label>
+        <label>Company group name</label>
         <select class="form-control" name="company" onchange="load_accounts(this.value)">
           <option value="-1">Select</option>
           <?php

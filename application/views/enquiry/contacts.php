@@ -32,7 +32,7 @@
   	         <tr>
                 <th>&nbsp; # &nbsp;</th>
                 <th id="th-1">Name</th>
-                <th id="th-2" style="width: 20%;">Company</th>
+                <th id="th-2" style="width: 20%;">Company group name</th>
                 <th id="th-3" style="width: 20%;">Designation</th>
                 <th id="th-4" style="width: 20%;">Contact Name</th>
                 <th id="th-5" style="width: 20%;">Contact Number</th>
@@ -152,7 +152,7 @@ function deleteContact(t)
               <label class=""><input type="checkbox" class="choose-col" value="1"> Name</label>
             </div>
             <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="2"> Company</label>
+              <label class=""><input type="checkbox" class="choose-col" value="2"> Company group name</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="3"> Designation</label>

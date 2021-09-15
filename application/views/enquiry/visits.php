@@ -51,7 +51,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                     </li>   
                     <li>
                       <label>
-                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>> Company</label>
+                      <input type="checkbox" value="company" id="companycheckbox" name="filter_checkbox" <?php if(in_array('company',$variable)){echo'checked';} ?>> Company group name</label>
                     </li>  
                     <li>
                       <label>
@@ -153,7 +153,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 
     <div class="col-lg-3" id="companyfilter" style="<?php if(!in_array('company',$variable)){echo'display:none';} ?>">
         <div class="form-group">
-        	<label>Company</label>
+        	<label>Company group name</label>
         	<select class="v_filter form-control" name="company" onchange="load_filter_account(this.value)">
         		<option value="">Select</option>
         		<?php
@@ -480,7 +480,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-2" width="15%">Visit Time</th>
 						      <th id="th-13" width="15%">Purpose of meeting</th>
 				          <th id="th-3" >Name</th>
-				          <th id="th-10">Company Name</th>
+				          <th id="th-10">Company group name</th>
                   <th id="th-14">Client Name</th>
                   <th id="th-15">Contact Person</th>
                   <th id="th-16">Start Location</th>
@@ -870,7 +870,7 @@ $("select").select2();
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label style="width:100%;">Company <span class="text-danger">*</span>
+                    <label style="width:100%;">Company group name <span class="text-danger">*</span>
                       <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
                         <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
                       </a>
@@ -968,7 +968,7 @@ $("select").select2();
               <label class=""><input type="checkbox" class="choose-col" value="3"> Name</label>
             </div>
             <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="10"> Company Name</label>
+              <label class=""><input type="checkbox" class="choose-col" value="10"> Company group name</label>
             </div>
              <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="14"> Client Name</label>

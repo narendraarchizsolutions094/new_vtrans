@@ -1034,7 +1034,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                           <th>S.N.</th>
 						  <th id="th-24">Quatation number</th>
 						  <th id="th-25">Quatation Amt (In Lakhs)</th>
-                          <th id="th-21">Company</th>
+                          <th id="th-21">Company group name</th>
                           <th id="th-22">Client Name</th>
                           <th id="th-3">Business Type</th>
                           <th id="th-4">Booking Type</th>
@@ -1359,7 +1359,7 @@ if(user_access('1020'))
                   <th id="th-1" width="15%">Visit Date</th>
                   <th id="th-2" width="15%">Visit Time</th>
                   <th id="th-13" width="15%">Purpose of meeting</th>
-                  <th id="th-10">Company Name</th>
+                  <th id="th-10">Company group name</th>
                   <th id="th-14">Client Name</th>
                   <th id="th-15">Contact Person</th>
                   <th id="th-16">Start Location</th>
@@ -1922,7 +1922,7 @@ if (document.getElementById('agg_same').checked)
                         <thead>               
                          <tr>
                             <th>&nbsp; # &nbsp;</th>
-                            <th id="th-2" style="width: 20%;">Company</th>
+                            <th id="th-2" style="width: 20%;">Company group name</th>
                             <th id="th-3" style="width: 20%;">Designation</th>
                             <th id="th-4" style="width: 20%;">Contact Name</th>
                             <th id="th-5" style="width: 20%;">Contact Number</th>
