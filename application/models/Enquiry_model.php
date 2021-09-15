@@ -5060,7 +5060,7 @@ public function insertComInfo($data)
         $this->db->where($where);
 
         //echo $where;exit();
-
+//print_r($_POST['filters']);exit;
         if(!empty($_POST['filters']))
         {
             foreach ($_POST['filters'] as $key => $value)
@@ -5096,10 +5096,10 @@ public function insertComInfo($data)
                           $this->db->where('info.stage_id',$value);
 						
                         if($key=='date_from')
-                          $this->db->where($fld.'>=',$value);
+                          $this->db->where("STR_TO_DATE($fld,'%Y-%m-%d') >=",$value);
 
                         if($key=='date_to')
-                          $this->db->where($fld.'<=',$value);
+                          $this->db->where("STR_TO_DATE($fld,'%Y-%m-%d') <=",$value);
 
                         if($key=='enquiry_id')
                           $this->db->where('info.enquiry_id',$value);
@@ -5185,7 +5185,7 @@ public function insertComInfo($data)
 
             }
         }
-
+//print_r($_POST['filters']);exit;
         if(!empty($_POST['filters']))
           {
               $match_list = array('date_from','date_to','phone','for','clientName','contact','enquiry_id');
@@ -5204,10 +5204,10 @@ public function insertComInfo($data)
                         //   $fld = 'client_created_date';
 
                         if($key=='date_from')
-                          $this->db->where('tbl_visit.created_at>=',$value);
+                          $this->db->where("STR_TO_DATE(tbl_visit.created_at,'%Y-%m-%d') >=",$value);
 
                         if($key=='date_to')
-                          $this->db->where('tbl_visit.created_at<=',$value);
+                          $this->db->where("STR_TO_DATE(tbl_visit.created_at,'%Y-%m-%d') <=",$value);
 
                         if($key=='for')
                           $this->db->where('enquiry.company',$value);

@@ -71,6 +71,12 @@ class Deals extends REST_Controller {
              
               //echo $offset; exit();
         $data['result'] = $this->enquiry_model->deal_list_api($company_id,$user_id,$process,$limit,$offset);
+		
+		/* echo "<pre>";
+        print_r($_POST);
+        print_r($data['result']->result_array());
+       echo $this->db->last_query(); */
+       //exit;
                   
           if(!empty($data['result']->result()))
           {
