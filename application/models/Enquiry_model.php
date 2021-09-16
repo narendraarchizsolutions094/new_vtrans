@@ -9,7 +9,7 @@ class Enquiry_model extends CI_Model {
     public function create($data = [],$comp_id =0) {
     $data['company'] = trim($data['company']);
 
-    if(!empty($data['company']))
+    if(!empty($data['company']) && !is_numeric($data['company']))
     {
       $company = $this->db->where('company_name',$data['company'])->get('tbl_company')->row();
       if(!empty($company))

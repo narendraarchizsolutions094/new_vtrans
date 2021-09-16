@@ -243,7 +243,7 @@ class Enquiry extends REST_Controller {
             {																
             	
 
-                if(!empty($postData['company']))
+                if(!empty($postData['company']) && !is_numeric($postData['company']))
                 {
                   $company = $this->db->where('company_name',$postData['company'])->get('tbl_company')->row();
                   if(!empty($company))
@@ -406,7 +406,7 @@ class Enquiry extends REST_Controller {
   public function create_account_post(){
     $company_name = $this->input->post('company_name');
     $company_id = $this->input->post('company_id');
-    $process_id = $this->input->post('process_id');
+    $process_id = $this->input->post('process_id')??141;
     
 
     $new_company = array(
