@@ -2747,7 +2747,7 @@ echo json_encode($res);die;
       if (in_array('Sales Branch', $this->session->userdata('post_report_columns'))) {
         $row[] = (!empty($repdetails->branch_name)) ? $repdetails->branch_name : 'NA';
       }
-      if (in_array('Company Name', $this->session->userdata('post_report_columns'))) {
+      if (in_array('Company Group Name', $this->session->userdata('post_report_columns'))) {
         $row[] = (!empty($repdetails->company)) ? $repdetails->company : 'NA';
       }
       if (in_array('Product', $this->session->userdata('post_report_columns'))) {
