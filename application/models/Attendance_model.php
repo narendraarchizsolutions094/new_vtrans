@@ -74,7 +74,7 @@ class Attendance_model extends CI_Model {
 
             $this->db->join('(select enquiry_id,created_by from enquiry where  (DATE(enquiry.created_date) >= "'.$filter_date.'" AND DATE(enquiry.created_date) <= "'.$filter_to.'") ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');
 
-            $this->db->join('(select id,user_id from tbl_visit where  (tbl_visit.created_at >= "'.$filter_date.'" AND tbl_visit.created_at <= "'.$filter_to.'") ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select id,user_id from tbl_visit where  (STR_TO_DATE(tbl_visit.created_at,"%Y-%m-%d") >= "'.$filter_date.'" AND STR_TO_DATE(tbl_visit.created_at,"%Y-%m-%d") <= "'.$filter_to.'") ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
 
             $this->db->join('(select id,createdby from commercial_info where (DATE(commercial_info.creation_date) >= "'.$filter_date.'" AND DATE(commercial_info.creation_date) <= "'.$filter_to.'") ORDER BY commercial_info.id asc) as deal_info','deal_info.createdby = tbl_admin.pk_i_admin_id','left');
 
@@ -85,14 +85,14 @@ class Attendance_model extends CI_Model {
 			$filter_date = $from;
 			$this->db->join('(select * from tbl_attendance where tbl_attendance.check_out_time!="0000-00-00 00:00:00" AND DATE(tbl_attendance.check_in_time) = "'.$filter_date.'" ORDER BY tbl_attendance.id asc) as tbl_attendance','tbl_attendance.uid = tbl_admin.pk_i_admin_id','left');
             $this->db->join('(select enquiry_id,created_by from enquiry where  DATE(enquiry.created_date) = "'.$filter_date.'" ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');
-            $this->db->join('(select id,user_id from tbl_visit where   tbl_visit.created_at = "'.$filter_date.'" ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select id,user_id from tbl_visit where   STR_TO_DATE(tbl_visit.created_at,"%Y-%m-%d") = "'.$filter_date.'" ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
             $this->db->join('(select id,createdby from commercial_info where DATE(commercial_info.creation_date) = "'.$filter_date.'" ORDER BY commercial_info.id asc) as deal_info','deal_info.createdby = tbl_admin.pk_i_admin_id','left');
             $this->db->join('(select waypoints,uid from map_location_feed where map_location_feed.created_date!="0000-00-00 00:00:00" AND DATE(map_location_feed.created_date) = "'.$filter_date.'" ORDER BY map_location_feed.id asc) as curr_location','curr_location.uid = tbl_admin.pk_i_admin_id','left');			
 
 		}else{
 			$this->db->join('(select * from tbl_attendance where tbl_attendance.check_out_time!="0000-00-00 00:00:00" AND DATE(tbl_attendance.check_in_time) = CURDATE() ORDER BY tbl_attendance.id asc) as tbl_attendance','tbl_attendance.uid = tbl_admin.pk_i_admin_id','left');	
             $this->db->join('(select enquiry_id,created_by from enquiry where DATE(enquiry.created_date) = CURDATE() ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');
-            $this->db->join('(select id,user_id from tbl_visit where tbl_visit.created_at = CURDATE() ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
+            $this->db->join('(select id,user_id from tbl_visit where STR_TO_DATE(tbl_visit.created_at,"%Y-%m-%d") = CURDATE() ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
             $this->db->join('(select id,createdby from commercial_info where  DATE(commercial_info.creation_date) = CURDATE() ORDER BY commercial_info.id asc) as deal_info','deal_info.createdby = tbl_admin.pk_i_admin_id','left');
             $this->db->join('(select waypoints,uid from map_location_feed where map_location_feed.created_date!="0000-00-00 00:00:00" AND DATE(map_location_feed.created_date) = CURDATE() ORDER BY map_location_feed.id asc) as curr_location','curr_location.uid = tbl_admin.pk_i_admin_id','left');			
 		}
