@@ -5169,7 +5169,7 @@ public function insertComInfo($data)
     
     $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id','left');
         $this->db->where("tbl_visit.comp_id",$company_id);
-        // $this->db->where("tbl_visit.user_id",$user_id);
+        $this->db->where("tbl_visit.user_id",$user_id);
         $this->db->order_by("tbl_visit.created_at",'DESC');
         $this->db->group_by("tbl_visit.id");
         $this->db->where($where);
