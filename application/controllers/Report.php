@@ -851,7 +851,7 @@ echo json_encode($res);die;
     $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
     $sales_region = $this->db->get_where('sales_region',array('type' => 1))->result_array();
-
+    $sales_region[] = array('region_id'=>0,'name'=>'NA');
     //$sales_region = $this->db->get_where('tbl_emp_region')->result_array();
 
 
@@ -898,7 +898,7 @@ echo json_encode($res);die;
     foreach($sales_region as $key => $region){
       $get_user = $this->db->get_where('tbl_admin',array('dept_name' => 1,'sales_region' => $region['region_id']))->result_array();
       array_push($total_users,count($get_user));
-      $html .='<tr>
+      $html .= '<tr>
                  <th style="text-align:center;font-size:8px;">'.$region['name'].'</th>
                  <th style="text-align:center;font-size:8px;">'.count($get_user).'</th>';
 
@@ -917,7 +917,10 @@ echo json_encode($res);die;
         $get_visit = $this->db->query("SELECT tbl_visit.* FROM `tbl_visit` INNER JOIN enquiry ON tbl_visit.enquiry_id= enquiry.enquiry_id WHERE enquiry.sales_region=".$region['region_id']." AND DATE(tbl_visit.visit_date)=".'"'.$date.'"')->result_array();
 
         $get_nad = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 1))->result_array();
+
         $get_sinings = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->result_array();
+        
+        echo $this->db->last_query().'<br>';
 
         if(count($get_visit) > 0){
           $visit_color = "background:#F9B1A5";
@@ -2227,12 +2230,12 @@ echo json_encode($res);die;
     if(!empty($region_id)){
       $this->db->where_in('created_by',$get_ids);
     }
-    $get_today_call = $this->db->where(array('status' => $enq_status,'created_date' => $todays))->from('enquiry')->count_all_results();
+    $get_today_call = $this->db->where(array('status' => $enq_status,'date(created_date)' => $todays))->from('enquiry')->count_all_results();
     
     if(!empty($region_id)){
       $this->db->where_in('created_by',$get_ids);
     }
-    $get_yesterday_call = $this->db->where(array('status' => $enq_status,'created_date' => $yesterday))->from('enquiry')->count_all_results();
+    $get_yesterday_call = $this->db->where(array('status' => $enq_status,'date(created_date)' => $yesterday))->from('enquiry')->count_all_results();
     
     if(!empty($region_id)){
       $this->db->where_in('created_by',$get_ids);
@@ -2243,7 +2246,7 @@ echo json_encode($res);die;
     if(!empty($region_id)){
       $this->db->where_in('created_by',$get_ids);
     }
-    $get_last_month_call = $this->db->where(array('status' => $enq_status,'created_date' => $lastMonth))->from('enquiry')->count_all_results();
+    $get_last_month_call = $this->db->where(array('status' => $enq_status,'MONTH(created_date)' => $lastMonth))->from('enquiry')->count_all_results();
     
     if(!empty($region_id)){
       $this->db->where_in('created_by',$get_ids);

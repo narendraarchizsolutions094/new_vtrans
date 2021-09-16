@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 class Report extends REST_Controller {
-    function __construct()  { 
+    function __construct()  {
         parent::__construct();        
     }
     public function team_report_post(){
@@ -35,7 +35,7 @@ class Report extends REST_Controller {
                     'deal_count'    => $value->t_deal,
                     'enq_count'     => $value->t_enq,
                     'visit_count'   => $value->t_vis,
-                    'designation'   => $value->designation,
+                    'designation'   => $value->user_role,
                     'sales_region'  => $value->sale_region,
                     'employee_id'   => $value->employee_id,
                     'employee_name' => $value->s_display_name.' '.$value->last_name,

@@ -213,4 +213,18 @@ class User extends REST_Controller
                ], REST_Controller::HTTP_OK);
   		}
     }
+
+	public function get_user_right_post(){
+		$company_id = $this->input->post('company_id');
+
+		$this->db->select('use_id,user_role');
+		$this->db->where('comp_id',$company_id);
+		$result = $this->db->get('tbl_user_role')->result_array();
+		
+		$this->set_response([
+			'status' => TRUE,
+			'data' => $result
+			], REST_Controller::HTTP_OK);
+	}
+
 }
