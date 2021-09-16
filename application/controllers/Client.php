@@ -449,7 +449,9 @@ class Client extends CI_Controller {
         // print_r($data['enquiry_list']);
         // die();
         $data['all_designation'] = $this->Leads_Model->desi_select();
-        $data['contact_create_form'] = $this->load->view('contacts/create_contact_form',array(),true);
+		//echo '<pre>';print_r($data['all_designation']);exit;
+		//$data['contact_create_form'] = $this->load->view('contacts/create_contact_form',array(),true);
+        $data['contact_create_form'] = $this->load->view('contacts/create_contact_form',$data,true);
         $data['content'] = $this->load->view('enquiry/contacts', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
