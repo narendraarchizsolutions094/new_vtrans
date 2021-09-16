@@ -333,8 +333,8 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                     Sales Branch</option>
 
                                 <option
-                                    <?php if(!empty(set_value('report_columns'))){if (in_array('Company Name',set_value('report_columns'))) {echo 'selected';}}?>>
-                                    Company Name</option>
+                                    <?php if(!empty(set_value('report_columns'))){if (in_array('Company Group Name',set_value('report_columns'))) {echo 'selected';}}?>>
+                                    Company Group Name</option>
 
                                 <option
                                     <?php if(!empty(set_value('report_columns'))){if (in_array('Product',set_value('report_columns'))) {echo 'selected';}}?>>
