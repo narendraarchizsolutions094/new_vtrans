@@ -1,4 +1,16 @@
 <?php
+$panel_menu = $this->db->select("tbl_user_role.user_permissions")
+            ->where('pk_i_admin_id',$this->session->user_id)
+            ->join('tbl_user_role','tbl_user_role.use_id=tbl_admin.user_permissions')
+            ->get('tbl_admin')
+            ->row();
+
+            if (!empty($panel_menu->user_permissions)) {
+              $module=explode(',',$panel_menu->user_permissions);
+            }else{
+              $module=array();
+            }
+//print_r($module);exit;
 $type="text";
 if (user_access(450)) { ?>
   <style type="text/css">
@@ -71,8 +83,9 @@ foreach($basic_fields as $row)
    </div>
 
     <div class="form-group col-sm-6 col-md-6 "> 
-      <label><?php  echo display("designation");  ?> <i class="text-danger">*</i></label>
-      <select class="form-control" name="designation" required>
+      <label><?php  echo display("designation");  ?> <i class="text-danger"></i></label>
+      <select class="form-control" name="designation">
+	  <option value="">--Select designation--</option>
         <?php
         $desg=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_designation')->result();
           if(!empty($desg))
@@ -84,7 +97,14 @@ foreach($basic_fields as $row)
           }
         ?>
       </select>
+	  <i class="fa fa-plus" onclick="showDivAttid('1')" style="<?php if(in_array('+desi',$module)){ echo 'display:block;color:red;';}else{echo 'display:none;';}?>"></i>
    </div>
+   
+    <div class="form-group col-sm-6 col-md-6" id="new_designation" style="display:none;"> 
+        <label><?php echo "New Designation"; ?> <i class="text-danger"></i></label>
+        <input class="form-control" name="new_designation" type="text" placeholder="Designation Name">
+        <i class="fa fa-times" onclick="showDivAttid('0')" style="color:red"></i>						
+    </div>
 
    <?php }?>
    <?php  if($row['id']== MOBILE && is_active_field(MOBILE,$process_id)){  ?>
@@ -223,8 +243,8 @@ foreach($basic_fields as $row)
     </div>
   
   <div class="form-group col-md-6">
-            <label class="control-label" for="industries"><?php echo 'Industries';?><i class="text-danger">*</i></label>                  
-        <select class="form-control" name="industries" id="industries" required>
+            <label class="control-label" for="industries"><?php echo 'Industries';?><i class="text-danger"></i></label>                  
+        <select class="form-control" name="industries" id="industries">
                 <option value="">--Select industries--</option>
         <?php
             $indus=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_industries')->result();
@@ -237,6 +257,12 @@ foreach($basic_fields as $row)
             }
         ?>
         </select>
+		<i class="fa fa-plus" onclick="showDivAttidind('1')" style="<?php if(in_array('+inds',$module)){ echo 'display:block;color:red;';}else{echo 'display:none;';}?>"></i>
+    </div>
+	<div class="form-group col-sm-6 col-md-6" id="new_industry" style="display:none;"> 
+        <label><?php echo "New industry"; ?> <i class="text-danger"></i></label>
+        <input class="form-control" name="new_industry" type="text" placeholder="industry Name">
+        <i class="fa fa-times" onclick="showDivAttidind('0')" style="color:red"></i>						
     </div>
 
    <?php }   
@@ -280,7 +306,7 @@ foreach($basic_fields as $row)
       if($row['id']== COMPANY && is_active_field(COMPANY,$process_id)){
       ?>
       <div class="form-group col-sm-6 col-md-6 enq-company">
-      <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
+      <label><?php echo 'Company group name'; ?> <i class="text-danger">*</i></label>
       <input class="form-control" name="company" id="company_list" type="company" value="<?php echo $details->company_name; ?>">
    </div>
 	  <div class="form-group col-md-6">
@@ -1110,6 +1136,32 @@ document.getElementById("email").disabled = false;
 document.getElementById("expected_date").disabled = false;
 document.getElementById("Lead_Scores").disabled = false;
 }
+</script>
+<script>
+    function showDivAttid(x){
+
+        if(x==1) {
+
+            document.getElementById("new_designation").style.display = 'block';
+        }
+        else
+        {
+            document.getElementById("new_designation").style.display = 'none';
+        }
+    }
+	
+	function showDivAttidind(x){
+
+        if(x==1) {
+
+            document.getElementById("new_industry").style.display = 'block';
+        }
+        else
+        {
+            document.getElementById("new_industry").style.display = 'none';
+        }
+    }
+
 </script>
 <?php
 if($this->session->companey_id==65 && $tid == 57){

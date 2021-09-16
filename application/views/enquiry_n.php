@@ -214,7 +214,7 @@ input[name=lead_stages]{
                     </li> 
                     <li>
                       <label>
-                      <input type="checkbox"  value="company" id="companycheckbox" name="filter_checkbox"> Company Name</label>
+                      <input type="checkbox"  value="company" id="companycheckbox" name="filter_checkbox"> Company group name</label>
                     </li> 
                     <li>
                       <label>
@@ -571,7 +571,7 @@ display: block;
                           </select>
                         </div>
                         <div class="form-group col-md-3" id="companyfilter">
-                          <label for="">Company Name</label>
+                          <label for="">Company group name</label>
                           <input type="text" name="company" class="form-control" id="company" value="<?= $filterData['company'] ?>">
                         </div>
                         <div class="form-group col-md-3" id="proccessfilter">
@@ -936,7 +936,7 @@ display: block;
                   <th >Sub Source</th>
             <?php } ?>
               <?php if ($showall == true or in_array(2, $acolarr)) {  ?>
-                  <th><?php echo display("company_name"); ?></th>
+                  <th><?php echo "Company group name"; ?></th>
 				<?php if($this->uri->segment(3)=='All'){ ?>
 				  <th>Account Status</th>
 				<?php } ?>
@@ -1390,7 +1390,7 @@ display: block;
           <label class=""><input type="checkbox" class="choose-col" id="choose-col" value = "1" <?php echo ($showall == true or in_array(1, $acolarr)) ? "checked" : ""; ?>> <?php echo display("source"); ?></label>
           </div>
           <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>>  Company</label> 
+          <label class=""><input type="checkbox" class="choose-col"  value = "2"  <?php echo ($showall == true or in_array(2, $acolarr)) ? "checked" : ""; ?>>  Company group name</label> 
           </div>
           <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="choose-col"  value = "21"  <?php echo ($showall == true or in_array(21, $acolarr)) ? "checked" : ""; ?>>  Client Name</label> 

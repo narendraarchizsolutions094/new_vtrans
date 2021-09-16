@@ -70,7 +70,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                     </li>  
                      <li>
                       <label>
-                      <input type="checkbox" value="companyfilter" id="companycheckbox" name="filter_checkbox" <?php if(in_array('companyfilter',$variable)){echo'checked';} ?>> Company</label>
+                      <input type="checkbox" value="companyfilter" id="companycheckbox" name="filter_checkbox" <?php if(in_array('companyfilter',$variable)){echo'checked';} ?>> Company group name</label>
                     </li>   
                     <li>
                       <label>
@@ -141,7 +141,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
  </div>
  <div class="col-lg-3"  id="companyfilter" style="<?php if(!in_array('companyfilter',$variable)){ echo 'display:none'; } ?>">
         <div class="form-group">
-          <label>Company</label>
+          <label>Company group name</label>
           <select class="d_filter form-control" name="d_company">
             <option value="">Select</option>
             <?php
@@ -395,7 +395,7 @@ function manage_filters()
 				  <th id="th-24">Quatation No</th>
 				  <th id="th-25">Quatation Amt (In Lakhs)</th>
                   <th id="th-1">Name</th>
-                  <th id="th-21">Company</th>
+                  <th id="th-21">Company group name</th>
                   <th id="th-22">Client Name</th>
                 <!--<th id="th-2">Branch Type</th> -->
                   <th id="th-3">Business Type</th>
@@ -619,7 +619,7 @@ $(window).load(function(){
          <div class="modal-body">
             <div class="row" >
                 <div class="form-group col-md-6">
-                    <label>Company</label>
+                    <label>Company group name</label>
                     <select class="form-control" name="company" onchange="filter_related_to(this.value)">
                       <option value="-1">Select</option>
                       <?php
@@ -722,7 +722,7 @@ $(window).load(function(){
               <label class=""><input type="checkbox" class="choose-col" value="25"> Quatation Amount</label>
             </div>
             <div class="col-md-4">
-              <label class=""><input type="checkbox" class="choose-col" value="21"> Company name</label>
+              <label class=""><input type="checkbox" class="choose-col" value="21"> Company group name</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="22"> Client Name</label>

@@ -877,6 +877,20 @@ if(!empty($comp)){
               }
 }
 
+if(!empty($this->input->post('new_designation'))){
+				$desi_id    =   $this->enquiry_model->create_designation($this->input->post('new_designation'));
+				$designation = $desi_id;
+			}else{
+				$designation = $this->input->post('designation');
+			}
+			
+if(!empty($this->input->post('new_industry'))){
+				$indus_id    =   $this->enquiry_model->create_industries($this->input->post('new_industry'));
+				$industries = $indus_id;
+			}else{
+				$industries = $this->input->post('industries');
+			}
+
             if($exp_date = $this->input->post('expected_date'))
                 $this->db->set('lead_expected_date', $exp_date);
 

@@ -349,7 +349,7 @@
                                 </div>-->
 								
 								<div class="form-group col-md-4">
-                                    <label class="control-label" for="sales_resion"><?=display('sales_resion')?></label> 									
+                                    <label class="control-label" for="sales_resion"><?= 'Employee region'; ?></label> 									
                                     <select class="form-control" name="sales_region" onchange="find_area();">
 									<option value="">---Select Region---</option>
                                         <?php

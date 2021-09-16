@@ -1,4 +1,16 @@
 <?php
+$panel_menu = $this->db->select("tbl_user_role.user_permissions")
+            ->where('pk_i_admin_id',$this->session->user_id)
+            ->join('tbl_user_role','tbl_user_role.use_id=tbl_admin.user_permissions')
+            ->get('tbl_admin')
+            ->row();
+
+            if (!empty($panel_menu->user_permissions)) {
+              $module=explode(',',$panel_menu->user_permissions);
+            }else{
+              $module=array();
+            }
+			
   define('FIRST_NAME',1);
   define('LAST_NAME',2);
   define('GENDER',3);
@@ -45,7 +57,7 @@
                      </div>
 
                      <div class="form-group col-sm-4 col-md-4"> 
-                        <label><?php echo display("designation"); ?> <i class="text-danger">*</i></label>
+                        <label><?php echo display("designation"); ?> <i class="text-danger"></i></label>
                         <select class="form-control" name="designation">
 						<option value="">Select Designation</option>
                           <?php
@@ -59,7 +71,7 @@
                             }
                           ?>
                         </select>
-						<i class="fa fa-plus" onclick="showDivAttid('1')" style="color:red"></i>
+						<i class="fa fa-plus" onclick="showDivAttid('1')" style="<?php if(in_array('+desi',$module)){ echo 'display:block;color:red;';}else{echo 'display:none;';}?>"></i>
                      </div>
 					 
 					 <div class="form-group col-sm-4 col-md-4" id="new_designation" style="display:none;"> 
@@ -130,7 +142,7 @@
                     if($companylist['field_id']==COMPANY){
                     ?>
                      <div class="form-group col-sm-4 col-md-4">
-                        <label><?php echo display('company_name') ?> <i class="text-danger">*</i></label>
+                        <label><?php echo 'Company group name' ?> <i class="text-danger">*</i></label>
                         <input class="form-control" value="<?php  echo set_value('company');?> " name="company" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)" required>
                      </div>
 					 
@@ -234,7 +246,7 @@
                       </div>
                     
                     <div class="form-group col-md-4">
-                              <label class="control-label" for="industries"><?php echo 'Industries';?><i class="text-danger">*</i></label>                  
+                              <label class="control-label" for="industries"><?php echo 'Industries';?><i class="text-danger"></i></label>                  
                           <select class="form-control" name="industries" id="industries">
                                 <option value="">--Select industry--</option>
                         <?php
@@ -248,7 +260,7 @@
                             }
                         ?>
                           </select>
-                      <i class="fa fa-plus" onclick="showDivAttidind('1')" style="color:red"></i>
+                      <i class="fa fa-plus" onclick="showDivAttidind('1')" style="<?php if(in_array('+inds',$module)){ echo 'display:block;color:red;';}else{echo 'display:none;';}?>"></i>
                      </div>
 					 
 					 <div class="form-group col-sm-4 col-md-4" id="new_industry" style="display:none;"> 

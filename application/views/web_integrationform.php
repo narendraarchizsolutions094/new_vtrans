@@ -56,12 +56,13 @@
                 <div class="row">
                     <div class="<?php  if($wid=='Mg=='){ echo 'col-md-2';  }else{ echo 'col-md-3'; } ?>">&nbsp;</div>
                     <div class="col-md-4 panel panel-default thumbnail">
+					<img src="<?php echo base_url('assets/images/vtrans_logo.png'); ?>" alt="" style="height: 50px !important;">
                        <form method="post" class="form-inner panel-body">
                             <input type="hidden" id="name" name="create_dby" value="<?=$qr_row['web_created_by']?>">                            
                             <input type="hidden" id="qr_code_id" name="qr_code_id" value="<?=$qr_row['wid']?>">                            
                             <input type="hidden" id="wid" name="wid" value="<?=$wid?>">                            
                             <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label"><?php echo display('name') ?>  
+                                <label for="description" class="col-xs-5 col-form-label"><?php echo 'name' ?>  
                                <?php  if($wid!='Mg=='){   ?><i class="text-danger">*</i> <?php } ?></label>
                                 <div class="col-xs-7">
                                     <!-- <input type="text" id="name" class="form-control br_25  m-0 icon_left_input" name="e_name" value="" placeholder="<?php echo display('name') ?>" required> -->
@@ -83,7 +84,7 @@
                                  <input type="text" class="form-control br_25  m-0 icon_left_input" name="e_email" value="" placeholder="Email" required>
                              </div>
                             </div>
-                            <div class="form-group row"> 
+                            <div class="form-group row" style="display:none;"> 
                                 <label class="col-xs-5 col-form-label"><?php echo 'Process' ?> </label>
                                 <div class="col-xs-7">
                                     <select class="form-control br_25  m-0 icon_left_input" name="product_id" >
@@ -91,7 +92,7 @@
                                     <option value="">---Select---</option>
                                         <?php foreach($products as $product){?>
                                         <option value="<?=$product->sb_id ?>" <?php 
-                                          if($product->sb_id=='200'){
+                                          if($product->sb_id=='141'){
                                               echo'selected'; }
                                             ?>><?= ucwords($product->product_name); ?></option>
                                         <?php } ?>
@@ -100,7 +101,7 @@
                              </div>
                             <?php }else{ ?>
                                 <div class="form-group row">
-                                <label for="description" class="col-xs-5 col-form-label">Student Mobile No. </label>
+                                <label for="description" class="col-xs-5 col-form-label"> Mobile No. </label>
                                 <div class="col-xs-7">
                                 <input type="tel" name="enqueryfield[]" class="form-control" id="student-phone-number" placeholder="">
                                 <input type="hidden" name="inputfieldno[]" value="4507">
