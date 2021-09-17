@@ -79,6 +79,7 @@ class Login extends REST_Controller {
                     $data=array(
                         'isLogIn'           => true,
                         'user_id'           => $check_user->row()->pk_i_admin_id,
+						'user_name'         => $check_user->row()->s_display_name.' '.$check_user->row()->last_name,
                         'companey_id'       => $check_user->row()->companey_id,
                         'email'             => $check_user->row()->s_user_email,
                         'orgisation_name'   => $check_user->row()->orgisation_name,
