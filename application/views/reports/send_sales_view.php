@@ -231,8 +231,7 @@ $dataPoints1 = array(
 	array("Negotiations",$approach_count),
 	array("Closure",$negotiations_count),
 	array("Order",$closure_count),
-	array("Future Opportunities",$order_count)
-	
+	array("Future Opportunities",$order_count)	
 );
 ?>
 
@@ -240,21 +239,24 @@ $dataPoints1 = array(
 $lead_source = $this->db->get_where('lead_source')->result_array();
 $dataPoints2_source = array();
 $dataPoints2_value = array();
+$get_ids_str = implode(',',$get_ids);
 foreach($lead_source as $key => $source){
-    if(!empty($get_ids)){                            
-        $this->db->where_in('created_by',$get_ids);
+    if(!empty($get_ids)){
+        $this->db->where("created_by in($get_ids_str)");
     }
     $lead_data = $this->db->where(array('enquiry_source' => $source['lsid']))->from('enquiry')->count_all_results();
     array_push($dataPoints2_source,$source['lead_name']);
     array_push($dataPoints2_value,$lead_data);
+    //echo $this->db->last_query().'<br>';
 }
 
+
 if(!empty($get_ids)){                            
-    $this->db->where_in('created_by',$get_ids);
+    $this->db->where("created_by in($get_ids_str)");
 }
-$this->db->where('enquiry_source ',NULL);
+$this->db->where('(enquiry_source IS NULL OR enquiry_source=0 OR enquiry_source="")');
 $lead_data = $this->db->from('enquiry')->count_all_results();
-//echo $this->db->last_query();
+
 array_push($dataPoints2_source,'NA');
 array_push($dataPoints2_value,$lead_data);
 
