@@ -212,6 +212,7 @@ class Client extends CI_Controller {
         $data['region_lists']=$this->Branch_model->all_sales_region();
         //$data['dept_lists']=$this->User_model->all_sales_dept();  
         $enq['enquiry_id'] = $enquiry_id;
+		$enq['all_designation'] = $this->Leads_Model->desi_select();
         $data['all_contact']= $this->Client_Model->getContactList()->result();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
         $data['content'] = $this->load->view('enquiry_details1', $data, true);

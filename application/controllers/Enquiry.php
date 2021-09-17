@@ -1225,6 +1225,7 @@ class Enquiry extends CI_Controller
 		$data['branch_lists']=$this->Branch_model->all_sales_branch();
 		$data['region_lists']=$this->Branch_model->all_sales_region();
         $enq['enquiry_id'] = $enquiry_id;
+		$enq['all_designation'] = $this->Leads_Model->desi_select();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
         $data['data_type'] = base64_decode($this->uri->segment(4));
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',array(),true);
