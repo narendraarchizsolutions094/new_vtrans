@@ -284,7 +284,7 @@ if(!empty($region_filter_id)){
 $user_data = $this->db->get_where('tbl_admin',array('dept_name'=>1,'b_status'=>1))->result_array();
 $dataPoints4 = array();
     foreach($user_data as $key => $user){
-        $lead_emp_data = $this->db->where('created_by',$user['pk_i_admin_id'])->or_where('aasign_to',$user['pk_i_admin_id'])->from('enquiry')->count_all_results();
+        $lead_emp_data = $this->db->where('created_by',$user['pk_i_admin_id'])->from('enquiry')->count_all_results();
         array_push($dataPoints4,array("name" => $user['s_display_name'].' '.$user['last_name'],"y" => (int)$lead_emp_data));
     }
     $dataPoints4[0]['sliced'] = 'true';
