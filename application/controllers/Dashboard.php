@@ -902,7 +902,13 @@ public function login_in_process(){
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
         $res = array();
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND original=1';
+        
+        $where = "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).')) AND original=1'; 
+        
+        $this->db->join('enquiry enq','enq.enquiry_id=commercial_info.enquiry_id','left');
+        
+        //$where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND original=1';
         if(!empty($_POST['from_date']) && !empty($_POST['to_date'])){
             $from_created = date("Y-m-d",strtotime($_POST['from_date']));
             $to_created = date("Y-m-d",strtotime($_POST['to_date']));
@@ -935,7 +941,13 @@ public function login_in_process(){
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
         $res = array();
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND original=1';
+        //$where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND original=1';
+        
+        $where = "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).')) AND original=1'; 
+        
+        $this->db->join('enquiry enq','enq.enquiry_id=commercial_info.enquiry_id','left');
+        
         if(!empty($_POST['from_date']) && !empty($_POST['to_date'])){
             $from_created = date("Y-m-d",strtotime($_POST['from_date']));
             $to_created = date("Y-m-d",strtotime($_POST['to_date']));

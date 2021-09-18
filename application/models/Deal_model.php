@@ -44,6 +44,7 @@ class Deal_model extends CI_Model {
                 }
             }
         }
+        //echo $this->db->last_query();
         return $res;
     }
     public function booking_type_feed($filter=array()){
@@ -224,8 +225,13 @@ class Deal_model extends CI_Model {
         $where .= " AND commercial_info.original = 1";                          
                   
         $this->db->select('count(enquiry.sales_region) as c,sales_region.name');
-        $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+        $this->db->where($where);
         $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region');
         $this->db->group_by('enquiry.sales_region');
         $result = $this->db->get('enquiry')->result_array();
@@ -261,8 +267,15 @@ class Deal_model extends CI_Model {
         $where .= " AND commercial_info.original = 1";                                    
 
         $this->db->select('count(enquiry.sales_branch) as c,branch.branch_name as name');
-        $this->db->where($where);
+        
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+
+        $this->db->where($where);
         $this->db->join('branch','branch.branch_id=enquiry.sales_branch');
         $this->db->group_by('enquiry.sales_branch');
         $result = $this->db->get('enquiry')->result_array();
@@ -298,8 +311,13 @@ class Deal_model extends CI_Model {
         $where .= " AND commercial_info.original = 1";                                    
 
         $this->db->select('count(enquiry.sales_area) as c,sales_area.area_name as name');
-        $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+        $this->db->where($where);
         $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area');
         $this->db->group_by('enquiry.sales_area');
         $result = $this->db->get('enquiry')->result_array();
@@ -336,9 +354,15 @@ class Deal_model extends CI_Model {
         $where .= " AND commercial_info.original = 1";                                    
 
         $this->db->select('sum(deal_data.expected_tonnage) as c,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee');
+        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+
+        if(!empty($filter['region'])){
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
         $this->db->where($where);
         $this->db->join('deal_data','deal_data.deal_id=commercial_info.id');
-        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+        
         $this->db->group_by('commercial_info.createdby');
         $result = $this->db->get('commercial_info')->result_array();
         if (!empty($result)){
@@ -374,9 +398,13 @@ class Deal_model extends CI_Model {
         $where .= " AND commercial_info.original = 1";                                    
 
         $this->db->select('sum(deal_data.expected_amount) as c,concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee');
+        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+        if(!empty($filter['region'])){         
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
         $this->db->where($where);
         $this->db->join('deal_data','deal_data.deal_id=commercial_info.id');
-        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
         $this->db->group_by('commercial_info.createdby');
         $result = $this->db->get('commercial_info')->result_array();
         if (!empty($result)){
@@ -416,6 +444,12 @@ class Deal_model extends CI_Model {
         $this->db->select("count(id) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
         
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+
         $this->db->where($where);
         $this->db->where('FIND_IN_SET(business_type,"'.$type.'")>',0);
         $this->db->group_by('month(creation_date)');
@@ -458,6 +492,14 @@ class Deal_model extends CI_Model {
         $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
         $this->db->select("count(id) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
+        
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+
+
         $this->db->where($where);
         $this->db->where('FIND_IN_SET(deal_type,"'.$type.'")>',0);
         $this->db->group_by('month(creation_date)');
@@ -500,6 +542,13 @@ class Deal_model extends CI_Model {
         $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
         $this->db->select("count(id) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
+
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+
         $this->db->where($where);
         $this->db->where('FIND_IN_SET(booking_type,"'.$type.'")>',0);
         $this->db->group_by('month(creation_date)');
@@ -544,6 +593,13 @@ class Deal_model extends CI_Model {
         $this->db->select("sum(expected_tonnage) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
         $this->db->group_by('month(creation_date)');
+
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+
         $this->db->where($where);
         $data = $this->db->get('commercial_info')->result_array();
         //print_r($data);
@@ -582,6 +638,13 @@ class Deal_model extends CI_Model {
         $month_arr = array(1,2,3,4,5,6,7,8,9,10,11,12);
         $this->db->select("sum(expected_amount) as c,month(creation_date) as m");
         $this->db->where('year(creation_date)',date("Y"));
+        
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+
         $this->db->where($where);
         $this->db->group_by('month(creation_date)');
         $data = $this->db->get('commercial_info')->result_array();

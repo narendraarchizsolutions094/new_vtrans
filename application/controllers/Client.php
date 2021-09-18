@@ -2382,8 +2382,12 @@ public function all_update_expense_status()
         $this->db->where("info.comp_id",$this->session->companey_id);
 
         $where='';
+
+        
         $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
+        
+        
         $and =1;
 
         if(!empty($_POST['date_from']) && !empty($_POST['date_to']))
@@ -2391,7 +2395,7 @@ public function all_update_expense_status()
             if($and)
                 $where.=" and ";
 
-            $where.=" (info.creation_date >='".$_POST['date_from']."' and info.creation_date <='".$_POST['date_to']."' ) ";
+            $where.=" (date(info.creation_date) >='".$_POST['date_from']."' and date(info.creation_date) <='".$_POST['date_to']."' ) ";
             $and =1;
         }
         else if(!empty($_POST['date_from']))
@@ -2399,7 +2403,7 @@ public function all_update_expense_status()
              if($and)
                 $where.=" and ";
 
-            $where.=" (info.creation_date >='".$_POST['date_from']."' ) ";
+            $where.=" (date(info.creation_date) >='".$_POST['date_from']."' ) ";
             $and =1;
         }
         else if(!empty($_POST['date_to']))
@@ -2407,7 +2411,7 @@ public function all_update_expense_status()
               if($and)
                 $where.=" and ";
 
-            $where.=" (info.creation_date <='".$_POST['date_to']."' ) ";
+            $where.=" (date(info.creation_date) <='".$_POST['date_to']."' ) ";
             $and =1;
         }
 
