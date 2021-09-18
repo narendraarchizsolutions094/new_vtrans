@@ -363,6 +363,7 @@ public function all_description($diesc) {
 
     public function get_leadsource_list() {
 		$this->db->where('comp_id', $this->session->userdata('companey_id'));
+        $this->db->order_by('order','ASC');
         $query = $this->db->get('lead_source');
         return $query->result();
     }

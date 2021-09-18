@@ -24,6 +24,11 @@ class Deal_model extends CI_Model {
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
         $where .= " AND commercial_info.original = 1";                                    
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
         $this->db->select('count(status) as c,status');             
         $this->db->where($where);
         $this->db->group_by('status');
@@ -64,6 +69,13 @@ class Deal_model extends CI_Model {
         }
         $where .= " AND commercial_info.original = 1";                                    
         $this->db->select('count(business_type) as c,business_type');
+        
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
+        
         $this->db->where($where);
         $this->db->group_by('business_type');
         $result = $this->db->get('commercial_info')->result_array();
@@ -100,7 +112,11 @@ class Deal_model extends CI_Model {
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
         $where .= " AND commercial_info.original = 1";                                    
-
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region=$region_id";
+        }
         $this->db->select('count(booking_type) as c,booking_type');
         $this->db->where($where);
         $this->db->group_by('booking_type');
@@ -205,7 +221,8 @@ class Deal_model extends CI_Model {
             $to_created = date("Y-m-d",strtotime($filter['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }
-        $where .= " AND commercial_info.original = 1";                                    
+        $where .= " AND commercial_info.original = 1";                          
+                  
         $this->db->select('count(enquiry.sales_region) as c,sales_region.name');
         $this->db->where($where);
         $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id');

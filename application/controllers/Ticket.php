@@ -2729,6 +2729,7 @@ class Ticket extends CI_Controller
 		$fromdate=$this->uri->segment(3);
 	    $todate=$this->uri->segment(4);
 		$low = $this->Ticket_Model->countPriority(1,$fromdate,$todate);
+		//echo $this->db->last_query();
 		$medium = $this->Ticket_Model->countPriority(2,$fromdate,$todate);
 		$high = $this->Ticket_Model->countPriority(3,$fromdate,$todate);
 		$data[] = ['name' => 'High', 'value' => $high];

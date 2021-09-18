@@ -3267,7 +3267,7 @@ $cpny_id=$this->session->companey_id;
         $get_ids = array();
 			if(!empty($_POST['region'])){
         $region_id = $_POST['region'];
-        $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE sales_region = '".$region_id."'")->result_array();
+        $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin WHERE b_status=1 AND sales_region = '".$region_id."'")->result_array();
         $get_ids = $this->array_flatten($get_user);
 			}
         if($_POST){
@@ -3283,7 +3283,6 @@ $cpny_id=$this->session->companey_id;
                 $to_date=$_POST['to_date'];
                 $from_filter.=" AND date(enquiry.created_date) >= '$from_date'";
                 $from_filter.=" AND date(enquiry.created_date) <='$to_date' ";
-                
             }
             if(!empty($_POST['users'])){
                 $users=$_POST['users'];
@@ -3298,7 +3297,7 @@ $cpny_id=$this->session->companey_id;
               }else{
                 $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
-              }                 
+              }
             }
             if(!empty($_POST['state_id'])){
                 $state_id=$_POST['state_id'];
@@ -3312,26 +3311,23 @@ $cpny_id=$this->session->companey_id;
             $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
             $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         }
-
-        $arr = $this->session->process;           
+        $arr = $this->session->process;
         if(is_array($arr)){
             $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
-        }          
-
-
+        }
         $enquiry = $lead = $client = $enq_ct = $lead_ct = $client_ct = $enq_ut = $lead_ut = $client_ut = $enq_drp = $lead_drp = $client_drp = $enq_active = $lead_active = $client_active = $enq_assign = $lead_assign = $client_assign = 0;
         $new_where = $where.$from_filter;
         $query = $this->db->query("SELECT enquiry.status FROM enquiry WHERE $new_where GROUP BY enquiry.status");
         $result = $query->result();
         
-        foreach($result as $r)
-        {
-            if($r->status == 1)
-            {
-            $one = $r->status;
-            $query = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $new_where AND (commercial_info.stage_id=$one OR enquiry.status=$one)");
-            $result = $query->row();
-                $enquiry = (!empty($result->counter)) ? $result->counter : 0;
+        //echo $this->db->last_query();
+
+        foreach($result as $r){
+            if($r->status == 1){
+              $one = $r->status;
+              $query = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $new_where AND (commercial_info.stage_id=$one OR enquiry.status=$one)");
+              $result = $query->row();
+              $enquiry = (!empty($result->counter)) ? $result->counter : 0;
             }
             if($r->status == 2)
             {

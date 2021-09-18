@@ -284,6 +284,7 @@ public function all_class_list($diesc,$diesc1) {
 
     public function get_leadsource_list() {
         $this->db->where('comp_id', $this->session->userdata('companey_id'));
+        $this->db->order_by('order','DESC');
         $query = $this->db->get('lead_source');
         return $query->result();
     }
