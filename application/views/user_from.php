@@ -365,7 +365,7 @@
                                 </div>
 								
 								<div class="form-group col-md-4">
-                                    <label class="control-label" for="sales_area"><?=display('sales_area')?></label> 									
+                                    <label class="control-label" for="sales_area"><?= 'Employee area'; ?></label> 									
                                     <select class="form-control" name="sales_area" id="filtered_area" onchange="find_branch();">
                                     <option value="0"> --- Select --- </option>
 
@@ -379,7 +379,7 @@
                                 </div>
 								
 								<div class="form-group col-md-4">
-                                    <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
+                                    <label class="control-label" for="sales_branch"><?= 'Employee branch'; ?></label> 									
                                     <select class="form-control" name="sales_branch" id="filtered_branch">
                                     <option value="0"> --- Select --- </option>
                                         <?php  if (!empty($branch_lists)) {

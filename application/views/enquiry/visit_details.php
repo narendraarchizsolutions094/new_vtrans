@@ -150,10 +150,13 @@ foreach ($visittable as $key => $value) { ?>
 </td>
 </tr>
 <?php
-$waypoints[]=$value->way_points;
+//$waypoints[]=$value->way_points;
 //  array_push(, json_decode($value->way_points));  
 // print_r($way_points);
-} 
+}
+//new line
+$waypoints[]=$details->all_waypoints; 
+//new line end
 $arr_m=[];
 foreach ($waypoints as $key => $value) {
 foreach (json_decode($value) as $key => $values) {
@@ -210,7 +213,7 @@ $secondpoint=$newpoints[$lastKey];
 $i=2;
 $totalexp=0;
 //$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.created_by'=>$user_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense','left')->get('tbl_expense')->result();
-$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.created_by as ct_id,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->visit_id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense','left')->get('tbl_expense')->result();
+$expense=$this->db->select('tbl_expense.id as ids,tbl_expense.created_by as ct_id,tbl_expense.*,tbl_expenseMaster.*')->where(array('tbl_expense.visit_id'=>$details->id,'tbl_expense.comp_id'=>$comp_id))->join('tbl_expenseMaster','tbl_expenseMaster.id=tbl_expense.expense','left')->get('tbl_expense')->result();
 foreach ($expense as $key => $value) { 
  $tamount= $value->amount
   ?>
@@ -489,7 +492,7 @@ function checkAll(ele) {
          </div>
          <form action="<?= base_url('enquiry/notify_rmanager') ?>" method="POST">
          <div class="modal-body">
-          <input name="visit_id" class="form-control"  value="<?= $details->visit_id ?>" hidden>
+          <input name="visit_id" class="form-control"  value="<?= $details->id ?>" hidden>
             <div class="col-md-12">
             <div class="form-group">
             <label>Remarks</label>
@@ -533,7 +536,7 @@ function checkAll(ele) {
             </select>
             </div>
             </div>
-          <input name="visit_id" class="form-control"  value="<?= $details->visit_id ?>" hidden>
+          <input name="visit_id" class="form-control"  value="<?= $details->id ?>" hidden>
             <div class="col-md-12">
             <div class="form-group">
             <label>Remarks</label>
@@ -580,7 +583,7 @@ function checkAll(ele) {
              </select>
             </div>
             </div>
-          <input id="visit_id" class="form-control"  value="<?= $details->visit_id ?>" hidden>
+          <input id="visit_id" class="form-control"  value="<?= $details->id ?>" hidden>
 
             <div class="col-md-12">
             <div class="form-group">
@@ -612,7 +615,7 @@ function checkAll(ele) {
          <div class="modal-body">
             <form  action="<?php echo base_url(); ?>client/add_expense" method="POST" enctype='multipart/form-data'>  
             <div class="row">
-          <input name="visit_id" class="form-control" value="<?= $details->visit_id ?>" hidden>
+          <input name="visit_id" class="form-control" value="<?= $details->id ?>" hidden>
 
             <table class="table table-responsive">
                   <thead>
