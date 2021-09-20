@@ -881,7 +881,7 @@ public function login_in_process(){
         $region_id = $this->input->post('region_id');
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         $where = " pk_i_admin_id IN (".implode(',', $all_reporting_ids).') ';
-        $where .= " AND sales_region = $region_id";
+        $where .= "AND b_status=1 AND sales_region = $region_id";
         $this->db->where($where);
         $result  = $this->db->get('tbl_admin')->result_array();
         $html = '<option value="">--- Select ---</option>';
@@ -891,17 +891,24 @@ public function login_in_process(){
             }
         }
         echo $html;
+        //echo $this->db->last_query();
 
     }
 
-    public function get_deal_count(){        
+    public function get_deal_count(){                
         if(!empty($_POST['users'])){
             $all_reporting_ids    =   $this->common_model->get_categories($_POST['users']);
         }else{
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
         $res = array();
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        
+        $where = "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).')) AND original=1'; 
+        
+        $this->db->join('enquiry enq','enq.enquiry_id=commercial_info.enquiry_id','left');
+        
+        //$where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND original=1';
         if(!empty($_POST['from_date']) && !empty($_POST['to_date'])){
             $from_created = date("Y-m-d",strtotime($_POST['from_date']));
             $to_created = date("Y-m-d",strtotime($_POST['to_date']));
@@ -915,6 +922,11 @@ public function login_in_process(){
             $to_created = date("Y-m-d",strtotime($_POST['to_date']));
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }        
+        if(!empty($_POST['region'])){
+            $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $_POST['region'];
+            $where .= " AND tbl_admin.sales_region = $region_id";
+        }
         $this->db->where($where);
         $this->db->from('commercial_info');
         $result = $this->db->count_all_results();     
@@ -929,7 +941,13 @@ public function login_in_process(){
             $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
         }
         $res = array();
-        $where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') ';
+        //$where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND original=1';
+        
+        $where = "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).')) AND original=1'; 
+        
+        $this->db->join('enquiry enq','enq.enquiry_id=commercial_info.enquiry_id','left');
+        
         if(!empty($_POST['from_date']) && !empty($_POST['to_date'])){
             $from_created = date("Y-m-d",strtotime($_POST['from_date']));
             $to_created = date("Y-m-d",strtotime($_POST['to_date']));
@@ -944,6 +962,11 @@ public function login_in_process(){
             $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
         }        
         $this->db->select("SUM(expected_amount) as c");
+        if(!empty($_POST['region'])){
+            $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $_POST['region'];
+            $where .= " AND tbl_admin.sales_region = $region_id";
+        }
         $this->db->where($where);
         $this->db->from('commercial_info');
         $result = $this->db->get()->row_array();     

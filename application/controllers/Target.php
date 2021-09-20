@@ -484,7 +484,7 @@ class Target extends CI_controller
 		$data['option_list'] = $op;
 		$data['products'] = $prd;
 		$data['user_id'] = empty($user_id)?$this->session->user_id:$user_id;
-		$data['rights']	=	$this->common_model->get_right_ids();
+		$data['rights']	=	$this->common_model->get_right_ids($this->session->user_right);
 		//print_r($data['rights']);
 		$data['content'] = $this->load->view('target/goal_details',$data,true);
 		$this->load->view('layout/main_wrapper',$data);

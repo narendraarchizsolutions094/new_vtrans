@@ -941,7 +941,7 @@ class Ticket_Model extends CI_Model
 			$data=$this->db->where('date(last_update) >=', $fromdate);
 			$data=$this->db->where('date(last_update) <=', $todate);
 	                     	}
-		$data = $this->db->count_all_results('tbl_ticket');
+		$data = $this->db->count_all_results('tbl_ticket');		
 		return $data;
 	}
 	public function report_countPriority($type,$fromdate,$todate,$process='',$user_id='',$comp_id='')

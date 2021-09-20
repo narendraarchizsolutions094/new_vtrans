@@ -2320,24 +2320,18 @@ public function all_update_expense_status()
 
     public function deals($specific=0)
     { 
-         if(user_access('1000') || user_access('1001') || user_access('1002')){
-            
+        if(user_access('1000') || user_access('1001') || user_access('1002')){            
         }else {
             redirect('restrected');
             exit();
         }
-
         $this->load->model('Client_Model');
         $this->load->model('Enquiry_Model');
-        $data['title'] = 'Deals'; //display('deal_list');
-       
+        $data['title'] = 'Deals'; //display('deal_list');       
         $data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('2,3,4,5,6,7,8');
-
         $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
 		$data['region']=$this->db->where('comp_id',$this->session->companey_id)->get('sales_region')->result();
-
         $data['company_list'] = $this->Client_Model->getCompanyList()->result();
-
         $data['content'] = $this->load->view('enquiry/deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -2388,8 +2382,12 @@ public function all_update_expense_status()
         $this->db->where("info.comp_id",$this->session->companey_id);
 
         $where='';
+
+        
         $where .= "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
+        
+        
         $and =1;
 
         if(!empty($_POST['date_from']) && !empty($_POST['date_to']))
@@ -2397,7 +2395,7 @@ public function all_update_expense_status()
             if($and)
                 $where.=" and ";
 
-            $where.=" (info.creation_date >='".$_POST['date_from']."' and info.creation_date <='".$_POST['date_to']."' ) ";
+            $where.=" (date(info.creation_date) >='".$_POST['date_from']."' and date(info.creation_date) <='".$_POST['date_to']."' ) ";
             $and =1;
         }
         else if(!empty($_POST['date_from']))
@@ -2405,7 +2403,7 @@ public function all_update_expense_status()
              if($and)
                 $where.=" and ";
 
-            $where.=" (info.creation_date >='".$_POST['date_from']."' ) ";
+            $where.=" (date(info.creation_date) >='".$_POST['date_from']."' ) ";
             $and =1;
         }
         else if(!empty($_POST['date_to']))
@@ -2413,7 +2411,7 @@ public function all_update_expense_status()
               if($and)
                 $where.=" and ";
 
-            $where.=" (info.creation_date <='".$_POST['date_to']."' ) ";
+            $where.=" (date(info.creation_date) <='".$_POST['date_to']."' ) ";
             $and =1;
         }
 

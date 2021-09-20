@@ -154,7 +154,7 @@
                         ?>
                         <div class="col-lg-2">
                             <div class="form-group">
-                                <label>Region</label>                                
+                                <label>Employee Region</label>                                
                                 <select name="region" class="form-control">
                                     <option value="" >--Select--</option>
                                     <?php
@@ -726,7 +726,11 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                                                         <!--<h4 class="timeline-title">Average</h4>-->
                                                         <p><small class="text-muted"><i
                                                                     class="glyphicon glyphicon-time"></i> &nbsp;<?php  if ($stime!=0) {
-                 $minutes= round(($stime)/$Count,0);
+                 if($stime && $Count){
+                    $minutes= round(($stime)/$Count,0);
+                 }else{
+                    $minutes = 0;
+                }
                 echo $this->enquiry_model->secsToStr($minutes);
                  
                  }else{echo 'N/A';} ?> </small></p>
@@ -776,34 +780,7 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                 </div>
             </div>
 
-<?php
-if(user_access('260') || user_access('261') || user_access('250'))
-{
-?>
- <div class="row pd-20">
-                <div class="col-md-12 pd-20">
-                <div class="card card-graph_full2 pd-20">
-    <center><text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true">Year <?=date('Y')?></text></center>
-    <canvas id="target_forecasting" width="800" height="350"></canvas>
-</div>
-</div>
-</div>
-<div class="row row-xs">
-                <div class="col-md-12">
-                    <hr style="border: 1px solid #3a95c4 !important">
-                </div>
-            </div>
-<div class="row pd-20">
-                <div class="col-md-12 pd-20">
-                <div class="card card-graph_full2 pd-20" >
-    <center><text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true">Year <?=((int)date('Y'))-1?> VS <?=((int)date('Y'))?></text></center>         
-    <canvas id="target_forecasting_previous" width="800" height="350"></canvas>
-</div>
-</div>
-</div>
-<?php
-}
-?>
+
                 <!----------------------------------Timeline END---------------------------------->
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <hr style="border: 1px solid #3a95e4 !important">
@@ -1188,12 +1165,10 @@ if(user_access('260') || user_access('261') || user_access('250'))
             </script>
             <!------------------------------------------------------------------knob js End---------------------------------------------->
             <!-----------------------------chart js-------------------->
-
             <!-- funnel chart Chart code start -->
             <script>
             $(document).ready(function() {
-                var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';
-                // alert(data_s);
+                var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';                
                 $.ajax({
                     url: "<?=base_url('Dashboard/enquiryLeadClientChart')?>",
                     type: "post",
@@ -1202,38 +1177,25 @@ if(user_access('260') || user_access('261') || user_access('250'))
                     success: function(data) {
                         if (data.status == 'success') {
                             am4core.ready(function() {
-
                                 // Themes begin
                                 am4core.useTheme(am4themes_animated);
                                 // Themes end
-
-                                var chart = am4core.create("chartdiv", am4charts
-                                    .SlicedChart);
-                                chart.hiddenState.properties.opacity =
-                                0; // this makes initial fade in effect
-                                //document.write(JSON.stringify(data.data));
+                                var chart = am4core.create("chartdiv", am4charts.SlicedChart);
+                                chart.hiddenState.properties.opacity = 0; 
                                 chart.data = data.data;
-
-                                var series = chart.series.push(new am4charts
-                            .FunnelSeries());
+                                var series = chart.series.push(new am4charts.FunnelSeries());
                                 series.colors.step = 2;
+                                series.calculatePercent = true;
                                 series.dataFields.value = "value";
                                 series.dataFields.category = "name";
                                 series.alignLabels = true;
-
                                 series.labelsContainer.paddingLeft = 15;
                                 series.labelsContainer.width = 200;
-
-                                //series.orientation = "horizontal";
-                                //series.bottomRatio = 1;
-
-                                chart.legend = new am4charts.Legend();
-                                // chart.legend.minWidth = 300;
+                                chart.legend = new am4charts.Legend();                                
                                 chart.legend.labels.template.truncate = false;
                                 chart.legend.position = "left";
                                 chart.legend.valign = "bottom";
                                 chart.legend.margin(5, 5, 20, 5);
-
                             });
                         }
                     }
@@ -1245,8 +1207,6 @@ if(user_access('260') || user_access('261') || user_access('250'))
             <script>
             $(document).ready(function() {
                 var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';
-
-
                 $.ajax({
                     url: "<?=base_url('Dashboard/monthWiseChart')?>",
                     type: "post",

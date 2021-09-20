@@ -333,6 +333,11 @@ $latitude   = (float)$l_lvalues[0];
 $longitude  = (float)$l_lvalues[1];
 $new_waypoint = array($latitude,$longitude);
 $waypoints  = json_decode($waypoints);   
+
+if(empty($waypoints)){
+   $waypoints = array();
+}
+
 array_push($waypoints, $new_waypoint);
 //FIND ALL POINTS END	
 //print_r($waypoints);exit;		
