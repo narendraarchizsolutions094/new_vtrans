@@ -25,7 +25,7 @@ $("select").select2();
 <div class="row">
 <div class="row">
     <?php
-        $visittable=$this->db->where(array('visit_id'=>$details->visit_id))->get('visit_details')->result();
+        $visittable=$this->db->where(array('visit_id'=>$details->id))->get('visit_details')->result();
 
 
 
