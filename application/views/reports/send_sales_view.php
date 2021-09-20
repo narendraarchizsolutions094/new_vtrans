@@ -189,6 +189,19 @@
                                 <th><?= round($future_opp_data['last_month_call']);?></th>
                                 <th><?= round($future_opp_data['all_call']);?></th>
                             </tr>
+
+                            <tr>
+                                <th>Deals</th>
+                                <th><?= round($deal_data['today_call']);?></th>
+                                <th><?= round($deal_data['yesterday_call']);?></th>
+                                <th><?= round($deal_data['this_week']);?></th>
+                                <th><?= round($deal_data['last_week']);?></th>
+                                <th><?= round($deal_data['this_month_call']);?></th>
+                                <th><?= round($deal_data['last_month_call']);?></th>
+                                <th><?= round($deal_data['all_call']);?></th>
+                            </tr>
+
+
                         </tbody>
                     </table>
                 </div>
@@ -742,16 +755,19 @@ $(document).ready(function(){
         var visit = 0;
         var nad = 0;
         var sinings = 0;
+        var deals = 0;
 
         for (let sales = 1; sales <= sales_region; sales++) {
           visit += parseInt($("#visit"+sales+'_'+index).text());
           nad += parseInt($("#nad"+sales+'_'+index).text());
           sinings += parseInt($("#sinings"+sales+'_'+index).text());
+          deals += parseInt($("#deals"+sales+'_'+index).text());
 
         }
         $("#res_visit"+index).text(visit);
         $("#res_nad"+index).text(nad);
         $("#res_signings"+index).text(sinings);
+        $("#res_deals"+index).text(deals);
 
     }
       

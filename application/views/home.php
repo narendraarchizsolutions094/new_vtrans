@@ -1165,12 +1165,10 @@ $enquiry_separation = json_decode($enquiry_separation, true);
             </script>
             <!------------------------------------------------------------------knob js End---------------------------------------------->
             <!-----------------------------chart js-------------------->
-
             <!-- funnel chart Chart code start -->
             <script>
             $(document).ready(function() {
-                var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';
-                // alert(data_s);
+                var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';                
                 $.ajax({
                     url: "<?=base_url('Dashboard/enquiryLeadClientChart')?>",
                     type: "post",
@@ -1179,38 +1177,25 @@ $enquiry_separation = json_decode($enquiry_separation, true);
                     success: function(data) {
                         if (data.status == 'success') {
                             am4core.ready(function() {
-
                                 // Themes begin
                                 am4core.useTheme(am4themes_animated);
                                 // Themes end
-
-                                var chart = am4core.create("chartdiv", am4charts
-                                    .SlicedChart);
-                                chart.hiddenState.properties.opacity =
-                                0; // this makes initial fade in effect
-                                //document.write(JSON.stringify(data.data));
+                                var chart = am4core.create("chartdiv", am4charts.SlicedChart);
+                                chart.hiddenState.properties.opacity = 0; 
                                 chart.data = data.data;
-
-                                var series = chart.series.push(new am4charts
-                            .FunnelSeries());
+                                var series = chart.series.push(new am4charts.FunnelSeries());
                                 series.colors.step = 2;
+                                series.calculatePercent = true;
                                 series.dataFields.value = "value";
                                 series.dataFields.category = "name";
                                 series.alignLabels = true;
-
                                 series.labelsContainer.paddingLeft = 15;
                                 series.labelsContainer.width = 200;
-
-                                //series.orientation = "horizontal";
-                                //series.bottomRatio = 1;
-
-                                chart.legend = new am4charts.Legend();
-                                // chart.legend.minWidth = 300;
+                                chart.legend = new am4charts.Legend();                                
                                 chart.legend.labels.template.truncate = false;
                                 chart.legend.position = "left";
                                 chart.legend.valign = "bottom";
                                 chart.legend.margin(5, 5, 20, 5);
-
                             });
                         }
                     }
@@ -1222,8 +1207,6 @@ $enquiry_separation = json_decode($enquiry_separation, true);
             <script>
             $(document).ready(function() {
                 var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';
-
-
                 $.ajax({
                     url: "<?=base_url('Dashboard/monthWiseChart')?>",
                     type: "post",

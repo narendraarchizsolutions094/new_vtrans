@@ -4757,51 +4757,32 @@ $cpny_id=$this->session->companey_id;
     public function DyenquiryLeadClientChart($userid,$companyid,$status)
     { 
       $all_reporting_ids    =   $this->common_model->get_categories($userid);
-        $cpny_id=$companyid;
-        $arr = $this->session->process;  
-        $where = '';
-        if(is_array($arr)){
-            $where="enquiry.product_id IN (".implode(',', $arr).')';
-           //$querys = $this->db->where($where);
-
-        } 
-        $querys = $this->db->where("enquiry.comp_id",$cpny_id);
-        if($_POST){
+      $cpny_id=$companyid;
+      $arr = $this->session->process;  
+      $where = '';
+      if(is_array($arr)){
+          $where="enquiry.product_id IN (".implode(',', $arr).')';
+      } 
+      $querys = $this->db->where("enquiry.comp_id",$cpny_id);
+      if($_POST){
         $filter=json_decode($_POST['datas']);
-
         if(!empty($filter->from_date) AND !empty($filter->to_date)){
             $from_date=$filter->from_date;
             $to_date=$filter->to_date;
-            $querys = $this->db->where('enquiry.created_date >=', $from_date);
-            $querys = $this->db->where('enquiry.created_date <=', $to_date);
-        }
-        
+            $querys = $this->db->where('date(enquiry.created_date) >=', $from_date);
+            $querys = $this->db->where('date(enquiry.created_date) <=', $to_date);
+        }        
         if(!empty($filter->users)){
             $users=$filter->users;
             $querys = $this->db->where("enquiry.created_by",$users);
-            $querys = $this->db->or_where("enquiry.aasign_to",$users);
-           
+            $querys = $this->db->or_where("enquiry.aasign_to",$users);           
         }else{
             $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-            $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
-            //$querys = $this->db->where($where);
-            
-        }
-        if(!empty($filter->state_id)){
-            $state_id=$filter->state_id;
-            $querys = $this->db->where("enquiry.state_id",$state_id);
-
-
-        }
-        if(!empty($filter->city_id)){
-            $city_id=$filter->city_id;
-            $querys = $this->db->where("enquiry.city_id",$city_id);
-
-        }
+            $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';            
+        }        
     }else{
         $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-      $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
-        //$querys = $this->db->where($where);
+        $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
     }
         $querys = $this->db->select("enquiry.created_date,enquiry.status,enquiry.aasign_to,enquiry.state_id,enquiry.city_id,enquiry.created_by,enquiry.product_id,count(enquiry.status) as c");
         $this->db->where($where);

@@ -676,6 +676,7 @@ echo json_encode($res);die;
       $data['signings_data'] = $this->all_signings_report_filterdata(5); // order data
       $data['closure_data'] = $this->all_prospect_report_filterdata(4); // closer data
       $data['future_opp_data'] = $this->all_prospect_report_filterdata(6); // future opportunities data
+      $data['deal_data'] = $this->all_deal_report_filterdata(); // future opportunities data
       $get_ids_str = implode(',',$get_ids);      
       if(!empty($region_id)){
         $this->db->where("created_by in($get_ids_str)");
@@ -864,10 +865,11 @@ echo json_encode($res);die;
     for ($i=1; $i <= $days; $i++) {
       $date_new = date('Y-m-d', strtotime($date2 . ' +1 day'));
       $date = date('Y-m-d', strtotime($date_new . ' -'.$a.' day'));
-      $html .= '<th style="text-align:center;font-size:8px;" colspan="3" style="text-align:center;">'.date('d-m-Y',strtotime($date)).'</th>';
+      $html .= '<th style="text-align:center;font-size:8px;" colspan="4" style="text-align:center;">'.date('d-m-Y',strtotime($date)).'</th>';
       $a++;
     }
     $html .= '<th style="text-align:center;font-size:8px;" style="text-align:center;">-</th>
+              <th style="text-align:center;font-size:8px;" style="text-align:center;">-</th>
               <th style="text-align:center;font-size:8px;" style="text-align:center;">-</th>
               <th style="text-align:center;font-size:8px;" style="text-align:center;">-</th>
             </tr>
@@ -880,11 +882,13 @@ echo json_encode($res);die;
     for ($y=1; $y <= $days; $y++) { 
       $html .='<th style="text-align:center;font-size:8px;background:#F9B1A5;">Visits</th>
               <th style="text-align:center;font-size:8px;background:#F2F751;">Lead</th>
-              <th style="text-align:center;font-size:8px;background:#51F797;">Order</th>';
+              <th style="text-align:center;font-size:8px;background:#51F797;">Order</th>
+              <th style="text-align:center;font-size:8px;background:#3779f7;">Deal</th>';
     }
     $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">Visit Grand Total</th>
               <th style="text-align:center;font-size:8px;background:#AFFF33;">Lead Grand Total</th>
               <th style="text-align:center;font-size:8px;background:#AFFF33;">Order Grand Total</th>
+              <th style="text-align:center;font-size:8px;background:#AFFF33;">Deal Grand Total</th>
             </tr>';
 
     $total_users = array();
@@ -893,6 +897,7 @@ echo json_encode($res);die;
     $grand_visit = array();
     $grand_nad = array();
     $grand_sinings = array();
+    $grand_deals = array();
 
     $urs_arr_str0 = array();
     $urs_arr_str_1 = '';
@@ -920,8 +925,9 @@ echo json_encode($res);die;
       $total_data = array();
       $total_visit_data = array();
       $total_nad_data = array(); 
+      
       $total_sinings_data = array(); 
-
+      $total_deals_data = array();
       $total = 0;
       $a = 2;
       for ($z=1; $z <=$days ; $z++) {
@@ -937,6 +943,9 @@ echo json_encode($res);die;
           $get_nad = $this->db->where("date(created_date)='$date' AND enquiry.created_by NOT IN($urs_arr_str_1) AND status=1")->get('enquiry')->result_array();
 
           $get_sinings = $this->db->where("date(created_date)='$date' AND enquiry.created_by NOT IN($urs_arr_str_1) AND status=5")->get('enquiry')->result_array();
+          
+          $get_deals = $this->db->where("date(creation_date)='$date' AND commercial_info.createdby NOT IN($urs_arr_str_1)")->get('commercial_info')->result_array();
+          
           //echo $this->db->last_query().'<br>';
 
         }else{
@@ -947,6 +956,8 @@ echo json_encode($res);die;
 
           $get_nad = $this->db->where("date(created_date)='$date' AND enquiry.created_by IN($urs_arr_str) AND status=1")->get('enquiry')->result_array();
           $get_sinings = $this->db->where("date(created_date)='$date' AND enquiry.created_by IN($urs_arr_str) AND status=5")->get('enquiry')->result_array();
+          
+          $get_deals = $this->db->where("date(creation_date)='$date' AND commercial_info.createdby IN($urs_arr_str)")->get('commercial_info')->result_array();
           //$get_sinings = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->result_array();
         }
         
@@ -970,26 +981,36 @@ echo json_encode($res);die;
           $sinings_color = "";
         }
 
+        if(count($get_deals) > 0){
+          $deals_color = "background:#3779f7";
+        }else{
+          $deals_color = "";
+        }
+
         $total = (count($get_visit)+count($get_nad)+count($get_sinings));
         array_push($total_data,$total);
         array_push($total_visit_data,count($get_visit));
         array_push($total_nad_data,count($get_nad));
         array_push($total_sinings_data,count($get_sinings));
+        array_push($total_deals_data,count($get_deals));
 
         $html .='<th id="visit'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$visit_color.'">'.count($get_visit).'</th>
                 <th  id="nad'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$nad_color.'">'.count($get_nad).'</th>
-                <th  id="sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.count($get_sinings).'</th>';
+                <th  id="sinings'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$sinings_color.'">'.count($get_sinings).'</th>
+                <th  id="deals'.$s.'_'.$z.'" style="text-align:center;font-size:8px;'.$deals_color.'">'.count($get_deals).'</th>';
         $a++;
       }
       array_push($total_data,count($get_user));
       $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_visit_data).'</th>
                 <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_nad_data).'</th>
                 <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_sinings_data).'</th>
+                <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($total_deals_data).'</th>
               </tr>';
       array_push($grand_total,array_sum($total_data));
       array_push($grand_visit,array_sum($total_visit_data));
       array_push($grand_nad,array_sum($total_nad_data));
       array_push($grand_sinings,array_sum($total_sinings_data));
+      array_push($grand_deals,array_sum($total_deals_data));
 
       $s++;
     }
@@ -1000,13 +1021,15 @@ echo json_encode($res);die;
         for ($x=1; $x <= $days; $x++) {
           $html .='<th id="res_visit'.$x.'" style="text-align:center;font-size:8px;"></th>
                   <th id="res_nad'.$x.'" style="text-align:center;font-size:8px;"></th>
-                  <th id="res_signings'.$x.'" style="text-align:center;font-size:8px;"></th>';
+                  <th id="res_signings'.$x.'" style="text-align:center;font-size:8px;"></th>
+                  <th id="res_deals'.$x.'" style="text-align:center;font-size:8px;"></th>';
           $c++;
         }
 
     $html .='<th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_visit).'</th>
             <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_nad).'</th>
             <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_sinings).'</th>
+            <th style="text-align:center;font-size:8px;background:#AFFF33;">'.array_sum($grand_deals).'</th>
             </tr>';
     $html .='</tbody>
           </table>';
@@ -2214,6 +2237,102 @@ echo json_encode($res);die;
       'av_daily_call_total_data'            => ($av_daily_call_total_data>=0)?$av_daily_call_total_data:0,
     );
 
+    return $getData;
+  }
+
+  public function all_deal_report_filterdata(){    
+    $region_id='';
+    $get_ids = array();
+    if(!empty($_GET['region'])){
+      $region_id = $_GET['region'];
+      $get_user = $this->db->query("SELECT GROUP_CONCAT(pk_i_admin_id) as ids FROM tbl_admin  WHERE b_status=1 AND dept_name = 1 AND FIND_IN_SET(141,process) > 0 and  sales_region = ".$region_id."")->result_array();
+      $get_ids = $this->array_flatten($get_user);
+    }
+    $data['get_ids'] = $get_ids;
+    $get_ids_str = implode(',',$get_ids);
+
+    $todays = date('Y-m-d');
+    $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($todays)));
+    $this_month = date('m');
+
+    $monday = strtotime("last monday");
+    $monday = date('w', $monday)==date('w') ? $monday+7*86400 : $monday;
+
+    $sunday = strtotime(date("Y-m-d",$monday)." +6 days");
+    $this_week_sd = date("Y-m-d",$monday);
+    $this_week_ed = date("Y-m-d",$sunday);
+
+    $previous_week = strtotime("-1 week +1 day");
+    $start_week = strtotime("last sunday midnight",$previous_week);
+    $end_week = strtotime("next saturday",$start_week);
+    $start_week = date("Y-m-d",$start_week);
+    $end_week = date("Y-m-d",$end_week);
+
+
+    $this_month_sd = date('Y-m-01');
+    $this_month_ed  = date('Y-m-t');
+
+    $last_month_sd = Date("Y-m-d", strtotime("first day of previous month"));
+    $last_month_ed = Date("Y-m-d", strtotime("last day of previous month"));
+
+    $lastMonth = date("m", strtotime("first day of previous month"));
+    
+    if(!empty($region_id)){
+      $this->db->where("createdby in($get_ids_str)");     
+    }
+    $this->db->where('original',1);
+    $get_all_call = $this->db->from('commercial_info')->count_all_results();    
+    
+    if(!empty($region_id)){
+      $this->db->where("createdby in($get_ids_str)");     
+    }
+    $this->db->where('original',1);
+    $get_today_call = $this->db->where(array('date(creation_date)' => $todays))->from('commercial_info')->count_all_results();
+//    echo $this->db->last_query().'<br>';
+    
+    if(!empty($region_id)){
+      $this->db->where("createdby in($get_ids_str)");     
+    }
+    $this->db->where('original',1);
+    $get_yesterday_call = $this->db->where(array('date(creation_date)' => $yesterday))->from('commercial_info')->count_all_results();
+    
+    if(!empty($region_id)){
+      $this->db->where("createdby in($get_ids_str)");     
+    }
+    $this->db->where('MONTH(creation_date)', $this_month);
+    $this->db->where('original',1);
+    $get_this_month_call = $this->db->from('commercial_info')->count_all_results();
+
+    if(!empty($region_id)){
+      $this->db->where("createdby in($get_ids_str)");     
+    }
+    $this->db->where('original',1);
+    $get_last_month_call = $this->db->where(array('MONTH(creation_date)' => $lastMonth))->from('commercial_info')->count_all_results();
+
+    if(!empty($region_id)){
+      $this->db->where("createdby in($get_ids_str)");     
+    }
+    $this->db->where('original',1);
+    $this->db->where('date(creation_date) >=', $this_week_sd);
+    $this->db->where('date(creation_date) <=', $this_week_ed);
+    $get_this_week_call = $this->db->from('commercial_info')->count_all_results();
+    if(!empty($region_id)){
+      $this->db->where("createdby in($get_ids_str)");     
+    }
+    $this->db->where('original',1);
+    $this->db->where('date(creation_date) >=', $start_week);
+    $this->db->where('date(creation_date) <=', $end_week);
+    $get_last_week_call = $this->db->from('commercial_info')->count_all_results();
+    
+    $getData = array(
+      'all_call'                            => $get_all_call,
+      'today_call'                          => $get_today_call,
+      'this_week'                           => $get_this_month_call,
+      'last_week'                           => $get_last_week_call,
+      'yesterday_call'                      => $get_yesterday_call,
+      'this_month_call'                     => $get_this_month_call,
+      'last_month_call'                     => $get_last_month_call      
+    );
     return $getData;
   }
 
