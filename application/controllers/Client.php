@@ -1948,7 +1948,7 @@ public function view_editable_aggrement()
          if(user_role('1020') || user_role('1021') || user_role('1022')){
         }
         $id=$this->uri->segment('3');
-        $visitdata= $this->db->select('tbl_visit.*,visit_details.visit_id,visit_details.visit_status,visit_details.start_time,visit_details.end_time,visit_details.visit_start,visit_details.created_by,visit_details.comp_id,visit_details.way_points,visit_details.visit_end,visit_details.meeting_status')->where('id',$id)->join('visit_details','visit_details.visit_id=tbl_visit.id')->get('tbl_visit');
+        $visitdata= $this->db->select('tbl_visit.*,visit_details.visit_id,visit_details.visit_status,visit_details.start_time,visit_details.end_time,visit_details.visit_start,visit_details.created_by,visit_details.comp_id,visit_details.way_points,visit_details.visit_end,visit_details.meeting_status')->where('tbl_visit.id',$id)->join('visit_details','visit_details.visit_id=tbl_visit.id')->get('tbl_visit');
         if($visitdata->num_rows()!=0){
             $data['details'] =$visitdata->row();
             $this->load->model('Client_Model');
