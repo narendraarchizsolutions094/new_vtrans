@@ -38,6 +38,7 @@ class Enquiry_model extends CI_Model {
            $name = $data['name'];
           $mobile = $data['phone'];
           $email = $data['email'];
+		  $designation = $data['designation'];
           $otherdetails ='';
         $data2 = array(
             'comp_id'=>$data['comp_id'],
@@ -45,7 +46,7 @@ class Enquiry_model extends CI_Model {
             'c_name' => $name,
             'emailid' => $email,
             'contact_number' => $mobile,
-            'designation' => 'Primary',
+            'designation' => $designation,
             'other_detail' =>$otherdetails,
             'decision_maker' => 1,
         );
