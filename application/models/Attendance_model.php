@@ -32,25 +32,47 @@ class Attendance_model extends CI_Model {
 	
 /***********************My team Visit Start*********************/	
 	public function myteam_logs($att_date,$employee,$from='',$desi='',$region='',$user_id=0,$to='',$comp_id=''){				
-        if (empty($employee)) {            
+		
+		if(empty($employee)){
 			$this->db->select('pk_i_admin_id');
 			if($user_id){
-				$this->db->where('report_to',$user_id);    
+				$this->db->where('report_to',$user_id);				
 			}else{
-				$this->db->where('report_to',$this->session->user_id);    
+				$this->db->where('report_to',$this->session->user_id);
+				$user_id = $this->session->user_id;
 			}
-    		$emp_res = $this->db->get('tbl_admin')->result_array();    
+    		$emp_res = $this->db->get('tbl_admin')->result_array();
+
+
 			$employee = array();
 			if(!empty($emp_res)){
 				foreach($emp_res as $key=>$emp){
 					$employee[] = $emp['pk_i_admin_id'];
 				}
+			}else{
+				$urow  = $this->db->select('sibling_id')->where('pk_i_admin_id',$user_id)->get('tbl_admin')->row_array();
+				if(!empty($urow['sibling_id'])){
+
+					$report_to = $urow['sibling_id'];
+					$this->db->where('report_to',$report_to);
+					$emp_res = $this->db->get('tbl_admin')->result_array();
+					foreach($emp_res as $key=>$emp){
+						$employee[] = $emp['pk_i_admin_id'];
+					}
+
+				}
+
 			}
 			$employee[] = $user_id;
         }
+
+		//print_r($employee);
 		if(empty($employee)){
 			return false;
 		}
+		
+		//echo $this->db->last_query().'<br><br><br><br>';
+
 		//$user_id   = $this->session->user_id;
 		$this->db->select("tbl_user_role.user_role,curr_location.waypoints as l_end,COUNT(DISTINCT(deal_info.id)) as t_deal,COUNT(DISTINCT(tbl_vis.id)) as t_vis,COUNT(DISTINCT(enquiry.enquiry_id)) as t_enq,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name,GROUP_CONCAT(CONCAT('(',tbl_attendance.id,',',tbl_attendance.uid,',',tbl_attendance.check_in_time,',',tbl_attendance.check_out_time,',',TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time),')') separator ',') as attendance_row,MIN(tbl_attendance.check_in_time) as check_in,MAX(tbl_attendance.check_out_time) as check_out,SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(tbl_attendance.check_out_time,tbl_attendance.check_in_time)))) as total");
 		//$this->db->select("tbl_visit.visit_date,tbl_visit.visit_time,tbl_admin.designation,sales_region.name as sale_region,tbl_admin.pk_i_admin_id,tbl_admin.employee_id,tbl_admin.s_display_name,tbl_admin.last_name");
@@ -115,7 +137,7 @@ class Attendance_model extends CI_Model {
         }
 		$this->db->group_by('tbl_admin.pk_i_admin_id');
 		return  $this->db->get()->result();     
-		 //echo $this->db->last_query();
+		 //echo $this->db->last_query()."<br><br>";
 		 //exit;
 	}
 /***********************My team Visit End*********************/	
