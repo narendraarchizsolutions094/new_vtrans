@@ -255,4 +255,24 @@ class Login extends REST_Controller {
             ], REST_Controller::HTTP_OK);
             }			
    }
+   
+   public function auto_check_out_get()
+	{
+	   $get_current_date_users = $this->db->get_where('tbl_attendance',array('DATE(check_in_time)' => date('Y-m-d')))->result_array();
+	  if(!empty($get_current_date_users)){
+		$this->db->where('DATE(check_in_time)',date('Y-m-d'))->where('check_out_time',"0000-00-00 00:00:00")->update('tbl_attendance',array('check_out_time' => date('Y-m-d H:i:s')));
+		// echo $this->db->last_query();die;
+		$att_arr  = array('message'=>'Mark Attendance Out Successfully');
+		$this->set_response([
+					'status' => true,
+					'att_data' =>$att_arr
+					 ], REST_Controller::HTTP_OK);
+	  }else{
+		$att_arr  = array('message'=>'No User Found !');
+		$this->set_response([
+			  'status' => false,
+			  'message' =>$att_arr   
+			   ], REST_Controller::HTTP_OK); 
+	  }
+	}
 }
