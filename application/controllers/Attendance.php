@@ -109,11 +109,16 @@ class Attendance extends CI_Controller {
 	 public function get_breadcrumb($user_id){   
 		$current_user = $this->session->user_id;
 		if($user_id != $current_user){
-		  $this->db->select('report_to');
+		  $this->db->select('report_to,sibling_id');
 		  $this->db->where('pk_i_admin_id',$user_id);
 		  $user_row = $this->db->get('tbl_admin')->row_array();
-		  $this->crumb_user[] = $user_row['report_to'];
-		  $this->get_breadcrumb($user_row['report_to']);
+		  if(empty($user_row['report_to'])){
+			$report_to = $user_row['sibling_id'];
+		  }else{
+			$report_to = $user_row['report_to'];
+		  }
+		  $this->crumb_user[] = $report_to;
+		  $this->get_breadcrumb($report_to);
 		}else{
 		  //$this->crumb_user[] = $user_id;
 		}
@@ -168,14 +173,13 @@ class Attendance extends CI_Controller {
 	 }
 
 /***********************My Team Start***************************/	
-	public function myteam($user_id=0){		
+	public function myteam($user_id=0){
 		if(empty($user_id)){
       		$user_id = $this->session->user_id;
     	}
-    	$crumb  = $this->get_breadcrumb($user_id);    
-    	$data['crumb'] = $crumb;        
+    	$crumb  = $this->get_breadcrumb($user_id);
+    	$data['crumb'] = $crumb;
     	$data['current_user'] = $user_id;
-
  		$this->load->model('report_model');
  		$data['title'] = 'Team Visits';
 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));
@@ -185,24 +189,18 @@ class Attendance extends CI_Controller {
 		$region		=	$this->input->post('region');
 		$from	= $data['from']	=	$this->input->post('att_date_from')??date('Y-m-d');
 		$to	= $data['to']	=	$this->input->post('att_date_to')??date('Y-m-d');
-		
 		if(!empty($_GET['fdate']) && !empty($_GET['tdate'])){
 			$from	= $data['from']	= $_GET['fdate'];
 			$to	= $data['to']	= $_GET['tdate'];
-		}
-		//echo $to;
+		}		
 		$content = $this->load->view('loginfo/visits__filter',$data,true);
- 		if ($_POST || $from || $to) {	
-			
-			$data['range_arr'] = $range_arr = $this->displayDates($from,$to);		
-
-			//$to			=	$this->input->post('att_date_to');			
+ 		if ($_POST || $from || $to) {
+			$data['range_arr'] = $range_arr = $this->displayDates($from,$to);
 			$employee	=	$this->input->post('employee');			
 			        $date = date("Y-m-d");
 			        $data['att_date'] = $date;
 		 			$data['users'] = $this->attendance_model->myteam_logs($date,$employee,$from,$desi,$region,$user_id,$to);
                     $data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));					
-					//$content .= $this->load->view('loginfo/visit_logs',$data,true);
 				}else{
 					$date = date("Y-m-d"); 			 			
 					$to = date("Y-m-d"); 			 			
@@ -231,15 +229,12 @@ class Attendance extends CI_Controller {
 					$visit_activity .= $this->load->view('loginfo/visit_activity',$data,true);
 				}
 				$data['visit_activity'] = $visit_activity;
-
 				$content .= $this->load->view('loginfo/visit_logs',$data,true);
 				$data['content'] = $content;					
 			$this->load->view('layout/main_wrapper',$data);
  	}
 /***********************My Team End***************************/	
-	public function deletes($type = ""){
-		
-		
+	public function deletes($type = ""){		
 	}
 	
 	
@@ -351,4 +346,5 @@ class Attendance extends CI_Controller {
 		curl_close($curl);
 		echo $response;
 	}
+
 }

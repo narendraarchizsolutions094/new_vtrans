@@ -1,7 +1,8 @@
 <div class="row">
         <div class="col-sm-12" style="background:aliceblue;padding:7px">        
             <div style="margin-left: 16px;">
-        <?php                    
+        
+        <?php     
         if(!empty($crumb)){
             foreach(array_reverse($crumb) as $value){
                 $this->db->where('pk_i_admin_id',$value);
