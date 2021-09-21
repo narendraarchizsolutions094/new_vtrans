@@ -321,7 +321,7 @@ if(!empty($result))
 		}else{
 		$start_point = $visit_row['end_waypoints'];	
 		}
-//FIND START POINT END	
+//FIND START POINT END	 
 //FIND All POINTS START
 $where = " uid=$user_id AND DATE(created_date)=CURDATE()";
 $this->db->select('id,one_lead');
