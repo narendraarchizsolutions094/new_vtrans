@@ -305,7 +305,8 @@ if(!empty($result))
     	if($this->form_validation->run()==true)
     	{
 //FIND START POINT START			
-		$where = " user_id=$user_id AND enquiry_id=$enquiry_id AND DATE(created_at)=CURDATE()";
+		//$where = " user_id=$user_id AND enquiry_id=$enquiry_id AND DATE(created_at)=CURDATE()";
+		$where = " user_id=$user_id AND DATE(created_at)=CURDATE()";
 		$this->db->select('end_waypoints,id');
         $this->db->where($where); 
         $this->db->order_by('id','DESC');		

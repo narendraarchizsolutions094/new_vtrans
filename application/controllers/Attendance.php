@@ -351,4 +351,25 @@ class Attendance extends CI_Controller {
 		curl_close($curl);
 		echo $response;
 	}
+	
+	/* public function auto_check_out()
+	{
+		print_r('hi');exit;
+	  /* $get_current_date_users = $this->db->get_where('tbl_attendance',array('DATE(check_in_time)' => date('Y-m-d')))->result_array();
+	  if(!empty($get_current_date_users)){
+		$this->db->where('task_id',0)->update('tbl_attendance',array('check_out_time' => date('Y-m-d H:i:s')));
+		// echo $this->db->last_query();die;
+		$att_arr  = array('message'=>'Mark Attendance Out Successfully');
+		$this->set_response([
+					'status' => true,
+					'att_data' =>$att_arr
+					 ], REST_Controller::HTTP_OK);
+	  }else{
+		$att_arr  = array('message'=>'No User Found !');
+		$this->set_response([
+			  'status' => false,
+			  'message' =>$att_arr   
+			   ], REST_Controller::HTTP_OK); 
+	  } */
+	} */
 }
