@@ -365,6 +365,6 @@ class Attendance extends CI_Controller {
 			  'status' => false,
 			  'message' =>$att_arr   
 			   ], REST_Controller::HTTP_OK); 
-	  } */
+	  } 
 	} */
 }
