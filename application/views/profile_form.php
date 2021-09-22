@@ -312,7 +312,7 @@
 
                                 
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-4" style="display:none">
 
                                      <label><?php echo display('country_name')?> <i class="text-danger">*</i></label>
 
@@ -338,7 +338,7 @@
 
                             
 
-                            <div class="form-row">
+                            <div class="form-row" style="display:none">
 
                                 
 
@@ -474,7 +474,7 @@
 
                                 
 
-                                 <div class="form-group col-md-4">
+                                 <div class="form-group col-md-4" style="display:none">
 
                                      <label><?php echo display('city_name')?> <i class="text-danger">*</i></label>
 
