@@ -133,7 +133,7 @@ class Report extends REST_Controller {
                     'employee_id'   => $value->employee_id,
                     'employee_name' => $value->s_display_name.' '.$value->last_name,                    
                     'attendance_row'=> $value->attendance_row,
-                    'check_in'      => $value->check_in,
+                    'check_in'      => if(!empty($user->check_in)){ $user->check_in }else{ $user->new_check_in},
                     'check_out'      => $value->check_out,
                     'current_location'=>$location,
                     'total'         => $value->total,
