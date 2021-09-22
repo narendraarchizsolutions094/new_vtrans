@@ -1534,6 +1534,108 @@ public function Insert_templates()
 	}
 }
 
+/*******************Useful links module code start***************/
+public function useful_link() {
+        $data['nav1'] = 'nav2';
+        if (!empty($_POST)) {
 
+        if(!empty($_FILES['link']['name'])){      
+        //$this->load->library("aws");
+        
+        $_FILES['userfile']['name']= $_FILES['link']['name'];
+        $_FILES['userfile']['type']= $_FILES['link']['type'];
+        $_FILES['userfile']['tmp_name']= $_FILES['link']['tmp_name'];
+        $_FILES['userfile']['error']= $_FILES['link']['error'];
+        $_FILES['userfile']['size']= $_FILES['link']['size'];    
+        
+        $_FILES['userfile']['name'] = $image = $_FILES['userfile']['name'];
+                                                 $path= $_SERVER["DOCUMENT_ROOT"]."/vt-apk/".$image;
+                                                 $ret = move_uploaded_file($_FILES['userfile']['tmp_name'],$path);
+                
+                /* if($ret)
+                {
+                    $rt = $this->aws->uploadinfolder($this->session->awsfolder,$path);
+
+                    if($rt == true)
+                    {
+                        unlink($path); 
+                    }
+                } */
+        }else{
+              $image=$this->input->post('old_link', true);
+        }
+
+            $link_title = $this->input->post('link_name');
+
+            $data = array(
+                'comp_id'   => $this->session->userdata('companey_id'),
+                'title'   => $link_title,
+                'links'   => $image,
+                'created_by' => $this->session->userdata('user_id')
+            );
+
+            $insert_id = $this->setting_model->link_add($data);
+            $this->session->set_flashdata('SUCCESSMSG', 'Links Added Successfully');
+            redirect('setting/useful_link');
+        }
+
+        $data['all_links'] = $this->setting_model->link_select();
+        $data['title'] = 'All Links';
+        $data['content'] = $this->load->view('setting/links', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
+	
+public function delete_links(){
+        if(!empty($_POST)){
+        $cvd_id=$this->input->post('sel_temp');
+        foreach($cvd_id as $key){
+        $this->db->where('id',$key);
+        $query = $this->db->delete('tbl_links');
+        }
+        }
+    }
+	
+public function link_update()
+    {  
+    if(!empty($_POST)){
+    $link_id = $this->input->post('link_id');
+    $link_name = $this->input->post('link_name');
+    
+    if(!empty($_FILES['link']['name'])){      
+        //$this->load->library("aws");
+        
+        $_FILES['userfile']['name']= $_FILES['link']['name'];
+        $_FILES['userfile']['type']= $_FILES['link']['type'];
+        $_FILES['userfile']['tmp_name']= $_FILES['link']['tmp_name'];
+        $_FILES['userfile']['error']= $_FILES['link']['error'];
+        $_FILES['userfile']['size']= $_FILES['link']['size'];    
+        
+        $_FILES['userfile']['name'] = $image = $_FILES['userfile']['name'];
+                                                 $path= $_SERVER["DOCUMENT_ROOT"]."/vt-apk/".$image;
+                                                 $ret = move_uploaded_file($_FILES['userfile']['tmp_name'],$path);
+                
+                /* if($ret)
+                {
+                    $rt = $this->aws->uploadinfolder($this->session->awsfolder,$path);
+
+                    if($rt == true)
+                    {
+                        unlink($path); 
+                    }
+                } */
+        }else{
+              $image=$this->input->post('old_link', true);
+        }
+    
+    $this->db->set('title',$link_name);
+    $this->db->set('links',$image);
+    $this->db->where('id',$link_id);
+    $this->db->update('tbl_links');
+    redirect('setting/useful_link');
+    }
+    $data['content'] = $this->load->view('setting/links', $data, true);
+    $this->load->view('layout/main_wrapper', $data);
+    }
+/*******************Useful links module code End***************/
 
 }

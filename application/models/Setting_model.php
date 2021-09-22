@@ -78,7 +78,18 @@ class Setting_model extends CI_Model {
 
 	
 
-	
+/*******************Useful links module code Start***************/ 
+    public function link_add($data) {
+        $this->db->insert('tbl_links', $data);
+    }
+    public function link_select() {
+        $this->db->select("*");
+        $this->db->from('tbl_links');
+        $this->db->where('comp_id', $this->session->userdata('companey_id'));
+        $query = $this->db->get();
+        return $query->result();
+    }
+/*******************Useful links module code End***************/
 
 	
 

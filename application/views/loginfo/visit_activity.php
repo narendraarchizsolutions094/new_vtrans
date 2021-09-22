@@ -53,7 +53,7 @@
 						?>
                             <tr>
                                 <td><?php echo $current_date;?></td>                                     
-                        		<td><?php echo $user->check_in;?></td>                                     
+                        		<td><?php if(!empty($user->check_in)){ echo $user->check_in; }else{ echo $user->new_check_in; };?></td>                                     
                                 <td><?php echo $user->check_out;?></td>
 								<td><?php echo $user->total;?></td>								
 								<td><?php echo $location;?></td>

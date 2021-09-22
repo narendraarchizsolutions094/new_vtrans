@@ -1948,7 +1948,17 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                 <?php echo display('task') ?></p> <?php } ?>
                         </a>
                     </li>
-
+					
+                    <li class="<?php echo (($segment1 == "task") ? "active" : null) ?>"
+                        style="<?php if(in_array('links',$module)){ echo 'display:block;';}else{echo 'display:none;';}?>">
+                        <a href="<?php echo base_url("setting/useful_link") ?>">
+                            <i class="fa fa-calendar icon-class"></i>
+                            &nbsp;<?php echo 'Useful links' ?>
+                            <?php  if($this->session->menu==1){ ?></br>
+                            <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
+                                <?php echo 'Useful links' ?></p> <?php } ?>
+                        </a>
+                    </li>
 
 
 

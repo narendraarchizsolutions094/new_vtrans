@@ -219,6 +219,7 @@ class Attendance extends CI_Controller {
 						$data['i'] = $i;
 						$data['current_date'] = $rdate;						
 						$data['users_activity'] = $this->attendance_model->myteam_logs($rdate,$user_id,$rdate,'',$region,$user_id);
+						//print_r($data['users_activity']);exit;
 						$visit_activity .= $this->load->view('loginfo/visit_activity',$data,true);
 						$i++;
 					}
@@ -226,6 +227,7 @@ class Attendance extends CI_Controller {
 					$data['is_end'] = date('Y-m-d');
 					$data['current_date'] = $rdate = date('Y-m-d');						
 					$data['users_activity'] = $this->attendance_model->myteam_logs($rdate,$user_id,$rdate,'',$region,$user_id);
+					//print_r($data['users_activity']);exit;
 					$visit_activity .= $this->load->view('loginfo/visit_activity',$data,true);
 				}
 				$data['visit_activity'] = $visit_activity;
