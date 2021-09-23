@@ -351,7 +351,7 @@ foreach($basic_fields as $row)
     </div>
 					  
 	<div class="form-group col-sm-6 col-md-6">
-        <label><?php echo 'Client Name ss'; ?> <i class="text-danger">*</i></label>
+        <label><?php echo 'Client Name'; ?> <i class="text-danger">*</i></label>
         <input class="form-control" value="<?php  echo set_value('client_name');?> " name="client_name" type="text" id="client_name" value="<?php echo $details->client_name; ?>" placeholder="Enter Client Name" required> 
     </div>
 <?php if($data_type!=1){ ?>	
