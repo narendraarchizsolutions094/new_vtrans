@@ -8,6 +8,7 @@ class Dashboard extends CI_Controller {
         $this->load->model(array(
             'dashboard_model',
             'setting_model',
+			'Branch_model',
             'user_model',
       'website/home_model',
       'Institute_model',
@@ -1463,8 +1464,8 @@ if (!empty($enquiry_separation)) {
             );
         }*/
         //echo $this->upload->display_errors();
-       
-        //print_r($imageDetailArray);
+        $imgname = explode('/',$img);
+        $not_update = $imgname[3];
         if ($this->session->user_id == 9) {
             $org = $this->input->post('org_name');
             $designation = '';
@@ -1504,7 +1505,7 @@ if (!empty($enquiry_separation)) {
             'region' => $this->input->post('region', true),
             'territory_name' => $this->input->post('territory', true),
             'add_ress' => $this->input->post('address', true),
-            'picture' => (!empty($img) ? $img : $this->input->post('new_file')),
+            'picture' => (!empty($not_update) ? $img : $this->input->post('new_file')),
             //'report_to' => $this->input->post('report_to', true)
         ];
         if ($this->form_validation->run() === true) {
@@ -1526,6 +1527,13 @@ if (!empty($enquiry_separation)) {
             $data['territory_lsit'] = $this->location_model->territory_lsit();
             $data['user_list'] = $this->user_model->user_list();
             $data['department_list'] = $this->Modules_model->modules_list();
+			
+			$data['emp_region_list']=$this->Branch_model->all_sales_region();
+		    $data['area_lists']=$this->Branch_model->all_sales_area();
+		    $data['branch_lists']=$this->Branch_model->all_sales_branch();
+		    $data['dept_lists']=$this->user_model->all_sales_dept();
+			$data['discount_list']= $this->Branch_model->discount_list();
+		
             $data['user_role'] = $this->db->get('tbl_user_role')->result();
             $data['department'] = $this->user_model->read_by_id($user_id);
             $data['county_list'] = $this->location_model->country();

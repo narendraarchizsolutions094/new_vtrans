@@ -227,13 +227,8 @@
                                 
 
                                 <div class="form-group col-md-4">
-
-                                    <label for="description">Date of birth <i class="text-danger">*</i></label>
-
-                                    <input type="date" class="form-control" name="dob" id="dob" value="<?php echo $department->date_of_birth;?>" required>
-
-                                    
-
+                                    <label for="description">Date of birth </label>
+                                    <input  class="form-control form-date" name="dob" id="dob" value="<?php echo $department->date_of_birth;?>" >                                    
                                 </div>
 
                                 
@@ -257,8 +252,89 @@
                                     <textarea class="custom-form-control" id="address" name="address"><?php echo $department->add_ress;?></textarea>
 
                                 </div>
+								
+<!---------New added form fields start-------------------->
+                                <div class="form-group col-md-4">
+                                    <label for="description">Anniversary </label>
+                                    <input name="anniversary" id="anniversary"   class="form-control form-date"  value="<?php echo $department->anniversary;?>">   
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="dept_name"><?=display('department')?></label> 									
+                                    <select class="form-control" name="dept_name" id="dept_name" disabled>
+									<option value=''>---Select Department----</option>
+                                        <?php  if (!empty($dept_lists)) {
+                                            foreach ($dept_lists as $key => $value) { ?>
+                                                <option value="<?= $value->id;?>" <?php if($value->id == $department->dept_name){ echo "selected";} ?>><?= $value->dept_name;?></option>
+                                            <?php
+                                            }
+                                        } ?>
+                                    </select>
+                                </div>
 
-                                
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="sales_resion"><?="Emp. Region";?></label> 									
+                                    <select class="form-control" name="emp_sales_region" disabled>
+									<option value="">---Select Emp. Region---</option>
+                                        <?php
+                                        if (!empty($emp_region_list)) {
+                                            foreach ($emp_region_list as $key => $value) { ?>
+                                                <option value="<?= $value->region_id;?>" <?php if($value->region_id == $department->sales_region){ echo "selected";} ?>><?= $value->name;?></option>
+                                            <?php
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="sales_area"><?=display('sales_area')?></label> 									
+                                    <select class="form-control" name="sales_area" id="filtered_area" disabled>
+                                    <option value="">---Select Area---</option>
+                                        <?php  if (!empty($area_lists)) {
+                                            foreach ($area_lists as $key => $value) { ?>
+                                                <option value="<?= $value->area_id;?>" <?php if($value->area_id == $department->sales_area){ echo "selected";} ?>><?= $value->area_name;?></option>
+                                            <?php
+                                            }
+                                        } ?>
+                                    </select>
+                                </div>
+								
+								<div class="form-group col-md-4">
+                                    <label class="control-label" for="sales_branch"><?=display('sales_branch')?></label> 									
+                                    <select class="form-control" name="sales_branch" id="filtered_branch" disabled>
+                                    <option value="">---Select Branch---</option>
+                                        <?php  if (!empty($branch_lists)) {
+                                            foreach ($branch_lists as $key => $value) { ?>
+                                                <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $department->sales_branch){ echo "selected";} ?>><?= $value->branch_name;?></option>
+                                            <?php
+                                            }
+                                        } ?>
+                                    </select>
+                                </div>
+								<div class="form-group col-md-4">
+								<label>Report to</label>
+                                    <select class="form-control" name="report_to" disabled>
+                                        <option value="" style="display:none;">---Select---</option>
+                                        <?php foreach($user_list as $user){?>
+                                            <option value="<?= $user->pk_i_admin_id ?>" <?php if($user->pk_i_admin_id==$department->report_to){echo 'selected';}?>><?= $user->s_display_name." ".$user->last_name ?></option>
+                                        <?php } ?>
+                                    </select>
+								</div>
+								<div class="form-group col-md-4">
+                                    <label class="control-label">Grade</label>                  
+                                    <select class="form-control" name="discount_id" disabled>
+									<option value="">---Select Grade---</option>
+                                      <?php
+                                      if(!empty($discount_list))
+                                      {
+                                        foreach ($discount_list as $key => $value) {
+                                         echo'<option value="'.$value->id.'" '.($value->id==$department->discount_id?'selected':'').'>'.$value->name.'</option>';
+                                        }
+                                      }
+                                      ?>
+                                    </select>
+                                </div>
+<!---------New added form fields end-------------------->                                
 
                             </div>
 
