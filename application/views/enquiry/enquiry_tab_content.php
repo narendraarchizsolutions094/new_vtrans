@@ -386,8 +386,11 @@ function clientname() {
 
         success:function(data){
        // alert(data);
-	   if(company!=''){
+	   if(company==''){
 		company = 'NA-';
+	   }
+	   if(data==''){
+		data = 'NA';
 	   }
 		c_name = company+data;
 		  $("#client_name").val(c_name); 
