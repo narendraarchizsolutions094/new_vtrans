@@ -46,6 +46,20 @@ class Message extends CI_Controller {
     	    }
 		}
 		
+		public function get_templates_for_user($for){
+    	    $this->db->where('temp_for',$for);
+    	    $this->db->where('comp_id',$this->session->companey_id);
+    	    $res=$this->db->get('api_templates');
+			$q=$res->result();
+    	    if(!empty($q)){
+    	        echo '<option value="0" selected style="display:none">Select Templates</option>';
+    	    foreach($q as $value){
+					echo '<option value="'.$value->temp_id.'">'.$value->template_name.'</option>';
+					}
+    	    
+    	    }
+		}
+		
 		public function get_templates_without_process($for){			
 			$this->db->where('temp_for',$for);			
     	    $this->db->where('comp_id',$this->session->companey_id);
@@ -619,7 +633,138 @@ class Message extends CI_Controller {
 				}
 			}
     	}
-	}	
+	}
+
+
+public function employee_send_sms(){
+	    	  
+		  $msgType= $this->input->post('mesge_type');
+		  $user_id = $this->session->user_id;
+          if(!empty($this->input->post('user_ids'))){		  
+		  $move_enquiry = explode(',',$this->input->post('user_ids'));
+		  }
+		  $all_user_id = json_encode($move_enquiry);
+		  
+		  $message=$this->input->post('message_name');
+          $email_subject = $this->input->post('email_subject')??'';
+		  
+		  $templates_id	=	$this->input->post('templates');
+		  if(!empty($templates_id)){
+	      	$this->db->where('temp_id',$templates_id);
+			$template_row	=	$this->db->get('api_templates')->row_array();
+			$template_name=$template_row['template_name'];
+		  }else{
+			$template_name = '';
+		  }
+
+        if($this->input->post('mesge_type')== 1){
+
+        	if(!empty($move_enquiry) && is_array($move_enquiry)){
+      	      foreach($move_enquiry as $key){	
+      	        $user_row	=	$this->db->select('s_phoneno')->where('pk_i_admin_id',$key)->get('tbl_admin')->row_array();
+      	        $phone='91'.$user_row['s_phoneno'];
+				  $this->Message_models->sendwhatsapp($phone,$message);
+				}
+				
+				    $data = array(
+                        'user_ids'=>$all_user_id,
+                        'sent_by'=>$this->session->user_id,
+                        'type'=>'1',
+                        'status'=>'1'
+                    );
+
+                    $this->db->insert('tbl_msg_sent_log',$data);
+				
+      	       echo "Whatsapp sent successfully";
+            }
+			
+        }else if($this->input->post('mesge_type')== 3){
+			
+			$temp_id = $this->input->post('templates');
+        	$rows	=	$this->db->select('*')
+                        ->from('api_templates')
+                        ->join('mail_template_attachments', 'mail_template_attachments.templt_id=api_templates.temp_id', 'left')                    
+                        ->where('temp_id',$temp_id)                        
+                        ->get()
+						->row();						
+
+        	$this->db->where('comp_id',$this->session->companey_id);
+        	$this->db->where('status',1);
+        	$email_row	=	$this->db->get('email_integration')->row_array();
+        	if(empty($email_row)){
+  				echo "Email is not configured";
+  				exit();
+        	}else{
+
+
+		        $config['smtp_auth']    = true;
+        		$config['protocol']     = $email_row['protocol'];
+		        $config['smtp_host']    = $email_row['smtp_host'];
+		        $config['smtp_port']    = $email_row['smtp_port'];
+		        $config['smtp_timeout'] = '7';
+		        $config['smtp_user']    = $email_row['smtp_user'];
+		        $config['smtp_pass']    = $email_row['smtp_pass'];
+		        $config['charset']      = 'utf-8';
+        		$config['mailtype']     = 'html'; // or html
+		        $config['newline']      = "\r\n";            
+        	}
+
+            if(!empty($move_enquiry)){
+				
+	            	if(is_array($move_enquiry))
+	            	{						
+	            		foreach($move_enquiry as $key){
+
+			      	        $user_row	=	$this->db->select('s_user_email')->where('pk_i_admin_id',$key)->get('tbl_admin')->row_array();
+      	                    $email = $user_row['s_user_email'];
+			      	       
+					        $this->email->initialize($config);
+					        $this->email->from($email_row['smtp_user']);
+			                $to=$email;
+			                $this->email->to($to);
+			                $this->email->subject($email_subject); 
+			                $this->email->message($message); 
+                            $this->email->send();
+			  			}
+						
+					$data = array(
+                        'user_ids'=>$all_user_id,
+                        'sent_by'=>$this->session->user_id,
+                        'type'=>'3',
+                        'status'=>'1'
+                    );
+
+                    $this->db->insert('tbl_msg_sent_log',$data);
+					echo "Mail sent successfully";
+	            	}
+			}
+        	        
+    	}else if($this->input->post('mesge_type')== 4){
+$this->load->model('Leads_Model');
+$templates_id	=	$this->input->post('templates');
+	      	$this->db->where('temp_id',$templates_id);
+			  $template_row	=	$this->db->get('api_templates')->row_array();
+			  $template_name=$template_row['template_name'];
+			  
+ if(!empty($move_enquiry)){
+    foreach($move_enquiry as $key){
+        $stage_remark = $template_name;
+		$conversation = $message;
+        $comment_id = $this->Leads_Model->add_notifications_for_events('',$key,$stage_remark,$conversation);
+    }
+	$data = array(
+                        'user_ids'=>$all_user_id,
+                        'sent_by'=>$this->session->user_id,
+                        'type'=>'1',
+                        'status'=>'1'
+                    );
+
+                    $this->db->insert('tbl_msg_sent_log',$data);
+	echo "Bell Notification sent successfully";
+ }
+    }
+	}
+	
 public function chat_start(){
    	$message=$this->input->post('message');
    	$phone= '91'.$this->input->post('phone');

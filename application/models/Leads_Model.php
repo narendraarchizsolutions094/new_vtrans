@@ -18,6 +18,26 @@ class Leads_Model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+	
+	public function add_notifications_for_events($enq_id='',$aasign_to_id,$stage_remark,$conversation) {
+        
+         
+        $ld_updt_by = $this->session->user_id;
+
+        $adt = date("d-m-Y"); 
+        $atm = date("h:i:s");       
+        $this->db->set('query_id', $enq_id);        
+        $this->db->set('subject', $stage_remark);
+        $this->db->set('task_remark', $conversation);
+        $this->db->set('create_by', $ld_updt_by);
+        $this->db->set('related_to', $aasign_to_id);
+        $this->db->set('task_date', $adt);
+        $this->db->set('task_time', $atm);
+		$this->db->set('task_type', '4');
+        $this->db->insert('query_response');
+        return $this->db->insert_id();
+    }
+	
     public function get_list_admin($aid) {
         $this->db->select(" * ");
         $this->db->from('allleads');
