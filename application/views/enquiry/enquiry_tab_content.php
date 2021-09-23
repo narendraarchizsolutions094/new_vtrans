@@ -387,7 +387,7 @@ function clientname() {
         success:function(data){
        // alert(data);
 		c_name = company+data;
-		  $("#client_name").val(c_name); 
+		  //$("#client_name").val(c_name); 
           //$("#client_name").value = data;
         }    
     });
