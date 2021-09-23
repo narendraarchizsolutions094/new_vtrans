@@ -386,13 +386,11 @@ function clientname() {
 
         success:function(data){
        // alert(data);
-	   if(company==''){
-		company = 'NA-';
-	   }
-	   if(data==''){
-		data = 'NA';
-	   }
+	   if(company=='' || data==''){
+		c_name = 'NA';
+	   }else{
 		c_name = company+data;
+	   }
 		  $("#client_name").val(c_name); 
           //$("#client_name").value = data;
         }    
