@@ -26,7 +26,7 @@
                    <th>Deals</th>
                    <th>Visits</th>
                    <th>Tickets</th>
-                   <th>Accounts</th>  
+                   <th>Clients</th>  
                  </tr>
              </thead>
              <tbody>
