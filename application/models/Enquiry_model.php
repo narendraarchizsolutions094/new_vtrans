@@ -5132,8 +5132,18 @@ public function insertComInfo($data)
 			$where .=" AND tbl_visit.id=$visit_id";
 			}
 
-        $this->db->select('tbl_visit.*,visit_details2.meeting_status,visit_details2.id as vid,visit_details2.id as vid,CONCAT(tbl_admin.s_display_name, '.', tbl_admin.last_name) as created_by,visit_details2.visit_status,tbl_expense.amount as total_expence,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
-        $this->db->from('tbl_visit');
+        //$this->db->select('tbl_visit.*,visit_details2.meeting_status,visit_details2.id as vid,visit_details2.id as vid,CONCAT(tbl_admin.s_display_name, '.', tbl_admin.last_name) as created_by,visit_details2.visit_status,tbl_expense.amount as total_expence,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,contact.c_name as contact_person');
+//open up select remove below select when apk on play store 
+ $this->db->select('tbl_visit.id,tbl_visit.enquiry_id,tbl_visit.visit_date,tbl_visit.travelled,tbl_visit.travelled_type,
+		tbl_visit.rating,tbl_visit.next_date,tbl_visit.next_time,tbl_visit.next_location,tbl_visit.comp_id,tbl_visit.user_id,
+		tbl_visit.user_rate,tbl_visit.remarks,tbl_visit.created_at,tbl_visit.idealDistance,tbl_visit.actualDistance,
+		tbl_visit.start_location,tbl_visit.end_location,tbl_visit.contact_id,tbl_visit.m_purpose,tbl_visit.start_waypoints,
+		tbl_visit.end_waypoints,tbl_visit.all_waypoints,
+		,visit_details2.meeting_status,visit_details2.id as vid,visit_details2.id as vid,CONCAT(tbl_admin.s_display_name, '.', 
+		tbl_admin.last_name) as created_by,visit_details2.visit_status,tbl_expense.amount as total_expence,enquiry.name,
+		enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,
+		contact.c_name as contact_person');
+		$this->db->from('tbl_visit');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
         $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id','left');

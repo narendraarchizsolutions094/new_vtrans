@@ -152,7 +152,16 @@ $vis_row  = $this->db->get('tbl_visit')->row();
 	//$ttl_exp = $total_expence->amount;
 	//$vst_sts = $visit_status->visit_status;
 	//End
+
+	
    $result[$key]=(array)$value;
+
+//remove below $time 3 line when apk on play store
+  
+   $time = explode(' ',$value->created_at);
+   $time = date("g:i A", strtotime($time[1]));
+   $result[$key]['visit_time']=$time;
+	
    $result[$key]['diff']=$percentChange;
    $result[$key]['status'] = $expstatus;
    // $result[$key]['meeting_status'] = $meeting_status;
@@ -164,7 +173,7 @@ $vis_row  = $this->db->get('tbl_visit')->row();
       $result[$key]['last_visit'] = '';
    }
 } 
-
+	
 if(!empty($result))
 {
    $res= array();
@@ -193,13 +202,26 @@ if(!empty($result))
     public function visit_details_post()
     {
     	$id = $this->input->post('visit_id');
-       $value_d = $this->db->select('enquiry.company,comp.company_name,enquiry.address,tbl_visit.*  ,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
+       //$value_d = $this->db->select('enquiry.company,comp.company_name,enquiry.address,tbl_visit.*  ,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
+//open up select remove below select when apk on play store
+	   $value_d = $this->db->select('enquiry.company,comp.company_name,enquiry.address,
+	    tbl_visit.id,tbl_visit.enquiry_id,tbl_visit.visit_date,tbl_visit.travelled,tbl_visit.travelled_type,
+		tbl_visit.rating,tbl_visit.next_date,tbl_visit.next_time,tbl_visit.next_location,tbl_visit.comp_id,tbl_visit.user_id,
+		tbl_visit.user_rate,tbl_visit.remarks,tbl_visit.created_at,tbl_visit.idealDistance,tbl_visit.actualDistance,
+		tbl_visit.start_location,tbl_visit.end_location,tbl_visit.contact_id,tbl_visit.m_purpose,tbl_visit.start_waypoints,
+		tbl_visit.end_waypoints,tbl_visit.all_waypoints
+	   ,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
        $value_d =     $this->db->where('tbl_visit.id',$id);
        $value_d =      $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
                        $this->db->join('tbl_company comp','enquiry.company=comp.id','left');
 
        $value_d =     $this->db->order_by('created_at','DESC');
        $value_d =       $this->db->get('tbl_visit')->row();
+
+//open up line remove below $time 3 line when apk on play store	   
+	$time = explode(' ',$value_d->created_at);
+    $time = date("g:i A", strtotime($time[1]));
+    $value_d->visit_time=$time;
 
     	$tvalue = $this->db->where('visit_id',$id)->limit('1')->order_by('id','DESC')->get('visit_details')->row();
 		//$tvalue = $this->db->where('visit_id',$id)->order_by('id','DESC')->get('visit_details')->result();
