@@ -60,6 +60,7 @@ class User extends CI_Controller
 	
     public function index()
     {
+		$this->load->model('Ticket_Model');
         if (!empty($_GET['user_role'])) {
             $data['title'] = $this->User_model->get_role_name_by_id($_GET['user_role']) . ' List';
         } else {
@@ -67,6 +68,7 @@ class User extends CI_Controller
         }
         //$data['departments'] = $this->User_model->read2();
         //echo $this->db->last_query();
+		$data['filterData'] = $this->Ticket_Model->get_filterData(1);
         $data['user_role'] = $this->db->get('tbl_user_role')->result();
         $data['content'] = $this->load->view('user', $data, true);
         $this->load->view('layout/main_wrapper', $data);
@@ -86,6 +88,15 @@ class User extends CI_Controller
                 }
             }            
         }
+		
+		$enquiry_filters_sess   =   $this->session->enquiry_filters_sess;
+        $from_created           =   !empty($enquiry_filters_sess['from_created'])?$enquiry_filters_sess['from_created']:'';       
+        $to_created             =   !empty($enquiry_filters_sess['to_created'])?$enquiry_filters_sess['to_created']:'';
+        $email                  =   !empty($enquiry_filters_sess['email'])?$enquiry_filters_sess['email']:'';
+        $employee               =   !empty($enquiry_filters_sess['employee'])?$enquiry_filters_sess['employee']:''; 
+        $phone                  =   !empty($enquiry_filters_sess['phone'])?$enquiry_filters_sess['phone']:'';
+        $status                 =   !empty($enquiry_filters_sess['status'])?$enquiry_filters_sess['status']:'';
+		
         $this->db->select("CONCAT(tadmin.s_display_name, tadmin.last_name) as rep_to,user.valid_upto,user.user_id,tbl_admin.*,tbl_user_role.user_role as user_role_title,sales_region.name as region,sales_area.area_name as area,branch.branch_name as branch,tbl_department.dept_name as department,discount_matrix.name as grade");
         $this->db->from('tbl_admin');
         $this->db->join('user', 'user.user_id = tbl_admin.companey_id');
@@ -102,6 +113,32 @@ class User extends CI_Controller
         if (!empty($_GET['user_role'])) {
             $this->db->where('tbl_admin.user_type', $_GET['user_role']);
         }
+		
+		if(!empty($phone)){
+            $this->db->where('tbl_admin.s_phoneno', $phone);                                  
+        }
+
+        if(!empty($from_created) && !empty($to_created)){
+            $this->db->where('tbl_admin.dt_create_date >=', date('Y-m-d',strtotime($from_created)));
+            $this->db->where('tbl_admin.dt_create_date <=', date('Y-m-d',strtotime($to_created)));                               
+        }
+        
+        if(!empty($email)){
+            $this->db->where('tbl_admin.s_user_email', $email);                                  
+        }
+
+        if(!empty($employee)){
+            $this->db->where('tbl_admin.s_display_name', $employee);                                  
+        }
+
+        if($status == 1){
+            $this->db->where('tbl_admin.b_status', 1);                               
+        }
+
+        if($status == 2){
+            $this->db->where('tbl_admin.b_status', 0);                               
+        }
+		
         $this->db->where('tbl_admin.user_type!=', 1);
         $this->db->where('tbl_admin.companey_id', $this->session->companey_id);
         $this->db->limit($_POST['length'], $_POST['start']);
@@ -176,6 +213,30 @@ class User extends CI_Controller
         }
         if (!empty($_GET['user_role'])) {
             $this->db->where('tbl_admin.user_type', $_GET['user_role']);
+        }
+		if(!empty($phone)){
+            $this->db->where('tbl_admin.s_phoneno', $phone);                                  
+        }
+
+        if(!empty($from_created) && !empty($to_created)){
+            $this->db->where('tbl_admin.dt_create_date >=', date('Y-m-d',strtotime($from_created)));
+            $this->db->where('tbl_admin.dt_create_date <=', date('Y-m-d',strtotime($to_created)));                               
+        }
+        
+        if(!empty($email)){
+            $this->db->where('tbl_admin.s_user_email', $email);                                  
+        }
+
+        if(!empty($employee)){
+            $this->db->where('tbl_admin.s_display_name', $employee);                                  
+        }
+
+        if($status == 1){
+            $this->db->where('tbl_admin.b_status', 1);                               
+        }
+
+        if($status == 2){
+            $this->db->where('tbl_admin.b_status', 0);                               
         }
         $iTotalRecords = $this->db->where('tbl_admin.user_type!=', 1)->where('tbl_admin.companey_id', $this->session->companey_id)->count_all_results('tbl_admin');
         //print_r($res);

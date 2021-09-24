@@ -126,7 +126,8 @@ class Ticket_Model extends CI_Model
 					'cust_problam' =>$value->cust_problam??NULL,
                     'sales_region' =>$value->sales_region??NULL,
                     'sales_area' =>$value->sales_area??NULL,
-                    'sales_branch' =>$value->sales_branch??NULL,															
+                    'sales_branch' =>$value->sales_branch??NULL,
+                    'status' =>$value->status??NULL,						
 					
 			];
 		}else{

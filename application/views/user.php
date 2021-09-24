@@ -31,10 +31,98 @@
               }
               ?>
             </div>                                         
-          </div>  
+          </div>
+
+<div class="btn-group dropdown-filter">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filter by <span class="caret"></span>
+              </button>              
+              <ul class="filter-dropdown-menu dropdown-menu">   
+                    <li>
+                      <label>
+                      <input type="checkbox" value="date" id="datecheckbox" name="filter_checkbox"> Date </label>
+                    </li>  
+                    <li>
+                      <label>
+                      <input type="checkbox" value="emp" id="empcheckbox" name="filter_checkbox"> Name</label>
+                    </li> 
+                             
+                   <li>
+                      <label>
+                      <input type="checkbox" value="email" id="emailcheckbox" name="filter_checkbox"> Email</label>
+                    </li> 
+                    <li>
+                      <label>
+                      <input type="checkbox" value="phone" id="phonecheckbox" name="filter_checkbox"> Phone</label>
+                    </li>
+                    
+                    <li>
+                      <label>                    
+                        <input type="checkbox" value="status" id="statuscheckbox" name="filter_checkbox"> Status
+                      </label>
+                    </li>
+                    
+                    <li class="text-center">
+                      <a href="javascript:void(0)" class="btn btn-sm btn-primary " id='save_advance_filters' title="Save Filters Settings"><i class="fa fa-save"></i></a>
+                    </li>                   
+                </ul>                
+            </div>
         </div>       
       </div>
+	  
+	            <!------ Filter Div ---------->
+<form method="post" id="enq_filter">
+<div class="row" id="filter_pannel" style="margin-top: 15px;">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+               
+                      <div class="form-row">
+                        <div class="form-group col-md-3" id="fromdatefilter">
+                          <label for="from-date"><?php echo display("from_date"); ?></label>
+                          <input   class="form-control form-date" id="from-date" name="from_created" style="padding-top:0px;" value="<?=$filterData['from_created']=='' || $filterData['from_created']=='0000-00-00' ?'':$filterData['from_created'] ?>">
+                        </div>
+                        <div class="form-group col-md-3" id="todatefilter">
+                          <label for="to-date"><?php echo display("to_date"); ?></label>
+                          <input   class="form-control form-date" id="to-date" name="to_created" style="padding-top:0px;" value="<?=$filterData['to_created']=='' || $filterData['from_created']=='0000-00-00'?'':$filterData['from_created'] ?>">
+                        </div> 
+                         
+                        <div class="form-group col-md-3" id="emailfilter">
+                          <label for=""><?php echo display("email"); ?></label>
+                          <input type="text" name="email" class="form-control" value="<?= $filterData['email'] ?>">
+                        </div>
+
+                         <div class="form-group col-md-3" id="empfilter">
+                          <label for=""><?php echo 'Name'; ?></label>
+                          <input type="text" class="form-control chosen-select" name="employee" id="employee" value="<?= $filterData['employee'] ?>">   
+                        </div>
+                      </div>
+
+                    <div class="form-row">                      
+                        <div class="form-group col-md-3" id="phonefilter">
+                          <label for="">Phone</label>
+                         <input type="text" name="phone" class="form-control" value="<?= $filterData['phone'] ?>">                        
+                        </div>
+
+                        <div class="form-group col-md-3" id="statusfilter">
+                          <label for="">Status</label>
+                            <select name="status" id="status" class="form-control">
+                              <option value="">--- Select Status ---</option>
+                              <option value="1" <?= ($filterData['status'] == 1)?'selected':''; ?>>Active</option>
+                              <option value="2" <?= ($filterData['status'] == 2)?'selected':''; ?>>Inactive</option>
+                            </select>                     
+                        </div>
+                        
+                    </div>
+
+                      <div class="form-group col-md-3">
+                        <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
+                      </div>
             </div>
+        </div>
+    </div>   
+</form>
+		  
+        
 
             <div class="panel-body">
                  <form id="inactive_all" method="POST" action="<?= base_url('user/inactive-all') ?>">   
@@ -299,4 +387,217 @@ $('#example').DataTable({
      }                
 });
   });
+</script>
+<script>
+  $(document).ready(function(){
+   $("#save_advance_filters").on('click',function(e){
+    e.preventDefault();
+    var arr = Array();  
+    $("input[name='filter_checkbox']:checked").each(function(){
+      arr.push($(this).val());
+    });        
+    setCookie('enquiry_filter_setting',arr,365);
+    // $('#enq_filter').reset();  
+    // $("#filter_pannel").trigger('reset'); 
+    $(".form-control").val('');  
+    ticket_save_filter();
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Your custom filters saved successfully.',
+      showConfirmButton: false,
+      timer: 1000
+    });
+  });
+
+ 
+
+  var enq_filters  = getCookie('enquiry_filter_setting');
+if (enq_filters=='') {
+    $('#filter_pannel').hide();
+    $('#save_filterbutton').hide();
+
+}else{
+  $('#filter_pannel').show();
+  $('#save_filterbutton').show();
+
+}
+
+if (!enq_filters.includes('date')) {
+  $('#fromdatefilter').hide();
+  $('#todatefilter').hide();
+}else{
+  $("input[value='date']").prop('checked', true);
+}
+
+if (!enq_filters.includes('emp')) {
+  $('#empfilter').hide();
+}else{
+  $("input[value='emp']").prop('checked', true);
+}
+
+if (!enq_filters.includes('phone')) {
+  $('#phonefilter').hide();
+}else{
+  $("input[value='phone']").prop('checked', true);
+}
+
+if (!enq_filters.includes('email')) {
+  $('#emailfilter').hide();
+}else{
+  $("input[value='email']").prop('checked', true);
+}
+
+if (!enq_filters.includes('status')) {
+  $('#statusfilter').hide();
+}else{
+  $('#statusfilter').show();
+  $("input[value='status']").prop('checked', true);
+}
+
+
+$('input[name="filter_checkbox"]').click(function(){  
+  if($('#datecheckbox').is(":checked")||$('#emailcheckbox').is(":checked")||
+  $('#phonecheckbox').is(":checked")||$('#empcheckbox').is(":checked")||$('#statuscheckbox').is(":checked")){ 
+    $('#save_filterbutton').show();
+    $('#filter_pannel').show();          
+  }else{
+    $('#save_filterbutton').hide();
+    $('#filter_pannel').hide();
+  }
+});
+
+$('#buttongroup').hide();
+
+ $('input[name="filter_checkbox"]').click(function(){   
+   
+  
+        if($('#datecheckbox').is(":checked")){
+         $('#fromdatefilter').show();
+         $('#todatefilter').show();
+         $("#buttongroup").show();
+        }
+        else{
+           $('#fromdatefilter').hide();
+           $('#todatefilter').hide();
+           $("#buttongroup").hide();
+        }
+         if($('#empcheckbox').is(":checked")){
+        $('#empfilter').show();
+        $("#buttongroup").show();
+        }
+        else{
+          $('#empfilter').hide();
+          $("#buttongroup").hide();
+        }
+        
+
+        if($('#emailcheckbox').is(":checked")){
+          $('#emailfilter').show();
+        }
+        else{
+          $('#emailfilter').hide();
+        }
+        
+        if($('#phonecheckbox').is(":checked")){
+          $('#phonefilter').show();
+        }
+        else{
+          $('#phonefilter').hide();
+        }
+       
+        if($('#statuscheckbox').is(":checked")){
+          $('#statusfilter').show();
+        }
+        else{
+          $('#statusfilter').hide();
+        }	  
+
+            
+    });
+})
+
+
+set_filter_session();
+      $('#enq_filter').change(function() {
+        set_filter_session();
+      });
+
+      function set_filter_session(){
+          
+          //update_top_filter_counter(); 
+          var form_data = $("#enq_filter").serialize();  
+          console.log(form_data);
+          // alert(form_data);
+  
+            $.ajax({
+            url: '<?=base_url()?>enq/enquiry_set_filters_session',
+            type: 'post',
+            data: form_data,
+            success: function(responseData){
+              $('#example').DataTable().ajax.reload();         
+            if(!$("#active_class").hasClass('hide_countings')){
+              update_top_filter_counter();      
+            }
+            }
+          });
+        }
+
+        function ticket_save_filter(){
+          var form_data = $("#enq_filter").serialize();       
+          // alert(form_data);
+          $.ajax({
+          url: '<?=base_url()?>ticket/ticket_save_filter/1',
+          type: 'post',
+          data: form_data,
+          success: function(responseData){
+            Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'filted data saved',
+            showConfirmButton: false,
+            timer: 500
+          });
+          }
+          });
+        }
+
+
+        $(document).on('click',".top_pill",function(){
+
+var stg_id = $(this).data('stage-id');
+if(!$(this).hasClass('top-active'))
+{
+   $(".top_pill").removeClass('top-active');
+   $(this).addClass('top-active');
+   var form_data = $("#enq_filter").serialize(); 
+     form_data+="&stage="+stg_id;
+     $.ajax({
+       url: '<?=base_url().'user/departments'?>',
+       type: 'post',
+       data: form_data,
+       success: function(responseData){
+         $('#example').DataTable().ajax.reload();   
+        // update_top_filter_counter(); 
+     }
+   });
+   
+}
+else
+{
+   $(".top_pill").removeClass('top-active');
+   var form_data = $("#enq_filter").serialize(); 
+     form_data+="&stage=";
+     $.ajax({
+       url: '<?=base_url().'user/departments'?>',
+       type: 'post',
+       data: form_data,
+       success: function(responseData){
+         $('#example').DataTable().ajax.reload();    
+          //update_top_filter_counter();
+     }
+   });
+}
+$('#example').DataTable().ajax.reload();
+});
 </script>
