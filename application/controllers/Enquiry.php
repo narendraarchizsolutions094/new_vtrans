@@ -3803,7 +3803,12 @@ echo  $details1;
                 }
            
             $sub = array();
-            $time = $res->visit_time=='00:00:00'?null:date("g:i A", strtotime($res->visit_time));
+            //$time = $res->visit_time=='00:00:00'?null:date("g:i A", strtotime($res->visit_time));
+			
+//open up line remove below $time 2 line when apk on play store
+			$time = explode(' ',$res->created_at);
+			$time = $res->visit_time=='00:00:00'?null:date("g:i A", strtotime($time[1]));
+			
             $first = '';
             if($this->session->user_id!=$res->user_id)
             $first = '<input  type="checkbox" name="approve[]" class="checkbox1"  value="'.$res->vids.'"> ';
