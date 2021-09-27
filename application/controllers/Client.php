@@ -2908,6 +2908,18 @@ public function all_update_expense_status()
                 $user_region = $res->region;
                 $sub[] = $user_region??'NA';
             }
+			
+			if($colsall || in_array(2,$cols))//deals
+            {
+                $client_name = $res->client_name;
+                $sub[] = $client_name??'NA';
+            }
+			
+			if($colsall || in_array(2,$cols))//deals
+            {
+                $lead_source = $res->lead_name;
+                $sub[] = $lead_source??'NA';
+            }
 
             if($colsall || in_array(2,$cols))//contacts
             {
@@ -2920,8 +2932,8 @@ public function all_update_expense_status()
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" =>$this->company_datatable_model->countAll(),
-            "recordsFiltered" => $this->company_datatable_model->countFiltered($_POST),
+            "recordsTotal" =>$this->company_datatable_model->userwise_countAll(),
+            "recordsFiltered" => $this->company_datatable_model->userwise_countFiltered($_POST),
             "data" => $data,
         );
         echo json_encode($output);

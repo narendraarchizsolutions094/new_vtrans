@@ -995,10 +995,17 @@ $fdistance=$this->distance_actual($actualurl);
    $data_up=['idealDistance'=>$ideald+$sum,'actualDistance'=>$actiuald+$fdistance];
     $this->db->where('id',$visit_id)->update('tbl_visit',$data_up);
     //fetch user km rate
-    $km_rate = $this->user_model->get_user_meta($user_id,array('km_rate'));
+    /* $km_rate = $this->user_model->get_user_meta($user_id,array('km_rate'));
     if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
       $rate=10;;
-  }
+  } */
+   $user_data = $this->db->get_where('tbl_admin',array('pk_i_admin_id' => $user_id))->row_array();
+   $rate_data = $this->db->get_where('discount_matrix',array('id' => $user_data['discount_id']))->row_array();
+   if(!empty($rate_data)){
+      $rate = $rate_data['rate_km'];
+   }else{
+      $rate = 10;
+   }
  if(!empty($visit_id)){
  //Update rate in visit table
  $this->db->set('user_rate',$rate);

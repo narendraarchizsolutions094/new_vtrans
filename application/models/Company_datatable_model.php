@@ -62,6 +62,16 @@ class Company_datatable_model extends CI_Model{
         $this->db->where($where);
         return $this->db->count_all_results();
     }
+	
+	public function userwise_countAll(){
+
+        $this->db->select('enquiry.enquiry_id');
+        $this->db->from('enquiry')
+                    ->join('tbl_company comp','comp.id=enquiry.company','left')
+                    ->group_by('enquiry.enquiry_id');
+        $this->db->where("enquiry.comp_id",$this->session->companey_id);
+        return $this->db->count_all_results();
+    }
     
     /*
      * Count records based on the filter params
@@ -69,6 +79,12 @@ class Company_datatable_model extends CI_Model{
      */
     public function countFiltered($postData){
         $this->_get_datatables_query($postData);
+        $query = $this->db->count_all_results();
+        return $query;
+    }
+	
+	public function userwise_countFiltered($postData){
+        $this->userwise_get_datatables_query($postData);
         $query = $this->db->count_all_results();
         return $query;
     }
@@ -134,13 +150,14 @@ class Company_datatable_model extends CI_Model{
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
 
 
-        $this->db->select('comp.id,comp.company_name,comp.created_at,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region');
-        $this->db->from('tbl_company comp')
-                    ->join('enquiry','enquiry.company=comp.id','left')
+        $this->db->select('comp.id,comp.company_name,comp.created_at,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region,enquiry.client_name,lead_source.lead_name');
+        $this->db->from('enquiry')
+                    ->join('tbl_company comp','comp.id=enquiry.company','left')
 					->join('tbl_admin','tbl_admin.pk_i_admin_id=enquiry.created_by','left')
 					->join('sales_region','sales_region.region_id=tbl_admin.sales_region','left')
+					->join('lead_source','lead_source.lsid=enquiry.enquiry_source','left')
                     ->where('enquiry.comp_id',$this->session->companey_id)
-                    ->group_by('comp.id');
+                    ->group_by('enquiry.enquiry_id');
 
  
         $i = 0;
