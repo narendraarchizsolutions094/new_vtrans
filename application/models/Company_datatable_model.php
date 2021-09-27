@@ -34,6 +34,16 @@ class Company_datatable_model extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+	
+	public function userwise_getRows($postData){
+
+        $this->userwise_get_datatables_query($postData);
+        if($postData['length'] != -1){
+            $this->db->limit($postData['length'], $postData['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
      
     /*
      * Count all records
@@ -86,6 +96,52 @@ class Company_datatable_model extends CI_Model{
         //echo $where; exit();
         if($where!='')
         $this->db->where($where);
+ 
+        $i = 0;
+        // loop searchable columns 
+        foreach($this->column_search as $item){
+            // if datatable send POST for search
+            if($postData['search']['value']){
+                // first loop
+                if($i===0){
+                    // open bracket
+                    $this->db->group_start();
+                    $this->db->like($item, $postData['search']['value']);
+                }else{
+                    $this->db->or_like($item, $postData['search']['value']);
+                }
+                
+                // last loop
+                if(count($this->column_search) - 1 == $i){
+                    // close bracket
+                    $this->db->group_end();
+                }
+            }
+            $i++;
+        }
+        
+        if(isset($postData['order'])){
+            $this->db->order_by($this->column_order[$postData['order']['0']['column']], $postData['order']['0']['dir']);
+        }else if(isset($this->order)){
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+	
+	public function userwise_get_datatables_query($postData){
+
+
+        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+
+
+        $this->db->select('comp.id,comp.company_name,comp.created_at,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name as region');
+        $this->db->from('tbl_company comp')
+                    ->join('enquiry','enquiry.company=comp.id','left')
+					->join('tbl_admin','tbl_admin.pk_i_admin_id=enquiry.created_by','left')
+					->join('sales_region','sales_region.region_id=tbl_admin.sales_region','left')
+                    ->where('enquiry.comp_id',$this->session->companey_id)
+                    ->group_by('comp.id');
+
  
         $i = 0;
         // loop searchable columns 

@@ -504,6 +504,15 @@ class Client extends CI_Controller {
         $data['content'] = $this->load->view('enquiry/company_list', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
+	
+	public function userwise_company_list()
+    {
+        if(user_role('1060')){}
+        $this->load->model(array('Client_Model','Enquiry_Model'));
+        $data['title'] = 'Userwise company list';
+        $data['content'] = $this->load->view('enquiry/userwise_company_list', $data, true);
+        $this->load->view('layout/main_wrapper', $data);
+    }
 
     public function company_details($id)
     {
@@ -2853,6 +2862,57 @@ public function all_update_expense_status()
             {
                 $accounts = count(explode(',', $res->enq_ids));
                 $sub[] = $accounts??'NA';
+            }
+
+            $data[] =$sub;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" =>$this->company_datatable_model->countAll(),
+            "recordsFiltered" => $this->company_datatable_model->countFiltered($_POST),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+	
+	 public function userwise_company_load_data()
+    {   
+        $this->load->model('company_datatable_model');
+        $result = $this->company_datatable_model->userwise_getRows($_POST);
+ //echo '<pre>'; print_r($result);exit; 
+        $colsall  = true;
+        $cols = array();
+        $data = array();
+        $i=1;
+        foreach ($result as $res)
+        {
+            $sub = array();
+
+            $sub[] = $i++;
+           
+            if($colsall || in_array(2,$cols))
+            {
+
+                $sub[] = '<a href="'.(base_url('client/company_details/'.$res->id)).'">'.$res->company_name.'</a>'??'NA';
+            }
+
+            if($colsall || in_array(2,$cols))//contacts
+            {
+                $create_by = $res->s_display_name.' '.$res->last_name;
+                $sub[] = $create_by??'NA';
+            }
+
+            if($colsall || in_array(2,$cols))//deals
+            {
+                $user_region = $res->region;
+                $sub[] = $user_region??'NA';
+            }
+
+            if($colsall || in_array(2,$cols))//contacts
+            {
+                $create_at = $res->created_at;
+                $sub[] = $create_at??'NA';
             }
 
             $data[] =$sub;
