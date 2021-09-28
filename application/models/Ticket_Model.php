@@ -118,7 +118,9 @@ class Ticket_Model extends CI_Model
 					'enq_product' => $value->enq_product??NULL,
 					'phone' =>$value->phone??NULL,
 					'createdby' =>$value->createdby??NULL,
+					'createdbydept' =>$value->createdbydept??NULL,
 					'assign' =>$value->assign??NULL,
+					'assigntodept' =>$value->assigntodept??NULL,
 					'address' =>$value->address??NULL,
 					'prodcntry' =>$value->prodcntry??NULL,
 					'state' =>$value->state??NULL,
@@ -143,7 +145,9 @@ class Ticket_Model extends CI_Model
 					'priority' =>$value->priority??NULL,
 					'issue' =>$value->issue??NULL,
 					'createdby' =>$value->createdby??NULL,
+					'createdbydept' =>$value->createdbydept??NULL,
 					'assign' =>$value->assign??NULL,
+					'assigntodept' =>$value->assigntodept??NULL,
 					'assign_by' =>$value->assign_by??NULL,
 					'prodcntry' =>$value->prodcntry??NULL,
 					'stage' =>$value->stage??NULL,
@@ -161,9 +165,9 @@ class Ticket_Model extends CI_Model
 	}
 	}else{
 		if($type==1){
-			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','clientname' =>'','department' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
+			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','clientname' =>'','department' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','createdbydept' =>'','assigntodept' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
 		}else{
-			$pdata=[ 'call_type' =>'','client_name' =>'','call_status' =>'','cust_problam' =>'','from_created' =>'','to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
+			$pdata=[ 'call_type' =>'','client_name' =>'','call_status' =>'','cust_problam' =>'','from_created' =>'','to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','createdbydept' =>'','assigntodept' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
 	       }
 	}
 	return $pdata;

@@ -214,7 +214,7 @@ input[name=lead_stages]{
                     </li> 
                     <li>
                       <label>
-                      <input type="checkbox"  value="company" id="companycheckbox" name="filter_checkbox"> Company group name</label>
+                      <input type="checkbox"  value="company" id="companycheckbox" name="filter_checkbox"> Comp group name</label>
                     </li>
                     <li>
                       <label>
@@ -223,10 +223,20 @@ input[name=lead_stages]{
                     <li>
                       <label>
                       <input type="checkbox" value="created_by" id="createdbycheckbox" name="filter_checkbox"> Created By</label>
-                    </li> 
+                    </li>
+
+                    <li>
+                      <label>
+                      <input type="checkbox" value="created_by_dept" id="createdbydeptcheckbox" name="filter_checkbox"> Cr By Department</label>
+                    </li>
+					
                     <li>
                       <label>
                       <input type="checkbox" value="assign_to" id="assigncheckbox" name="filter_checkbox"> Assign To</label>
+                    </li>
+					<li>
+                      <label>
+                      <input type="checkbox" value="assign_to_dept" id="assigntodeptcheckbox" name="filter_checkbox"> As To Department</label>
                     </li>
                     <li>
                       <label>
@@ -611,6 +621,20 @@ display: block;
                               <?php }}?>    
                          </select>                       
                         </div>
+						
+						<div class="form-group col-md-3" id="createdbydeptfilter">
+                          <label for="">Created By Department</label>
+                         <select name="createdbydept" class="form-control"> 
+                          <option value="">Select</option>
+                         <?php 
+                          if (!empty($dept_lists)) {
+                              foreach ($dept_lists as $createdbydept) { ?>
+                              <option value="<?=$createdbydept->id;?>" <?php if($createdbydept->id==$filterData['createdbydept']) {echo 'selected';}?> <?php if(!empty(set_value('createdbydept'))){if (in_array($createdbydept->id,set_value('createdbydept'))) {echo 'selected';}}?> ><?=$createdbydept->dept_name;?>                               
+                              </option>
+                              <?php }}?>    
+                         </select>                       
+                        </div>
+						
                          <div class="form-group col-md-3" id="assignfilter">
                           <label for="">Assign To</label>  
                          <select name="assign" class="form-control"> 
@@ -622,6 +646,20 @@ display: block;
                               <?php }}?>    
                          </select>                          
                         </div>
+						
+						<div class="form-group col-md-3" id="assigntodeptfilter">
+                          <label for="">Assign To Department</label>
+                         <select name="assigntodept" class="form-control"> 
+                          <option value="">Select</option>
+                         <?php 
+                          if (!empty($dept_lists)) {
+                              foreach ($dept_lists as $assigntodepts) { ?>
+                              <option value="<?=$assigntodepts->id;?>" <?php if($assigntodepts->id==$filterData['assigntodept']) {echo 'selected';}?> <?php if(!empty(set_value('assigntodept'))){if (in_array($assigntodepts->id,set_value('assigntodept'))) {echo 'selected';}}?>><?=$assigntodepts->dept_name;?>                               
+                              </option>
+                              <?php }}?>    
+                         </select>                       
+                        </div>
+						
                          <div class="form-group col-md-3" id="addfilter">
                           <label for="">Address</label>
                          <input type="text" name="address" class="form-control" value="<?= $filterData['address'] ?>">                        
@@ -984,9 +1022,15 @@ display: block;
               <?php if ($showall == true or in_array(11, $acolarr)) {  ?>
                   <th ><?php echo display("created_by"); ?></th>
             <?php } ?>
+			<?php if ($showall == true or in_array(31, $acolarr)) {  ?>
+                  <th ><?php echo "Create By Department"; ?></th>
+            <?php } ?>
              <?php if ($showall == true or in_array(12, $acolarr)) {  ?>
                   <th ><?php echo display("assign_to"); ?></th>
                 <?php } ?>
+			<?php if ($showall == true or in_array(32, $acolarr)) {  ?>
+                  <th ><?php echo "Assign to Department"; ?></th>
+            <?php } ?>
              <?php if ($showall == true or in_array(13, $acolarr)) {  ?>
                   <th ><?php echo display("data_source"); ?></th>
             <?php } ?>
@@ -1447,9 +1491,18 @@ display: block;
           
               <label class=""><input type="checkbox" class="choose-col"  value = "11"  <?php echo ($showall == true or in_array(11, $acolarr)) ? "checked" : ""; ?>>     <?php echo display("created_by"); ?></label>  &nbsp;
           </div>
+		  <div class = "col-md-4">  
+          
+              <label class=""><input type="checkbox" class="choose-col"  value = "31"  <?php echo ($showall == true or in_array(31, $acolarr)) ? "checked" : ""; ?>>     <?php echo "create by department"; ?></label>  &nbsp;
+          </div>
           <div class = "col-md-4">  
           
               <label class=""><input type="checkbox" class="choose-col"  value = "12"  <?php echo ($showall == true or in_array(12, $acolarr)) ? "checked" : ""; ?>>     <?php echo display("assign_to"); ?></label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">  
+          
+              <label class=""><input type="checkbox" class="choose-col"  value = "32"  <?php echo ($showall == true or in_array(32, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Assign to department"; ?></label>  &nbsp;
           </div>
           
           <div class = "col-md-4">  
@@ -2386,11 +2439,25 @@ if (!enq_filters.includes('created_by')) {
 }else{
   $("input[value='created_by']").prop('checked', true);
 }
+
+if (!enq_filters.includes('created_by_dept')) {
+  $('#createdbydeptfilter').hide();
+}else{
+  $("input[value='created_by_dept']").prop('checked', true);
+}
+
 if (!enq_filters.includes('assign_to')) {
   $('#assignfilter').hide();
 }else{
   $("input[value='assign_to']").prop('checked', true);
 }
+
+if (!enq_filters.includes('assign_to_dept')) {
+  $('#assigntodeptfilter').hide();
+}else{
+  $("input[value='assign_to_dept']").prop('checked', true);
+}
+
 if (!enq_filters.includes('state')) {
   $('#statefilter').hide();
 }else{
@@ -2498,6 +2565,7 @@ $('input[name="filter_checkbox"]').click(function(){
   $('#phonecheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||$('#addcheckbox').is(":checked")||
   $('#stagecheckbox').is(":checked")||$('#prodcheckbox').is(":checked")||$('#statecheckbox').is(":checked")||
   $('#citycheckbox').is(":checked")||$('#datasrccheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||
+  $('#createdbydeptcheckbox').is(":checked")||$('#assigntodeptcheckbox').is(":checked")||
   $('#proccheckbox').is(":checked") || $('#regioncheckbox').is(":checked") || $('#areacheckbox').is(":checked") ||
   $('#branchcheckbox').is(":checked") || $('#ctypecheckbox').is(":checked") || $('#loadcheckbox').is(":checked") ||
   $('#industriescheckbox').is(":checked") || $('#visit_wisecheckbox').is(":checked") || $('#list_datacheckbox').is(":checked") ||
@@ -2606,11 +2674,23 @@ $('#buttongroup').hide();
         else{
           $('#createdbyfilter').hide();
         }
+		if($('#createdbydeptcheckbox').is(":checked")){
+          $('#createdbydeptfilter').show();
+        }
+        else{
+          $('#createdbydeptfilter').hide();
+        }
         if($('#assigncheckbox').is(":checked")){
           $('#assignfilter').show();
         }
         else{
           $('#assignfilter').hide();
+        }
+		if($('#assigntodeptcheckbox').is(":checked")){
+          $('#assigntodeptfilter').show();
+        }
+        else{
+          $('#assigntodeptfilter').hide();
         }
         if($('#addcheckbox').is(":checked")){
           $('#addfilter').show();

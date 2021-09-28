@@ -285,6 +285,9 @@ class Enq extends CI_Controller
 					$row[] = $a;
 				}
 			}
+			if ($showall == true or in_array(31, $acolarr)) {
+				$row[] = (!empty($each->createbydept)) ? ucwords($each->createbydept) : "NA";
+			}
 			if ($showall == true or in_array(12, $acolarr)) {
 				$a = (!empty($each->assign_to_name)) ? ucwords($each->assign_to_name) : "NA";
 				if ((empty($c1[1]) || $c1[1] == 2) && !in_array($each->aasign_to, $d)) {
@@ -296,6 +299,9 @@ class Enq extends CI_Controller
 				} else {
 					$row[] = $a;
 				}
+			}
+			if ($showall == true or in_array(32, $acolarr)) {
+				$row[] = (!empty($each->assignbydept)) ? ucwords($each->assignbydept) : "NA";
 			}
 			if ($showall == true or in_array(13, $acolarr)) {
 				$row[] = (!empty($each->datasource_name)) ? ucwords($each->datasource_name) : "NA";
