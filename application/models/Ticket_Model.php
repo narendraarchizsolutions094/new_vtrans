@@ -113,6 +113,8 @@ class Ticket_Model extends CI_Model
 					'employee' =>$value->employee??NULL, 
 					'datasource' => $value->datasource??NULL,
 					'company' =>$value->company??NULL,
+					'clientname' =>$value->clientname??NULL,
+					'department' =>$value->department??NULL,
 					'enq_product' => $value->enq_product??NULL,
 					'phone' =>$value->phone??NULL,
 					'createdby' =>$value->createdby??NULL,
@@ -154,11 +156,12 @@ class Ticket_Model extends CI_Model
 					'call_type' =>$value->call_type??NULL,
 					'client_name' =>$value->client_name??NULL,
 					'call_status' =>$value->call_status??NULL,
+					'department' =>$value->department??NULL,
 		];
 	}
 	}else{
 		if($type==1){
-			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
+			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','clientname' =>'','department' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
 		}else{
 			$pdata=[ 'call_type' =>'','client_name' =>'','call_status' =>'','cust_problam' =>'','from_created' =>'','to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
 	       }

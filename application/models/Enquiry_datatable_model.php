@@ -53,6 +53,7 @@ class Enquiry_datatable_model extends CI_Model {
         $employee               =   !empty($enquiry_filters_sess['employee'])?$enquiry_filters_sess['employee']:''; 
         $datasource             =   !empty($enquiry_filters_sess['datasource'])?$enquiry_filters_sess['datasource']:'';
         $company                =   !empty($enquiry_filters_sess['company'])?$enquiry_filters_sess['company']:'';
+		$clientname             =   !empty($enquiry_filters_sess['clientname'])?$enquiry_filters_sess['clientname']:'';
         $enq_product            =   !empty($enquiry_filters_sess['enq_product'])?$enquiry_filters_sess['enq_product']:'';
         $phone                  =   !empty($enquiry_filters_sess['phone'])?$enquiry_filters_sess['phone']:'';
         $createdby              =   !empty($enquiry_filters_sess['createdby'])?$enquiry_filters_sess['createdby']:'';
@@ -266,6 +267,11 @@ class Enquiry_datatable_model extends CI_Model {
             //$where .= " AND enquiry.company =  '".$company."'"; 
               $where .= " AND tbl_company.company_name LIKE  '%$company%'";			
         }
+		
+		if(!empty($clientname)){
+              $where .= " AND enquiry.client_name LIKE  '%$clientname%'";			
+        }
+		
         if(!empty($source)){                       
             $where .= " AND enquiry.enquiry_source =  '".$source."'";                                    
         }

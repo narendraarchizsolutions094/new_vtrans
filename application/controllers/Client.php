@@ -8,7 +8,7 @@ class Client extends CI_Controller {
         $this->load->library('upload');
         $this->lang->load("activitylogmsg","english");;        
         $this->load->model(
-                array('Ticket_Model','Leads_Model','common_model','enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models','Institute_model','Datasource_model','Taskstatus_model','dash_model','Center_model','SubSource_model','Kyc_model','Education_model','SocialProfile_model','Closefemily_model','form_model','report_model','Configuration_Model','Doctor_model','rule_model','message_models')
+                array('Branch_model','Ticket_Model','Leads_Model','common_model','enquiry_model', 'dashboard_model', 'Task_Model', 'User_model', 'location_model', 'Message_models','Institute_model','Datasource_model','Taskstatus_model','dash_model','Center_model','SubSource_model','Kyc_model','Education_model','SocialProfile_model','Closefemily_model','form_model','report_model','Configuration_Model','Doctor_model','rule_model','message_models')
                 );
         if (empty($this->session->user_id)) {
             redirect('login');
@@ -500,6 +500,14 @@ class Client extends CI_Controller {
     {
         if(user_role('1060')){}
         $this->load->model(array('Client_Model','Enquiry_Model'));
+		if($this->session->companey_id == 65 && $this->session->user_right == 215){
+			$data['created_bylist'] = $this->User_model->read(147,false);
+		}else{
+			$data['created_bylist'] = $this->User_model->read();
+		}
+		$data['region_lists']=$this->Branch_model->all_sales_region();
+		$data['dept_lists']=$this->User_model->all_sales_dept();
+		$data['filterData'] = $this->Ticket_Model->get_filterData(1);
         $data['title'] = display('company_list');
         $data['content'] = $this->load->view('enquiry/company_list', $data, true);
         $this->load->view('layout/main_wrapper', $data);
@@ -2832,6 +2840,29 @@ public function all_update_expense_status()
             {
 
                 $sub[] = '<a href="'.(base_url('client/company_details/'.$res->id)).'">'.$res->company_name.'</a>'??'NA';
+            }
+			
+			if($colsall || in_array(2,$cols))//created by
+            {
+                //$empname = $this->db->select('s_display_name,last_name')->from('enquiry')->join('tbl_admin','tbl_admin.pk_i_admin_id=enquiry.created_by','left')->where('enquiry.company',$res->id)->order_by('enquiry.enquiry_id','ASC')->get()->row();
+                $sub[] = $res->s_display_name.' '.$res->last_name??'NA';
+            }
+			
+			if($colsall || in_array(2,$cols))//region
+            {
+                //$empregion = $this->db->select('sales_region.name')->from('enquiry')->join('tbl_admin','tbl_admin.pk_i_admin_id=enquiry.created_by','left')->join('sales_region','sales_region.region_id=tbl_admin.sales_region','left')->where('enquiry.company',$res->id)->order_by('enquiry.enquiry_id','ASC')->get()->row();
+                $sub[] = $res->name??'NA';
+            }
+			
+			if($colsall || in_array(2,$cols))//department
+            {
+                //$empdepartment = $this->db->select('tbl_department.dept_name')->from('enquiry')->join('tbl_admin','tbl_admin.pk_i_admin_id=enquiry.created_by','left')->join('tbl_department','tbl_department.id=tbl_admin.dept_name','left')->where('enquiry.company',$res->id)->order_by('enquiry.enquiry_id','ASC')->get()->row();
+                $sub[] = $res->dept_name??'NA';
+            }
+			
+			if($colsall || in_array(2,$cols))//created by
+            {
+                $sub[] = $res->created_at??'NA';
             }
 
             if($colsall || in_array(2,$cols))//contacts

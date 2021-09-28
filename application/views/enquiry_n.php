@@ -215,7 +215,11 @@ input[name=lead_stages]{
                     <li>
                       <label>
                       <input type="checkbox"  value="company" id="companycheckbox" name="filter_checkbox"> Company group name</label>
-                    </li> 
+                    </li>
+                    <li>
+                      <label>
+                      <input type="checkbox"  value="clientname" id="clientnamecheckbox" name="filter_checkbox"> Client name</label>
+                    </li>					
                     <li>
                       <label>
                       <input type="checkbox" value="created_by" id="createdbycheckbox" name="filter_checkbox"> Created By</label>
@@ -573,6 +577,10 @@ display: block;
                         <div class="form-group col-md-3" id="companyfilter">
                           <label for="">Company group name</label>
                           <input type="text" name="company" class="form-control" id="company" value="<?= $filterData['company'] ?>">
+                        </div>
+						<div class="form-group col-md-3" id="clientnamefilter">
+                          <label for=""><?php echo 'Client name'; ?></label>
+                          <input type="text" name="clientname" id="clientname" class="form-control" value="<?= $filterData['clientname'] ?>">
                         </div>
                         <div class="form-group col-md-3" id="proccessfilter">
                           <label for="enq_product"><?php echo display("proccess"); ?></label>
@@ -2350,6 +2358,12 @@ if (!enq_filters.includes('company')) {
   $("input[value='company']").prop('checked', true);
 }
 
+if (!enq_filters.includes('clientname')) {
+  $('#clientnamefilter').hide();
+}else{
+  $("input[value='clientname']").prop('checked', true);
+}
+
 if (!enq_filters.includes('process')) {
   $('#proccessfilter').hide();
 }else{
@@ -2480,6 +2494,7 @@ if (!enq_filters.includes('industries')) {
 $('input[name="filter_checkbox"]').click(function(){  
   if($('#datecheckbox').is(":checked")||$('#empcheckbox').is(":checked") ||$('#tagcheckbox').is(":checked")|| $('#sourcecheckbox').is(":checked")||
   $('#subsourcecheckbox').is(":checked")||$('#emailcheckbox').is(":checked")||$('#companycheckbox').is(":checked")||
+  $('#clientnamecheckbox').is(":checked")||
   $('#phonecheckbox').is(":checked")||$('#assigncheckbox').is(":checked")||$('#addcheckbox').is(":checked")||
   $('#stagecheckbox').is(":checked")||$('#prodcheckbox').is(":checked")||$('#statecheckbox').is(":checked")||
   $('#citycheckbox').is(":checked")||$('#datasrccheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||
@@ -2566,6 +2581,12 @@ $('#buttongroup').hide();
         }
         else{
           $('#companyfilter').hide();
+        }
+		if($('#clientnamecheckbox').is(":checked")){
+          $('#clientnamefilter').show();
+        }
+        else{
+          $('#clientnamefilter').hide();
         }
         if($('#phonecheckbox').is(":checked")){
           $('#phonefilter').show();

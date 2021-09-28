@@ -7,11 +7,11 @@ class Company_datatable_model extends CI_Model{
   
         $this->table = 'tbl_company';
         // Set orderable column fields
-        $this->column_order = array('','comp.id');
+        $this->column_order = array('','comp.id','tbl_admin.s_display_name','sales_region.name','tbl_department.dept_name');
 
         // Set searchable column fields
 
-        $this->column_search = array('comp.company_name');
+        $this->column_search = array('comp.company_name','tbl_admin.s_display_name','tbl_admin.last_name','sales_region.name','tbl_department.dept_name');
 
         // $this->column_search = array('tck.ticketno','tck.id','tck.category','tck.name','tck.email','tck.product','tck.message','tck.issue','tck.solution','tck.sourse','tck.ticket_stage','tck.review','tck.status','tck.priority','tck.complaint_type','tck.coml_date','tck.last_update','tck.send_date','tck.client','tck.assign_to','tck.company','tck.added_by','enq.phone','enq.gender','prd.country_name');
         
@@ -97,18 +97,43 @@ class Company_datatable_model extends CI_Model{
 
 
         $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
+		
+		$enquiry_filters_sess   =   $this->session->enquiry_filters_sess;
+        $from_created           =   !empty($enquiry_filters_sess['from_created'])?$enquiry_filters_sess['from_created']:'';       
+        $to_created             =   !empty($enquiry_filters_sess['to_created'])?$enquiry_filters_sess['to_created']:'';
+        $createdby                  =   !empty($enquiry_filters_sess['createdby'])?$enquiry_filters_sess['createdby']:'';
+        $sales_region               =   !empty($enquiry_filters_sess['sales_region'])?$enquiry_filters_sess['sales_region']:''; 
+        $department                  =   !empty($enquiry_filters_sess['department'])?$enquiry_filters_sess['department']:'';
 
-
-        $this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids');
+        $this->db->select('comp.*,GROUP_CONCAT(enq.enquiry_id) enq_ids,tbl_admin.s_display_name,tbl_admin.last_name,sales_region.name,tbl_department.dept_name');
         $this->db->from($this->table.' as comp')
                     ->join('enquiry enq','enq.company=comp.id','left')
+					->join('tbl_admin','tbl_admin.pk_i_admin_id=enq.created_by','left')
+					->join('sales_region','sales_region.region_id=tbl_admin.sales_region','left')
+					->join('tbl_department','tbl_department.id=tbl_admin.dept_name','left')
                     ->where('comp.process_id',$this->session->process[0])
                     ->group_by('comp.id');
 
         $where="comp.comp_id=".$this->session->companey_id;
         $where .= " AND ( enq.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';   
-     
+        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+/*****************filters start******************/
+if(!empty($from_created) && !empty($to_created)){
+    $this->db->where('comp.created_at >=', date('Y-m-d',strtotime($from_created)));
+    $this->db->where('comp.created_at <=', date('Y-m-d',strtotime($to_created)));                               
+}
+        
+if(!empty($createdby)){
+    $this->db->where('enq.created_by', $createdby);                                  
+}
+
+if(!empty($sales_region)){
+    $this->db->where('tbl_admin.sales_region', $sales_region);                                  
+}
+if(!empty($department)){
+    $this->db->where('tbl_admin.dept_name', $department);                                  
+}		
+/*****************filters start******************/     
         //echo $where; exit();
         if($where!='')
         $this->db->where($where);
