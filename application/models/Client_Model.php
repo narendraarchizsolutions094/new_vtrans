@@ -287,8 +287,8 @@ class Client_Model extends CI_Model
         $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
         $user_id  = empty($user_id)?$this->session->user_id:$user_id;
 //New		
-		//$ids = array('16313', '16314');
-		$ids = array('40805', '40807');
+		$ids = array('16313000', '16314000');
+		//$ids = array('40805', '40807');
 //End
         $where="comp.comp_id=".$comp_id;
 		$where .= " AND ( enq.created_by = (".$user_id.')';

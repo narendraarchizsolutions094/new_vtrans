@@ -34,14 +34,15 @@ class Enq extends CI_Controller
 	{
 		
 //Create dumy enquery for all branchs
-/*$this->load->model('Branch_model');
+$this->load->model('Branch_model');
 $data['branch_lists']=$this->Branch_model->all_sales_branch();
 foreach($data['branch_lists'] as $branch){
 	$bid = $branch->branch_id;
 	$bname = $branch->branch_name;
 	$aid = $branch->area_id;
 	$rid = $branch->region_id;
-	$clientname = 'VTRANS GROUP '.$branch->branch_name;
+	$clientname = 'VTG '.$branch->branch_name;
+	$contactname = 'VTGC '.$branch->branch_name;
 	$email = 'vtgroup'.$bid.'@vtrans.com';
 	$phone = '0000000000'.$bid;
 	$phone = substr ($phone, -10);
@@ -62,7 +63,7 @@ foreach($data['branch_lists'] as $branch){
 		'phone'=>$phone,
 		'name_prefix'=>'Mr.',
 		'name'=>'VTRANS GROUP',
-		'lastname'=>'VG',
+		'lastname'=>' ',
 		'gender'=>'1',
 		'enquiry_source'=>'131',
 		'status'=>'1',
@@ -93,7 +94,7 @@ foreach($data['branch_lists'] as $branch){
         'comp_id'=>'65',
         'client_id'=>$insert_id,
 		'designation'=>'3',
-		'c_name'=>'VTRANS GROUP',
+		'c_name'=>$contactname,
 		'contact_number'=>$phone,
 		'emailid'=>$email,
 		'other_detail'=>'No Deatails',
@@ -101,7 +102,7 @@ foreach($data['branch_lists'] as $branch){
 		'dumy_contact'=>'1'
     );	
     $this->db->insert('tbl_client_contacts',$datac);
-} */
+} 
 //end
 		//$this->output->enable_profiler(TRUE);
 		if (user_role('60') == true) {
