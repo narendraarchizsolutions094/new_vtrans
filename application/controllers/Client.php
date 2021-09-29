@@ -4116,6 +4116,7 @@ if(is_numeric($b_lastChar)){
     {
         $this->load->model(array('Enquiry_Model'));
         $comp_id  = $this->input->get('comp_id');
+		
 
             $all_reporting_ids  = $this->common_model->get_categories($this->session->user_id);
 
@@ -4130,6 +4131,9 @@ if(is_numeric($b_lastChar)){
             $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
             $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
             $this->db->where($where);
+//New
+			$this->db->or_where('enquiry.company', $comp_id);
+//End			
             $res = $this->db->get();
 
         foreach ($res->result() as $key => $value) 

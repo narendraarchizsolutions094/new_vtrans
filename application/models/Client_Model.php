@@ -286,7 +286,9 @@ class Client_Model extends CI_Model
         $process = !empty($process)?$process:$this->session->process;
         $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
         $user_id  = empty($user_id)?$this->session->user_id:$user_id;
-
+//New		
+		$ids = array('40805', '40807');
+//End
         $where="comp.comp_id=".$comp_id;
 		$where .= " AND ( enq.created_by = (".$user_id.')';
         $where .= " OR enq.aasign_to = (".$user_id.'))';
@@ -295,7 +297,9 @@ class Client_Model extends CI_Model
         $this->db->join('enquiry enq','enq.company=comp.id','left');
         $this->db->group_by('comp.id');
         $this->db->where($where);
-
+//New
+        $this->db->or_where_in('comp.id', $ids);
+//End
         if(is_array($process)){
             $this->db->where_in('comp.process_id',$process);
         }else{ 
