@@ -32,6 +32,77 @@ class Enq extends CI_Controller
 
 	public function index($all = '')
 	{
+		
+//Create dumy enquery for all branchs
+$this->load->model('Branch_model');
+$data['branch_lists']=$this->Branch_model->all_sales_branch();
+foreach($data['branch_lists'] as $branch){
+	$bid = $branch->branch_id;
+	$bname = $branch->branch_name;
+	$aid = $branch->area_id;
+	$rid = $branch->region_id;
+	$clientname = 'VTRANS GROUP '.$branch->branch_name;
+	$email = 'vtgroup'.$bid.'@vtrans.com';
+	$phone = '0000000000'.$bid;
+	$phone = substr ($phone, -10);
+	
+	            $branch = strtoupper($bname);
+                $first = substr("$branch", 0, 4);
+                $dt = date('d');
+                $mt = date('m');
+                $yt = date('y');
+                $second = $dt . '' . $mt . '' . $yt;
+                $third = mt_rand(10000, 99999);
+                $encode = $first . '' . $second . '' . $third;
+	
+	$data = array(
+        'comp_id'=>'65',
+        'Enquery_id'=>$encode,
+		'email'=>$email,
+		'phone'=>$phone,
+		'name_prefix'=>'Mr.',
+		'name'=>'VTRANS GROUP',
+		'lastname'=>'VG',
+		'gender'=>'1',
+		'enquiry_source'=>'131',
+		'status'=>'1',
+		'drop_status'=>'0',
+		'country_id'=>'133',
+		'product_id'=>'141',
+		'created_by'=>'286',
+		'company'=>'16313',
+		'city_id'=>'4303',
+		'state_id'=>'166',
+		'territory_id'=>'1892',
+		'region_id'=>'115',
+		'is_delete'=>'1',
+		'client_name'=>$clientname,
+		'client_type'=>'Pvt. Ltd.',
+		'business_load'=>'FTL',
+		'industries'=>'9',
+		'sales_branch'=>$bid,
+		'sales_region'=>$rid,
+		'sales_area'=>$aid,
+		'designation'=>'3',
+		'dumy_data'=>'1',
+    );	
+    $this->db->insert('enquiry',$data);
+	$insert_id = $this->db->insert_id();
+	
+	$datac = array(
+        'comp_id'=>'65',
+        'client_id'=>$insert_id,
+		'designation'=>'3',
+		'c_name'=>'VTRANS GROUP',
+		'contact_number'=>$phone,
+		'emailid'=>$email,
+		'other_detail'=>'No Deatails',
+		'decision_maker'=>'1',
+		'dumy_contact'=>'1'
+    );	
+    $this->db->insert('tbl_client_contacts',$datac);
+}
+//end
 		//$this->output->enable_profiler(TRUE);
 		if (user_role('60') == true) {
 		}
