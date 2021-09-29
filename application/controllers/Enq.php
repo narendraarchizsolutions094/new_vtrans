@@ -34,7 +34,7 @@ class Enq extends CI_Controller
 	{
 		
 //Create dumy enquery for all branchs
-$this->load->model('Branch_model');
+/* $this->load->model('Branch_model');
 $data['branch_lists']=$this->Branch_model->all_sales_branch();
 foreach($data['branch_lists'] as $branch){
 	$bid = $branch->branch_id;
@@ -102,7 +102,7 @@ foreach($data['branch_lists'] as $branch){
 		'dumy_contact'=>'1'
     );	
     $this->db->insert('tbl_client_contacts',$datac);
-} 
+}  */
 //end
 		//$this->output->enable_profiler(TRUE);
 		if (user_role('60') == true) {
