@@ -450,6 +450,13 @@ class Dashboard extends REST_Controller {
             $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
             $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
             $this->db->where($where);
+//New
+//$ids = array('16313', '16314');//For Local Server
+$ids = array('40805', '40807', '40856');
+if(in_array($comp_id,$ids)){
+			$this->db->or_where('enquiry.company', $comp_id);
+}
+//End
             $res = $this->db->get()->result();
 
             if(!empty($res))
