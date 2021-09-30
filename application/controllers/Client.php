@@ -1944,8 +1944,10 @@ public function view_editable_aggrement()
         //$data['all_enquiry'] = $this->Enquiry_Model->all_enqueries('1,2,3');
 		$data['all_enquiry'] = $this->Enquiry_Model->all_enqueries_clients('1,2,3');
         
-        $data['company_list'] = $this->Client_Model->getCompanyList_visit()->result();
-		//print_r(count($data['company_list']));exit;
+        $data['createby_company'] = $this->Client_Model->getCompanyList_visit()->result();
+		$data['common_company'] = $this->Client_Model->getcommonCompanyList_visit()->result();
+		$data['company_list'] = array_merge($data['createby_company'],$data['common_company']);
+		//echo '<pre>';print_r($data['company_list']);exit;
         $this->load->model('Branch_model');
         $data['region_list']=$this->Branch_model->sales_region_list()->result();
         $data['area_list']=$this->Branch_model->sales_area_list()->result();
@@ -4132,7 +4134,11 @@ if(is_numeric($b_lastChar)){
             $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
             $this->db->where($where);
 //New
+//$ids = array('16313', '16314');
+$ids = array('40805', '40807', '40856');
+if(in_array($comp_id,$ids)){
 			$this->db->or_where('enquiry.company', $comp_id);
+}
 //End			
             $res = $this->db->get();
 

@@ -286,10 +286,7 @@ class Client_Model extends CI_Model
         $process = !empty($process)?$process:$this->session->process;
         $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
         $user_id  = empty($user_id)?$this->session->user_id:$user_id;
-//New		
-		$ids = array('16313000', '16314000');
-		//$ids = array('40805', '40807');
-//End
+
         $where="comp.comp_id=".$comp_id;
 		$where .= " AND ( enq.created_by = (".$user_id.')';
         $where .= " OR enq.aasign_to = (".$user_id.'))';
@@ -298,14 +295,27 @@ class Client_Model extends CI_Model
         $this->db->join('enquiry enq','enq.company=comp.id','left');
         $this->db->group_by('comp.id');
         $this->db->where($where);
-//New
-        $this->db->or_where_in('comp.id', $ids);
-//End
+        $this->db->where('comp.dumy_company!=','1');
         if(is_array($process)){
             $this->db->where_in('comp.process_id',$process);
         }else{ 
             $this->db->where(' comp.process_id IN ('.$process.') ');
 		}
+        $res =  $this->db->get();
+        return $res;
+    }
+	
+	public function getcommonCompanyList_visit()
+    {
+		
+        $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
+        $where="comp.comp_id=".$comp_id;
+		$this->db->select('comp.id,comp.company_name');
+        $this->db->from('tbl_company comp');
+        $this->db->join('enquiry enq','enq.company=comp.id','left');
+        $this->db->group_by('comp.id');
+        $this->db->where($where);
+		$this->db->where('comp.dumy_company','1');
         $res =  $this->db->get();
         return $res;
     }
@@ -327,6 +337,59 @@ class Client_Model extends CI_Model
         }
 		$this->db->select('comp.id,comp.company_name');
         $this->db->from('tbl_company comp')
+		->join('enquiry enq','enq.company=comp.id','left')
+                        ->group_by('comp.id');
+        
+
+        $where="comp.comp_id=".$comp_id;
+		
+		if($user_id!=-1)
+        {
+            if(!empty($user_id))
+            {
+                $where .= " AND ( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+                $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+            }
+        }
+
+        if(!empty($where))
+            $this->db->where($where);
+
+        $this->db->where('comp.dumy_company!=','1');
+        if(is_array($process))
+            $this->db->where_in('comp.process_id',$process);
+        else 
+            $this->db->where(' comp.process_id IN ('.$process.') ');
+
+        if(!empty($id))
+        {
+            $this->db->where('comp.id',$id);
+        }
+		
+		if(!empty($keyword))
+        {
+            $this->db->like('comp.company_name',$keyword);
+        }
+
+        if($action=='count')
+         return  $this->db->count_all_results();
+        if($limit!=-1 and $offset!=-1)
+            $this->db->limit($limit,$offset);
+        
+        $res =  $this->db->get();
+
+        return $res;
+    }
+	
+	public function common_filter_getCompanyList($id =0,$where=array(),$comp_id=0,$user_id=0,$process=0,$keyword=0,$action='data',$limit=-1,$offset=-1,$sort=-1)
+    {
+
+        $process = !empty($process)?$process:$this->session->process;
+        $comp_id = !empty($comp_id)?$comp_id:$this->session->companey_id;
+
+		$this->db->select('comp.id,comp.company_name');
+        $this->db->from('tbl_company comp')
+		->join('enquiry enq','enq.company=comp.id','left')
                         ->group_by('comp.id');
         
 
@@ -335,7 +398,7 @@ class Client_Model extends CI_Model
         if(!empty($where))
             $this->db->where($where);
 
-
+        $this->db->where('comp.dumy_company','1');
         if(is_array($process))
             $this->db->where_in('comp.process_id',$process);
         else 
