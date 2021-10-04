@@ -13,8 +13,8 @@
 						<th>Region</th>
                         <th>Check In Time</th>
                         <th>Check Out Time</th>
-                        <th>Break</th>
-                        <th>Total</th>
+                        <!--<th>Break</th>
+                        <th>Total</th>-->
                         <th>Action</th>
 						<th>Map</th>
                     </tr>
@@ -31,9 +31,9 @@
 								<td><?php echo $user->sale_region;?></td>
                                 <td><?php echo $user->check_in;?></td>                                     
                                 <td><?php echo $user->check_out;?></td>
-                                <td>
+                                <!--<td>
                                     <?php
-                                    $time1 = new DateTime($user->check_in);
+                                    /* $time1 = new DateTime($user->check_in);
                                     $time2 = new DateTime($user->check_out);
                                     $timediff = $time1->diff($time2);
                                     
@@ -43,14 +43,14 @@
                                     
                                     if($user->total){
                                         echo $diff->format('%H:%i:%S');
-                                    }
+                                    } */
                                     ?>
                                 </td>
                                 <td>
                                     <?php                                     
-                                    echo $user->total;
+                                    //echo $user->total;
                                     ?>
-                                </td>
+                                </td>-->
                                 <td><a class="btn btn-primary btn-sm" href="<?=base_url().'attendance/view/'.$user->pk_i_admin_id?>">View</a></td>
 								<td><a href="javascript:void(0)" onclick="get_modal_content(<?=$user->pk_i_admin_id?>)" class="btn btn-sm btn-success"><i class="fa fa-map-marker" aria-hidden="true"></i></a></td>
                             </tr>                                
