@@ -1,3 +1,6 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
 <script src="<?=base_url()?>/assets/summernote/summernote-bs4.min.js"></script>
 <link href="<?=base_url()?>/assets/summernote/summernote-bs4.css" rel="stylesheet" />
 <div class="row">
@@ -55,6 +58,16 @@
                       <label>
                       <input type="checkbox" value="phone" id="phonecheckbox" name="filter_checkbox"> Phone</label>
                     </li>
+					
+					<li>
+                      <label>
+                      <input type="checkbox" value="created_by_dept" id="createdbydeptcheckbox" name="filter_checkbox"> Department</label>
+                    </li>
+					
+					<li>
+                      <label>
+                      <input type="checkbox" value="sales_region" id="regioncheckbox" name="filter_checkbox"> Employee Region</label>
+                    </li>
                     
                     <li>
                       <label>                    
@@ -96,6 +109,31 @@
                           <input type="text" class="form-control chosen-select" name="employee" id="employee" value="<?= $filterData['employee'] ?>">   
                         </div>
                       </div>
+					  
+					  <div class="form-group col-md-3" id="createdbydeptfilter">
+                          <label for="">Department</label>
+                         <select name="createdbydept" class="form-control"> 
+                          <option value="">Select</option>
+                         <?php 
+                          if (!empty($dept_lists)) {
+                              foreach ($dept_lists as $createdbydept) { ?>
+                              <option value="<?=$createdbydept->id;?>" <?php if($createdbydept->id==$filterData['createdbydept']) {echo 'selected';}?> <?php if(!empty(set_value('createdbydept'))){if (in_array($createdbydept->id,set_value('createdbydept'))) {echo 'selected';}}?> ><?=$createdbydept->dept_name;?>                               
+                              </option>
+                              <?php }}?>    
+                         </select>                       
+                        </div>
+					
+					<div class="form-group col-md-3" id="regionfilter">
+                        <label for="">Employee Region</label> 
+                        <select name="sales_region" class="form-control">
+                          <option value="">Select</option>
+                          <?php
+                            foreach ($region_lists as $k=>$v) {  ?>
+                              <option value="<?=$v->region_id;?>" <?php if(!empty($filterData['sales_region']) && $v->region_id==$filterData['sales_region']) {echo 'selected';}?>><?php echo $v->name; ?></option>
+                              <?php }                             
+                              ?>
+                        </select>
+                      </div>
 
                     <div class="form-row">                      
                         <div class="form-group col-md-3" id="phonefilter">
@@ -127,7 +165,7 @@
             <div class="panel-body">
                  <form id="inactive_all" method="POST" action="<?= base_url('user/inactive-all') ?>">   
                    
-                <table class="table table-striped table-bordered" id="example" cellspacing="0" width="100%">
+                <table class="table table-striped table-bordered" id="user_dlist" cellspacing="0" width="100%">
 
                     <thead>
 
@@ -343,7 +381,7 @@ $(document).ready(function(){
 $(document).ready(function() {
 role = "<?=!empty($_GET['user_role'])?'?user_role='.$_GET['user_role']:''?>";
 
-$('#example').DataTable({         
+$('#user_dlist').DataTable({         
     "processing": true,
     "scrollX": true,
     "scrollY": 520,
@@ -448,6 +486,20 @@ if (!enq_filters.includes('email')) {
   $("input[value='email']").prop('checked', true);
 }
 
+if (!enq_filters.includes('created_by_dept')) {
+  $('#createdbydeptfilter').hide();
+}else{
+  $("input[value='created_by_dept']").prop('checked', true);
+}
+
+if (!enq_filters.includes('sales_region')) {
+  $('#regionfilter').hide();
+}else{
+  $('#regionfilter').show();
+
+  $("input[value='sales_region']").prop('checked', true);
+}
+
 if (!enq_filters.includes('status')) {
   $('#statusfilter').hide();
 }else{
@@ -458,6 +510,7 @@ if (!enq_filters.includes('status')) {
 
 $('input[name="filter_checkbox"]').click(function(){  
   if($('#datecheckbox').is(":checked")||$('#emailcheckbox').is(":checked")||
+  $('#createdbydeptcheckbox').is(":checked")|| $('#regioncheckbox').is(":checked") ||
   $('#phonecheckbox').is(":checked")||$('#empcheckbox').is(":checked")||$('#statuscheckbox').is(":checked")){ 
     $('#save_filterbutton').show();
     $('#filter_pannel').show();          
@@ -505,6 +558,20 @@ $('#buttongroup').hide();
         else{
           $('#phonefilter').hide();
         }
+		
+		if($('#createdbydeptcheckbox').is(":checked")){
+          $('#createdbydeptfilter').show();
+        }
+        else{
+          $('#createdbydeptfilter').hide();
+        }
+		
+		if($('#regioncheckbox').is(":checked")){
+          $('#regionfilter').show();
+        }
+        else{
+          $('#regionfilter').hide();
+        }
        
         if($('#statuscheckbox').is(":checked")){
           $('#statusfilter').show();
@@ -527,7 +594,7 @@ set_filter_session();
           
           //update_top_filter_counter(); 
           var form_data = $("#enq_filter").serialize();  
-          console.log(form_data);
+          //console.log(form_data);
           // alert(form_data);
   
             $.ajax({
@@ -535,10 +602,10 @@ set_filter_session();
             type: 'post',
             data: form_data,
             success: function(responseData){
-              $('#example').DataTable().ajax.reload();         
-            if(!$("#active_class").hasClass('hide_countings')){
+              $('#user_dlist').DataTable().ajax.reload();         
+            /* if(!$("#active_class").hasClass('hide_countings')){
               update_top_filter_counter();      
-            }
+            } */
             }
           });
         }
@@ -577,7 +644,7 @@ if(!$(this).hasClass('top-active'))
        type: 'post',
        data: form_data,
        success: function(responseData){
-         $('#example').DataTable().ajax.reload();   
+         $('#user_dlist').DataTable().ajax.reload();   
         // update_top_filter_counter(); 
      }
    });
@@ -593,11 +660,11 @@ else
        type: 'post',
        data: form_data,
        success: function(responseData){
-         $('#example').DataTable().ajax.reload();    
+         $('#user_dlist').DataTable().ajax.reload();    
           //update_top_filter_counter();
      }
    });
 }
-$('#example').DataTable().ajax.reload();
+$('#user_dlist').DataTable().ajax.reload();
 });
 </script>

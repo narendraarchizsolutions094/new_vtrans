@@ -68,7 +68,10 @@ class User extends CI_Controller
         }
         //$data['departments'] = $this->User_model->read2();
         //echo $this->db->last_query();
+		$this->load->model('Branch_model');
 		$data['filterData'] = $this->Ticket_Model->get_filterData(1);
+		$data['dept_lists']=$this->User_model->all_sales_dept();
+		$data['region_lists']=$this->Branch_model->all_sales_region();
         $data['user_role'] = $this->db->get('tbl_user_role')->result();
         $data['content'] = $this->load->view('user', $data, true);
         $this->load->view('layout/main_wrapper', $data);
@@ -96,6 +99,8 @@ class User extends CI_Controller
         $employee               =   !empty($enquiry_filters_sess['employee'])?$enquiry_filters_sess['employee']:''; 
         $phone                  =   !empty($enquiry_filters_sess['phone'])?$enquiry_filters_sess['phone']:'';
         $status                 =   !empty($enquiry_filters_sess['status'])?$enquiry_filters_sess['status']:'';
+		$employee_dept          =   !empty($enquiry_filters_sess['createdbydept'])?$enquiry_filters_sess['createdbydept']:'';
+		$employee_region        =   !empty($enquiry_filters_sess['sales_region'])?$enquiry_filters_sess['sales_region']:'';
 		
         $this->db->select("CONCAT(tadmin.s_display_name, tadmin.last_name) as rep_to,user.valid_upto,user.user_id,tbl_admin.*,tbl_user_role.user_role as user_role_title,sales_region.name as region,sales_area.area_name as area,branch.branch_name as branch,tbl_department.dept_name as department,discount_matrix.name as grade");
         $this->db->from('tbl_admin');
@@ -129,6 +134,14 @@ class User extends CI_Controller
 
         if(!empty($employee)){
             $this->db->where('tbl_admin.s_display_name', $employee);                                  
+        }
+		
+		if(!empty($employee_region)){
+			$this->db->where('tbl_admin.sales_region', $employee_region);                                                
+        }
+		
+		if(!empty($employee_dept)){            
+            $this->db->where('tbl_admin.dept_name', $employee_dept);                                    
         }
 
         if($status == 1){

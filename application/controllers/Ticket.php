@@ -186,6 +186,8 @@ class Ticket extends CI_Controller
 					'city' =>$this->input->post('city'),
 					'stage' =>$this->input->post('stage'),
 					'top_filter' =>$this->input->post('top_filter'),
+					'createdbydept' =>$this->input->post('createdbydept'),
+					'sales_region' =>$this->input->post('sales_region')
 					];
 			$data=[
 				'user_id'=>$user_id,
@@ -213,6 +215,8 @@ class Ticket extends CI_Controller
 				'stage' => $this->input->post('stage'),
 				'sub_stage' => $this->input->post('sub_stage'),
 				'ticket_status' =>$this->input->post('ticket_status'),
+				'createdbydept' =>$this->input->post('createdbydept'),
+				'sales_region' =>$this->input->post('sales_region')
 				];
 		$data=[
 			'user_id'=>$user_id,
@@ -245,6 +249,8 @@ class Ticket extends CI_Controller
 					'city' =>$this->input->post('city'),
 					'stage' =>$this->input->post('stage'),
 					'top_filter' =>$this->input->post('top_filter'),
+					'createdbydept' =>$this->input->post('createdbydept'),
+					'sales_region' =>$this->input->post('sales_region'),
 					];
 			$data=[
 				'user_id'=>$user_id,
@@ -269,6 +275,8 @@ class Ticket extends CI_Controller
 				'stage' => $this->input->post('stage'),
 				'sub_stage' => $this->input->post('sub_stage'),
 				'ticket_status' =>$this->input->post('ticket_status'),
+				'createdbydept' =>$this->input->post('createdbydept'),
+				'sales_region' =>$this->input->post('sales_region')
 				];
 		$data=[
 			'user_id'=>$user_id,
