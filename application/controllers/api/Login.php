@@ -72,7 +72,7 @@ class Login extends REST_Controller {
                     }
 					if(!empty($check_user->row()->sales_branch)){
 					$bdata = $this->db->where(array('branch_id'=>$check_user->row()->sales_branch))->get('branch')->row();
-					$branch_id = $bdata->branch_name;
+					$branch_id = $bdata->branch_name??'';
 					}else{
 					$branch_id = '';	
 					}
