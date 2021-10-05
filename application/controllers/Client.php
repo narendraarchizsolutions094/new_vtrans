@@ -3821,10 +3821,28 @@ if(is_numeric($b_lastChar)){
         $potential_tonnage = $potential_amount = $expected_tonnage = $expected_amount = 0;
         foreach($hook as $link_id => $rate)
         {
+			$booking_branch = $this->input->post('bid['.$link_id.']');
+			
+	    $this->db->select('area_id,region_id');
+        $this->db->from('branch');
+        $this->db->where('branch_id',$booking_branch);
+        $bbrh = $this->db->get()->row();
+		
+			$delivery_branch = $this->input->post('did['.$link_id.']');
+		
+		$this->db->select('area_id,region_id');
+        $this->db->from('branch');
+        $this->db->where('branch_id',$delivery_branch);
+        $dbrh = $this->db->get()->row();
+			
             $data  = array(
                         'deal_id'=>$deal_id,
-                        'booking_branch'=>$this->input->post('bid['.$link_id.']'),
-                        'delivery_branch'=>$this->input->post('did['.$link_id.']'),
+                        'booking_branch'=>$booking_branch,
+						'booking_region'=>$bbrh->region_id??'',
+                        'booking_area'=>$bbrh->area_id??'',
+                        'delivery_branch'=>$delivery_branch,
+						'delivery_region'=>$dbrh->region_id??'',
+                        'delivery_area'=>$bbrh->area_id??'',
                         'rate'=>$this->input->post('rate['.$link_id.']')??'',
                         'discount'=>$this->input->post('discount['.$link_id.']')??'',
 						'final_rate'=>$this->input->post('final_rate['.$link_id.']')??'',
