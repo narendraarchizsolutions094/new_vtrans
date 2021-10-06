@@ -104,6 +104,11 @@ echo '</pre>'; */
 
 foreach($list as $row)
 {
+	$bregion = $row->booking_region??$row->bregion;
+	$barea = $row->booking_area??$row->barea;	
+	$dregion = $row->delivery_region??$row->dregion;
+	$darea = $row->delivery_area??$row->darea;
+	
     echo'<div class="row" style=" margin-bottom: 20px;
     border-bottom: 1px solid #d6d6d6; padding-bottom:20px;">
             <div class="col-lg-6">
@@ -119,7 +124,7 @@ foreach($list as $row)
                             {
                                 foreach ($region_list as $reg)
                                 {
-                                    echo'<option value="'.$reg->region_id.'" '.($row->bregion==$reg->region_id?'selected':'').'>'.$reg->name.'</option>';
+                                    echo'<option value="'.$reg->region_id.'" '.($bregion==$reg->region_id?'selected':'').'>'.$reg->name.'</option>';
                                 }
                                 
                             }
@@ -130,11 +135,11 @@ foreach($list as $row)
                         <label>Area</label>
                         <select class="form-control" name="barea" id="b_area'.$did.'" data-did="'.$did.'"  onchange="load_branch_particular(this)">';
 
-                        $res =	$this->Branch_model->sales_area_list(0,array('sales_area.region_id'=>$row->bregion))->result();
+                        $res =	$this->Branch_model->sales_area_list(0,array('sales_area.region_id'=>$bregion))->result();
 						if(!empty($res))
 						{	echo'<option value="">Select Area</option>';
 							foreach ($res as $key => $value) {
-								echo'<option value="'.$value->area_id.'" '.($value->area_id==$row->barea?'selected':'').'>'.$value->area_name.'</option>';
+								echo'<option value="'.$value->area_id.'" '.($value->area_id==$barea?'selected':'').'>'.$value->area_name.'</option>';
 							}
 						}
 
@@ -155,7 +160,7 @@ foreach($list as $row)
                         }
                         else
                         {
-                        	$res =	$this->Branch_model->branch_list(0,array('branch.area_id'=>$row->barea))->result();
+                        	$res =	$this->Branch_model->branch_list(0,array('branch.area_id'=>$barea))->result();
 							if(!empty($res))
 							{	
 								foreach ($res as $key => $value) {
@@ -180,7 +185,7 @@ foreach($list as $row)
                             {
                                 foreach ($region_list as $reg)
                                 {
-                                    echo'<option value="'.$reg->region_id.'" '.($row->dregion==$reg->region_id?'selected':'').'>'.$reg->name.'</option>';
+                                    echo'<option value="'.$reg->region_id.'" '.($dregion==$reg->region_id?'selected':'').'>'.$reg->name.'</option>';
                                 }
                                 
                             }
@@ -190,11 +195,11 @@ foreach($list as $row)
                     <div class="col-md-6">
                         <label>Area</label>
                         <select id="d_area'.$did.'" data-did="'.$did.'" class="form-control" name="area"  onchange="load_branch_particular(this)">';
-                        $resda =	$this->Branch_model->sales_area_list(0,array('sales_area.region_id'=>$row->dregion))->result();
+                        $resda =	$this->Branch_model->sales_area_list(0,array('sales_area.region_id'=>$dregion))->result();
 						if(!empty($resda))
 						{	echo'<option value="">Select Area</option>';
 							foreach ($resda as $key => $value) {
-								echo'<option value="'.$value->area_id.'" '.($value->area_id==$row->darea?'selected':'').'>'.$value->area_name.'</option>';
+								echo'<option value="'.$value->area_id.'" '.($value->area_id==$darea?'selected':'').'>'.$value->area_name.'</option>';
 							}
 						}
                        echo '</select>
@@ -207,7 +212,7 @@ foreach($list as $row)
 							$all[] = $val->branch_id;
 						}
 
-						$resbd =	$this->Branch_model->branch_list(0,"branch.area_id = (".$row->darea.")")->result();
+						$resbd =	$this->Branch_model->branch_list(0,"branch.area_id = (".$darea.")")->result();
 
 							if(!empty($resbd))
 							{	

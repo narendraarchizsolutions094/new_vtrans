@@ -295,11 +295,28 @@ class Enquiry extends CI_Controller
                         'status' => 3,
                         'phone' => $res->phone
                     );
-
                     if (!empty($postData)) {
                         $this->enquiry_model->update_tbleqry2($res->enquiry_id);
                         $this->db->insert('enquiry', $postData);
                         $lid = $this->db->insert_id();
+    //Create contact code
+        $designation = $res->designation;
+        $this->db->select('desi_name');
+        $this->db->where('id', $designation);
+        $res_des = $this->db->get('tbl_designation')->row();		
+		$data2 = array(
+            'comp_id'=>$c_id->companey_id??'',
+            'client_id' =>$lid??'',
+            'c_name' => $res->name??'',
+            'emailid' => $res->email??'',
+            'contact_number' => $res->phone??'',
+            'designation' => $res_des->desi_name??'',
+            'other_detail' =>'CSV Upload',
+            'decision_maker' => 1,
+        );
+        
+        $this->db->insert('tbl_client_contacts', $data2);						
+	//End	
                         $this->enquiry_model->update_tblextra($lid, $res->enquiry_id, $encode);
                         $this->db->insert('tbl_comment', $commentData);
                     }
