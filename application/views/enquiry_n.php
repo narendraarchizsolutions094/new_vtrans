@@ -179,7 +179,7 @@ input[name=lead_stages]{
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Filter by <span class="caret"></span>
               </button>              
-              <ul class="filter-dropdown-menu dropdown-menu">   
+              <ul class="filter-dropdown-menu dropdown-menu" style="overflow-y:auto;height:500px;">   
                     <li>
                       <label>
                       <input type="checkbox" value="date" id="datecheckbox" name="filter_checkbox"> Date </label>
@@ -196,7 +196,7 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="subsource" id="subsourcecheckbox" name="filter_checkbox"> Sub Source</label>
                     </li>                
-                   <li>
+                    <li>
                       <label>
                       <input type="checkbox" value="email" id="emailcheckbox" name="filter_checkbox"> Email</label>
                     </li> 
@@ -292,6 +292,20 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="sales_branch" id="branchcheckbox" name="filter_checkbox"> Sales Branch</label>
                     </li>
+					
+					<li>
+                      <label>
+                      <input type="checkbox" value="emp_region" id="empregioncheckbox" name="filter_checkbox"> Employee Region</label>
+                    </li>
+					<li>
+                      <label>
+                      <input type="checkbox" value="emp_area" id="empareacheckbox" name="filter_checkbox"> Employee Area</label>
+                    </li>
+					<li>
+                      <label>
+                      <input type="checkbox" value="emp_branch" id="empbranchcheckbox" name="filter_checkbox"> Employee Branch</label>
+                    </li>					
+					
 					<li>
                       <label>
                       <input type="checkbox" value="client_type" id="ctypecheckbox" name="filter_checkbox"> Client Type</label>
@@ -378,7 +392,9 @@ input[name=lead_stages]{
               <?php if(user_access(221)) { if(!empty($this->session->telephony_token)){ ?>
                 <a class="btn "  onclick="autoDial()" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo display('bulk_autodial'); ?></a> 
               <?php } } ?>
-              <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo display('table_config'); ?></a>      
+              <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo display('table_config'); ?></a>
+              
+        <!--<a class="btn"  onclick="export_csv()" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo 'Export All'; ?></a>-->			  
               
               <?php if(user_access('A61')) { ?>
                 <a class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;" href="<?=base_url().'lead/datasourcelist'?>"><?php echo display('datasource_management'); ?></a>      
@@ -798,6 +814,42 @@ display: block;
                         </select>
                       </div>
 					  
+					  <div class="form-group col-md-3" id="empregionfilter">
+                        <label for="">Employee Region</label> 
+                        <select name="emp_region" class="form-control">
+                          <option value="">Select</option>
+                          <?php
+                            foreach ($region_lists as $k=>$v) {  ?>
+                              <option value="<?=$v->region_id;?>" <?php if(!empty($filterData['emp_region']) && $v->region_id==$filterData['emp_region']) {echo 'selected';}?>><?php echo $v->name; ?></option>
+                              <?php }                             
+                              ?>
+                        </select>
+                      </div>
+					  
+					  <div class="form-group col-md-3" id="empareafilter">
+                        <label for="">Employee Area</label> 
+                        <select name="emp_area" class="form-control" id="filter_area">
+                          <option value="">Select</option>
+                          <?php
+                            foreach ($area_lists as $k=>$v) {  ?>
+                              <option value="<?=$v->area_id;?>" <?php if(!empty($filterData['emp_area']) && $v->area_id==$filterData['emp_area']) {echo 'selected';}?>><?php echo $v->area_name; ?></option>
+                              <?php }                             
+                              ?>
+                        </select>
+                      </div>
+					  
+					  <div class="form-group col-md-3" id="empbranchfilter">
+                        <label for="">Employee Branch</label> 
+                        <select name="emp_branch" class="form-control" id="filter_branch">
+                          <option value="">Select</option>
+                          <?php
+                            foreach ($branch_lists as $k=>$v) {  ?>
+                              <option value="<?=$v->branch_id;?>" <?php if(!empty($filterData['emp_branch']) && $v->branch_id==$filterData['emp_branch']) {echo 'selected';}?>><?php echo $v->branch_name; ?></option>
+                              <?php }                             
+                              ?>
+                        </select>
+                      </div>
+					  
 					  <div class="form-group col-md-3" id="ctypefilter">
  						<label for="">Client Type</label>
                         <select class="form-control" name="client_type">
@@ -1048,7 +1100,32 @@ display: block;
 
                <?php if ($showall == true or in_array(19, $acolarr)) {  ?>
                   <th>Remark</th>
-             <?php } ?> 
+             <?php } ?>
+
+            <?php if ($showall == true or in_array(33, $acolarr)) {  ?>
+                  <th ><?php echo "Employee Region"; ?></th>
+            <?php } ?>
+              
+            <?php if ($showall == true or in_array(34, $acolarr)) {  ?>
+                  <th ><?php echo "Employee Area"; ?></th>
+            <?php } ?>
+			
+			<?php if ($showall == true or in_array(35, $acolarr)) {  ?>
+                  <th ><?php echo "Employee Branch"; ?></th>
+            <?php } ?>
+			
+			<?php if ($showall == true or in_array(36, $acolarr)) {  ?>
+                  <th ><?php echo "Sales Region"; ?></th>
+            <?php } ?>
+              
+            <?php if ($showall == true or in_array(37, $acolarr)) {  ?>
+                  <th ><?php echo "Sales Area"; ?></th>
+            <?php } ?>
+			
+			<?php if ($showall == true or in_array(38, $acolarr)) {  ?>
+                  <th ><?php echo "Sales Branch"; ?></th>
+            <?php } ?>
+			
              <?php if ($showall == true or in_array(20, $acolarr)) {  ?>
                   <th>No Of Visit</th>
              <?php } ?> 
@@ -1521,6 +1598,31 @@ display: block;
           <div class = "col-md-4">  
             <label class=""><input type="checkbox" class="choose-col"  value = "19"  <?php echo ($showall == true or in_array(19, $acolarr)) ? "checked" : ""; ?>>  Remark</label>  &nbsp;
           </div>
+		  
+		  <div class = "col-md-4">         
+              <label class=""><input type="checkbox" class="choose-col"  value = "33"  <?php echo ($showall == true or in_array(33, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Employee region"; ?></label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">         
+              <label class=""><input type="checkbox" class="choose-col"  value = "34"  <?php echo ($showall == true or in_array(34, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Employee Area"; ?></label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">         
+              <label class=""><input type="checkbox" class="choose-col"  value = "35"  <?php echo ($showall == true or in_array(35, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Employee Branch"; ?></label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">         
+              <label class=""><input type="checkbox" class="choose-col"  value = "36"  <?php echo ($showall == true or in_array(36, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Sales region"; ?></label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">         
+              <label class=""><input type="checkbox" class="choose-col"  value = "37"  <?php echo ($showall == true or in_array(37, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Sales Area"; ?></label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">         
+              <label class=""><input type="checkbox" class="choose-col"  value = "38"  <?php echo ($showall == true or in_array(38, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Sales Branch"; ?></label>  &nbsp;
+          </div>
+		  
           <div class = "col-md-4">  
             <label class=""><input type="checkbox" class="choose-col"  value = "20"  <?php echo ($showall == true or in_array(20, $acolarr)) ? "checked" : ""; ?>>  No Of Visit</label>  &nbsp;
           </div>
@@ -2079,6 +2181,17 @@ function autoDial(){
   }
 }
 
+function export_csv()
+{
+    $.ajax({
+      type: "POST",
+      url: "<?=base_url();?>enq/export_enq_all",        
+      success: function(data){  
+        alert('hi');
+      } 
+	}); 
+}
+
 function assign_enquiry(){
   if($('.checkbox1:checked').size() > 1000){
     alert('You can not assign more than 1000 <?=display('enquiry')?> at once');
@@ -2534,6 +2647,30 @@ if (!enq_filters.includes('sales_branch')) {
   $("input[value='sales_branch']").prop('checked', true);
 }
 
+if (!enq_filters.includes('emp_region')) {
+  $('#empregionfilter').hide();
+}else{
+  $('#empregionfilter').show();
+
+  $("input[value='emp_region']").prop('checked', true);
+}
+
+if (!enq_filters.includes('emp_area')) {
+  $('#empareafilter').hide();
+}else{
+  $('#empareafilter').show();
+
+  $("input[value='emp_area']").prop('checked', true);
+}
+
+if (!enq_filters.includes('emp_branch')) {
+  $('#empbranchfilter').hide();
+}else{
+  $('#empbranchfilter').show();
+
+  $("input[value='emp_branch']").prop('checked', true);
+}
+
 if (!enq_filters.includes('client_type')) {
   $('#ctypefilter').hide();
 }else{
@@ -2567,6 +2704,7 @@ $('input[name="filter_checkbox"]').click(function(){
   $('#citycheckbox').is(":checked")||$('#datasrccheckbox').is(":checked")||$('#createdbycheckbox').is(":checked")||
   $('#createdbydeptcheckbox').is(":checked")||$('#assigntodeptcheckbox').is(":checked")||
   $('#proccheckbox').is(":checked") || $('#regioncheckbox').is(":checked") || $('#areacheckbox').is(":checked") ||
+  $('#empregioncheckbox').is(":checked") || $('#empareacheckbox').is(":checked") || $('#empbranchcheckbox').is(":checked") ||
   $('#branchcheckbox').is(":checked") || $('#ctypecheckbox').is(":checked") || $('#loadcheckbox').is(":checked") ||
   $('#industriescheckbox').is(":checked") || $('#visit_wisecheckbox').is(":checked") || $('#list_datacheckbox').is(":checked") ||
   $('#agingRulecheckbox').is(":checked")){ 
@@ -2760,6 +2898,27 @@ if($('#branchcheckbox').is(":checked")){
       }
       else{
        $('#branchfilter').hide();
+      }
+	  
+if($('#empregioncheckbox').is(":checked")){
+        $('#empregionfilter').show();
+      }
+      else{
+       $('#empregionfilter').hide();
+      }	
+
+if($('#empareacheckbox').is(":checked")){
+        $('#empareafilter').show();
+      }
+      else{
+       $('#empareafilter').hide();
+      }
+
+if($('#empbranchcheckbox').is(":checked")){
+        $('#empbranchfilter').show();
+      }
+      else{
+       $('#empbranchfilter').hide();
       }
 
 if($('#ctypecheckbox').is(":checked")){

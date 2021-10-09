@@ -402,6 +402,41 @@ foreach($data['branch_lists'] as $branch){
 			if ($showall == true or in_array(19, $acolarr)) {
 				$row[] = (!empty($each->enquiry)) ? $each->enquiry : "NA";
 			}
+			if ($showall == true or in_array(33, $acolarr)) {
+				$empreg = $this->db->select('name')->get_where('sales_region', array('region_id' => $each->as_region))->row();
+				if(empty($empreg->name)){
+				$empreg = $this->db->select('name')->get_where('sales_region', array('region_id' => $each->cr_region))->row();	
+				}				
+				$row[] = (!empty($empreg->name)) ? $empreg->name : "NA";
+			}
+			if ($showall == true or in_array(34, $acolarr)) {
+				$empara = $this->db->select('area_name')->get_where('sales_area', array('area_id' => $each->as_area))->row();
+				if(empty($empara->area_name)){
+				$empara = $this->db->select('area_name')->get_where('sales_area', array('area_id' => $each->cr_area))->row();	
+				}
+				$row[] = (!empty($empara->area_name)) ? $empara->area_name : "NA";
+			}
+			if ($showall == true or in_array(35, $acolarr)) {
+				$empbrh = $this->db->select('branch_name')->get_where('branch', array('branch_id' => $each->as_branch))->row();
+				if(empty($empbrh->branch_name)){
+				$empbrh = $this->db->select('branch_name')->get_where('branch', array('branch_id' => $each->cr_branch))->row();	
+				}
+				$row[] = (!empty($empbrh->branch_name)) ? $empbrh->branch_name : "NA";
+			}
+			
+			if ($showall == true or in_array(36, $acolarr)) {
+				$slreg = $this->db->select('name')->get_where('sales_region', array('region_id' => $each->sl_region))->row();				
+				$row[] = (!empty($slreg->name)) ? $slreg->name : "NA";
+			}
+			if ($showall == true or in_array(37, $acolarr)) {
+				$slara = $this->db->select('area_name')->get_where('sales_area', array('area_id' => $each->sl_area))->row();
+				$row[] = (!empty($slara->area_name)) ? $slara->area_name : "NA";
+			}
+			if ($showall == true or in_array(38, $acolarr)) {
+				$slbrh = $this->db->select('branch_name')->get_where('branch', array('branch_id' => $each->sl_branch))->row();
+				$row[] = (!empty($slbrh->branch_name)) ? $slbrh->branch_name : "NA";
+			}
+			
 			if ($showall == true or in_array(20, $acolarr)) {
 				$row[] = (!empty($each->visit_count)) ? $each->visit_count : "NA";
 			}
@@ -896,4 +931,29 @@ foreach($data['branch_lists'] as $branch){
 
 
 	}
+	
+function export_enq_all(){
+		
+$result = mysql_query('SELECT * FROM `cronjobs`');
+if (!$result) die('Couldn\'t fetch records');
+$num_fields = mysql_num_fields($result);
+$headers = array();
+for ($i = 0; $i < $num_fields; $i++) {
+    $headers[] = mysql_field_name($result , $i);
+}
+$fp = fopen('php://output', 'w');
+if ($fp && $result) {
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="export.csv"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+    fputcsv($fp, $headers);
+    while ($row = $result->fetch_array(MYSQLI_NUM)) {
+        fputcsv($fp, array_values($row));
+    }
+    die;
+}
+		
+}
+	
 }

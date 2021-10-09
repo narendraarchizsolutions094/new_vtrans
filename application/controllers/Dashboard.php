@@ -500,8 +500,7 @@ $this->load->library('zip');
         }
         
         if ($this->form_validation->run() === true) {
-            $check_user = $this->dashboard_model->check_user($postData);                       
-           
+            $check_user = $this->dashboard_model->check_user($postData);     
             
             $active = 1;
             $validity_msg="";
@@ -510,6 +509,7 @@ $this->load->library('zip');
             //     $active = 0;
             // }
             $user_data = $check_user->row();
+	//print_r($user_data);exit;
             if ($check_user->num_rows() === 1 AND $active==1) {
                 //check validity of account and account type 
               if($user_data->companey_id==0){

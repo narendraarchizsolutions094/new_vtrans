@@ -180,9 +180,9 @@
 							<th>Report To</th>
                             <th>Email</th>
                             <th><?php echo display('mobile') ?></th>
-							<th>Sales Region</th>
-							<th>Sale Area</th>
-							<th>Sales Branch</th>
+							<th>Employee Region</th>
+							<th>Employee Area</th>
+							<th>Employee Branch</th>
 							<th>Grade</th>
 							<th>Department</th>
                             <th><?php echo display("proccess"); ?></th>
