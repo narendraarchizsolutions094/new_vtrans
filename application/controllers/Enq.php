@@ -958,12 +958,12 @@ assign_dept.dept_name as assignbydept,
 tbl_datasource.datasource_name,
 lead_score.score_name,
 enquiry.enquiry,
-tbl_admin2.sales_region as as_region,
-tbl_admin2.sales_area as as_area,
-tbl_admin2.sales_branch as as_branch,
-enquiry.sales_region as sl_region,
-enquiry.sales_area as sl_area,
-enquiry.sales_branch as sl_branch,
+sales_region.name as as_region,
+sales_area.area_name as as_area,
+branch.branch_name as as_branch,
+enq_sales_region.name as sl_region,
+enq_sales_area.area_name as sl_area,
+enq_branch.branch_name as sl_branch,
 visit_tbl.visit_count,
 enquiry.Enquery_id,
 tbl_subsource.subsource_name,
@@ -991,7 +991,14 @@ extra_dept6.enq_pin
 	$this->db->join('tbl_subsource','tbl_subsource.subsource_id = enquiry.sub_source','left');
 	$this->db->join('(select count(tbl_visit.enquiry_id) as visit_count,tbl_visit.enquiry_id from tbl_visit group by tbl_visit.enquiry_id) as visit_tbl','visit_tbl.enquiry_id=enquiry.enquiry_id','left');
 	
+	$this->db->join('sales_region','sales_region.region_id = tbl_admin2.sales_region','left');
+	$this->db->join('sales_area','sales_area.area_id = tbl_admin2.sales_area','left');
+	$this->db->join('branch','branch.branch_id = tbl_admin2.sales_branch','left');
 	
+	$this->db->join('sales_region as enq_sales_region','enq_sales_region.region_id = enquiry.sales_region','left');
+	$this->db->join('sales_area as enq_sales_area','enq_sales_area.area_id = enquiry.sales_area','left');
+	$this->db->join('branch as enq_branch','enq_branch.branch_id = enquiry.sales_branch','left');
+		
 	$this->db->join('(select fvalue as enq_dept,input,enq_no from extra_enquery where input=4452  group by extra_enquery.enq_no) as extra_dept','extra_dept.enq_no=enquiry.Enquery_id','left');
 	$this->db->join('(select fvalue as enq_ccode,input,enq_no from extra_enquery where input=4453  group by extra_enquery.enq_no) as extra_dept1','extra_dept1.enq_no=enquiry.Enquery_id','left');
 	$this->db->join('(select fvalue as enq_std,input,enq_no from extra_enquery where input=4454  group by extra_enquery.enq_no) as extra_dept2','extra_dept2.enq_no=enquiry.Enquery_id','left');
