@@ -393,9 +393,9 @@ input[name=lead_stages]{
                 <a class="btn "  onclick="autoDial()" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo display('bulk_autodial'); ?></a> 
               <?php } } ?>
               <a class="btn" data-toggle="modal" data-target="#table-col-conf" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo display('table_config'); ?></a>
-              
-        <!--<a class="btn"  onclick="export_csv()" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo 'Export All'; ?></a>-->			  
-              
+ <?php if(user_access('allexp')) { ?>             
+<a class="btn"  href="<?php echo base_url('enq/export_enq_all'); ?>" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;"><?php echo 'Export All'; ?></a>		
+ <?php } ?>             
               <?php if(user_access('A61')) { ?>
                 <a class="btn" style="color:#000;cursor:pointer;border-radius: 2px;border-bottom: 1px solid #fff;" href="<?=base_url().'lead/datasourcelist'?>"><?php echo display('datasource_management'); ?></a>      
             <?php
@@ -2179,17 +2179,6 @@ function autoDial(){
             );       
     }});
   }
-}
-
-function export_csv()
-{
-    $.ajax({
-      type: "POST",
-      url: "<?=base_url();?>enq/export_enq_all",        
-      success: function(data){  
-        alert('hi');
-      } 
-	}); 
 }
 
 function assign_enquiry(){

@@ -934,25 +934,89 @@ foreach($data['branch_lists'] as $branch){
 	
 function export_enq_all(){
 		
-$result = mysql_query('SELECT * FROM `cronjobs`');
-if (!$result) die('Couldn\'t fetch records');
-$num_fields = mysql_num_fields($result);
-$headers = array();
-for ($i = 0; $i < $num_fields; $i++) {
-    $headers[] = mysql_field_name($result , $i);
-}
-$fp = fopen('php://output', 'w');
-if ($fp && $result) {
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="export.csv"');
-    header('Pragma: no-cache');
-    header('Expires: 0');
-    fputcsv($fp, $headers);
-    while ($row = $result->fetch_array(MYSQLI_NUM)) {
-        fputcsv($fp, array_values($row));
-    }
-    die;
-}
+$file_name = 'all_client_'.date('Ymd').'.csv'; 
+     header("Content-Description: File Transfer"); 
+     header("Content-Disposition: attachment; filename=$file_name"); 
+     header("Content-Type: application/csv;");
+   
+     // get data
+$select = "
+lead_source.lead_name,
+tbl_company.company_name,
+enquiry.client_name,
+CONCAT(enquiry.name,' ',enquiry.lastname) as enname,
+enquiry.email,
+enquiry.phone,
+enquiry.address,
+tbl_product.product_name as product_name,
+lead_stage.lead_stage_name,
+enquiry.created_date,
+CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,
+create_dept.dept_name as createbydept,
+CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name,
+assign_dept.dept_name as assignbydept,
+tbl_datasource.datasource_name,
+lead_score.score_name,
+enquiry.enquiry,
+tbl_admin2.sales_region as as_region,
+tbl_admin2.sales_area as as_area,
+tbl_admin2.sales_branch as as_branch,
+enquiry.sales_region as sl_region,
+enquiry.sales_area as sl_area,
+enquiry.sales_branch as sl_branch,
+visit_tbl.visit_count,
+enquiry.Enquery_id,
+tbl_subsource.subsource_name,
+extra_dept.enq_dept,
+extra_dept1.enq_ccode,
+extra_dept2.enq_std,
+extra_dept3.enq_competitor,
+extra_dept4.enq_sensitive,
+extra_dept5.enq_web,
+extra_dept6.enq_pin
+";
+
+    $this->db->select($select);
+	$this->db->from('enquiry');        
+    $this->db->join('lead_source','enquiry.enquiry_source = lead_source.lsid','left');
+	$this->db->join('tbl_company','tbl_company.id=enquiry.company','left');	
+    $this->db->join('tbl_product','enquiry.product_id = tbl_product.sb_id','left');	
+    $this->db->join('lead_stage','lead_stage.stg_id = enquiry.lead_stage','left');
+	$this->db->join('tbl_admin as tbl_admin', 'tbl_admin.pk_i_admin_id = enquiry.created_by', 'left');
+    $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left'); 
+    $this->db->join('tbl_department as create_dept', 'create_dept.id = tbl_admin.dept_name', 'left');
+    $this->db->join('tbl_department as assign_dept', 'assign_dept.id = tbl_admin2.dept_name', 'left');
+	$this->db->join('tbl_datasource','enquiry.datasource_id = tbl_datasource.datasource_id','left');
+	$this->db->join('lead_score','lead_score.sc_id = enquiry.lead_score','left');
+	$this->db->join('tbl_subsource','tbl_subsource.subsource_id = enquiry.sub_source','left');
+	$this->db->join('(select count(tbl_visit.enquiry_id) as visit_count,tbl_visit.enquiry_id from tbl_visit group by tbl_visit.enquiry_id) as visit_tbl','visit_tbl.enquiry_id=enquiry.enquiry_id','left');
+	
+	
+	$this->db->join('(select fvalue as enq_dept,input,enq_no from extra_enquery where input=4452  group by extra_enquery.enq_no) as extra_dept','extra_dept.enq_no=enquiry.Enquery_id','left');
+	$this->db->join('(select fvalue as enq_ccode,input,enq_no from extra_enquery where input=4453  group by extra_enquery.enq_no) as extra_dept1','extra_dept1.enq_no=enquiry.Enquery_id','left');
+	$this->db->join('(select fvalue as enq_std,input,enq_no from extra_enquery where input=4454  group by extra_enquery.enq_no) as extra_dept2','extra_dept2.enq_no=enquiry.Enquery_id','left');
+	$this->db->join('(select fvalue as enq_competitor,input,enq_no from extra_enquery where input=4478  group by extra_enquery.enq_no) as extra_dept3','extra_dept3.enq_no=enquiry.Enquery_id','left');
+	$this->db->join('(select fvalue as enq_sensitive,input,enq_no from extra_enquery where input=4479  group by extra_enquery.enq_no) as extra_dept4','extra_dept4.enq_no=enquiry.Enquery_id','left');
+	$this->db->join('(select fvalue as enq_web,input,enq_no from extra_enquery where input=4505  group by extra_enquery.enq_no) as extra_dept5','extra_dept5.enq_no=enquiry.Enquery_id','left');
+	$this->db->join('(select fvalue as enq_pin,input,enq_no from extra_enquery where input=4536  group by extra_enquery.enq_no) as extra_dept6','extra_dept6.enq_no=enquiry.Enquery_id','left');
+	
+	$this->db->where('enquiry.drop_status','0');
+$student_data = $this->db->get()->result_array();
+	 
+     // file creation 
+     $file = fopen('php://output', 'w');
+ 
+     $header = array("Source","Company group name","Client Name","Name","Email","Phone","Address","Process","Lead Stage"
+	 ,"Create Date","Created By","create by department","Assign To","Assign to department","Data Source","Score","Remark","Employee region",
+	 "Employee Area","Employee Branch","Sales region","Sales Area","Sales Branch","No Of Visit","EnquiryId","Sub Source","Department","Country Code",
+	 "STD Code","Competitor Name","Customer Sensitive To","Website","Pincode"); 
+     fputcsv($file, $header);
+     foreach ($student_data as $key => $value)
+     {		 
+       fputcsv($file, $value);
+     }
+     fclose($file); 
+     exit;
 		
 }
 	
