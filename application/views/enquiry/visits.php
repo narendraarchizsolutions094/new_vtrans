@@ -487,6 +487,7 @@ $('input[name="filter_checkbox"]').click(function(){
                   <th id="th-17">End Location</th>
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distance</th>
+						  <th id="th-30">Manual Distance</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-28">Remark</th>
 						      <th id="th-29">Employee Region</th>
@@ -987,6 +988,9 @@ $("select").select2();
             </div>
              <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="5">  Shortest Distance</label>
+            </div>
+			<div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="30">  Manual Distance</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="6">  Rating</label>

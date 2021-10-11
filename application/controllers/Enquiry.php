@@ -3880,6 +3880,10 @@ echo  $details1;
         
         if($colsall || in_array(5,$cols))
             $sub[] =$res->actualDistance.' Km';
+		
+		if($colsall || in_array(30,$cols))
+            $sub[] =empty($res->manual_distence)?'0 KM':$res->manual_distence.' Km';
+		
             if($colsall || in_array(6,$cols))
                 $sub[] = $res->rating!=''?$res->rating:'NA';
 

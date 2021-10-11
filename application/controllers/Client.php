@@ -2223,6 +2223,7 @@ public function view_editable_aggrement()
                         move_uploaded_file($file_tmp,$upload_path.$finalfilename);
                         }
                         // visit type =2
+						if($expense!='5'){
                         $data=['type'=>2,
                                'amount'=>$amount,
                                'visit_id'=>$visit_id,
@@ -2231,6 +2232,27 @@ public function view_editable_aggrement()
                                'file'=>$finalfilename,
                                'comp_id'=>$comp_id,
                                ];
+						}else{
+
+   $rate_data = $this->db->get_where('tbl_visit',array('id'=>$visit_id))->row_array();
+   if(!empty($rate_data)){
+      $rate = $rate_data['user_rate'];
+   }else{
+      $rate = 10;
+   }
+   
+    $exp_data=['manual_distence'=>$amount];
+    $this->db->where(array('id'=>$visit_id))->update('tbl_visit',$exp_data);
+   
+							$data=['type'=>1,
+                               'amount'=>($amount)*$rate,
+                               'visit_id'=>$visit_id,
+                               'created_by'=>$uid,
+                               'expense'=>$expense,
+                               'file'=>$finalfilename,
+                               'comp_id'=>$comp_id,
+                               ];							
+						}
                     $this->db->insert('tbl_expense',$data);
                     
                     $this->Leads_Model->add_comment_for_events('Expense Added',$enq_id,0,$uid);
