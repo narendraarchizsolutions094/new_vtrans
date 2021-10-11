@@ -237,7 +237,7 @@ foreach ($expense as $key => $value) {
 }else{
   echo $value->title;
 } ?></td>
-<td><?= $value->amount ?> ₹</td>
+<td><?= $value->amount ?> <?php if($value->title!='Actual KM'){ echo '₹';}else{echo 'KM';} ?></td>
 <td><?php  if($value->approve_status==0){echo'<span >Pending</span>';}elseif($value->approve_status==2){
 echo'<span style="color:green">Accepted'.' ( '.$value->remarks.' ) </span>';
 }elseif($value->approve_status==1){
