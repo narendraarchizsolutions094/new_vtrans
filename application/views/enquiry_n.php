@@ -627,7 +627,7 @@ display: block;
                         </div>
                          <div class="form-group col-md-3" id="createdbyfilter">
                           <label for="">Created By</label>
-                         <select name="createdby" class="form-control"> 
+                         <select name="createdby" id="createdbyrst" class="form-control"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($created_bylist)) {
@@ -640,7 +640,7 @@ display: block;
 						
 						<div class="form-group col-md-3" id="createdbydeptfilter">
                           <label for="">Created By Department</label>
-                         <select name="createdbydept" class="form-control"> 
+                         <select name="createdbydept" id="createdbydeptrst" class="form-control"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($dept_lists)) {
@@ -653,7 +653,7 @@ display: block;
 						
                          <div class="form-group col-md-3" id="assignfilter">
                           <label for="">Assign To</label>  
-                         <select name="assign" class="form-control"> 
+                         <select name="assign" id="assignrst" class="form-control"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($created_bylist)) {
@@ -665,7 +665,7 @@ display: block;
 						
 						<div class="form-group col-md-3" id="assigntodeptfilter">
                           <label for="">Assign To Department</label>
-                         <select name="assigntodept" class="form-control"> 
+                         <select name="assigntodept" id="assigntodeptrst" class="form-control"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($dept_lists)) {
@@ -685,7 +685,7 @@ display: block;
                     <div class="row">
                     <div class="form-group col-md-3" id="prodfilter">
                     <label for="">Products</label>  
-                    <select name="prodcntry" class="form-control"> 
+                    <select name="prodcntry" id="prodcntryrst" class="form-control"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($prodcntry_list)) {
@@ -696,7 +696,7 @@ display: block;
                     </div> 
                     <div class="form-group col-md-3" id="statefilter">
                     <label for="">State</label>  
-                    <select name="state" class="form-control" id="state"> 
+                    <select name="state" id="staterst" class="form-control" id="state"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($state_list)) {
@@ -707,7 +707,7 @@ display: block;
                     </div> 
                     <div class="form-group col-md-3" id="cityfilter">
                     <label for="">City</label>  
-                    <select name="city" class="form-control" id="city_name"> 
+                    <select name="city" id="cityrst" class="form-control" id="city_name"> 
                       <option value="">Select</option>
                            <?php 
                               if (!empty($city_list)) {
@@ -719,7 +719,7 @@ display: block;
 
                     <div class="form-group col-md-3" id="stagefilter">
                         <label for="">Stage</label> 
-                        <select name="stage" class="form-control">
+                        <select name="stage" id="stagerst" class="form-control">
                           <option value="">Select</option>
                           <?php foreach ($all_stage_lists as $stage) {  ?>
                               <option value="<?= $stage->stg_id ?>"  <?php if($stage->stg_id==$filterData['city']) {echo 'selected';}?>><?php echo $stage->lead_stage_name; ?></option>
@@ -733,7 +733,7 @@ display: block;
                       ?>
                       <div class="form-group col-md-3" id="tagfilter">
                         <label for="">Tag</label> 
-                        <select name="tag" class="form-control">
+                        <select name="tag" id="tagrst" class="form-control">
                           <option value="">Select</option>
                           <?php 
                           if(!empty($tags)){
@@ -749,7 +749,7 @@ display: block;
 
                       <div class="form-group col-md-3" id="probabilityfilter">
                         <label for="">Probability</label> 
-                        <select name="probability" class="form-control">
+                        <select name="probability" id="probabilityrst" class="form-control">
                           <option value="">Select</option>
                           <?php 
                           if(!empty($lead_score)){
@@ -765,7 +765,7 @@ display: block;
                       if(!empty($aging_rule)){ ?>
                       <div class="form-group col-md-3" id="agingRulefilter">
                         <label for="">Aging Rule</label> 
-                        <select name="aging_rule" class="form-control">
+                        <select name="aging_rule" id="aging_rulerst" class="form-control">
                           <option value="">Select</option>
                           <?php
                             foreach ($aging_rule as $k=>$v) {  ?>
@@ -780,7 +780,7 @@ display: block;
                       
 					  <div class="form-group col-md-3" id="regionfilter">
                         <label for="">Sales Region</label> 
-                        <select name="sales_region" class="form-control" onchange="find_areas();">
+                        <select name="sales_region" id="sales_regionrst" class="form-control" onchange="find_areas();">
                           <option value="">Select</option>
                           <?php
                             foreach ($region_lists as $k=>$v) {  ?>
@@ -816,7 +816,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="empregionfilter">
                         <label for="">Employee Region</label> 
-                        <select name="emp_region" class="form-control">
+                        <select name="emp_region" id="emp_regionrst" class="form-control">
                           <option value="">Select</option>
                           <?php
                             foreach ($region_lists as $k=>$v) {  ?>
@@ -828,7 +828,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="empareafilter">
                         <label for="">Employee Area</label> 
-                        <select name="emp_area" class="form-control" id="filter_area">
+                        <select name="emp_area" class="form-control" id="filter_arearst">
                           <option value="">Select</option>
                           <?php
                             foreach ($area_lists as $k=>$v) {  ?>
@@ -840,7 +840,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="empbranchfilter">
                         <label for="">Employee Branch</label> 
-                        <select name="emp_branch" class="form-control" id="filter_branch">
+                        <select name="emp_branch" class="form-control" id="filter_branchrst">
                           <option value="">Select</option>
                           <?php
                             foreach ($branch_lists as $k=>$v) {  ?>
@@ -852,7 +852,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="ctypefilter">
  						<label for="">Client Type</label>
-                        <select class="form-control" name="client_type">
+                        <select class="form-control" name="client_type" id="client_typerst">
                             <option value="">--Select Client Type--</option>
 				            <option value="MSME" <?php if(!empty($filterData['client_type']) && $filterData['client_type']=='MSME') {echo 'selected';}?>>MSME</option>
                             <option value="Pvt. Ltd." <?php if(!empty($filterData['client_type']) && $filterData['client_type']=='Pvt. Ltd.'){ echo "selected";} ?>> Pvt. Ltd.</option>
@@ -865,7 +865,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="loadfilter">
  						<label for="">Load/Business</label>
-                        <select class="form-control" name="business_load">
+                        <select class="form-control" name="business_load" id="business_loadrst">
                             <option value="">--Select business_load--</option>
 				            <option value="FTL" <?php if(!empty($filterData['business_load']) && $filterData['business_load']=='FTL') {echo 'selected';}?>>FTL</option>
                             <option value="LTL/Sundry" <?php if(!empty($filterData['business_load']) && $filterData['business_load']=='LTL/Sundry'){ echo "selected";} ?>> LTL/Sundry</option>
@@ -874,7 +874,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="Industriesfilter">
  						<label for="">Industries</label>
-                        <select class="form-control" name="industries">
+                        <select class="form-control" name="industries" id="industriesrst">
                             <option value="">--Select Industries--</option>
 				            <option value="FMCG" <?php if(!empty($filterData['industries']) && $filterData['industries']=='FMCG') {echo 'selected';}?>>FMCG</option>
                             <option value="Auto &amp; Auto Ancillaries" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Auto & Auto Ancillaries') {echo 'selected';}?>> Auto &amp; Auto Ancillaries</option>
@@ -890,7 +890,7 @@ display: block;
                       </div>
                       <div class="form-group col-md-3" id="visit_wisefilter">
  						            <label for="">Visit Wise</label>
-                        <select class="form-control" name="visit_wise">
+                        <select class="form-control" name="visit_wise" id="visit_wiserst">
                             <option value="">--Select --</option>
                             <option value="1"> Visited </option>
                             <option value="2"> Non Visited </option>
@@ -899,7 +899,7 @@ display: block;
 					  
 					  <div class="form-group col-md-3" id="list_datafilter">
  						            <label for="">List Data</label>
-                        <select class="form-control" name="list_data">
+                        <select class="form-control" name="list_data" id="list_datarst">
                             <option value="">--Select List--</option>
                             <option value="1"> Lead </option>
                             <option value="2"> Approach </option>
@@ -909,10 +909,11 @@ display: block;
 							<option value="6"> Future Opportunities </option>
                         </select>
                       </div>
-
-                      <div class="form-group col-md-3">
-                    <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
-                        </div>  
+		
+                    <div class="form-group col-md-3">
+					  <button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button> 
+                      <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
+                    </div>  
                     </div>
           
             </div>
@@ -2448,10 +2449,12 @@ var enq_filters  = getCookie('enquiry_filter_setting');
 if (enq_filters=='') {
     $('#filter_pannel').hide();
     $('#save_filterbutton').hide();
+	$('#reset_filterbutton').hide();	
 
 }else{
   $('#filter_pannel').show();
   $('#save_filterbutton').show();
+  $('#reset_filterbutton').show();
 
 }
 
@@ -2698,9 +2701,11 @@ $('input[name="filter_checkbox"]').click(function(){
   $('#industriescheckbox').is(":checked") || $('#visit_wisecheckbox').is(":checked") || $('#list_datacheckbox').is(":checked") ||
   $('#agingRulecheckbox').is(":checked")){ 
     $('#save_filterbutton').show();
+	$('#reset_filterbutton').show();
     $('#filter_pannel').show();          
   }else{
     $('#save_filterbutton').hide();
+	$('#reset_filterbutton').hide();
     $('#filter_pannel').hide();
     
 
@@ -3048,6 +3053,7 @@ function moveto_client(){
   }});
   }
 }
+
 function ticket_save_filter(){
 var form_data = $("#enq_filter").serialize();       
 // alert(form_data);
@@ -3065,6 +3071,58 @@ success: function(responseData){
 });
 
 
+}
+});
+  }
+  
+function ticket_reset_filter(){
+$('input[name=from_created').val('');
+$('input[name=to_created').val('');
+$('#source').val(null).trigger("change");
+$('#subsource').val(null).trigger("change");
+$('input[name=email').val('');
+$('input[name=employee').val('');
+$('#datasource').val(null).trigger("change");
+$('input[name=company').val('');
+$('input[name=clientname').val('');
+$('#enq_product').val(null).trigger("change");
+$('input[name=phone').val('');
+$('#createdbyrst').val(null).trigger("change");
+$('#createdbydeptrst').val(null).trigger("change");
+$('#assignrst').val(null).trigger("change");
+$('#assigntodeptrst').val(null).trigger("change");
+$('input[name=address').val('');
+$('#prodcntryrst').val(null).trigger("change");
+$('#staterst').val(null).trigger("change");
+$('#cityrst').val(null).trigger("change");
+$('#stagerst').val(null).trigger("change");
+$('#probabilityrst').val(null).trigger("change");
+$('#aging_rulerst').val(null).trigger("change");
+$('#sales_regionrst').val(null).trigger("change");
+$('#filter_area').val(null).trigger("change");
+$('#filter_branch').val(null).trigger("change");
+$('#emp_regionrst').val(null).trigger("change");
+$('#filter_arearst').val(null).trigger("change");
+$('#filter_branchrst').val(null).trigger("change");
+$('#client_typerst').val(null).trigger("change");
+$('#business_loadrst').val(null).trigger("change");
+$('#industriesrst').val(null).trigger("change");
+$('#visit_wiserst').val(null).trigger("change");
+$('#list_datarst').val(null).trigger("change");
+var form_data = $("#enq_filter").serialize();       
+
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/1',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'filted data Reset',
+  showConfirmButton: false,
+  timer: 500
+});
 }
 });
   }
