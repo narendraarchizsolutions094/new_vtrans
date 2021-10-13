@@ -28,6 +28,8 @@
 										<th>Sr no</th>
 										<th>Enquiry Id</th>
 										<th>Name</th>
+										<th>Client Name</th>
+										<th>Company Group Name</th>
 										<th>Type</th>
                                         <th>Mobile</th> 
                                         <th>Email</th> 
@@ -80,6 +82,8 @@
 											<td><a href="<?php echo base_url($url); ?>"><?php echo $key + 1; ?></a></td>
 											<td><a href="<?php echo base_url($url); ?>"><?php echo $rslt->Enquery_id; ?></a></td>
 											<td><a href="<?php echo base_url($url); ?>"><?php echo $rslt->name_prefix." ".$rslt->name." ".$rslt->lastname; ?></a></td>
+											<td><?php echo $rslt->client_name;  ?></td>
+											<td><?php echo $rslt->company_name;  ?></td>
 											<td><?php echo $type;  ?></td>
 										
 											<td>

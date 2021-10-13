@@ -2858,10 +2858,11 @@ public function get_all_stage_deals() {
             $retuser   = $this->common_model->get_categories($this->session->user_id);
             $impuser   = implode(",", $retuser);
     
-            $qry    = "SELECT  enq.*, concat(usr.s_display_name,' ' , usr.last_name) as username,  concat(asgn.s_display_name,' ' , asgn.last_name) as asignuser  FROM enquiry enq
+            $qry    = "SELECT  cmpny.company_name,enq.*, concat(usr.s_display_name,' ' , usr.last_name) as username,  concat(asgn.s_display_name,' ' , asgn.last_name) as asignuser  FROM enquiry enq
                                                 LEFT JOIN tbl_admin usr ON usr.pk_i_admin_id = enq.created_by 
                                                 LEFT JOIN tbl_client_contacts ON tbl_client_contacts.client_id = enq.enquiry_id 
-                                                LEFT JOIN tbl_admin asgn ON asgn.pk_i_admin_id = enq.aasign_to 
+                                                LEFT JOIN tbl_admin asgn ON asgn.pk_i_admin_id = enq.aasign_to
+                                                LEFT JOIN tbl_company cmpny ON cmpny.id = enq.company												
                                                 WHERE $qpart  ";
             if ($global_search) {
                 $qry .= "enq.comp_id=$comp_id";
