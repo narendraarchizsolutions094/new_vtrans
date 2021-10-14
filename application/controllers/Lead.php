@@ -2842,6 +2842,7 @@ public function get_all_stage_deals() {
     function lead_search() // route created for this function
     {
         $filter = (!empty($_GET["search"])) ? trim($_GET["search"]) : "";
+		//print_r($filter);exit;
         if (empty($filter)) {
             redirect(base_url());
         }else{
@@ -2850,7 +2851,7 @@ public function get_all_stage_deals() {
     
             if (!empty($filter)) {
     
-                $qpart = " (enq.Enquery_id LIKE '%{$filter}%' OR enq.email LIKE '%{$filter}%' OR enq.phone LIKE '%{$filter}%' OR enq.name LIKE '%{$filter}%' OR enq.lastname LIKE '%{$filter}%' OR CONCAT(enq.name,' ',enq.lastname) LIKE '%{$filter}%' OR CONCAT(enq.name_prefix,' ',enq.name,' ',enq.lastname) LIKE '%{$filter}%' OR usr.s_display_name LiKE '%{$filter}%' OR usr.last_name LiKE '%{$filter}%' OR asgn.s_display_name LiKE '%{$filter}%' OR asgn.last_name LiKE '%{$filter}%' OR tbl_client_contacts.c_name LiKE '%{$filter}%' OR  tbl_client_contacts.contact_number LiKE '%{$filter}%') AND";
+                $qpart = " (enq.client_name LIKE '%{$filter}%' OR cmpny.company_name LIKE '%{$filter}%' OR enq.Enquery_id LIKE '%{$filter}%' OR enq.email LIKE '%{$filter}%' OR enq.phone LIKE '%{$filter}%' OR enq.name LIKE '%{$filter}%' OR enq.lastname LIKE '%{$filter}%' OR CONCAT(enq.name,' ',enq.lastname) LIKE '%{$filter}%' OR CONCAT(enq.name_prefix,' ',enq.name,' ',enq.lastname) LIKE '%{$filter}%' OR usr.s_display_name LiKE '%{$filter}%' OR usr.last_name LiKE '%{$filter}%' OR asgn.s_display_name LiKE '%{$filter}%' OR asgn.last_name LiKE '%{$filter}%' OR tbl_client_contacts.c_name LiKE '%{$filter}%' OR  tbl_client_contacts.contact_number LiKE '%{$filter}%') AND";
             } else {
                 $qpart = "";
             }
