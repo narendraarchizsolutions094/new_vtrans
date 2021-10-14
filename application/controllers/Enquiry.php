@@ -575,7 +575,13 @@ class Enquiry extends CI_Controller
 				$industry = $this->input->post('industries');
 			}
 			//print_r($designation);exit;
-           
+//For asign to jitesh gautam			
+			if($this->input->post('lead_source') == 129 || $this->input->post('lead_source') == 135){
+                $created_by = '2173';
+            }else{
+                $created_by = $this->session->user_id;
+            }
+//End           
             $postData = [
                 'Enquery_id' => $encode,
                 'comp_id' => $this->session->userdata('companey_id'),
@@ -605,7 +611,7 @@ class Enquiry extends CI_Controller
                 'datasource_id' => $this->input->post('datasource_id'),
                 'center_id' => $this->input->post('center_id'),
                 'ip_address' => $this->input->ip_address(),
-                'created_by' => $this->session->user_id,
+                'created_by' => $created_by,
                 'city_id' => !empty($city_id->row()->id) ? $city_id->row()->id : '',
                 'state_id' => !empty($city_id->row()->state_id) ? $city_id->row()->state_id : '',
                 'country_id'  => !empty($city_id->row()->country_id) ? $city_id->row()->country_id : '',

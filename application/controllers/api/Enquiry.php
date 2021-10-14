@@ -154,9 +154,9 @@ class Enquiry extends REST_Controller {
     }
     public function create_post()
     { 	
-    	    $file = @$_FILES;
-        	$upd = $this->input->post('update');		
-    		  $comp_id	=	$this->input->post('company_id');		
+    	  $file = @$_FILES;
+          $upd = $this->input->post('update');		
+    	  $comp_id	=	$this->input->post('company_id');		
           $process_id =  $this->input->post('process_id');
           $user_id = $this->input->post('user_id');
           $this->form_validation->set_rules('user_id','user_id', 'trim|required');
@@ -277,9 +277,17 @@ class Enquiry extends REST_Controller {
                 $postData['sales_area'] = $sales_area;
 
               $postData['comp_id'] = $comp_id;
-              $postData['created_by'] =$user_id;
+
+//For asign to jitesh gautam
+		if($this->input->post('enquiry_source') == 129 || $this->input->post('enquiry_source') == 135){
+                $postData['created_by'] ='2173';
+        }else{
+                $postData['created_by'] =$user_id;
+        }
+//End
+			
               $postData['product_id'] =$process_id;
-            	$postData['Enquery_id'] = $encode;
+              $postData['Enquery_id'] = $encode;
 
               if(empty($_POST['other_id']))
                 $data_type_id = 1;
