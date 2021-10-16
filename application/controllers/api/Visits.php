@@ -858,14 +858,32 @@ array_push($waypoints, $new_waypoint);
                   $exp_data['file'] = $finalfilename;
 
                   }
-
-                  $exp_data['amount']=$amount;
+				  
+//For Manual KM
+ if($expense!='5'){
+            $exp_data['amount']=$amount;
+			$exp_data['type'] = 2;
+		}else{
+			
+   $rate_data = $this->db->get_where('tbl_visit',array('id'=>$visit_id))->row_array();
+   if(!empty($rate_data)){
+      $rate = $rate_data['user_rate'];
+   }else{
+      $rate = 10;
+   }  
+    $expm_data=['manual_distence'=>$amount];
+    $this->db->where(array('id'=>$visit_id))->update('tbl_visit',$expm_data);
+   
+							$exp_data['amount']=($amount)*$rate;
+                            $exp_data['type'] = 1;							
+			}
+//End
                   $exp_data['expense']=$expense;
                 
              
                     if(empty($_POST['ids'][$key]))
                     {
-                      $exp_data['type'] = 2;
+                      //$exp_data['type'] = 2;
                       $exp_data['visit_id']=$visit_id;
                       $exp_data['created_by']=$user_id;
                       $exp_data['comp_id']=$comp_id;
