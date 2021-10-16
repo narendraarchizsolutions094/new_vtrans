@@ -526,8 +526,10 @@ class User extends CI_Controller
         if (empty($this->input->post('dprt_id'))) {
             $this->form_validation->set_rules('employee_id', display('employee_id'), 'required|is_unique[tbl_admin.employee_id]', array('is_unique' => 'Duplicate Entery For Employee Id '));
             $this->form_validation->set_rules('password', display('password'), 'required|min_length[8]');
-            $this->form_validation->set_rules('email', display('email'), 'required|is_unique[tbl_admin.s_user_email]', array('is_unique' => 'Duplicate Entery For email'));
-            $this->form_validation->set_rules('cell', display('cell'), 'required|is_unique[tbl_admin.s_phoneno]');
+           // $this->form_validation->set_rules('email', display('email'), 'required|is_unique[tbl_admin.s_user_email]', array('is_unique' => 'Duplicate Entery For email'));
+           // $this->form_validation->set_rules('cell', display('cell'), 'required|is_unique[tbl_admin.s_phoneno]');
+		    $this->form_validation->set_rules('email', display('email'), 'required');
+            $this->form_validation->set_rules('cell', display('cell'), 'required');
         }
 
         #-------------------------------#

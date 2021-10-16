@@ -6,17 +6,26 @@ class User_model extends CI_Model {
     public function create($data = []) {         
         $insert_id = 0;
         $where = '';
+
         if(!empty($data['s_user_email'])){
-            $where = "s_user_email='".$data['s_user_email'].'\'';
+			if(!empty($data['s_phoneno'])){
+                $where = " (";
+            }
+            $where .= "s_user_email='".$data['s_user_email'].'\'';
         }
         if(!empty($data['s_phoneno'])){
             if(!empty($where)){
                 $where .= " OR";
             }
             $where .= " s_phoneno='".$data['s_phoneno'].'\'';
+			if(!empty($data['s_user_email'])){
+                $where .= " )";
+            }
         }
+		$where .= " AND b_status='1'";
         $this->db->where($where);
         $user_row    =   $this->db->get('tbl_admin')->row_array();
+
         if (empty($user_row)) {            
             $this->db->insert($this->table, $data);
             $insert_id = $this->db->insert_id();
