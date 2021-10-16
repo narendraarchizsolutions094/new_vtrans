@@ -4082,4 +4082,47 @@ echo '</table>';
                         echo '</div>';
    	    }
     }
+
+//For ticket add organization field	
+	public function suggest_company()
+    {
+        $key = trim($this->input->post('search'));
+        $this->load->model('Client_Model');
+        $company_id = $this->session->companey_id;
+        $user_id = -1; //$this->session->user_id;
+        // $process = $this->session->process;
+        $where = 'comp.company_name LIKE "%'.$key.'%" ';
+
+		$process = $this->session->userdata('process');
+        $this->db->select('enquiry.*,comp.company_name');
+        $this->db->from('enquiry');
+        $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
+        $this->db->where_in('product_id',$process);
+
+    	if($where){
+            $this->db->where($where);
+        }   
+
+    	$this->db->where('enquiry.comp_id',$this->session->companey_id);
+		$res = $this->db->get()->result_array();
+        //$res = $this->Client_Model->getCompanyList(0,$where,$company_id,$user_id,$process,'data',10,0)->result_array();
+        //echo $this->db->last_query();exit();
+		// echo '<pre>';
+		// print_r($res);die;
+        // $abc = array_column($res,'company');
+		// echo '<pre>';
+		// print_r($abc);die;
+		// $abc = "";
+		// foreach($res as $r){
+		// 	$abc .='<option value="'.$r['enquiry_id'].'">'.$r['company'].' ('.$r['name'].')</option>';
+		// }
+
+		$abc ='<ul id="country-list" style="z-index:1;max-height:150px;overflow-y:scroll;">';
+		foreach($res as $r) {
+			$name = "'".$r["company_name"].'('.$r['name'].')'."'" ;
+			$abc .='<li onClick="selectCountry('.$r["enquiry_id"].','.trim($name).');">'.$r["company_name"].'('.$r["name"].')'.'</li>';
+ 		}
+		 $abc .='</ul>';
+        echo json_encode($abc);
+    }
 }

@@ -185,8 +185,8 @@
     });
   }
 
-
-	$(document).on("change", ".choose-client", function(){		
+//Old function
+/* 	$(document).on("change", ".choose-client", function(){		
 		$.ajax({
 			url     : "<?php echo base_url('ticket/loadinfo'); ?>",
 			type    : "post",
@@ -198,7 +198,24 @@
 				$("input[name=phone]").val(jdata.phone);
 			}
 		})
-	});
+	}); */
+//End	
+	
+//For find organization details 
+function enq_loadinfo(val) {		
+		$.ajax({
+			url     : "<?php echo base_url('ticket/loadinfo'); ?>",
+			type    : "post",
+			data    : {clientno : val},
+			success : function (resp){
+				var jdata = JSON.parse(resp);
+				$("input[name=name]").val(jdata.name);
+				$("input[name=email]").val(jdata.email);
+				$("input[name=phone]").val(jdata.phone);
+			}
+		})
+	}
+//End
 	$(document).on("change", ".chg-productt", function(){
 		$.ajax({
 				url     : "<?php echo base_url('ticket/loadamc') ?>",

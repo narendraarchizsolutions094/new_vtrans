@@ -1,3 +1,10 @@
+<style>
+.frmSearch {border: 1px solid #a8d4b1;background-color: #c6f7d0;margin: 2px 0px;padding:40px;border-radius:4px;}
+#country-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
+#country-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+#country-list li:hover{background:#ece3d2;cursor: pointer;}
+#search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
+</style>
 <?php
   define('COMPLAINT_TYPE',15);
   define('REFERRED_BY',16);
@@ -181,22 +188,25 @@ echo'<div class="trackingDetails"></div>';
                    <?php
                     if($companylist['field_id']==PROBLEM_FOR){
                     ?>
-                     <div class="col-md-6" id='client_div'>
+					<div class="col-md-6" id='client_div'>
                       <div class="form-group">
                         <label><?=display('problem_for')?> </label>
-                        <select class="form-control  choose-client" name = "client" id='client'>
+                        <!-- <select class="form-control  choose-client" name = "client" id='client'>
                           <option value = "" style ="display:none;">---Select---</option>
                           <?php if(!empty($clients)){
                             foreach($clients as $ind => $clt){
-                              $n = $clt->company_name;
+                              $n = $clt->company;
                               if(!empty($n)){
                               ?><option value ="<?php echo $clt->enquiry_id ?>"><?php echo $n; ?> (<?= $clt->name ?>) </option><?php
                               }
                             }
                           } ?>
-                        </select>
+                        </select> -->
+                        <input class="form-control ui-autocomplete-input" value=" " name="" id="client" type="text" placeholder="Enter Organization" autocomplete="off">
+                        <input class="form-control" value="" name="client" id="client_val" type="hidden" placeholder="Enter Organization">
                         <i class="fa fa-plus" id='addmoreorg' onclick="add_more_org('add_more_org')" style="float:right;margin-top:-23px;margin-right:10px;color:red;position:relative;"></i>
-                      </div>
+                        <div id="suggesstion-box"></div>
+                      </div>                     
                     </div>
 
                    
@@ -413,4 +423,32 @@ echo'<div class="trackingDetails"></div>';
               $("#client").attr('disabled',true);
               
             }
+			
+	// AJAX call for autocomplete 
+          $(document).ready(function(){
+            $("#client").keyup(function(){
+              $.ajax({
+              type: "POST",
+              url: "<?= base_url('ticket/suggest_company');?>",
+              data:'search='+$(this).val(),
+              beforeSend: function(){
+                $("#client").css("background","#FFF url(<?= base_url();?>assets/images/LoaderIcon.gif) no-repeat 165px");
+              },
+              success: function(data){
+                obj = JSON.parse(data);
+                $("#suggesstion-box").show();
+                $("#suggesstion-box").html(obj);
+                $("#client").css("background","#FFF");
+              }
+              });
+            });
+          });
+          //To select country name
+          function selectCountry(val,name) {
+            // alert(name);
+            $("#client").val(name);
+            $("#client_val").val(val);
+            $("#suggesstion-box").hide();
+			enq_loadinfo(val);
+          }
             </script>
