@@ -99,8 +99,8 @@ class Visit_datatable_model extends CI_Model{
         $this->db->order_by("tbl_visit.created_at",'DESC');
         $where="";
 
-        //$where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        //$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+        $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
         $and =1;
        
         if(!empty($_POST['area'])){
