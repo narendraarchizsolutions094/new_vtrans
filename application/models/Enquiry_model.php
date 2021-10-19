@@ -5125,7 +5125,9 @@ public function insertComInfo($data)
        $all_reporting_ids    =   $this->common_model->get_categories($user_id);
      //print_r($all_reporting_ids);exit;
        $where = '';
+	   $create_user_id = array($user_id);
             $where .= " ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+			$where .= " OR tbl_visit.user_id IN (".implode(',', $create_user_id).')';
             $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
             $where .=" AND enquiry.drop_status=0 and enquiry.product_id IN (".$process.")";
 			if(!empty($visit_id)){
