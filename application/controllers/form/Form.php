@@ -260,6 +260,8 @@ class Form extends CI_Controller {
 		$data['problem'] = $this->Ticket_Model->get_sub_list($this->session->companey_id,$data['ticket']->process_id);
 		$data['issues'] = $this->Ticket_Model->get_issue_list();
     	$data['company_list'] = $this->location_model->get_company_list1_ticket($process_id);
+		$this->load->model('Branch_model');
+		$data['branch_lists']=$this->Branch_model->all_sales_branch();
     	echo $this->load->view('forms/ticket_basic_form_fields_update',$data,true);
 		
 	}

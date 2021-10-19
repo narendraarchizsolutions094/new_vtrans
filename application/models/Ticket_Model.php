@@ -298,6 +298,7 @@ class Ticket_Model extends CI_Model
 			$arr["status"]   	= 0;
 			$arr["ticket_status"] = $this->input->post("ticket_status", true);
 			$arr['process_id'] =  $_SESSION['process'][0];
+			$arr['branch_for'] =  $this->input->post("emp_branch", true)??'';
 			// echo $arr['attachment'];
 			// exit();
 			$this->db->insert("tbl_ticket", $arr);
