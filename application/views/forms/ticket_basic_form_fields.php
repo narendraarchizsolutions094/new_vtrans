@@ -20,6 +20,7 @@
   define('ATTACHMENT',26);  
   define('DESCRIPTION',27);
   define('TRACKING_NUMBER',28);
+  define('BRANCH',52);
   // define('PIN_CODE',14); 
   // define('SUB_SOURCE',15);  
 echo'<div class="trackingDetails"></div>';
@@ -395,6 +396,23 @@ echo'<div class="trackingDetails"></div>';
 
                   <?php
                   }
+			if($companylist['field_id']==BRANCH)
+                {
+                ?>	  
+			<div class="form-group col-md-6">
+                <label class="control-label" for="emp_branch">Branch</label> 									
+                <select class="form-control" name="emp_branch">
+				<option value="">---Select Branch---</option>
+                    <?php  if (!empty($branch_lists)) {
+                    foreach ($branch_lists as $key => $value) { ?>
+                <option value="<?= $value->branch_id;?>"><?= $value->branch_name;?></option>
+                    <?php
+                    }
+                    } ?>
+                </select>
+            </div>
+			<?php
+                }
                   if($companylist['field_id']==DESCRIPTION)
                   {
                   ?>

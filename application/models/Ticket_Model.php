@@ -176,7 +176,6 @@ class Ticket_Model extends CI_Model
 	public function save($companey_id = '', $user_id = '')
 	{
 		$cid = '';
-		//print_r($_POST); 
 		if (!empty($companey_id) && !empty($user_id) && !empty($_POST['client_new']) && empty($_POST['client'])) {
 			if (isset($_SESSION['process']) && count($_SESSION['process']) == 1) {				
 				$company = $this->db->where('company_name',$_POST['client_new'])->get('tbl_company')->row();
@@ -192,7 +191,23 @@ class Ticket_Model extends CI_Model
 					$this->db->insert('tbl_company',$new_company);
 					$newcompId = $this->db->insert_id();
 				}
-				
+//For assign to new created lead				
+				$branch = $this->input->post("emp_branch", true);
+				if(!empty($branch)){
+				$assign_users= $this->db->select('pk_i_admin_id')->where('sales_branch',$branch)->where('user_permissions','147')->where('b_status','1')->get('tbl_admin')->result();
+				$ttl = count($assign_users);
+				if($ttl==1){
+					$assign_touser= $this->db->select('pk_i_admin_id')->where('sales_branch',$branch)->where('user_permissions','147')->where('b_status','1')->get('tbl_admin')->row();
+					$assign_to = $assign_touser->pk_i_admin_id;
+				}else{					
+					$assign_repuser= $this->db->select('report_to')->where('sales_branch',$branch)->where('user_permissions','147')->where('b_status','1')->get('tbl_admin')->row();
+                    $assign_to = $assign_repuser->report_to;					
+				}
+				}else{
+					$assign_to = $this->session->user_id;
+				}
+				//print_r($assign_to);exit;
+//End				
 				$encode = get_enquery_code();
 				$postData = array(
 					'Enquery_id' 	=> $encode,
@@ -206,6 +221,7 @@ class Ticket_Model extends CI_Model
 					'created_date' 	=>  date("Y-m-d H:i:s"),
 					'status' 		=> 1,
 					'created_by' 	=> $this->session->user_id,
+					'aasign_to'     => $assign_to,
 					'phone'			=> $this->input->post('phone'),
 				);
 				//print_r($postData);
