@@ -941,8 +941,8 @@ class Ticket_Model extends CI_Model
 
 		if($fromdate!='all'){
 					
-			$data=$this->db->where('date(last_update) >=', $fromdate);
-			$data=$this->db->where('date(last_update) <=', $todate);
+			$data=$this->db->where('date(coml_date) >=', $fromdate);
+			$data=$this->db->where('date(coml_date) <=', $todate);
 		}
 	                 	// $where .= " DATE(tck.coml_date) <=  '".$to_created."' OR DATE(tck.last_update) <=  '".$to_created."'"; 
 						 $data= $this->db->count_all_results('tbl_ticket');
@@ -963,8 +963,8 @@ class Ticket_Model extends CI_Model
 		
 		if($fromdate!='all'){
 					
-			$data=$this->db->where('date(last_update) >=', $fromdate);
-			$data=$this->db->where('date(last_update) <=', $todate);
+			$data=$this->db->where('date(coml_date) >=', $fromdate);
+			$data=$this->db->where('date(coml_date) <=', $todate);
 	                     	}
 		$data = $this->db->count_all_results('tbl_ticket');		
 		return $data;
@@ -981,7 +981,7 @@ class Ticket_Model extends CI_Model
 		}else{
 			$data = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'priority' => $type));
 		     }
-			$data=$this->db->where('date(last_update) =', $fromdate);
+			$data=$this->db->where('date(coml_date) =', $fromdate);
 		$data = $this->db->count_all_results('tbl_ticket');
 
 		return $data;
@@ -1003,8 +1003,8 @@ class Ticket_Model extends CI_Model
 		$data = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'complaint_type' => $type));
 		if($fromdate!='all'){
 					
-			$data=$this->db->where('date(last_update) >=', $fromdate);
-			$data=$this->db->where('date(last_update) <=', $todate);
+			$data=$this->db->where('date(coml_date) >=', $fromdate);
+			$data=$this->db->where('date(coml_date) <=', $todate);
 	                     	}
 						 $data = $this->db->count_all_results('tbl_ticket');
 		return $data;
@@ -1030,8 +1030,8 @@ class Ticket_Model extends CI_Model
 
 		$count = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'sourse' => $lsid));
 		if($fromdate!='all'){
-			$count=$this->db->where('date(last_update) >=', $fromdate);
-			$count=$this->db->where('date(last_update) <=', $todate);
+			$count=$this->db->where('date(coml_date) >=', $fromdate);
+			$count=$this->db->where('date(coml_date) <=', $todate);
 	                     	}
 							 $count=$this->db->count_all_results('tbl_ticket');
 		return $count;
@@ -1057,8 +1057,8 @@ class Ticket_Model extends CI_Model
 
 		$count = $this->db->where('process_id IN ('.$process.')')->where(array('company' => $comp_id, 'ticket_stage' => $stg_id));
 		if($fromdate!='all'){
-			$count=$this->db->where('date(last_update) >=', $fromdate);
-			$count=$this->db->where('date(last_update) <=', $todate);
+			$count=$this->db->where('date(coml_date) >=', $fromdate);
+			$count=$this->db->where('date(coml_date) <=', $todate);
 	                     	}
 							 $count=$this->db->count_all_results('tbl_ticket');
 		return $count;
@@ -1097,8 +1097,8 @@ class Ticket_Model extends CI_Model
 		$count = $this->db->where(array('tbl_ticket.process_id' => $process,'tbl_ticket.company' => $this->session->companey_id, 'tbl_ticket.ticket_substage' => $stg_id));
 		
 		if($fromdate!='all'){
-			$count=$this->db->where('date(last_update) >=', $fromdate);
-			$count=$this->db->where('date(last_update) <=', $todate);
+			$count=$this->db->where('date(coml_date) >=', $fromdate);
+			$count=$this->db->where('date(coml_date) <=', $todate);
 							 }
 							$count= $this->db->count_all_results('tbl_ticket');
 		return $count;
@@ -1138,8 +1138,8 @@ class Ticket_Model extends CI_Model
 
 		$count= $this->db->where('process_id IN ('.$process.')')->where(array('product'=>$id,'company'=>$comp_id));
 		if($fromdate!='all'){
-			$count=$this->db->where('date(last_update) >=', $fromdate);
-			$count=$this->db->where('date(last_update) <=', $todate);
+			$count=$this->db->where('date(coml_date) >=', $fromdate);
+			$count=$this->db->where('date(coml_date) <=', $todate);
 							 }
 			$count=$this->db->count_all_results('tbl_ticket');
 		return $count;

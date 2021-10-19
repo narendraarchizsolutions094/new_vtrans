@@ -106,19 +106,34 @@ class Attendance extends CI_Controller {
 		$this->load->view('layout/main_wrapper',$data);
  	}
 
-	 public function get_breadcrumb($user_id){   
-		$current_user = $this->session->user_id;
+	 public function get_breadcrumb($user_id){   		 
+		$current_user = $this->session->user_id;				
+		
+		$c_row = $this->db->where('pk_i_admin_id',$current_user)->get('tbl_admin')->row_array();
+		if(empty($c_row['repot_to'])){
+			$current_user = $c_row['sibling_id'];
+		}
+
 		if($user_id != $current_user){
 		  $this->db->select('report_to,sibling_id');
 		  $this->db->where('pk_i_admin_id',$user_id);
 		  $user_row = $this->db->get('tbl_admin')->row_array();
-		  if(empty($user_row['report_to'])){
+		  if(empty($user_row['report_to'])){			
 			$report_to = $user_row['sibling_id'];
-		  }else{
+		  }else if(!empty($user_row['report_to'])){
 			$report_to = $user_row['report_to'];
 		  }
-		  $this->crumb_user[] = $report_to;
-		  $this->get_breadcrumb($report_to);
+		  if($report_to){
+			//echo $report_to.'<br>';
+			// echo "<pre>";
+			// print_r($user_row);
+			// echo "</pre>";
+			// echo $this->db->last_query();
+
+
+			$this->crumb_user[] = $report_to;
+			$this->get_breadcrumb($report_to);
+		  }
 		}else{
 		  //$this->crumb_user[] = $user_id;
 		}
@@ -137,10 +152,12 @@ class Attendance extends CI_Controller {
 		return array_reverse($dates);
 	 } 
 	 public function visit_activity($user_id=0){
-		if(empty($user_id)){
+		$crumb = array();
+		if($user_id != 0){
 			$user_id = $this->session->user_id;
-	  	}
-	  	$crumb  = $this->get_breadcrumb($user_id);    
+		}else{
+			$crumb  = $this->get_breadcrumb($user_id);    			
+		}
 	  	$data['crumb'] = $crumb;        
 	  	$data['current_user'] = $user_id;
 
@@ -174,17 +191,25 @@ class Attendance extends CI_Controller {
 
 /***********************My Team Start***************************/	
 	public function myteam($user_id=0){
+		//$this->output->enable_profiler(TRUE);
+		$crumb = array();
 		if(empty($user_id)){
       		$user_id = $this->session->user_id;
-    	}
-    	$crumb  = $this->get_breadcrumb($user_id);
+    	}else{
+			$crumb  = $this->get_breadcrumb($user_id);
+		}
+		// echo "hello world";
+		// exit;
     	$data['crumb'] = $crumb;
     	$data['current_user'] = $user_id;
  		$this->load->model('report_model');
- 		$data['title'] = 'Team Visits';
+ 		$data['title'] = 'Team Visits';				
 		$data['employee'] = $this->report_model->all_company_employee($this->session->userdata('companey_id'));
+
         $data['user_roles'] = $this->db->select('use_id,user_role')->where(array('comp_id'=>$this->session->userdata('companey_id')))->get('tbl_user_role')->result();
+
         $data['user_region'] = $this->db->select('region_id,name')->where(array('comp_id'=>$this->session->userdata('companey_id')))->get('sales_region')->result();		
+
 		$desi		=	$this->input->post('designation');
 		$region		=	$this->input->post('region');
 		$from	= $data['from']	=	$this->input->post('att_date_from')??date('Y-m-d');
