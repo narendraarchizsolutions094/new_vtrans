@@ -98,8 +98,11 @@ class Visit_datatable_model extends CI_Model{
         $this->db->where("tbl_visit.comp_id",$this->session->companey_id);
         $this->db->order_by("tbl_visit.created_at",'DESC');
         $where="";
+    
+	$create_user_id = array($this->session->user_id);
 
         $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+		$where .= " OR tbl_visit.user_id IN (".implode(',', $create_user_id).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
 		
 /* $ids = array('40805', '40807', '40856');
