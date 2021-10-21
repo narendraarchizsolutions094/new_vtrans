@@ -865,11 +865,15 @@ class location extends CI_Controller {
                     }
                     $this->db->where('booking_branch', $b_branch_id);
                     $this->db->where('delivery_branch', $d_branch_id);
-                    $this->db->where('rate', $filesop[2]);
+					$this->db->where('type', 'branch');
+                    //$this->db->where('rate', $filesop[2]);
                     $id5 = $this->db->get('branchwise_rate');
                     $id6 = $id5->num_rows();
                     if ($id6 > 0) {
-                        $rate_id = $id5->row()->id;
+						$rate_id = $id5->row()->id;
+                        $this->db->set('rate', $filesop[2]);
+						$this->db->where('id', $rate_id);
+                        $this->db->update('branchwise_rate');
                     } else {
                         $this->db->set('booking_branch', $b_branch_id);
                         $this->db->set('delivery_branch', $d_branch_id);
