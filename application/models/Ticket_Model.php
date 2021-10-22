@@ -204,7 +204,7 @@ class Ticket_Model extends CI_Model
                     $assign_to = $assign_repuser->report_to;					
 				}
 				}else{
-					$assign_to = $this->session->user_id;
+					$assign_to = '2173';
 				}
 				//print_r($assign_to);exit;
 //End				
