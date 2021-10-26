@@ -3766,7 +3766,9 @@ echo  $details1;
             $this->db->update('tbl_expense');
 			}
 		     */
-		    //End								
+		    //End	
+$en_title = $this->db->select('title')->from('enquiry_status')->where('status_id',$res->enq_type)->get()->row();
+		
             $visit_totalexp= $this->db->where(array('tbl_expense.visit_id'=> $res->vids))->count_all_results('tbl_expense');
             $visit_reject= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 1))->count_all_results('tbl_expense');
             $visit_approve= $this->db->where(array('tbl_expense.visit_id'=> $res->vids,'approve_status' => 2))->count_all_results('tbl_expense');
@@ -3785,7 +3787,6 @@ echo  $details1;
                         $expstatus='Partial';
                     }         
              }
-
             if(!empty($_POST['expensetype']))
             {
                         $type = $_POST['expensetype'];
@@ -3905,8 +3906,6 @@ echo  $details1;
             $sub[] = $res->employee;
         }
         
-            
-
                 
         if($colsall || in_array(11,$cols))
         $sub[] = '<span class="diff">'.round(abs($percentChange)).'</span>';
@@ -3923,7 +3922,6 @@ echo  $details1;
         if($colsall || in_array(20,$cols)){         
             $sub[] = '<span class="expstatus">'.$expstatus.'<span>';
         }
-
                 
         if($colsall || in_array(21,$cols)){  
             $sub[] = $res->region_name??'NA';                
@@ -3935,7 +3933,7 @@ echo  $details1;
             $sub[] = $res->area_name??'NA'; 
         }
         if($colsall || in_array(24,$cols)){                 
-            $sub[] = $res->enquiry_status_title??'NA';                
+            $sub[] = $en_title->title??'NA';                
         }
         if($colsall || in_array(25,$cols)){                         
             if(!empty($res->start_time) && !empty($res->end_time)){
@@ -3982,6 +3980,7 @@ echo  $details1;
             "totaltravelExp" =>$visit_expSum_s,
             "totalExpense" =>$total_expSum_s,
         );
+		//print_r($output);exit;
         echo json_encode($output);
     }
 
