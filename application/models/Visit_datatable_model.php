@@ -85,7 +85,7 @@ class Visit_datatable_model extends CI_Model{
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id');
         $this->db->join('enquiry_status','enquiry.status=enquiry_status.status_id');
-        $this->db->join('city','enquiry.city_id=city.id','left');
+        $this->db->join('city','enquiry.city_id=city.id');
         $this->db->join('branch','branch.branch_id=enquiry.sales_branch');
         $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region');
 		$this->db->join('sales_region as s_r','s_r.region_id=tbl_admin.sales_region');
