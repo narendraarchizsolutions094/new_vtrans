@@ -85,6 +85,13 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                       <label>
                       <input type="checkbox" value="region_type_filter" id="regioncheckbox" name="filter_checkbox" <?php if(in_array('region_type_filter',$variable)){echo'checked';} ?>> Region Name</label>
                     </li>
+					
+					<li>
+                      <label>
+                      <input type="checkbox" value="createdby" id="createdbycheckbox" name="filter_checkbox" <?php if(in_array('createdby',$variable)){echo'checked';} ?>> Created By</label>
+                    </li>
+					
+					
                    
                     <!--  <li>
                       <label>
@@ -206,6 +213,19 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
                 </select>
         </div>
     </div>
+	
+	<div class="form-group col-md-3" id="createdby" style="<?php if(!in_array('createdby',$variable)){echo'display:none';} ?>">
+                          <label for="">Created By</label>
+                         <select name="createdby" class="d_filter form-control"> 
+                          <option value="">Select</option>
+                         <?php 
+                          if (!empty($created_bylist)) {
+                              foreach ($created_bylist as $createdbylist) {?>
+                              <option value="<?=$createdbylist->pk_i_admin_id;?>" <?php if(!empty($_GET['employee']) && $createdbylist->pk_i_admin_id == $_GET['employee']){ echo "selected=selected"; } ?>  ><?=$createdbylist->s_display_name.' '.$createdbylist->last_name;?> -  <?=$createdbylist->s_user_email?$createdbylist->s_user_email:$createdbylist->s_phoneno;?>                               
+                              </option>
+                              <?php }}?>    
+                         </select>                       
+                        </div>
 
     <div class="col-lg-3" id="booking_branch_filter" style="<?php if(!in_array('booking_branch_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
@@ -492,7 +512,8 @@ $(document).ready(function(){
                      d.date_to = $("input[name=d_to_date]").val();
                      d.enq_for = $("select[name=d_enquiry_id]").val();
                      d.booking_type = $("select[name=d_booking_type]").val();
-					           d.region_type = $("select[name=d_region_type]").val();
+					 d.region_type = $("select[name=d_region_type]").val();
+					 d.created_by = $("select[name=createdby]").val();
                      d.company = $("select[name=d_company]").val();
                      d.emp_filter = $("input[name=filter_emp]").val();
                      // d.from_date = obj[0]['value'];

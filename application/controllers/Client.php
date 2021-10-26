@@ -2374,6 +2374,11 @@ public function all_update_expense_status()
         $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
 		$data['region']=$this->db->where('comp_id',$this->session->companey_id)->get('sales_region')->result();
         $data['company_list'] = $this->Client_Model->getCompanyList()->result();
+		if($this->session->companey_id == 65 && $this->session->user_right == 215){
+            $data['created_bylist'] = $this->User_model->read(147,false);
+        }else{
+            $data['created_bylist'] = $this->User_model->read();
+        }
         $data['content'] = $this->load->view('enquiry/deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }

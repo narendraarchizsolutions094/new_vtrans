@@ -169,6 +169,15 @@ class Deals_datatable_model extends CI_Model{
             $where.=" (tbl_admin.sales_region ='".$_POST['region_type']."' ) ";
             $and =1;
         }
+		
+		if(!empty($_POST['created_by']))
+        {
+              if($and)
+                $where.=" and ";
+
+            $where.=" (tbl_admin.pk_i_admin_id ='".$_POST['created_by']."' ) ";
+            $and =1;
+        }
 
         if(!empty($_POST['booking_branch']))
         {
