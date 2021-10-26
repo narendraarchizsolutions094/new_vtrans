@@ -82,17 +82,17 @@ class Visit_datatable_model extends CI_Model{
         //$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1" AND tbl_expense.approve_status = "2" ) as visit_expSum');
 		$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1") as visit_expSum');
         $this->db->from($this->table);
-        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id');
-        $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id');
-        $this->db->join('enquiry_status','enquiry.status=enquiry_status.status_id');
-        $this->db->join('city','enquiry.city_id=city.id');
-        $this->db->join('branch','branch.branch_id=enquiry.sales_branch');
-        $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region');
-		$this->db->join('sales_region as s_r','s_r.region_id=tbl_admin.sales_region');
-        $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area');
-        $this->db->join('tbl_company','tbl_company.id=enquiry.company');
-        $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id');
-		$this->db->join('discount_matrix','discount_matrix.id=tbl_admin.discount_id');
+        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id','left');
+        $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
+        $this->db->join('enquiry_status','enquiry.status=enquiry_status.status_id','left');
+        $this->db->join('city','enquiry.city_id=city.id','left');
+        $this->db->join('branch','branch.branch_id=enquiry.sales_branch','left');
+        $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region','left');
+		$this->db->join('sales_region as s_r','s_r.region_id=tbl_admin.sales_region','left');
+        $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area','left');
+        $this->db->join('tbl_company','tbl_company.id=enquiry.company','left');
+        $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id','left');
+		$this->db->join('discount_matrix','discount_matrix.id=tbl_admin.discount_id','left');
 
         // $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$this->session->companey_id);
