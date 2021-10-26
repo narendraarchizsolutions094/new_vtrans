@@ -83,7 +83,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 					
 					<li>
                       <label>
-                      <input type="checkbox" value="region_type_filter" id="regioncheckbox" name="filter_checkbox" <?php if(in_array('region_type_filter',$variable)){echo'checked';} ?>> Region Name</label>
+                      <input type="checkbox" value="region_type_filter" id="regioncheckbox" name="filter_checkbox" <?php if(in_array('region_type_filter',$variable)){echo'checked';} ?>> Employee Region</label>
                     </li>
 					
 					<li>
@@ -420,7 +420,7 @@ function manage_filters()
                 <!--<th id="th-2">Branch Type</th> -->
                   <th id="th-3">Business Type</th>
                   <th id="th-4">Booking Type</th>
-				  <th id="th-27">Region Name</th>
+				  <th id="th-27">Employee Region</th>
                 <!--<th id="th-5">Booking Branch</th>
                   <th id="th-6">Delivery Branch</th>
                   <th id="th-7">Rate</th>
