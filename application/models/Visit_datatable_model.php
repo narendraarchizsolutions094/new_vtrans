@@ -86,10 +86,10 @@ class Visit_datatable_model extends CI_Model{
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id');
         $this->db->join('enquiry_status','enquiry.status=enquiry_status.status_id');
         $this->db->join('city','enquiry.city_id=city.id','left');
-        $this->db->join('branch','branch.branch_id=enquiry.sales_branch','left');
-        $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region','left');
-		$this->db->join('sales_region as s_r','s_r.region_id=tbl_admin.sales_region','left');
-        $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area','left');
+        $this->db->join('branch','branch.branch_id=enquiry.sales_branch');
+        $this->db->join('sales_region','sales_region.region_id=enquiry.sales_region');
+		$this->db->join('sales_region as s_r','s_r.region_id=tbl_admin.sales_region');
+        $this->db->join('sales_area','sales_area.area_id=enquiry.sales_area');
         $this->db->join('tbl_company','tbl_company.id=enquiry.company');
         $this->db->join('tbl_client_contacts contact','contact.cc_id=tbl_visit.contact_id');
 		$this->db->join('discount_matrix','discount_matrix.id=tbl_admin.discount_id');
