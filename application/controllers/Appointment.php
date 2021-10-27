@@ -418,6 +418,6 @@ class Appointment extends CI_Controller {
         }
     }
     function helo(){
-        echo "string is";
+        echo "string";
     }
 }
