@@ -19,6 +19,19 @@ class Setting extends REST_Controller {
             'message' => $lang  
            ], REST_Controller::HTTP_OK);  
     }
+	
+	public function get_app_labels_post(){
+        $comp_id = $this->input->post('comp_id');
+        $this->db->where('comp_id',$comp_id);
+		$this->db->where('for_app','1');
+        $this->db->or_where('comp_id',0);
+        $lang    =  $this->db->get('language')->result_array();
+  
+        $this->set_response([
+            'status' => false,
+            'message' => $lang  
+           ], REST_Controller::HTTP_OK);  
+    }
 
    
 } 
