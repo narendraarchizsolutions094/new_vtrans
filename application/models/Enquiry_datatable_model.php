@@ -279,7 +279,8 @@ class Enquiry_datatable_model extends CI_Model {
         }
 		
 		if(!empty($emp_branch)){
-            $where .= " AND tbl_admin.sales_branch =  '".$emp_branch."' OR tbl_admin.sales_branch =  '".$emp_branch."'";                                                
+            //$where .= " AND tbl_admin.sales_branch =  '".$emp_branch."' OR tbl_admin.sales_branch =  '".$emp_branch."'";
+            $where .= " AND FIND_IN_SET($emp_branch, tbl_admin.sales_branch) OR FIND_IN_SET($emp_branch, tbl_admin.sales_branch)";			
         }
 		
 		if(!empty($client_type)){

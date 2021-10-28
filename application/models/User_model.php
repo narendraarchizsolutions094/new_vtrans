@@ -63,7 +63,8 @@ class User_model extends CI_Model {
 		$this->db->where('sales_area', $area);
 		}
 		if(!empty($branch)){
-		$this->db->where('sales_branch', $branch);
+		//$this->db->where_in('sales_branch', $branch);
+		$this->db->where("FIND_IN_SET(".$branch.", sales_branch)");
 		}
 		if(!empty($dept)){
 		$this->db->where('dept_name', $dept);

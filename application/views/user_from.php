@@ -210,7 +210,7 @@
                                 </div> 
                                 <div class="form-group col-md-4">
                                     <label class="control-label" for="process">Product</label>                                   
-                                    <select data-placeholder="Begin typing a name to filter..." multiple class="form-control chosen-select" name="product[]">
+                                    <select data-placeholder="Begin typing a name to filter..." multiple class="form-control" name="product[]">
                                         <option value=""></option>
 										<?php foreach($products_list as $val) { ?>
                                         <option value="<?= $val->id ?>" <?php $cid=explode(',',$department->products); foreach($cid as $cc){if ($cc == $val->id)echo 'selected'; }?>><?php echo $val->country_name; ?></option>
@@ -380,11 +380,10 @@
 								
 								<div class="form-group col-md-4">
                                     <label class="control-label" for="sales_branch"><?= 'Employee branch'; ?></label> 									
-                                    <select class="form-control" name="sales_branch" id="filtered_branch">
-                                    <option value="0"> --- Select --- </option>
+                                    <select class="form-control" data-placeholder="Begin typing a name to filter..." multiple name="sales_branch[]" id="filtered_branch">
                                         <?php  if (!empty($branch_lists)) {
                                             foreach ($branch_lists as $key => $value) { ?>
-                                                <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $department->sales_branch){ echo "selected";} ?>><?= $value->branch_name;?></option>
+												<option value="<?= $value->branch_id ?>" <?php $bid=explode(',',$department->sales_branch); foreach($bid as $bb){if ($bb == $value->branch_id)echo 'selected'; }?>><?php echo $value->branch_name; ?></option>
                                             <?php
                                             }
                                         } ?>

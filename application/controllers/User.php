@@ -102,14 +102,14 @@ class User extends CI_Controller
 		$employee_dept          =   !empty($enquiry_filters_sess['createdbydept'])?$enquiry_filters_sess['createdbydept']:'';
 		$employee_region        =   !empty($enquiry_filters_sess['sales_region'])?$enquiry_filters_sess['sales_region']:'';
 		
-        $this->db->select("CONCAT(tadmin.s_display_name, tadmin.last_name) as rep_to,user.valid_upto,user.user_id,tbl_admin.*,tbl_user_role.user_role as user_role_title,sales_region.name as region,sales_area.area_name as area,branch.branch_name as branch,tbl_department.dept_name as department,discount_matrix.name as grade");
+        $this->db->select("CONCAT(tadmin.s_display_name, tadmin.last_name) as rep_to,user.valid_upto,user.user_id,tbl_admin.*,tbl_user_role.user_role as user_role_title,sales_region.name as region,sales_area.area_name as area,tbl_admin.sales_branch,tbl_department.dept_name as department,discount_matrix.name as grade");
         $this->db->from('tbl_admin');
         $this->db->join('user', 'user.user_id = tbl_admin.companey_id');
 		$this->db->join('tbl_admin tadmin', 'tadmin.pk_i_admin_id = tbl_admin.report_to','left');
 		$this->db->join('tbl_user_role', 'tbl_user_role.use_id=tbl_admin.user_type', 'left');
         $this->db->join('sales_region', 'sales_region.region_id=tbl_admin.sales_region', 'left');
 		$this->db->join('sales_area', 'sales_area.area_id=tbl_admin.sales_area', 'left');
-		$this->db->join('branch', 'branch.branch_id=tbl_admin.sales_branch', 'left');
+		//$this->db->join('branch', 'branch.branch_id=tbl_admin.sales_branch', 'left');
 		$this->db->join('tbl_department', 'tbl_department.id=tbl_admin.dept_name', 'left');
 		$this->db->join('discount_matrix', 'discount_matrix.id=tbl_admin.discount_id', 'left');
         if (!empty($sep_arr)) {
@@ -194,6 +194,18 @@ class User extends CI_Controller
                     $process .= $value['product_name'].', ';
                 }
             }
+//For branch			
+			$branches = '';
+            $branches_arr = explode(',', $department->sales_branch);
+            $this->db->select('branch_name');
+            $this->db->where_in('branch_id', $branches_arr);
+            $b_res    =   $this->db->get('branch')->result_array();
+            if (!empty($b_res)) {
+                foreach ($b_res as $key => $value) {
+                    $branches .= $value['branch_name'].', ';
+                }
+            }
+			
             if($department->b_status == 1){ 
                 $status= display('active');
             }elseif($department->b_status == 0){
@@ -210,7 +222,7 @@ class User extends CI_Controller
             $sub[] = $department->s_phoneno ?? "NA";
 			$sub[] = $department->region ?? "NA";
 			$sub[] = $department->area ?? "NA";
-			$sub[] = $department->branch ?? "NA";
+			$sub[] = $branches ?? "NA";
 			$sub[] = $department->grade ?? "NA";
 			$sub[] = $department->department ?? "NA";
             $sub[] = $process ?? "NA";
@@ -595,7 +607,7 @@ class User extends CI_Controller
 			
 			'sales_region' => $this->input->post('sales_region', true),
             'sales_area' => $this->input->post('sales_area', true),
-			'sales_branch' => $this->input->post('sales_branch', true),
+			'sales_branch' => !empty($this->input->post('sales_branch', true)) ? implode(',', $this->input->post('sales_branch', true)) : '',
 			'dept_name' => $this->input->post('dept_name', true),
            
             'picture' => (!empty($img) ? $img : $this->input->post('new_file')),

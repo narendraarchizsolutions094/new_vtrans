@@ -417,11 +417,34 @@ foreach($data['branch_lists'] as $branch){
 				$row[] = (!empty($empara->area_name)) ? $empara->area_name : "NA";
 			}
 			if ($showall == true or in_array(35, $acolarr)) {
-				$empbrh = $this->db->select('branch_name')->get_where('branch', array('branch_id' => $each->as_branch))->row();
+			
+			$branches = '';
+            $branches_arr = explode(',', $each->as_branch);
+            $this->db->select('branch_name');
+            $this->db->where_in('branch_id', $branches_arr);
+            $b_res    =   $this->db->get('branch')->result_array();
+            if (!empty($b_res)) {
+                foreach ($b_res as $key => $value) {
+                    $branches .= $value['branch_name'].', ';
+                }
+            }
+				//$empbrh = $this->db->select('branch_name')->get_where('branch', array('branch_id' => $each->as_branch))->row();
 				if(empty($empbrh->branch_name)){
-				$empbrh = $this->db->select('branch_name')->get_where('branch', array('branch_id' => $each->cr_branch))->row();	
+					
+			if(empty($branches)){
+            $branches_arr = explode(',', $each->cr_branch);
+            $this->db->select('branch_name');
+            $this->db->where_in('branch_id', $branches_arr);
+            $b_res    =   $this->db->get('branch')->result_array();
+            if (!empty($b_res)) {
+                foreach ($b_res as $key => $value) {
+                    $branches .= $value['branch_name'].', ';
+                }
+            }	
 				}
-				$row[] = (!empty($empbrh->branch_name)) ? $empbrh->branch_name : "NA";
+				//$empbrh = $this->db->select('branch_name')->get_where('branch', array('branch_id' => $each->cr_branch))->row();	
+				}
+				$row[] = (!empty($branches)) ? $branches : "NA";
 			}
 			
 			if ($showall == true or in_array(36, $acolarr)) {
@@ -451,6 +474,7 @@ foreach($data['branch_lists'] as $branch){
 			$data[] = $row;
 		}
 		$c = $this->enquiry_datatable_model->count_all();
+
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $c,
