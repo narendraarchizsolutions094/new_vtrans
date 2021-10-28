@@ -8,12 +8,10 @@
                 <div class="col-md-2">
                     <label>Filter By From Date<i class="text-danger">*</i></label>                    
                     <?php
-                    if (set_value('att_date_from') || $from || $to) {
+                    if (set_value('att_date_from') || $from) {
                         $from =   !empty($from) ? $from :set_value('att_date_from');                     
-                        $to =   !empty($to) ? $to :set_value('att_date_to');                     
                     }else{
                         $from =  date('Y-m-d');
-                        $to =  date('Y-m-d');
                     }                                                            
                     ?>
                     <input type="date" name="att_date_from" class="form-control" value="<?=$from?>" required>
@@ -21,11 +19,9 @@
                 <div class="col-md-2">
                     <label>To Date<i class="text-danger">*</i></label>                    
                     <?php
-                    if (set_value('att_date_to') || $from || $to) {
-                        $from =   !empty($from) ? $from :set_value('att_date_from');                     
+                    if (set_value('att_date_to') || $to) {                     
                         $to =   !empty($to) ? $to :set_value('att_date_to');                     
                     }else{
-                        $from =  date('Y-m-d');
                         $to =  date('Y-m-d');
                     }                        
                     //echo $to;                

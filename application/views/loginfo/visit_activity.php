@@ -8,8 +8,7 @@
                     <tr>
                         <th>Date</th>
                         <th>Day In</th>
-                        <th>Day Out</th>
-						<!--<th>Active Hours</th>-->						
+                        <th>Day Out</th>						
 						<th>Current Location</th>
 						<th>Map</th>
                     </tr>
@@ -54,8 +53,7 @@
                             <tr>
                                 <td><?php echo $current_date;?></td>                                     
                         		<td><?php if(!empty($user->check_in)){ echo $user->check_in; }else{ echo $user->new_check_in; };?></td>                                     
-                                <td><?php echo $user->check_out;?></td>
-								<!--<td><?php// echo $user->total;?></td>-->								
+                                <td><?php echo $user->check_out;?></td>								
 								<td><?php echo $location;?></td>
 								<td><a href="javascript:void(0)" onclick="get_modal_content(<?=$user->pk_i_admin_id?>,'<?=$current_date?>')" class="btn btn-sm btn-success"><i class="fa fa-map-marker" aria-hidden="true"></i></a></td>
                             </tr>                                
