@@ -835,14 +835,14 @@ class location extends CI_Controller {
             $c = 0;
             while (($filesop = fgetcsv($handle, 1000, ",")) !== false) {
                 if ($c > 0) {
-                    $this->db->where('branch_name', $filesop[0]);
+                    $this->db->where('branch_name', trim($filesop[0]));
                     $this->db->where('comp_id', $this->session->companey_id);
                     $id = $this->db->get('branch');
                     $id1 = $id->num_rows();
                     if ($id1 > 0) {
                         $b_branch_id = $id->row()->branch_id;
                     } else {
-                        $this->db->set('branch_name', $filesop[0]);
+                        $this->db->set('branch_name', trim($filesop[0]));
 						$this->db->set('branch_status', '1');
 						$this->db->set('type', 'branch');
 						$this->db->set('comp_id', $this->session->userdata('companey_id'));
@@ -850,7 +850,7 @@ class location extends CI_Controller {
                         $b_branch_id = $this->db->insert_id();
                     }
                     //$this->db->where('branch_id', $b_branch_id);
-                    $this->db->where('branch_name', $filesop[1]);
+                    $this->db->where('branch_name', trim($filesop[1]));
                     $id2 = $this->db->get('branch');
                     $id3 = $id2->num_rows();
                     if ($id3 > 0) {
@@ -859,7 +859,7 @@ class location extends CI_Controller {
 						$this->db->set('comp_id', $this->session->userdata('companey_id'));
 						$this->db->set('branch_status', '1');
 						$this->db->set('type', 'branch');
-                        $this->db->set('branch_name', $filesop[1]);
+                        $this->db->set('branch_name', trim($filesop[1]));
                         $this->db->insert('branch');
                         $d_branch_id = $this->db->insert_id();
                     }
@@ -871,7 +871,7 @@ class location extends CI_Controller {
                     $id6 = $id5->num_rows();
                     if ($id6 > 0) {
 						$rate_id = $id5->row()->id;
-                        $this->db->set('rate', $filesop[2]);
+                        $this->db->set('rate', trim($filesop[2]));
 						$this->db->where('id', $rate_id);
                         $this->db->update('branchwise_rate');
                     } else {
@@ -881,7 +881,7 @@ class location extends CI_Controller {
 						$this->db->set('created_by', $this->session->userdata('user_id'));
 						$this->db->set('type', 'branch');
 						$this->db->set('rate_status', '0');
-                        $this->db->set('rate', $filesop[2]);
+                        $this->db->set('rate', trim($filesop[2]));
                         $this->db->insert('branchwise_rate');
                         $rate_id = $this->db->insert_id();
                     }
