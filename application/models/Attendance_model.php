@@ -138,7 +138,7 @@ $this->db->join('(select check_in_time,uid,id from tbl_attendance where (DATE(tb
 		 //exit;
 	} */
 	
-	public function myteam_logs($employee,$from='',$desi='',$region='',$user_id=0,$to=''){				
+	public function myteam_logs($employee,$from='',$desi='',$region='',$user_id=0,$to='',$comp_id=''){				
 		
 		if(empty($employee)){
 			$this->db->select('pk_i_admin_id');
