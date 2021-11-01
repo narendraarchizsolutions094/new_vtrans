@@ -132,7 +132,7 @@ class Report extends REST_Controller {
                     'sale_region'   => $value->sale_region,
                     'employee_id'   => $value->employee_id,
                     'employee_name' => $value->s_display_name.' '.$value->last_name,                    
-                   // 'attendance_row'=> $value->attendance_row,
+                   //'attendance_row'=> $value->attendance_row,
                     'check_in'      => $value->check_in??$value->new_check_in,
                     'check_out'      => $value->check_out,
                     'current_location'=>$location,
