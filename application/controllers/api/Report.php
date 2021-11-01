@@ -74,7 +74,7 @@ class Report extends REST_Controller {
         if(!empty($range_arr)){                        
             foreach($range_arr as $rdate){
                 $data['current_date'] = $rdate;						
-                $res = $this->attendance_model->myteam_logs($rdate,$user_id,$rdate,'','',$user_id,$rdate,$comp_id);                
+                $res = $this->attendance_model->myteam_logs($user_id,$rdate,'','',$user_id,$rdate,$comp_id);                
                 if(!empty($res)){
                     $res[0]->date = $rdate;
                     $res_arr[] = $res[0];
@@ -83,7 +83,7 @@ class Report extends REST_Controller {
         }else{
             $data['is_end'] = date('Y-m-d'); 
             $data['current_date'] = $rdate = date('Y-m-d');						
-            $res = $this->attendance_model->myteam_logs($rdate,$user_id,$rdate,'','',$user_id,$rdate,$comp_id);
+            $res = $this->attendance_model->myteam_logs($user_id,$rdate,'','',$user_id,$rdate,$comp_id);
             if(!empty($res)){
                 $res[0]->date = $rdate;
                 $res_arr[] = $res[0];
@@ -132,11 +132,11 @@ class Report extends REST_Controller {
                     'sale_region'   => $value->sale_region,
                     'employee_id'   => $value->employee_id,
                     'employee_name' => $value->s_display_name.' '.$value->last_name,                    
-                    'attendance_row'=> $value->attendance_row,
+                   // 'attendance_row'=> $value->attendance_row,
                     'check_in'      => $value->check_in??$value->new_check_in,
                     'check_out'      => $value->check_out,
                     'current_location'=>$location,
-                    'total'         => $value->total,
+                    //'total'         => $value->total,
                     'waypoints'     => $value->l_end,
                     'user_role'     => $value->user_role,
                     'date'          => $value->date,
