@@ -212,8 +212,12 @@ $this->db->join('(select check_in_time,uid,id from tbl_attendance where (DATE(tb
 		}
 		
 		$this->db->where('tbl_admin.b_status',1);
-		$this->db->where('tbl_admin.companey_id', $this->session->companey_id);
 		
+		if(!empty($comp_id)){
+			$this->db->where('tbl_admin.companey_id', $comp_id);		
+		}else{
+			$this->db->where('tbl_admin.companey_id', $this->session->companey_id);		
+		}
 		if (!empty($employee)) {
 			$this->db->where_in('tbl_admin.pk_i_admin_id', $employee);		
 		}else{
