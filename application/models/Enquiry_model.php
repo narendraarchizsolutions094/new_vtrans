@@ -5194,10 +5194,12 @@ public function insertComInfo($data)
                         //   $fld = 'client_created_date';
 
                         if($key=='date_from')
-                          $this->db->where("STR_TO_DATE(tbl_visit.created_at,'%Y-%m-%d') >=",$value);
+						   $this->db->where($fld.'>=',$value);
+                          //$this->db->where("STR_TO_DATE(tbl_visit.created_at,'%Y-%m-%d') >=",$value);
 
                         if($key=='date_to')
-                          $this->db->where("STR_TO_DATE(tbl_visit.created_at,'%Y-%m-%d') <=",$value);
+							$this->db->where($fld.'<=',$value);
+                          //$this->db->where("STR_TO_DATE(tbl_visit.created_at,'%Y-%m-%d') <=",$value);
 
                         if($key=='for')
                           $this->db->where('enquiry.company',$value);
