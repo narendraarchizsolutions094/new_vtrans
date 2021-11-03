@@ -3765,4 +3765,39 @@ public function find_competitor_info_post(){
     }					
 }
 //End
+
+//For duplicate company group contact alert popup
+public function get_enquiry_id_post(){
+  $company_id = $this->input->post('company_id');
+  $process_id = $this->input->post('process_id')??198;
+  $client_name = $this->input->post('client_name');
+  $user_id = $this->input->post('user_id');
+
+  $this->form_validation->set_rules('company_id','company_id','required|trim');
+  $this->form_validation->set_rules('compId','process_id','required|trim');
+  $this->form_validation->set_rules('userId','client_name','required|trim');
+  $this->form_validation->set_rules('process_id','process_id','required|trim');
+  $this->form_validation->set_rules('user_id','user_id','required|trim');
+
+  $this->db->like('client_name', $client_name,'both',false);
+  $get_enquiry = $this->db->get_where('enquiry',array('created_by' => $user_id,'product_id' => $process_id,'company' => $company_id))->row_array();
+
+  if(!empty($get_enquiry)){
+    $res = array(
+      'enquiry_id' => $get_enquiry['enquiry_id'],
+      'enquiry_code' => $get_enquiry['Enquery_id']
+    );
+
+    $this->set_response([
+      'status' => true,
+      'data' => $res
+      ], REST_Controller::HTTP_OK);
+  }else{
+    $this->set_response([
+      'status' => false,
+      'data' => "",
+      ], REST_Controller::HTTP_OK);
+  }
+}
+//End
 }

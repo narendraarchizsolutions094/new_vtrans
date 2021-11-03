@@ -89,6 +89,11 @@ class Visit_datatable_model extends CI_Model{
         $this->db->select('(SELECT sum(amount) from tbl_expense  where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="2") as visit_otexpSum');
         //$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1" AND tbl_expense.approve_status = "2" ) as visit_expSum');
 		$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1") as visit_expSum');
+		
+//For Manual KM amt count
+        $this->db->select('(SELECT sum(amount) from tbl_expense  where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="2" AND tbl_expense.expense = "5") as visit_otexpSumM');
+		$this->db->select('(select sum(amount) from tbl_expense where tbl_expense.visit_id = tbl_visit.id AND tbl_expense.type="1" AND tbl_expense.expense = "5") as visit_expSumM');
+//End
         $this->db->from($this->table);
         $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id','left');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');

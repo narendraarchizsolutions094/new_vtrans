@@ -3812,9 +3812,26 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
                         }
             }
 
-             $visit_expSum=round(abs($res->visit_expSum));
+             /* $visit_expSum=round(abs($res->visit_expSum));
              $visit_otexpSum=round(abs($res->visit_otexpSum));
-             $total_expSum=round(abs($res->visit_expSum+$res->visit_otexpSum));
+             $total_expSum=round(abs($res->visit_expSum+$res->visit_otexpSum)); */
+// Manual only if not empty
+
+            if(!empty($res->visit_expSumM)){
+                $visit_expSum=round(abs($res->visit_expSumM));
+            }else{
+                $visit_expSum=round(abs($res->visit_expSum));
+            }
+             
+             if(!empty($res->visit_otexpSumM)){
+                $visit_otexpSum=round(abs($res->visit_otexpSumM));
+             }else{
+                $visit_otexpSum=round(abs($res->visit_otexpSum));
+             }
+             
+             $total_expSum=round(abs($visit_otexpSum+$visit_expSum));
+			 
+//End
              $percentChange=0;
             /*$km_rate = $this->user_model->get_user_meta($res->user_id,array('km_rate'));
             if(!empty($km_rate['km_rate'])){$rate= $km_rate['km_rate'];}else{
@@ -3911,13 +3928,13 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
         $sub[] = '<span class="diff">'.round(abs($percentChange)).'</span>';
 
         if($colsall || in_array(8,$cols)){
-            $sub[] = round(abs($res->visit_expSum));
+            $sub[] = round(abs($visit_expSum));
         }
         if($colsall || in_array(18,$cols)){         
-            $sub[] = round(abs($res->visit_otexpSum));
+            $sub[] = round(abs($visit_otexpSum));
         }
         if($colsall || in_array(19,$cols)){         
-            $sub[] = round(abs($res->visit_expSum+$res->visit_otexpSum));
+            $sub[] = round(abs($total_expSum));
         }
         if($colsall || in_array(20,$cols)){         
             $sub[] = '<span class="expstatus">'.$expstatus.'<span>';
