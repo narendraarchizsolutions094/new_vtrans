@@ -181,7 +181,8 @@ class Visit_datatable_model extends CI_Model{
             if($and)
                 $where.=" and ";
 
-            $where.=" enquiry.client_name = '".$_POST['enquiry_id']."'";
+            //$where.=" enquiry.client_name = '".$_POST['enquiry_id']."'";
+			$where.=" enquiry.enquiry_id = '".$_POST['enquiry_id']."'";
             $and =1;
         }
         if(!empty($_POST['createdby']))

@@ -2,7 +2,8 @@
 	<div class="col-md-4 col-sm-4 col-xs-4"> 
         <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>
 		&nbsp;&nbsp;<a href="<?=base_url().'client/userwise_company_list'?>" class="btn btn-primary">Userwise Company</a>
-        <!--<a href="<?=base_url().'compay_profile/company_upload_data'?>" class="btn btn-danger">Add Company</a>-->		  
+        <!--<a href="<?=base_url().'compay_profile/company_upload_data'?>" class="btn btn-danger">Add Company</a>-->
+<a class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#Addbulk" href="javascript:void(0)"> <i class="fa fa-wrench"></i> Update Company Name</a>		
           <?php
           // if(user_access('1010'))
           // {
@@ -12,6 +13,37 @@
           // }
           ?>        
         </div>
+		
+<!----------------------------------------------------Bulk Upload Start-------------------------------->
+<div class="modal fade" id="Addbulk" role="dialog" aria-labelledby="course_upload_label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="">Upload Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="<?= base_url() . 'location/update_company_name' ?>" enctype="multipart/form-data" method='post'>
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="form-group">
+              <label id="label">Choose File </label>
+              <input type="file" name="file" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!----------------------------------------------------bulk Upload End-------------------------------->
 		
 	<div class="btn-group dropdown-filter" style="float:right;margin-right:60px;">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

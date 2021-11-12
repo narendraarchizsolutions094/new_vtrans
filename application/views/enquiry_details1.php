@@ -1289,7 +1289,7 @@ if(user_access('1020'))
             <div class="row" >
 
 <form  id="visit_create_form" action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
-          <div class="row">
+          <!--<div class="row">
                         <div class="form-group col-md-12">
                         <label>Select Visit Type</label>
                         <div class="form-check">
@@ -1299,9 +1299,9 @@ if(user_access('1020'))
                               <input type="radio" name="type" value="2" onchange="handleClick_ch(this);">Future Visit</label>
                           </div>
                         </div>
-                        </div>
+                        </div>-->
     <select style="display: none;" name="enq_id">
-      <option value="<?=$details->enquiry_id?>" selected></option>
+      <option value="<?=$details->Enquery_id?>" selected></option>
     </select>
     <input type="hidden" name="enq_code" value="<?=$details->Enquery_id?>">
                         
@@ -1324,7 +1324,19 @@ if(user_access('1020'))
                       ?>
                     </select>
                 </div>
-                <div class="form-group col-md-6 visit-date col-md-6">     
+        <div class="form-group col-md-6 col-md-6">     
+          <label>Start Location</label>
+          <input type="text" name="start_loc" id="sloc" class="form-control">
+        </div>
+		<div class="form-group col-md-6 col-md-6">     
+          <label>End Location</label>
+          <input type="text" name="end_loc" id="eloc" class="form-control">
+        </div>
+		<div class="form-group col-md-6 col-md-6">     
+          <label>Mannual KM</label>
+          <input type="number" name="mannual_km" id="mkm" class="form-control">
+        </div>
+		<div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
           <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>">
         </div>
@@ -1356,22 +1368,33 @@ if(user_access('1020'))
       <thead>
       <tr>
                   <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
-                  <th id="th-1" width="15%">Visit Date</th>
-                  <th id="th-2" width="15%">Visit Time</th>
-                  <th id="th-13" width="15%">Purpose of meeting</th>
-                  <th id="th-10">Company group name</th>
+				  <th id="th-1" width="15%">Visit Date</th>
+				  <th id="th-2" width="15%">Visit Time</th>
+				  <th id="th-13" width="15%">Purpose of meeting</th>
+				  <th id="th-10">Company group name</th>
                   <th id="th-14">Client Name</th>
                   <th id="th-15">Contact Person</th>
                   <th id="th-16">Start Location</th>
                   <th id="th-17">End Location</th>
-                  <th id="th-4">Shortest Distance</th>
-                  <th id="th-5">Actual Distancee</th>
-                  <th id="th-6">Rating</th>
-                  <th id="th-11" >Difference (%)</th>
-                  <th >Travel Expense</th>
-                  <th>Other Expense</th>
-                  <th>Total Expense</th>
-                  <th>Expense Staus</th>
+				  <th id="th-4">Shortest Distance</th>
+				  <th id="th-5">Actual Distance</th>
+				  <th id="th-30">Manual Distance</th>
+				  <th id="th-6">Rating</th>
+				  <th id="th-28">Remark</th>
+				  <th id="th-29">Employee Region</th>
+				  <th id="th-7">Employee</th>
+				  <th id="th-11" >Difference (%)</th>
+				  <th id="th-8">Travel Expense</th>
+				  <th id="th-18">Other Expense</th>
+				  <th id="th-19">Total Expense</th>
+				  <th id="th-20">Expense Staus</th>
+				  <th id="th-21">Region</th>
+				  <th id="th-22">Branch</th>
+				  <th id="th-23">Area</th>
+				  <th id="th-24">Stage Of Call</th>
+				  <th id="th-25">Time Spend</th>
+				  <th id="th-26">City</th>
+				  <th id="th-27">Rate</th>
                   <th id="th-9">Action</th>
                 </tr>
       </thead>

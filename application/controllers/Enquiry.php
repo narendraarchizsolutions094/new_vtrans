@@ -3609,6 +3609,9 @@ echo  $details1;
         if($post = $this->input->post())
         {
 			$m_purpose=$this->input->post('m_purpose');
+			$start_loc=$this->input->post('start_loc');
+			$end_loc=$this->input->post('end_loc');
+			$mannual_km=$this->input->post('mannual_km');
             $visit_type=$this->input->post('type');
             $visit_time=$this->input->post('visit_time');
             $visit_date=$this->input->post('visit_date');
@@ -3619,16 +3622,31 @@ echo  $details1;
                 $visit_date    =   $this->input->post('visit_date');
                 $visit_date = date("Y-m-d",strtotime($visit_date));
             }
+			
+//For Finding user rate 			
+$user_data = $this->db->get_where('tbl_admin',array('pk_i_admin_id' => $this->session->user_id))->row_array();
+$rate_data = $this->db->get_where('discount_matrix',array('id' => $user_data['discount_id']))->row_array();
+   if(!empty($rate_data)){
+      $rate = $rate_data['rate_km'];
+   }else{
+      $rate = 10;
+   }
+//End
+
             //print_r($_POST); 
             $data = array('enquiry_id'=>$this->input->post('enq_id'),
                             'contact_id'=>$this->input->post('contact_id'),
                             'visit_date'=>$visit_date,
                             'visit_time'=>$visit_time,
 							'm_purpose'=>$m_purpose,
+							'start_location'=>$start_loc,
+							'end_location'=>$end_loc,
+							'manual_distence'=>$mannual_km,
+							'user_rate'=>$rate,
                             'comp_id'=>$this->session->companey_id,
                             'user_id'=>$this->session->user_id,
                         );
-			//print_r($data['enquiry_id']);exit;
+			//echo '<pre>';print_r($data);exit;
             $res = $this->Enquiry_model->getEnquiry(array('Enquery_id'=>$data['enquiry_id']))->row();
             
             $mobileno = $res->phone;
@@ -3646,7 +3664,15 @@ echo  $details1;
         //   echo $visit_date;
             $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $visit_time, $enq_code, $notification_id, 'Visit -'.$m_purpose,1,3);
 
-            $this->Client_Model->add_visit($data);
+           $vis_ids = $this->Client_Model->add_visit($data);
+		   
+//For insert expence data
+$comp_id = $this->session->companey_id;
+$user_id = $this->session->user_id;
+$exp_data=['visit_id'=>$vis_ids,'type'=>1,'amount'=>($mannual_km)*$rate,'expense'=>0,'comp_id'=>$comp_id,'created_by'=>$user_id];
+$this->db->insert('tbl_expense',$exp_data);
+//End
+
          $contact=  $this->db->where('cc_id',$data['contact_id'])->get('tbl_client_contacts')->row();
          $cname ='';
          if(!empty($contact))

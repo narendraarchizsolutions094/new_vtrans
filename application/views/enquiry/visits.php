@@ -853,7 +853,7 @@ $("select").select2();
             <div class="row" >
 
 <form id="visit_create_form" action="<?=base_url('enquiry/add_visit')?>" class="form-inner" enctype="multipart/form-data" method="post" accept-charset="utf-8" autocomplete="off">
-          <div class="row">
+          <!--<div class="row">
                 <div class="form-group col-md-12">
                     <label>Select Visit Type</label>
                     <div class="form-check">
@@ -863,12 +863,25 @@ $("select").select2();
                         <input type="radio" name="type" value="2" onclick="handleClick(this);">Future Visit</label>
                     </div>
                   </div>
-                </div>
+                </div>-->
 						
-				        <div class="form-group col-md-6 visit-time col-md-6">     
+				<div class="form-group col-md-6 visit-time col-md-6">     
                     <label>Purpose of meeting <span class="text-danger">*</span></label>
                     <input type="text" name="m_purpose" id="m_purpose" class="form-control" required>
                 </div>
+				
+		<div class="form-group col-md-6 col-md-6">     
+          <label>Start Location</label>
+          <input type="text" name="start_loc" id="sloc" class="form-control">
+        </div>
+		<div class="form-group col-md-6 col-md-6">     
+          <label>End Location</label>
+          <input type="text" name="end_loc" id="eloc" class="form-control">
+        </div>
+		<div class="form-group col-md-6 col-md-6">     
+          <label>Mannual KM</label>
+          <input type="number" name="mannual_km" id="mkm" class="form-control">
+        </div>
 
                 <div class="form-group col-md-6">
                     <label style="width:100%;">Company group name <span class="text-danger">*</span>

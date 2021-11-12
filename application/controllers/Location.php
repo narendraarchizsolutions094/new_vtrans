@@ -933,4 +933,56 @@ class location extends CI_Controller {
         $territory_id = $this->input->post('territory_id');
         echo json_encode($this->location_model->all_city($territory_id));
     }
+	
+//Update Company Group Name
+function update_company_name() {
+        if (!is_dir('assets/csv')) {
+            mkdir('assets/csv', 0777, TRUE);
+        }
+        $filename = "companygnu_" . date('d-m-Y_H_i_s'); //"school_26-07-2018_16_17_51";
+        $config = array(
+            'upload_path' => "assets/csv",
+			//'upload_path' => $_SERVER["DOCUMENT_ROOT"]."/newcrm/vtrans/assets/csv", //For Local host
+            'allowed_types' => "text/plain|text/csv|csv",
+            'remove_spaces' => TRUE,
+            'max_size' => "10000",
+            'file_name' => $filename
+        );
+		//print_r($config);exit;
+        $this->load->library('upload', $config);
+        if ($this->upload->do_upload('file')) {
+            $upload = $this->upload->data();
+            $json['success'] = 1;
+            $filePath = $config['upload_path'] . '/' . $upload['file_name'];
+            $file = $filePath;
+            $handle = fopen($file, "r");
+            $c = 0;
+            while (($filesop = fgetcsv($handle, 1000, ",")) !== false) {
+                if ($c > 0) {
+                    
+					$this->db->select('id');
+                    $this->db->from('tbl_company');
+                    $this->db->like('company_name', $filesop[2], 'none');
+                    $result = $this->db->get()->result();
+					
+					foreach($result as $key => $value){
+                    if (!empty($value->id)) {
+						$this->db->set('company_name', $filesop[4]);
+						$this->db->where('id', $value->id);
+                        $this->db->update('tbl_company');
+                    }
+					}
+					
+                }
+                $c++;
+            }
+            $this->session->set_flashdata('message', "Data successfully Update.");
+            redirect(base_url() . 'client/company_list');
+        } else {
+            $this->session->set_flashdata('error', $this->upload->display_errors());
+            
+            redirect(base_url() . 'client/company_list');
+        }
+    }
+//End
 }
