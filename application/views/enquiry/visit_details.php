@@ -286,7 +286,7 @@ $totalexp += $tamount;
             blink.style.opacity = 
             (blink.style.opacity == 0 ? 1 : 0);
         }, 500); 
-    </script>
+</script>
 <?php } ?>
 <script>
       
