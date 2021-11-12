@@ -155,6 +155,7 @@ foreach ($visittable as $key => $value) { ?>
 // print_r($way_points);
 }
 //new line
+if(!empty($details->all_waypoints)){
 $waypoints[]=$details->all_waypoints; 
 //new line end
 $arr_m=[];
@@ -175,7 +176,7 @@ for ($i=0; $i < $totalpoints; $i+=$cuts) {
  $lastKey = key(array_slice($newpoints, -1, 1, true));
 $firstpoint=$newpoints[0];
 $secondpoint=$newpoints[$lastKey];
-
+}
 ?>
 </tbody>
 </table>
@@ -268,9 +269,25 @@ $totalexp += $tamount;
 <br>
 
 <hr>
-
+<?php if(!empty($details->all_waypoints)){ ?>
 <div id="map" style="width: 100%; height: 800px;"></div>
-
+<?php }else{ ?>
+<style>
+#blink {
+    font-size: 20px;
+  }
+</style>
+<div style="width: 100%; height: 800px;text-align:center;color:red;" id="blink">No Map Found</div>
+<script type="text/javascript">
+        var blink = 
+            document.getElementById('blink');
+  
+        setInterval(function () {
+            blink.style.opacity = 
+            (blink.style.opacity == 0 ? 1 : 0);
+        }, 500); 
+    </script>
+<?php } ?>
 <script>
       
        
