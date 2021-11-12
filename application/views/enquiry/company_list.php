@@ -3,7 +3,7 @@
         <a class="pull-left fa fa-arrow-left btn btn-circle btn-default btn-sm" onclick="history.back(-1)" title="Back"></a>
 		&nbsp;&nbsp;<a href="<?=base_url().'client/userwise_company_list'?>" class="btn btn-primary">Userwise Company</a>
         <!--<a href="<?=base_url().'compay_profile/company_upload_data'?>" class="btn btn-danger">Add Company</a>-->
-<a class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#Addbulk" href="javascript:void(0)"> <i class="fa fa-wrench"></i> Update Company Name</a>		
+<!--<a class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#Addbulk" href="javascript:void(0)"> <i class="fa fa-wrench"></i> Update Company Name</a>-->		
           <?php
           // if(user_access('1010'))
           // {
