@@ -164,6 +164,7 @@ class Enquiry extends REST_Controller {
           if(empty($upd))
           { 
           	$this->form_validation->set_rules('mobileno', 'mobileno', 'required|max_length[20]');
+			$this->form_validation->set_rules('email', 'emailid', 'required|max_length[100]');
             $this->form_validation->set_rules('company_id','company_id', 'trim|required');
             $this->form_validation->set_rules('process_id','process_id', 'trim|required');
           }
