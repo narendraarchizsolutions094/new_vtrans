@@ -798,7 +798,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
             }
             ?>
             <?php
-            if(user_access('1020') && $details->status!='1')
+            if(user_access('1020'))
             {  ?>
             <li href="#vtran_visit" data-toggle="tab" >Visit Details</li>
             <?php
