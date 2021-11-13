@@ -639,7 +639,12 @@ $(window).load(function(){
          </div>
          <div class="modal-body">
             <div class="row" >
-                <div class="form-group col-md-6">
+			        <div class="form-group col-md-6">
+                        <label><?php echo 'Company group name' ?> <i class="text-danger">*</i></label>
+                        <input class="form-control" value="<?php  echo set_value('company');?> " name="company_nm" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)" required>
+						<input class="form-control" name="company" type="hidden">
+                    </div>
+                <!--<div class="form-group col-md-6">
                     <label>Company group name</label>
                     <select class="form-control" name="company" onchange="filter_related_to(this.value)">
                       <option value="-1">Select</option>
@@ -653,7 +658,7 @@ $(window).load(function(){
                       }
                       ?>
                     </select>
-                </div>
+                </div>-->
                 <div class="form-group col-md-6">
                   <label>Client Name <span style="color:red;">*</span> <a href="<?= base_url('enquiry/create?status=1') ?>" target="_blank"  style=" float:right;margin-left: 30px;"> <i class="fa fa-plus-square"> </i></a> </label>
                   <select class="form-control" name="enquiry_id" required onchange="match()">
@@ -812,22 +817,6 @@ function quotation_pdf(info_id) {
 
 <script type="text/javascript">
 
-  function filter_related_to(v)
-  {
-      $.ajax({
-            url:"<?=base_url('client/account_by_company')?>",
-            type:'get',
-            data:{comp_id:v,escape_lead:1},
-            success:function(q){
-              $("select[name=enquiry_id]").html(q);
-               $("select[name=enquiry_id]").trigger('change');
-            }
-      });
-      match();
-  }
-
-
-
 function save_table_conf()
 {
       var x = $(".choose-col:checked");
@@ -911,6 +900,55 @@ $(function() {
 
 });
 $("select").select2();
+
+$(function() {   
+          $("input[name=company_nm]").autocomplete({
+            source: function( request, response ) {
+                 $.ajax({
+                  url: "<?=base_url('enquiry/suggest_company')?>",
+                  type: 'post',
+                  dataType: "json",
+                  data: {
+                   search: request.term
+                  },
+                  success: function( data ) {
+                   response(data);
+                  }
+                 });
+              },
+          });
+        });
+function find_company_id(key)
+{
+    $.ajax({
+            url:"<?=base_url('client/company_by_name')?>",
+            type:'get',
+            data:{key:key},
+            success:function(q){
+              q = q.trim();
+              if(q)
+              {
+				$('input[name=company]').val(q);
+                filter_related_to(q);
+              }
+
+            }
+  });
+}
+
+  function filter_related_to(v)
+  {
+      $.ajax({
+            url:"<?=base_url('client/account_by_company')?>",
+            type:'get',
+            data:{comp_id:v,escape_lead:1},
+            success:function(q){
+              $("select[name=enquiry_id]").html(q);
+               $("select[name=enquiry_id]").trigger('change');
+            }
+      });
+      match();
+  }
 </script>
 <style type="text/css">
   #slider-range
@@ -924,5 +962,8 @@ $("select").select2();
   #slider-range .ui-slider-range
   {
     background: #26c726;
+  }
+  .ui-widget-content{
+	  z-index:99999;
   }
 </style>
