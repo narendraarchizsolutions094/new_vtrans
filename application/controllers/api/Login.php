@@ -258,8 +258,13 @@ class Login extends REST_Controller {
    
    public function auto_check_out_get()
 	{
+	$data = array(
+        'execution_dt'=>date('Y-m-d H:i:s')
+    );
+    $this->db->insert('tbl_checkout_cron',$data);
+	
 	   $get_current_date_users = $this->db->get_where('tbl_attendance',array('DATE(check_in_time)' => date('Y-m-d')))->result_array();
-	  if(!empty($get_current_date_users)){
+	if(!empty($get_current_date_users)){
 		$this->db->where('DATE(check_in_time)',date('Y-m-d'))->where('check_out_time',"0000-00-00 00:00:00")->update('tbl_attendance',array('check_out_time' => date('Y-m-d H:i:s')));
 		// echo $this->db->last_query();die;
 		$att_arr  = array('message'=>'Mark Attendance Out Successfully');

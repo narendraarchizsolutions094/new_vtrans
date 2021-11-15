@@ -309,14 +309,14 @@ class Attendance extends CI_Controller {
 					foreach($range_arr as $rdate){
 						$data['i'] = $i;
 						$data['current_date'] = $rdate;						
-						$data['users_activity'] = $this->attendance_model->myteam_logs($user_id,$rdate,$desi,$region,$user_id,'');
+						$data['users_activity'] = $this->attendance_model->myteam_logs($user_id,$rdate,$desi,$region,$user_id,$rdate);
 						$visit_activity .= $this->load->view('loginfo/visit_activity',$data,true);
 						$i++;
 					}
 				}else{
 					$data['is_end'] = date('Y-m-d');
 					$data['current_date'] = $rdate = date('Y-m-d');						
-					$data['users_activity'] = $this->attendance_model->myteam_logs($user_id,$rdate,$desi,$region,$user_id,'');
+					$data['users_activity'] = $this->attendance_model->myteam_logs($user_id,$rdate,$desi,$region,$user_id,$rdate);
 					$visit_activity .= $this->load->view('loginfo/visit_activity',$data,true);
 				}
 				$data['visit_activity'] = $visit_activity;

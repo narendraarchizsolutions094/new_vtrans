@@ -83,6 +83,8 @@ public function mark_attendance_post(){
         $att_arr  = array('message'=>'Mark Out attendance successfully');
         $where = " uid=$user_id";//AND DATE(check_in_time)=CURDATE() AND id = ". $res_row['id']
         $this->db->where($where);
+		$this->db->order_by("id", "desc");
+		$this->db->limit("1");
         $this->db->update('tbl_attendance',$insert_array2);
         $this->set_response([
                     'status' => true,

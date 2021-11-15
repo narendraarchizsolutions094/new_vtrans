@@ -2066,12 +2066,12 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                         </a>
 
                         <ul class="treeview-menu">
-                            <li
+                            <li style="<?php if(in_array('200a',$module)){ echo 'display:block;';}else{echo 'display:none;';}?>"
                                 class="<?php echo (($segment1 == "attendance" && in_array($segment2, array('logs'))) ? "active" : null) ?>">
                                 <a
                                     href="<?php echo base_url("attendance/logs") ?>"><?php echo display('attendence') ?></a>
                             </li>
-							<li
+							<li style="<?php if(in_array('200mt',$module)){ echo 'display:block;';}else{echo 'display:none;';}?>"
                                 class="<?php echo (($segment1 == "attendance" && in_array($segment2, array('myteam'))) ? "active" : null) ?>">
                                 <a
                                     href="<?php echo base_url("attendance/myteam") ?>"><?php echo 'My Team'; ?></a>
