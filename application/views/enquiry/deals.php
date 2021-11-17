@@ -127,7 +127,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 </div>
 
 
-
+<form method="post" id="deal_filter">
 <div class="row" style=" padding: 5px 0px; <?=!empty($this->uri->segment(3))?'display: none;':''?> <?php if(empty($_COOKIE['deals_filter_setting'])){ echo'display:none'; }  ?>" id="filter_pannel">
 
 <input name='filter_emp' type='hidden' value="<?php if(!empty($_GET['employee'])){ echo $_GET['employee'];  } ?>">
@@ -135,21 +135,21 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 	<div class="col-lg-3">
         <div class="form-group">
           <label>From</label>
-          <input class="d_filter form-control form-date" name="d_from_date" value="<?php if(!empty($_GET['from'])){ echo $_GET['from'];} ?>">
+          <input class="d_filter form-control form-date" name="d_from_date" value="<?=$filterData['d_from_date']=='' || $filterData['d_from_date']=='0000-00-00' ?'':$filterData['d_from_date'] ?>">
         </div>
     </div>
 
       <div class="col-lg-3">
         <div class="form-group">
           <label>To</label>
-           <input  class="d_filter form-control form-date" name="d_to_date" value="<?php if(!empty($_GET['to'])){ echo $_GET['to'];} ?>">
+           <input  class="d_filter form-control form-date" name="d_to_date" value="<?=$filterData['d_to_date']=='' || $filterData['d_to_date']=='0000-00-00' ?'':$filterData['d_to_date'] ?>">
         </div>
       </div>
  </div>
  <div class="col-lg-3"  id="companyfilter" style="<?php if(!in_array('companyfilter',$variable)){ echo 'display:none'; } ?>">
         <div class="form-group">
           <label>Company group name</label>
-          <select class="d_filter form-control" name="d_company">
+          <select class="d_filter form-control" name="d_company" id="d_reset_company">
             <option value="">Select</option>
             <?php
             if(!empty($company_list))
@@ -157,7 +157,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
               foreach ($company_list as $row) 
               {  
                 $row  = (array)$row;
-                echo'<option value="'.$row['id'].'">'.$row['company_name'].'</option>';
+                echo'<option value="'.$row['id'].'" '.(($row['id']==$filterData['d_company'])?"selected":"").'>'.$row['company_name'].'</option>';
               }
             }
             ?>
@@ -167,7 +167,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
     <div class="col-lg-3"  id="for" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Client Name</label>
-        	<select class="d_filter form-control" name="d_enquiry_id">
+        	<select class="d_filter form-control" name="d_enquiry_id" id="d_reset_enquiry_id">
         		<option value="">Select</option>
         		<?php
         		if(!empty($all_enquiry))
@@ -175,7 +175,7 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
         			foreach ($all_enquiry as $row) 
         			{  
                 $row  = (array)$row;
-        				echo'<option value="'.$row['enquiry_id'].'">'.$row['client_name'].'</option>';
+        				echo'<option value="'.$row['enquiry_id'].'" '.(($row['enquiry_id']==$filterData['d_enquiry_id'])?"selected":"").'>'.$row['client_name'].'</option>';
         			}
         		}
         		?>
@@ -193,10 +193,10 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
     <div class="col-lg-3" id="booking_type_filter" style="<?php if(!in_array('booking_type_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Booking Type</label>
-           <select class="d_filter form-control" name="d_booking_type">
+           <select class="d_filter form-control" name="d_booking_type" id="d_reset_booking_type">
                     <option value="" selected>-Select-</option>
-                    <option value="sundry">Sundry</option>
-                    <option value="ftl" >FTL</option>
+                    <option value="sundry" <?php if($filterData['d_booking_type']=='sundry') {echo 'selected';}?>>Sundry</option>
+                    <option value="ftl" <?php if($filterData['d_booking_type']=='ftl') {echo 'selected';}?>>FTL</option>
                 </select>
         </div>
     </div>
@@ -204,11 +204,11 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 	<div class="col-lg-3" id="region_type_filter" style="<?php if(!in_array('region_type_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Region Name</label>
-           <select class="d_filter form-control" name="d_region_type">
+           <select class="d_filter form-control" name="d_region_type" id="d_reset_region_type">
                     <option value="" selected>-Select-</option>
                 <?php 
                 foreach($region as $dregion){ ?>
-                      <option value="<?= $dregion->region_id ?>"><?= $dregion->name ?></option>
+                      <option value="<?= $dregion->region_id ?>" <?php if($dregion->region_id==$filterData['d_region_type']) {echo 'selected';}?>><?= $dregion->name ?></option>
                      <?php }  ?>
                 </select>
         </div>
@@ -216,12 +216,12 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
 	
 	<div class="form-group col-md-3" id="createdby" style="<?php if(!in_array('createdby',$variable)){echo'display:none';} ?>">
                           <label for="">Created By</label>
-                         <select name="createdby" class="d_filter form-control"> 
+                         <select name="createdby" id="d_createdby_reset" class="d_filter form-control"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($created_bylist)) {
                               foreach ($created_bylist as $createdbylist) {?>
-                              <option value="<?=$createdbylist->pk_i_admin_id;?>" <?php if(!empty($_GET['employee']) && $createdbylist->pk_i_admin_id == $_GET['employee']){ echo "selected=selected"; } ?>  ><?=$createdbylist->s_display_name.' '.$createdbylist->last_name;?> -  <?=$createdbylist->s_user_email?$createdbylist->s_user_email:$createdbylist->s_phoneno;?>                               
+                              <option value="<?=$createdbylist->pk_i_admin_id;?>" <?php if($createdbylist->pk_i_admin_id==$filterData['createdby']) {echo 'selected';}?>><?=$createdbylist->s_display_name.' '.$createdbylist->last_name;?> -  <?=$createdbylist->s_user_email?$createdbylist->s_user_email:$createdbylist->s_phoneno;?>                               
                               </option>
                               <?php }}?>    
                          </select>                       
@@ -230,11 +230,11 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
     <div class="col-lg-3" id="booking_branch_filter" style="<?php if(!in_array('booking_branch_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Booking Branch</label>
-          <select class="d_filter form-control" name="d_booking_branch">
+          <select class="d_filter form-control" name="d_booking_branch" id="d_reset_booking_branch">
                   <option value="">-Select-</option>
                 <?php 
                 foreach($branch as $dbranch){ ?>
-                      <option value="<?= $dbranch->branch_id ?>"><?= $dbranch->branch_name ?></option>
+                      <option value="<?= $dbranch->branch_id ?>" <?php if($dbranch->branch_id==$filterData['d_booking_branch']) {echo 'selected';}?>><?= $dbranch->branch_name ?></option>
                      <?php }  ?>
                </select>
         </div>
@@ -243,11 +243,11 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
     <div class="col-lg-3" id="delivery_branch_filter" style="<?php if(!in_array('delivery_branch_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Delivery Branch</label>
-          <select class="d_filter form-control" name="d_delivery_branch">
+          <select class="d_filter form-control" name="d_delivery_branch" id="d_reset_delivery_branch">
                   <option value="">-Select-</option>
                 <?php 
                 foreach($branch as $dbranch){ ?>
-                      <option value="<?= $dbranch->branch_id ?>"><?= $dbranch->branch_name ?></option>
+                      <option value="<?= $dbranch->branch_id ?>" <?php if($dbranch->branch_id==$filterData['d_delivery_branch']) {echo 'selected';}?>><?= $dbranch->branch_name ?></option>
                      <?php }  ?>
                </select>
         </div>
@@ -256,10 +256,10 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
   <div class="col-lg-3" id="paymode_filter" style="<?php if(!in_array('paymode_filter',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Paymode</label>
-          <select class="d_filter form-control" name="d_paymode">
+          <select class="d_filter form-control" name="d_paymode" id="d_reset_paymode">
                    <option value="1" selected>Paid</option>
-                   <option value="2" >To-Pay</option>
-                   <option value="3" >Tbb</option>
+                   <option value="2" <?php if($filterData['d_paymode']=='2') {echo 'selected';}?>>To-Pay</option>
+                   <option value="3" <?php if($filterData['d_paymode']=='3') {echo 'selected';}?>>Tbb</option>
                 </select>
         </div>
     </div>
@@ -276,7 +276,13 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
           <div id="slider-range"></div> -->
         </div>
     </div>
+	
+	<div class="form-group col-md-3">
+		<!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="deal_reset_filter();" style="margin: 20px;">Reset</button>-->
+        <button class="btn btn-success" id="save_filterbutton" type="button" onclick="deal_save_filter();" style="margin: 20px;">Save</button>        
+    </div>
 </div>
+</form>
 <script>
   $(document).ready(function(){
     $("#show_analytics").on("click", function(){
@@ -948,6 +954,55 @@ function find_company_id(key)
             }
       });
       match();
+  }
+  
+function deal_save_filter(){
+var form_data = $("#deal_filter").serialize();
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/deal',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'filted data saved',
+  showConfirmButton: false,
+  timer: 500
+});
+
+}
+});
+}
+  
+function deal_reset_filter(){
+$('input[name=d_from_date').val('');
+$('input[name=d_to_date').val('');
+$('#d_reset_company').val(null).trigger("change");
+$('#d_reset_enquiry_id').val(null).trigger("change");
+$('#d_reset_booking_type').val(null).trigger("change");
+$('#d_reset_region_type').val(null).trigger("change");
+$('#d_createdby_reset').val(null).trigger("change");
+$('#d_reset_booking_branch').val(null).trigger("change");
+$('#d_reset_delivery_branch').val(null).trigger("change");
+$('#d_reset_paymode').val(null).trigger("change");
+
+var form_data = $("#deal_filter").serialize();       
+
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/deal',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'filted data Reset',
+  showConfirmButton: false,
+  timer: 500
+});
+}
+});
   }
 </script>
 <style type="text/css">

@@ -1929,7 +1929,7 @@ public function view_editable_aggrement()
     /***********************end Generate aggriment*****************************/
     public function visits()
     {
-         if(user_role('1020') || user_role('1021') || user_role('1022')){
+        if(user_role('1020') || user_role('1021') || user_role('1022')){
             
         }
         $this->load->model('Client_Model');
@@ -1952,6 +1952,7 @@ public function view_editable_aggrement()
         $data['region_list']=$this->Branch_model->sales_region_list()->result();
         $data['area_list']=$this->Branch_model->sales_area_list()->result();
         $data['branch_list']=$this->Branch_model->branch_list()->result();
+		$data['filterData'] = $this->Ticket_Model->get_filterData('vis');
         $data['content'] = $this->load->view('enquiry/visits', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -2379,9 +2380,11 @@ public function all_update_expense_status()
         }else{
             $data['created_bylist'] = $this->User_model->read();
         }
+		$data['filterData'] = $this->Ticket_Model->get_filterData('deal');
         $data['content'] = $this->load->view('enquiry/deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
+	
     public function short_dashboard_count_deals()
     {
         //print_r($_POST); exit();

@@ -131,7 +131,23 @@ class Ticket_Model extends CI_Model
                     'sales_region' =>$value->sales_region??NULL,
                     'sales_area' =>$value->sales_area??NULL,
                     'sales_branch' =>$value->sales_branch??NULL,
-                    'status' =>$value->status??NULL,						
+                    'status' =>$value->status??NULL,
+                    
+				    'clientname' =>$value->clientname??NULL,
+					'assigntodept' =>$value->assigntodept??NULL,
+					'stage' =>$value->stage??NULL,
+					'probability' =>$value->probability??NULL,
+					'aging_rule' =>$value->aging_rule??NULL,
+					'sales_area' =>$value->sales_area??NULL,
+					'sales_branch' =>$value->sales_branch??NULL,
+					'emp_region' =>$value->emp_region??NULL,
+					'emp_area' =>$value->emp_area??NULL,
+					'emp_branch' =>$value->emp_branch??NULL,
+					'client_type' =>$value->client_type??NULL,
+					'business_load' =>$value->business_load??NULL,
+					'industries' =>$value->industries??NULL,
+					'visit_wise' =>$value->visit_wise??NULL,
+					'list_data' =>$value->list_data??NULL					
 					
 			];
 		}else{
@@ -161,13 +177,39 @@ class Ticket_Model extends CI_Model
 					'client_name' =>$value->client_name??NULL,
 					'call_status' =>$value->call_status??NULL,
 					'department' =>$value->department??NULL,
+					
+					'emp_region' =>$value->emp_region??NULL,
+					'branch' =>$value->branch??NULL,
+					'area' =>$value->area??NULL,
+					'region' =>$value->region??NULL,
+					'expensetype' =>$value->expensetype??NULL,
+					'createdby' =>$value->createdby??NULL,
+					'contact' =>$value->contact??NULL,
+					'enquiry_id' =>$value->enquiry_id??NULL,
+					'company' =>$value->company??NULL,
+					'rating' =>$value->rating??NULL,
+					'min' =>$value->min??NULL,
+					'max' =>$value->max??NULL,
+					'from_date' =>$value->from_date??NULL,
+					'to_date' =>$value->to_date??NULL,
+					
+					'd_from_date' =>$value->d_from_date??NULL,
+					'd_to_date' =>$value->d_to_date??NULL,
+					'd_company' =>$value->d_company??NULL,
+					'd_enquiry_id' =>$value->d_enquiry_id??NULL,
+					'd_booking_type' =>$value->d_booking_type??NULL,
+					'd_region_type' =>$value->d_region_type??NULL,
+					'createdby' =>$value->createdby??NULL,
+					'd_booking_branch' =>$value->d_booking_branch??NULL,
+					'd_delivery_branch' =>$value->d_delivery_branch??NULL,
+					'd_paymode' =>$value->d_paymode??NULL,
 		];
 	}
 	}else{
 		if($type==1){
-			$pdata=[ 'cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','clientname' =>'','department' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','createdbydept' =>'','assigntodept' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
+			$pdata=[ 'list_data' =>'','visit_wise' =>'','industries' =>'','business_load' =>'','client_type' =>'','emp_branch' =>'','emp_area' =>'','emp_region' =>'','sales_branch' =>'','sales_area' =>'','aging_rule' =>'','probability' =>'','cust_problam' =>'','from_created' =>'', 'to_created' =>'', 'source' =>'','filter_checkbox' =>'','subsource' =>'','email' =>'','employee' =>'','datasource' => '','company' =>'','clientname' =>'','department' =>'','enq_product' => '','phone' =>'','createdby' =>'','assign' =>'','createdbydept' =>'','assigntodept' =>'','address' =>'','prodcntry' =>'','state' =>'','city' =>'','stage' =>'','top_filter' =>''];
 		}else{
-			$pdata=[ 'call_type' =>'','client_name' =>'','call_status' =>'','cust_problam' =>'','from_created' =>'','to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','createdbydept' =>'','assigntodept' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
+			$pdata=[ 'd_paymode' =>'','d_delivery_branch' =>'','d_booking_branch' =>'','createdby' =>'','d_region_type' =>'','d_booking_type' =>'','d_enquiry_id' =>'','d_company' =>'','d_to_date' =>'','d_from_date' =>'','to_date' =>'','from_date' =>'','max' =>'','min' =>'','rating' =>'','company' =>'','enquiry_id' =>'','contact' =>'','createdby' =>'','expensetype' =>'','region' =>'','area' =>'','branch' =>'','emp_region' =>'','call_type' =>'','client_name' =>'','call_status' =>'','department' =>'','cust_problam' =>'','from_created' =>'','to_created' =>'','update_from_created' =>'','update_to_created' =>'','source' =>'','problem' =>'','priority' =>'','issue' =>'','createdby' =>'','assign' =>'', 'assign_by' =>'','createdbydept' =>'','assigntodept' =>'','prodcntry' =>'', 'stage' =>'', 'sub_stage' =>'', 'ticket_status' =>''];
 	       }
 	}
 	return $pdata;

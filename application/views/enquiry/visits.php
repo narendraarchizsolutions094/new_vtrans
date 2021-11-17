@@ -103,12 +103,13 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 		</div>
 </div>
 
+<form method="post" id="visit_filter" >
 <div class="row" style=" margin: 15px 0px; padding: 15px; <?php if(empty($_COOKIE['visits_filter_setting'])){ echo'display:none'; }  ?>" id="filter_pannel">
 <div id="datefilter" style="<?php if(!in_array('date',$variable)){echo'display:none';} ?>">
 	<div class="col-lg-3"  >
         <div class="form-group">
           <label>From</label>
-          <input class="v_filter form-control form-date" name="from_date" value="<?php if(!empty($_GET['from'])){ echo $_GET['from'];} ?>">
+          <input class="v_filter form-control form-date" name="from_date" value="<?=$filterData['from_date']=='' || $filterData['from_date']=='0000-00-00' ?date("d-m-Y"):$filterData['from_date'] ?>">
        
         </div>
     </div>
@@ -116,7 +117,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
       <div class="col-lg-3" id="tofilter">
         <div class="form-group">
           <label>To</label>
-           <input  class="v_filter form-control form-date" name="to_date" value="<?php if(!empty($_GET['to'])){ echo $_GET['to'];} ?>">
+           <input  class="v_filter form-control form-date" name="to_date" value="<?=$filterData['to_date']=='' || $filterData['to_date']=='0000-00-00' ?date("d-m-Y"):$filterData['to_date'] ?>">
         </div>
       </div>
 </div>
@@ -124,13 +125,13 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
      <div class="col-lg-3" id="ratingfilter" style="<?php if(!in_array('rating',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Rating</label>
-       	<select class="form-control v_filter" name="rating">
+       	<select class="form-control v_filter" name="rating" id="v_reset_rating">
               <option value="">Select</option>
-              <option value="1 star">1 star</option>
-              <option value="2 star"> 2 star</option>
-              <option value="3 star"> 3 star</option>
-              <option value="4 star"> 4 star</option>
-              <option value="5 star"> 5 star</option>
+              <option value="1 star" <?php if($filterData['rating']=='1 star') {echo 'selected';}?>>1 star</option>
+              <option value="2 star" <?php if($filterData['rating']=='2 star') {echo 'selected';}?>> 2 star</option>
+              <option value="3 star" <?php if($filterData['rating']=='3 star') {echo 'selected';}?>> 3 star</option>
+              <option value="4 star" <?php if($filterData['rating']=='4 star') {echo 'selected';}?>> 4 star</option>
+              <option value="5 star" <?php if($filterData['rating']=='5 star') {echo 'selected';}?>> 5 star</option>
             </select>
         </div>
     </div>
@@ -138,7 +139,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         <div class="form-group">
             <!-- <label for="amount">Difference range: <span id="range_value">0 - 100</span></label> -->
             <label>Minimum Difference </label>
-            <input class="form-control" id="min" onkeyup="refresh_table()">
+            <input class="form-control" name="min" id="min" onkeyup="refresh_table()" value="<?=$filterData['min']=='' ?'':$filterData['min'] ?>">
            
         </div>
     </div>
@@ -146,7 +147,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         <div class="form-group">
         
             <label>Maximum Difference</label>
-            <input class="form-control"  id="max" onkeyup="refresh_table()">
+            <input class="form-control"  name="max" id="max" onkeyup="refresh_table()" value="<?=$filterData['max']=='' ?'':$filterData['max'] ?>">
           <!-- <div id="slider-range"></div> -->
         </div>
     </div>
@@ -154,7 +155,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class="col-lg-3" id="companyfilter" style="<?php if(!in_array('company',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Company group name</label>
-        	<select class="v_filter form-control" name="company" onchange="load_filter_account(this.value)">
+        	<select class="v_filter form-control" name="company" id="v_reset_company" onchange="load_filter_account(this.value)">
         		<option value="">Select</option>
         		<?php
         		if(!empty($company_list))
@@ -162,7 +163,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         			foreach ($company_list as $row) 
         			{  
                 $row  = (array)$row;
-        				echo'<option value="'.$row['id'].'">'.$row['company_name'].'</option>';
+        				echo'<option value="'.$row['id'].'" '.(($row['id']==$filterData['company'])?"selected":"").'>'.$row['company_name'].'</option>';
         			}
         		}
         		?>
@@ -173,7 +174,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class="col-lg-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Client Name </label>
-          <select class="v_filter form-control" name="enquiry_id" onchange="load_filter_contact(this.value)">
+          <select class="v_filter form-control" name="enquiry_id" id="v_reset_enquiry_id" onchange="load_filter_contact(this.value)">
             <option value="">Select</option>
             <?php
             if(!empty($all_enquiry))
@@ -182,7 +183,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
               { 
                 if($row->client_name!=''){			  
                 $row  = (array)$row;
-                echo'<option value="'.$row['client_name'].'">'.$row['client_name'].'</option>';
+                echo'<option value="'.$row['client_name'].'" '.(($row['client_name']==$filterData['enquiry_id'])?"selected":"").'>'.$row['client_name'].'</option>';
 				}
               }
             }
@@ -195,7 +196,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class="col-lg-3" id="contactfilter" style="<?php if(!in_array('contact',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Contact Person</label>
-          <select class="v_filter form-control" name="contact" >
+          <select class="v_filter form-control" name="contact" id="v_reset_contact">
             <option value="">Select</option>
             <?php
           $all_contact=  $this->db->where('comp_id',$this->session->companey_id)->get('tbl_client_contacts')->result();
@@ -204,7 +205,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
               foreach ($all_contact as $row) 
               {  
                 $row  = (array)$row;
-                echo'<option value="'.$row['cc_id'].'">'.$row['c_name'].'</option>';
+                echo'<option value="'.$row['cc_id'].'" '.(($row['cc_id']==$filterData['contact'])?"selected":"").'>'.$row['c_name'].'</option>';
               }
             }
             ?>
@@ -214,12 +215,12 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 
     <div class="form-group col-md-3" id="createdbyfilter" style="<?php if(!in_array('createdby',$variable)){echo'display:none';} ?>">
                           <label for="">Created By</label>
-                         <select name="createdby" class="v_filter form-control"> 
+                         <select name="createdby" class="v_filter form-control" id="v_reset_createdby"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($created_bylist)) {
                               foreach ($created_bylist as $createdbylist) {?>
-                              <option value="<?=$createdbylist->pk_i_admin_id;?>" <?php if(!empty($_GET['employee']) && $createdbylist->pk_i_admin_id == $_GET['employee']){ echo "selected=selected"; } ?>  ><?=$createdbylist->s_display_name.' '.$createdbylist->last_name;?> -  <?=$createdbylist->s_user_email?$createdbylist->s_user_email:$createdbylist->s_phoneno;?>                               
+                              <option value="<?=$createdbylist->pk_i_admin_id;?>" <?php if($createdbylist->pk_i_admin_id==$filterData['createdby']) {echo 'selected';}?>><?=$createdbylist->s_display_name.' '.$createdbylist->last_name;?> -  <?=$createdbylist->s_user_email?$createdbylist->s_user_email:$createdbylist->s_phoneno;?>                               
                               </option>
                               <?php }}?>    
                          </select>                       
@@ -229,10 +230,10 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         <label>Expense Status</label>
        	<select class="form-control v_filter" id="expensetype" name="expensetype">
               <option value="">Select</option>
-              <option value="1">Approved</option>
-              <option value="2">Pending</option>
-              <option value="3">Rejected</option>
-              <option value="4">Partial</option>
+              <option value="1" <?php if($filterData['expensetype']=='1') {echo 'selected';}?>>Approved</option>
+              <option value="2" <?php if($filterData['expensetype']=='2') {echo 'selected';}?>>Pending</option>
+              <option value="3" <?php if($filterData['expensetype']=='3') {echo 'selected';}?>>Rejected</option>
+              <option value="4" <?php if($filterData['expensetype']=='4') {echo 'selected';}?>>Partial</option>
             </select>
         </div>
     </div>
@@ -240,13 +241,13 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     <div class='col-md-3' id="regionfilter" style="<?php if(!in_array('region',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Region</label> 
-          <select class="form-control v_filter"  name="region" onchange="find_area();">
+          <select class="form-control v_filter"  name="region" onchange="find_area();" id="v_reset_region">
                 <option value="">Select</option>
                 <?php
                 if(!empty($region_list)){
                   foreach($region_list as $key=>$value){
                     ?>
-                    <option value="<?=$value->region_id?>"><?=$value->name?></option>
+                    <option value="<?=$value->region_id?>" <?php if($value->region_id==$filterData['region']) {echo 'selected';}?>><?=$value->name?></option>
                     <?php
                   }
                 }
@@ -264,7 +265,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                 if(!empty($area_list)){
                   foreach($area_list as $key=>$value){
                     ?>
-                    <option value="<?=$value->area_id?>"><?=$value->area_name?></option>
+                    <option value="<?=$value->area_id?>" <?php if($value->area_id==$filterData['area']) {echo 'selected';}?>><?=$value->area_name?></option>
                     <?php
                   }
                 }
@@ -282,7 +283,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
                 if(!empty($branch_list)){
                   foreach($branch_list as $key=>$value){
                     ?>
-                    <option value="<?=$value->branch_id?>"><?=$value->branch_name?></option>
+                    <option value="<?=$value->branch_id?>" <?php if($value->branch_id==$filterData['branch']) {echo 'selected';}?>><?=$value->branch_name?></option>
                     <?php
                   }
                 }
@@ -294,18 +295,22 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
 	<div class="col-lg-3" id="empregionfilter" style="<?php if(!in_array('emp_region',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label> Employee Region</label>
-           <select class="v_filter form-control" name="emp_region">
+           <select class="v_filter form-control" name="emp_region" id="v_reset_emp_region">
                     <option value="" selected>-Select-</option>
                 <?php 
                 foreach($region_list as $dregion){ ?>
-                      <option value="<?= $dregion->region_id ?>"><?= $dregion->name ?></option>
+                      <option value="<?= $dregion->region_id ?>" <?php if($dregion->region_id==$filterData['emp_region']) {echo 'selected';}?>><?= $dregion->name ?></option>
                      <?php }  ?>
                 </select>
         </div>
     </div>
 
-
+    <div class="form-group col-md-3">
+		<!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="visit_reset_filter();" style="margin: 20px;">Reset</button>-->
+        <button class="btn btn-success" id="save_filterbutton" type="button" onclick="visit_save_filter();" style="margin: 20px;">Save</button>        
+    </div>
 </div>
+</form>
 <script>
 
  function find_area() { 
@@ -663,10 +668,11 @@ function refresh_table_exs(){
 var c = getCookie('visit_allowcols');
 
 var Data = {"from_data":"","to_date":"","from_time":"","to_time":""};
-$(".v_filter").change(function(){
 
+$(".v_filter").change(function(){
  $("#datatable").DataTable().ajax.reload(); 
 });
+
 $(document).ready(function(){
 
 var table2  = $('#datatable').DataTable({ 
@@ -1310,7 +1316,58 @@ function handleClick(myRadio) {
   } 
 }
 
+function visit_save_filter(){
+var form_data = $("#visit_filter").serialize();
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/vis',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'filted data saved',
+  showConfirmButton: false,
+  timer: 500
+});
 
+}
+});
+}
+
+function visit_reset_filter(){
+$('input[name=from_date').val('');
+$('input[name=to_date').val('');
+$('input[name=min').val('');
+$('input[name=max').val('');
+$('#v_reset_emp_region').val(null).trigger("change");
+$('#filtered_branch').val(null).trigger("change");
+$('#filtered_area').val(null).trigger("change");
+$('#v_reset_region').val(null).trigger("change");
+$('#expensetype').val(null).trigger("change");
+$('#v_reset_createdby').val(null).trigger("change");
+$('#v_reset_contact').val(null).trigger("change");
+$('#v_reset_enquiry_id').val(null).trigger("change");
+$('#v_reset_company').val(null).trigger("change");
+$('#v_reset_rating').val(null).trigger("change");
+
+var form_data = $("#visit_filter").serialize();       
+
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/vis',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'filted data Reset',
+  showConfirmButton: false,
+  timer: 500
+});
+}
+});
+  }
 </script>
 <style type="text/css">
   #slider-range

@@ -212,19 +212,19 @@ input[name=lead_stages]{
         <div class="col-lg-12">
             <div class="panel panel-default">
                
-                      <div class="form-row">                       
+                    <div class="form-row">                       
                         <div class="form-group col-md-3" id="fromdatefilter">
                           <label for="from-date"><?php echo display("from_date"); ?></label>
                           <input   class="form-control form-date" id="from-date" name="from_created" style="padding-top:0px;" value="<?=$filterData['from_created']=='' || $filterData['from_created']=='0000-00-00' ?'':$filterData['from_created'] ?>">
                         </div>
                         <div class="form-group col-md-3" id="todatefilter">
                           <label for="to-date"><?php echo display("to_date"); ?></label>
-                          <input   class="form-control form-date" id="to-date" name="to_created" style="padding-top:0px;" value="<?=$filterData['to_created']=='' || $filterData['from_created']=='0000-00-00'?'':$filterData['from_created'] ?>">
+                          <input   class="form-control form-date" id="to-date" name="to_created" style="padding-top:0px;" value="<?=$filterData['to_created']=='' || $filterData['to_created']=='0000-00-00'?'':$filterData['to_created'] ?>">
                         </div>
 						
                         <div class="form-group col-md-3" id="createdbyfilter">
                           <label for="">Created By</label>
-                         <select name="createdby" class="form-control"> 
+                         <select name="createdby" class="form-control" id="created_rest"> 
                           <option value="">--please Select--</option>
                          <?php 
                           if (!empty($created_bylist)) {
@@ -236,7 +236,7 @@ input[name=lead_stages]{
                         </div>
                          <div class="form-group col-md-3" id="calltypefilter">
                           <label for="">Call Type</label>  
-                         <select name="calltype" class="form-control"> 
+                         <select name="calltype" class="form-control" id="call_reset"> 
                           <option value="">--Please Select--</option>
                           <option value="Incoming" <?php if($filterData['call_type']=='Incoming') {echo 'selected';}?>>Incoming</option>
                           <option value="Outgoing" <?php if($filterData['call_type']=='Outgoing') {echo 'selected';}?>>Outgoing</option>						  
@@ -250,7 +250,7 @@ input[name=lead_stages]{
                       </div>
 					  <div class="form-group col-md-3" id="callstatusfilter">
  						<label for="">Call Status</label>
-                        <select class="form-control" name="callstatus">
+                        <select class="form-control" name="callstatus" id="callstatus_reset">
                             <option value="">--Please Select --</option>
                             <option value="1" <?php if($filterData['call_status']==1) {echo 'selected';}?>> New </option>
                             <option value="2" <?php if($filterData['call_status']==2) {echo 'selected';}?>> Old </option>
@@ -258,8 +258,9 @@ input[name=lead_stages]{
                       </div>
 
                       <div class="form-group col-md-3">
+					   <!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>-->
                        <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
-                        </div>  
+                      </div>  
                     </div>
           
             </div>
@@ -873,5 +874,30 @@ success: function(responseData){
 }
 });
 }
-  
+
+function ticket_reset_filter(){
+$('input[name=from_created').val('');
+$('input[name=to_created').val('');
+$('input[name=clientname').val('');
+$('#created_rest').val(null).trigger("change");
+$('#call_reset').val(null).trigger("change");
+$('#callstatus_reset').val(null).trigger("change");
+
+var form_data = $("#log_filter").serialize();       
+
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/log',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'filted data Reset',
+  showConfirmButton: false,
+  timer: 500
+});
+}
+});
+  }  
 </script>

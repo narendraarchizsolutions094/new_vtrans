@@ -722,7 +722,7 @@ display: block;
                         <select name="stage" id="stagerst" class="form-control">
                           <option value="">Select</option>
                           <?php foreach ($all_stage_lists as $stage) {  ?>
-                              <option value="<?= $stage->stg_id ?>"  <?php if($stage->stg_id==$filterData['city']) {echo 'selected';}?>><?php echo $stage->lead_stage_name; ?></option>
+                              <option value="<?= $stage->stg_id ?>"  <?php if($stage->stg_id==$filterData['stage']) {echo 'selected';}?>><?php echo $stage->lead_stage_name; ?></option>
                               <?php } ?>
                         </select>
                       </div>
@@ -892,8 +892,8 @@ display: block;
  						            <label for="">Visit Wise</label>
                         <select class="form-control" name="visit_wise" id="visit_wiserst">
                             <option value="">--Select --</option>
-                            <option value="1"> Visited </option>
-                            <option value="2"> Non Visited </option>
+                            <option value="1" <?php if(!empty($filterData['visit_wise']) && $filterData['visit_wise']=='1') {echo 'selected';}?>> Visited </option>
+                            <option value="2" <?php if(!empty($filterData['visit_wise']) && $filterData['visit_wise']=='2') {echo 'selected';}?>> Non Visited </option>
                         </select>
                       </div>
 					  
@@ -901,17 +901,17 @@ display: block;
  						            <label for="">List Data</label>
                         <select class="form-control" name="list_data" id="list_datarst">
                             <option value="">--Select List--</option>
-                            <option value="1"> Lead </option>
-                            <option value="2"> Approach </option>
-							<option value="3"> Negotiation </option>
-							<option value="4"> Closure </option>
-							<option value="5"> Order </option>
-							<option value="6"> Future Opportunities </option>
+                            <option value="1" <?php if(!empty($filterData['list_data']) && $filterData['list_data']=='1') {echo 'selected';}?>> Lead </option>
+                            <option value="2" <?php if(!empty($filterData['list_data']) && $filterData['list_data']=='2') {echo 'selected';}?>> Approach </option>
+							<option value="3" <?php if(!empty($filterData['list_data']) && $filterData['list_data']=='3') {echo 'selected';}?>> Negotiation </option>
+							<option value="4" <?php if(!empty($filterData['list_data']) && $filterData['list_data']=='4') {echo 'selected';}?>> Closure </option>
+							<option value="5" <?php if(!empty($filterData['list_data']) && $filterData['list_data']=='5') {echo 'selected';}?>> Order </option>
+							<option value="6" <?php if(!empty($filterData['list_data']) && $filterData['list_data']=='6') {echo 'selected';}?>> Future Opportunities </option>
                         </select>
                       </div>
 		
                     <div class="form-group col-md-3">
-					  <button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button> 
+					  <!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>--> 
                       <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
                     </div>  
                     </div>

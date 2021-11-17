@@ -1,3 +1,8 @@
+<style>
+.ui-widget-content{
+	  z-index:99999;
+  }
+ </style>
 <?php
 /* please dont execute below commented code here, it will slow down application*/
 // $ci = &get_instance();
@@ -15,7 +20,7 @@
 <?php
 if(empty($enquiry_id))
 {?>
-   <div class="form-group col-md-6">
+   <!--<div class="form-group col-md-6">
         <label>Company group name</label>
         <select class="form-control" name="company" onchange="load_accounts(this.value)">
           <option value="-1">Select</option>
@@ -30,6 +35,12 @@ if(empty($enquiry_id))
           }
           ?>
         </select>
+    </div>-->
+	
+	<div class="form-group col-md-6">
+        <label><?php echo 'Company group name' ?> <i class="text-danger">*</i></label>
+        <input class="form-control" value="<?php  echo set_value('company');?> " name="company_nm" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)" required>
+		<input class="form-control" name="company" type="hidden">
     </div>
 
    <div class="form-group col-md-6">
@@ -46,8 +57,7 @@ if(empty($enquiry_id))
      		}
      	}
       	?>
-      </select>
-      
+      </select>      
    </div>
 <?php
 }
@@ -130,6 +140,40 @@ function load_accounts(v)
       // });
 }
 
+$(function() {   
+          $("input[name=company_nm]").autocomplete({
+            source: function( request, response ) {
+                 $.ajax({
+                  url: "<?=base_url('enquiry/suggest_company')?>",
+                  type: 'post',
+                  dataType: "json",
+                  data: {
+                   search: request.term
+                  },
+                  success: function( data ) {
+                   response(data);
+                  }
+                 });
+              },
+          });
+        });
+function find_company_id(key)
+{
+    $.ajax({
+            url:"<?=base_url('client/company_by_name')?>",
+            type:'get',
+            data:{key:key},
+            success:function(q){
+              q = q.trim();
+              if(q)
+              {
+				$('input[name=company]').val(q);
+                load_accounts(q);
+              }
+
+            }
+  });
+}
 </script>
 <script>
     function showDivAttid(x){

@@ -279,7 +279,7 @@ input[name=lead_stages]{
                         
                          <div class="form-group col-md-3" id="createdbyfilter">
                           <label for="">Created By</label>
-                         <select name="createdby" class="form-control"> 
+                         <select name="createdby" class="form-control" id="createdby_reset"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($created_bylist)) {
@@ -291,7 +291,7 @@ input[name=lead_stages]{
                         </div>
                          <div class="form-group col-md-3" id="assignfilter">
                           <label for="">Assign To</label>  
-                         <select name="assign" class="form-control"> 
+                         <select name="assign" class="form-control" id="assign_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($created_bylist)) {
@@ -303,7 +303,7 @@ input[name=lead_stages]{
 
                          <div class="form-group col-md-3" id="assign_byfilter">
                           <label for="">Assign By</label>  
-                         <select name="assign_by" class="form-control"> 
+                         <select name="assign_by" class="form-control" id="assign_by_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($created_bylist)) {
@@ -315,7 +315,7 @@ input[name=lead_stages]{
 
                     <div class="form-group col-md-3" id="problamfilter">
                     <label for="">Customer Feedback</label>  
-                    <select name="cust_problam" class="form-control"> 
+                    <select name="cust_problam" class="form-control" id="cust_problam_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($customer_feed)) {
@@ -330,7 +330,7 @@ input[name=lead_stages]{
 
                     <div class="form-group col-md-3" id="regionfilter">
                     <label for="">Sales Region</label>  
-                    <select name="sales_region" class="form-control" onchange="find_area();"> 
+                    <select name="sales_region" class="form-control" onchange="find_area();" id="sales_region_reset"> 
                           <option value="">Select</option>
 				    <?php
                         if (!empty($region_lists)) {
@@ -371,7 +371,7 @@ input[name=lead_stages]{
                    
                    <div class="form-group col-md-3" id="statusfilter">
                     <label for="">FTL Status</label>  
-                    <select name="ticket_status" class="form-control"> 
+                    <select name="ticket_status" class="form-control" id="ticket_status_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($ticket_status)) {
@@ -384,6 +384,7 @@ input[name=lead_stages]{
                     </select> 
                     </div>
                     <div class="form-group col-md-3">
+					<!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="feedback_reset_filter();" style="margin: 20px;">Reset</button>-->
                     <button class="btn btn-success" id="save_filterbutton" type="button" onclick="feedback_save_filter();" style="margin: 20px;">Save</button>        
                         </div>           
                     <!-- </div> -->
@@ -1287,6 +1288,36 @@ success: function(responseData){
 });
 
 
+}
+});
+  }
+  
+function feedback_reset_filter(){
+$('input[name=from_created').val('');
+$('input[name=to_created').val('');
+$('#createdby_reset').val(null).trigger("change");
+$('#assign_reset').val(null).trigger("change");
+$('#assign_by_reset').val(null).trigger("change");
+$('#cust_problam_reset').val(null).trigger("change");
+$('#sales_region_reset').val(null).trigger("change");
+$('#filtered_area').val(null).trigger("change");
+$('#filtered_branch').val(null).trigger("change");
+$('#ticket_status_reset').val(null).trigger("change");
+
+var form_data = $("#feedback_filter").serialize();       
+
+$.ajax({
+url: '<?=base_url()?>ticket/feedback_save_filter/4',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'filted data Reset',
+  showConfirmButton: false,
+  timer: 500
+});
 }
 });
   }

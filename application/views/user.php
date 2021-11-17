@@ -112,7 +112,7 @@
 					  
 					  <div class="form-group col-md-3" id="createdbydeptfilter">
                           <label for="">Department</label>
-                         <select name="createdbydept" class="form-control"> 
+                         <select name="createdbydept" class="form-control" id="dept_reset"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($dept_lists)) {
@@ -125,7 +125,7 @@
 					
 					<div class="form-group col-md-3" id="regionfilter">
                         <label for="">Employee Region</label> 
-                        <select name="sales_region" class="form-control">
+                        <select name="sales_region" class="form-control" id="sales_reset">
                           <option value="">Select</option>
                           <?php
                             foreach ($region_lists as $k=>$v) {  ?>
@@ -133,7 +133,7 @@
                               <?php }                             
                               ?>
                         </select>
-                      </div>
+                    </div>
 
                     <div class="form-row">                      
                         <div class="form-group col-md-3" id="phonefilter">
@@ -153,6 +153,7 @@
                     </div>
 
                       <div class="form-group col-md-3">
+					    <button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button> 
                         <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
                       </div>
             </div>
@@ -667,4 +668,32 @@ else
 }
 $('#user_dlist').DataTable().ajax.reload();
 });
+
+function ticket_reset_filter(){
+$('input[name=from_created').val('');
+$('input[name=to_created').val('');
+$('input[name=email').val('');
+$('input[name=employee').val('');
+$('input[name=phone').val('');
+$('#dept_reset').val(null).trigger("change");
+$('#sales_reset').val(null).trigger("change");
+$('#status').val(null).trigger("change");
+
+var form_data = $("#enq_filter").serialize();       
+
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/1',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'filted data Reset',
+  showConfirmButton: false,
+  timer: 500
+});
+}
+});
+  }
 </script>

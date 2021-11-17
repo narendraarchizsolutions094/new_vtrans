@@ -358,7 +358,7 @@ input[name=lead_stages]{
                         
                          <div class="form-group col-md-3" id="createdbyfilter">
                           <label for="">Created By</label>
-                         <select name="createdby" class="form-control"> 
+                         <select name="createdby" class="form-control" id="createdby_reset"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($created_bylist)) {
@@ -370,7 +370,7 @@ input[name=lead_stages]{
                         </div>
                          <div class="form-group col-md-3" id="assignfilter">
                           <label for="">Assign To</label>  
-                         <select name="assign" class="form-control"> 
+                         <select name="assign" class="form-control" id="assign_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($created_bylist)) {
@@ -382,7 +382,7 @@ input[name=lead_stages]{
 
                          <div class="form-group col-md-3" id="assign_byfilter">
                           <label for="">Assign By</label>  
-                         <select name="assign_by" class="form-control"> 
+                         <select name="assign_by" class="form-control" id="assign_by_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($created_bylist)) {
@@ -397,7 +397,7 @@ input[name=lead_stages]{
                     <!-- <div class="row"> -->
                     <div class="form-group col-md-3" id="prodfilter">
                     <label for="">Products</label>  
-                    <select name="prodcntry" class="form-control"> 
+                    <select name="prodcntry" class="form-control" id="prodcntry_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($prodcntry_list)) {
@@ -409,7 +409,7 @@ input[name=lead_stages]{
                     
                      <div class="form-group col-md-3" id="stagefilter">
                     <label for="">Stage</label>  
-                    <select name="stage" class="form-control"> 
+                    <select name="stage" class="form-control" id="stage_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($stage)) {
@@ -424,7 +424,7 @@ input[name=lead_stages]{
 
                      <div class="form-group col-md-3" id="sub_stagefilter">
                     <label for="">Sub Stage</label>  
-                    <select name="sub_stage" class="form-control"> 
+                    <select name="sub_stage" class="form-control" id="sub_stage_reset"> 
                           <option value="">Select</option>
                          <?php 
                               if (!empty($sub_stage)) {
@@ -439,7 +439,7 @@ input[name=lead_stages]{
                    
                    <div class="form-group col-md-3" id="statusfilter">
                     <label for=""><?=display('ticket')?> Status</label>  
-                    <select name="ticket_status" class="form-control"> 
+                    <select name="ticket_status" class="form-control" id="ticket_status_reset"> 
                           <option value="0">Select</option>
                          <?php 
                               if (!empty($ticket_status)) {
@@ -453,6 +453,7 @@ input[name=lead_stages]{
                     </div> 
                   
                     <div class="form-group col-md-3">
+					<!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>-->
                     <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
                         </div>           
                     <!-- </div> -->
@@ -1434,6 +1435,41 @@ success: function(responseData){
 });
 
 
+}
+});
+  }
+  
+function ticket_reset_filter(){
+$('input[name=from_created').val('');
+$('input[name=to_created').val('');
+$('input[name=update_from_created').val('');
+$('input[name=update_to_created').val('');
+$('#source').val(null).trigger("change");
+$('#problem').val(null).trigger("change");
+$('#priority').val(null).trigger("change");
+$('#issue').val(null).trigger("change");
+$('#createdby_reset').val(null).trigger("change");
+$('#assign_reset').val(null).trigger("change");
+$('#assign_by_reset').val(null).trigger("change");
+$('#prodcntry_reset').val(null).trigger("change");
+$('#stage_reset').val(null).trigger("change");
+$('#sub_stage_reset').val(null).trigger("change");
+$('#ticket_status_reset').val(null).trigger("change");
+
+var form_data = $("#ticket_filter").serialize();       
+
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/2',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'filted data Reset',
+  showConfirmButton: false,
+  timer: 500
+});
 }
 });
   }

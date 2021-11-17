@@ -93,7 +93,7 @@
                          
                         <div class="form-group col-md-3" id="createdbyfilter">
                           <label for="">Created By</label>
-                         <select name="createdby" class="form-control"> 
+                         <select name="createdby" class="form-control" id="create_reset"> 
                           <option value="">Select</option>
                          <?php 
                           if (!empty($created_bylist)) {
@@ -106,7 +106,7 @@
 
                         <div class="form-group col-md-3" id="regionfilter">
                         <label for="">Sales Region</label> 
-                        <select name="sales_region" class="form-control">
+                        <select name="sales_region" class="form-control" id="region_reset">
                           <option value="">Select</option>
                           <?php
                             foreach ($region_lists as $k=>$v) {  ?>
@@ -122,7 +122,7 @@
 
                         <div class="form-group col-md-3" id="deptfilter">
                           <label for="">Select Department</label>
-                            <select name="department" class="form-control">
+                            <select name="department" class="form-control" id="dept_reset">
                               <option value="">---Select---</option>
                               <?php
                             foreach ($dept_lists as $k=>$d) {  ?>
@@ -135,6 +135,7 @@
                     </div>
 
                       <div class="form-group col-md-3">
+					    <!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>-->
                         <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
                       </div>
             </div>
@@ -389,4 +390,28 @@ set_filter_session();
           }
           });
         }
+function ticket_reset_filter(){
+$('input[name=from_created').val('');
+$('input[name=to_created').val('');
+$('#create_reset').val(null).trigger("change");
+$('#region_reset').val(null).trigger("change");
+$('#dept_reset').val(null).trigger("change");
+
+var form_data = $("#enq_filter").serialize();       
+
+$.ajax({
+url: '<?=base_url()?>ticket/ticket_save_filter/1',
+type: 'post',
+data: form_data,
+success: function(responseData){
+  Swal.fire({
+  position: 'top-end',
+  icon: 'warning',
+  title: 'filted data Reset',
+  showConfirmButton: false,
+  timer: 500
+});
+}
+});
+  } 
 </script>
