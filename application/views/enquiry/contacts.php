@@ -30,7 +30,7 @@
 				<table id="contactTable" class="table table-bordered table-response">
 					<thead>               
   	         <tr>
-                <th>&nbsp; # &nbsp;</th>
+                <th>S.No</th>
                 <th id="th-1">Name</th>
                 <th id="th-2" style="width: 20%;">Company group name</th>
                 <th id="th-3" style="width: 20%;">Designation</th>

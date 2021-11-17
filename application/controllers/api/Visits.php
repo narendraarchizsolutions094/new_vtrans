@@ -312,17 +312,17 @@ if(!empty($result))
     	$comp_id = $this->input->post('company_id');
     	$enquiry_id = $this->input->post('enquiry_id');
     	$user_id = $this->input->post('user_id');
-      $contact_id  = $this->input->post('contact_id')??'';
-      $visit_date = $this->input->post('visit_date');
-      $visit_time = $this->input->post('visit_time');
-      $m_purpose = $this->input->post('m_purpose');
-	  $end_point = $this->input->post('end_point')??'';
+        $contact_id  = $this->input->post('contact_id')??'';
+        $visit_date = $this->input->post('visit_date');
+        $visit_time = $this->input->post('visit_time');
+        $m_purpose = $this->input->post('m_purpose');
+	    $end_point = $this->input->post('end_point')??'';
 
     	$this->form_validation->set_rules('company_id','company_id','required|trim');
     	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
         $this->form_validation->set_rules('contact_id','contact_id','required|trim');
     	$this->form_validation->set_rules('user_id','user_id','required|trim');
-      $this->form_validation->set_rules('m_purpose','m_purpose','required|trim');
+        $this->form_validation->set_rules('m_purpose','m_purpose','required|trim');
 
     	if($this->form_validation->run()==true)
     	{

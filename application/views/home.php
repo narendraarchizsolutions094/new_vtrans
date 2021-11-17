@@ -2109,7 +2109,7 @@ $.ajax({
                             new Chart(document.getElementById("process_Monthwise"), {
                                 type: 'bar',
                                 data: {
-                                    labels: ["JUN", "FEB", "MAR", "APR", "MAY", "JUNE",
+                                    labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE",
                                         "JULY", "AUG", "SEP", "OCT", "NOV", "DEC"
                                     ],
                                     datasets: [
