@@ -226,6 +226,90 @@ $this->db->join('(select check_in_time,uid,id from tbl_attendance where (DATE(tb
 		$this->db->group_by('tbl_admin.pk_i_admin_id');
 		return  $this->db->get()->result();
 	}
+	
+	
+	public function myteam_logs_for_app($employee,$from='',$desi='',$region='',$user_id=0,$to='',$comp_id=''){				
+		
+		if(empty($employee)){
+			$this->db->select('pk_i_admin_id');
+			if($user_id){
+				$this->db->where('report_to',$user_id);				
+			}else{
+				$this->db->where('report_to',$this->session->user_id);
+				$user_id = $this->session->user_id;
+			}
+    		$emp_res = $this->db->get('tbl_admin')->result_array();
+
+
+			$employee = array();
+			if(!empty($emp_res)){
+				foreach($emp_res as $key=>$emp){
+					$employee[] = $emp['pk_i_admin_id'];
+				}
+			}else{
+				$urow  = $this->db->select('sibling_id')->where('pk_i_admin_id',$user_id)->get('tbl_admin')->row_array();
+				if(!empty($urow['sibling_id'])){
+
+					$report_to = $urow['sibling_id'];
+					$this->db->where('report_to',$report_to);
+					$emp_res = $this->db->get('tbl_admin')->result_array();
+					foreach($emp_res as $key=>$emp){
+						$employee[] = $emp['pk_i_admin_id'];
+					}
+
+				}
+
+			}
+			$employee[] = $user_id;
+        }
+
+		if(empty($employee)){
+			return false;
+		}
+		
+		$filter_date = $from;
+	    $filter_to = $to;
+		
+		$this->db->select("tbl_user_role.user_role,
+		COUNT(DISTINCT(deal_info.id)) as t_deal,
+		COUNT(DISTINCT(tbl_vis.id)) as t_vis,
+		COUNT(DISTINCT(enquiry.enquiry_id)) as t_enq,
+		tbl_admin.designation,
+		sales_region.name as sale_region,
+		tbl_admin.pk_i_admin_id,
+		tbl_admin.employee_id,
+		tbl_admin.s_display_name,
+		tbl_admin.last_name,");
+		$this->db->from('tbl_admin');
+		$this->db->join('sales_region','sales_region.region_id = tbl_admin.sales_region','left');
+		$this->db->join('tbl_user_role','tbl_user_role.use_id = tbl_admin.user_permissions','left');        
+		$this->db->join('(select enquiry_id,created_by from enquiry where  (DATE(enquiry.created_date) >= "'.$filter_date.'" AND DATE(enquiry.created_date) <= "'.$filter_to.'") ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');
+        $this->db->join('(select id,user_id from tbl_visit where  (STR_TO_DATE(tbl_visit.created_at,"%Y-%m-%d") >= "'.$filter_date.'" AND STR_TO_DATE(tbl_visit.created_at,"%Y-%m-%d") <= "'.$filter_to.'") ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
+        $this->db->join('(select id,createdby from commercial_info where (DATE(commercial_info.creation_date) >= "'.$filter_date.'" AND DATE(commercial_info.creation_date) <= "'.$filter_to.'") ORDER BY commercial_info.id asc) as deal_info','deal_info.createdby = tbl_admin.pk_i_admin_id','left');
+        			
+
+		if (!empty($desi)) {
+			$this->db->where('tbl_user_role.use_id',$desi);
+		}
+		if (!empty($region)) {
+			$this->db->where('sales_region.region_id',$region);
+		}
+		
+		$this->db->where('tbl_admin.b_status',1);
+		
+		if(!empty($comp_id)){
+			$this->db->where('tbl_admin.companey_id', $comp_id);		
+		}else{
+			$this->db->where('tbl_admin.companey_id', $this->session->companey_id);		
+		}
+		if (!empty($employee)) {
+			$this->db->where_in('tbl_admin.pk_i_admin_id', $employee);		
+		}else{
+            $this->db->where_in('tbl_admin.pk_i_admin_id', $employee);
+        }
+		$this->db->group_by('tbl_admin.pk_i_admin_id');
+		return  $this->db->get()->result();
+	}
 /***********************My team Visit End*********************/	
 
 	public function attendance_logs_by_uid($uid){

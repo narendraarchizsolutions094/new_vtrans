@@ -24,9 +24,9 @@ class Report extends REST_Controller {
         }        
         $employee = array();
         $comp_id = $this->input->post('comp_id');
-        $users = $this->attendance_model->myteam_logs($employee,$date,$designation,$region,$user_id,$to,$comp_id);
+        //$users = $this->attendance_model->myteam_logs($employee,$date,$designation,$region,$user_id,$to,$comp_id);
+		$users = $this->attendance_model->myteam_logs_for_app($employee,$date,$designation,$region,$user_id,$to,$comp_id);
         //echo $this->db->last_query();
-		print_r($users);exit;
         $res_arr = array();
         if(!empty($users)){
             foreach($users as $key => $value){
