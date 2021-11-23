@@ -107,16 +107,20 @@ class Deals extends REST_Controller {
                         $this->db->where('request_to_uid',$user_id);
                         $req_log2 = $this->db->get('deal_approval_history')->row_array();
                         if(!empty($req_log2)){
-                            $dst ='3'; //Edited
+							if($req_log2['status'] != ''){
+							   $dst ='0'; //None
+							}else if($req_log2['status'] == ''){
+                               $dst ='3'; //Edited
+							}
                         }else{
-							$dst ='0';
+							   $dst ='3'; //Edited
 						}
                     }
                 }else{
-					$dst ='0';
+					$dst ='0'; //None
 				}
             }else{
-				$dst ='0';
+				$dst ='0'; //None
 			}
 			
               array_push($res['list'],array('dst'=>$dst,'id'=>$value->id,'original'=>$value->original,'name'=>$value->name,'enquery_id'=>$value->enquiry_id,'booking_type'=>$value->booking_type,'business_type'=>$value->business_type.'ward','deal_type'=>$value->deal_type,'company'=>$value->company_name,'client_name'=>$value->client_name,'status'=>$value->status,'creation_date'=>$value->creation_date,'quotation_url'=>base_url('uploads/quotations/quotations_').$value->id.'.pdf','edited'=>$value->edited));  
