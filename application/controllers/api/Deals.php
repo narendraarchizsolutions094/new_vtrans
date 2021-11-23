@@ -90,7 +90,36 @@ class Deals extends REST_Controller {
             
             foreach($data['result']->result() as $value)
             {
-              array_push($res['list'],array('id'=>$value->id,'original'=>$value->original,'name'=>$value->name,'enquery_id'=>$value->enquiry_id,'booking_type'=>$value->booking_type,'business_type'=>$value->business_type.'ward','deal_type'=>$value->deal_type,'company'=>$value->company_name,'client_name'=>$value->client_name,'status'=>$value->status,'creation_date'=>$value->creation_date,'quotation_url'=>base_url('uploads/quotations/quotations_').$value->id.'.pdf','edited'=>$value->edited));  
+			
+			if($value->original=='1'){
+                $this->db->where('deal_id',$value->id);
+                $this->db->where('request_from_uid',$user_id);
+                $req_log = $this->db->get('deal_approval_history')->row_array();
+                if($value->edited=='1' && ($value->approval=='pending' || $value->approval == '')){                
+                    if(!empty($req_log)){
+                        if($req_log['status'] == ''){
+                            $dst  ='1'; //Send For Approval 
+                        }else if($req_log['status'] == 'pending'){
+                            $dst ='2'; //Waiting for approval
+                        }
+                    }else{                     
+                        $this->db->where('deal_id',$value->id);
+                        $this->db->where('request_to_uid',$user_id);
+                        $req_log2 = $this->db->get('deal_approval_history')->row_array();
+                        if(!empty($req_log2)){
+                            $dst ='3'; //Edited
+                        }else{
+							$dst ='0';
+						}
+                    }
+                }else{
+					$dst ='0';
+				}
+            }else{
+				$dst ='0';
+			}
+			
+              array_push($res['list'],array('dst'=>$dst,'id'=>$value->id,'original'=>$value->original,'name'=>$value->name,'enquery_id'=>$value->enquiry_id,'booking_type'=>$value->booking_type,'business_type'=>$value->business_type.'ward','deal_type'=>$value->deal_type,'company'=>$value->company_name,'client_name'=>$value->client_name,'status'=>$value->status,'creation_date'=>$value->creation_date,'quotation_url'=>base_url('uploads/quotations/quotations_').$value->id.'.pdf','edited'=>$value->edited));  
             } 
             $this->set_response([
                 'status' => TRUE,
