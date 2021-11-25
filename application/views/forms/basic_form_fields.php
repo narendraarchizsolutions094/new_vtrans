@@ -243,7 +243,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                           <option value="FTL" >FTL</option>
                                   <option value="LTL/Sundry"> LTL / Sundry</option>
                           </select>
-                      </div>
+                    </div>
                     
                     <div class="form-group col-md-4">
                               <label class="control-label" for="industries"><?php echo 'Industries';?><i class="text-danger"></i></label>                  

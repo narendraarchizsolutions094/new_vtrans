@@ -357,6 +357,15 @@ public function contact($lead_code) {
                         ->get()
                         ->result();
     }
+	
+	public function get_branch_list() {
+         $company=$this->session->userdata('companey_id');
+        return $this->db->select("branch_id,branch_name")
+                        ->from("branch")
+                        ->where('branch.comp_id', $company)
+                        ->get()
+                        ->result();
+    }
 
 
      public function ecountry_list() {

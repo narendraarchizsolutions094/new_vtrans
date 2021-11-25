@@ -216,6 +216,16 @@ class LeadRules extends CI_Controller {
         $country   =   $this->location_model->country();
         $state     =   $this->location_model->estate_list();
         $city      =   $this->location_model->ecity_list();
+
+//For Emp branch		
+		$s_branch = $this->location_model->get_branch_list();
+        $rule_branch = array();
+        if (!empty($s_branch)) {             
+            foreach ($s_branch as $key => $value) {
+              $rule_branch[$value->branch_id]  = $value->branch_name;
+            }
+        }
+//End		
 		$lead_score = $this->Leads_Model->get_leadscore_list();
         
         $process_list = $this->dash_model->get_user_product_list();        
@@ -327,6 +337,7 @@ class LeadRules extends CI_Controller {
         $data['user_list']   = $this->user_model->companey_users();
         $data['products']   = json_encode($rule_product);
         $data['sub_source']   = json_encode($rule_subsource);
+		$data['sale_branch']   = json_encode($rule_branch);
        
         $data['content'] = $this->load->view('rules/create_rule', $data, true);
         $this->load->view('layout/main_wrapper', $data);       
