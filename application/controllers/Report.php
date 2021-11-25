@@ -679,33 +679,46 @@ echo json_encode($res);die;
       $data['deal_data'] = $this->all_deal_report_filterdata(); // future opportunities data
       $get_ids_str = implode(',',$get_ids);      
       if(!empty($region_id)){
-        $this->db->where("created_by in($get_ids_str)");
+        //$this->db->where("created_by in($get_ids_str)");
+        $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
       }
+      $this->db->where('product_id',141);
       $data['nad_count'] = $this->db->get_where('enquiry',array('status' => 1))->num_rows();
 
       if(!empty($region_id)){
-        $this->db->where("created_by in($get_ids_str)");
+        //$this->db->where("created_by in($get_ids_str)");
+        $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
       }
+      $this->db->where('product_id',141);
       $data['prospect_count'] = $this->db->get_where('enquiry',array('status' => 2))->num_rows();
       if(!empty($region_id)){
         $this->db->where("created_by in($get_ids_str)");
       }
+      $this->db->where('product_id',141);
       $data['approach_count'] = $this->db->get_where('enquiry',array('status' => 3))->num_rows();
       if(!empty($region_id)){
-        $this->db->where("created_by in($get_ids_str)");
+        //$this->db->where("created_by in($get_ids_str)");
+        $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
       }
+      $this->db->where('product_id',141);
       $data['negotiations_count'] = $this->db->get_where('enquiry',array('status' => 4))->num_rows();
       if(!empty($region_id)){
-        $this->db->where("created_by in($get_ids_str)");
+        //$this->db->where("created_by in($get_ids_str)");
+        $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
       }
+      $this->db->where('product_id',141);
       $data['closure_count'] = $this->db->get_where('enquiry',array('status' => 5))->num_rows();
       if(!empty($region_id)){
-        $this->db->where("created_by in($get_ids_str)");
+        //$this->db->where("created_by in($get_ids_str)");
+        $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
       }
+      $this->db->where('product_id',141);
       $data['order_count'] = $this->db->get_where('enquiry',array('status' => 6))->num_rows();
       if(!empty($region_id)){
-        $this->db->where("created_by in($get_ids_str)");
+        //$this->db->where("created_by in($get_ids_str)");
+        $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
       }
+      $this->db->where('product_id',141);
       $data['future_count'] = $this->db->get_where('enquiry',array('status' => 7))->num_rows();
       //echo $this->db->last_query();
       $data['emp_region'] = $this->db->get_where('sales_region',array('type'=>1))->result_array();
@@ -839,17 +852,13 @@ echo json_encode($res);die;
   // }
 
   
-  public function get_last_month_data(){
-    
+  public function get_last_month_data(){    
     $date1 =  date('Y-m-01');   
     $date2 = date('Y-m-d', strtotime('today'));
-
     $diff = abs(strtotime($date2) - strtotime($date1));
-
     $years = floor($diff / (365*60*60*24));
     $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
     $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-
     $sales_region = $this->db->get_where('sales_region',array('type' => 1))->result_array();
     $sales_region[] = array('region_id'=>0,'name'=>'NA');
     //$sales_region = $this->db->get_where('tbl_emp_region')->result_array();
@@ -916,7 +925,7 @@ echo json_encode($res);die;
         $urs_arr_str_1 = implode(', ',$urs_arr_str0);
       }
       
-
+      //echo $urs_arr_str.'<br>';
       array_push($total_users,count($get_user));
       $html .= '<tr>
                  <th style="text-align:center;font-size:8px;">'.$region['name'].'</th>
@@ -948,16 +957,15 @@ echo json_encode($res);die;
           
           //echo $this->db->last_query().'<br>';
 
-        }else{
-          
+        }else{          
           $get_visit = $this->db->query("SELECT tbl_visit.* FROM `tbl_visit` WHERE tbl_visit.user_id IN($urs_arr_str) AND DATE(tbl_visit.visit_date)=".'"'.$date.'"')->result_array();
-          
-          //echo $this->db->last_query()."<br>";
 
-          $get_nad = $this->db->where("date(created_date)='$date' AND enquiry.created_by IN($urs_arr_str) AND status=1")->get('enquiry')->result_array();
-          $get_sinings = $this->db->where("date(created_date)='$date' AND enquiry.created_by IN($urs_arr_str) AND status=5")->get('enquiry')->result_array();
+          $get_nad = $this->db->where("date(created_date)='$date' AND (enquiry.created_by IN($urs_arr_str) OR enquiry.aasign_to IN($urs_arr_str)) AND status=1")->get('enquiry')->result_array();
+          
+          $get_sinings = $this->db->where("date(created_date)='$date' AND (enquiry.created_by IN($urs_arr_str) OR enquiry.aasign_to IN($urs_arr_str)) AND status=5")->get('enquiry')->result_array();
           
           $get_deals = $this->db->where("date(creation_date)='$date' AND commercial_info.createdby IN($urs_arr_str)")->get('commercial_info')->result_array();
+
           //$get_sinings = $this->db->get_where('enquiry',array('sales_region' => $region['region_id'],'DATE(created_date)' => $date,'status' => 5))->result_array();
         }
         
@@ -2374,69 +2382,79 @@ echo json_encode($res);die;
     $lastMonth = date("m", strtotime("first day of previous month"));
     
     if(!empty($region_id)){
-      $this->db->where("created_by in($get_ids_str)");     
+      $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))");     
     }
+    $this->db->where('product_id',141);
+
     $get_all_call = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
     //echo $this->db->last_query().'<br>';
     
     if(!empty($region_id)){
-      $this->db->where("created_by in($get_ids_str)");     
+      $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))");       
     }
+    $this->db->where('product_id',141);
+
     $get_today_call = $this->db->where(array('status' => $enq_status,'date(created_date)' => $todays))->from('enquiry')->count_all_results();
     
     if(!empty($region_id)){
-      $this->db->where("created_by in($get_ids_str)");     
+      $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))");       
     }
+    $this->db->where('product_id',141);
+
     $get_yesterday_call = $this->db->where(array('status' => $enq_status,'date(created_date)' => $yesterday))->from('enquiry')->count_all_results();
     
     if(!empty($region_id)){
-      $this->db->where("created_by in($get_ids_str)");     
+      $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))");     
+      $this->db->where('product_id',141);
     }
     $this->db->where('MONTH(created_date)', $this_month);
     $get_this_month_call = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
 
     if(!empty($region_id)){
-      $this->db->where("created_by in($get_ids_str)");     
+      $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))");     
     }
+    $this->db->where('product_id',141);
+
     $get_last_month_call = $this->db->where(array('status' => $enq_status,'MONTH(created_date)' => $lastMonth))->from('enquiry')->count_all_results();
     
     if(!empty($region_id)){
-      $this->db->where("created_by in($get_ids_str)");     
+      $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))");       
     }
     $this->db->where('date(created_date) >=', $this_week_sd);
     $this->db->where('date(created_date) <=', $this_week_ed);
+    $this->db->where('product_id',141);
+
     $get_this_week_call = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
 
     if(!empty($region_id)){
-      $this->db->where("created_by in($get_ids_str)");     
+      $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))");     
     }
     $this->db->where('date(created_date) >=', $start_week);
     $this->db->where('date(created_date) <=', $end_week);
+    $this->db->where('product_id',141);    
     $get_last_week_call = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
-
     $all_users = $this->db->where(array('dept_name' => 1,'b_status'=>1))->from('tbl_admin')->count_all_results();
-
     if(!empty($region_id)){
-      $this->db->where("created_by in($get_ids_str)");     
+      $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))");     
     }
     $this->db->where('date(created_date) >=', $this_week_sd);
     $this->db->where('date(created_date) <=', $this_week_ed);
+    $this->db->where('product_id',141);
     $av_daily_call_this_week = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
-
     if(!empty($region_id)){
       $this->db->where("created_by in($get_ids_str)");     
     }
     $this->db->where('date(created_date) >=', $this_month_sd);
     $this->db->where('date(created_date) <=', $this_month_ed);
+    $this->db->where('product_id',141);
     $av_daily_call_this_month = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
-
     if(!empty($region_id)){
       $this->db->where("created_by in($get_ids_str)");     
     }
     $this->db->where('date(created_date) >=', $last_month_sd);
     $this->db->where('date(created_date) <=', $last_month_ed);
+    $this->db->where('product_id',141);
     $av_daily_call_last_month = $this->db->where(array('status' => $enq_status))->from('enquiry')->count_all_results();
-
     $av_daily_call_today_data = $get_today_call/$all_users;
     $av_daily_call_per_yesterday_data = $get_yesterday_call/$all_users;
     $av_daily_call_this_week_data = $av_daily_call_this_week/$all_users;
@@ -2444,8 +2462,7 @@ echo json_encode($res);die;
     $av_daily_call_this_month_data = $av_daily_call_this_month/$all_users;
     $av_daily_call_last_month_data = $av_daily_call_last_month/$all_users;
     $av_daily_call_total_data = $get_all_call/$all_users;
-
-
+    
     $av_daily_call_per_person_today = $get_today_call/$all_users;
     $av_daily_call_per_person_yesterday = $get_yesterday_call/$all_users;
     $av_daily_call_per_person_this_week = $get_this_week_call/$all_users;

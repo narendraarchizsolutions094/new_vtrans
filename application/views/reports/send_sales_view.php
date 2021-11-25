@@ -255,8 +255,10 @@ $dataPoints2_value = array();
 $get_ids_str = implode(',',$get_ids);
 foreach($lead_source as $key => $source){
     if(!empty($get_ids)){
-        $this->db->where("created_by in($get_ids_str)");
+        //$this->db->where("created_by in($get_ids_str)");
+        $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
     }
+    $this->db->where('product_id',141);
     $lead_data = $this->db->where(array('enquiry_source' => $source['lsid']))->from('enquiry')->count_all_results();
     array_push($dataPoints2_source,$source['lead_name']);
     array_push($dataPoints2_value,$lead_data);
@@ -265,8 +267,10 @@ foreach($lead_source as $key => $source){
 
 
 if(!empty($get_ids)){                            
-    $this->db->where("created_by in($get_ids_str)");
+    //$this->db->where("created_by in($get_ids_str)");
+    $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
 }
+$this->db->where('product_id',141);
 $this->db->where('(enquiry_source IS NULL OR enquiry_source=0 OR enquiry_source="")');
 $lead_data = $this->db->from('enquiry')->count_all_results();
 
@@ -282,7 +286,8 @@ $lead_stage = $this->db->get_where('lead_stage')->result_array();
 $dataPoints3 = array();
     foreach($lead_stage as $key => $stage){
         if(!empty($get_ids)){                            
-            $this->db->where_in('created_by',$get_ids);
+            //$this->db->where_in('created_by',$get_ids);
+            $this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
         }
         $lead_stage = $this->db->where(array('lead_stage' => $stage['stg_id']))->from('enquiry')->count_all_results();
         array_push($dataPoints3,array("label" => $stage['lead_stage_name'], "symbol" => substr($stage['lead_stage_name'], 0, 2),"y" => $lead_stage));
@@ -297,7 +302,10 @@ if(!empty($region_filter_id)){
 $user_data = $this->db->get_where('tbl_admin',array('dept_name'=>1,'b_status'=>1))->result_array();
 $dataPoints4 = array();
     foreach($user_data as $key => $user){
-        $lead_emp_data = $this->db->where('created_by',$user['pk_i_admin_id'])->from('enquiry')->count_all_results();
+        $this->db->where('product_id',141);
+        //$this->db->where("(created_by in($get_ids_str) OR aasign_to in($get_ids_str))"); 
+        $pk_i_admin_id = $user['pk_i_admin_id'];
+        $lead_emp_data = $this->db->where("(created_by = $pk_i_admin_id OR aasign_to = $pk_i_admin_id)")->from('enquiry')->count_all_results();
         array_push($dataPoints4,array("name" => $user['s_display_name'].' '.$user['last_name'],"y" => (int)$lead_emp_data));
     }
     $dataPoints4[0]['sliced'] = 'true';

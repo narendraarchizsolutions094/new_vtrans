@@ -3290,11 +3290,15 @@ $cpny_id=$this->session->companey_id;
                 $where.=" AND (enquiry.created_by=$users";
                 $where.=" OR enquiry.aasign_to=$users)";
                 if(!empty($get_ids) && count($get_ids) > 0){
-                  $where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+                  $where.= " AND ( enquiry.created_by IN (".implode(',', $get_ids).')';
+                  $where.= " OR enquiry.aasign_to IN (".implode(',', $get_ids).'))';
+                  //$where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
                 } 
             }else{
               if(!empty($get_ids) && count($get_ids) > 0){
-                $where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+                //$where.= " AND  enquiry.created_by IN (".implode(',', $get_ids).')';					
+                $where.= " AND ( enquiry.created_by IN (".implode(',', $get_ids).')';
+                $where.= " OR enquiry.aasign_to IN (".implode(',', $get_ids).'))';
               }else{
                 $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';

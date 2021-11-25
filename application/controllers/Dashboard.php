@@ -484,12 +484,9 @@ $this->load->library('zip');
     $this->zip->download('file_backup.zip'); 
    }
  }
-    public function validate_login() {  
-        
-  
+    public function validate_login() {
         $this->form_validation->set_rules('email', 'Login id', 'required|max_length[50]|trim');
-        $this->form_validation->set_rules('password', display('password'), 'required|max_length[32]|md5');        
-        
+        $this->form_validation->set_rules('password', display('password'), 'required|max_length[32]|md5');
         $data['user'] = (object) $postData = [
             'email' => trim($this->input->post('email', true)),
             'password' => md5($this->input->post('password', true)),
@@ -830,8 +827,7 @@ public function login_in_process(){
         {
             $data['counts'] = $this->enquiry_model->enquiryLeadClientCount($this->session->user_id,$this->session->companey_id);  
             //echo $this->db->last_query();
-
-            $data['msg']='';
+            $data['msg'] = '';
             $data['state']   = $this->enquiry_model->get_state();
             $data['products'] = $this->dash_model->product_list_graph();
             $data['taskdata'] = $this->dash_model->task_list();

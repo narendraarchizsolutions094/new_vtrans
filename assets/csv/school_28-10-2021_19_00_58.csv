@@ -1,0 +1,586 @@
+Country,Region,State,Territory,City
+India,South,ANDHRA PRADESH,AP-Territory 1,CHITTOOR
+India,South,ANDHRA PRADESH,AP-Territory 1,CUDDAPAH
+India,South,ANDHRA PRADESH,AP-Territory 1,ELURU
+India,South,ANDHRA PRADESH,AP-Territory 1,VISAKHAPATNAM
+India,South,ANDHRA PRADESH,AP-Territory 1,GUDIVADA
+India,South,ANDHRA PRADESH,AP-Territory 1,GUNTUR
+India,South,ANDHRA PRADESH,AP-Territory 1,KAKINADA
+India,South,ANDHRA PRADESH,AP-Territory 1,NELLORE
+India,South,ANDHRA PRADESH,AP-Territory 1,ONGOLE
+India,South,ANDHRA PRADESH,AP-Territory 1,VISAKHAPATNAM
+India,South,ANDHRA PRADESH,AP-Territory 1,RAJHAMUNDRY
+India,South,ANDHRA PRADESH,AP-Territory 1,SRIKAKULAM
+India,South,ANDHRA PRADESH,AP-Territory 1,TIRUPATHI
+India,South,ANDHRA PRADESH,AP-Territory 1,VIJAYWADA
+India,South,ANDHRA PRADESH,AP-Territory 1,VIJAYWADA
+India,South,ANDHRA PRADESH,AP-Territory 1,VIZIANAGARAM
+India,South,ANDHRA PRADESH,AP-Territory 1,ANANTAPURAM
+India,South,ANDHRA PRADESH,AP-Territory 1,KURNOOL
+India,South,ANDHRA PRADESH,AP-Territory 1,KUPPAM
+India,South,ANDHRA PRADESH,AP-Territory 1,HINDUPUR
+India,South,ANDHRA PRADESH,AP-Territory 1,TADA
+India,East,ASSAM,AS-Territory 1,GUWAHATI
+India,East,BIHAR,BI-Territory1,PATNA
+India,East,BIHAR,BI-Territory1,RAXAUL
+India,Central,CHHATTISGARH,CG-Territory 1,BHILAI
+India,Central,CHHATTISGARH,CG-Territory 1,BILASPUR
+India,Central,CHHATTISGARH,CG-Territory 1,RAIPUR
+India,West,DADRA NAGAR HAVELI,DN-Territory 1,DADRA
+India,West,DADRA NAGAR HAVELI,DN-Territory 1,SILVASSA
+India,West,DADRA NAGAR HAVELI,DN-Territory 1,SILVASSA
+India,West,DADRA NAGAR HAVELI (DAMAN),DN-Territory 1,DAMAN
+India,West,DADRA NAGAR HAVELI (DAMAN),DN-Territory 1,DAMAN
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,NEW DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,NEW DELHI
+India,North,DELHI,DL-Territory 1,NEW DELHI
+India,North,DELHI,DL-Territory 1,NEW DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,NEW DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,NEW DELHI
+India,North,DELHI,DL-Territory 1,NEW DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,NEW DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,North,DELHI,DL-Territory 1,DELHI
+India,West,GOA,GO-Territory 1,MADGAON
+India,West,GOA,GO-Territory 1,MAPUCA (GOA)
+India,West,GOA,GO-Territory 1,PONDA
+India,West,GOA,GO-Territory 1,VERNA
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,NADIAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,CHHATRAL (N.G.)
+India,West,GUJARAT,GJ-Territory 1,CHHATRAL (N.G.)
+India,West,GUJARAT,GJ-Territory 1,DHOLKA
+India,West,GUJARAT,GJ-Territory 1,GANDHINAGAR
+India,West,GUJARAT,GJ-Territory 1,CHHATRAL (N.G.)
+India,West,GUJARAT,GJ-Territory 1,HIMATNAGAR
+India,West,GUJARAT,GJ-Territory 1,KALOL (N.G.)
+India,West,GUJARAT,GJ-Territory 1,MAHESANA
+India,West,GUJARAT,GJ-Territory 1,PALANPUR
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,AHMEDABAD
+India,West,GUJARAT,GJ-Territory 1,SIDHPUR
+India,West,GUJARAT,GJ-Territory 1,SURENDRANAGAR
+India,West,GUJARAT,GJ-Territory 1,BARODA
+India,West,GUJARAT,GJ-Territory 1,BARODA
+India,West,GUJARAT,GJ-Territory 1,BARODA
+India,West,GUJARAT,GJ-Territory 1,GODHRA
+India,West,GUJARAT,GJ-Territory 1,BARODA
+India,West,GUJARAT,GJ-Territory 1,HALOL
+India,West,GUJARAT,GJ-Territory 1,BARODA
+India,West,GUJARAT,GJ-Territory 1,BARODA
+India,West,GUJARAT,GJ-Territory 1,BARODA
+India,West,GUJARAT,GJ-Territory 1,BARODA
+India,West,GUJARAT,GJ-Territory 1,PADRA
+India,West,GUJARAT,GJ-Territory 1,POR
+India,West,GUJARAT,GJ-Territory 1,VALLABH VIDYANAGAR
+India,West,GUJARAT,GJ-Territory 1,WAGHODIA
+India,West,GUJARAT,GJ-Territory 1,BHUJ
+India,West,GUJARAT,GJ-Territory 1,GANDHIDHAM
+India,West,GUJARAT,GJ-Territory 1,GANDHIDHAM
+India,West,GUJARAT,GJ-Territory 1,MANDVI
+India,West,GUJARAT,GJ-Territory 1,MUNDRA
+India,West,GUJARAT,GJ-Territory 1,RAJKOT
+India,West,GUJARAT,GJ-Territory 1,RAJKOT
+India,West,GUJARAT,GJ-Territory 1,BHAVNAGAR
+India,West,GUJARAT,GJ-Territory 1,DARED
+India,West,GUJARAT,GJ-Territory 1,GONDAL
+India,West,GUJARAT,GJ-Territory 1,JAMNAGAR
+India,West,GUJARAT,GJ-Territory 1,JAMNAGAR
+India,West,GUJARAT,GJ-Territory 1,JETPUR
+India,West,GUJARAT,GJ-Territory 1,JUNAGADH
+India,West,GUJARAT,GJ-Territory 1,MAHUVA
+India,West,GUJARAT,GJ-Territory 1,METODA
+India,West,GUJARAT,GJ-Territory 1,MORBI
+India,West,GUJARAT,GJ-Territory 1,BHAVNAGAR
+India,West,GUJARAT,GJ-Territory 1,PIPAVAV
+India,West,GUJARAT,GJ-Territory 1,PORBANDAR
+India,West,GUJARAT,GJ-Territory 1,RAJKOT
+India,West,GUJARAT,GJ-Territory 1,RAJKOT
+India,West,GUJARAT,GJ-Territory 1,RAJKOT
+India,West,GUJARAT,GJ-Territory 1,SIHOR
+India,West,GUJARAT,GJ-Territory 1,THANGADH
+India,West,GUJARAT,GJ-Territory 1,MORBI
+India,West,GUJARAT,GJ-Territory 1,RAJKOT
+India,West,GUJARAT,GJ-Territory 1,VERAVAL
+India,West,GUJARAT,GJ-Territory 1,ANKLESHWAR
+India,West,GUJARAT,GJ-Territory 1,ANKLESHWAR
+India,West,GUJARAT,GJ-Territory 1,BHARUCH
+India,West,GUJARAT,GJ-Territory 1,DAHEJ
+India,West,GUJARAT,GJ-Territory 1,JHAGADIA
+India,West,GUJARAT,GJ-Territory 1,KIM
+India,West,GUJARAT,GJ-Territory 1,PANOLI
+India,West,GUJARAT,GJ-Territory 1,BILIMORA
+India,West,GUJARAT,GJ-Territory 1,SURAT
+India,West,GUJARAT,GJ-Territory 1,SURAT
+India,West,GUJARAT,GJ-Territory 1,SURAT
+India,West,GUJARAT,GJ-Territory 1,NAVSARI
+India,West,GUJARAT,GJ-Territory 1,SURAT
+India,West,GUJARAT,GJ-Territory 1,SURAT
+India,West,GUJARAT,GJ-Territory 1,SURAT
+India,West,GUJARAT,GJ-Territory 1,SURAT
+India,West,GUJARAT,GJ-Territory 1,UNN (SURAT)
+India,West,GUJARAT,GJ-Territory 1,PARDI
+India,West,GUJARAT,GJ-Territory 1,SARIGAM
+India,West,GUJARAT,GJ-Territory 1,UMARGAON
+India,West,GUJARAT,GJ-Territory 1,VALSAD
+India,West,GUJARAT,GJ-Territory 1,VAPI
+India,West,GUJARAT,GJ-Territory 1,VAPI
+India,West,GUJARAT,GJ-Territory 1,VAPI
+India,West,GUJARAT,GJ-Territory 1,VAPI
+India,North,HARYANA,HR-Territory 1,BAHADURGARH
+India,North,HARYANA,HR-Territory 1,FARIDABAD
+India,North,HARYANA,HR-Territory 1,FARIDABAD
+India,North,HARYANA,HR-Territory 1,SONEPAT
+India,North,HARYANA,HR-Territory 1,SONEPAT
+India,North,HARYANA,HR-Territory 1,ROHTAK
+India,North,HARYANA,HR-Territory 1,ROHTAK
+India,North,HARYANA,HR-Territory 1,SONEPAT
+India,North,HARYANA,HR-Territory 1,REWARI
+India,North,HARYANA,HR-Territory 1,GURGAON
+India,North,HARYANA,HR-Territory 1,BAWAL
+India,North,HARYANA,HR-Territory 1,REWARI
+India,North,HARYANA,HR-Territory 1,DHARUHERA
+India,North,HARYANA,HR-Territory 1,DHARUHERA
+India,North,HARYANA,HR-Territory 1,REWARI
+India,North,HARYANA,HR-Territory 1,GURGAON
+India,North,HARYANA,HR-Territory 1,GURGAON
+India,North,HARYANA,HR-Territory 1,GURGAON
+India,North,HARYANA,HR-Territory 1,GURGAON
+India,North,HARYANA,HR-Territory 1,GURGAON
+India,North,HARYANA,HR-Territory 1,REWARI
+India,North,HARYANA,HR-Territory 1,AMBALA CITY
+India,North,HARYANA,HR-Territory 1,PANCHKULA
+India,North,HARYANA,HR-Territory 1,HISAR
+India,North,HARYANA,HR-Territory 1,JAGADHRI
+India,North,HARYANA,HR-Territory 1,KAITHAL
+India,North,HARYANA,HR-Territory 1,KARNAL
+India,North,HARYANA,HR-Territory 1,PANCHKULA
+India,North,HARYANA,HR-Territory 1,PANCHKULA
+India,North,HARYANA,HR-Territory 1,PANIPAT
+India,North,HARYANA,HR-Territory 1,YAMUNANAGAR
+India,North,HIMACHAL PRADESH,HR-Territory 1,BADDI
+India,North,HIMACHAL PRADESH,HR-Territory 1,KALA-AMB
+India,North,HIMACHAL PRADESH,HR-Territory 1,NALAGARH
+India,North,HIMACHAL PRADESH,HR-Territory 1,PARWANOO
+India,North,HIMACHAL PRADESH,HR-Territory 1,SOLAN
+India,North,HIMACHAL PRADESH,HR-Territory 1,UNA
+India,North,JAMMU AND KASHMIR,JK - Territory 1,JAMMU
+India,North,JAMMU AND KASHMIR,JK - Territory 1,SRINAGAR
+India,East,JHARKHAND,JH-Territory 1,BAHARAGORA
+India,East,JHARKHAND,JH-Territory 1,DEOGHAR
+India,East,JHARKHAND,JH-Territory 1,JAMSHEDPUR
+India,East,JHARKHAND,JH-Territory 1,RANCHI
+India,East,JHARKHAND,JH-Territory 1,RANCHI
+India,South,KARNATAKA,KT-Territory 1,RAMANAGARA
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,HAROHALLI
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,NELAMANGALA
+India,South,KARNATAKA,KT-Territory 1,CHIKMAGALUR
+India,South,KARNATAKA,KT-Territory 1,DABASPETE
+India,South,KARNATAKA,KT-Territory 1,DODDABALLAPUR
+India,South,KARNATAKA,KT-Territory 1,HASSAN
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,KOLAR
+India,South,KARNATAKA,KT-Territory 1,MALUR
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,BANGALORE
+India,South,KARNATAKA,KT-Territory 1,TUMKUR
+India,South,KARNATAKA,KT-Territory 1,TUMKUR
+India,South,KARNATAKA,KT-Territory 1,MANGALORE
+India,South,KARNATAKA,KT-Territory 1,MYSORE
+India,South,KARNATAKA,KT-Territory 1,KUNDAPUR
+India,South,KARNATAKA,KT-Territory 1,KUSHALANAGAR
+India,South,KARNATAKA,KT-Territory 1,MANDYA
+India,South,KARNATAKA,KT-Territory 1,MANGALORE
+India,South,KARNATAKA,KT-Territory 1,MYSORE
+India,South,KARNATAKA,KT-Territory 1,MYSORE
+India,South,KARNATAKA,KT-Territory 1,PUTTUR
+India,South,KARNATAKA,KT-Territory 1,RAMANAGARA
+India,South,KARNATAKA,KT-Territory 1,UDUPI
+India,South,KARNATAKA,KT-Territory 1,BAGALAKOTE
+India,South,KARNATAKA,KT-Territory 1,BELGAUM
+India,South,KARNATAKA,KT-Territory 1,BELGAUM
+India,South,KARNATAKA,KT-Territory 1,BELLARY
+India,South,KARNATAKA,KT-Territory 1,BHATKAL
+India,South,KARNATAKA,KT-Territory 1,BIDAR
+India,South,KARNATAKA,KT-Territory 1,BIJAPUR
+India,South,KARNATAKA,KT-Territory 1,CHITRADURGA
+India,South,KARNATAKA,KT-Territory 1,DAVANAGERE
+India,South,KARNATAKA,KT-Territory 1,GADAG
+India,South,KARNATAKA,KT-Territory 1,GANGAVATI
+India,South,KARNATAKA,KT-Territory 1,GOKAK
+India,South,KARNATAKA,KT-Territory 1,GULBARGA
+India,South,KARNATAKA,KT-Territory 1,HOSPET
+India,South,KARNATAKA,KT-Territory 1,HUBLI
+India,South,KARNATAKA,KT-Territory 1,HUBLI
+India,South,KARNATAKA,KT-Territory 1,HUBLI
+India,South,KARNATAKA,KT-Territory 1,HUBLI
+India,South,KARNATAKA,KT-Territory 1,KARWAR
+India,South,KARNATAKA,KT-Territory 1,KOPPAL
+India,South,KARNATAKA,KT-Territory 1,KUMTA
+India,South,KARNATAKA,KT-Territory 1,BELGAUM
+India,South,KARNATAKA,KT-Territory 1,RABAKAVI- BANATTI
+India,South,KARNATAKA,KT-Territory 1,RAICHUR
+India,South,KARNATAKA,KT-Territory 1,RANEBENNUR
+India,South,KARNATAKA,KT-Territory 1,SHIMOGA
+India,South,KARNATAKA,KT-Territory 1,SHIMOGA
+India,South,KARNATAKA,KT-Territory 1,SINDHNOOR
+India,South,KARNATAKA,KT-Territory 1,SIRSI
+India,South,KERALA,KR-Territory 1,PALAKKAD
+India,South,KERALA,KR-Territory 1,ALAPPUZHA
+India,South,KERALA,KR-Territory 1,CALICUT
+India,South,KERALA,KR-Territory 1,COCHIN
+India,South,KERALA,KR-Territory 1,COCHIN
+India,South,KERALA,KR-Territory 1,KANNUR
+India,South,KERALA,KR-Territory 1,QUILON(KOLLAM)
+India,South,KERALA,KR-Territory 1,KOTTAYAM
+India,South,KERALA,KR-Territory 1,MANJERI
+India,South,KERALA,KR-Territory 1,COCHIN
+India,South,KERALA,KR-Territory 1,QUILON(KOLLAM)
+India,South,KERALA,KR-Territory 1,SHORANUR
+India,South,KERALA,KR-Territory 1,THRISSUR
+India,South,KERALA,KR-Territory 1,TRIVANDRUM
+India,Central,MADHYA PRADESH,MP-Territory 1,BHOPAL
+India,Central,MADHYA PRADESH,MP-Territory 1,DEWAS
+India,Central,MADHYA PRADESH,MP-Territory 1,INDORE
+India,Central,MADHYA PRADESH,MP-Territory 1,INDORE
+India,Central,MADHYA PRADESH,MP-Territory 1,INDORE
+India,Central,MADHYA PRADESH,MP-Territory 1,INDORE
+India,Central,MADHYA PRADESH,MP-Territory 1,MANDIDEEP
+India,Central,MADHYA PRADESH,MP-Territory 1,INDORE
+India,Central,MADHYA PRADESH,MP-Territory 1,PITHAMPUR
+India,Central,MADHYA PRADESH,MP-Territory 1,UJJAIN
+India,Central,MADHYA PRADESH,MP-Territory 1,CHHINDWARA
+India,Central,MADHYA PRADESH,MP-Territory 1,JABALPUR
+India,Central,MADHYA PRADESH,MP-Territory 1,GWALIOR
+India,West,MAHARASHTRA,MH-Territory 1,AMBERNATH
+India,West,MAHARASHTRA,MH-Territory 1,BHIWANDI
+India,West,MAHARASHTRA,MH-Territory 1,BHIWANDI
+India,West,MAHARASHTRA,MH-Territory 1,BHIWANDI
+India,West,MAHARASHTRA,MH-Territory 1,THANA
+India,West,MAHARASHTRA,MH-Territory 1,BHIWANDI
+India,West,MAHARASHTRA,MH-Territory 1,KALYAN
+India,West,MAHARASHTRA,MH-Territory 1,BHIWANDI
+India,West,MAHARASHTRA,MH-Territory 1,THANA
+India,West,MAHARASHTRA,MH-Territory 1,AMBERNATH
+India,West,MAHARASHTRA,MH-Territory 1,BHIWANDI
+India,West,MAHARASHTRA,MH-Territory 1,ASANGAON
+India,West,MAHARASHTRA,MH-Territory 1,BHIWANDI
+India,West,MAHARASHTRA,MH-Territory 1,BHIWANDI
+India,West,MAHARASHTRA,MH-Territory 1,THANA
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,BOISAR
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,PALGHAR
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,PALGHAR
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,VASAI
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,PALGHAR
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,DRONAGIRI
+India,West,MAHARASHTRA,MH-Territory 1,NAVI MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,KHOPOLI
+India,West,MAHARASHTRA,MH-Territory 1,MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,NAVI MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,RAIGAD
+India,West,MAHARASHTRA,MH-Territory 1,NAVI MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,TALOJA
+India,West,MAHARASHTRA,MH-Territory 1,NAVI MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,NAVI MUMBAI
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,AMRAVATI
+India,West,MAHARASHTRA,MH-Territory 1,BHANDARA
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,CHANDRAPUR
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,KHAMGAON
+India,West,MAHARASHTRA,MH-Territory 1,MALKAPUR
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,NAGPUR
+India,West,MAHARASHTRA,MH-Territory 1,ICHALKARANJI
+India,West,MAHARASHTRA,MH-Territory 1,KAGAL
+India,West,MAHARASHTRA,MH-Territory 1,KARAD
+India,West,MAHARASHTRA,MH-Territory 1,KOLHAPUR
+India,West,MAHARASHTRA,MH-Territory 1,KOLHAPUR
+India,West,MAHARASHTRA,MH-Territory 1,RATNAGIRI
+India,West,MAHARASHTRA,MH-Territory 1,MAHAD MIDC
+India,West,MAHARASHTRA,MH-Territory 1,RATNAGIRI
+India,West,MAHARASHTRA,MH-Territory 1,ROHA
+India,West,MAHARASHTRA,MH-Territory 1,SANGLI
+India,West,MAHARASHTRA,MH-Territory 1,SATARA
+India,West,MAHARASHTRA,MH-Territory 1,SHINOLI
+India,West,MAHARASHTRA,MH-Territory 1,SOLAPUR
+India,West,MAHARASHTRA,MH-Territory 1,SOLAPUR
+India,West,MAHARASHTRA,MH-Territory 1,SOLAPUR
+India,West,MAHARASHTRA,MH-Territory 1,AHMEDNAGAR
+India,West,MAHARASHTRA,MH-Territory 1,AURANGABAD
+India,West,MAHARASHTRA,MH-Territory 1,AURANGABAD
+India,West,MAHARASHTRA,MH-Territory 1,DHULE
+India,West,MAHARASHTRA,MH-Territory 1,NASIK
+India,West,MAHARASHTRA,MH-Territory 1,JALGAON
+India,West,MAHARASHTRA,MH-Territory 1,JALNA
+India,West,MAHARASHTRA,MH-Territory 1,LATUR
+India,West,MAHARASHTRA,MH-Territory 1,MALEGAON
+India,West,MAHARASHTRA,MH-Territory 1,NANDED
+India,West,MAHARASHTRA,MH-Territory 1,NASIK
+India,West,MAHARASHTRA,MH-Territory 1,SINNER
+India,West,MAHARASHTRA,MH-Territory 1,NASIK
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,CHAKAN
+India,West,MAHARASHTRA,MH-Territory 1,CHAKAN
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,RANJANGAON
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,TALEGAON
+India,West,MAHARASHTRA,MH-Territory 1,BARAMATI
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,DAUND
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,SHIRVAL
+India,West,MAHARASHTRA,MH-Territory 1,PUNE
+India,West,MAHARASHTRA,MH-Territory 1,WAGHOLI
+India,South,ODISHA,AP-Territory 1,BALASORE
+India,South,ODISHA,AP-Territory 1,BERHAMPUR
+India,South,ODISHA,AP-Territory 1,BHUBANESHWAR
+India,South,ODISHA,AP-Territory 1,CUTTACK
+India,South,ODISHA,AP-Territory 1,SAMBALPUR
+India,South,PUDUCHERRY,PU-Territory 1,KARAIKAL
+India,South,PUDUCHERRY,PU-Territory 1,PONDICHERRY
+India,South,PUDUCHERRY,PU-Territory 1,THIRUBHUVANAI
+India,North,PUNJAB,PJ-Territory 1,AMRITSAR
+India,North,PUNJAB,PJ-Territory 1,JALANDHAR
+India,North,PUNJAB,PJ-Territory 1,LUDHIANA
+India,North,PUNJAB,PJ-Territory 1,MOHALI
+India,North,PUNJAB,PJ-Territory 1,PATIALA
+India,North,PUNJAB,PJ-Territory 1,PATIALA
+India,North,PUNJAB,PJ-Territory 1,MOHALI
+India,North,RAJASTHAN,RJ-Territory 1,ABU ROAD
+India,North,RAJASTHAN,RJ-Territory 1,BHILWARA
+India,North,RAJASTHAN,RJ-Territory 1,CHITTORGARH
+India,North,RAJASTHAN,RJ-Territory 1,JODHPUR
+India,North,RAJASTHAN,RJ-Territory 1,KOTA
+India,North,RAJASTHAN,RJ-Territory 1,PALI MARWAR
+India,North,RAJASTHAN,RJ-Territory 1,UDAIPUR
+India,North,RAJASTHAN,RJ-Territory 1,AJMER
+India,North,RAJASTHAN,RJ-Territory 1,ALWAR
+India,North,RAJASTHAN,RJ-Territory 1,BAGRU
+India,North,RAJASTHAN,RJ-Territory 1,JAIPUR
+India,North,RAJASTHAN,RJ-Territory 1,BHIWADI
+India,North,RAJASTHAN,RJ-Territory 1,BIKANER
+India,North,RAJASTHAN,RJ-Territory 1,JAIPUR
+India,North,RAJASTHAN,RJ-Territory 1,JAIPUR
+India,North,RAJASTHAN,RJ-Territory 1,JAIPUR
+India,North,RAJASTHAN,RJ-Territory 1,KHUSHKHERA
+India,North,RAJASTHAN,RJ-Territory 1,JAIPUR
+India,North,RAJASTHAN,RJ-Territory 1,NEEMRANA
+India,North,RAJASTHAN,RJ-Territory 1,JAIPUR
+India,North,RAJASTHAN,RJ-Territory 1,JAIPUR
+India,South,TAMILNADU,TN-Territory 1,COIMBATORE
+India,South,TAMILNADU,TN-Territory 1,COIMBATORE
+India,South,TAMILNADU,TN-Territory 1,COIMBATORE
+India,South,TAMILNADU,TN-Territory 1,COIMBATORE
+India,South,TAMILNADU,TN-Territory 1,DHARMAPURI
+India,South,TAMILNADU,TN-Territory 1,ERODE
+India,South,TAMILNADU,TN-Territory 1,COIMBATORE
+India,South,TAMILNADU,TN-Territory 1,KARUR
+India,South,TAMILNADU,TN-Territory 1,KARUR
+India,South,TAMILNADU,TN-Territory 1,ERODE
+India,South,TAMILNADU,TN-Territory 1,KOVILPATTI
+India,South,TAMILNADU,TN-Territory 1,KUMBAKONAM
+India,South,TAMILNADU,TN-Territory 1,KARUR
+India,South,TAMILNADU,TN-Territory 1,SALEM
+India,South,TAMILNADU,TN-Territory 1,COIMBATORE
+India,South,TAMILNADU,TN-Territory 1,PERUNDURAI
+India,South,TAMILNADU,TN-Territory 1,POLLACHI
+India,South,TAMILNADU,TN-Territory 1,PUDUKKOTTAI
+India,South,TAMILNADU,TN-Territory 1,SALEM
+India,South,TAMILNADU,TN-Territory 1,SALEM
+India,South,TAMILNADU,TN-Territory 1,THANJAVUR
+India,South,TAMILNADU,TN-Territory 1,NAMAKKAL
+India,South,TAMILNADU,TN-Territory 1,TIRUPUR
+India,South,TAMILNADU,TN-Territory 1,TIRUPUR
+India,South,TAMILNADU,TN-Territory 1,TRICHY
+India,South,TAMILNADU,TN-Territory 1,UDUMALPET
+India,South,TAMILNADU,TN-Territory 1,BODINAYAKKANUR
+India,South,TAMILNADU,TN-Territory 1,DINDIGUL
+India,South,TAMILNADU,TN-Territory 1,MADURAI
+India,South,TAMILNADU,TN-Territory 1,MADURAI
+India,South,TAMILNADU,TN-Territory 1,NAGERCOIL
+India,South,TAMILNADU,TN-Territory 1,RAJAPALAYAM
+India,South,TAMILNADU,TN-Territory 1,SIVAKASI
+India,South,TAMILNADU,TN-Territory 1,SIVAKASI
+India,South,TAMILNADU,TN-Territory 1,TIRUNELVELI
+India,South,TAMILNADU,TN-Territory 1,TUTICORIN
+India,South,TAMILNADU,TN-Territory 1,HOSUR
+India,South,TAMILNADU,TN-Territory 1,HOSUR
+India,South,TAMILNADU,TN-Territory 1,HOSUR
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,AMBUR
+India,South,TAMILNADU,TN-Territory 1,CUDDALORE
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,KANCHIPURAM
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,PANRUTI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,RANIPET
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,CHENNAI
+India,South,TAMILNADU,TN-Territory 1,THIRUVNNAMALAI
+India,South,TELANGANA,TN-Territory 1,ADILABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,KARIMNAGAR
+India,South,TELANGANA,TN-Territory 1,KHAMMAM
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,NIZAMABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,HYDERABAD
+India,South,TELANGANA,TN-Territory 1,WARANGAL
+India,North,UTTAR PRADESH,UP-EAST,ALLAHABAD
+India,North,UTTAR PRADESH,UP-EAST,LUCKNOW
+India,North,UTTAR PRADESH,UP-EAST,BHADOHI
+India,North,UTTAR PRADESH,UP-EAST,GHAZIPUR
+India,North,UTTAR PRADESH,UP-EAST,GORAKHPUR
+India,North,UTTAR PRADESH,UP-EAST,KANPUR
+India,North,UTTAR PRADESH,UP-EAST,KANPUR
+India,North,UTTAR PRADESH,UP-EAST,KANPUR
+India,North,UTTAR PRADESH,UP-EAST,KANPUR
+India,North,UTTAR PRADESH,UP-EAST,LUCKNOW
+India,North,UTTAR PRADESH,UP-EAST,AGRA
+India,North,UTTAR PRADESH,UP-EAST,UNNAO
+India,North,UTTAR PRADESH,UP-EAST,VARANASI
+India,North,UTTAR PRADESH,UP-EAST,AGRA
+India,North,UTTAR PRADESH,UP-EAST,AGRA
+India,North,UTTAR PRADESH,UP-EAST,ALIGARH
+India,North,UTTAR PRADESH,UP-EAST,GHAZIABAD
+India,North,UTTAR PRADESH,UP-EAST,FIROZABAD
+India,North,UTTAR PRADESH,UP-EAST,MORADABAD
+India,North,UTTAR PRADESH,UP-EAST,GHAZIABAD
+India,North,UTTAR PRADESH,UP-EAST,GHAZIABAD
+India,North,UTTAR PRADESH,UP-EAST,GHAZIABAD
+India,North,UTTAR PRADESH,UP-EAST,NOIDA
+India,North,UTTAR PRADESH,UP-EAST,GHAZIABAD
+India,North,UTTAR PRADESH,UP-EAST,GHAZIABAD
+India,North,UTTAR PRADESH,UP-EAST,MATHURA
+India,North,UTTAR PRADESH,UP-EAST,MEERUT
+India,North,UTTAR PRADESH,UP-EAST,MODINAGAR
+India,North,UTTAR PRADESH,UP-EAST,MUZAFFARNAGAR
+India,North,UTTAR PRADESH,UP-EAST,NOIDA
+India,North,UTTAR PRADESH,UP-EAST,SAHIBABAD
+India,North,UTTAR PRADESH,UP-EAST,MEERUT
+India,North,UTTAR PRADESH,UP-EAST,GHAZIABAD
+India,North,UTTAR PRADESH,UP-EAST,UPBORDER
+India,North,UTTAR PRADESH,UP-EAST,BAREILLY
+India,North,UTTAR PRADESH,UP-EAST,MORADABAD
+India,North,UTTAR PRADESH,UP-EAST,SAHARANPUR
+India,North,UTTARAKHAND,UK- Territory 1,RORKEE
+India,North,UTTARAKHAND,UK- Territory 1,DEHRADUN
+India,North,UTTARAKHAND,UK- Territory 1,HARIDWAR
+India,North,UTTARAKHAND,UK- Territory 1,KASHIPUR
+India,North,UTTARAKHAND,UK- Territory 1,RORKEE
+India,North,UTTARAKHAND,UK- Territory 1,RUDRAPUR
+India,North,UTTARAKHAND,UK- Territory 1,DEHRADUN
+India,North,UTTARAKHAND,UK- Territory 1,SITARGANJ
+India,East,WEST BENGAL,WB-Territory 1,HOWRAH
+India,East,WEST BENGAL,WB-Territory 1,HOWRAH
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,DURGAPUR
+India,East,WEST BENGAL,WB-Territory 1,HALDIA
+India,East,WEST BENGAL,WB-Territory 1,HOWRAH
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,KHARAGPUR
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,MALDA
+India,East,WEST BENGAL,WB-Territory 1,KOLKATA
+India,East,WEST BENGAL,WB-Territory 1,SILIGURI
