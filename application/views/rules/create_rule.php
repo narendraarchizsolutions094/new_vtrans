@@ -282,6 +282,7 @@ var TicketStatus = <?=$rule_ticket_status?>;
 var TicketDisposition = <?=$ticket_stages?>;
 var TicketSubDisposition  = <?=$ticket_description?>;
 var probability = <?=$rule_lead_score?>;
+var salesbranch = <?=$sale_branch?>;
 
 // function manageValues(key)
 // {
@@ -528,6 +529,15 @@ function builder_fun(rule_type)
 						values: days,
 						operators: ['equal', 'not_equal','less','greater','is_null', 'is_not_null']
 					});
+					
+					filterArray.push({
+						    id: 'sales_branch',
+						    label: 'Sales Branch',
+						    type: 'integer',
+						    input: 'select',
+						    values: salesbranch,
+						    operators: ['equal', 'not_equal','is_null', 'is_not_null']
+						  });
 				}
 
 					if(['3','5','6','7','8','9','10'].includes(rule_type))

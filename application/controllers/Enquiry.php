@@ -581,7 +581,26 @@ class Enquiry extends CI_Controller
             }else{
                 $created_by = $this->session->user_id;
             }
-//End           
+			
+//End
+
+//For asign to according to sales branch
+$post_br = $this->input->post('sales_branch');
+if(!empty($post_br)){
+$usr_br = $this->User_model->all_emp_list('',$post_br,'','');
+$usr_ttl = count($usr_br);
+if($usr_ttl > 1){	
+	$usr_id = $usr_br[0]->pk_i_admin_id;
+	$reparr = $this->db->select('report_to')->where('pk_i_admin_id',$usr_id)->get('tbl_admin')->row();
+	$assign_to = $reparr->report_to??'';
+}else{
+	$usr_id = $usr_br[0]->pk_i_admin_id;
+	$assign_to = $usr_id??'';	
+} 
+}else{
+	$assign_to = '';
+}
+//End         
             $postData = [
                 'Enquery_id' => $encode,
                 'comp_id' => $this->session->userdata('companey_id'),
@@ -612,6 +631,7 @@ class Enquiry extends CI_Controller
                 'center_id' => $this->input->post('center_id'),
                 'ip_address' => $this->input->ip_address(),
                 'created_by' => $created_by,
+				'aasign_to' => $assign_to,
                 'city_id' => !empty($city_id->row()->id) ? $city_id->row()->id : '',
                 'state_id' => !empty($city_id->row()->state_id) ? $city_id->row()->state_id : '',
                 'country_id'  => !empty($city_id->row()->country_id) ? $city_id->row()->country_id : '',
@@ -624,7 +644,7 @@ class Enquiry extends CI_Controller
                 'industries'=>$industry,
                 'status' => $status
             ];
-            
+         //echo '<pre>';print_r($postData);exit;   
             $insert_id    =   $this->enquiry_model->create($postData);
             if ($this->input->post('apply_with')) {
                 $course_apply = $this->Institute_model->readRowcrs($this->input->post('apply_with'));

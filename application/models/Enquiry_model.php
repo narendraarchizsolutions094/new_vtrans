@@ -513,7 +513,7 @@ class Enquiry_model extends CI_Model {
                                                                 ),
                                                       ),
                                   "parameter_name"=> "industries",
-                                  "current_value"=> !empty($eb)?$eb->indus_name:'',
+                                  "current_value"=> !empty($eb)?$eb->indus_name:$enquiry->industries,
                                 ),
 
                            );
