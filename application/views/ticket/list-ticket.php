@@ -453,7 +453,8 @@ input[name=lead_stages]{
                     </div> 
                   
                     <div class="form-group col-md-3">
-					<!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>-->
+					<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>
+					<button class="btn btn-primary" id="find_filterbutton" type="button" style="margin: 10px;">Filter</button>
                     <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
                         </div>           
                     <!-- </div> -->
@@ -1140,8 +1141,27 @@ $(document).ready(function() {
             }
          });
 
+//CHANGE DUE TO RESET BUTTON
+    /* $('#ticket_filter').change(function() {
 
-    $('#ticket_filter').change(function() {
+        var form_data = $("#ticket_filter").serialize();       
+       // alert(form_data);
+        $.ajax({
+        url: '<?=base_url()?>ticket/ticket_set_filters_session',
+        type: 'post',
+        data: form_data,
+        success: function(responseData){
+         // document.write(responseData);
+          $('#ticket_table').DataTable().ajax.reload();
+          //stage_counter(); 
+          if(!$("#active_class").hasClass('hide_countings')){
+           return update_short_dashboard(); 
+          }
+           }
+        });
+    }); */
+//END
+$('#find_filterbutton').click(function() {
 
         var form_data = $("#ticket_filter").serialize();       
        // alert(form_data);
@@ -1472,6 +1492,7 @@ success: function(responseData){
 });
 }
 });
+$('#find_filterbutton').click();
   }
 
 jQuery(function($){ //on document.ready

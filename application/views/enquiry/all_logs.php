@@ -258,7 +258,8 @@ input[name=lead_stages]{
                       </div>
 
                       <div class="form-group col-md-3">
-					   <!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>-->
+					   <button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>
+					   <button class="btn btn-primary" id="find_filterbutton" type="button" style="margin: 20px;">Filter</button>
                        <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
                       </div>  
                     </div>
@@ -677,11 +678,18 @@ $(document).on('click',".top_pill",function(){
         }
     });
       }
+set_filter_session();
 
-      set_filter_session();
-      $('#log_filter').change(function() {
+//CHANGE DUE TO RESET BUTTON
+      /* $('#log_filter').change(function() {
+        set_filter_session();
+      }); */
+//END
+
+$('#find_filterbutton').click(function() {
         set_filter_session();
       });
+
 
       function set_filter_session(){ 
         var form_data = $("#log_filter").serialize();  
@@ -899,5 +907,6 @@ success: function(responseData){
 });
 }
 });
+$('#find_filterbutton').click();
   }  
 </script>
