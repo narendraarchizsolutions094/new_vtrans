@@ -3190,7 +3190,10 @@ class Ticket extends CI_Controller
 			//subsatge
 		}
 		// tat rule code start
-		public function tat_run($comp_id){			
+		public function tat_run($comp_id){	
+			$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    		$this->db->insert('cron_log',array('created_at_php'=>date('Y-m-d H:i:s'),'url'=>$actual_link));		
+			
 			echo date('Y-m-d H:i:s').'<br>';
 			$fetchrules = $this->db->where(array('comp_id' => $comp_id, 'type' => 5,'status'=>1))->order_by("id", "ASC")->get('leadrules')->result();			
 			if(!empty($fetchrules)){
