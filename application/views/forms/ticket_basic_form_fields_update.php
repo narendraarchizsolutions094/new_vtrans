@@ -266,6 +266,7 @@ echo'
                       <div class="form-group">
                         <label>Product</label>
                         <select name="product" class="form-control">
+						<option value="">---Select Product---</option>
                         <?php
                         foreach ($product as $prd)
                         {
@@ -354,6 +355,7 @@ echo'
                       <div class="form-group">
                         <label>Source</label>
                         <select name="source" class="form-control">
+						<option value="">---Select Source---</option>
                         <?php
                         foreach ($source as $sor)
                         {
@@ -416,14 +418,14 @@ echo'
                 ?>	  
 			<div class="form-group col-md-6">
                 <label class="control-label" for="emp_branch">Branch</label> 									
-                <select class="form-control add-select2 choose-client" name="emp_branch">
+                <select class="form-control add-select2" name="emp_branch" id="emp_brnh">
 				<option value="">---Select Branch---</option>
                     <?php  if (!empty($branch_lists)) {
                     foreach ($branch_lists as $key => $value) {
                               $n = $value->branch_name;
-                              if(!empty($n)){                               
-                                if($value->branch_id==$ticket->branch_for)
-                                echo "<option value =".$value->branch_id." selected>".$n."</option>";
+                              if(!empty($n)){
+								  
+                                echo "<option value =".$value->branch_id." ".(($value->branch_id==$ticket->branch_for)?"selected":"").">".$n."</option>";
                                 
                               }
                     }

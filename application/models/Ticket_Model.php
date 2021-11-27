@@ -517,7 +517,8 @@ class Ticket_Model extends CI_Model
 			"category" 	=> $this->input->post("issue", true),
 			"solution" => $this->input->post("solution", true),
 			"status"    => $this->input->post("status", true),
-			"review"    => $this->input->post("review", true)
+			"review"    => $this->input->post("review", true),
+			"branch_for" => $this->input->post("emp_branch", true)
 		);
 		//print_r($updarr); exit();
 		//echo $this->input->post("ticketno", true); exit();

@@ -1803,6 +1803,30 @@ class Ticket extends CI_Controller
 		$stage_remark	=	$this->input->post('conversation');
 		$client	=	$this->input->post('client');
 		
+//For asign to according to sales branch
+$post_br = $this->input->post('brnh_id');
+if(!empty($post_br)){
+$usr_br = $this->User_model->all_emp_list('',$post_br,'','');
+$usr_ttl = count($usr_br);
+if($usr_ttl > 1){	
+	$usr_id = $usr_br[0]->pk_i_admin_id;
+	$reparr = $this->db->select('report_to')->where('pk_i_admin_id',$usr_id)->get('tbl_admin')->row();
+	$assign_to = $reparr->report_to??'';
+}else{
+	$usr_id = $usr_br[0]->pk_i_admin_id;
+	$assign_to = $usr_id??'';	
+} 
+}else{
+	$assign_to = '';
+}
+$mobileno = $this->input->post('mobile');
+$email = $this->input->post('email');
+$this->db->set('aasign_to', $assign_to);
+$this->db->where('phone',$mobileno);
+$this->db->where('email',$email);
+$this->db->update('enquiry');
+//End
+		
 		$stage_date = date("d-m-Y", strtotime($this->input->post('c_date')));
 		$stage_time = date("H:i:s", strtotime($this->input->post('c_time')));
 		$user_id = $this->session->user_id;

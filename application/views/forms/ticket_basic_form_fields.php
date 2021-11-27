@@ -50,6 +50,7 @@ echo'<div class="trackingDetails"></div>';
                           <div class="form-group">
                             <label>Referred By</label>
                             <select class="form-control" name="referred_by">
+							<option value = ""> -- Select Referred By --</option>
                               <?php
                               if(!empty($referred_type))
                               {
@@ -274,6 +275,7 @@ echo'<div class="trackingDetails"></div>';
                           <div class="form-group">
                             <label>Product</label>
                             <select class="form-control  chg-product" name = "product">
+							<option value = "">-- Select Product --</option>
                               <?php if(!empty($product)) {
                                 foreach($product as $ind => $prd){
                                   ?><option value ="<?php echo $prd->id ?>"><?php echo ucfirst($prd->country_name); ?> </option><?php
@@ -295,7 +297,7 @@ echo'<div class="trackingDetails"></div>';
                         <div class="form-group">
                           <label><?=display('ticket_problem')?><i class="text-danger opt">*</i></label>
                           <select class="form-control " name = "relatedto" required>
-                          <option value = "">Select Subject</option>
+                          <option value = "">-- Select Subject --</option>
                         <?php  if(!empty($problem)) {
                               foreach($problem as $ind => $prblm){
                                 ?><option value = "<?php echo $prblm->id ?>"><?php echo ucfirst($prblm->subject_title) ?> </option><?php
@@ -343,7 +345,7 @@ echo'<div class="trackingDetails"></div>';
                       <div class="form-group">
                         <label>Priority</label>
                         <select class="form-control " name = "priority">
-                          <option value = "">Select</option>
+                          <option value = "">-- Select --</option>
                           <option value = "1">Low</option>
                           <option value = "2">Medium</option>
                           <option value = "3">High</option>
@@ -365,6 +367,7 @@ echo'<div class="trackingDetails"></div>';
                       <div class="form-group">
                         <label>Source</label>
                         <select class="form-control " name = "source">
+						<option value = "">-- Select Source --</option>
                           <?php
                            if(!empty($source)) {
                             foreach($source as $ind => $prblm){

@@ -97,7 +97,8 @@
                 <div class="row" > 
                    <?php echo form_open_multipart('ticket/ticket_disposition/'.$ticket->id,array('id'=>'ticket_disposition_form','class'=>'form-inner')) ?>                     
                    <input type="hidden" name="client" value="<?php if(!empty($enquiry->enquiry_id)) { echo $enquiry->enquiry_id;}?>">
-                   <input type="hidden" name="ticketno" value="<?=$ticket->ticketno?>">                   
+                   <input type="hidden" name="ticketno" value="<?=$ticket->ticketno?>"> 
+                   <input type="hidden" name="brnh_id" id="brnh_for">				   
 
                     <div class="form-group">                 
                       <select class="form-control" id="lead_stage_change" name="lead_stage" onchange="find_description()">
@@ -184,6 +185,14 @@
   $("#ticket_disposition_save").on('click',function(e){
     //alert('name');
     e.preventDefault();
+	if("<?=$this->session->companey_id?>"==65 && $("#lead_description").val() == '6'){
+	 if($("#emp_brnh").val() == ''){
+      alert('Please select branch in basic tab for business lead.');
+      return;
+	 }else{
+		$("#brnh_for").val($("#emp_brnh").val())
+	 }
+    }
     if("<?=$this->session->companey_id?>"==65 && $("#lead_description").val() == ''){
       alert('Please select sub stage.');
       return;
