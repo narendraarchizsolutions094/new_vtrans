@@ -89,6 +89,7 @@
 					</div>
 					
 				</div>
+				<br>
 				<center><button type = "submit" class="btn btn-success">Update</button></center>
 			</div>	
 		</div>	
