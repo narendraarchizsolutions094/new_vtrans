@@ -1804,9 +1804,10 @@ class Ticket extends CI_Controller
 		$client	=	$this->input->post('client');
 		
 //For asign to according to sales branch
+if($stage_desc=='5' || $stage_desc=='6'){
 $post_br = $this->input->post('brnh_id');
 if(!empty($post_br)){
-$usr_br = $this->User_model->all_emp_list('',$post_br,'','');
+$usr_br = $this->User_model->all_emp_list_assign($post_br);
 $usr_ttl = count($usr_br);
 if($usr_ttl > 1){	
 	$usr_id = $usr_br[0]->pk_i_admin_id;
@@ -1819,12 +1820,14 @@ if($usr_ttl > 1){
 }else{
 	$assign_to = '';
 }
+//print_r($assign_to);exit;
 $mobileno = $this->input->post('mobile');
 $email = $this->input->post('email');
 $this->db->set('aasign_to', $assign_to);
 $this->db->where('phone',$mobileno);
 $this->db->where('email',$email);
 $this->db->update('enquiry');
+}
 //End
 		
 		$stage_date = date("d-m-Y", strtotime($this->input->post('c_date')));
