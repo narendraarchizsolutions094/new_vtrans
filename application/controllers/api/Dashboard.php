@@ -397,7 +397,7 @@ class Dashboard extends REST_Controller {
         {
             $this->load->model('Client_Model');
           
-            $res1 = $this->Client_Model->filter_getCompanyList($key,array(),$company_id,$user_id,$process,$keyword)->result();
+            $res1 = $this->Client_Model->filter_getCompanyList_forapi($key,array(),$company_id,$user_id,$process,$keyword)->result();
 			$res2 = $this->Client_Model->common_filter_getCompanyList($key,array(),$company_id,$user_id,$process,$keyword)->result();
 
 			if(!empty($res1 && $res2)){
