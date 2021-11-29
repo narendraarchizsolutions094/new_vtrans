@@ -587,7 +587,7 @@ class Enquiry extends CI_Controller
 //For asign to according to sales branch
 $post_br = $this->input->post('sales_branch');
 if(!empty($post_br)){
-$usr_br = $this->User_model->all_emp_list('',$post_br,'','');
+$usr_br = $this->User_model->all_emp_list_assign($post_br);
 $usr_ttl = count($usr_br);
 if($usr_ttl > 1){	
 	$usr_id = $usr_br[0]->pk_i_admin_id;

@@ -74,6 +74,21 @@ class User_model extends CI_Model {
         return $query->result();
     }
 	
+	public function all_emp_list_assign($branch='') {
+
+        $this->db->select("pk_i_admin_id,s_display_name,last_name,s_user_email");
+        $this->db->from('tbl_admin');
+		
+		if(!empty($branch)){
+		//$this->db->where_in('sales_branch', $branch);
+		$this->db->where("FIND_IN_SET(".$branch.", sales_branch)");
+		}
+		$this->db->where('user_permissions', '147');
+		$this->db->where('b_status', '1');
+        $query = $this->db->get();
+        return $query->result();
+    }
+	
 	public function all_pkr_list($desc_id) {
 
         $this->db->select("rate_km");
