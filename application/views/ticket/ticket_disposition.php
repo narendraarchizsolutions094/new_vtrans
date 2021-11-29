@@ -185,9 +185,9 @@
   $("#ticket_disposition_save").on('click',function(e){
     //alert('name');
     e.preventDefault();
-	if("<?=$this->session->companey_id?>"==65 && $("#lead_description").val() == '6'){
+	if("<?=$this->session->companey_id?>"==65 && ($("#lead_description").val() == '6' || $("#lead_description").val() == '5')){
 	 if($("#emp_brnh").val() == ''){
-      alert('Please select branch in basic tab for business lead.');
+      alert('Please select Branch Name in basic tab for business lead.');
       return;
 	 }else{
 		$("#brnh_for").val($("#emp_brnh").val())

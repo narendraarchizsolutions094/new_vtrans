@@ -306,8 +306,9 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
     </div>
 
     <div class="form-group col-md-3">
-		<!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="visit_reset_filter();" style="margin: 20px;">Reset</button>-->
-        <button class="btn btn-success" id="save_filterbutton" type="button" onclick="visit_save_filter();" style="margin: 20px;">Save</button>        
+		<button class="btn btn-warning btn-sm" id="reset_filterbutton" type="button" onclick="visit_reset_filter();" style="margin: 25px 5px;">Reset</button>
+		<button class="btn btn-primary btn-sm" id="find_filterbutton" type="button" style="margin: 25px 5px;">Filter</button>
+        <button class="btn btn-success btn-sm" id="save_filterbutton" type="button" onclick="visit_save_filter();" style="margin: 25px 5px;">Save</button>        
     </div>
 </div>
 </form>
@@ -669,9 +670,15 @@ var c = getCookie('visit_allowcols');
 
 var Data = {"from_data":"","to_date":"","from_time":"","to_time":""};
 
-$(".v_filter").change(function(){
+//CHANGE DUE TO RESET BUTTON
+/* $(".v_filter").change(function(){
  $("#datatable").DataTable().ajax.reload(); 
-});
+}); */
+//END
+
+$('#find_filterbutton').click(function() {
+     $("#datatable").DataTable().ajax.reload();
+ });
 
 $(document).ready(function(){
 
@@ -1367,6 +1374,7 @@ success: function(responseData){
 });
 }
 });
+$('#find_filterbutton').click();
   }
 </script>
 <style type="text/css">

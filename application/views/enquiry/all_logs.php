@@ -258,9 +258,9 @@ input[name=lead_stages]{
                       </div>
 
                       <div class="form-group col-md-3">
-					   <button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 20px;">Reset</button>
-					   <button class="btn btn-primary" id="find_filterbutton" type="button" style="margin: 20px;">Filter</button>
-                       <button class="btn btn-success" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 20px;">Save</button>        
+					   <button class="btn btn-warning btn-sm" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 25px 5px;">Reset</button>
+					   <button class="btn btn-primary btn-sm" id="find_filterbutton" type="button" style="margin: 25px 5px;">Filter</button>
+                       <button class="btn btn-success btn-sm" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 25px 5px;">Save</button>        
                       </div>  
                     </div>
           

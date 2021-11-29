@@ -278,8 +278,9 @@ $variable=explode(',',$_COOKIE['deals_filter_setting']);
     </div>
 	
 	<div class="form-group col-md-3">
-		<!--<button class="btn btn-warning" id="reset_filterbutton" type="button" onclick="deal_reset_filter();" style="margin: 20px;">Reset</button>-->
-        <button class="btn btn-success" id="save_filterbutton" type="button" onclick="deal_save_filter();" style="margin: 20px;">Save</button>        
+		<button class="btn btn-warning btn-sm" id="reset_filterbutton" type="button" onclick="deal_reset_filter();" style="margin: 25px 5px;">Reset</button>
+		<button class="btn btn-primary btn-sm" id="find_filterbutton" type="button" style="margin: 25px 5px;">Filter</button>
+        <button class="btn btn-success btn-sm" id="save_filterbutton" type="button" onclick="deal_save_filter();" style="margin: 25px 5px;">Save</button>        
     </div>
 </div>
 </form>
@@ -495,11 +496,17 @@ var specific_list = "<?=!empty($this->uri->segment(3))?$this->uri->segment(3):''
 specific_list = atob(specific_list);
 
 var TempData = {};
-$(".d_filter").on('change',function(){
 
-  $('#deals_table').DataTable().ajax.reload();
- 
-});
+//CHANGE DUE TO RESET BUTTON
+/* $(".d_filter").on('change',function(){
+  $('#deals_table').DataTable().ajax.reload(); 
+}); */
+//END*
+
+$('#find_filterbutton').click(function() {
+     $('#deals_table').DataTable().ajax.reload();
+ });
+
 $(document).ready(function(){
 
   $('#deals_table').DataTable({           
@@ -1003,6 +1010,7 @@ success: function(responseData){
 });
 }
 });
+$('#find_filterbutton').click();
   }
 </script>
 <style type="text/css">
