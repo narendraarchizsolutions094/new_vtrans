@@ -398,7 +398,7 @@ class Client_Model extends CI_Model
         }
 		$this->db->select('comp.id,comp.company_name');
         $this->db->from('tbl_company comp')
-		//->join('enquiry enq','enq.company=comp.id','left')
+		->join('enquiry enq','enq.company=comp.id','left')
                         ->group_by('comp.id');
         
 

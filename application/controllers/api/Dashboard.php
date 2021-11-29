@@ -382,8 +382,57 @@ class Dashboard extends REST_Controller {
             ], REST_Controller::HTTP_OK); 
         }
     }
+	
+	public function filter_unique_company_list_post()
+    {
+        $user_id = $this->input->post('user_id')??0;
+        $company_id = $this->input->post('company_id');
+        $process =  $this->input->post('process');//can be multiple
+        $key = $this->input->post('key')??0;
+		$keyword = $this->input->post('keyword');
 
-    public function filter_unique_company_list_post()
+        $this->form_validation->set_rules('company_id','company_id', 'trim|required');
+        $this->form_validation->set_rules('process','process', 'trim|required');
+        if($this->form_validation->run()==true)
+        {
+            $this->load->model('Client_Model');
+          
+            $res1 = $this->Client_Model->filter_getCompanyList($key,array(),$company_id,$user_id,$process,$keyword)->result();
+			$res2 = $this->Client_Model->common_filter_getCompanyList($key,array(),$company_id,$user_id,$process,$keyword)->result();
+
+			if(!empty($res1 && $res2)){
+			$res = array_merge($res1,$res2);
+			}else if(empty($res1) && !empty($res2)){
+				$res = $res2; 
+			}else{
+				$res = $res1;
+			}
+			
+            $ary = array();
+            foreach ($res as $key => $value)
+            {
+                unset($value->enq_ids);
+                unset($value->created_at);
+                unset($value->updated_at);
+                unset($value->comp_id); 
+                $ary[] = $value;
+            }
+            $res = $ary;
+            $this->set_response([
+                'status' => TRUE,            
+                'data' => $res
+            ], REST_Controller::HTTP_OK); 
+        }
+        else
+        {
+            $this->set_response([
+                'status' => FALSE,            
+                'message' => strip_tags(validation_errors()),
+            ], REST_Controller::HTTP_OK); 
+        }
+    }
+
+    public function hierarchy_filter_unique_company_list_post()
     {
         $user_id = $this->input->post('user_id')??0;
         $company_id = $this->input->post('company_id');
