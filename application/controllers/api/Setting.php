@@ -31,6 +31,18 @@ class Setting extends REST_Controller {
             'message' => $lang  
            ], REST_Controller::HTTP_OK);  
     }
+	
+	public function get_apk_post(){
+        $comp_id = $this->input->post('comp_id');
+        $this->db->where('comp_id',$comp_id);
+		$this->db->where('latest_app','1');
+        $apk    =  $this->db->get('tbl_apk_version')->result_array();
+  
+        $this->set_response([
+            'status' => false,
+            'apk' => $apk  
+           ], REST_Controller::HTTP_OK);  
+    }
 
    
 } 

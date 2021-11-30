@@ -148,7 +148,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
 					 
 					    <div class="form-group col-md-4">
                             <label class="control-label" for="sales_branch"><?=display('sales_branch')?><i class="text-danger">*</i></label> 									
-                            <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()">
+                            <select class="form-control" name="sales_branch" id="sales_branch" onchange="clientname()" required>
                                     <?php  if (!empty($branch_lists)) {
                                         foreach ($branch_lists as $key => $value) { ?>
                                             <option value="<?= $value->branch_id;?>" <?php if($value->branch_id == $this->session->branch_name){ echo "selected";} ?>><?= $value->branch_name;?></option>
