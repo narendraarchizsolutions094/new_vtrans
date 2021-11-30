@@ -39,7 +39,7 @@ class Setting extends REST_Controller {
         $apk    =  $this->db->get('tbl_apk_version')->result_array();
   
         $this->set_response([
-            'status' => false,
+            'status' => true,
             'apk' => $apk  
            ], REST_Controller::HTTP_OK);  
     }
