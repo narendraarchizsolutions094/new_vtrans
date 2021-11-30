@@ -40,7 +40,7 @@ class Setting extends REST_Controller {
   
         $this->set_response([
             'status' => true,
-            'apk' => $apk  
+            'apk' => $apk 
            ], REST_Controller::HTTP_OK);  
     }
 
