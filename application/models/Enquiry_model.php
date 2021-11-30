@@ -2827,12 +2827,12 @@ $cpny_id=$this->session->companey_id;
             'today' => $visit_today
         );
 
-        /* $deal_total = $this->get_deal_count($userid,$filter=array());
-        $deal_today = $this->get_deal_today_count($userid,array('from_date'=>date('Y-m-d')));
+		$deal_total_count = $this->get_deal_count($userid,$filter=array());
+        $get_deal_count_amount = $this->get_deal_count_amount($userid,$filter=array());
         $deal_data = array(
-            'total' => $deal_total,
-            'today' => $deal_today
-        ); */
+            'total' => $deal_total_count,
+            'deal_amount' => $get_deal_count_amount
+        );
 
         /* $query7 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.lead_score FROM `enquiry` WHERE $where GROUP BY enquiry.lead_score");
 
@@ -3180,8 +3180,7 @@ $cpny_id=$this->session->companey_id;
               $deffered_amnt = $value->total??0;
         } */
         //$funnelchartAry = array('tabs'=>$tab_list,'hot'=>$hot,'warm'=>$warm,'cold'=>$cold,'month_wise'=>$month_list,'raw'=>$raw,'indiamap'=>$indiamap,'disposition'=>$dispo,'source'=>$src,'process_wise'=>$process_wise,'drop_wise'=>$drop_data);
-        //$funnelchartAry = array('tabs'=>$tab_list,'visit_data'=> $visit_data,'deal_data' => $deal_data);
-		$funnelchartAry = array('tabs'=>$tab_list,'visit_data'=> $visit_data);
+        $funnelchartAry = array('tabs'=>$tab_list,'visit_data'=> $visit_data,'deal_data' => $deal_data);
         /* $funnelchartAry['followup'] = $followup;
         $funnelchartAry['deals'] = array('all'=>$alldeals,
                                           'done'=>$done_deals,
@@ -3214,6 +3213,85 @@ $cpny_id=$this->session->companey_id;
         $this->db->where($where);                
         return $this->db->count_all_results();
         }
+		
+		public function get_deal_count($user_id,$filter=array()){                
+        if(!empty($filter['users'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['users']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($user_id);
+        }
+        $res = array();
+        
+        $where = "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).')) AND original=1'; 
+        
+        $this->db->join('enquiry enq','enq.enquiry_id=commercial_info.enquiry_id','left');
+        
+        //$where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND original=1';
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }        
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region = $region_id";
+        }
+        $this->db->where($where);
+        $this->db->from('commercial_info');
+        $result = $this->db->count_all_results();     
+        //echo $this->db->last_query();
+        return $result;   
+    }
+	
+	public function get_deal_count_amount($user_id,$filter=array()){        
+        if(!empty($filter['users'])){
+            $all_reporting_ids    =   $this->common_model->get_categories($filter['users']);
+        }else{
+            $all_reporting_ids    =   $this->common_model->get_categories($user_id);
+        }
+        $res = array();
+        //$where = " commercial_info.createdby IN (".implode(',', $all_reporting_ids).') AND original=1';
+        
+        $where = "( enq.created_by IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enq.aasign_to IN (".implode(',', $all_reporting_ids).')) AND original=1'; 
+        
+        $this->db->join('enquiry enq','enq.enquiry_id=commercial_info.enquiry_id','left');
+        
+        if(!empty($filter['from_date']) && !empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >= '".$from_created."' AND DATE(commercial_info.creation_date) <= '".$to_created."'";
+        }
+        if(!empty($filter['from_date']) && empty($filter['to_date'])){
+            $from_created = date("Y-m-d",strtotime($filter['from_date']));
+            $where .= " AND DATE(commercial_info.creation_date) >=  '".$from_created."'";                        
+        }
+        if(empty($filter['from_date']) && !empty($filter['to_date'])){            
+            $to_created = date("Y-m-d",strtotime($filter['to_date']));
+            $where .= " AND DATE(commercial_info.creation_date) <=  '".$to_created."'";                                    
+        }        
+        $this->db->select("SUM(expected_amount) as c");
+        if(!empty($filter['region'])){
+            $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=commercial_info.createdby');
+            $region_id = $filter['region'];
+            $where .= " AND tbl_admin.sales_region = $region_id";
+        }
+        $this->db->where($where);
+        $this->db->from('commercial_info');
+        $result = $this->db->get()->row_array();     
+        return number_format((float)$result['c'], 2, '.', '');   
+    }
+		
 		
 		
 
