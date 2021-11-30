@@ -2819,6 +2819,20 @@ $cpny_id=$this->session->companey_id;
           $new_tab[] = $value;
         }
         $tab_list = $new_tab;
+		
+		$visit_total = $this->get_visit_count($userid,$filter=array());
+        $visit_today = $this->get_visit_count($userid,array('from_date'=>date('Y-m-d')));
+        $visit_data = array(
+            'total' => $visit_total,
+            'today' => $visit_today
+        );
+
+        /* $deal_total = $this->get_deal_count($userid,$filter=array());
+        $deal_today = $this->get_deal_today_count($userid,array('from_date'=>date('Y-m-d')));
+        $deal_data = array(
+            'total' => $deal_total,
+            'today' => $deal_today
+        ); */
 
         /* $query7 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.lead_score FROM `enquiry` WHERE $where GROUP BY enquiry.lead_score");
 
@@ -3166,7 +3180,8 @@ $cpny_id=$this->session->companey_id;
               $deffered_amnt = $value->total??0;
         } */
         //$funnelchartAry = array('tabs'=>$tab_list,'hot'=>$hot,'warm'=>$warm,'cold'=>$cold,'month_wise'=>$month_list,'raw'=>$raw,'indiamap'=>$indiamap,'disposition'=>$dispo,'source'=>$src,'process_wise'=>$process_wise,'drop_wise'=>$drop_data);
-        $funnelchartAry = array('tabs'=>$tab_list);
+        //$funnelchartAry = array('tabs'=>$tab_list,'visit_data'=> $visit_data,'deal_data' => $deal_data);
+		$funnelchartAry = array('tabs'=>$tab_list,'visit_data'=> $visit_data);
         /* $funnelchartAry['followup'] = $followup;
         $funnelchartAry['deals'] = array('all'=>$alldeals,
                                           'done'=>$done_deals,
@@ -3178,6 +3193,29 @@ $cpny_id=$this->session->companey_id;
                                         ); */
         return $funnelchartAry;
     }
+	
+	public function get_visit_count($user_id,$filter=array()){
+		if(!empty($_POST['region'])){
+			$all_reporting_ids    =   $this->common_model->get_categories_new($user_id,$_POST['region']);
+		}else{
+			$all_reporting_ids    =   $this->common_model->get_categories($user_id);
+		}    
+        $this->db->from('tbl_visit');
+        $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id');            
+        $where="";
+        $where .= "tbl_admin.pk_i_admin_id IN (".implode(',', $all_reporting_ids).")";
+        $and =1;
+
+		if(!empty($filter['from_date'])){
+            $where.=" AND tbl_visit.visit_date = '".$filter['from_date']."'";
+            $and =1;
+        }
+
+        $this->db->where($where);                
+        return $this->db->count_all_results();
+        }
+		
+		
 
     public function sourceDataChart($userid,$companyid)
     { 
