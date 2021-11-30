@@ -409,7 +409,7 @@ function clientname() {
                // alert(data);
                 var html='';
                 var obj = JSON.parse(data);
-                
+                html +='<option value="">---Select---</option>';;
                 for(var i=0; i <(obj.length); i++){
                     
                     html +='<option value="'+(obj[i].area_id)+'" '+((fill_id==obj[i].area_id)?"selected":"")+'>'+(obj[i].area_name)+'</option>';
@@ -435,7 +435,7 @@ var fill_id = '<?=$details->enq_salebrach;?>';
                 var html='';
                 var obj = JSON.parse(data);
                 
-                html +='<option value="" style="display:none">---Select---</option>';;
+                html +='<option value="">---Select---</option>';
                 for(var i=0; i <(obj.length); i++){
                     
                     html +='<option value="'+(obj[i].branch_id)+'" '+((fill_id==obj[i].branch_id)?"selected":"")+'>'+(obj[i].branch_name)+'</option>';

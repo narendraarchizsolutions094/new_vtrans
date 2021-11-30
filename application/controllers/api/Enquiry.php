@@ -292,6 +292,7 @@ $post_br = $this->input->post('sales_branch');
 if(!empty($post_br)){
 $usr_br = $this->User_model->all_emp_list_assign($post_br);
 $usr_ttl = count($usr_br);
+if(!empty($usr_ttl)){
 if($usr_ttl > 1){	
 	$usr_id = $usr_br[0]->pk_i_admin_id;
 	$reparr = $this->db->select('report_to')->where('pk_i_admin_id',$usr_id)->get('tbl_admin')->row();
@@ -303,9 +304,12 @@ if($usr_ttl > 1){
 }else{
 	$assign_to = '';
 }
+}else{
+	$assign_to = '';
+}
 //End 
 
-			  $postData['aasign_to'] =$assign_to;
+			  $postData['aasign_to'] =$assign_to??'';
               $postData['product_id'] =$process_id;
               $postData['Enquery_id'] = $encode;
 
