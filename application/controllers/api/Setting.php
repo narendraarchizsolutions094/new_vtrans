@@ -36,11 +36,13 @@ class Setting extends REST_Controller {
         $comp_id = $this->input->post('comp_id');
         $this->db->where('comp_id',$comp_id);
 		$this->db->where('latest_app','1');
-        $apk    =  $this->db->get('tbl_apk_version')->result_array();
-  
+        $apk    =  $this->db->get('tbl_apk_version')->row();
+
         $this->set_response([
             'status' => true,
-            'apk' => $apk 
+            "version_name" => $apk->version_name,
+            "version_code" => $apk->version_code,
+            "apk_url" => $apk->apk_url, 
            ], REST_Controller::HTTP_OK);  
     }
 
