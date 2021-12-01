@@ -266,12 +266,6 @@ $this->db->join('(select check_in_time,uid,id from tbl_attendance where (DATE(tb
 		if(empty($employee)){
 			return false;
 		}
-		$this->load->model('common_model');
-		$all_reporting_ids    =   $this->common_model->get_categories($user_id??$this->session->user_id);
-		$where  = "";
-		$where .= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; 
-        $where.=" AND enquiry.drop_status=0";
 		
 		$filter_date = $from;
 	    $filter_to = $to;
@@ -289,7 +283,7 @@ $this->db->join('(select check_in_time,uid,id from tbl_attendance where (DATE(tb
 		$this->db->from('tbl_admin');
 		$this->db->join('sales_region','sales_region.region_id = tbl_admin.sales_region','left');
 		$this->db->join('tbl_user_role','tbl_user_role.use_id = tbl_admin.user_permissions','left');        
-		$this->db->join('(select enquiry_id,created_by from enquiry where  (DATE(enquiry.created_date) >= "'.$filter_date.'" AND DATE(enquiry.created_date) <= "'.$filter_to.'" AND "'.$where.'") ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');
+		$this->db->join('(select enquiry_id,created_by from enquiry where  (DATE(enquiry.created_date) >= "'.$filter_date.'" AND DATE(enquiry.created_date) <= "'.$filter_to.'") ORDER BY enquiry.enquiry_id asc) as enquiry','enquiry.created_by = tbl_admin.pk_i_admin_id','left');
         $this->db->join('(select id,user_id from tbl_visit where  (STR_TO_DATE(tbl_visit.created_at,"%Y-%m-%d") >= "'.$filter_date.'" AND STR_TO_DATE(tbl_visit.created_at,"%Y-%m-%d") <= "'.$filter_to.'") ORDER BY tbl_visit.id asc) as tbl_vis','tbl_vis.user_id = tbl_admin.pk_i_admin_id','left');
         $this->db->join('(select id,createdby from commercial_info where (DATE(commercial_info.creation_date) >= "'.$filter_date.'" AND DATE(commercial_info.creation_date) <= "'.$filter_to.'") ORDER BY commercial_info.id asc) as deal_info','deal_info.createdby = tbl_admin.pk_i_admin_id','left');
         			
