@@ -106,7 +106,7 @@ foreach($data['branch_lists'] as $branch){
 //end
 
 //UPDATE CLIENT NAME USING COMPANY GROUP NAME + SALES BRANCH
-$enq_data = $this->db->select('enquiry_id,company,sales_branch')->get('enquiry')->result();
+/* $enq_data = $this->db->select('enquiry_id,company,sales_branch')->get('enquiry')->result();
 foreach($enq_data as $val){
 	$ec = $val->company;
 	$eb = $val->sales_branch;
@@ -128,7 +128,7 @@ foreach($enq_data as $val){
 	$client_name = ''; 	
 	}
 	
-}
+} */
 //END
 		//$this->output->enable_profiler(TRUE);
 		if (user_role('60') == true) {
