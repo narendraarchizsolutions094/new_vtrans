@@ -104,6 +104,32 @@ foreach($data['branch_lists'] as $branch){
     $this->db->insert('tbl_client_contacts',$datac);
 }  */
 //end
+
+//UPDATE CLIENT NAME USING COMPANY GROUP NAME + SALES BRANCH
+$enq_data = $this->db->select('enquiry_id,company,sales_branch')->get('enquiry')->result();
+foreach($enq_data as $val){
+	$ec = $val->company;
+	$eb = $val->sales_branch;
+	$eid = $val->enquiry_id;	
+	if(!empty($ec && $eb)){
+	$cdata = $this->db->select('company_name')->where(array('id'=>$ec))->get('tbl_company')->row();
+	$bdata = $this->db->select('branch_name')->where(array('branch_id'=>$eb))->get('branch')->row();
+	if(!empty($cdata && $bdata)){
+	$client_name = $cdata->company_name . " " . $bdata->branch_name;
+
+    $this->db->set('client_name',$client_name);
+    $this->db->where('enquiry_id',$eid);
+    $this->db->update('enquiry');
+	
+	}else{
+	$client_name = '';
+	}
+	}else{
+	$client_name = ''; 	
+	}
+	
+}
+//END
 		//$this->output->enable_profiler(TRUE);
 		if (user_role('60') == true) {
 		}
