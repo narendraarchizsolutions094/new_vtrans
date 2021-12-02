@@ -896,7 +896,18 @@ $("select").select2();
           <input type="number" name="mannual_km" id="mkm" class="form-control">
         </div>
 
+
                 <div class="form-group col-md-6">
+                    <label style="width:100%;">Company group name <span class="text-danger">*</span>
+                      <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
+                        <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
+                      </a>
+                    </label>
+                    <input class="form-control" value="<?php  echo set_value('company');?> " name="company_nm" id="company_list" type="text"  placeholder="Enter Company" onblur="find_company_id(this.value)" required>
+				    <input class="form-control" name="company" type="hidden">
+                </div>
+					
+                <!--<div class="form-group col-md-6">
                     <label style="width:100%;">Company group name <span class="text-danger">*</span>
                       <a href="<?=base_url('enquiry/create?status=1&red=visits')?>">
                         <span style="float: right; color:gray;"><i class="fa fa-plus"></i></span>
@@ -914,7 +925,7 @@ $("select").select2();
                       }
                       ?>
                     </select>
-                </div>
+                </div>-->
 
                <div class="form-group col-md-6">
                   <label style="width: 100%">Client Name <span class="text-danger">*</span>
@@ -940,11 +951,11 @@ $("select").select2();
 
                 <div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
-          <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>" required>
+          <input type="date" name="visit_date" id="vdate" readonly class="form-control" value="<?= date('Y-m-d') ?>" required>
         </div>
         <div class="form-group col-md-6 visit-time col-md-6">     
          <label>Visit Time</label>
-          <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>" required>
+          <input type="time" name="visit_time" id="vtime" readonly class="form-control" value="<?= date('H:i') ?>" required>
         </div>
      
         <input type="hidden" name="visit_notification_id" value="">
@@ -1192,30 +1203,6 @@ $(function() {
     });
 
 
-function filter_related_to(v)
-{
-      $.ajax({
-            url:"<?=base_url('client/account_by_company')?>",
-            type:'get',
-            data:{comp_id:v},
-            success:function(q){
-              $("select[name=enq_id]").html(q);
-               $("select[name=enq_id]").trigger('change');
-            }
-      });
-    
-       $.ajax({
-            url:"<?=base_url('client/contact_by')?>",
-            type:'get',
-            data:{key:v,by:'company'},
-            success:function(q){
-              $("select[name=contact_id]").html(q);
-               $("select[name=contact_id]").trigger('change');
-            }
-      });
-  }
-
-
 function load_filter_account(v)
 {
       $.ajax({
@@ -1376,6 +1363,67 @@ success: function(responseData){
 });
 $('#find_filterbutton').click();
   }
+ 
+ 
+$(function() {   
+          $("input[name=company_nm]").autocomplete({
+            source: function( request, response ) {
+                 $.ajax({
+                  url: "<?=base_url('enquiry/suggest_company')?>",
+                  type: 'post',
+                  dataType: "json",
+                  data: {
+                   search: request.term
+                  },
+                  success: function( data ) {
+                   response(data);
+                  }
+                 });
+              },
+          });
+        });
+		
+function find_company_id(key)
+{
+    $.ajax({
+            url:"<?=base_url('client/company_by_name')?>",
+            type:'get',
+            data:{key:key},
+            success:function(q){
+              q = q.trim();
+              if(q)
+              {
+				$('input[name=company]').val(q);
+                filter_related_to(q);
+              }
+
+            }
+  });
+}
+
+function filter_related_to(v)
+  {
+      $.ajax({
+            url:"<?=base_url('client/account_by_company')?>",
+            type:'get',
+            data:{comp_id:v,escape_lead:1},
+            success:function(q){
+              $("select[name=enq_id]").html(q);
+               $("select[name=enq_id]").trigger('change');
+            }
+      });
+	  
+	  $.ajax({
+            url:"<?=base_url('client/contact_by')?>",
+            type:'get',
+            data:{key:v,by:'company'},
+            success:function(q){
+              $("select[name=contact_id]").html(q);
+               $("select[name=contact_id]").trigger('change');
+            }
+      });
+      //match();
+  }
 </script>
 <style type="text/css">
   #slider-range
@@ -1389,5 +1437,8 @@ $('#find_filterbutton').click();
   #slider-range .ui-slider-range
   {
     background: #26c726;
+  }
+  .ui-widget-content{
+	  z-index:99999;
   }
 </style>
