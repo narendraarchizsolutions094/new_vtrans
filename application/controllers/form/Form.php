@@ -201,7 +201,7 @@ class Form extends CI_Controller {
 	    if($this->input->post('field_for')==2)
 	    {
     		$data['source'] = $this->Leads_Model->get_leadsource_list();
-			$data["clients"] = $this->Enquiry_model->getEnquiry()->result();
+			$data["clients"] = array();//$this->Enquiry_model->getEnquiry()->result();
 			$data["product"] = $this->Ticket_Model->getproduct();
 			$data["referred_type"] = $this->Leads_Model->get_referred_by();
 			$data['problem'] = $this->Ticket_Model->get_sub_list($this->session->companey_id,$this->session->process[0]);
@@ -254,7 +254,7 @@ class Form extends CI_Controller {
 		$data["ticket"] = $this->Ticket_Model->get($tckt);
 		//print_r($data['ticket']); exit();
 		$data['source'] = $this->Leads_Model->get_leadsource_list();
-		$data["clients"] = $this->Enquiry_model->getEnquiry()->result();
+		$data["clients"] = $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$data['ticket']->client))->result();
 		$data["product"] = $this->Ticket_Model->getproduct();
 		$data["referred_type"] = $this->Leads_Model->get_referred_by();
 		$data['problem'] = $this->Ticket_Model->get_sub_list($this->session->companey_id,$data['ticket']->process_id);

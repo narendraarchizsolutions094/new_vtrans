@@ -34,7 +34,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $ci->db->where('user_id',$user);
         $ci->db->update('tbl_otp');
     }
-
+     function get_dynamic_partition(){
+        $m=date('m');
+        $y=date('Y');
+        $part_arr = array(4,8,12);
+        $f = 0;
+        if(in_array($m,$part_arr)){
+            $f=$m;
+        }else{
+            foreach($part_arr as $v){
+                if($v>$m){
+                    $f=$v;
+                    break;
+                }
+            }
+        }
+        $part="'P".$y.$f."',"."'oth'";
+        return $part;
+      }
     function getOrderNumber($id)
     {
         $ci = & get_instance();

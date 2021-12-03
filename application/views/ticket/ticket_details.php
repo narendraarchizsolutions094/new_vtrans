@@ -341,10 +341,7 @@ function get_basic_field() {
         field_for:'2'
       },
       success: function(data) {
-      	//alert(data);
         $("#basic_field_data").html(data);
-        // $("#fcity").select2();
-        // $("#fstate").select2();
         get_custom_field();
       },
      error:function(u,v,w)

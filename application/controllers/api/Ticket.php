@@ -135,15 +135,17 @@ class Ticket extends REST_Controller {
             $basic[$key]['parameter_name'] = 'referred_by';
             break;
             case 17:
-            $clients = $this->Enquiry_model->getEnquiry()->result();
+            $clients = array();//$this->Enquiry_model->getEnquiry()->result();
             $values = array();
+              if(!empty($clients)){
             foreach ($clients as $res)
             {
              
               $values[] =  array('key'=>$res->enquiry_id,
                                 'value'=> $res->name." ".$res->lastname
                               );
-            }
+            
+                          }                }
             $basic[$key]['input_values'] = $values;
             $basic[$key]['parameter_name'] = 'client';
             break;
