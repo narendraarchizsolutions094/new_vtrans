@@ -177,6 +177,7 @@
                      <input type='checkbox' class="checked_all1" value="check all"  onclick="event.stopPropagation();">
                      </th>
                             <th>Emp Id</th>
+							<th>App Version</th>
                             <th><?php echo display('disolay_name') ?></th>
                             <th><?php echo display('user_function') ?></th>
 							<th>Report To</th>

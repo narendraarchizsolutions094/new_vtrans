@@ -215,6 +215,7 @@ class User extends CI_Controller
             $sub = array();
             $sub[] = '<input name="com_id" hidden value="' . $department->companey_id . '"> <input type="checkbox" value="' . $department->pk_i_admin_id . '" id="checkitem" name="user_ids[]"> ' . $i++ . '';
             $sub[] = '<a   href="' . base_url('user/edit/' . $department->pk_i_admin_id . '') . '">' . $department->employee_id . '</a>';
+			$sub[] = $department->used_apk ?? "NA";
             $sub[] = '<a   href="' . base_url('user/edit/' . $department->pk_i_admin_id . '') . '">' . $department->s_display_name . ' ' . $department->last_name . '</a>';
             $sub[] = $department->user_role_title ?? "NA";
 			$sub[] = $department->rep_to ?? "NA";

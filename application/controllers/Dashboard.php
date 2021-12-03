@@ -332,6 +332,7 @@ class Dashboard extends CI_Controller {
                 
                 $data = $this->session->set_userdata([
                 'isLogIn'        => true,
+				'emp_app'        => $user_data->used_apk,
                 'user_id'        => $user_data->pk_i_admin_id,
 				'timline_sts'    => $user_data->timline_access,
                 'companey_id'    => $user_data->companey_id,
@@ -419,6 +420,7 @@ class Dashboard extends CI_Controller {
                 $data = $this->session->set_userdata([
             'menu' => $menu,
                     'isLogIn' => true,
+					'emp_app'  => $check_user->row()->used_apk,
                     'user_id' => $check_user->row()->pk_i_admin_id,
 					'timline_sts' => $check_user->row()->timline_access,
                     'companey_id' => $check_user->row()->companey_id,
@@ -628,6 +630,7 @@ $this->load->library('zip');
                         $data = $this->session->set_userdata([
                             'menu'                  => $menu,
                             'isLogIn'               => true,
+							'emp_app'               => $user_data->used_apk,
                             'user_id'               =>$user_data->pk_i_admin_id,
 							'timline_sts'           =>$user_data->timline_access,
                             'companey_id'           =>$user_data->companey_id,
@@ -736,6 +739,7 @@ public function login_in_process(){
                     $data = $this->session->set_userdata([
                         'menu'                  => $menu,
                         'isLogIn'               => true,
+						'emp_app'               => $check_user->row()->used_apk,
                         'user_id'               => $check_user->row()->pk_i_admin_id,
                         'companey_id'           => $check_user->row()->companey_id,
                         'email'                 => $check_user->row()->s_user_email,

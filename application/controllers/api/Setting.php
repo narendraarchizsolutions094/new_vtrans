@@ -45,6 +45,20 @@ class Setting extends REST_Controller {
             "apk_url" => $apk->apk_url, 
            ], REST_Controller::HTTP_OK);  
     }
+	
+	public function profile_apk_post(){
+        $apk = $this->input->post('apk');
+		$user_id = $this->input->post('user_id');
+		
+        $this->db->set('used_apk',$apk);
+		$this->db->where('pk_i_admin_id',$user_id);
+        $this->db->update('tbl_admin');
+
+        $this->set_response([
+            'status' => true,
+            "msg" => 'Apk file updated', 
+           ], REST_Controller::HTTP_OK);  
+    }
 
    
 } 
