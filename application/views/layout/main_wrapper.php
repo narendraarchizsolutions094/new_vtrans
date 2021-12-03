@@ -1039,7 +1039,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     </div>
                     <div class="info">
                         <p><?php echo $this->session->userdata('fullname') ?></p>
-						<p>APK Version - <?php if(empty($this->session->userdata('emp_app'))){ echo $this->session->userdata('emp_app');}else{ echo "Missing";} ?></p>
+						<p>APK Version - <?php if(!empty($this->session->userdata('emp_app'))){ echo $this->session->userdata('emp_app');}else{ echo "Missing";} ?></p>
                         <a href="#"><i class="fa fa-circle text-success"></i>
                         </a>
                     </div>
