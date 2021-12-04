@@ -2301,7 +2301,7 @@ public function updateEnquiryTab_post()
                   {
                     
                     $enq = $this->enquiry_model->enquiry_by_code($key);
-                    
+                    //print_r($enq);exit;
                    // if(empty($this->Leads_Model->get_leadListDetailsby_code($enq->Enquery_id))){
                   
                       $data = array(
