@@ -283,6 +283,7 @@ class Enquiry_model extends CI_Model {
           $sr = $this->db->where('region_id',$enquiry->sales_region)->get('sales_region')->row();
           $sb = $this->db->where('branch_id',$enquiry->sales_branch)->get('branch')->row();
 		  $eb = $this->db->where('id',$enquiry->industries)->get('tbl_industries')->row();
+		  $ls = $this->db->where('sc_id',$enquiry->lead_score)->get('lead_score')->row();
           $self_created1 = array(
                         array(
                               "id"=> -8,
@@ -338,6 +339,33 @@ class Enquiry_model extends CI_Model {
                               "type"=> "Text",
                               "parameter_name"=> "client_name",
                               "current_value"=>$enquiry->client_name,
+                        ),
+						array(
+                              "id"=> -4,
+                              "comp_id"=> 65,
+                              "field_id"=>-4,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Expected Closer Date",
+                              "type"=> "Date",
+                              "parameter_name"=> "expected_date",
+                              "current_value"=>$enquiry->lead_expected_date,
+                        ),
+						array(
+                              "id"=> -5,
+                              "comp_id"=> 65,
+                              "field_id"=>-5,
+                              "form_id"=> "0",
+                              "process_id"=> "141",
+                              "status" =>"1",
+                              "fld_order"=>"0",
+                              "title"=> "Conversion Probability",
+                              "type"=> "Dropdown",
+                              "parameter_name"=> "lead_score",
+							  "input_values"=>array(),
+                              "current_value"=>!empty($ls)?$ls->score_name.' '.$ls->probability:'',
                         ),
                         //   array(
                         //       "id"=> -3,
