@@ -19,7 +19,9 @@ class Dashboard extends CI_Controller {
         ));
     }
     public function hello(){
-        echo "hwllow worlkd";
+        //echo "hwllow worlkd";
+        
+        
     }
   
 //for santram only map view page start

@@ -23,10 +23,11 @@ class Notifications extends REST_Controller {
           $this->db->where($where);
           $msg =  $this->db->get()->num_rows(); */
 		  
-          $this->db->from('query_response');                        
+          $dyn_part = get_dynamic_partition();
+         $this->db->from("query_response","PARTITION($dyn_part)");		                       
           $this->db->select("query_response.resp_id");      
           $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
-          $where = " ((enquiry.created_by=$user_id OR enquiry.aasign_to=$user_id) OR query_response.create_by=$user_id OR query_response.related_to=$user_id)  AND query_response.noti_read=0 AND CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) <= NOW() ORDER BY CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) DESC";          
+          $where = " (query_response.noti_read=0 AND CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) <= NOW() AND (enquiry.created_by=$user_id OR enquiry.aasign_to=$user_id) OR query_response.create_by=$user_id OR query_response.related_to=$user_id)  ORDER BY CONCAT(str_to_date(task_date,'%d-%m-%Y'),' ',task_time) DESC";          
         
           $this->db->where($where);
           $msg =  $this->db->get()->num_rows();		  
@@ -47,8 +48,9 @@ class Notifications extends REST_Controller {
         $per_page = '10';        
         $this->form_validation->set_rules('user_id', 'User Id', 'required');                   
         if ($this->form_validation->run() == TRUE) {     
-          $this->db->from('query_response');       
-          $this->db->select("query_response.resp_id,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,CONCAT_WS(' ',enquiry.name_prefix,enquiry.name,enquiry.lastname) as user_name,enquiry.enquiry_id,enquiry.status as enq_status,tbl_company.company_name as company,enquiry.client_name");      
+          $dyn_part = get_dynamic_partition();
+          $this->db->from("query_response","PARTITION($dyn_part)");		
+          $this->db->select("query_response.resp_id,query_response.notification_id,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,CONCAT_WS(' ',enquiry.name_prefix,enquiry.name,enquiry.lastname) as user_name,enquiry.enquiry_id,enquiry.status as enq_status,tbl_company.company_name as company,enquiry.client_name");      
           //$this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=query_response.create_by', 'left');
           $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
 
@@ -65,7 +67,8 @@ class Notifications extends REST_Controller {
 
 //For total records 
 
-$this->db->from('query_response');       
+        $dyn_part = get_dynamic_partition();
+        $this->db->from("query_response","PARTITION($dyn_part)");		
           $this->db->select("query_response.resp_id");
           $this->db->join('enquiry', 'enquiry.Enquery_id=query_response.query_id', 'left');
           $this->db->join('tbl_ticket ticket', 'ticket.ticketno=query_response.query_id', 'left');
