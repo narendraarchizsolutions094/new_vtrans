@@ -341,9 +341,9 @@ class Enquiry_model extends CI_Model {
                               "current_value"=>$enquiry->client_name,
                         ),
 						array(
-                              "id"=> -4,
+                              "id"=> -10,
                               "comp_id"=> 65,
-                              "field_id"=>-4,
+                              "field_id"=>-10,
                               "form_id"=> "0",
                               "process_id"=> "141",
                               "status" =>"1",
@@ -354,9 +354,9 @@ class Enquiry_model extends CI_Model {
                               "current_value"=>$enquiry->lead_expected_date,
                         ),
 						array(
-                              "id"=> -5,
+                              "id"=> -11,
                               "comp_id"=> 65,
-                              "field_id"=>-5,
+                              "field_id"=>-11,
                               "form_id"=> "0",
                               "process_id"=> "141",
                               "status" =>"1",

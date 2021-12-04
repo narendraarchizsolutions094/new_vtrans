@@ -2277,7 +2277,9 @@ public function updateEnquiryTab_post()
 				$expected_date 	= $this->input->post('expected_date');
 				$user_id 	= $this->input->post('user_id');
     //            $assign_to=$this->session->user_id;
-	            $expected_date = date('Y-m-d',strtotime($expected_date));
+			if(!empty($expected_date)){
+                $expected_date = date('Y-m-d',strtotime($expected_date));
+			}
                 
                 if(empty($lead_score)){
                    $lead_score='';              
