@@ -250,7 +250,17 @@ foreach($enq_data as $val){
 			}
 			$row[] = '<a href="' . $url . '">' . $no/*$each->enquiry_id*/ . '</a>';
 			if ($showall == true or in_array(1, $acolarr)) {
-				$row[] = (!empty($each->lead_name)) ? ucwords($each->lead_name) : "NA";
+				if(!empty($each->enquiry_source)){
+				$find_source = explode(',',$each->enquiry_source);
+				$all_sourse_name = array();
+				foreach($find_source as $src_id){
+					$sourse_name = $this->db->select('lead_name')->where('lsid',$src_id)->get('lead_source')->row();
+					if(!empty($sourse_name->lead_name)){
+					$all_sourse_name[] = $sourse_name->lead_name;
+					}
+				}
+				}
+				$row[] = (!empty($all_sourse_name)) ? ucwords(implode(',',$all_sourse_name)) : "NA";
 			}
 			if ($showall == true or in_array(16, $acolarr)) {
 				$row[] = (!empty($each->subsource_name)) ? ucwords($each->subsource_name) : "NA";
