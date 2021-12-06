@@ -1030,7 +1030,8 @@ display: block;
               </th>
                   <th>S.N</th>
              <?php if ($showall == true or in_array(1, $acolarr)) {  ?>
-                  <th><?php echo display("source"); ?></th>
+                  <!--<th><?php echo display("source"); ?></th>-->
+				  <th><?php echo 'User Right'; ?></th>
              <?php } ?>
               <?php if ($showall == true or in_array(16, $acolarr)) {  ?>
                   <th >Sub Source</th>
