@@ -251,7 +251,7 @@ foreach($enq_data as $val){
 			$row[] = '<a href="' . $url . '">' . $no/*$each->enquiry_id*/ . '</a>';
 			if ($showall == true or in_array(1, $acolarr)) {
 				//$row[] = (!empty($each->lead_name)) ? ucwords($each->lead_name) : "NA";
-				$row[] = (!empty($each->user_permissions)) ? ucwords($each->user_permissions) : "NA";
+				$row[] = (!empty($each->enquiry_id)) ? ucwords($each->enquiry_id) : "NA";
 			}
 			if ($showall == true or in_array(16, $acolarr)) {
 				$row[] = (!empty($each->subsource_name)) ? ucwords($each->subsource_name) : "NA";

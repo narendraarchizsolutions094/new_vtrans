@@ -143,7 +143,7 @@ class Enquiry_datatable_model extends CI_Model {
         }
 		
 		
-                $where .= " tbl_admin.user_permissions ='216' AND ";
+               // $where .= " tbl_admin.user_permissions ='216' AND ";
         
 //FOR ALL CLIENT DATA LIST FILTER START
         if($top_filter=='all')
