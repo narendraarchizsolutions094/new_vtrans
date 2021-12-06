@@ -305,7 +305,8 @@ class Enquiry_datatable_model extends CI_Model {
         }
 		
         if(!empty($source)){                       
-            $where .= " AND enquiry.enquiry_source =  '".$source."'";                                    
+            //$where .= " AND enquiry.enquiry_source =  '".$source."'";
+            $where .= " AND FIND_IN_SET($source,enquiry.enquiry_source) > 0 ";			  
         }
 
         if(!empty($probability)){                       

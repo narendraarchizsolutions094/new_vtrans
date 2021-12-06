@@ -259,6 +259,8 @@ foreach($enq_data as $val){
 					$all_sourse_name[] = $sourse_name->lead_name;
 					}
 				}
+				}else{
+					unset($all_sourse_name);
 				}
 				$row[] = (!empty($all_sourse_name)) ? ucwords(implode(',',$all_sourse_name)) : "NA";
 			}

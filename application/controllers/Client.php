@@ -835,7 +835,7 @@ class Client extends CI_Controller {
             $email = $this->input->post('email');
             $mobile = $this->input->post('mobileno');
             $other_phone = $this->input->post('other_no[]');
-            $lead_source = $this->input->post('lead_source');
+            $lead_source = $this->input->post('lead_source[]');
             $subsource = $this->input->post('subsource');
             $enquiry = $this->input->post('enquiry');
             $en_comments = $this->input->post('en_comments');
@@ -865,6 +865,12 @@ class Client extends CI_Controller {
                  $country_id = implode(',',$this->input->post('country_id'));
             }else{
                 $country_id = '';
+            }
+			
+			if(!empty($lead_source)){
+               $lead_source =   implode(',', $lead_source);
+            }else{
+                $lead_source = '';
             }
        
             $enqarr = $this->db->select('*')->where('enquiry_id',$enquiry_id)->get('enquiry')->row();           

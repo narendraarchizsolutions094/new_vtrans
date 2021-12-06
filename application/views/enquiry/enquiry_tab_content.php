@@ -195,11 +195,14 @@ foreach($basic_fields as $row)
       ?> 
    <div class="form-group   col-sm-4 col-md-6 enq-source">
       <label><?php echo display('lead_source') ?><i class="text-danger">*</i></label>
-      <select class="form-control" name="lead_source" id="lead_source" onchange="find_sub1()">
+      <select class="form-control chosen-select" name="lead_source[]" id="lead_source" onchange="find_sub1()" multiple>
          <option value="">--Select Source--</option>
-         <?php 
-            foreach ($leadsource as $post){?>
-         <option value="<?= $post->lsid?>" <?php if($details->enquiry_source==$post->lsid){echo 'selected';}?>><?= $post->lead_name?></option>
+         <?php
+		$all_source = array();
+        $all_source = explode(',',$details->enquiry_source);		 
+            foreach ($leadsource as $post){
+			?>
+         <option value="<?= $post->lsid?>" <?php if(in_array($post->lsid,$all_source)){echo 'selected';}?>><?= $post->lead_name?></option>
          <?php } ?>
       </select>
    </div>
