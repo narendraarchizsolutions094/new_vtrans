@@ -262,8 +262,30 @@ class Enquiry extends REST_Controller {
                     $postData['company'] = $this->db->insert_id();
                   }
                 }
-              $this->db->where('Enquery_id',$this->input->post('update'));
-            	$insert_id = $this->db->update('enquiry',$postData);
+			  
+//For make source comma seprated if details are same and source is different
+$enq_id = $this->db->select('enquiry_source,enquiry_id')->where('email',$this->input->post('email'))->where('phone',$this->input->post('mobileno'))->order_by('enquiry_id','DESC')->get('enquiry')->row();
+if(!empty($enq_id->enquiry_id)){
+$post_source = array();
+$find_source = array();
+$find_source = explode(',',$enq_id->enquiry_source);
+$post_source[] = $this->input->post('enquiry_source');
+$unset = array_merge($find_source,$post_source);
+$update_array = array_unique($unset);
+if(!empty($update_array)){
+	$enquiry_source = implode(',',$update_array);
+	
+$postData['enquiry_source'] = $enquiry_source;
+$this->db->where('Enquery_id',$this->input->post('update'));
+$insert_id = $this->db->update('enquiry',$postData);
+	
+}
+}else{
+//End
+$postData['enquiry_source'] = $this->input->post('enquiry_source');
+$this->db->where('Enquery_id',$this->input->post('update'));
+$insert_id = $this->db->update('enquiry',$postData);
+}
         
             	$this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');
     			    $this->db->where('Enquery_id',$this->input->post('update'));
@@ -320,7 +342,29 @@ if($usr_ttl > 1){
 
             	$postData['status'] = $data_type_id;
             	
-    			    $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_id'));
+//For make source comma seprated if details are same and source is different
+$enq_id = $this->db->select('enquiry_source,enquiry_id')->where('email',$this->input->post('email'))->where('phone',$this->input->post('mobileno'))->order_by('enquiry_id','DESC')->get('enquiry')->row();
+if(!empty($enq_id->enquiry_id)){
+$post_source = array();
+$find_source = array();
+$find_source = explode(',',$enq_id->enquiry_source);
+$post_source[] = $this->input->post('enquiry_source');
+$unset = array_merge($find_source,$post_source);
+$update_array = array_unique($unset);
+if(!empty($update_array)){
+	$enquiry_source = implode(',',$update_array);
+	
+	$this->db->set('enquiry_source',$enquiry_source);
+	$this->db->where('enquiry_id',$enq_id->enquiry_id);
+	$this->db->update('enquiry');
+	
+}
+$insert_id = $enq_id->enquiry_id;
+}else{
+//End
+$insert_id = $this->enquiry_model->create($postData,$this->input->post('company_id'));
+}
+    			    
     			    $this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');
     			    $this->db->where('enquiry_id',$insert_id);
     			    $e_row	=	$this->db->get('enquiry')->row_array();
