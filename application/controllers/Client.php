@@ -4180,8 +4180,8 @@ if(is_numeric($b_lastChar)){
             $this->db->from('enquiry');
             $this->db->where("enquiry.company",$comp_id);
 
-            if(!empty($this->input->get('escape_lead')))
-                $this->db->where('enquiry.status!=1');
+            /* if(!empty($this->input->get('escape_lead')))
+                $this->db->where('enquiry.status!=1'); */
 
             $where="";
             $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
