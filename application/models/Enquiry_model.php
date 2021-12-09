@@ -2819,7 +2819,7 @@ $cpny_id=$this->session->companey_id;
             $tab_list[$value]['all'] = !empty($result->counter)?$result->counter:0;
         }
         
-        $query2 = $this->db->query("SELECT count(enquiry_id)counter,enquiry.status FROM `enquiry` WHERE $where AND DATE(created_date) = CURRENT_DATE GROUP BY enquiry.status");
+        $query2 = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM `enquiry` LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND DATE(enquiry.created_date) = CURRENT_DATE GROUP BY enquiry.status");
 
         $result2 = $query2->result();
 
@@ -2836,7 +2836,7 @@ $cpny_id=$this->session->companey_id;
             $tab_list[$r->status]['updated_today'] = !empty($r->counter)?$r->counter:0;
         }
 
-        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
+        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
         $result4 = $query4->result();
 
         foreach($result4 as $r)
