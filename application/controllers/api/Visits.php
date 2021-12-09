@@ -23,7 +23,7 @@ class Visits extends REST_Controller {
       $process_id= $this->input->post('process_id');
       $company_id = $this->input->post('company_id');
       $offset = $this->input->post('offset')??0;
-      $limit = $this->input->post('limit')??10;
+      $limit = $this->input->post('limit')??50;
 
       if(strpos(',',$process_id) !== false) 
       {
