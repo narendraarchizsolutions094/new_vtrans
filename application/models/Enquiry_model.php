@@ -2823,41 +2823,41 @@ $cpny_id=$this->session->companey_id;
 
         $result2 = $query2->result();
 
-        foreach($result2 as $r)
+        foreach($result2 as $r2)
         {
-            $tab_list[$r->status]['created_today'] = !empty($r->counter)?$r->counter:0;
+            $tab_list[$r2->status]['created_today'] = !empty($r2->counter)?$r2->counter:0;
         }
 
         $query3 = $this->db->query("SELECT count(enquiry_id)counter,enquiry.status FROM `enquiry` WHERE $where AND DATE(update_date) = CURRENT_DATE GROUP BY enquiry.status");
         $result3 = $query2->result();
 
-        foreach($result3 as $r)
+        foreach($result3 as $r3)
         {
-            $tab_list[$r->status]['updated_today'] = !empty($r->counter)?$r->counter:0;
+            $tab_list[$r3->status]['updated_today'] = !empty($r3->counter)?$r3->counter:0;
         }
 
         $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
         $result4 = $query4->result();
 
-        foreach($result4 as $r)
+        foreach($result4 as $r4)
         {
-            $tab_list[$r->status]['active'] = !empty($r->counter)?$r->counter:0;
+            $tab_list[$r4->status]['active'] = !empty($r4->counter)?$r4->counter:0;
         }
 
         $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND drop_status >0 GROUP BY enquiry.status");
 
         $result5 = $query5->result();
-        foreach($result5 as $r)
+        foreach($result5 as $r5)
         {
-            $tab_list[$r->status]['dropped'] = !empty($r->counter)?$r->counter:0;
+            $tab_list[$r5->status]['dropped'] = !empty($r5->counter)?$r5->counter:0;
         }
 
         $query6 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $where AND aasign_to IS NULL GROUP BY enquiry.status");
 
         $result6 = $query6->result();
-        foreach($result6 as $r)
+        foreach($result6 as $r6)
         {
-           $tab_list[$r->status]['unassigned'] = !empty($r->counter)?$r->counter:0;
+           $tab_list[$r6->status]['unassigned'] = !empty($r6->counter)?$r6->counter:0;
         }
 
         $new_tab = array();
