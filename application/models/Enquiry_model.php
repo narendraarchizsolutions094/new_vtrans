@@ -2813,14 +2813,38 @@ $cpny_id=$this->session->companey_id;
         } */
 		
 		foreach ($stage_ids as $key => $value){
+//For all
             $query = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND (commercial_info.stage_id=$value OR enquiry.status=$value)");
             $result = $query->row();
-			//echo $this->db->last_query();die;
             $tab_list[$value]['all'] = !empty($result->counter)?$result->counter:0;
-        }
-        
-        $query2 = $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status FROM `enquiry` LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND DATE(enquiry.created_date) = CURRENT_DATE GROUP BY enquiry.status");
+			
+//For created_today			
+		$query2 = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND DATE(created_date) = CURRENT_DATE AND (commercial_info.stage_id=$value OR enquiry.status=$value)");
+        $result2 = $query2->row();
+		$tab_list[$value]['created_today'] = !empty($result2->counter)?$result2->counter:0;
+		
+//For updated_today				
+		$query3 = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND DATE(update_date) = CURRENT_DATE AND (commercial_info.stage_id=$value OR enquiry.status=$value)");
+        $result3 = $query2->row();
+        $tab_list[$value]['updated_today'] = !empty($result3->counter)?$result3->counter:0;
 
+//For active		
+		$query4 =  $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter from enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND enquiry.drop_status=0  AND (commercial_info.stage_id=$value OR enquiry.status=$value)");
+        $result4 = $query4->row();
+        $tab_list[$value]['active'] = !empty($result4->counter)?$result4->counter:0;
+
+//For dropped		
+		$query5 = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND drop_status >0 AND (commercial_info.stage_id=$value OR enquiry.status=$value)");
+        $result5 = $query5->row();
+        $tab_list[$value]['dropped'] = !empty($result5->counter)?$result5->counter:0;
+
+//For unassigned		
+		$query6 = $this->db->query("SELECT COUNT(DISTINCT(enquiry.enquiry_id))counter FROM enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND aasign_to IS NULL AND (commercial_info.stage_id=$value OR enquiry.status=$value)");
+        $result6 = $query6->result();
+           $tab_list[$value]['unassigned'] = !empty($result6->counter)?$result6->counter:0;
+        
+		}   
+        /* $query2 = $this->db->query("SELECT count(enquiry_id)counter,enquiry.status FROM `enquiry` WHERE $where AND DATE(created_date) = CURRENT_DATE GROUP BY enquiry.status");
         $result2 = $query2->result();
 
         foreach($result2 as $r)
@@ -2836,7 +2860,7 @@ $cpny_id=$this->session->companey_id;
             $tab_list[$r->status]['updated_today'] = !empty($r->counter)?$r->counter:0;
         }
 
-        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry LEFT JOIN commercial_info ON commercial_info.enquiry_id=enquiry.enquiry_id WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
+        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
         $result4 = $query4->result();
 
         foreach($result4 as $r)
@@ -2858,7 +2882,7 @@ $cpny_id=$this->session->companey_id;
         foreach($result6 as $r)
         {
            $tab_list[$r->status]['unassigned'] = !empty($r->counter)?$r->counter:0;
-        }
+        } */
 
         $new_tab = array();
         foreach ($tab_list as $key => $value)
