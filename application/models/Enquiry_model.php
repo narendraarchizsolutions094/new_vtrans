@@ -2838,7 +2838,7 @@ $cpny_id=$this->session->companey_id;
 
         $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
         $result4 = $query4->result();
-//print_r($this->db->last_query());exit;
+
         foreach($result4 as $r4)
         {
             $tab_list[$r4->status]['active'] = !empty($r4->counter)?$r4->counter:0;
@@ -3423,9 +3423,9 @@ $cpny_id=$this->session->companey_id;
     { 
       $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-       $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-       $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
-       $where.=" AND enquiry.comp_id=$cpny_id";
+      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+        // $where.=" AND enquiry.comp_id=$cpny_id";
         $where="enquiry.comp_id=$cpny_id";
         $from_filter = '';
         $get_ids = array();
@@ -3517,19 +3517,19 @@ $cpny_id=$this->session->companey_id;
 
         $result2 = $query2->result();
 
-        foreach($result2 as $r)
+        foreach($result2 as $r2)
         {
-            if($r->status == 1)
+            if($r2->status == 1)
             {
-                $enq_ct = (!empty($r->counter)) ? $r->counter : 0;
+                $enq_ct = (!empty($r2->counter)) ? $r2->counter : 0;
             }
-            if($r->status == 2)
+            if($r2->status == 2)
             {
-                $lead_ct = (!empty($r->counter)) ? $r->counter : 0;
+                $lead_ct = (!empty($r2->counter)) ? $r2->counter : 0;
             }
-            if($r->status == 3)
+            if($r2->status == 3)
             {
-                $client_ct = (!empty($r->counter)) ? $r->counter : 0;
+                $client_ct = (!empty($r2->counter)) ? $r2->counter : 0;
             }
         }
 
@@ -3537,75 +3537,75 @@ $cpny_id=$this->session->companey_id;
 
         $result3 = $query2->result();
 
-        foreach($result3 as $r)
+        foreach($result3 as $r3)
         {
-            if($r->status == 1)
+            if($r3->status == 1)
             {
-                $enq_ut = (!empty($r->counter)) ? $r->counter : 0;
+                $enq_ut = (!empty($r3->counter)) ? $r3->counter : 0;
             }
-            if($r->status == 2)
+            if($r3->status == 2)
             {
-                $lead_ut = (!empty($r->counter)) ? $r->counter : 0;
+                $lead_ut = (!empty($r3->counter)) ? $r3->counter : 0;
             }
-            if($r->status == 3)
+            if($r3->status == 3)
             {
-                $client_ut = (!empty($r->counter)) ? $r->counter : 0;
+                $client_ut = (!empty($r3->counter)) ? $r3->counter : 0;
             }
         }
 
         $query4 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $new_where AND drop_status > 0 GROUP BY enquiry.status");
         $result4 = $query4->result();
-        foreach($result4 as $r)
+        foreach($result4 as $r4)
         {
-            if($r->status == 1)
+            if($r4->status == 1)
             {
-                $enq_drp = (!empty($r->counter)) ? $r->counter : 0;
+                $enq_drp = (!empty($r4->counter)) ? $r4->counter : 0;
             }
-            if($r->status == 2)
+            if($r4->status == 2)
             {
-                $lead_drp = (!empty($r->counter)) ? $r->counter : 0;
+                $lead_drp = (!empty($r4->counter)) ? $r4->counter : 0;
             }
-            if($r->status == 3)
+            if($r4->status == 3)
             {
-                $client_drp = (!empty($r->counter)) ? $r->counter : 0;
+                $client_drp = (!empty($r4->counter)) ? $r4->counter : 0;
             }
         }
 
         $query5 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $new_where AND drop_status = 0 GROUP BY enquiry.status");
 
         $result5 = $query5->result();
-        foreach($result5 as $r)
+        foreach($result5 as $r5)
         {
-            if($r->status == 1)
+            if($r5->status == 1)
             {
-                $enq_active = (!empty($r->counter)) ? $r->counter : 0;
+                $enq_active = (!empty($r5->counter)) ? $r5->counter : 0;
             }
-            if($r->status == 2)
+            if($r5->status == 2)
             {
-                $lead_active = (!empty($r->counter)) ? $r->counter : 0;
+                $lead_active = (!empty($r5->counter)) ? $r5->counter : 0;
             }
-            if($r->status == 3)
+            if($r5->status == 3)
             {
-                $client_active = (!empty($r->counter)) ? $r->counter : 0;
+                $client_active = (!empty($r5->counter)) ? $r5->counter : 0;
             }
         }
 
         $query6 = $this->db->query("SELECT count(enquiry_id) counter,enquiry.status FROM `enquiry` WHERE $new_where AND aasign_to IS NULL GROUP BY enquiry.status");
 
         $result6 = $query6->result();
-        foreach($result6 as $r)
+        foreach($result6 as $r6)
         {
-            if($r->status == 1)
+            if($r6->status == 1)
             {
-                $enq_assign = (!empty($r->counter)) ? $r->counter : 0;
+                $enq_assign = (!empty($r6->counter)) ? $r6->counter : 0;
             }
-            if($r->status == 2)
+            if($r6->status == 2)
             {
-                $lead_assign = (!empty($r->counter)) ? $r->counter : 0;
+                $lead_assign = (!empty($r6->counter)) ? $r6->counter : 0;
             }
-            if($r->status == 3)
+            if($r6->status == 3)
             {
-                $client_assign = (!empty($r->counter)) ? $r->counter : 0;
+                $client_assign = (!empty($r6->counter)) ? $r6->counter : 0;
             }
         }
 
