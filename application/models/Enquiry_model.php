@@ -3423,9 +3423,9 @@ $cpny_id=$this->session->companey_id;
     { 
       $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
-      // $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-      // $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
-        // $where.=" AND enquiry.comp_id=$cpny_id";
+       $where = "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+       $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+       $where.=" AND enquiry.comp_id=$cpny_id";
         $where="enquiry.comp_id=$cpny_id";
         $from_filter = '';
         $get_ids = array();
