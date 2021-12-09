@@ -2836,7 +2836,7 @@ $cpny_id=$this->session->companey_id;
             $tab_list[$r->status]['updated_today'] = !empty($r->counter)?$r->counter:0;
         }
 
-        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry WHERE $where AND enquiry.drop_status=0  GROUP BY enquiry.status");
+        $query4 =  $this->db->query("SELECT count(enquiry.enquiry_id)counter,enquiry.status from enquiry WHERE $where  GROUP BY enquiry.status");
         $result4 = $query4->result();
 
         foreach($result4 as $r)
