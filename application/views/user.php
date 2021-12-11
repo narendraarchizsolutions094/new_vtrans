@@ -367,68 +367,7 @@ $('.checked_all1').on('change', function() {
     $('input:checkbox').not(this).prop('checked', this.checked);
 }); 
 </script>
-<script> 
 
-$("#checkAll").click(function(){
-    $('input:checkbox').not(this).prop('checked', this.checked);
-});
-
-$(document).ready(function(){
-  $('#saveButton').click(function(){
-    $("#inactive_all").submit(); //if requestNew is the id of your form
-  });
-});
-
-// Pipelining function for DataTables. To be used to the `ajax` option of DataTables
-
-$(document).ready(function() {
-role = "<?=!empty($_GET['user_role'])?'?user_role='.$_GET['user_role']:''?>";
-
-$('#user_dlist2').DataTable({         
-    "processing": true,
-    "scrollX": true,
-    "scrollY": 520,
-    "serverSide": true,          
-    "lengthMenu": [ [10,30, 50,100,500,1000], [10,30, 50,100,500,1000] ],
-    "ajax": {
-        "url": "<?=base_url().'user/departments'?>"+role,
-        "type": "POST",
-        //"dataType":"html",
-        //success:function(q){ //alert(q); //document.write(q);},
-        error:function(u,v,w)
-        {
-          alert(w); 
-        }
-        },
-          dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp", 
-        buttons: [  
-            {extend: 'copy', className: 'btn-xs btn',exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }}, 
-            {extend: 'csv', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn',exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }}, 
-            {extend: 'excel', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn', title: 'exportTitle',exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }}, 
-            {extend: 'pdf', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn',exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }}, 
-            {extend: 'print', className: 'btn-xs btn',exportOptions: {
-                        columns: "thead th:not(.noExport)"
-                    }} 
-        ] ,
-     createdRow: function( row, data, dataIndex ) {            
-       var th = $("table>th");            
-       l = $("table").find('th').length;
-       for(j=1;j<=l;j++){
-         h = $("table").find('th:eq('+j+')').html();
-         $(row).find('td:eq('+j+')').attr('data-th',h);
-       }  
-     }                
-});
-  });
-</script>
 <script>
   $(document).ready(function(){
    $("#save_advance_filters").on('click',function(e){
@@ -588,37 +527,6 @@ $('#buttongroup').hide();
 })
 
 
-set_filter_session();
-
-//CHANGE DUE TO RESET BUTTON
-      /* $('#enq_filter').change(function() {
-        set_filter_session();
-      }); */
-//END
-
-$('#find_filterbutton').click(function() {
-        set_filter_session();
-      });
-
-      function set_filter_session(){
-          
-          //update_top_filter_counter(); 
-          var form_data = $("#enq_filter").serialize();  
-          //console.log(form_data);
-          // alert(form_data);
-  
-            $.ajax({
-            url: '<?=base_url()?>enq/enquiry_set_filters_session',
-            type: 'post',
-            data: form_data,
-            success: function(responseData){
-              $('#user_dlist2').DataTable().ajax.reload();         
-            /* if(!$("#active_class").hasClass('hide_countings')){
-              update_top_filter_counter();      
-            } */
-            }
-          });
-        }
 
         function ticket_save_filter(){
           var form_data = $("#enq_filter").serialize();       
@@ -639,44 +547,6 @@ $('#find_filterbutton').click(function() {
           });
         }
 
-
-        $(document).on('click',".top_pill",function(){
-
-var stg_id = $(this).data('stage-id');
-if(!$(this).hasClass('top-active'))
-{
-   $(".top_pill").removeClass('top-active');
-   $(this).addClass('top-active');
-   var form_data = $("#enq_filter").serialize(); 
-     form_data+="&stage="+stg_id;
-     $.ajax({
-       url: '<?=base_url().'user/departments'?>',
-       type: 'post',
-       data: form_data,
-       success: function(responseData){
-         $('#user_dlist2').DataTable().ajax.reload();   
-        // update_top_filter_counter(); 
-     }
-   });
-   
-}
-else
-{
-   $(".top_pill").removeClass('top-active');
-   var form_data = $("#enq_filter").serialize(); 
-     form_data+="&stage=";
-     $.ajax({
-       url: '<?=base_url().'user/departments'?>',
-       type: 'post',
-       data: form_data,
-       success: function(responseData){
-         $('#user_dlist2').DataTable().ajax.reload();    
-          //update_top_filter_counter();
-     }
-   });
-}
-$('#user_dlist2').DataTable().ajax.reload();
-});
 
 function ticket_reset_filter(){
 $('input[name=from_created').val('');
@@ -706,4 +576,100 @@ success: function(responseData){
 });
 $('#find_filterbutton').click();
   }
+</script>
+
+
+<script> 
+
+$("#checkAll").click(function(){
+    $('input:checkbox').not(this).prop('checked', this.checked);
+});
+
+$(document).ready(function(){
+  $('#saveButton').click(function(){
+    $("#inactive_all").submit(); //if requestNew is the id of your form
+  });
+});
+
+// Pipelining function for DataTables. To be used to the `ajax` option of DataTables
+
+$(document).ready(function() {
+role = "<?=!empty($_GET['user_role'])?'?user_role='.$_GET['user_role']:''?>";
+$("#user_dlist2").dataTable().fnDestroy();
+
+$('#user_dlist2').DataTable({         
+    "processing": true,
+    "scrollX": true,
+    "scrollY": 520,
+    "serverSide": true,          
+    "lengthMenu": [ [10,30, 50,100,500,1000], [10,30, 50,100,500,1000] ],
+    "ajax": {
+        "url": "<?=base_url().'user/departments'?>"+role,
+        "type": "POST",
+        //"dataType":"html",
+        //success:function(q){ //alert(q); //document.write(q);},
+        error:function(u,v,w)
+        {
+          alert(w); 
+        }
+        },
+          dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp", 
+        buttons: [  
+            {extend: 'copy', className: 'btn-xs btn',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }}, 
+            {extend: 'csv', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }}, 
+            {extend: 'excel', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn', title: 'exportTitle',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }}, 
+            {extend: 'pdf', title: 'list<?=date("Y-m-d H:i:s")?>', className: 'btn-xs btn',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }}, 
+            {extend: 'print', className: 'btn-xs btn',exportOptions: {
+                        columns: "thead th:not(.noExport)"
+                    }} 
+        ] ,
+     createdRow: function( row, data, dataIndex ) {            
+       var th = $("table>th");            
+       l = $("table").find('th').length;
+       for(j=1;j<=l;j++){
+         h = $("table").find('th:eq('+j+')').html();
+         $(row).find('td:eq('+j+')').attr('data-th',h);
+       }  
+     }                
+});
+
+
+
+
+set_filter_session();
+
+$('#find_filterbutton').click(function() {
+        set_filter_session();
+      });
+
+      function set_filter_session(){
+          
+          //update_top_filter_counter(); 
+          var form_data = $("#enq_filter").serialize();  
+          //console.log(form_data);
+          // alert(form_data);
+  
+            $.ajax({
+            url: '<?=base_url()?>enq/enquiry_set_filters_session',
+            type: 'post',
+            data: form_data,
+            success: function(responseData){
+              $('#user_dlist2').DataTable().ajax.reload();         
+            /* if(!$("#active_class").hasClass('hide_countings')){
+              update_top_filter_counter();      
+            } */
+            }
+          });
+        }
+
+        
+  });
 </script>
