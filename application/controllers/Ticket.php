@@ -1285,7 +1285,7 @@ class Ticket extends CI_Controller
 						<tr><th>Branch Name:</th><td>' . (empty($table1->Branch_Name) ? '' : $table1->Branch_Name) . '</td><th>Contact Person:</th><td>' . (empty($table1->Contact_Person) ? '' : $table1->Contact_Person) . '</td></tr>	
 						<tr><th>Branch Address:</th><td colspan="3">' . (empty($table1->Address) ? '' : $table1->Address) . '</td></tr>
 						<tr><th>City Name:</th><td>' . (empty($table1->City_name) ? '' : $table1->City_name) . '</td><th>Pincode:</th><td>' . (empty($table1->Pin_Code) ? '' : $table1->Pin_Code) . '</td></tr>
-						<tr><th>STD Code:</th><td>' . (empty($table1->Std_Code) ? '' : $table1->Std_Code) . '</td><th>Mobile:</th><td>' . (empty($table1->mobileno) ? '' : $table1->mobileno) . '</td></tr>
+						<tr><th>STD Code:</th><td>' . (!empty($table1->Std_Code) ? $table1->Std_Code : '') . '</td><th>Mobile:</th><td>' . (!empty($table1->mobileno) && !is_object($table1->mobileno) ? $table1->mobileno : '') . '</td></tr>
 						<tr><th>Phone No:</th><td>' . (empty($table1->phoneno) ? '' : $table1->phoneno) . '</td><th>Email:</th><td>' . (empty($table1->EMail_Id) ? '' : $table1->EMail_Id) . '</td></tr>
 						<tr><th>Latitude:</th><td>' . (empty($table1->Latitude) ? '' : $table1->Latitude) . '</td><th>Longitude:</th><td>' . (empty($table1->Longitude) ? '' : $table1->Longitude) . '</td></tr>
 					</table>';

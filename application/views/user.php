@@ -167,7 +167,7 @@
             <div class="panel-body">
                  <form id="inactive_all" method="POST" action="<?= base_url('user/inactive-all') ?>">   
                    
-                <table class="table table-striped table-bordered" id="user_dlist" cellspacing="0" width="100%">
+                <table class="table table-striped table-bordered" id="user_dlist2" cellspacing="0" width="100%">
 
                     <thead>
 
@@ -384,7 +384,7 @@ $(document).ready(function(){
 $(document).ready(function() {
 role = "<?=!empty($_GET['user_role'])?'?user_role='.$_GET['user_role']:''?>";
 
-$('#user_dlist').DataTable({         
+$('#user_dlist2').DataTable({         
     "processing": true,
     "scrollX": true,
     "scrollY": 520,
@@ -612,7 +612,7 @@ $('#find_filterbutton').click(function() {
             type: 'post',
             data: form_data,
             success: function(responseData){
-              $('#user_dlist').DataTable().ajax.reload();         
+              $('#user_dlist2').DataTable().ajax.reload();         
             /* if(!$("#active_class").hasClass('hide_countings')){
               update_top_filter_counter();      
             } */
@@ -654,7 +654,7 @@ if(!$(this).hasClass('top-active'))
        type: 'post',
        data: form_data,
        success: function(responseData){
-         $('#user_dlist').DataTable().ajax.reload();   
+         $('#user_dlist2').DataTable().ajax.reload();   
         // update_top_filter_counter(); 
      }
    });
@@ -670,12 +670,12 @@ else
        type: 'post',
        data: form_data,
        success: function(responseData){
-         $('#user_dlist').DataTable().ajax.reload();    
+         $('#user_dlist2').DataTable().ajax.reload();    
           //update_top_filter_counter();
      }
    });
 }
-$('#user_dlist').DataTable().ajax.reload();
+$('#user_dlist2').DataTable().ajax.reload();
 });
 
 function ticket_reset_filter(){
