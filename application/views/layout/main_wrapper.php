@@ -144,7 +144,7 @@ $( document ).ajaxComplete(function( event, jqxhr, settings ) {
     <style>
 #loading {
   position: fixed;
-  display: block;
+  display: none;
   width: 100%;
   height: 100%;
   top: 0;
@@ -506,7 +506,7 @@ $( document ).ajaxComplete(function( event, jqxhr, settings ) {
     data-baseUrl="<?php echo base_url(); ?>">
 
 <div id="loading">
-  <img id="loading-image" src="<?php echo base_url('assets/loader.gif'); ?>" alt="Loading..." />
+  <img id="loading-image" src="<?php echo base_url('assets/loader.gif'); ?>" alt="Loading..."/>
 </div>
 
     <div id='img-view-light'></div>
