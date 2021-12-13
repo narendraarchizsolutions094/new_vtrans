@@ -126,7 +126,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 </script>
 
 <!-------ajax loader setup ------------>	
-<script>
+<!--<script>
 $( document ).ajaxSend(function( event, jqxhr, settings ) {
 var parts = settings.url.split('/');
 var lastSegment = parts.pop() || parts.pop();
@@ -140,7 +140,7 @@ var lastSegment = parts.pop() || parts.pop();
 $( document ).ajaxComplete(function( event, jqxhr, settings ) {
 	$("#loading").css("display","none");	  
 });
-</script>
+</script>-->
 <!----------------End-------------------->
     <style>
 #loading {
