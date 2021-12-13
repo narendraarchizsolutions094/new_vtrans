@@ -185,7 +185,7 @@ $(document).ready(function(){
 
           "processing": true,
           "scrollX": true,
-          "serverSide": true,          
+          "serverSide": true,         
           "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
           "ajax": {
               "url": "<?=base_url().'client/company_load_data'?>",
@@ -207,7 +207,7 @@ $(document).ready(function(){
              }
          },
 		 
-		 dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp", 
+		// dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",
         buttons: [  
             {extend: 'copy', className: 'btn-xs btn',exportOptions: {
                         columns: "thead th:not(.noExport)"
