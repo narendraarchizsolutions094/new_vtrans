@@ -126,25 +126,25 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 </script>
 
 <!-------ajax loader setup ------------>	
-<!--<script>
+<script>
 $( document ).ajaxSend(function( event, jqxhr, settings ) {
 var parts = settings.url.split('/');
 var lastSegment = parts.pop() || parts.pop();
+
   if ( (lastSegment == "getunread") || (lastSegment == "check_attendance_status") || (lastSegment == "count_bell_notification") || (lastSegment == "get_bell_notification_content")) {
-    $("#loading").hide();
+    $("#loading").css("display","none");
   }else{
-	$("#loading").show();
+	$("#loading").css("display","block");
   }	  
 });
 $( document ).ajaxComplete(function( event, jqxhr, settings ) {
-	$("#loading").hide();	  
+	$("#loading").css("display","none");	  
 });
-</script>-->
+</script>
 <!----------------End-------------------->
     <style>
 #loading {
   position: fixed;
-  display: none;
   width: 100%;
   height: 100%;
   top: 0;
@@ -505,8 +505,8 @@ $( document ).ajaxComplete(function( event, jqxhr, settings ) {
 <body class="sidebar-mini <?php if($this->session->menu==1){echo 'sidebar-collapse';}?>"
     data-baseUrl="<?php echo base_url(); ?>">
 
-<div id="loading">
-  <img id="loading-image" src="<?php echo base_url('assets/loader.gif'); ?>" alt="Loading..."/>
+<div id="loading" style="display: none;">
+  <img id="loading-image" src="<?php echo base_url('assets/loader.gif'); ?>" alt="Loading..." />
 </div>
 
     <div id='img-view-light'></div>
