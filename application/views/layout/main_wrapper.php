@@ -117,14 +117,50 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
     <script src="<?php echo base_url('assets/js/jquery.min.js?v=1.0') ?>" type="text/javascript"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
     window.getCookie = function(name) {
         var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
         if (match) return match[2];
         else return false;
     }
-    </script>
+</script>
+
+<!-------ajax loader setup ------------>	
+<script>
+$( document ).ajaxSend(function( event, jqxhr, settings ) {
+var parts = settings.url.split('/');
+var lastSegment = parts.pop() || parts.pop();
+  if ( (lastSegment == "getunread") || (lastSegment == "check_attendance_status") || (lastSegment == "count_bell_notification") || (lastSegment == "get_bell_notification_content")) {
+    $("#loading").hide();
+  }else{
+	$("#loading").show();
+  }	  
+});
+$( document ).ajaxComplete(function( event, jqxhr, settings ) {
+	$("#loading").hide();	  
+});
+</script>
+<!----------------End-------------------->
     <style>
+#loading {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  opacity: 0.7;
+  background-color: #fff;
+  z-index: 99;
+}
+
+#loading-image {
+  position: absolute;
+  top: 25%;
+  left: 45%;
+  z-index: 200;
+}
        .icon-class {
         color: #fff;
         font-size: 17px !important;
@@ -468,6 +504,10 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
 <body class="sidebar-mini <?php if($this->session->menu==1){echo 'sidebar-collapse';}?>"
     data-baseUrl="<?php echo base_url(); ?>">
+
+<div id="loading">
+  <img id="loading-image" src="<?php echo base_url('assets/loader.gif'); ?>" alt="Loading..." />
+</div>
 
     <div id='img-view-light'></div>
     <style>
