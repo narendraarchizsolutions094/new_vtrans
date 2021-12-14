@@ -683,12 +683,13 @@ $('#find_filterbutton').click(function() {
 $(document).ready(function(){
 
 var table2  = $('#datatable').DataTable({ 
-          "processing": false,
+          "processing": true,
           "scrollX": true,
           "serverSide": true,          
           "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
-          dom: "<'row '<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",         
-          buttons: [  
+         // dom: "<'row '<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",         
+          dom: "<'row text-center'<'text-left col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>rtip",
+		  buttons: [  
               {extend: 'copy', className: 'btn-xs btn',exportOptions: {
                           columns: "thead th:not(.noExport)"
                       }}, 

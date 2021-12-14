@@ -223,8 +223,9 @@ if(user_access(310)){
         'searching': true,
         "ordering": false,
         "scrollY": 800,
-        "dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",         
-        "buttons": [  
+        //"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",         
+        dom: "<'row text-center'<'text-left col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>rtip",
+		"buttons": [  
             {extend: 'copy', className: 'btn-sm'}, 
             {extend: 'csv',  className: 'btn-sm'}, 
             {extend: 'excel', className: 'btn-sm'}, 

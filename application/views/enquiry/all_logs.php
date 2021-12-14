@@ -564,7 +564,8 @@ for (var i = 0; i < checkboxes.length; i++) {
               }
           },
         <?php if(user_access(500)) { ?>
-          dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",         
+          //dom: "<'row text-center'<'col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>tp",
+        dom: "<'row text-center'<'text-left col-sm-12 col-xs-12 col-md-4'l><'col-sm-12 col-xs-12 col-md-4 text-center'B><'col-sm-12 col-xs-12 col-md-4'f>>rtip",		  
         buttons: [  
             {extend: 'copy', className: 'btn-xs btn',exportOptions: {
                         columns: "thead th:not(.noExport)"

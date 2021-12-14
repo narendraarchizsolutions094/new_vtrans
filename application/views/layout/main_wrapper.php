@@ -129,6 +129,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 .dataTables_processing{
 	background: #43AEEF;
 	color: #fff;
+	z-index: 9;
 }
        .icon-class {
         color: #fff;
