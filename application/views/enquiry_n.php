@@ -318,12 +318,12 @@ input[name=lead_stages]{
                       <label>
                       <input type="checkbox" value="industries" id="industriescheckbox" name="filter_checkbox"> Industries</label>
                     </li>
-                    
+<!--                     
                     <li>
                       <label>                    
                         <input type="checkbox" value="visit_wise" id="visit_wisecheckbox" name="filter_checkbox"> Visit Wise
                       </label>
-                    </li>
+                    </li> -->
 					
 					<li>
                       <label>
@@ -888,14 +888,14 @@ display: block;
                             <option value="Others" <?php if(!empty($filterData['industries']) && $filterData['industries']=='Others') {echo 'selected';}?>> Others</option>
                         </select>
                       </div>
-                      <div class="form-group col-md-3" id="visit_wisefilter">
+                      <!-- <div class="form-group col-md-3" id="visit_wisefilter">
  						            <label for="">Visit Wise</label>
                         <select class="form-control" name="visit_wise" id="visit_wiserst">
                             <option value="">--Select --</option>
                             <option value="1" <?php if(!empty($filterData['visit_wise']) && $filterData['visit_wise']=='1') {echo 'selected';}?>> Visited </option>
                             <option value="2" <?php if(!empty($filterData['visit_wise']) && $filterData['visit_wise']=='2') {echo 'selected';}?>> Non Visited </option>
                         </select>
-                      </div>
+                      </div> -->
 					  
 					  <div class="form-group col-md-3" id="list_datafilter">
  						            <label for="">List Data</label>
@@ -1128,9 +1128,7 @@ display: block;
                   <th ><?php echo "Sales Branch"; ?></th>
             <?php } ?>
 			
-             <?php if ($showall == true or in_array(20, $acolarr)) {  ?>
-                  <th>No Of Visit</th>
-             <?php } ?> 
+             
               
             <?php if($this->session->userdata('companey_id')==29) { ?>
             <?php if ($showall == true or in_array(15, $acolarr)) {  ?>
@@ -1625,9 +1623,8 @@ display: block;
               <label class=""><input type="checkbox" class="choose-col"  value = "38"  <?php echo ($showall == true or in_array(38, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Sales Branch"; ?></label>  &nbsp;
           </div>
 		  
-          <div class = "col-md-4">  
-            <label class=""><input type="checkbox" class="choose-col"  value = "20"  <?php echo ($showall == true or in_array(20, $acolarr)) ? "checked" : ""; ?>>  No Of Visit</label>  &nbsp;
-          </div>
+          
+
           <div class = "col-md-4">  
             <label class=""><input type="checkbox" class="choose-col"  value = "17"  <?php echo ($showall == true or in_array(17, $acolarr)) ? "checked" : ""; ?>>EnquiryId</label>  &nbsp;
           </div>

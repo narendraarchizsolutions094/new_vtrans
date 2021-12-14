@@ -498,9 +498,7 @@ foreach($enq_data as $val){
 				$row[] = (!empty($slbrh->branch_name)) ? $slbrh->branch_name : "NA";
 			}
 			
-			if ($showall == true or in_array(20, $acolarr)) {
-				$row[] = (!empty($each->visit_count)) ? $each->visit_count : "NA";
-			}
+		
 			$enqid = $each->enquiry_id;
 			if (!empty($dacolarr) and !empty($dfields)) {
 				foreach ($dfields as $ind => $flds) {
