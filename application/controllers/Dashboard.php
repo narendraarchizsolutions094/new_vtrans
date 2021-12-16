@@ -4001,7 +4001,7 @@ $all_zones = array_chunk($all_zones,2);
         exit(); 
     }
     else
-    {    if($this->session->use_id=='2879'){   
+    {    if($this->session->user_id=='2879'){   
          echo $content;
          exit();
 	}
