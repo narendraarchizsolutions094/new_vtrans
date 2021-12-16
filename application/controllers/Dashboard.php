@@ -3928,7 +3928,7 @@ $all_zones = array_chunk($all_zones,2);
 
 
         $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/uploads/quotations/quotations_".$info_id.".pdf";
-        $pdf=   $this->pdf->create($content,0,$pdfFilePath1);
+        //$pdf=   $this->pdf->create($content,0,$pdfFilePath1);
 
         //get template of caf
 
@@ -4002,8 +4002,8 @@ $all_zones = array_chunk($all_zones,2);
     }
     else
     {       
-        // echo $content;
-        // exit();
+         echo $content;
+         exit();
         
         $task = 0;
         if(!empty($this->input->post('task')))
