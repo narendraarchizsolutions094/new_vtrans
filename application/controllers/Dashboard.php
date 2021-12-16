@@ -3685,7 +3685,7 @@ $all_zones = array_chunk($all_zones,2);
             }//ifend
             else
             {
-              $freight_table='hi test';
+              $freight_table='';
             }
             $area_table='';
 
