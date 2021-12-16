@@ -3389,9 +3389,7 @@ public function set_layout_to_session() {
                   
     public function pdf_gen($info_id=0)
     {
-if($this->session->user_id=='2879'){
- print_r($info_id);exit;
-} 
+        
         $this->load->model('Branch_model');
 
           if(empty($info_id))
