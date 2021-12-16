@@ -4001,10 +4001,10 @@ $all_zones = array_chunk($all_zones,2);
         exit(); 
     }
     else
-    {       
+    {    if($this->session->use_id=='2879'){   
          echo $content;
          exit();
-        
+	}
         $task = 0;
         if(!empty($this->input->post('task')))
           $task = $this->input->post('task');
