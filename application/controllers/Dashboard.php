@@ -3389,7 +3389,9 @@ public function set_layout_to_session() {
                   
     public function pdf_gen($info_id=0)
     {
-        
+if($this->session->user_id=='2879'){
+ print_r($info_id);exit;
+} 
         $this->load->model('Branch_model');
 
           if(empty($info_id))
@@ -4001,10 +4003,10 @@ $all_zones = array_chunk($all_zones,2);
         exit(); 
     }
     else
-    {    if($this->session->user_id=='2879'){   
-         echo $content;
-         exit();
-	}
+    {       
+        // echo $content;
+        // exit();
+        
         $task = 0;
         if(!empty($this->input->post('task')))
           $task = $this->input->post('task');
