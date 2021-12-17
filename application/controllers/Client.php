@@ -3840,7 +3840,7 @@ if(is_numeric($b_lastChar)){
             //$deal['stage_id']=$this->input->post('current_stage');
             $deal['createdby']=$this->session->user_id;
             $deal_id = $this->Branch_model->add_deal($deal);
-            file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
+            //file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
 			//$this->db->set('status','3');
 			//$this->db->where('enquiry_id',$this->input->post('enquiry_id'));
             //$this->db->update('enquiry');
@@ -3910,7 +3910,7 @@ if(is_numeric($b_lastChar)){
             'expected_tonnage'  => $expected_tonnage
             )
         );
-
+        file_get_contents(base_url('dashboard/pdf_gen/'.$deal_id));
         echo'1';
     }
 
