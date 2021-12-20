@@ -204,7 +204,7 @@ if(!empty($result))
     	$id = $this->input->post('visit_id');
        //$value_d = $this->db->select('enquiry.company,comp.company_name,enquiry.address,tbl_visit.*  ,CONCAT(COALESCE(enquiry.name,"")," ",COALESCE(enquiry.lastname,"")) as name');
 //open up select remove below select when apk on play store
-	   $value_d = $this->db->select('enquiry.Enquery_id as enquiry_code,enquiry.company,comp.company_name,enquiry.address,
+	   $value_d = $this->db->select('tbl_expense.amount as total_expence,enquiry.Enquery_id as enquiry_code,enquiry.company,comp.company_name,enquiry.address,
 	    tbl_visit.id,tbl_visit.enquiry_id,tbl_visit.visit_date,tbl_visit.travelled,tbl_visit.travelled_type,
 		tbl_visit.rating,tbl_visit.next_date,tbl_visit.next_time,tbl_visit.next_location,tbl_visit.comp_id,tbl_visit.user_id,
 		tbl_visit.user_rate,tbl_visit.remarks,tbl_visit.created_at,tbl_visit.idealDistance,tbl_visit.actualDistance,
@@ -214,6 +214,7 @@ if(!empty($result))
        $value_d =     $this->db->where('tbl_visit.id',$id);
        $value_d =      $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
                        $this->db->join('tbl_company comp','enquiry.company=comp.id','left');
+					   $this->db->join('tbl_expense','tbl_expense.visit_id=tbl_visit.id','left');
 
        $value_d =     $this->db->order_by('created_at','DESC');
        $value_d =       $this->db->get('tbl_visit')->row();
