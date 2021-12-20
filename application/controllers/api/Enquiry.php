@@ -597,11 +597,14 @@ $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_
             case 7:
             $leadsource = $this->Leads_Model->get_leadsource_list();
             $values = array();
+			$remove = array("129", "135");
             foreach ($leadsource as $res)
             {
+			if(!in_array($res->lsid, $remove)){
               $values[] =  array('key'=>$res->lsid,
                                 'value'=> $res->lead_name
                               );
+			}
             }
             $basic[$key]['input_values'] = $values;
             $basic[$key]['parameter_name'] = 'enquiry_source';
