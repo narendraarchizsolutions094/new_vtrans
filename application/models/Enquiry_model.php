@@ -303,6 +303,8 @@ $insid = $this->db->insert_id();
           $sb = $this->db->where('branch_id',$enquiry->sales_branch)->get('branch')->row();
 		  $eb = $this->db->where('id',$enquiry->industries)->get('tbl_industries')->row();
 		  $ls = $this->db->where('sc_id',$enquiry->lead_score)->get('lead_score')->row();
+		  $exdate = new DateTime($enquiry->lead_expected_date);
+          $exdate = $exdate->format('Y-m-d');
           $self_created1 = array(
                         array(
                               "id"=> -8,
@@ -370,7 +372,7 @@ $insid = $this->db->insert_id();
                               "title"=> "Expected Closer Date",
                               "type"=> "Date",
                               "parameter_name"=> "expected_date",
-                              "current_value"=>$enquiry->lead_expected_date,
+                              "current_value"=>$exdate,
                         ),
 						array(
                               "id"=> -11,
