@@ -494,6 +494,7 @@ class Dashboard extends REST_Controller {
             $this->db->select('enquiry.enquiry_id,enquiry.Enquery_id as enq_code,enquiry.client_name');
             $this->db->from('enquiry');
             $this->db->where("enquiry.company",$comp_id);
+			$this->db->where("enquiry.drop_status",0);
 
             $where="";
             $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
