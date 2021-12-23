@@ -40,6 +40,7 @@ class Map_feed extends REST_Controller {
       }else{		  
         $insert_array = array(
           'uid'       => $uid,
+		  'uid_time'  => $uid.date('H:i:s'),
           'waypoints'  => json_encode(array($new_waypoint)),
 		  'one_lead'  => json_encode(array($new_waypoint))
         );      
