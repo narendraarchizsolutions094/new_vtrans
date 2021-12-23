@@ -82,7 +82,11 @@ class Web extends CI_Controller{
         $limit = ($this->input->post('limit')) ? $this->input->post('limit') : 20;
         $load = $this->input->post('loaddata');
         $dyn_part = get_dynamic_partition();
-        $this->db->from("query_response","PARTITION($dyn_part)");		        
+
+        $dyn_part = str_replace("'", "", $dyn_part);
+        $this->db->from("query_response PARTITION($dyn_part)");	
+
+//        $this->db->from("query_response","PARTITION($dyn_part)");		        
         $user_id = $this->session->user_id;              
         $this->db->select("query_response.related_to,query_response.notification_id,query_response.resp_id,query_response.task_type,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,CONCAT_WS(' ',enquiry.name_prefix,enquiry.name,enquiry.lastname) as user_name,enquiry.enquiry_id,enquiry.status as enq_status,ticket.assign_to,ticket.assigned_by,ticket.name as ticket_name,tbl_company.company_name as company,enquiry.client_name");      
         $this->db->join('tbl_admin', 'tbl_admin.pk_i_admin_id=query_response.create_by', 'left');
@@ -122,7 +126,11 @@ class Web extends CI_Controller{
     public function count_bell_notification(){
         //echo 0;
          $dyn_part = get_dynamic_partition();
-         $this->db->from("query_response","PARTITION($dyn_part)");		        
+
+         $dyn_part = str_replace("'", "", $dyn_part);
+         $this->db->from("query_response PARTITION($dyn_part)");	
+
+//         $this->db->from("query_response","PARTITION($dyn_part)");		        
          //$this->db->from('query_response');              
          $user_id = $this->session->user_id;              
          $this->db->select("query_response.related_to,query_response.resp_id,query_response.noti_read,query_response.query_id,query_response.upd_date,query_response.task_date,query_response.task_time,query_response.task_remark,query_response.subject,query_response.task_status,query_response.mobile,tbl_admin.s_display_name as user_name");      
