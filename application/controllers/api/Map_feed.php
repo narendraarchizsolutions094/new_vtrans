@@ -43,12 +43,8 @@ class Map_feed extends REST_Controller {
           'waypoints'  => json_encode(array($new_waypoint)),
 		  'one_lead'  => json_encode(array($new_waypoint))
         );      
-        $this->db->insert('map_location_feed',$insert_array);
-	$a = 0;
-	while($a<=15){
-    	
-      $a++;
-    }
+       // $this->db->insert('map_location_feed',$insert_array);
+	
       }
       $this->set_response([
                 'status' => true,
