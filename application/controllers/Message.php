@@ -646,6 +646,11 @@ public function employee_send_sms(){
 		  $all_user_id = json_encode($move_enquiry);
 		  
 		  $message=$this->input->post('message_name');
+		  
+//For sent APK Link
+$apk_row  = $this->db->get('tbl_apk_version')->row_array();
+		  $message = str_replace("@link",$apk_row['apk_url'],$message);
+//End					
           $email_subject = $this->input->post('email_subject')??'';
 		  
 		  $templates_id	=	$this->input->post('templates');
