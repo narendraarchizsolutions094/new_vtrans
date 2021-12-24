@@ -403,8 +403,8 @@ echo'<div class="trackingDetails"></div>';
                 {
                 ?>	  
 			<div class="form-group col-md-6">
-                <label class="control-label" for="emp_branch">Branch</label> 									
-                <select class="form-control" name="emp_branch">
+                <label class="control-label" for="emp_branch">Branch<i class="text-danger opt">*</i></label> 									
+                <select class="form-control" name="emp_branch" required>
 				<option value="">---Select Branch---</option>
                     <?php  if (!empty($branch_lists)) {
                     foreach ($branch_lists as $key => $value) { ?>

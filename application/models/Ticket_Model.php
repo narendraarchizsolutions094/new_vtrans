@@ -235,7 +235,14 @@ class Ticket_Model extends CI_Model
 				}
 //For assign to new created lead				
 				$branch = $this->input->post("emp_branch", true);
-				if(!empty($branch)){
+				if(!empty($branch)){					
+//For branch and region and area
+				$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$branch)->get('branch')->row();
+				$branch_id = $branch;
+				$area_id = $rab->area_id;
+				$region_id = $rab->region_id;
+                $client_name = $_POST['client_new'].' '.$rab->branch_name;				
+//End				
 				$assign_users= $this->db->select('pk_i_admin_id')->where('sales_branch',$branch)->where('user_permissions','147')->where('b_status','1')->get('tbl_admin')->result();
 				$ttl = count($assign_users);
 				if($ttl==1){
@@ -247,6 +254,10 @@ class Ticket_Model extends CI_Model
 				}
 				}else{
 					$assign_to = '2173';
+					$branch_id = '';
+				    $area_id = '';
+				    $region_id = '';
+					$client_name = '';
 				}
 				//print_r($assign_to);exit;
 //End				
@@ -258,6 +269,10 @@ class Ticket_Model extends CI_Model
 					'phone' 		=> $this->input->post("phone", true),
 					'name' 			=> $this->input->post("name", true),
 					'company'		=> $newcompId,
+					'sales_branch'	=> $branch_id,
+					'sales_region'	=> $region_id,
+					'sales_area'	=> $area_id,
+					'client_name'	=> $client_name,
 					'checked' 		=> 0,
 					'product_id' 	=>  $_SESSION['process'][0],
 					'created_date' 	=>  date("Y-m-d H:i:s"),
