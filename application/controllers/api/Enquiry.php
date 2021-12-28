@@ -355,6 +355,7 @@ if(!empty($update_array)){
 	$enquiry_source = implode(',',$update_array);
 	
 	$this->db->set('enquiry_source',$enquiry_source);
+	$this->db->set('update_date',date('Y-m-d H:i:s'));
 	$this->db->where('enquiry_id',$enq_id->enquiry_id);
 	$this->db->update('enquiry');
 	

@@ -40,6 +40,7 @@ if(!empty($update_array)){
 	$enquiry_source = implode(',',$update_array);
 	
 	$this->db->set('enquiry_source',$enquiry_source);
+	$this->db->set('update_date',date('Y-m-d H:i:s'));
 	$this->db->where('enquiry_id',$enq_id->enquiry_id);
 	$this->db->update('enquiry');
 	
@@ -2284,7 +2285,7 @@ $insid = $this->db->insert_id();
         }
 
        
-    $this->db->order_by('enquiry.enquiry_id','DESC');
+    $this->db->order_by('enquiry.update_date','DESC');
     //for pagination api
 
     if($offset!=-1 && $limit!=-1)
