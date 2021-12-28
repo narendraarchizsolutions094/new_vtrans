@@ -101,14 +101,20 @@ class Enquiry extends REST_Controller {
                       // $msg = 'You can pick the order from "3" customers';
                       //echo $msg.'<br>';
 
-                      $this->Leads_Model->add_comment_for_events_popup($msg,$stage_date,'','','','',$stage_time,'',0,'Aging Notification',$task_for='1',$task_type='2',$key,$comp_id);                      
-                      $user_row = $this->user_model->read_by_id($key);
+                    $user_row = $this->user_model->read_by_id($key);
+
+//For Stop send all notification for support staff
+$not_send = array("216", "217");
+if (!in_array($user_row->user_permissions, $not_send)){
+                    $this->Leads_Model->add_comment_for_events_popup($msg,$stage_date,'','','','',$stage_time,'',0,'Aging Notification',$task_for='1',$task_type='2',$key,$comp_id);
 
                       if(!empty($user_row)){                        
                           $this->message_models->smssend($user_row->s_phoneno, $msg1,$comp_id,$key);                
                           $this->message_models->sendwhatsapp($user_row->s_phoneno, $msg1,$comp_id,$key);
                           $this->message_models->send_email($user_row->s_user_email, 'Aging Notification', $msg1,$comp_id);
                       }
+}
+//End
                     }
                   }
               }

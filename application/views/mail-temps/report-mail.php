@@ -28,7 +28,7 @@
                             <tr>
                                 <td valign="top" style="text-align: left; padding: 20px 50px;background-color: #ffffff;">
                                     <!-- Intro content -->
-                                    <p style="font-family: 'Open Sans', sans-serif; color: #333333; font-size:17px; font-weight: 500; margin: 0 auto;"> Dear <?=$userName?>, </p>
+                                    <p style="font-family: 'Open Sans', sans-serif; color: #333333; font-size:17px; font-weight: 500; margin: 0 auto;"> Dear  Sir/ Madam <?=$userName?>, </p>
                                 </td>
                             </tr>
                             <tr>

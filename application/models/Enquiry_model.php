@@ -2285,7 +2285,8 @@ $insid = $this->db->insert_id();
         }
 
        
-    $this->db->order_by('enquiry.update_date','DESC');
+    //$this->db->order_by('enquiry.enquiry_id','DESC');
+	$this->db->order_by('enquiry.update_date','DESC');
     //for pagination api
 
     if($offset!=-1 && $limit!=-1)
