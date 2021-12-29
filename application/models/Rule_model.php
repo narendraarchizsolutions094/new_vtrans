@@ -35,6 +35,7 @@ class Rule_model extends CI_Model {
             $user_id = $this->session->user_id;
         }
 		//$this->load->model('rule_model');
+$rule_id = $id;
 		$rule_data    =   $this->get_rule($id,$comp_id);        
         $affected = 0;
         if (!empty($rule_data)) {
@@ -132,6 +133,7 @@ class Rule_model extends CI_Model {
                             $this->db->where('type','COMPANY_SETTING');
                             $cc_row = $this->db->get('sys_parameters')->row_array(); 
                             $cc = '';
+						if($rule_id!='190'){
                             if(!empty($cc_row))
                             {
                                 $this->db->where('pk_i_admin_id',$user_id);
@@ -139,7 +141,7 @@ class Rule_model extends CI_Model {
                                if(!empty($cc_user))
                                     $cc = $cc_user['s_user_email'];
                             }
-                           
+                        }   
                             $this->load->model('Message_models');
                             $subject = $row['mail_subject'];
                             $message = $row['template_content'];
