@@ -133,7 +133,8 @@ $rule_id = $id;
                             $this->db->where('type','COMPANY_SETTING');
                             $cc_row = $this->db->get('sys_parameters')->row_array(); 
                             $cc = '';
-						if($rule_id!='190'){
+		
+						//if($rule_id!='190'){
                             if(!empty($cc_row))
                             {
                                 $this->db->where('pk_i_admin_id',$user_id);
@@ -141,7 +142,7 @@ $rule_id = $id;
                                if(!empty($cc_user))
                                     $cc = $cc_user['s_user_email'];
                             }
-                        }   
+                       // }   
                             $this->load->model('Message_models');
                             $subject = $row['mail_subject'];
                             $message = $row['template_content'];
