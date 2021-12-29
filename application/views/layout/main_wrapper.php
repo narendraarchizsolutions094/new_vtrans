@@ -2887,8 +2887,10 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                             phone_n + '">' + phone_n +
                                             '</a></strong><br><a class="btn btn-info" href="<?=base_url()?>telephony/forword_to/' +
                                             phone_n + '">Go</a>',
+										showCloseButton: true,
                                         showCancelButton: false,
                                         showConfirmButton: false,
+										cancelButtonText: 'Close',
                                         confirmButtonColor: '#3085d6',
                                         cancelButtonColor: '#d33',
                                     }).then((result) => {
