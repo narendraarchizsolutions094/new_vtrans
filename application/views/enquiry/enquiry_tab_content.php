@@ -388,7 +388,7 @@ function clientname() {
         data: {sales_branch:branch_id},
 
         success:function(data){
-       // alert(data);
+        //alert(data);
 	   if(company=='' || data==''){
 		c_name = 'NA';
 	   }else{

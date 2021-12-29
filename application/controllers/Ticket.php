@@ -2112,6 +2112,7 @@ $this->db->update('enquiry');
 	{
 		if (user_role('311') == true) {}
 		if (isset($_POST["ticketno"])) {
+			//print_r($_POST); exit();
 			//echo $_POST['']
 			//$_POST['relatedto'] = $_POST['issue'];
 			$this->Ticket_Model->updatestatus();

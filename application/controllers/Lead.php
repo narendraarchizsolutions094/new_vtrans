@@ -2396,8 +2396,12 @@ public function get_all_stage_deals() {
 	public function get_compname_by_id()
     {
         $id = $this->input->post('sales_branch');
-        $res = $this->SubSource_model->get_company_name($id);       
+		if(!empty($id)){
+        $res = $this->SubSource_model->get_company_name($id); 		
         echo $res->branch_name;
+		}else{
+		echo '';
+		}
     }
 	
     public function description()

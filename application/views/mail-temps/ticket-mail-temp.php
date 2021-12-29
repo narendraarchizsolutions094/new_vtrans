@@ -66,7 +66,7 @@
                               background-color: #ffffff;">
                               <!-- Intro content -->
                               <p style="font-family: 'Open Sans', sans-serif; color: #333333; font-size:
-                                 17px; font-weight: 500; margin: 0 auto;"> Dear  Sir/ Madam <?= $userName ?>, </p>
+                                 17px; font-weight: 500; margin: 0 auto;"> Dear <?= $userName ?>, </p>
                            </td>
                         </tr>
                         <tr>

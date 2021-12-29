@@ -187,7 +187,7 @@
     e.preventDefault();
 	if("<?=$this->session->companey_id?>"==65 && ($("#lead_description").val() == '6' || $("#lead_description").val() == '5')){
 	 if($("#emp_brnh").val() == ''){
-      alert('Please select Branch Name in basic tab for business lead.');
+      alert('Please update Branch Name first in basic tab for business lead/Rate Enquiry.');
       return;
 	 }else{
 		$("#brnh_for").val($("#emp_brnh").val())

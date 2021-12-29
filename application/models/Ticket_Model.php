@@ -535,6 +535,33 @@ class Ticket_Model extends CI_Model
 			"review"    => $this->input->post("review", true),
 			"branch_for" => $this->input->post("emp_branch", true)
 		);
+		
+//For branch and region and area
+                $enq= $this->db->select('client')->where('id',$this->input->post("ticketno", true))->get('tbl_ticket')->row();
+				if(!empty($enq->client)){
+				$cmp_id= $this->db->select('company')->where('enquiry_id',$enq->client)->get('enquiry')->row();
+				}
+				if(!empty($cmp_id->company)){
+				$cmp= $this->db->select('company_name')->where('id',$cmp_id->company)->get('tbl_company')->row();
+				}
+				if(!empty($this->input->post("emp_branch", true) && $cmp->company_name)){
+				$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$this->input->post("emp_branch", true))->get('branch')->row();
+				$branch_id = $this->input->post("emp_branch", true);
+				$area_id = $rab->area_id;
+				$region_id = $rab->region_id;
+                $client_name = $cmp->company_name.' '.$rab->branch_name;	
+				}
+
+if(!empty($client_name)){
+$this->db->set("client_name", $client_name);
+$this->db->set("sales_branch", $branch_id);
+$this->db->set("sales_region", $region_id);
+$this->db->set("sales_area", $area_id);
+$this->db->where("enquiry_id", $enq->client);
+$this->db->update("enquiry");
+}				
+//End
+
 		//print_r($updarr); exit();
 		//echo $this->input->post("ticketno", true); exit();
 		$this->db->where("id", $this->input->post("ticketno", true));
