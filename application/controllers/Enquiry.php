@@ -585,7 +585,8 @@ class Enquiry extends CI_Controller
 //End
 
 //For asign to according to sales branch
-$post_br = $this->input->post('sales_branch');
+//$post_br = $this->input->post('sales_branch');
+$post_br = '';
 if(!empty($post_br)){
 $usr_br = $this->User_model->all_emp_list_assign($post_br);
 if(empty($usr_br)){
