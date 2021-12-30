@@ -254,13 +254,13 @@ class Ticket_Model extends CI_Model
                     $assign_to = $assign_repuser->report_to;					
 				}
 				}else{
-				$assign_users= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions!=','216')->where('user_permissions!=','217')->where('b_status','1')->get('tbl_admin')->result();
+				$assign_users= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->get('tbl_admin')->result();
 				$ttl = count($assign_users);
 				if($ttl==1){
-					$assign_touser= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions!=','216')->where('user_permissions!=','217')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
+					$assign_touser= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
 					$assign_to = $assign_touser->pk_i_admin_id;
 				}else{					
-					$assign_repuser= $this->db->select('report_to')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions!=','216')->where('user_permissions!=','217')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
+					$assign_repuser= $this->db->select('report_to')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
                     $assign_to = $assign_repuser->report_to;					
 				}
 				}

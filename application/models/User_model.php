@@ -98,8 +98,7 @@ class User_model extends CI_Model {
 		//$this->db->where_in('sales_branch', $branch);
 		$this->db->where("FIND_IN_SET(".$branch.", sales_branch)");
 		}
-		$this->db->where('user_permissions!=', '216');
-		$this->db->where('user_permissions!=', '217');
+		$this->db->where('dept_name', '1');
 		$this->db->where('b_status', '1');
 		$this->db->order_by('pk_i_admin_id', 'DESC');
         $query = $this->db->get();
