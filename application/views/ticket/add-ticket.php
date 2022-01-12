@@ -308,6 +308,22 @@ function autoFill(find_by,key)
 	});
 }
 
+
+$("#save_ticket").on('click',function(e){
+    //alert('name');
+    e.preventDefault();
+	if($("#client_val").val() == '' || $("#tracking_no").val() == '' || $("#name").val() == '' || $("#phone").val() == '' || $("#relatedto").val() == ''){
+	if($("#client_new").val() == '' || $("#tracking_no").val() == '' || $("#name").val() == '' || $("#phone").val() == '' || $("#relatedto").val() == ''){
+      alert('Please update Fill all mandatory (*) fields.');
+      return;
+	}else{
+		$("#ticket-add-form").submit();
+	}
+    }else{
+		$("#ticket-add-form").submit();
+	}
+  });
+
 <?php
 
 if(!empty($_GET['phone']))

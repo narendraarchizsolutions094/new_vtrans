@@ -180,7 +180,7 @@ echo'<div class="trackingDetails"></div>';
                         }                        
                         ?>
                         </label>
-                        <input type="text" name="tracking_no" class="form-control" onblur="loadTracking(this),match_previous(this.value)" required>
+                        <input type="text" name="tracking_no" id="tracking_no" class="form-control" onblur="loadTracking(this),match_previous(this.value)" required>
                       </div>
                     </div>
 
@@ -192,7 +192,7 @@ echo'<div class="trackingDetails"></div>';
                     ?>
 					<div class="col-md-6" id='client_div'>
                       <div class="form-group">
-                        <label><?=display('problem_for')?> </label>
+                        <label><?=display('problem_for')?><i class="text-danger opt">*</i> </label>
                         <!-- <select class="form-control  choose-client" name = "client" id='client'>
                           <option value = "" style ="display:none;">---Select---</option>
                           <?php if(!empty($clients)){
@@ -210,6 +210,13 @@ echo'<div class="trackingDetails"></div>';
                         <div id="suggesstion-box"></div>
                       </div>                     
                     </div>
+					
+					<div class="col-md-6" style="display:none;" id="new_org">
+					<div class="form-group">
+					<label><?='New '.display('problem_for')?><i class="text-danger opt">*</i></label>
+					<input type="text" name="client_new" id="client_new" class="form-control">
+					</div>
+					</div>
 
                    
                   <?php
@@ -221,7 +228,7 @@ echo'<div class="trackingDetails"></div>';
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Name <i class="text-danger">*</i></label>
-                        <input type = "text" class="form-control" name = "name" required>
+                        <input type = "text" class="form-control" name = "name" id = "name" required>
                       </div>
                     </div>
                    
@@ -245,7 +252,7 @@ echo'<div class="trackingDetails"></div>';
                             <?php
                           }
                           ?>
-                          <input type = "text" class="form-control" name = "phone" <?=$required?> value="<?=!empty($_GET['phone'])?$_GET['phone']:''?>" onkeyup="autoFill('phone',this.value)"> 
+                          <input type = "text" class="form-control" name = "phone" id = "phone" <?=$required?> value="<?=!empty($_GET['phone'])?$_GET['phone']:''?>" onkeyup="autoFill('phone',this.value)"> 
                           <div id="is-avl-mobile"></div>
                         </div>
                     </div>                   
@@ -296,7 +303,7 @@ echo'<div class="trackingDetails"></div>';
                     <div class="col-md-6">
                         <div class="form-group">
                           <label><?=display('ticket_problem')?><i class="text-danger opt">*</i></label>
-                          <select class="form-control " name = "relatedto" required>
+                          <select class="form-control " name = "relatedto" id = "relatedto" required>
                           <option value = "">-- Select Subject --</option>
                         <?php  if(!empty($problem)) {
                               foreach($problem as $ind => $prblm){
@@ -439,7 +446,9 @@ echo'<div class="trackingDetails"></div>';
             function add_more_org(type='add_more_org'){
               $("#addmoreorg").hide();                            
               $("#client").val("").trigger('change');
-              html = '<div class="col-md-6"><div class="form-group"><label>'+"<?='New '.display('problem_for')?>"+'</label><input type="text" name="client_new" class="form-control"></div></div>';
+			  $("#client_val").val("");
+			  $("#new_org").show();
+              //html = '<div class="col-md-6"><div class="form-group"><label>'+"<?='New '.display('problem_for')?>"+'</label><input type="text" name="client_new" id="client_new" class="form-control"></div></div>';
               $("#client_div").after(html);
               $("#client").attr('disabled',true);
               
