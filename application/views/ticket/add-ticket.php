@@ -309,7 +309,7 @@ function autoFill(find_by,key)
 }
 
 
-$("#save_ticket").on('click',function(e){
+/* $("#save_ticket").on('click',function(e){
     //alert('name');
     e.preventDefault();
 	if($("#client_val").val() == '' || $("#tracking_no").val() == '' || $("#name").val() == '' || $("#phone").val() == '' || $("#relatedto").val() == ''){
@@ -322,7 +322,7 @@ $("#save_ticket").on('click',function(e){
     }else{
 		$("#ticket-add-form").submit();
 	}
-  });
+  }); */
 
 <?php
 
