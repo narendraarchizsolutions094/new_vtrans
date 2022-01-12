@@ -192,7 +192,7 @@ echo'<div class="trackingDetails"></div>';
                     ?>
 					<div class="col-md-6" id='client_div'>
                       <div class="form-group">
-                        <label><?=display('problem_for')?><i class="text-danger opt">*</i> </label>
+                        <label><?=display('problem_for')?><i class="text-danger opt1">*</i> </label>
                         <!-- <select class="form-control  choose-client" name = "client" id='client'>
                           <option value = "" style ="display:none;">---Select---</option>
                           <?php if(!empty($clients)){
@@ -213,7 +213,7 @@ echo'<div class="trackingDetails"></div>';
 					
 					<div class="col-md-6" style="display:none;" id="new_org">
 					<div class="form-group">
-					<label><?='New '.display('problem_for')?><i class="text-danger opt">*</i></label>
+					<label><?='New '.display('problem_for')?><i class="text-danger">*</i></label>
 					<input type="text" name="client_new" id="client_new" class="form-control">
 					</div>
 					</div>
@@ -444,7 +444,8 @@ echo'<div class="trackingDetails"></div>';
             $('select[class~="form-control"]').select2();        
           });
             function add_more_org(type='add_more_org'){
-              $("#addmoreorg").hide();                            
+              $("#addmoreorg").hide();
+              $(".opt1").hide();			  
               $("#client").val("").trigger('change');
 			  $("#client_val").val("");
 			  $("#new_org").show();

@@ -309,12 +309,13 @@ function autoFill(find_by,key)
 }
 
 
-/* $("#save_ticket").on('click',function(e){
-    //alert('name');
+$("#save_ticket").on('click',function(e){
+	var ct = $('input[name=complaint_type]:checked', '#ticket-add-form').val();
+if(ct=='1'){
     e.preventDefault();
 	if($("#client_val").val() == '' || $("#tracking_no").val() == '' || $("#name").val() == '' || $("#phone").val() == '' || $("#relatedto").val() == ''){
 	if($("#client_new").val() == '' || $("#tracking_no").val() == '' || $("#name").val() == '' || $("#phone").val() == '' || $("#relatedto").val() == ''){
-      alert('Please update Fill all mandatory (*) fields.');
+      alert('Please Fill all mandatory (*) fields.');
       return;
 	}else{
 		$("#ticket-add-form").submit();
@@ -322,7 +323,20 @@ function autoFill(find_by,key)
     }else{
 		$("#ticket-add-form").submit();
 	}
-  }); */
+}else{
+    e.preventDefault();
+	if($("#client_val").val() == ''  || $("#name").val() == '' || $("#phone").val() == ''){
+	if($("#client_new").val() == ''  || $("#name").val() == '' || $("#phone").val() == ''){
+      alert('Please Fill all mandatory (*) fields.');
+      return;
+	}else{
+		$("#ticket-add-form").submit();
+	}
+    }else{
+		$("#ticket-add-form").submit();
+	}
+}
+  });
 
 <?php
 
