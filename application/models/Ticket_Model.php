@@ -235,7 +235,7 @@ class Ticket_Model extends CI_Model
 				}
 //For assign to new created lead				
 				$branch = $this->input->post("emp_branch", true);
-				if(!empty($branch)){					
+				/*if(!empty($branch)){					
 //For branch and region and area
 				$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$branch)->get('branch')->row();
 				$branch_id = $branch;
@@ -265,13 +265,13 @@ class Ticket_Model extends CI_Model
 				}
 				}
 				}else{
-					//$assign_to = '2173';
-					$assign_to = '';
+					$assign_to = '2173';
 					$branch_id = '';
 				    $area_id = '';
 				    $region_id = '';
 					$client_name = '';
-				}
+				}*/
+				$assign_to = '';
 				//print_r($assign_to);exit;
 //End				
 				$encode = get_enquery_code();
