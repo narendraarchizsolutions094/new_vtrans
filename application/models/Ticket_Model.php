@@ -265,7 +265,8 @@ class Ticket_Model extends CI_Model
 				}
 				}
 				}else{
-					$assign_to = '2173';
+					//$assign_to = '2173';
+					$assign_to = '';
 					$branch_id = '';
 				    $area_id = '';
 				    $region_id = '';
