@@ -2888,6 +2888,7 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                             '</a></strong><br><a class="btn btn-info" href="<?=base_url()?>telephony/forword_to/' +
                                             phone_n + '">Go</a>',
 										showCloseButton: true,
+										allowOutsideClick: false,
                                         showCancelButton: false,
                                         showConfirmButton: false,
 										cancelButtonText: 'Close',
