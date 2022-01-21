@@ -1128,6 +1128,14 @@ display: block;
                   <th ><?php echo "Sales Branch"; ?></th>
             <?php } ?>
 			
+			<?php if ($showall == true or in_array(39, $acolarr)) {  ?>
+                  <th ><?php echo "Total Deal"; ?></th>
+            <?php } ?>
+			
+			<?php if ($showall == true or in_array(40, $acolarr)) {  ?>
+                  <th ><?php echo "Total Visit"; ?></th>
+            <?php } ?>
+			
              
               
             <?php if($this->session->userdata('companey_id')==29) { ?>
@@ -1621,6 +1629,14 @@ display: block;
 		  
 		  <div class = "col-md-4">         
               <label class=""><input type="checkbox" class="choose-col"  value = "38"  <?php echo ($showall == true or in_array(38, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Sales Branch"; ?></label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">         
+              <label class=""><input type="checkbox" class="choose-col"  value = "39"  <?php echo ($showall == true or in_array(39, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Total Deals"; ?></label>  &nbsp;
+          </div>
+		  
+		  <div class = "col-md-4">         
+              <label class=""><input type="checkbox" class="choose-col"  value = "40"  <?php echo ($showall == true or in_array(40, $acolarr)) ? "checked" : ""; ?>>     <?php echo "Total Visits"; ?></label>  &nbsp;
           </div>
 		  
           

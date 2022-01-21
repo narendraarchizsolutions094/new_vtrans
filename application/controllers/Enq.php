@@ -524,6 +524,16 @@ if(!empty($company)){
 				$row[] = (!empty($slbrh->branch_name)) ? $slbrh->branch_name : "NA";
 			}
 			
+			if ($showall == true or in_array(39, $acolarr)) {
+				$all_deals = $this->db->select('COUNT(id) as tdl')->get_where('commercial_info', array('enquiry_id' => $each->enquiry_id,'original' => '1'))->row();
+				$row[] = (!empty($all_deals->tdl)) ? $all_deals->tdl : "NA";
+			}
+			
+			if ($showall == true or in_array(40, $acolarr)) {
+				$all_visits = $this->db->select('COUNT(id) as tvis')->get_where('tbl_visit', array('enquiry_id' => $each->enquiry_id))->row();
+				$row[] = (!empty($all_visits->tvis)) ? $all_visits->tvis : "NA";
+			}
+			
 		
 			$enqid = $each->enquiry_id;
 			if (!empty($dacolarr) and !empty($dfields)) {
