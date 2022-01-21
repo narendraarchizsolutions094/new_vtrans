@@ -132,7 +132,7 @@ foreach($enq_data as $val){
 //END
 
 //UPDATE COMPANY GROUP NAME USING CLIENT NAME
-$enq_data = $this->db->select('enquiry_id,client_name,sales_branch,company')->where('company','')->where('sales_branch!=','')->get('enquiry')->result();
+$enq_data = $this->db->select('enquiry_id,client_name,sales_branch,company')->where('company','')->or_where('company',null)->where('sales_branch!=','')->get('enquiry')->result();
 foreach($enq_data as $val){
 	$ecn = $val->client_name;
 	$esb = $val->sales_branch;
