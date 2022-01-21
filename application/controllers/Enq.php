@@ -132,7 +132,7 @@ foreach($enq_data as $val){
 //END
 
 //UPDATE COMPANY GROUP NAME USING CLIENT NAME
-/*$enq_data = $this->db->select('enquiry_id,client_name,sales_branch,company')->where('company','')->where('sales_branch!=','')->get('enquiry')->result();
+$enq_data = $this->db->select('enquiry_id,client_name,sales_branch,company')->where('company','')->where('sales_branch!=','')->get('enquiry')->result();
 foreach($enq_data as $val){
 	$ecn = $val->client_name;
 	$esb = $val->sales_branch;
@@ -143,15 +143,17 @@ foreach($enq_data as $val){
 	$brch_nm = $bdata->branch_name;	
 	$company = strstr($ecn, $brch_nm, true);
 	$company = trim($company);
+if(!empty($company)){
 	$cid = $this->db->select('id')->like(array('company_name'=>$company))->get('tbl_company')->row();
 	if(!empty($cid->id)){
     $this->db->set('company',$cid->id);
     $this->db->where('enquiry_id',$eid);
     $this->db->update('enquiry');
 	}
+}
 	}
 	}	
-}*/
+}
 //END
 
 		//$this->output->enable_profiler(TRUE);
