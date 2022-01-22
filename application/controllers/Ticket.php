@@ -813,13 +813,13 @@ class Ticket extends CI_Controller
 				$colums[]  = 'Email';
 			}
 			if ($showall or in_array(4, $acolarr)) {
-				if (user_access(220) && !empty($point->phone && !$export_only)) {
-					$sub[] = "<a href='javascript:void(0)' onclick='send_parameters(".$point->phone.")'>" . $point->phone . " <button class='btn btn-xs btn-success'><i class='fa fa-phone' aria-hidden='true'></i></button></a>";
-					$colums[]  = 'Phone';
-				} else {
+				//if (user_access(220) && !empty($point->phone && !$export_only)) {
+				//	$sub[] = "<a href='javascript:void(0)' onclick='send_parameters(".$point->phone.")'>" . $point->phone . " <button class='btn btn-xs btn-success'><i class='fa fa-phone' aria-hidden='true'></i></button></a>";
+				//	$colums[]  = 'Phone';
+				//} else {
 					$sub[] = $point->phone ?? "NA";
 					$colums[]  = 'Phone';
-				}
+				//}
 			}
 			//$sub[] = $point->phone??"NA";
 			if ($showall or in_array(5, $acolarr)) {

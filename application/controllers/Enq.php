@@ -353,11 +353,11 @@ if(!empty($company)){
 					$p = '##########';
 				}
 				$c = $this->session->companey_id;
-				if (user_access(220) && $c!=65) {
-					$row[] = "<a href='javascript:void(0)' onclick='send_parameters(".$each->phone.")'>" . $p . " <button class='fa fa-phone btn btn-xs btn-success'></button></a>";
-				} else {
+				//if (user_access(220) && $c!=65) {
+				//	$row[] = "<a href='javascript:void(0)' onclick='send_parameters(".$each->phone.")'>" . $p . " <button class='fa fa-phone btn btn-xs btn-success'></button></a>";
+				//} else {
 					$row[] = (!empty($each->phone)) ? '<a  href="tel:' . $p . '">' . $p . '</a>' : "NA";
-				}
+				//}
 			}
 			if ($showall == true or in_array(6, $acolarr)) {
 				$row[] = (!empty(trim($each->address))) ? ucwords($each->address) : "NA";

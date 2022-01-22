@@ -44,7 +44,8 @@
                 $p = '##########';
               }
             ?>
-            <a href='javascript:void(0)' onclick='send_parameters("<?php if(!empty($ticket->phone)) {echo $ticket->phone;} ?>")'><?php echo $p ?></a>
+            <!--<a href='javascript:void(0)' onclick='send_parameters("<?php if(!empty($ticket->phone)) {echo $ticket->phone;} ?>")'><?php echo $p ?></a>-->
+			<a href='javascript:void(0)'><?php echo $p ?></a>
             <br><?php if(!empty($ticket->email)) { echo $ticket->email; }             
             ?>            
          </h5>
