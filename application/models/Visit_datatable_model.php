@@ -115,9 +115,9 @@ class Visit_datatable_model extends CI_Model{
 	$create_user_id = array($this->session->user_id);
 
         $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';  
+		$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).')';
+        $where .= " AND tbl_visit.user_id IN (".implode(',', $create_user_id).'))';  
 		
-		$where .= " AND tbl_visit.user_id IN (".implode(',', $create_user_id).')';
 /* $ids = array('40805', '40807', '40856');
 			$this->db->or_where_in('enquiry.company', $ids);
 			$this->db->where('tbl_visit.user_id', $this->session->user_id);
