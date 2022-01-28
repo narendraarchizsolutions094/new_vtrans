@@ -93,7 +93,8 @@ class Enquiry_datatable_model extends CI_Model {
 		$industries = !empty($enquiry_filters_sess['industries'])?$enquiry_filters_sess['industries']:'';
 		
 		//print_r($list_data);exit;
-
+       // echo '<pre>';
+       // print_r($enquiry_filters_sess);die;
         $select = "enquiry.sales_branch as sl_branch,enquiry.sales_region as sl_region,enquiry.sales_area as sl_area,tbl_admin2.sales_region as as_region,tbl_admin2.sales_area as as_area,tbl_admin2.sales_branch as as_branch,tbl_admin.sales_region as cr_region,tbl_admin.sales_area as cr_area,tbl_admin.sales_branch as cr_branch,create_dept.dept_name as createbydept,assign_dept.dept_name as assignbydept,lead_stage.lead_stage_name,tbl_company.company_name,enquiry.status,enquiry.name_prefix,enquiry.enquiry_id,tbl_subsource.subsource_name,enquiry.created_by,enquiry.aasign_to,enquiry.Enquery_id,enquiry.score,enquiry.enquiry,enquiry.company,tbl_product_country.country_name,enquiry.org_name,enquiry.name,enquiry.lastname,enquiry.email,enquiry.phone,enquiry.address,enquiry.reference_name,enquiry.created_date,enquiry.enquiry_source,lead_source.icon_url,lead_source.lsid,lead_source.score_count,lead_source.lead_name,lead_stage.lead_stage_name,tbl_datasource.datasource_name,tbl_product.product_name as product_name,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name,lead_score.score_name,lead_score.probability,tbl_company.company_name,enquiry.client_name,enquiry_tags.tag_ids";
 
         if ($this->session->companey_id != 57) {
