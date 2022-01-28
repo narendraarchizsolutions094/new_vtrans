@@ -118,7 +118,7 @@ class Visit_datatable_model extends CI_Model{
 		$where .= " OR tbl_visit.user_id IN (".implode(',', $create_user_id).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; */ 
 
-        $where .= "( tbl_visit.user_id IN (".implode(',', $create_user_id).')';
+        $where .= "( tbl_visit.user_id IN (".implode(',', $all_reporting_ids).')';
 		$where .= " AND enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';		
 		
