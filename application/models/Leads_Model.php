@@ -1188,6 +1188,20 @@ public function all_description($diesc) {
 
     }
 	
+	public function add_bell_notification_ticket($stage_remark,$enq_code,$userno) {
+        $ld_updt_by = $this->session->user_id;
+		$comp_id = $this->session->companey_id;
+ 
+        $this->db->set('query_id', $enq_code);
+        $this->db->set('comp_id', $comp_id);		
+	    $this->db->set('related_to', $userno);	 
+		$this->db->set('create_by', $ld_updt_by);
+        $this->db->set('task_remark', $stage_remark);
+        $this->db->insert('query_response');
+        return $this->db->insert_id();
+
+    }
+	
 	public function getuserinfo($userno =""){
 		
 		$this->db->select('usr.*, concat(enq.name_prefix," ",enq.name," ",enq.lastname) as cname,enq.email as enq_email,enq.phone as enq_phone,enq.status');

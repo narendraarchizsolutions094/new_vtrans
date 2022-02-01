@@ -1827,6 +1827,14 @@ $this->db->set('aasign_to', $assign_to);
 $this->db->where('phone',$mobileno);
 $this->db->where('email',$email);
 $this->db->update('enquiry');
+
+//notification bell
+$enno = $this->db->select('Enquery_id')->where('phone',$mobileno)->where('email',$email)->get('enquiry')->row();
+$enquiry_code = $enno->Enquery_id;
+if(!empty($enquiry_code && $assign_to)){
+$this->Leads_Model->add_comment_for_events(display("enquery_assigned"), $enquiry_code);
+$this->Leads_Model->add_bell_notification_ticket(display("enquery_assigned"),$enquiry_code,$assign_to);
+}
 }
 //End
 		
