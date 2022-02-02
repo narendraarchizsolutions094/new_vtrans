@@ -3155,6 +3155,9 @@ $('#find_filterbutton').click();
 $("#filtered_branch").trigger("change");
  function find_area() { 
             $('#filtered_branch').prop('selectedIndex',0);
+			$('#filtered_area').prop('selectedIndex',0);
+			$("#filtered_branch").trigger("change");
+			$("#filtered_area").trigger("change");
             var reg_id = $("select[name='sale_region']").val();
             $.ajax({
             type: 'POST',
