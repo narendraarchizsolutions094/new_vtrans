@@ -3984,7 +3984,7 @@ $all_zones = array_chunk($all_zones,2);
         {
           if($this->input->post('api'))
           {
-            echo json_encode(array('status'=>true,'message'=>'Mail Send Successfully!'));
+            echo json_encode(array('status'=>true,'message'=>'Mail Send Successfully'));
             exit();
           }
           echo'<script>alert("Email Send successfully."); window.close();</script>';
