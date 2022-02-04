@@ -3546,7 +3546,7 @@ if($allcol > 14){
                 {
 $strArr = explode("\r\n", $value2->dname);
 $max =max(array_map('strlen', $strArr));
-
+$vertical ='';
 for($i=0; $i< $max;$i++)
 {
     for($x=0;$x < count($strArr); $x++)
@@ -3599,7 +3599,7 @@ $vertical ='';
                 {
 $strArr = explode("\r\n", $value2->dname);
 $max =max(array_map('strlen', $strArr));
-
+$vertical ='';
 for($i=0; $i< $max;$i++)
 {
     for($x=0;$x < count($strArr); $x++)
