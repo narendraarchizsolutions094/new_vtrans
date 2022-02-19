@@ -199,14 +199,20 @@ class Visit_datatable_model extends CI_Model{
             $where.=" tbl_visit.user_id = '".$_POST['createdby']."'";
             $and =1;
         }
-        if(!empty($_POST['company']))
+        /* if(!empty($_POST['company']))
         {   
             if($and)
                 $where.=" and ";
 
             $where.=" enquiry.company = '".$_POST['company']."'";
             $and =1;
+        } */
+		
+		if(!empty($_POST['company'])){
+			$company = $_POST['company'];
+              $where .= " AND tbl_company.company_name LIKE  '%$company%'";			
         }
+		
         if(!empty($_POST['contact']))
         {   
             if($and)

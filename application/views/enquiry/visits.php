@@ -152,7 +152,7 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         </div>
     </div>
 
-    <div class="col-lg-3" id="companyfilter" style="<?php if(!in_array('company',$variable)){echo'display:none';} ?>">
+    <!--<div class="col-lg-3" id="companyfilter" style="<?php if(!in_array('company',$variable)){echo'display:none';} ?>">
         <div class="form-group">
         	<label>Company group name</label>
         	<select class="v_filter form-control" name="company" id="v_reset_company" onchange="load_filter_account(this.value)">
@@ -169,6 +169,11 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         		?>
         	</select>
         </div>
+    </div>-->
+	
+	<div class="form-group col-md-3" id="companyfilter">
+        <label for="">Company group name</label>
+        <input type="text" name="company" class="form-control v_filter" id="v_reset_company" value="<?= $filterData['company'] ?>">
     </div>
 
     <div class="col-lg-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
