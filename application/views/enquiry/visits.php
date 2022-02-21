@@ -171,12 +171,12 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
         </div>
     </div>-->
 	
-	<div class="form-group col-md-3" id="companyfilter">
+	<div class="form-group col-md-3" id="companyfilter" style="<?php if(!in_array('company',$variable)){echo'display:none';} ?>">
         <label for="">Company group name</label>
         <input type="text" name="company" class="form-control v_filter" id="v_reset_company" value="<?= $filterData['company'] ?>">
     </div>
 
-    <div class="col-lg-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
+    <!--<div class="col-lg-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
         <div class="form-group">
           <label>Client Name </label>
           <select class="v_filter form-control" name="enquiry_id" id="v_reset_enquiry_id" onchange="load_filter_contact(this.value)">
@@ -195,8 +195,12 @@ $variable=explode(',',$_COOKIE['visits_filter_setting']);
             ?>
           </select>
         </div>
+    </div>-->
+	
+	<div class="form-group col-md-3" id="forfilter" style="<?php if(!in_array('for',$variable)){echo'display:none';} ?>">
+        <label for=""><?php echo 'Client name'; ?></label>
+        <input type="text" name="enquiry_id" id="v_reset_enquiry_id" class="form-control v_filter" value="<?= $filterData['enquiry_id'] ?>">
     </div>
-
 
     <div class="col-lg-3" id="contactfilter" style="<?php if(!in_array('contact',$variable)){echo'display:none';} ?>">
         <div class="form-group">

@@ -182,7 +182,7 @@ class Visit_datatable_model extends CI_Model{
         }
 
 
-        if(!empty($_POST['enquiry_id']))
+        /* if(!empty($_POST['enquiry_id']))
         {   
             if($and)
                 $where.=" and ";
@@ -190,7 +190,14 @@ class Visit_datatable_model extends CI_Model{
             //$where.=" enquiry.client_name = '".$_POST['enquiry_id']."'";
 			$where.=" enquiry.enquiry_id = '".$_POST['enquiry_id']."'";
             $and =1;
+        } */
+		
+		if(!empty($_POST['enquiry_id']))
+        {    
+		   $client_name = $_POST['enquiry_id'];
+           $where .= " AND enquiry.client_name LIKE  '%$client_name%'";
         }
+		
         if(!empty($_POST['createdby']))
         {   
             if($and)
