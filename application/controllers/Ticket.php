@@ -1804,7 +1804,7 @@ class Ticket extends CI_Controller
 		$client	=	$this->input->post('client');
 		
 //For asign to according to sales branch
-if($stage_desc=='5' || $stage_desc=='6'){
+if($stage_desc=='6'){
 $post_br = $this->input->post('brnh_id');
 if(!empty($post_br)){
 $usr_br = $this->User_model->all_emp_list_assign($post_br);
