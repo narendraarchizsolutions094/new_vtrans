@@ -49,7 +49,7 @@ class Ticket_datatable_model extends CI_Model{
         }
         if($showall or in_array(10,$acolarr))
         {
-            $search_string[] = "ref.name";
+            //$search_string[] = "ref.name";
         }
         if($showall or in_array(11,$acolarr))
         {
@@ -84,7 +84,7 @@ class Ticket_datatable_model extends CI_Model{
         }
         $this->table = 'tbl_ticket';
         // Set orderable column fields
-        $this->column_order = array('', 'tck.id','tck.ticketno','tck.client','tck.email','tck.assign_to','tck.added_by','tck.priority','tck.coml_date','ref.name','source.lead_name','stage.lead_stage_name','sub_stage.description','tck.message','tck.tracking_no');
+        $this->column_order = array('', 'tck.id','tck.ticketno','tck.client','tck.email','tck.assign_to','tck.added_by','tck.priority','tck.coml_date','source.lead_name','stage.lead_stage_name','sub_stage.description','tck.message','tck.tracking_no');
         // Set searchable column fields
        
 
