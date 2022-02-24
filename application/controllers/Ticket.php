@@ -823,7 +823,14 @@ class Ticket extends CI_Controller
 			}
 			//$sub[] = $point->phone??"NA";
 			if ($showall or in_array(5, $acolarr)) {
-				$sub[] = $point->country_name ?? "NA";
+				//$sub[] = $point->country_name ?? "NA";
+				if($point->product == '153'){
+					$sub[] = 'FTL';
+				}else if($point->product == '154'){
+					$sub[] = 'SUNDRY';
+				}else{
+					$sub[] = 'NA';
+				}
 				$colums[]  = 'Country';
 			}
 			if ($showall or in_array(6, $acolarr)) {
@@ -854,7 +861,17 @@ class Ticket extends CI_Controller
 			}
 			
 			if ($showall or in_array(10, $acolarr)) {
-				$sub[] = $point->referred_name ?? 'NA';
+				//$sub[] = $point->referred_name ?? 'NA';
+				$refferedBy = $point->referred_by;
+				if($refferedBy == 1){
+					$sub[] = 'Consignee';
+				}else if($refferedBy == 2){
+					$sub[] =	'Consignor';
+				}else if($refferedBy == 3){
+					$sub[] = 'Internal';
+				}else {
+					$sub[] = 'NA';
+				}
 				$colums[]  = 'Refferred By';
 			}
 			if ($showall or in_array(11, $acolarr)) {
@@ -875,7 +892,18 @@ class Ticket extends CI_Controller
 			}
 			
 			if ($showall or in_array(16, $acolarr)) {
-				$sub[] = $point->status_name == '' ? 'Open' : $point->status_name;
+				if($point->ticket_status){
+					if($point->ticket_status=='1'){
+						$sub[] = 'Open';
+					}else if($point->ticket_status=='3'){
+						$sub[] = 'Close';
+					}else{
+						$sub[] = 'Open';
+					}
+				}else{
+					$sub[] = 'Open';
+				}
+				//$sub[] = $point->status_name == '' ? 'Open' : $point->status_name;
 				$colums[]  = 'Status';
 			}
 			//dynamic fields

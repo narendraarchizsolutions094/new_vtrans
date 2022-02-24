@@ -37,7 +37,7 @@ class Ticket_datatable_model extends CI_Model{
         }
         if($showall or in_array(5,$acolarr))
         {
-            $search_string[] = "prd.country_name";
+            //$search_string[] = "prd.country_name";
         }
         if($showall or in_array(8,$acolarr))
         {
@@ -75,7 +75,7 @@ class Ticket_datatable_model extends CI_Model{
 
         if($showall or in_array(16,$acolarr))
         {
-            $search_string[] = " status.status_name ";    
+            //$search_string[] = " status.status_name ";    
         }
 
         if($showall or in_array(17,$acolarr))
@@ -84,7 +84,7 @@ class Ticket_datatable_model extends CI_Model{
         }
         $this->table = 'tbl_ticket';
         // Set orderable column fields
-        $this->column_order = array('', 'tck.id','tck.ticketno','tck.client','tck.email','prd.country_name','tck.assign_to','tck.added_by','tck.priority','tck.coml_date','ref.name','source.lead_name','stage.lead_stage_name','sub_stage.description','tck.message','tck.tracking_no');
+        $this->column_order = array('', 'tck.id','tck.ticketno','tck.client','tck.email','tck.assign_to','tck.added_by','tck.priority','tck.coml_date','ref.name','source.lead_name','stage.lead_stage_name','sub_stage.description','tck.message','tck.tracking_no');
         // Set searchable column fields
        
 
@@ -183,7 +183,7 @@ class Ticket_datatable_model extends CI_Model{
 
         if($showall or in_array(5,$acolarr))
         {
-            $sel_string[] = " prd.country_name ";
+         //   $sel_string[] = " prd.country_name ";
         }
         if($showall or in_array(6,$acolarr))
         {
@@ -204,7 +204,7 @@ class Ticket_datatable_model extends CI_Model{
         // }
         if($showall or in_array(10,$acolarr))
         {
-            $sel_string[] = " ref.name as referred_name ";
+            //$sel_string[] = " ref.name as referred_name ";
         }
         if($showall or in_array(11,$acolarr))
         {
@@ -220,7 +220,7 @@ class Ticket_datatable_model extends CI_Model{
         }
         if($showall or in_array(16,$acolarr))
         {
-            $sel_string[] = " status.status_name ";    
+            //$sel_string[] = " status.status_name ";    
         }
 
         if($showall or in_array(17,$acolarr))
@@ -259,7 +259,7 @@ class Ticket_datatable_model extends CI_Model{
         
         if($showall or in_array(5, $acolarr))
         {
-            $this->db->join("tbl_product_country prd", "prd.id = tck.product", "LEFT");
+            //$this->db->join("tbl_product_country prd", "prd.id = tck.product", "LEFT");
         }
 
         if($showall or in_array(19, $acolarr))
@@ -279,7 +279,7 @@ class Ticket_datatable_model extends CI_Model{
         
         if($showall or in_array(10, $acolarr))
         {
-         $this->db->join("tbl_referred_by ref","tck.referred_by=ref.id","LEFT");
+         //$this->db->join("tbl_referred_by ref","tck.referred_by=ref.id","LEFT");
         }
 
         if($showall or in_array(11, $acolarr))
@@ -299,7 +299,7 @@ class Ticket_datatable_model extends CI_Model{
 
         if($showall or in_array(16, $acolarr))
         {
-         $this->db->join("tbl_ticket_status status","tck.ticket_status=status.id","LEFT");
+         //$this->db->join("tbl_ticket_status status","tck.ticket_status=status.id","LEFT");
         } 
 
         

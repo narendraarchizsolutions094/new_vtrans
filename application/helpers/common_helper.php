@@ -32,19 +32,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         $ci->db->set('status',2);
         $ci->db->where('user_id',$user);
-        $ci->db->update('tbl_otp');
+        $ci->db->update('tbl_otp'); 
     }
     function get_dynamic_partition(){
         $m=date('m');
         $y=date('Y');
-        $part_arr = array('03','06','09','12');
+        $part_arr = array('02','04','06','08','10','12');
         $f = 0;        
         if(in_array($m,$part_arr)){
             $f=$m;
         }else{
             foreach($part_arr as $v){
                 if($v>$m){
-                    $f=$v;
+                    $f=$v; 
                     break;
                 }
             }
