@@ -820,27 +820,22 @@ if(!empty($company)){
         $state                  =   !empty($enquiry_filters_sess['state'])?$enquiry_filters_sess['state']:'';
         $city                   =   !empty($enquiry_filters_sess['city'])?$enquiry_filters_sess['city']:'';
 
-         $select = "enquiry.name_prefix,enquiry.enquiry_id,tbl_subsource.subsource_name,enquiry.created_by,enquiry.aasign_to,enquiry.Enquery_id,enquiry.score,enquiry.enquiry,enquiry.company,tbl_product_country.country_name,enquiry.org_name,enquiry.name,enquiry.lastname,enquiry.email,enquiry.phone,enquiry.address,enquiry.reference_name,enquiry.created_date,enquiry.enquiry_source,lead_source.icon_url,lead_source.lsid,lead_source.score_count,lead_source.lead_name,lead_stage.lead_stage_name,tbl_datasource.datasource_name,tbl_product.product_name as product_name,CONCAT(tbl_admin.s_display_name,' ',tbl_admin.last_name) as created_by_name,CONCAT(tbl_admin2.s_display_name,' ',tbl_admin2.last_name) as assign_to_name";
+         $select = "enquiry.enquiry_id";
 
-        if($this->session->userdata('companey_id')==29){
-            $select.= ",tbl_bank.bank_name";
-            $this->db->join('tbl_newdeal ', 'tbl_newdeal.enq_id = enquiry.Enquery_id', 'left');
-            $this->db->join('tbl_bank ', 'tbl_bank.id = tbl_newdeal.bank', 'left');
-        }
        
 
         $data_type = $_POST['data_type']; 
 
 
         $this->db->select($select);                
-        $this->db->join('lead_source','enquiry.enquiry_source = lead_source.lsid','left');
-        $this->db->join('tbl_product','enquiry.product_id = tbl_product.sb_id','left');
-        $this->db->join('lead_stage','lead_stage.stg_id = enquiry.lead_stage','left');   
-        $this->db->join('tbl_product_country','tbl_product_country.id = enquiry.enquiry_subsource','left');
-        $this->db->join('tbl_subsource','tbl_subsource.subsource_id = enquiry.sub_source','left');        
-        $this->db->join('tbl_datasource','enquiry.datasource_id = tbl_datasource.datasource_id','left');
-        $this->db->join('tbl_admin as tbl_admin', 'tbl_admin.pk_i_admin_id = enquiry.created_by', 'left');
-        $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left');        
+        // $this->db->join('lead_source','enquiry.enquiry_source = lead_source.lsid','left');
+        // $this->db->join('tbl_product','enquiry.product_id = tbl_product.sb_id','left');
+        // $this->db->join('lead_stage','lead_stage.stg_id = enquiry.lead_stage','left');   
+        // $this->db->join('tbl_product_country','tbl_product_country.id = enquiry.enquiry_subsource','left');
+        // $this->db->join('tbl_subsource','tbl_subsource.subsource_id = enquiry.sub_source','left');        
+        // $this->db->join('tbl_datasource','enquiry.datasource_id = tbl_datasource.datasource_id','left');
+        // $this->db->join('tbl_admin as tbl_admin', 'tbl_admin.pk_i_admin_id = enquiry.created_by', 'left');
+        // $this->db->join('tbl_admin as tbl_admin2', 'tbl_admin2.pk_i_admin_id = enquiry.aasign_to', 'left');        
 	
 	    $this->db->join('commercial_info','commercial_info.enquiry_id = enquiry.enquiry_id','left');
 		//$where.="  enquiry.status=$data_type";

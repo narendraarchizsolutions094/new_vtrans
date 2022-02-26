@@ -559,6 +559,9 @@ public function get_all_stage_deals() {
             redirect('lead');
         }
     }
+    function testt(){
+        echo get_dynamic_partition();
+    }
     ///////////////// STAGE ////////////////////
     public function stage()
     {
