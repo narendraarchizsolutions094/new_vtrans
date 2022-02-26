@@ -235,7 +235,7 @@ class Ticket_Model extends CI_Model
 				}
 //For assign to new created lead				
 				$branch = $this->input->post("emp_branch", true);
-				/*if(!empty($branch)){					
+				if(!empty($branch)){					
 //For branch and region and area
 				$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$branch)->get('branch')->row();
 				$branch_id = $branch;
@@ -243,7 +243,7 @@ class Ticket_Model extends CI_Model
 				$region_id = $rab->region_id;
                 $client_name = $_POST['client_new'].' '.$rab->branch_name;				
 //End				
-				$assign_users= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions','147')->where('b_status','1')->get('tbl_admin')->result();
+				/*$assign_users= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions','147')->where('b_status','1')->get('tbl_admin')->result();
 				if(!empty($assign_users)){
 				$ttl = count($assign_users);
 				if($ttl==1){
@@ -263,15 +263,15 @@ class Ticket_Model extends CI_Model
 					$assign_repuser= $this->db->select('report_to')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
                     $assign_to = $assign_repuser->report_to;					
 				}
-				}
+				}*/
+				$assign_to = '';
 				}else{
-					$assign_to = '2173';
+					$assign_to = '';
 					$branch_id = '';
 				    $area_id = '';
 				    $region_id = '';
 					$client_name = '';
-				}*/
-				$assign_to = '';
+				}
 				//print_r($assign_to);exit;
 //End				
 				$encode = get_enquery_code();

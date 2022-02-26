@@ -1833,8 +1833,22 @@ class Ticket extends CI_Controller
 		
 //For asign to according to sales branch
 if($stage_desc=='6'){
+$enno = $this->db->select('Enquery_id,company')->where('phone',$mobileno)->where('email',$email)->get('enquiry')->row();
 $post_br = $this->input->post('brnh_id');
 if(!empty($post_br)){
+	
+//For client name generate
+$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$post_br)->get('branch')->row();
+$rab2= $this->db->select('company_name')->where('id',$enno->company)->get('tbl_company')->row();
+				$branch_id = $post_br;
+				$area_id = $rab->area_id??'';
+				$region_id = $rab->region_id??'';
+if(!empty($rab2)){
+    $client_name = $rab2->company_name.' '.$rab->branch_name;
+}else{
+	$client_name = '';
+}
+				
 $usr_br = $this->User_model->all_emp_list_assign($post_br);
 $usr_ttl = count($usr_br);
 if($usr_ttl > 1){	
@@ -1852,12 +1866,14 @@ if($usr_ttl > 1){
 $mobileno = $this->input->post('mobile');
 $email = $this->input->post('email');
 $this->db->set('aasign_to', $assign_to);
-$this->db->where('phone',$mobileno);
-$this->db->where('email',$email);
+$this->db->set('client_name', $client_name);
+$this->db->set('sales_branch', $branch_id);
+$this->db->set('sales_region', $region_id);
+$this->db->set('sales_area', $area_id);
+$this->db->where('Enquery_id',$enno->Enquery_id);
 $this->db->update('enquiry');
 
 //notification bell
-$enno = $this->db->select('Enquery_id')->where('phone',$mobileno)->where('email',$email)->get('enquiry')->row();
 $enquiry_code = $enno->Enquery_id;
 if(!empty($enquiry_code && $assign_to)){
 $this->Leads_Model->add_comment_for_events(display("enquery_assigned"), $enquiry_code);
