@@ -1191,10 +1191,14 @@ public function all_description($diesc) {
 	public function add_bell_notification_ticket($stage_remark,$enq_code,$userno) {
         $ld_updt_by = $this->session->user_id;
 		$comp_id = $this->session->companey_id;
+		$adt = date("d-m-Y"); 
+        $atm = date("H:i:s");
  
         $this->db->set('query_id', $enq_code);
         $this->db->set('comp_id', $comp_id);		
-	    $this->db->set('related_to', $userno);	 
+	    $this->db->set('related_to', $userno);
+        $this->db->set('task_date', $adt);
+        $this->db->set('task_time', $atm);		
 		$this->db->set('create_by', $ld_updt_by);
         $this->db->set('task_remark', $stage_remark);
         $this->db->insert('query_response');
