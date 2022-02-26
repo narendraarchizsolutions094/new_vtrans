@@ -25,7 +25,7 @@ class Leads_Model extends CI_Model {
         $ld_updt_by = $this->session->user_id;
 
         $adt = date("d-m-Y"); 
-        $atm = date("h:i:s");       
+        $atm = date("H:i:s");       
         $this->db->set('query_id', $enq_id);        
         $this->db->set('subject', $stage_remark);
         $this->db->set('task_remark', $conversation);
@@ -1155,8 +1155,8 @@ public function all_description($diesc) {
         $this->db->set('email', $email);
         $this->db->set('designation', $designation);
         $this->db->set('create_by', $ld_updt_by);
-        $this->db->set('task_date', $stage_date);
-        $this->db->set('task_time', $stage_time);
+        $this->db->set('task_date', date("d-m-Y", strtotime($stage_date)));
+        $this->db->set('task_time', date("H:i:s", strtotime($stage_time)));
         $this->db->set('task_remark', $stage_remark);
         $this->db->set('notification_id', $notification_id);
         $this->db->set('subject', $dis_subject);
@@ -1179,8 +1179,8 @@ public function all_description($diesc) {
 	    $this->db->set('updated_date', date("Y-m-d h:i:s"));
 	 
 		$this->db->set('create_by', $ld_updt_by);
-        $this->db->set('task_date', $stage_date);
-        $this->db->set('task_time', $stage_time);
+		$this->db->set('task_date', date("d-m-Y", strtotime($stage_date)));
+        $this->db->set('task_time', date("H:i:s", strtotime($stage_time)));
         $this->db->set('task_remark', $stage_remark);
         $this->db->set('conversation', $stage_remark);
         $this->db->insert('query_response');
