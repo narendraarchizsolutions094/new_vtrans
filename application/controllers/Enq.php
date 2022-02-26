@@ -208,6 +208,10 @@ if(!empty($company)){
 		if(!empty($_GET['to'])){
 			$data['filterData']['to_created'] = $_GET['to'];
 		}
+		
+		if(!empty($_GET['employee'])){
+			$data['filterData']['createdby'] = $_GET['employee'];
+		}
 
 
 
