@@ -3492,7 +3492,9 @@ $this->Leads_Model->add_bell_notification_ticket(display("enquery_assigned"),$en
 				$this->common_query_short_dashboard();
 				$data['total']  = $this->db->count_all_results();
 				$this->common_query_short_dashboard();
-				 $this->db->get();
+				$this->db->get();
+
+
 				 $res = $this->db->last_query();
 				$num = $this->db->query("SELECT count(*) as num from tbl_ticket_conv inner join ($res) chk on chk.id= tbl_ticket_conv.tck_id");
 				$data['activity'] = $num->row()->num;
@@ -3687,7 +3689,8 @@ $this->Leads_Model->add_bell_notification_ticket(display("enquery_assigned"),$en
         }       
         $sel_string = array();
         $sel_string[] = "tck.*"; 
-        if($showall or in_array(2,$acolarr))
+      /*
+		if($showall or in_array(2,$acolarr))
         {
             $sel_string[] = " concat(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname ";
         }
@@ -3727,11 +3730,11 @@ $this->Leads_Model->add_bell_notification_ticket(display("enquery_assigned"),$en
         {
             $sel_string[] = " concat(assign_by.s_display_name,' ',assign_by.last_name) as assigned_by_name";    
         }
-        
+        */
         $select = implode(',', $sel_string);
         $this->db->select($select);
         $this->db->from("tbl_ticket  tck");
-		
+		/*
 		if($showall or count(array_intersect(array(2,4),$acolarr))>0)
         {
             $this->db->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT");
@@ -3777,8 +3780,10 @@ $this->Leads_Model->add_bell_notification_ticket(display("enquery_assigned"),$en
         {
          $this->db->join("tbl_admin assign_by","tck.assigned_by=assign_by.pk_i_admin_id","LEFT");
         } 
+
+		*/
          $this->db->where("tck.company",$this->session->companey_id);
-         $this->db->group_by("tck.id");
+         //$this->db->group_by("tck.id");
 			$enquiry_filters_sess   =   $this->session->ticket_filters_sess;
             
 	        $top_filter             =   !empty($enquiry_filters_sess['top_filter'])?$enquiry_filters_sess['top_filter']:'';
