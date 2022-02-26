@@ -1833,6 +1833,8 @@ class Ticket extends CI_Controller
 		
 //For asign to according to sales branch
 if($stage_desc=='6'){
+$mobileno = $this->input->post('mobile');
+$email = $this->input->post('email');
 $enno = $this->db->select('Enquery_id,company')->where('phone',$mobileno)->where('email',$email)->get('enquiry')->row();
 $post_br = $this->input->post('brnh_id');
 if(!empty($post_br)){
@@ -1863,8 +1865,6 @@ if($usr_ttl > 1){
 	$assign_to = '';
 }
 //print_r($assign_to);exit;
-$mobileno = $this->input->post('mobile');
-$email = $this->input->post('email');
 $this->db->set('aasign_to', $assign_to);
 $this->db->set('client_name', $client_name);
 $this->db->set('sales_branch', $branch_id);
