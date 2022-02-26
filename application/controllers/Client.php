@@ -1959,6 +1959,19 @@ public function view_editable_aggrement()
         $data['area_list']=$this->Branch_model->sales_area_list()->result();
         $data['branch_list']=$this->Branch_model->branch_list()->result();
 		$data['filterData'] = $this->Ticket_Model->get_filterData('vis');
+		
+		if(!empty($_GET['from'])){
+			$data['filterData']['from_date'] = $_GET['from'];
+		}
+
+		if(!empty($_GET['to'])){
+			$data['filterData']['to_created'] = $_GET['to'];
+		}
+		
+		if(!empty($_GET['employee'])){
+			$data['filterData']['createdby'] = $_GET['employee'];
+		}
+		
         $data['content'] = $this->load->view('enquiry/visits', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
@@ -2387,6 +2400,19 @@ public function all_update_expense_status()
             $data['created_bylist'] = $this->User_model->read();
         }
 		$data['filterData'] = $this->Ticket_Model->get_filterData('deal');
+		
+		if(!empty($_GET['from'])){
+			$data['filterData']['d_from_date'] = $_GET['from'];
+		}
+
+		if(!empty($_GET['to'])){
+			$data['filterData']['d_to_date'] = $_GET['to'];
+		}
+		
+		if(!empty($_GET['employee'])){
+			$data['filterData']['createdby'] = $_GET['employee'];
+		}
+		
         $data['content'] = $this->load->view('enquiry/deals', $data, true);
         $this->load->view('layout/main_wrapper', $data);
     }
