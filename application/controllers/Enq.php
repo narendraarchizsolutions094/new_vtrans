@@ -107,15 +107,16 @@ foreach($data['branch_lists'] as $branch){
 
 //UPDATE CLIENT NAME USING COMPANY ID + BRANCH ID(from table ticket)
 //$enq_data = $this->db->select('enquiry_id,company')->where('client_name','')->or_where('client_name',null)->or_where('sales_branch','')->where('sales_branch',null)->get('enquiry')->result();
-/* $enq_data = $this->db->select("enq.enquiry_id,enq.company,enq.client_name")
+$enq_data = $this->db->select("enq.enquiry_id,enq.company,enq.client_name")
+            ->from("enquiry enq")
+			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
+			->where("tbl_ticket.branch_for is NOT NULL", NULL, FALSE)
 			->where("enq.client_name", '')
 			->where("enq.sales_branch",null)
 			->or_where('enq.client_name',null)
 			->or_where('enq.sales_branch','')
 			->where("enq.company is NOT NULL", NULL, FALSE)
 			->where("enq.client_name is NULL", NULL, TRUE)
-			->from("enquiry enq")
-			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
 			->get()
 			->result();
 
@@ -141,7 +142,7 @@ if(!empty($rab2)){
 	
 }
 }
-} */
+}
 //END
 
 //UPDATE CLIENT NAME USING COMPANY GROUP NAME + SALES BRANCH
@@ -194,6 +195,7 @@ if(!empty($company)){
 	}	
 }*/
 //END
+
 		//$this->output->enable_profiler(TRUE);
 		if (user_role('60') == true) {
 		}
