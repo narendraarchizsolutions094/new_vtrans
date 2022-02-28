@@ -110,14 +110,13 @@ foreach($data['branch_lists'] as $branch){
 $enq_data = $this->db->select("enq.enquiry_id,enq.company,enq.client_name")
             ->from("enquiry enq")
 			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
-			->where("tbl_ticket.branch_for is NOT NULL", NULL, FALSE)
-			->where('tbl_ticket.branch_for!=','')
 			->where("enq.client_name", '')
 			->where("enq.sales_branch",null)
 			->or_where('enq.client_name',null)
 			->or_where('enq.sales_branch','')
 			->where("enq.company is NOT NULL", NULL, FALSE)
 			->where("enq.client_name is NULL", NULL, TRUE)
+			->where("tbl_ticket.branch_for!=", '')
 			->get()
 			->result();
 
@@ -129,7 +128,7 @@ if(!empty($brid->branch_for)){
 $rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$brid->branch_for)->get('branch')->row();
 $rab2= $this->db->select('company_name')->where('id',$val->company)->get('tbl_company')->row();
 
-if(!empty($rab2)){
+if(!empty($rab2->company_name)){
     $client_name = $rab2->company_name.' '.$rab->branch_name;
 }else{
 	$client_name = '';
@@ -139,7 +138,8 @@ if(!empty($rab2)){
 	$this->db->set('sales_region',$rab->region_id);
 	$this->db->set('sales_area',$rab->area_id);
     $this->db->where('enquiry_id',$val->enquiry_id);
-    $this->db->update('enquiry');	
+    $this->db->update('enquiry');
+	
 }
 }
 }
