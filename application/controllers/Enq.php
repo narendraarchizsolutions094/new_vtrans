@@ -107,7 +107,7 @@ foreach($data['branch_lists'] as $branch){
 
 //UPDATE CLIENT NAME USING COMPANY ID + BRANCH ID(from table ticket)
 //$enq_data = $this->db->select('enquiry_id,company')->where('client_name','')->or_where('client_name',null)->or_where('sales_branch','')->where('sales_branch',null)->get('enquiry')->result();
-$enq_data = $this->db->select("enq.enquiry_id,enq.company")
+$enq_data = $this->db->select("enq.enquiry_id,enq.company,enq.client_name")
 			->where("enq.client_name", '')
 			->where("enq.sales_branch",null)
 			->or_where('enq.client_name',null)
@@ -118,8 +118,9 @@ $enq_data = $this->db->select("enq.enquiry_id,enq.company")
 			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
 			->get()
 			->result();
-print_r(count($enq_data));exit;
+
 foreach($enq_data as $val){
+if(empty($val->client_name)){
 $brid = $this->db->select('branch_for')->where('client',$val->enquiry_id)->get('tbl_ticket')->row();
 if(!empty($brid->branch_for)){	
 
@@ -138,6 +139,7 @@ if(!empty($rab2)){
     $this->db->where('enquiry_id',$val->enquiry_id);
     $this->db->update('enquiry');
 	
+}
 }
 }
 //END
