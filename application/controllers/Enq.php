@@ -117,7 +117,7 @@ $enq_data = $this->db->select("enq.enquiry_id,enq.company")
 			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
 			->get()
 			->result();
-print_r($enq_data);exit;
+print_r(count($enq_data));exit;
 foreach($enq_data as $val){
 $brid = $this->db->select('branch_for')->where('client',$val->enquiry_id)->get('tbl_ticket')->row();
 if(!empty($brid->branch_for)){	
