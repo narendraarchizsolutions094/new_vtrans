@@ -108,14 +108,16 @@ foreach($data['branch_lists'] as $branch){
 //UPDATE CLIENT NAME USING COMPANY ID + BRANCH ID(from table ticket)
 //$enq_data = $this->db->select('enquiry_id,company')->where('client_name','')->or_where('client_name',null)->or_where('sales_branch','')->where('sales_branch',null)->get('enquiry')->result();
 $enq_data = $this->db->select("enq.enquiry_id,enq.company,enq.client_name")
-            ->from("enquiry enq")
-			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
 			->where("enq.client_name", '')
 			->where("enq.sales_branch",null)
 			->or_where('enq.client_name',null)
 			->or_where('enq.sales_branch','')
 			->where("enq.company is NOT NULL", NULL, FALSE)
 			->where("enq.client_name is NULL", NULL, TRUE)
+			->from("enquiry enq")
+			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
+			->where('tbl_ticket.branch_for!=','')
+			->or_where('tbl_ticket.branch_for is NOT NULL',NULL, FALSE)
 			->get()
 			->result();
 
@@ -127,7 +129,7 @@ if(!empty($brid->branch_for)){
 $rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$brid->branch_for)->get('branch')->row();
 $rab2= $this->db->select('company_name')->where('id',$val->company)->get('tbl_company')->row();
 
-if(!empty($rab2->company_name)){
+if(!empty($rab2)){
     $client_name = $rab2->company_name.' '.$rab->branch_name;
 }else{
 	$client_name = '';
