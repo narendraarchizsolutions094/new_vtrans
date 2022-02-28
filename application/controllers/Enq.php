@@ -109,20 +109,19 @@ foreach($data['branch_lists'] as $branch){
 //$enq_data = $this->db->select('enquiry_id,company')->where('client_name','')->or_where('client_name',null)->or_where('sales_branch','')->where('sales_branch',null)->get('enquiry')->result();
 $enq_data = $this->db->select("enq.enquiry_id,enq.company,enq.client_name")
             ->from("enquiry enq")
-			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'left')
+			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
 			->where("enq.client_name", '')
 			->where("enq.sales_branch",null)
 			->or_where('enq.client_name',null)
 			->or_where('enq.sales_branch','')
 			->where("enq.company is NOT NULL", NULL, FALSE)
 			->where("enq.client_name is NULL", NULL, TRUE)
-			->where("tbl_ticket.branch_for!=", '')
 			->get()
 			->result();
 
 foreach($enq_data as $val){
 if(empty($val->client_name)){
-$brid = $this->db->select('branch_for')->where('client',$val->enquiry_id)->get('tbl_ticket')->row();
+$brid = $this->db->select('branch_for')->where('branch_for!=','')->or_where('branch_for is NOT NULL',NULL, FALSE)->where('client',$val->enquiry_id)->get('tbl_ticket')->row();
 if(!empty($brid->branch_for)){	
 
 $rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$brid->branch_for)->get('branch')->row();
