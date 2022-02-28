@@ -110,6 +110,8 @@ foreach($data['branch_lists'] as $branch){
 $enq_data = $this->db->select("enq.enquiry_id,enq.company")
 			->where("enq.client_name", '')
 			->where("enq.sales_branch",null)
+			->or_where('enq.client_name',null)
+			->or_where('enq.sales_branch','')
 			->where("enq.company is NOT NULL", NULL, FALSE)
 			->from("enquiry enq")
 			->join("tbl_ticket", 'tbl_ticket.client=enq.enquiry_id', 'inner')
