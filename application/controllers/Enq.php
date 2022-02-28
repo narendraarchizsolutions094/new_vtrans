@@ -139,8 +139,7 @@ if(!empty($rab2)){
 	$this->db->set('sales_region',$rab->region_id);
 	$this->db->set('sales_area',$rab->area_id);
     $this->db->where('enquiry_id',$val->enquiry_id);
-    $this->db->update('enquiry');
-	
+    $this->db->update('enquiry');	
 }
 }
 }
