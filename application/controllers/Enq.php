@@ -194,7 +194,6 @@ if(!empty($company)){
 	}	
 }*/
 //END
-
 		//$this->output->enable_profiler(TRUE);
 		if (user_role('60') == true) {
 		}
