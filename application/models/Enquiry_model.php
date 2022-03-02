@@ -3384,14 +3384,14 @@ $cpny_id=$this->session->companey_id;
             if(!empty($filter->from_date) AND !empty($filter->to_date)){
                 $from_date=$filter->from_date;
                 $to_date=$filter->to_date;
-                $where.=" AND enquiry.created_date >= $to_date";
-                $where.=" AND enquiry.created_date <=$to_date";
+                $where.=" AND date(enquiry.created_date) >= $to_date";
+                $where.=" AND date(enquiry.created_date) <=$to_date";
                 
             }
             if(!empty($filter->users)){
                 $users=$filter->users;
-                 $where.=" AND enquiry.created_by=$users";
-                 $where.=" OR enquiry.aasign_to=$users";
+                 $where.=" AND (enquiry.created_by=$users";
+                 $where.=" OR enquiry.aasign_to=$users)";
             }else{
                 $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
@@ -4011,14 +4011,14 @@ $cpny_id=$this->session->companey_id;
             if(!empty($_POST['from_date']) AND !empty($_POST['to_date'])){
                 $from_date=$_POST['from_date'];
                 $to_date=$_POST['to_date'];
-                $where.=" AND enquiry.created_date >= $to_date";
-                $where.=" AND enquiry.created_date <=$to_date";
+                $where.=" AND date(enquiry.created_date) >= $to_date";
+                $where.=" AND date(enquiry.created_date) <=$to_date";
                 
             }
             if(!empty($_POST['users'])){
                 $users=$_POST['users'];
-                 $where.=" AND enquiry.created_by=$users";
-                 $where.=" OR enquiry.aasign_to=$users";
+                 $where.=" AND (enquiry.created_by=$users";
+                 $where.=" OR enquiry.aasign_to=$users)";
             }else{
                 $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
                 $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
@@ -4038,8 +4038,10 @@ $cpny_id=$this->session->companey_id;
 
         $enqAyr = array(); 
         
-      $enquiry_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = 1)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
+      $enquiry_src_qry = $this->db->query("SELECT lead_name,(SELECT COUNT(enquiry_id) FROM enquiry WHERE $where AND enquiry.enquiry_source =  lead_source.lsid AND enquiry.status = $status)counternow FROM lead_source WHERE lead_source.comp_id = $cpny_id");
+
         $EnquirySrc = $enquiry_src_qry->result_array();
+        //echo $this->db->last_query();
           foreach ($EnquirySrc as $key => $value) {
             $data[]=$value['counternow'];
       }
@@ -4048,8 +4050,9 @@ $cpny_id=$this->session->companey_id;
 
     }
    
-    public function monthWiseChart($userid,$companyid)
+    public function monthWiseChart($userid,$companyid,$year=0)
     { 
+      
       $all_reporting_ids    =   $this->common_model->get_categories($userid);
         $cpny_id=$companyid;
 
@@ -4064,6 +4067,9 @@ $cpny_id=$this->session->companey_id;
                 $where.=" AND enquiry.created_date >= $from_date";
                 $where.=" AND enquiry.created_date <=$to_date";
                 
+            }else{
+              $year = date('Y');
+              $where .= " AND YEAR(enquiry.created_date) = $year";
             }
             if(!empty($filter->users)){
                 $users=$filter->users;
@@ -4499,6 +4505,9 @@ $cpny_id=$this->session->companey_id;
                 $where.=" AND enquiry.created_date >= $from_date";
                 $where.=" AND enquiry.created_date <=$to_date";
                 
+            }else{
+              $year = date("Y");
+              $where .= " AND YEAR(enquiry.created_date) = $year";
             }
             if(!empty($_POST['users'])){
                 $users=$_POST['users'];
@@ -4980,7 +4989,9 @@ $cpny_id=$this->session->companey_id;
         $where.= " AND ( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where.= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
     }
-        $querys = $this->db->select("enquiry.created_date,enquiry.status,enquiry.aasign_to,enquiry.state_id,enquiry.city_id,enquiry.created_by,enquiry.product_id,count(enquiry.status) as c");
+        $querys = $this->db->select("enquiry.created_date,enquiry.status,enquiry.aasign_to,enquiry.state_id,enquiry.city_id,enquiry.created_by,enquiry.product_id,count(enquiry.status) as c");        
+        $where .= " AND (commercial_info.stage_id=$status OR enquiry.status=$status)";
+        $this->db->join('commercial_info','commercial_info.enquiry_id=enquiry.enquiry_id','left');
         $this->db->where($where);
         $this->db->group_by("enquiry.status");
         $querys = $this->db->get('enquiry');         

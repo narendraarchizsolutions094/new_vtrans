@@ -489,8 +489,8 @@ if (!empty($enquiry_separation)) {
                 <div class="col-md-6 " style="padding:10px;">
                     <div class="card card-graph" style="padding:10px;">
                         <div class="card-header pd-y-10 d-md-flex align-items-center justify-content-between">
-						<text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true"><?php echo 'All Clients'; ?></text>
-                        </div><!-- card-header -->
+						<text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true"><?php echo 'All Clients ('.date('Y').')'; ?></text>
+                        </div><!-- card-header -->                        
                         <canvas id="bar-chart-grouped" width="800" ></canvas>
                     </div><!-- card -->
                 </div>
@@ -761,7 +761,7 @@ $enquiry_separation = json_decode($enquiry_separation, true);
 <div class="row pd-20">
 <div class="col-md-6 pd-20">
 <div class="card card-graph_full2 pd-20" style="height:430px;">
-    <center><text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true">Drop Data</text></center>
+    <center><text x="347" text-anchor="middle" class="highcharts-title" data-z-index="4" style="color:#333333;font-size:18px;fill:#333333;font-weight:900;" y="24" aria-hidden="true">Drop Data (<?=date('Y')?>)</text></center>
     <canvas id="process_Monthwise" width="800" height="400"></canvas>
 </div>
 </div>
@@ -1205,119 +1205,122 @@ $enquiry_separation = json_decode($enquiry_separation, true);
             </script>
             <!-- monthwise chart starts -->
             <script>
-            $(document).ready(function() {
-                var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';
-                $.ajax({
-                    url: "<?=base_url('Dashboard/monthWiseChart')?>",
-                    type: "post",
-                    data:{datas:data_s},
-                    dataType: "json",
-                    success: function(data) {
-                        if (data.status == 'success') {
-                            new Chart(document.getElementById("bar-chart-grouped"), {
-                                type: 'bar',
-                                data: {
-                                    labels: ["JUN", "FEB", "MAR", "APR", "MAY", "JUNE",
-                                        "JULY", "AUG", "SEP", "OCT", "NOV", "DEC"
-                                    ],
-                                    datasets: [
-                                        <?php if(user_access(60)){ ?> {
-                                            label: "<?=display("enquiry") ?>",
-                                            backgroundColor: "#3e95cd",
-                                            data: [parseInt(data.data.ejan), parseInt(
-                                                    data.data.efeb), parseInt(data
-                                                    .data.emar), parseInt(data.data
-                                                    .eapr), parseInt(data.data
-                                                .emay), parseInt(data.data.ejun),
-                                                parseInt(data.data.ejuly), parseInt(
-                                                    data.data.eaug), parseInt(data
-                                                    .data.esep), parseInt(data.data
-                                                    .eoct), parseInt(data.data
-                                                .enov), parseInt(data.data.edec)
-                                            ]
-                                        },
-                                        <?php } if(user_access(70)){ ?> {
-                                            label: "<?=display("lead") ?>",
-                                            backgroundColor: "#8e5ea2",
-                                            data: [parseInt(data.data.ljan), parseInt(
-                                                    data.data.lfeb), parseInt(data
-                                                    .data.lmar), parseInt(data.data
-                                                    .lapr), parseInt(data.data
-                                                .lmay), parseInt(data.data.ljun),
-                                                parseInt(data.datajuly), parseInt(
-                                                    data.data.laug), parseInt(data
-                                                    .data.lsep), parseInt(data.data
-                                                    .loct), parseInt(data.data
-                                                .lnov), parseInt(data.data.ldec)
-                                            ]
-                                        },
-                                        <?php } 
-                 if(user_access(80)){
-                ?> {
-                                            label: "<?=display("client") ?>",
-                                            backgroundColor: "#c45850",
-                                            data: [parseInt(data.data.cjan), parseInt(
-                                                    data.data.cfeb), parseInt(data
-                                                    .data.cmar), parseInt(data.data
-                                                    .capr), parseInt(data.data
-                                                .cmay), parseInt(data.data.cjun),
-                                                parseInt(data.data.cjuly), parseInt(
-                                                    data.data.caug), parseInt(data
-                                                    .data.csep), parseInt(data.data
-                                                    .coct), parseInt(data.data
-                                                .cnov), parseInt(data.data.cdec)
-                                            ]
-                                        },
-                                        <?php } ?>
-                                        <?php 
-                                        if(user_access(553)){ 
-        $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
+            
+                function all_client_monthly_graph(){
+                    var data_s= '<?php  if(!empty($filterData)){ echo $filterData; } ?>';
+                    $.ajax({
+                        url: "<?=base_url('Dashboard/monthWiseChart')?>",
+                        type: "post",
+                        data:{datas:data_s},
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status == 'success') {
+                                new Chart(document.getElementById("bar-chart-grouped"), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE",
+                                            "JULY", "AUG", "SEP", "OCT", "NOV", "DEC"
+                                        ],
+                                        datasets: [
+                                            <?php if(user_access(60)){ ?> {
+                                                label: "<?=display("enquiry") ?>",
+                                                backgroundColor: "#3e95cd",
+                                                data: [parseInt(data.data.ejan), parseInt(
+                                                        data.data.efeb), parseInt(data
+                                                        .data.emar), parseInt(data.data
+                                                        .eapr), parseInt(data.data
+                                                    .emay), parseInt(data.data.ejun),
+                                                    parseInt(data.data.ejuly), parseInt(
+                                                        data.data.eaug), parseInt(data
+                                                        .data.esep), parseInt(data.data
+                                                        .eoct), parseInt(data.data
+                                                    .enov), parseInt(data.data.edec)
+                                                ]
+                                            },
+                                            <?php } if(user_access(70)){ ?> {
+                                                label: "<?=display("lead") ?>",
+                                                backgroundColor: "#8e5ea2",
+                                                data: [parseInt(data.data.ljan), parseInt(
+                                                        data.data.lfeb), parseInt(data
+                                                        .data.lmar), parseInt(data.data
+                                                        .lapr), parseInt(data.data
+                                                    .lmay), parseInt(data.data.ljun),
+                                                    parseInt(data.datajuly), parseInt(
+                                                        data.data.laug), parseInt(data
+                                                        .data.lsep), parseInt(data.data
+                                                        .loct), parseInt(data.data
+                                                    .lnov), parseInt(data.data.ldec)
+                                                ]
+                                            },
+                                            <?php } 
+                    if(user_access(80)){
+                    ?> {
+                                                label: "<?=display("client") ?>",
+                                                backgroundColor: "#c45850",
+                                                data: [parseInt(data.data.cjan), parseInt(
+                                                        data.data.cfeb), parseInt(data
+                                                        .data.cmar), parseInt(data.data
+                                                        .capr), parseInt(data.data
+                                                    .cmay), parseInt(data.data.cjun),
+                                                    parseInt(data.data.cjuly), parseInt(
+                                                        data.data.caug), parseInt(data
+                                                        .data.csep), parseInt(data.data
+                                                        .coct), parseInt(data.data
+                                                    .cnov), parseInt(data.data.cdec)
+                                                ]
+                                            },
+                                            <?php } ?>
+                                            <?php 
+                                            if(user_access(553)){ 
+            $enquiry_separation  = get_sys_parameter('enquiry_separation', 'COMPANY_SETTING');
 
-                 if (!empty($enquiry_separation)) {
-                  $enquiry_separation = json_decode($enquiry_separation, true);
+                    if (!empty($enquiry_separation)) {
+                    $enquiry_separation = json_decode($enquiry_separation, true);
 
-                      foreach ($enquiry_separation as $key => $value) {
-                              $ctitle = $enquiry_separation[$key]['title']; 
-                        $count = $this->enquiry_model->DYmonthWiseChart($this->session->user_id,$this->session->companey_id,$key);
-                            ?> {
-                                            label: "<?= $ctitle ?>",
-                                            backgroundColor: "<?=  sprintf('#%06X', mt_rand(0, 0xFFFFFF)); ?>",
-                                            data: [<?= $count['ejan']?>,
-                                                <?= $count['efeb']?>,
-                                                <?= $count['emar']?>,
-                                                <?= $count['eapr']?>,
-                                                <?= $count['emay']?>,
-                                                <?= $count['ejun']?>,
-                                                <?= $count['ejuly']?>,
-                                                <?= $count['eaug']?>,
-                                                <?= $count['esep']?>,
-                                                <?= $count['eoct']?>,
-                                                <?= $count['enov']?>,
-                                                <?= $count['edec']?>,
-                                            ],
-                                        },
+                        foreach ($enquiry_separation as $key => $value) {
+                                $ctitle = $enquiry_separation[$key]['title']; 
+                            $count = $this->enquiry_model->DYmonthWiseChart($this->session->user_id,$this->session->companey_id,$key);
+                                ?> {
+                                                label: "<?= $ctitle ?>",
+                                                backgroundColor: "<?=  sprintf('#%06X', mt_rand(0, 0xFFFFFF)); ?>",
+                                                data: [<?= $count['ejan']?>,
+                                                    <?= $count['efeb']?>,
+                                                    <?= $count['emar']?>,
+                                                    <?= $count['eapr']?>,
+                                                    <?= $count['emay']?>,
+                                                    <?= $count['ejun']?>,
+                                                    <?= $count['ejuly']?>,
+                                                    <?= $count['eaug']?>,
+                                                    <?= $count['esep']?>,
+                                                    <?= $count['eoct']?>,
+                                                    <?= $count['enov']?>,
+                                                    <?= $count['edec']?>,
+                                                ],
+                                            },
 
-                                        <?php 
+                                            <?php 
 
-                      }
-
-                    }
-
-                } 
-                ?>
-                                    ]
-                                },
-                                options: {
-                                    title: {
-                                        display: true,
-                                        //text: 'Vertical Bar Graph'
-                                    }
-                                }
-                            });
                         }
-                    }
-                })
-            })
+
+                        }
+
+                    } 
+                    ?>
+                                        ]
+                                    },
+                                    options: {
+                                        title: {
+                                            display: true,
+                                            //text: 'Vertical Bar Graph'
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+                all_client_monthly_graph();
+            
             </script>
 
             <!-- monthwise chart ends -->

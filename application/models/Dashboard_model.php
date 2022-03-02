@@ -38,17 +38,14 @@ class Dashboard_model extends CI_Model {
         $and =1;
 
 		if(!empty($filter['from_date']) && empty($filter['to_date'])){
-            $where.=" AND tbl_visit.visit_date = '".$filter['from_date']."'";
+            $where.=" AND date(tbl_visit.visit_date) = '".$filter['from_date']."'";
             $and =1;
         }
-
 		if(!empty($filter['from_date']) && !empty($filter['to_date'])){
-            $where.= " AND tbl_visit.visit_date >= '".$filter['from_date']."'";
-            $where.= " AND tbl_visit.visit_date <= '".$filter['to_date']."'";
+            $where.= " AND date(tbl_visit.visit_date) >= '".$filter['from_date']."'";
+            $where.= " AND date(tbl_visit.visit_date) <= '".$filter['to_date']."'";
             $and =1;
         }
-
-
         // if(!empty($filter['from_date']))
         // {
         //     $where.=" AND tbl_visit.visit_date >= '".$filter['from_date']."'";
@@ -75,19 +72,14 @@ class Dashboard_model extends CI_Model {
 		 ->get();
 		 return $check_user;
 	}
- 
-
 	public function check_user($data = []){
-
-		$where = "(tbl_admin.s_user_email='".$data['email']."' OR tbl_admin.s_phoneno='".$data['email']."' or tbl_admin.employee_id= '".$data['email']."') AND tbl_admin.s_password='".$data['password']."' AND tbl_admin.b_status = 1 AND user.status = 1";
-		
+		$where = "(tbl_admin.s_user_email='".$data['email']."' OR tbl_admin.s_phoneno='".$data['email']."' or tbl_admin.employee_id= '".$data['email']."') AND tbl_admin.s_password='".$data['password']."' AND tbl_admin.b_status = 1 AND user.status = 1";		
 		return $this->db->select("*")
 			->from($this->table)
-			->join('user','user.user_id = tbl_admin.companey_id','left')			
+			->join('user','user.user_id = tbl_admin.companey_id','left')
 			->where($where)
 			->get();
-
-	} 
+	}
 
 	public function check_user_by_mail_phone($data = []){
 		if(!empty($data['email']) || !empty($data['phone'])){

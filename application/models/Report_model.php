@@ -9,14 +9,12 @@ class Report_model extends CI_Model {
     }
 	
      function all_rep($from,$to,$employe,$phone,$country,$institute,$center,$source,$subsource,$datasource,$state,$lead_source,$lead_subsource,$enq_product,$drop_status,$all=''){      
-        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);
-        
+        $all_reporting_ids    =   $this->common_model->get_categories($this->session->user_id);        
         if($all){
             $select = 'enquiry.enquiry_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.phone,enquiry.update_date,enquiry.email,enquiry.gender,enquiry.drop_status,enquiry.status,enquiry.address as enq_address,enquiry.enquiry as enq_remark,lead_source.lead_name,tbl_subsource.subsource_name,tbl_comment.created_date,tbl_comment.remark,enquiry.status as inq_status,enquiry.created_date as inq_created_date, CONCAT(tbl_admin.s_display_name,tbl_admin.last_name) as created_by_name,CONCAT(admin2.s_display_name,admin2.last_name) as assign_to_name,tbl_product.product_name,lead_stage2.lead_stage_name as followup_name';
         }else{
             $select = 'enquiry.enquiry_id,enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.phone,enquiry.update_date,enquiry.email,enquiry.gender,enquiry.drop_status,enquiry.status,enquiry.address as enq_address,enquiry.enquiry as enq_remark,lead_source.lead_name,tbl_subsource.subsource_name,lead_stage.lead_stage_name as followup_name,enquiry.status as inq_status,enquiry.created_date as inq_created_date, CONCAT(tbl_admin.s_display_name,tbl_admin.last_name) as created_by_name,CONCAT(admin2.s_display_name,admin2.last_name) as assign_to_name,tbl_product.product_name';
         }
-
         $this->db->select($select);
         //$this->db->select('enquiry.name_prefix,enquiry.name,enquiry.lastname,enquiry.phone,enquiry.email,enquiry.gender,lead_source.lead_name,tbl_subsource.subsource_name,lead_description.description,lead_stage.lead_stage_name,enquiry.status as inq_status,enquiry.created_date as inq_created_date, CONCAT(tbl_admin.s_display_name,tbl_admin.last_name) as created_by_name,CONCAT(admin2.s_display_name,admin2.last_name) as assign_to_name,tbl_product.product_name');
 
