@@ -959,8 +959,12 @@ $("select").select2();
                   </select>
                </div>
 
-                <div class="form-group col-md-6 visit-date col-md-6">     
-          <label>Visit Date</label>
+        <div class="form-group col-md-6">               
+          <label>Back Date  <input value='1' type="checkbox" name='allowbackdate' class="form-control" /> </label>
+        </div>
+
+        <div class="form-group col-md-6 visit-date col-md-6">     
+         <label>Visit Date  </label>
           <input type="date" name="visit_date" id="vdate" readonly class="form-control" value="<?= date('Y-m-d') ?>" required>
         </div>
         <div class="form-group col-md-6 visit-time col-md-6">     
@@ -1108,6 +1112,18 @@ $("select").select2();
 
 
 <script type="text/javascript">
+
+
+  $("input[name='allowbackdate']").on('change', function(){
+    var ischecked = $('input[name="allowbackdate"]:checked').val();
+    if(ischecked){
+      $("input[name='visit_date']").removeAttr('readonly');
+      $("input[name='visit_time']").removeAttr('readonly');
+    }else{
+      $("input[name='visit_date']").prop("readonly", true);;
+      $("input[name='visit_time']").prop("readonly", true);;
+    }
+  })
 function add_contact()
 {
   var enq = $("select[name=enq_id]").val();
@@ -1434,6 +1450,7 @@ function filter_related_to(v)
       });
       //match();
   }
+
 </script>
 <style type="text/css">
   #slider-range

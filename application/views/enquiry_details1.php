@@ -826,6 +826,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                    ?>
                </div>
             <script type="text/javascript">
+
             manageScroll();
                function manageScroll()
                {
@@ -1336,6 +1337,9 @@ if(user_access('1020'))
 		<div class="form-group col-md-6 col-md-6">     
           <label>Mannual KM</label>
           <input type="number" name="mannual_km" id="mkm" class="form-control">
+        </div>
+        <div class="form-group col-md-6">               
+          <label>Back Date  <input value='1' type="checkbox" name='allowbackdate' class="form-control" /> </label>
         </div>
 		<div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
@@ -2713,7 +2717,6 @@ $(function () {
   }
 </style>
 <script type="text/javascript">
-
 function edit_contact(t)
 {
   var contact_id = $(t).data('cc-id');
@@ -3750,4 +3753,5 @@ $(".nav-tabs li").on('click',function(){
             }
         })
     });
+    
 </script>

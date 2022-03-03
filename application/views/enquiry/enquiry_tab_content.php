@@ -1045,6 +1045,19 @@ var fill_id = '<?=$details->enq_salebrach;?>';
 ?>
 <script>
   $(document).ready(function(){
+   $("input[name='allowbackdate']").on('change', function(){
+      //alert('heelo');
+      var ischecked = $('input[name="allowbackdate"]:checked').val();
+      if(ischecked){
+         
+         $("input[name='visit_date']").removeAttr('disabled');
+         $("input[name='visit_time']").removeAttr('disabled');
+      }else{
+         console.log('unchecked');
+         $("input[name='visit_date']").prop("disabled", true);;
+         $("input[name='visit_time']").prop("disabled", true);;
+      }
+   })
   var src_id = $('#lead_source').val();
   var sub_src_id = '<?= $details->sub_source; ?>'  
     $.ajax({
@@ -1128,8 +1141,8 @@ document.getElementById("sales_branch").disabled = true;
 document.getElementById("client_name").disabled = true;
 document.getElementById("mobileno").disabled = true;
 document.getElementById("email").disabled = true;
-document.getElementById("expected_date").disabled = true;
-document.getElementById("Lead_Scores").disabled = true;
+//document.getElementById("expected_date").disabled = true;
+//document.getElementById("Lead_Scores").disabled = true;
 });
 
 function disableField() {
@@ -1140,8 +1153,8 @@ document.getElementById("sales_branch").disabled = false;
 document.getElementById("client_name").disabled = false;
 document.getElementById("mobileno").disabled = false;
 document.getElementById("email").disabled = false;
-document.getElementById("expected_date").disabled = false;
-document.getElementById("Lead_Scores").disabled = false;
+//document.getElementById("expected_date").disabled = false;
+//document.getElementById("Lead_Scores").disabled = false;
 }
 </script>
 <script>
