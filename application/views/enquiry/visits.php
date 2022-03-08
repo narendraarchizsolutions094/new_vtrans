@@ -10,7 +10,7 @@
           if(user_access('1020'))
           {
           ?>
-          <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" data-toggle="modal" data-target="#Save_Visit" title="Add Visit"></a> 
+          <!-- <a class="dropdown-toggle btn btn-danger btn-circle btn-sm fa fa-plus" data-toggle="modal" data-target="#Save_Visit" title="Add Visit"></a>  -->
           <?php
           }
           ?>   

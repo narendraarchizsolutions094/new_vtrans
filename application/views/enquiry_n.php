@@ -913,10 +913,10 @@ display: block;
                     <div class="form-group col-md-3">
 					  <button class="btn btn-warning btn-sm" id="reset_filterbutton" type="button" onclick="ticket_reset_filter();" style="margin: 25px 5px;">Reset</button> 
 					  <button class="btn btn-primary btn-sm" id="find_filterbutton" type="button" style="margin: 25px 5px;">Filter</button>
+                      <a href='javascript:void(0)' class="btn btn-success btn-sm text-center" id='filter_and_export'> Export All</a>
                       <button class="btn btn-success btn-sm" id="save_filterbutton" type="button" onclick="ticket_save_filter();" style="margin: 25px 5px;">Save</button>        
                     </div>  
-                    </div>
-          
+                    </div>          
             </div>
         </div>
     </div>   
@@ -1020,8 +1020,8 @@ display: block;
           $dshowall = false;
         }       
       ?>
-  <div class="row">
-    <div class="col-md-12" >    
+  <div class="row">    
+    <div class="col-md-12" >            
             <table id="enq_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
         <thead>
           <tr class="bg-info table_header">
@@ -1794,11 +1794,11 @@ if(!empty($_GET['desposition']))
 
   $(document).ready(function() {
        
-   var table  = $('#enq_table').DataTable(
-        {         
+   var table  = $('#enq_table').DataTable({
           "processing": true,
           "scrollX": true,
           "scrollY": 520,
+          "destroy": true,
           "pagingType": "simple",
           "bInfo": false,
           "serverSide": true,          
@@ -1808,7 +1808,7 @@ if(!empty($_GET['desposition']))
 			  //"url": "<?=base_url().'Enq/enq_load_data'?>",
               "type": "POST",
               "data":function(d){
-                d.data_type = "<?=$data_type?>";               
+                d.data_type = "<?=$data_type?>";              
                 return d;
               }
               //"data":{'data_type':"<?=$data_type?>"}
@@ -2014,6 +2014,36 @@ $(document).on('click',".top_pill",function(){
           }
         });
       }
+
+      $("#filter_and_export").on('click',function(){    
+        set_filter_session();
+        $.ajax({
+                url: "<?=base_url().'Enq/enq_load_data'?>",
+                type: "POST",
+                data:{
+                  'is_download': 1,
+                  'data_type' : "<?=$data_type?>"
+              },
+              success:function(res){
+                const a = document.createElement("a");
+                document.body.appendChild(a);
+                a.style = "display: none";
+                const blob = new Blob([res], {type: "text/csv;charset=utf-8;"}),
+                url = window.URL.createObjectURL(blob);
+                a.href = url;
+                var currentdate = new Date(); 
+                var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+                a.download = 'Data_'+datetime+'.csv';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+          });
+      });
       
 
   } );
@@ -3333,5 +3363,5 @@ function mark_tag(){
             }           
             });
 }
-  
+ 
 </script>

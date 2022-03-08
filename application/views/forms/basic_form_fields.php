@@ -42,7 +42,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                                  <?php } ?>
                               </select>
                            </span>
-                           <input class="form-control" name="enquirername" type="text" value="<?php  echo set_value('enquirername');?>" placeholder="Enter First Name" style="width:130%;" <?php if($this->session->companey_id==65){echo'required';}?>/>
+                           <input class="form-control" name="enquirername" type="text" value="<?php  echo set_value('enquirername');?>" placeholder="Enter First Name" style="width:100%;" <?php if($this->session->companey_id==65){echo'required';}?>/>
                         </div>
                      </div>
                      <?php

@@ -213,7 +213,8 @@ class Client extends CI_Controller {
         //$data['dept_lists']=$this->User_model->all_sales_dept();  
         $enq['enquiry_id'] = $enquiry_id;
 		$enq['all_designation'] = $this->Leads_Model->desi_select();
-        $data['all_contact']= $this->Client_Model->getContactList()->result();
+        $data['all_contact']= $this->Client_Model->getContactWhere("client_id=$enquiry_id")->result();
+        //echo $this->db->last_query();
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
         $data['content'] = $this->load->view('enquiry_details1', $data, true);
         $this->enquiry_model->assign_notification_update($enquiry_code);

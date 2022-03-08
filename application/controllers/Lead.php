@@ -310,14 +310,11 @@ public function get_all_stage_deals() {
         $data['drops'] = $this->Leads_Model->get_drop_list();
         $this->load->view('lead_list', $data);
     }
-    public function lead_details($enquiry_id = null)
-    {
-        
+    public function lead_details($enquiry_id = null){
         $this->load->model('Client_Model');
         $data['title'] = display('Lead Details');
         $compid = $this->session->userdata('companey_id');
         $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($enquiry_id);
-
         $data['allleads'] = $this->Leads_Model->get_leadList();
         if (!empty($data['details'])) {
             $lead_code = $data['details']->Enquery_id;
@@ -341,8 +338,7 @@ public function get_all_stage_deals() {
         // $data['subsource_list'] = $this->Datasource_model->subsourcelist();
         // $data['drops'] = $this->Leads_Model->get_drop_list();
         // $data['name_prefix'] = $this->enquiry_model->name_prefix_list();
-        // $data['leadsource'] = $this->Leads_Model->get_leadsource_list();
-        
+        // $data['leadsource'] = $this->Leads_Model->get_leadsource_list();        
         $data['enquiry'] = $this->enquiry_model->enquiry_by_id($enquiry_id);
         //$data['lead_stages'] = $this->Leads_Model->get_leadstage_list();
         $data['lead_score'] = $this->Leads_Model->get_leadscore_list();
@@ -354,7 +350,6 @@ public function get_all_stage_deals() {
         // $data['country_list'] = $this->location_model->productcountry();
         // $data['institute_list'] = $this->Institute_model->institutelist_by_country($data['details']->enq_country);
         // $data['institute_app_status'] = $this->Institute_model->get_institute_app_status();
-
         // $data['datasource_list'] = $this->Datasource_model->datasourcelist();
         $data['taskstatus_list'] = $this->Taskstatus_model->taskstatuslist();
         // $data['state_list'] = $this->location_model->estate_list();
@@ -362,9 +357,8 @@ public function get_all_stage_deals() {
         // $data['product_contry'] = $this->location_model->productcountry();
         // $data['get_message'] = $this->Message_models->get_chat($phone_id);
         // $data['all_stage_lists'] = $this->Leads_Model->find_stage();
-        //$data['all_estage_lists'] = $this->Leads_Model->find_estage($enquiry_id);
+        // $data['all_estage_lists'] = $this->Leads_Model->find_estage($enquiry_id);
         $data['all_estage_lists'] = $this->Leads_Model->find_estage($data['details']->product_id, 2);
-
         $data['all_description_lists']    =   $this->Leads_Model->find_description();
         // $data['institute_data'] = $this->enquiry_model->institute_data($data['details']->Enquery_id);
         // $data['dynamic_field']  = $this->enquiry_model->get_dyn_fld($enquiry_id);
@@ -374,13 +368,12 @@ public function get_all_stage_deals() {
         $this->load->helper('custom_form_helper');
         $data['leadid']     = $data['details']->Enquery_id;
         $data['compid']     =  $data['details']->comp_id;
-        $data['enquiry_id'] = $enquiry_id;
-        
+        $data['enquiry_id'] = $enquiry_id;        
+
         // if(user_access('1000') || user_access('1001') || user_access('1002'))
         // {
         //     $data['branch']=$this->db->where('comp_id',$this->session->companey_id)->get('branch')->result();
-        //     $data['CommercialInfo'] = $this->enquiry_model->getComInfo($enquiry_id);
-          
+        //     $data['CommercialInfo'] = $this->enquiry_model->getComInfo($enquiry_id);          
         //     $comm_data=$this->db->where(array('enquiry_id'=>$enquiry_id))->order_by('id',"desc")
         //     ->limit(1)->get('commercial_info');
         //     $data['commInfoCount']=$comm_data->num_rows();
@@ -392,15 +385,15 @@ public function get_all_stage_deals() {
         //     $data['commInfoCount']=0;
         //     $data['commInfoData']=array();
         // }
-
-//        $data['course_list'] = $this->Leads_Model->get_course_list();
-  //      $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
+        //  $data['course_list'] = $this->Leads_Model->get_course_list();
+        //  $this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
+        
 		$this->load->model('Branch_model');
 		$data['branch_lists']=$this->Branch_model->all_sales_branch();
 		$data['region_lists']=$this->Branch_model->all_sales_region();
         $enq['enquiry_id'] = $enquiry_id;
 		$enq['all_designation'] = $this->Leads_Model->desi_select();
-        $data['all_contact']= $this->Client_Model->getContactList()->result();
+        $data['all_contact']= $this->Client_Model->getContactWhere("client_id=$enquiry_id")->result();        
         $data['create_contact_form'] = $this->load->view('contacts/create_contact_form',$enq,true);
         $data['data_type'] = base64_decode($this->uri->segment(4));
         $data['content'] = $this->load->view('enquiry_details1', $data, true);

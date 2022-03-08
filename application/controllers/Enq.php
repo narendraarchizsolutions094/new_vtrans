@@ -280,17 +280,18 @@ if(!empty($company)){
 
 	public function enq_load_data()
 	{
-		//$this->output->enable_profiler(TRUE);
-		//print_r($_POST['data_type']);exit();	
+		if($this->session->user_id == 286){
+		//	$this->output->enable_profiler(TRUE);
+		}
 		$this->load->model('enquiry_datatable_model');
 		$list = $this->enquiry_datatable_model->get_datatables();
-
-		if($this->session->companey_id == 1){
-			//echo $this->db->last_query();
+		$is_download = $this->input->post('is_download');
+		if($is_download){
+			ini_set('max_execution_time', '0'); // for infinite time of execution 
 		}
 		$dfields = $this->enquiry_model->getformfield(0); //0 for enquiry
 		$data = array();
-		$no = $_POST['start'];
+		$no = $_POST['start']??0;
 		$acolarr = $dacolarr = array();
 		if (isset($_COOKIE["allowcols"])) {
 			$showall = false;
@@ -304,12 +305,15 @@ if(!empty($company)){
 		}
 		if (!empty($enqarr) and !empty($dacolarr)) {
 		}
-		$fieldval =  $this->enquiry_model->getfieldvalue(); 
+		$fieldval =  $this->enquiry_model->getfieldvalue(); 		
 		foreach ($list as $each) 
 		{
+			$column = array();
 			$no++;
 			$row = array();
-			$row[] = "<input onclick='event.stopPropagation();'' type='checkbox' name='enquiry_id[]'' class='checkbox1' value=" . $each->enquiry_id . ">";
+			if(!$is_download){
+				$row[] = "<input onclick='event.stopPropagation();'' type='checkbox' name='enquiry_id[]'' class='checkbox1' value=" . $each->enquiry_id . ">";
+			}
 			if ($_POST['data_type'] == 1) {
 				$url = base_url('enquiry/view/') . $each->enquiry_id.'/'.base64_encode($_POST['data_type']);
 			} else if ($_POST['data_type'] == 2) {
@@ -319,7 +323,12 @@ if(!empty($company)){
 			} else {
 				$url = base_url('client/view/') . $each->enquiry_id.'/'.base64_encode($_POST['data_type']);
 			}
-			$row[] = '<a href="' . $url . '">' . $no/*$each->enquiry_id*/ . '</a>';
+			if(!$is_download){
+				$row[] = '<a href="' . $url . '">' . $no/*$each->enquiry_id*/ . '</a>';			
+			}else{
+				$column[] = 'Sr. No.';
+				$row[] = $no;
+			}
 			if ($showall == true or in_array(1, $acolarr)) {
 				if(!empty($each->enquiry_source)){
 				$find_source = explode(',',$each->enquiry_source);
@@ -333,12 +342,19 @@ if(!empty($company)){
 				}else{
 					unset($all_sourse_name);
 				}
+				$column[] = 'Source';
+				
+
 				$row[] = (!empty($all_sourse_name)) ? ucwords(implode(',',$all_sourse_name)) : "NA";
 			}
 			if ($showall == true or in_array(16, $acolarr)) {
 				$row[] = (!empty($each->subsource_name)) ? ucwords($each->subsource_name) : "NA";
+				$column[] = 'Sub Source';
+
 			}
 			if ($showall == true or in_array(2, $acolarr)) {
+				$column[] = 'Company Name';
+
 				$row[] = (!empty(trim($each->company_name))) ? ucwords($each->company_name) : "NA";
 
 				if(!empty($_POST['data_type']) && count(explode(',',$_POST['data_type']))>1)
@@ -370,9 +386,11 @@ if(!empty($company)){
 				}
 				
 			}
-
+	
 			if ($showall == true or in_array(21, $acolarr)) {
 				$row[] = $each->client_name;
+				$column[] = 'Client Name';
+
 			}
 
 			if ($showall == true or in_array(3, $acolarr)) {
@@ -387,13 +405,22 @@ if(!empty($company)){
 						}
 					}
 				}
-				$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname. '</a>'.$thtml;
+				if(!$is_download){
+					$row[] = '<a href="' . $url . '">' . $each->name_prefix . " " . $each->name . " " . $each->lastname. '</a>'.$thtml;
+				}else{
+					$row[] = $each->name_prefix . " " . $each->name . " " . $each->lastname;
+				}
+				$column[] = 'Name';
+
 			}
 			if ($showall == true or in_array(4, $acolarr)) {
 				$row[] = (!empty($each->email)) ? $each->email : "NA";
+				$column[] = 'Email';
+
 			}
 			if ($showall == true or in_array(5, $acolarr)) {
 				$p = $each->phone;
+				$column[] = 'Phone';
 				if (user_access(450)) {
 					$p = '##########';
 				}
@@ -401,17 +428,25 @@ if(!empty($company)){
 				//if (user_access(220) && $c!=65) {
 				//	$row[] = "<a href='javascript:void(0)' onclick='send_parameters(".$each->phone.")'>" . $p . " <button class='fa fa-phone btn btn-xs btn-success'></button></a>";
 				//} else {
-					$row[] = (!empty($each->phone)) ? '<a  href="tel:' . $p . '">' . $p . '</a>' : "NA";
+					if(!$is_download){
+						$row[] = (!empty($each->phone)) ? '<a  href="tel:' . $p . '">' . $p . '</a>' : "NA";
+					}else{
+						$row[] = $p;
+					}
 				//}
 			}
 			if ($showall == true or in_array(6, $acolarr)) {
 				$row[] = (!empty(trim($each->address))) ? ucwords($each->address) : "NA";
+				$column[] = 'Address';
+
 			}
 			if ($showall == true or in_array(7, $acolarr)) {
 				$row[] = (!empty($each->product_name)) ? ucwords($each->product_name) : "NA";
+				$column[] = 'Process';
 			}
 			if ($showall == true or in_array(30, $acolarr)) {
 				$row[] = (!empty($each->lead_stage_name)) ? ucwords($each->lead_stage_name) : "NA";
+				$column[] = 'Lead Stage';
 			}
 			if ($showall == true or in_array(8, $acolarr)) {
 				if ($each->lead_stage_name) {
@@ -419,7 +454,12 @@ if(!empty($company)){
 				} else {
 					$option = '<option value="0">Select Disposition</option>';
 				}
-				$row[] = '<select class="form-control change_dispositions" style="height: 11px;width: 60%;font-size: smaller;padding: 4px;" data-id="' . $each->enquiry_id . '" data-stages="'.$each->status .'" >' . $option . '</select>';
+				if(!$is_download){
+					$row[] = '<select class="form-control change_dispositions" style="height: 11px;width: 60%;font-size: smaller;padding: 4px;" data-id="' . $each->enquiry_id . '" data-stages="'.$each->status .'" >' . $option . '</select>';
+				}else{
+					$row[] = $each->lead_stage_name;
+				}
+				$column[] = 'Disposition';
 			}
 			if ($this->session->companey_id == 29) {
 				//$row[] = (!empty($each->reference_name)) ? $each->reference_name : "NA";
@@ -439,6 +479,7 @@ if(!empty($company)){
 				}
 			}
 			if ($showall == true or in_array(10, $acolarr)) {
+				$column[] = 'Created Date';
 				$row[] = (!empty($each->created_date)) ? $each->created_date : "NA";
 			}
 			$c = array();
@@ -459,20 +500,25 @@ if(!empty($company)){
 				}
 			}
 			if ($showall == true or in_array(11, $acolarr)) {
+				$column[] = 'Created By';
+
 				$a = (!empty($each->created_by_name)) ? ucwords($each->created_by_name) : "NA";
-				if (empty($c1[0]) || $c1[0] == 2) {
+				if ((empty($c1[0]) || $c1[0] == 2) && !$is_download) {
 					$row[] = $a . '<a class="tag">NEW</a>';
 				} else {
 					$row[] = $a;
 				}
 			}
 			if ($showall == true or in_array(31, $acolarr)) {
+				$column[] = 'Created By Department';
 				$row[] = (!empty($each->createbydept)) ? ucwords($each->createbydept) : "NA";
 			}
 			if ($showall == true or in_array(12, $acolarr)) {
+				$column[] = 'Assign To Name';
+
 				$a = (!empty($each->assign_to_name)) ? ucwords($each->assign_to_name) : "NA";
 				if ((empty($c1[1]) || $c1[1] == 2) && !in_array($each->aasign_to, $d)) {
-					if ($a != 'NA') {
+					if ($a != 'NA'  && !$is_download) {
 						$row[] = $a . '<a class="tag">NEW</a>';
 					} else {
 						$row[] = $a;
@@ -482,12 +528,15 @@ if(!empty($company)){
 				}
 			}
 			if ($showall == true or in_array(32, $acolarr)) {
+				$column[] = 'Assign To Department';
 				$row[] = (!empty($each->assignbydept)) ? ucwords($each->assignbydept) : "NA";
 			}
 			if ($showall == true or in_array(13, $acolarr)) {
+				$column[] = 'Datasource';
 				$row[] = (!empty($each->datasource_name)) ? ucwords($each->datasource_name) : "NA";
 			}
 			if ($showall == true or in_array(14, $acolarr)) {
+				$column[] = 'Product';
 				$row[] = (!empty($each->country_name)) ? ucwords($each->country_name) : "NA";
 			}
 			if ($this->session->companey_id == 29) {
@@ -496,12 +545,14 @@ if(!empty($company)){
 				}
 			}
 			if ($showall == true or in_array(17, $acolarr)) {
+				$column[] = 'EnquiryId';
 				$row[] = (!empty($each->Enquery_id)) ? $each->Enquery_id : "NA";
 			}
 			if ($showall == true or in_array(18, $acolarr)) {
+				$column[] = 'Score';
 				$sc = (!empty($each->score)) ? $each->score : "NA";				
 				
-				if(!empty($each->score_name)){
+				if(!empty($each->score_name &&   !$is_download)){
 					$row[] = $sc.' <span class="label label-primary">'.$each->score_name.'</span';
 				}else{					
 					$row[] = $sc;
@@ -509,9 +560,11 @@ if(!empty($company)){
 
 			}
 			if ($showall == true or in_array(19, $acolarr)) {
+				$column[] = 'Remark';
 				$row[] = (!empty($each->enquiry)) ? $each->enquiry : "NA";
 			}
 			if ($showall == true or in_array(33, $acolarr)) {
+				$column[] = 'Employee Region';
 				$empreg = $this->db->select('name')->get_where('sales_region', array('region_id' => $each->as_region))->row();
 				if(empty($empreg->name)){
 				$empreg = $this->db->select('name')->get_where('sales_region', array('region_id' => $each->cr_region))->row();	
@@ -519,6 +572,7 @@ if(!empty($company)){
 				$row[] = (!empty($empreg->name)) ? $empreg->name : "NA";
 			}
 			if ($showall == true or in_array(34, $acolarr)) {
+				$column[] = 'Employee Area';
 				$empara = $this->db->select('area_name')->get_where('sales_area', array('area_id' => $each->as_area))->row();
 				if(empty($empara->area_name)){
 				$empara = $this->db->select('area_name')->get_where('sales_area', array('area_id' => $each->cr_area))->row();	
@@ -526,6 +580,7 @@ if(!empty($company)){
 				$row[] = (!empty($empara->area_name)) ? $empara->area_name : "NA";
 			}
 			if ($showall == true or in_array(35, $acolarr)) {
+				$column[] = 'Employee Branch';
 			
 			$branches = '';
             $branches_arr = explode(',', $each->as_branch);
@@ -557,24 +612,29 @@ if(!empty($company)){
 			}
 			
 			if ($showall == true or in_array(36, $acolarr)) {
+				$column[] = 'Sales Region';
 				$slreg = $this->db->select('name')->get_where('sales_region', array('region_id' => $each->sl_region))->row();				
 				$row[] = (!empty($slreg->name)) ? $slreg->name : "NA";
 			}
 			if ($showall == true or in_array(37, $acolarr)) {
+				$column[] = 'Sales Area';
 				$slara = $this->db->select('area_name')->get_where('sales_area', array('area_id' => $each->sl_area))->row();
 				$row[] = (!empty($slara->area_name)) ? $slara->area_name : "NA";
 			}
 			if ($showall == true or in_array(38, $acolarr)) {
+				$column[] = 'Sales Branch';
 				$slbrh = $this->db->select('branch_name')->get_where('branch', array('branch_id' => $each->sl_branch))->row();
 				$row[] = (!empty($slbrh->branch_name)) ? $slbrh->branch_name : "NA";
 			}
 			
 			if ($showall == true or in_array(39, $acolarr)) {
+				$column[] = 'Total Deal';
 				$all_deals = $this->db->select('COUNT(id) as tdl')->get_where('commercial_info', array('enquiry_id' => $each->enquiry_id,'original' => '1'))->row();
 				$row[] = (!empty($all_deals->tdl)) ? $all_deals->tdl : "NA";
 			}
 			
 			if ($showall == true or in_array(40, $acolarr)) {
+				$column[] = 'Total Visit';
 				$all_visits = $this->db->select('COUNT(id) as tvis')->get_where('tbl_visit', array('enquiry_id' => $each->enquiry_id))->row();
 				$row[] = (!empty($all_visits->tvis)) ? $all_visits->tvis : "NA";
 			}
@@ -584,6 +644,7 @@ if(!empty($company)){
 			if (!empty($dacolarr) and !empty($dfields)) {
 				foreach ($dfields as $ind => $flds) {
 					if (in_array($flds->input_id, $dacolarr)) {
+						$column[] = $flds->input_label;
 						$row[] = (!empty($fieldval[$enqid][$flds->input_id])) ? $fieldval[$enqid][$flds->input_id]->fvalue : "NA";
 					}
 				}
@@ -591,7 +652,10 @@ if(!empty($company)){
 			$data[] = $row;
 		}
 		$c = $this->enquiry_datatable_model->count_all();
-
+		if ($this->input->post('is_download') == 1) {
+			$this->exports_data($data,$column);        
+			exit(); 
+		}
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $c,
@@ -600,6 +664,20 @@ if(!empty($company)){
 		);
 		echo json_encode($output);
 	}
+	public function exports_data($data,$report_columns=0){        
+        $file_data =  $data;        
+        array_unshift($file_data, $report_columns);
+        header("Content-type: application/csv");
+        header("Content-Disposition: attachment; filename=\"test".".csv\"");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        $handle = fopen('php://output', 'w');
+
+        foreach ($file_data as $file_data) {
+            fputcsv($handle, $file_data);
+        }
+        fclose($handle);        
+    }
 	public function stages_of_enq($data_type = 1)
 	{
 		$data['all_enquery_num'] = $this->enquiry_model->all_enquery($data_type);

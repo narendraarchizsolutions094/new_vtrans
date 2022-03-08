@@ -1270,7 +1270,7 @@ if($usr_ttl > 1){
         //$data['all_designation'] = $this->Leads_Model->desi_select();		
         //$this->enquiry_model->make_enquiry_read($data['details']->Enquery_id);
 
-        $data['all_contact']= $this->Client_Model->getContactList()->result();
+        $data['all_contact']= $this->Client_Model->getContactWhere("client_id=$enquiry_id")->result();
 
         //echo"<pre>";print_r($data);die;
 		$this->load->model('Branch_model');
