@@ -11,6 +11,8 @@ class Mobile extends CI_Controller
     $query  = $this->db->query("select tbl_admin.mobile_token,query_response.subject,query_response.task_time,query_response.task_date,query_response.task_remark,query_response.query_id,query_response.create_by,enquiry.status,enquiry.enquiry_id as enqid,CONCAT_WS(' ',enquiry.name_prefix,enquiry.name,enquiry.lastname) as enq_name from query_response INNER JOIN enquiry ON query_response.query_id = enquiry.Enquery_id INNER JOIN tbl_admin ON query_response.create_by = tbl_admin.pk_i_admin_id where STR_TO_DATE(query_response.task_date,'%d-%m-%Y') = CURDATE() AND tbl_admin.mobile_token!=''");
     
     $result = $query->result_array();             
+    // echo $this->db->last_query();
+    // exit;
     /*
     echo "<pre>";
     print_r($result);
@@ -20,7 +22,9 @@ class Mobile extends CI_Controller
         foreach ($result as $key => $value) {
             $t_time = date('H:i',strtotime($value['task_time']));
             $curr_time    =   date("H:i");            
+
             if($t_time == $curr_time){
+                echo $t_time.'-'.$curr_time.'<br>';
                 $message = $value['task_remark'];      
                 if(empty($message)){
                   $message = 'N/A';      
@@ -35,7 +39,7 @@ class Mobile extends CI_Controller
                 ];
                 $data = json_encode($d);
                 $url = 'https://fcm.googleapis.com/fcm/send';
-                $server_key = 'AAAAXIizH-0:APA91bFPGZglqP0yxF141MeRksGMhGOjIsBSDUNtTPHl8WZ9vb0UMacfl87A4yetHE4o6LtUncQJ92bdeGnLf-Tb-M4wStFSwfrnZmI4G9kR-_7YU8QTC0rkQ7Ub7bxUXghCjWwOHlaF';
+                $server_key = 'AAAAT7RVphg:APA91bESMxfXW_6zPa_IyLepfh3ACK3D6pRoHB45-bvIge0J19TBV81LSsHnUBkpiVNPm8999YLeZn-Rwpr2RDLx4l-9YawqbPhmAVVKrEfz6w0Fj3jU_z0HBPbJj5o2nKlhXFT1PY_T	';
                 $headers = array(
                 'Content-Type:application/json',
                 'Authorization:key='.$server_key
@@ -49,7 +53,9 @@ class Mobile extends CI_Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
                 $result = curl_exec($ch);
-                
+                echo "<pre>";
+                print($result);
+                echo "</pre>";
             }
         }
     }   
