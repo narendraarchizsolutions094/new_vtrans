@@ -109,6 +109,7 @@ class Visit_datatable_model extends CI_Model{
 
         // $this->db->join('visit_details','visit_details.visit_id=tbl_visit.id','left');
         $this->db->where("tbl_visit.comp_id",$this->session->companey_id);
+		$this->db->where("tbl_admin.b_status",1);
         $this->db->order_by("tbl_visit.created_at",'DESC');
         $where="";
     
