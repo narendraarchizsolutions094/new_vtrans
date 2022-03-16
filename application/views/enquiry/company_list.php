@@ -349,7 +349,7 @@ $('#buttongroup').hide();
 })
 
 
-set_filter_session();
+//set_filter_session();
 
 //CHANGE DUE TO RESET BUTTON
       /* $('#enq_filter').change(function() {
