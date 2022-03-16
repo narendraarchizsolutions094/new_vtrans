@@ -268,6 +268,7 @@ $log_filters_sess   =   $this->session->log_filters_sess;
 		$this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_comment.created_by','left');
         $where.=" and ";
         $where.="tbl_comment.coment_type = '5'";
+		$where .= " AND tbl_comment.created_by IN (".implode(',', $all_reporting_ids).")";
         if($where!='')
 			
 		if($top_filter=='all')
