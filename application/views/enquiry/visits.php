@@ -495,6 +495,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-2" width="15%">Visit Time</th>
 						      <th id="th-13" width="15%">Purpose of meeting</th>
 				          <th id="th-3" >Name</th>
+						  <th id="th-31" >Mobile</th>
 				          <th id="th-10">Company group name</th>
                   <th id="th-14">Client Name</th>
                   <th id="th-15">Contact Person</th>
@@ -1018,6 +1019,9 @@ $("select").select2();
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="3"> Name</label>
+            </div>
+			<div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="31"> Mobile</label>
             </div>
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="10"> Company group name</label>

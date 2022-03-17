@@ -78,7 +78,7 @@ class Visit_datatable_model extends CI_Model{
         // print_r($_POST['company']);exit;
 		$this->db->select($this->table.'.*,
 		discount_matrix.name as discount_name,tbl_visit.user_rate as rate_km,s_r.name as emp_region,tbl_visit.created_at,
-		concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee,enquiry.name,enquiry.status as enq_type,enquiry.Enquery_id,
+		concat_ws(" ",tbl_admin.s_display_name,tbl_admin.last_name) as employee,enquiry.name,enquiry.phone,enquiry.status as enq_type,enquiry.Enquery_id,
 		enquiry.company,tbl_visit.id as vids,tbl_company.company_name,enquiry.client_name,contact.c_name as contact_person,
 		sales_region.name as region_name,branch.branch_name as branch_name,sales_area.area_name as area_name,
 		city.city');

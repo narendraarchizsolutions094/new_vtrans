@@ -3206,13 +3206,13 @@ public function all_update_expense_status()
                         $extract=  array_values($oc_data);
                         unset($extract[0]);
                         $oc = $extract;
-                        $oc[22] = $oc[23] = '';
+                        $oc[22] = $oc[23] = $oc[25] = '';
                     }
 					if(empty($deal_id)){
                         $extract=  array_values($oc_data);
                         unset($extract[0]);
                         $uc = $extract;
-                        $uc[22] = $uc[23] = ''; 							
+                        $uc[22] = $uc[23] = $uc[25] = ''; 							
 				        }
                     $oc['rate_type'] = 'KG';
 					$uc['rate_type'] = 'KG';
@@ -3648,10 +3648,10 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     </table>';
                 if($booking_type=='sundry')
                 {
-					echo'<p '.(($oc[21]!=$uc[21])?"style='background:#ffbaba;'":"").'>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[21]" value="'.$oc[21].'" class="exip" style="width: 100px !important;">. per Ltr.';
+					echo'<p '.(($oc[25]!=$uc[25])?"style='background:#ffbaba;'":"").'>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[25]" value="'.$oc[25].'" class="exip" style="width: 100px !important;">. per Ltr.';
         
 		if(!empty($deal_id)){
-                echo'&nbsp;&nbsp;&nbsp;To &nbsp;&nbsp;&nbsp;<input type="number" name="uc[21]" value="'.$uc[21].'" class="exip" style="width: 100px !important;">. per Ltr.';
+                echo'&nbsp;&nbsp;&nbsp;To &nbsp;&nbsp;&nbsp;<input type="number" name="uc[25]" value="'.$uc[25].'" class="exip" style="width: 100px !important;">. per Ltr.';
                     
 		}
 		echo'</p>';
@@ -3799,7 +3799,7 @@ if(is_numeric($b_lastChar)){
                     'stage_id'=>$this->input->post('current_stage'),
                     'status'=>'0',
                     );
-//print_r($deal);exit;
+
         if(!empty($deal_id))
         {   
             $edit = $this->input->post('edited');

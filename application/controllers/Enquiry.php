@@ -3939,6 +3939,9 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
                     if($colsall || in_array(3,$cols))
                     $sub[] = '<a href="'.$url.'">'.$res->name.'</a>'??'NA';
             }
+			if($colsall || in_array(31,$cols)){
+                $sub[] = $res->phone??'NA';            
+            }
             if($colsall || in_array(10,$cols)){
                 $sub[] = $res->company_name??'NA';            
             }
