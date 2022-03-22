@@ -459,14 +459,22 @@ background-color: #ffb099;
 <script>
 function refresh_table_exs(){
       // alert(exstatus);
+	  $(".deal_download").show();
       var tr_list = $("#deals_table tbody").find('tr');
       $(tr_list).each(function(k,v){
           var sfa = $(v).find('td > a.sfa > label.label').text();
-		  //alert(sfa);
+		  var lfa = $(v).find('td > label.lfa').text();
+		  //alert(lfa);
            var string = "Send For Approval";
+		   var stringlbl = "Waiting for approval";
           if(sfa === string)
           {
             $(v).addClass('tr_hover');
+			$(v).find('td > div.btn-group > a.deal_download').hide();
+          }
+		  if(lfa === stringlbl)
+          {
+			$(v).find('td > div.btn-group > a.deal_download').hide();
           }
          
       });

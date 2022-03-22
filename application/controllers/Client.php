@@ -3475,7 +3475,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     <tbody>
                         <tr '.(($oc[1]!=$uc[1])?"style='background:#ffbaba;'":"").'>
                             <td>GC Charges</td>
-                            <td><input name="oc[1]" value="'.$oc[1].'"></td>';
+                            <td><input name="oc[1]" value="'.$oc[1].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[1]" value="'.$uc[1].'"></td>';}			
                        echo'<td>In Rs. Per GC</td>
                         </tr>';
@@ -3483,38 +3483,38 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     {
                     echo'<tr '.(($oc[2]!=$uc[2])?"style='background:#ffbaba;'":"").'>
                             <td>Minimum Chargeable Wt</td>
-                            <td><input name="oc[2]" value="'.$oc[2].'"></td>';
+                            <td><input name="oc[2]" value="'.$oc[2].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[2]" value="'.$uc[2].'"></td>';}
                        echo'<td>KGs, Whichever is Higher</td>
                         </tr>
                         <tr '.(($oc[3]!=$uc[3])?"style='background:#ffbaba;'":"").'>
                             <td>Minimum Freight Value</td>
-                            <td><input name="oc[3]" value="'.$oc[3].'"></td>';
+                            <td><input name="oc[3]" value="'.$oc[3].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[3]" value="'.$uc[3].'"></td>';}
                         echo'<td>In Rs.</td>
                         </tr>
                         <tr '.(($oc[4]!=$uc[4])?"style='background:#ffbaba;'":"").'>
                             <td>CFT factor</td>
-                            <td><input name="oc[4]" value="'.$oc[4].'"></td>';
+                            <td><input name="oc[4]" value="'.$oc[4].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[4]" value="'.$uc[4].'"></td>';}
                        echo'<td>KG.</td>
                         </tr>
                         <tr '.(($oc[5]!=$uc[5])?"style='background:#ffbaba;'":"").'>
                             <td>Hamali Charges</td>
-                            <td><input name="oc[5]" value="'.$oc[5].'"></td>';
+                            <td><input name="oc[5]" value="'.$oc[5].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[5]" value="'.$uc[5].'"></td>';}
                        echo'<td>Per Kg.</td>
                         </tr>';
                     }
                     echo'<tr '.(($oc[6]!=$uc[6])?"style='background:#ffbaba;'":"").'>
                             <td>FOV Charges (owner risk)</td>
-                            <td><input name="oc[6]" value="'.$oc[6].'"></td>';
+                            <td><input name="oc[6]" value="'.$oc[6].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[6]" value="'.$uc[6].'"></td>';}
                        echo'<td>% of Invoice Value</td>
                         </tr>
                         <tr '.(($oc[7]!=$uc[7])?"style='background:#ffbaba;'":"").'>
                             <td>FOV Charges (Carrier risk)</td>
-                            <td><input name="oc[7]" value="'.$oc[7].'"></td>';
+                            <td><input name="oc[7]" value="'.$oc[7].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[7]" value="'.$uc[7].'"></td>';}
                        echo'<td>% of Invoice Value</td>
                         </tr>';
@@ -3522,26 +3522,26 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     {
                     echo'<tr '.(($oc[8]!=$uc[8])?"style='background:#ffbaba;'":"").'>
                             <td>AOC Charges</td>
-                            <td><input name="oc[8]" value="'.$oc[8].'"></td>';
+                            <td><input name="oc[8]" value="'.$oc[8].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[8]" value="'.$uc[8].'"></td>';}
                        echo'<td>% of Total Freight</td>
                         </tr>
                         <tr '.(($oc[9]!=$uc[9])?"style='background:#ffbaba;'":"").'>
                             <td>COD/DOD Charges</td>
-                            <td><input name="oc[9]" value="'.$oc[9].'"></td>';
+                            <td><input name="oc[9]" value="'.$oc[9].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[9]" value="'.$uc[9].'"></td>';}
                        echo'<td>Per GC</td>
                         </tr>
                         <tr '.(($oc[10]!=$uc[10])?"style='background:#ffbaba;'":"").'>
                             <td>DACC Charges</td>
-                            <td><input name="oc[10]" value="'.$oc[10].'"></td>';
+                            <td><input name="oc[10]" value="'.$oc[10].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[10]" value="'.$uc[10].'"></td>';}
                        echo'<td>Per GC</td>
                         </tr>';
                     }
                     echo'<tr '.(($oc[11]!=$uc[11])?"style='background:#ffbaba;'":"").'>
                             <td>Other (Please Specify)</td>
-                            <td><input name="oc[11]" value="'.$oc[11].'"></td>';
+                            <td><input name="oc[11]" value="'.$oc[11].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[11]" value="'.$uc[11].'"></td>';}
                        echo'<td>At Actual</td>
                         </tr>';
@@ -3553,7 +3553,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     echo'</tr>
                         <tr '.(($oc[13]!=$uc[13])?"style='background:#ffbaba;'":"").'>
                             <td>Demurrage charges</td>
-                            <td><input name="oc[13]" value="'.$oc[13].'"></td>';
+                            <td><input name="oc[13]" value="'.$oc[13].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[13]" value="'.$uc[13].'"></td>';}
                        echo'<td>Per KG on Per day basis</td>
                         </tr>
@@ -3564,7 +3564,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     }
                     echo'<tr '.(($oc[15]!=$uc[15])?"style='background:#ffbaba;'":"").'>
                             <td>Loading/Unloading Charges/Union Charges</td>
-                            <td><input name="oc[15]" value="'.$oc[15].'"></td>';
+                            <td><input name="oc[15]" value="'.$oc[15].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[15]" value="'.$uc[15].'"></td>';}
                        echo'<td>Per Kg / Box</td>
                         </tr>';
@@ -3572,26 +3572,26 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     {
                     echo'<tr '.(($oc[16]!=$uc[16])?"style='background:#ffbaba;'":"").'>
                             <td>GI Charges</td>
-                            <td><input name="oc[16]" value="'.$oc[16].'"></td>';
+                            <td><input name="oc[16]" value="'.$oc[16].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[16]" value="'.$uc[16].'"></td>';}
                        echo'<td>In Rs. per GC</td>
                         </tr>
                         <tr '.(($oc[17]!=$uc[17])?"style='background:#ffbaba;'":"").'>
                             <td>Dynamic Fuel Surcharge in %</td>
-                            <td><input name="oc[17]" value="'.$oc[17].'"></td>';
+                            <td><input name="oc[17]" value="'.$oc[17].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[17]" value="'.$uc[17].'"></td>';}
                        echo'<td>% of basic freight</td>
                         </tr>
                         <tr '.(($oc[18]!=$uc[18])?"style='background:#ffbaba;'":"").'>
                             <td>Levy- in %</td>
-                            <td><input name="oc[18]" value="'.$oc[18].'"></td>';
+                            <td><input name="oc[18]" value="'.$oc[18].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[18]" value="'.$uc[18].'"></td>';}
                        echo'<td>% of basic freight</td>
                         </tr>';
                     }
                     echo'<tr '.(($oc[19]!=$uc[19])?"style='background:#ffbaba;'":"").'>
                             <td>E-way bill charge</td>
-                            <td><input name="oc[19]" value="'.$oc[19].'"></td>';
+                            <td><input name="oc[19]" value="'.$oc[19].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[19]" value="'.$uc[19].'"></td>';}
                        echo'<td>In Rs. Per GC</td>
                         </tr>';
@@ -3601,7 +3601,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     echo'<tr '.(($oc[20]!=$uc[20])?"style='background:#ffbaba;'":"").'>
                             <td>Door Collection Charges</td>
                             <td id="door_box">
-                                <input name="oc[20]" value="'.$oc[20].'">
+                                <input name="oc[20]" value="'.$oc[20].'" class="no_edit">
                             </td>';
   if(!empty($deal_id)){echo'<td><input name="uc[20]" value="'.$uc[20].'"></td>';}
                        echo'<td>Upto 3 MT and above free</td>
@@ -3609,7 +3609,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                         <tr '.(($oc[21]!=$uc[21])?"style='background:#ffbaba;'":"").'>
                             <td>Last Mile  Delivery charges</td>
                             <td id="mile_box">
-                             <input name="oc[21]" value="'.$oc[21].'">
+                             <input name="oc[21]" value="'.$oc[21].'" class="no_edit">
                             </td>';
   if(!empty($deal_id)){echo'<td><input name="uc[21]" value="'.$uc[21].'"></td>';}
                        echo'<td>Upto 3 MT and above free</td>
@@ -3622,11 +3622,11 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                             <td>ODA Charges</td>
                             <td colspan="2">
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge" >
+                                    <input id="oda_value" name="oc[22]" value="'.$oc[22].'" placeholder="Charge" class="no_edit">
                                 </div>
                                 <div style="width:49%; display:inline-block;">
-                                    <input id="oda_distance" name="oc[23]" value="'.$oc[23].'" type="number" style="width:40%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip">
-                                    <input id="oda_weight" name="oc[24]" value="'.$oc[24].'" type="number" style="width:40%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip">
+                                    <input id="oda_distance" name="oc[23]" value="'.$oc[23].'" type="number" style="width:40%" placeholder="Distance ( In KM )" onkeyup="oda_cal()" class="exip no_edit">
+                                    <input id="oda_weight" name="oc[24]" value="'.$oc[24].'" type="number" style="width:40%" placeholder="Weight ( In KG )" onkeyup="oda_cal()" class="exip no_edit">
 									&nbsp;<span onclick="rate_alert()" class="btn btn-primary btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
                                 </div>
                             </td>';
@@ -3648,7 +3648,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     </table>';
                 if($booking_type=='sundry')
                 {
-					echo'<p '.(($oc[25]!=$uc[25])?"style='background:#ffbaba;'":"").'>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[25]" value="'.$oc[25].'" class="exip" style="width: 100px !important;">. per Ltr.';
+					echo'<p '.(($oc[25]!=$uc[25])?"style='background:#ffbaba;'":"").'>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[25]" value="'.$oc[25].'" class="exip no_edit" style="width: 100px !important;">. per Ltr.';
         
 		if(!empty($deal_id)){
                 echo'&nbsp;&nbsp;&nbsp;To &nbsp;&nbsp;&nbsp;<input type="number" name="uc[25]" value="'.$uc[25].'" class="exip" style="width: 100px !important;">. per Ltr.';

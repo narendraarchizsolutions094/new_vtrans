@@ -585,7 +585,7 @@ return;
 			type:'warning',
 			showConfirmButton:false,
 		});
-		//$(f).find("input[name='discount["+qid+"]']").val(max_discount);
+		$(f).find("input[name='discount["+qid+"]']").val(max_discount);
 		return false;
 	}
 	var cal_rate = rate.toFixed(2) - ((rate*discount)/100).toFixed(2);
@@ -632,6 +632,7 @@ $(document).on('click','#edit_charge',function(){
 	$('.disc-box').find('input').removeAttr('readonly');
 	$('.disc-box').find('input:first').focus();
 	$(".edit_remark").show();
+	$(".no_edit").attr('readonly','readonly');
 });
 
 function rep_discount()

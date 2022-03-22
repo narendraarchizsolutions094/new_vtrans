@@ -4157,7 +4157,7 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
                             <label class="label label-warning text-black">Send For Approval</label>
                             </a>'; 
                         }else if($req_log['status'] == 'pending'){
-                            $sub[] ='<label class="label label-primary">Waiting for approval</label>
+                            $sub[] ='<label class="label label-primary lfa">Waiting for approval</label>
                             ';
                         }
                     }else{                     
@@ -4251,7 +4251,7 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
             $part2.="<a class='btn btn-xs btn-danger' onclick='return confirm(\"Are you sure ?\")' href='".base_url('enquiry/deleteInfo/' . $value->id . '/'.$value->enquiry_id.'/')."'><i class='fa fa-trash'></i></a>";
             }
 
-            $part2.="<a class='btn btn-primary btn-xs' onclick='quotation_pdf(".$value->id.")' style='cursor: pointer;'><i class='fa fa-download'></i></a>
+            $part2.="<a class='btn btn-primary btn-xs deal_download' onclick='quotation_pdf(".$value->id.")' style='cursor: pointer;'><i class='fa fa-download'></i></a>
 
            
             ";
