@@ -172,4 +172,43 @@ class Common_model extends CI_Model {
         $res = $this->db->where('companey_id',$comp_id)->get('tbl_admin')->result();
         return $res;
     }
+    public function send_fcm($title,$msg,$uid){
+        $message = $msg;      
+        if(empty($message)){
+          $message = 'N/A';      
+        }
+        $value = $this->db->where('pk_i_admin_id',$uid)-get('tbl_admin')->row_array();        
+        $d= [
+            "to" =>$value['mobile_token'],
+            "notification" => [
+            "body" => $message,
+            "title" => $title,
+            ]
+        ];
+        $data = json_encode($d);
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $server_key = 'AAAAT7RVphg:APA91bESMxfXW_6zPa_IyLepfh3ACK3D6pRoHB45-bvIge0J19TBV81LSsHnUBkpiVNPm8999YLeZn-Rwpr2RDLx4l-9YawqbPhmAVVKrEfz6w0Fj3jU_z0HBPbJj5o2nKlhXFT1PY_T	';
+        $headers = array(
+        'Content-Type:application/json',
+        'Authorization:key='.$server_key
+        );        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $result = curl_exec($ch);
+
+        $ins_arr = array(
+            'res' => $result,
+            'req' => json_encode($d)
+        );
+
+        $this->db->insert('push_notification',$ins_arr);
+
+
+    }
 }
