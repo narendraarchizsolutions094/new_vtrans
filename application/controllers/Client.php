@@ -1424,6 +1424,9 @@ public function updateclientpersonel() {
                         'enq_code'=>$enquiry_code,
                         'assign_status'=> 0);
                     $this->Leads_Model->add_comment_for_events(display('client_assigned'), $enquiry_code);
+                    
+                    $noti_msg = display('client_assigned');
+                    $this->common_model->send_fcm($noti_msg,$noti_msg,$assign_employee);
                 }
                 $this->db->update_batch('enquiry',$assign_data,'enquiry_id');
                 $this->db->insert_batch('tbl_assign_notification',$notification_data);

@@ -1390,6 +1390,10 @@ public function get_all_stage_deals() {
                     $data['details'] = $this->Leads_Model->get_leadListDetailsby_id($key);
                     $lead_code = $data['details']->Enquery_id;
                     $this->Leads_Model->add_comment_for_events(display('lead_assigned'), $lead_code);
+
+                    $noti_msg = display('lead_assigned');
+                    $this->common_model->send_fcm($noti_msg,$noti_msg,$assign_employee);
+
                 }
                 echo display('save_successfully');
             } else {

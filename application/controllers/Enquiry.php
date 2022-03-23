@@ -1101,6 +1101,9 @@ if($usr_ttl > 1){
                     $this->db->set('task_type','0');
                     $this->db->set('subject',display('enquiry').' Assigned');
                     $this->db->insert('query_response');
+                    
+                    $noti_msg = display("enquery_assigned");
+                    $this->common_model->send_fcm($noti_msg,$noti_msg,$assign_employee);
                 }
                 $this->db->update_batch('enquiry', $assign_data, 'enquiry_id');
                 $this->db->insert_batch('tbl_assign_notification', $notification_data);

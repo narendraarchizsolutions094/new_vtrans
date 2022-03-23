@@ -2268,12 +2268,24 @@ public function updateEnquiryTab_post()
           
             foreach($move_enquiry as $key){
              
-              $data['enquiry'] = $this->enquiry_model->enquiry_by_code($key);
+              $data['enquiry'] = $enq_row = $this->enquiry_model->enquiry_by_code($key);
           
               $enquiry_code = $data['enquiry']->Enquery_id;
               //if(empty($this->Leads_Model->get_leadListDetailsby_code($enquiry_code))){
           
                 $this->enquiry_model->assign_enquery_api($key,$assign_employee,$enquiry_code,$assigner_user_id);
+                
+                if($enq_row->status == 1){
+                  $noti_msg = display('enquery_assigned');
+                }else if($enq_row->status == 2){
+                  $noti_msg = display('lead_assigned');
+                }else if($enq_row->status == 3){
+                  $noti_msg = display('client_assigned');
+                }else{
+                  $noti_msg = 'Data Assigned';
+                }
+
+                $this->common_model->send_fcm($noti_msg,$noti_msg,$assign_employee);
                // $customer_name = $data['enquiry']->name_prefix.''.$data['enquiry']->name.' '.$data['enquiry']->lastname.' ';
               //  $notification_msg = sprintf(display('enquiry_assigned_to'),trim($customer_name),trim($assign_to_name),trim($assign_by_name));
                // $this->Message_models->sendwhatsapp($assignee_phone,$notification_msg);
