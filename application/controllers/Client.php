@@ -831,6 +831,7 @@ class Client extends CI_Controller {
        
             $res = $this->enquiry_model->get_deal($enquiry_id);
             $name_prefix = $this->input->post('name_prefix');
+			$code_prefix = $this->input->post('code_prefix');
             $firstname = $this->input->post('enquirername');
             $lastname = $this->input->post('lastname');
             $email = $this->input->post('email');
@@ -930,6 +931,7 @@ if(!empty($email)){
             $this->db->set('email', $email);
 }
             $this->db->set('name_prefix', $name_prefix);
+			$this->db->set('code_prefix', $code_prefix);
             $this->db->set('name', $firstname);
             $this->db->set('enquiry_source', $lead_source);
             $this->db->set('sub_source', $subsource);
@@ -3396,7 +3398,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     {
                         echo'<td '.(($row->rate!=$old_rate)?"style='background:#ffbaba;'":"").'><input type="number" id="rate_'.$row->id.'" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
                         <td class="disc-box" '.(($discount!=$old_discount)?"style='background:#ffbaba;'":"").'><input type="number" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
-						<td '.(($old_final_rate!=$final_rate)?"style='background:#ffbaba;'":"").'><input type="text" id="final_rate_'.$row->id.'" class="final_rate" name="final_rate['.$row->id.']" data-id="'.$row->id.'" value="'.$final_rate.'"></td>';
+						<td '.(($old_final_rate!=$final_rate)?"style='background:#ffbaba;'":"").'><input type="text" id="final_rate_'.$row->id.'" class="final_rate" name="final_rate['.$row->id.']" data-id="'.$row->id.'" value="'.$final_rate.'" onchange="final_discount_calculate('.$row->id.');"></td>';
                     }
 
                     if($booking_type=='ftl')

@@ -183,6 +183,7 @@
 							<th>Report To</th>
                             <th>Email</th>
                             <th><?php echo display('mobile') ?></th>
+							<th>Designation</th>
 							<th>Employee Region</th>
 							<th>Employee Area</th>
 							<th>Employee Branch</th>

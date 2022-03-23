@@ -618,6 +618,7 @@ if($usr_ttl > 1){
                 'phone' => $this->input->post('mobileno', true),
                 'other_phone' => $other_phone,
                 'name_prefix' => $this->input->post('name_prefix', true),
+				'code_prefix' => $this->input->post('code_prefix', true),
                 'name' => $name_w_prefix,
                 'lastname' => $this->input->post('lastname'),
                 'gender' => $this->input->post('gender'),

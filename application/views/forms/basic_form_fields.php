@@ -115,9 +115,15 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                         <i class="text-danger">*</i></label>
                         <?php
                           }?>
-
-                        <input class="form-control" value="<?php if(!empty($_GET['phone'])){echo $_GET['phone']; }else{ echo set_value('mobileno')?set_value('mobileno'):($this->input->get('phone')?$this->input->get('phone'):'');}?>" name="mobileno" onchange="exist_alert(this.value,'mobile')" type="text" maxlength='10' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Enter Mobile Number" <?=$required?> required>
-                        <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
+                        <div class = "input-group" >
+                           <span class="input-group-addon" style="padding:0px!important;border:0px!important;width:30%;">
+                              <select class="form-control" name="code_prefix">
+                                 <option value="91" selected>+91</option>
+                              </select>
+                           </span>
+                           <input class="form-control" value="<?php if(!empty($_GET['phone'])){echo $_GET['phone']; }else{ echo set_value('mobileno')?set_value('mobileno'):($this->input->get('phone')?$this->input->get('phone'):'');}?>" name="mobileno" onchange="exist_alert(this.value,'mobile')" type="text" maxlength='10' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Enter Mobile Number" <?=$required?> style="width:100%;" required>
+                           <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-50px;margin-right:10px;color:red"></i>
+                        </div>
                      </div>
                      <div id="add_more_phone">
                           <div class="form-group col-sm-4 col-md-4">

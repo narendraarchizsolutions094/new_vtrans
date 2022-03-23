@@ -221,6 +221,7 @@ class User extends CI_Controller
 			$sub[] = $department->rep_to ?? "NA";
             $sub[] = '<a   href="' . base_url('user/edit/' . $department->pk_i_admin_id . '') . '">' . $department->s_user_email . '</a>';
             $sub[] = $department->s_phoneno ?? "NA";
+			$sub[] = $department->designation ?? "NA";
 			$sub[] = $department->region ?? "NA";
 			$sub[] = $department->area ?? "NA";
 			$sub[] = $branches ?? "NA";

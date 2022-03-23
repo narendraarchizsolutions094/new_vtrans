@@ -1144,6 +1144,9 @@ $(document).ready(function(){
                   return d;
               }
           },
+		  "drawCallback":function(settings ){
+			refresh_table_exs();
+          },
           columnDefs: [
                        { orderable: false, targets: -1 }
                     ],
@@ -1151,6 +1154,33 @@ $(document).ready(function(){
 
 });
 
+</script>
+<style>.tr_hover {
+background-color: #ffb099; 
+}</style>
+<script>
+function refresh_table_exs(){
+      // alert(exstatus);
+	  $(".deal_download").show();
+      var tr_list = $("#deals_table tbody").find('tr');
+      $(tr_list).each(function(k,v){
+          var sfa = $(v).find('td > a.sfa > label.label').text();
+		  var lfa = $(v).find('td > label.lfa').text();
+		  //alert(lfa);
+           var string = "Send For Approval";
+		   var stringlbl = "Waiting for approval";
+          if(sfa === string)
+          {
+            $(v).addClass('tr_hover');
+			$(v).find('td > div.btn-group > a.deal_download').hide();
+          }
+		  if(lfa === stringlbl)
+          {
+			$(v).find('td > div.btn-group > a.deal_download').hide();
+          }
+         
+      });
+}
 </script>
 <?php
 }

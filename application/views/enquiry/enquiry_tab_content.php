@@ -110,8 +110,15 @@ foreach($basic_fields as $row)
    <?php  if($row['id']== MOBILE && is_active_field(MOBILE,$process_id)){  ?>
    <div class="form-group col-sm-6 col-md-6 enq-mobile"> 
       <label><?php echo display('mobile') ?><i class="text-danger">*</i></label>
-      <input class="form-control mask-number" id="mobileno" name="mobileno" type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
-      <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-25px;margin-right:10px;color:red"></i>
+	  <div class = "input-group">
+         <span class = "input-group-addon" style="padding:0px !important;border:0px !important;width:40%;">
+            <select class="form-control" name="code_prefix" id="code_prefix">
+               <option value="91" selected>+91</option>
+            </select>
+         </span>
+         <input class="form-control mask-number" id="mobileno" name="mobileno" type="<?= $type ?>" maxlength='10' onchange="exist_alert(this.value,'mobile')" value="<?php echo $details->phone ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" style="width:100%;" />
+         <i class="fa fa-plus" onclick="add_more_phone('add_more_phone')" style="float:right;margin-top:-50px;margin-right:10px;color:red"></i>
+      </div>
    </div>
    <?php }?>
    <?php
@@ -1141,6 +1148,7 @@ document.getElementById("sales_branch").disabled = true;
 document.getElementById("client_name").disabled = true;
 document.getElementById("mobileno").disabled = true;
 document.getElementById("email").disabled = true;
+document.getElementById("code_prefix").disabled = true;
 //document.getElementById("expected_date").disabled = true;
 //document.getElementById("Lead_Scores").disabled = true;
 });
@@ -1153,6 +1161,7 @@ document.getElementById("sales_branch").disabled = false;
 document.getElementById("client_name").disabled = false;
 document.getElementById("mobileno").disabled = false;
 document.getElementById("email").disabled = false;
+document.getElementById("code_prefix").disabled = false;
 //document.getElementById("expected_date").disabled = false;
 //document.getElementById("Lead_Scores").disabled = false;
 }
