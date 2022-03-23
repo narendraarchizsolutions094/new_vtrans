@@ -3515,7 +3515,9 @@ echo  $details1;
         }
         if(!empty($notimsg)){
             $this->Leads_Model->add_comment_for_events_popup('',date('d-m-Y'),'','','','',date('H:i:s'),$endata->Enquery_id,0,$notimsg,1,'',$en->createdby);
-           
+            
+            $this->common_model->send_fcm($notimsg,$notimsg,$en->createdby);
+
             $user_row = $this->user_model->read_by_id($en->createdby);
             if(!empty($user_row)){
                 $this->message_models->smssend($user_row->s_phoneno, $notimsg);                
