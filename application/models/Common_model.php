@@ -177,7 +177,7 @@ class Common_model extends CI_Model {
         if(empty($message)){
           $message = 'N/A';      
         }
-        $value = $this->db->where('pk_i_admin_id',$uid)-get('tbl_admin')->row_array();        
+        $value = $this->db->where('pk_i_admin_id',$uid)->get('tbl_admin')->row_array();        
         $d= [
             "to" =>$value['mobile_token'],
             "notification" => [
