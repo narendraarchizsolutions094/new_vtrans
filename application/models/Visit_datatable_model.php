@@ -123,7 +123,9 @@ class Visit_datatable_model extends CI_Model{
 		$where .= " AND enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; */
 
-        $where .= "( tbl_visit.user_id IN (".implode(',', $all_reporting_ids).'))';		
+        $where .= "( tbl_visit.user_id IN (".implode(',', $all_reporting_ids).')';
+        $where .= " OR enquiry.created_by IN (".implode(',', $all_reporting_ids).')';		
+        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';		
 		
 /* $ids = array('40805', '40807', '40856');
 			$this->db->or_where_in('enquiry.company', $ids);
@@ -193,11 +195,19 @@ class Visit_datatable_model extends CI_Model{
             $and =1;
         } */
 		
-		if(!empty($_POST['enquiry_id']))
+		/* if(!empty($_POST['enquiry_id']))
         {    
 		   $client_name = $_POST['enquiry_id'];
            $where .= " AND enquiry.client_name LIKE  '%$client_name%'";
-        }
+        } */
+		
+		if(!empty($_POST['enquiry_id']))
+        {    
+	        $client_name = $_POST['enquiry_id'];
+			$where .= " AND enquiry.client_name LIKE  '%$client_name%'";
+			$where.=" OR enquiry.enquiry_id = '".$client_name."'";
+			
+		}
 		
         if(!empty($_POST['createdby']))
         {   

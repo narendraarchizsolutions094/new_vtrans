@@ -831,7 +831,7 @@ class Client extends CI_Controller {
        
             $res = $this->enquiry_model->get_deal($enquiry_id);
             $name_prefix = $this->input->post('name_prefix');
-			$code_prefix = $this->input->post('code_prefix');
+			//$code_prefix = $this->input->post('code_prefix');
             $firstname = $this->input->post('enquirername');
             $lastname = $this->input->post('lastname');
             $email = $this->input->post('email');
@@ -850,6 +850,7 @@ class Client extends CI_Controller {
             
             $sales_branch = $this->input->post('sales_branch');
             $client_name = $this->input->post('client_name');
+			$gender = $this->input->post('gender');
             
             $sales_region = $this->input->post('sales_region');
             $sales_area = $this->input->post('sales_area');
@@ -931,7 +932,7 @@ if(!empty($email)){
             $this->db->set('email', $email);
 }
             $this->db->set('name_prefix', $name_prefix);
-			$this->db->set('code_prefix', $code_prefix);
+			//$this->db->set('code_prefix', $code_prefix);
             $this->db->set('name', $firstname);
             $this->db->set('enquiry_source', $lead_source);
             $this->db->set('sub_source', $subsource);
@@ -965,6 +966,7 @@ if(!empty($process_id)){
             $this->db->set('product_id', $process_id); 
 }			
             $this->db->set('lead_score', $lead_score);
+			$this->db->set('gender', $gender);
 			$this->db->set('lead_expected_date', $expected_date);
             $this->db->where('enquiry_id', $enquiry_id);            
             $this->db->update('enquiry');  
@@ -3396,8 +3398,8 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                             <td '.(($row->delivery_branch!=$old_d_branch)?"style='background:#ffbaba;'":"").'><input type="hidden" name="did['.$row->id.']" value="'.$row->delivery_branch.'">'.$row->to.'</td>';
                     if($booking_type=='sundry')
                     {
-                        echo'<td '.(($row->rate!=$old_rate)?"style='background:#ffbaba;'":"").'><input type="number" id="rate_'.$row->id.'" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
-                        <td class="disc-box" '.(($discount!=$old_discount)?"style='background:#ffbaba;'":"").'><input type="number" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
+                        echo'<td '.(($row->rate!=$old_rate)?"style='background:#ffbaba;'":"").'><input type="text" id="rate_'.$row->id.'" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
+                        <td class="disc-box" '.(($discount!=$old_discount)?"style='background:#ffbaba;'":"").'><input type="text" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
 						<td '.(($old_final_rate!=$final_rate)?"style='background:#ffbaba;'":"").'><input type="text" id="final_rate_'.$row->id.'" class="final_rate" name="final_rate['.$row->id.']" data-id="'.$row->id.'" value="'.$final_rate.'" onchange="final_discount_calculate('.$row->id.');"></td>';
                     }
 
