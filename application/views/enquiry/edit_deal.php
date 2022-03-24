@@ -30,18 +30,13 @@
 		        <label>Booking Type</label>
 		        <select class="form-control" name="booking_type" id="booking_type" onchange="set_type(this)">
 				<option>#-Select Here</option>
-		            <?php
-		        	if($deal->booking_type=='sundry')
-		        	{
-		        	?>
+		            <?php if($deal->booking_type=='sundry'){ ?>
 		            <option value="sundry" <?=$deal->booking_type=='sundry'?'selected':''?>>Sundry</option>
-		            <?php
-		        	}else
-		        	{?>
+		            <?php }else if($deal->booking_type=='ftl'){ ?>
 		            <option value="ftl" <?=$deal->booking_type=='ftl'?'selected':''?>>FTL</option>
-		            <?php
-		        	}
-		        	?>
+		            <?php }else{ ?>
+					<option value="both" <?=$deal->booking_type=='both'?'selected':''?>>Both</option>
+					<?php } ?>
 		        </select>
 		    </div>
 		</div>
@@ -667,6 +662,16 @@ function final_rate_calculate(uid)
 		var finalrate = finalrate.toFixed(1);
 		var finalrate = finalrate+'0';
 		$("#final_rate_"+uid).val(finalrate);
+}
+
+function final_discount_calculate(uid)
+{
+		var rate =	$("#rate_"+uid).val();
+		var discount =	$("#discount_"+uid).val();
+		var final_rate =	$("#final_rate_"+uid).val();
+		var percent = ((rate - final_rate)*100) /rate ;
+		var dis_rate = percent.toFixed(1);
+		$("#discount_"+uid).val(dis_rate);
 }
 
 function rep_paymode()

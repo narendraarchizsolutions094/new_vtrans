@@ -25,6 +25,7 @@
 				    <option>#-Select Here</option>
 		            <option value="sundry">Sundry</option>
 		            <option value="ftl">FTL</option>
+					<option value="both">Both</option>
 		        </select>
 		    </div>
 		</div>
@@ -492,6 +493,16 @@ function final_rate_calculate(uid)
 		var finalrate = finalrate+'0';
 		//alert(finalrate);
 		$("#final_rate_"+uid).val(finalrate);
+}
+
+function final_discount_calculate(uid)
+{
+		var rate =	$("#rate_"+uid).val();
+		var discount =	$("#discount_"+uid).val();
+		var final_rate =	$("#final_rate_"+uid).val();
+		var percent = ((rate - final_rate)*100) /rate ;
+		var dis_rate = percent.toFixed(1);
+		$("#discount_"+uid).val(dis_rate);
 }
 
 function rep_paymode()
