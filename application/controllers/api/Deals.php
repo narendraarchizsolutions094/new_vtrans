@@ -475,6 +475,7 @@ class Deals extends REST_Controller {
     	{
     		$this->db->where(array('id'=>$deal_id,'comp_id'=>$comp_id))
     				->set(array('status'=>$status,'updatedby'=>$user_id))->update('commercial_info');
+					
     		$res = $this->db->affected_rows();
     		if($res)
     		{

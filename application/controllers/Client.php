@@ -2346,6 +2346,8 @@ public function visit_expense_status()
                 $this->message_models->smssend($user_row->s_phoneno, $subject);                
                 $this->message_models->sendwhatsapp($user_row->s_phoneno, $subject);
                 $this->message_models->send_email($user_row->s_user_email, 'Visit Notification', $subject);
+                $remarks = $_POST['remarks'];
+                $this->common_model->send_fcm($subject,$remarks,$visit_creator);
             }
         }
     }
@@ -3651,10 +3653,22 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     </table>';
                 if($booking_type=='sundry')
                 {
-					echo'<p '.(($oc[25]!=$uc[25])?"style='background:#ffbaba;'":"").'>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[25]" value="'.$oc[25].'" class="exip no_edit" style="width: 100px !important;">. per Ltr.';
+                    if(!empty($oc[25])){
+                        $oc25 = $oc[25];
+                    }else{
+                        $oc25 = '';
+                    }
+
+                    if(!empty($uc[25])){
+                        $uc25 = $uc[25];
+                    }else{
+                        $uc25 = '';
+                    }
+
+					echo'<p '.(($oc25!=$uc25)?"style='background:#ffbaba;'":"").'>The average fuel price at the time of signing the contract is Rs <input type="number" name="oc[25]" value="'.$oc25.'" class="exip no_edit" style="width: 100px !important;">. per Ltr.';
         
 		if(!empty($deal_id)){
-                echo'&nbsp;&nbsp;&nbsp;To &nbsp;&nbsp;&nbsp;<input type="number" name="uc[25]" value="'.$uc[25].'" class="exip" style="width: 100px !important;">. per Ltr.';
+                echo'&nbsp;&nbsp;&nbsp;To &nbsp;&nbsp;&nbsp;<input type="number" name="uc[25]" value="'.$uc25.'" class="exip" style="width: 100px !important;">. per Ltr.';
                     
 		}
 		echo'</p>';
@@ -4014,7 +4028,9 @@ if(is_numeric($b_lastChar)){
                     );
                 }
                 $this->Leads_Model->add_comment_for_events_stage($deal->quatation_number.' Deal approval request send.',$enq->Enquery_id,0,0,'',0);
-
+                $noti_msg = $deal->quatation_number.' Deal approval request send.';
+                $this->common_model->send_fcm($noti_msg,$noti_msg,$current_user->report_to);
+                
                 redirect($_SERVER['HTTP_REFERER']);
            }
            else

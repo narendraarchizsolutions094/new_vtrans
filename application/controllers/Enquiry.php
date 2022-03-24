@@ -3514,10 +3514,8 @@ echo  $details1;
             $notimsg = 'Deal Rejected';
         }
         if(!empty($notimsg)){
-            $this->Leads_Model->add_comment_for_events_popup('',date('d-m-Y'),'','','','',date('H:i:s'),$endata->Enquery_id,0,$notimsg,1,'',$en->createdby);
-            
+            $this->Leads_Model->add_comment_for_events_popup('',date('d-m-Y'),'','','','',date('H:i:s'),$endata->Enquery_id,0,$notimsg,1,'',$en->createdby);            
             $this->common_model->send_fcm($notimsg,$notimsg,$en->createdby);
-
             $user_row = $this->user_model->read_by_id($en->createdby);
             if(!empty($user_row)){
                 $this->message_models->smssend($user_row->s_phoneno, $notimsg);                
@@ -3771,13 +3769,15 @@ $this->db->insert('tbl_expense',$exp_data);
                     'task_status'      =>  2,
                     'query_id'       =>  $visit_id,
                     'task_remark'    =>  $remarks,
-                      'task_date'    =>   date("d-m-Y"),
+                    'task_date'    =>   date("d-m-Y"),
                     'task_time'        => date("H:i:s"),
                     'related_to' => $report_to,
                     'create_by'      =>  $this->session->user_id
                 );
                 $this->db->insert('query_response',$ins_arr);
                 $this->session->set_flashdata('message', 'Request successfully submitted');
+                $this->common_model->send_fcm('Need for approval',$remarks,$report_to);
+                
                 // redirect($url);
                 redirect($this->agent->referrer()); 
     }
