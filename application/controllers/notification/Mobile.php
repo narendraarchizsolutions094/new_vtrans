@@ -56,6 +56,13 @@ class Mobile extends CI_Controller
                 echo "<pre>";
                 print($result);
                 echo "</pre>";
+
+                $ins_arr = array(
+                    'res' => $result,
+                    'req' => json_encode($d)
+                );
+        
+                $this->db->insert('push_notification',$ins_arr);
             }
         }
     }   

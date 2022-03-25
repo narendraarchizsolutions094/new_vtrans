@@ -4064,8 +4064,13 @@ if(is_numeric($b_lastChar)){
               $this->Leads_Model->add_comment_for_events_popup($deal->quatation_number.' Deal approved By '.$cdata->s_display_name.' '.$cdata->last_name,date('d-m-Y'),$cdata->s_display_name.' '.$cdata->last_name,'','','',date('H:i:s'),$enq->Enquery_id,0,$deal->quatation_number.' Deal approved',1,0);
 
               $this->Leads_Model->add_comment_for_events_stage($deal->quatation_number.' Deal approved ',$enq->Enquery_id,0,0,'',0);
+              
+              $notimsg1 = 'Deal approved';
+              $notimsg2 = $deal->quatation_number.' Deal approved By '.$cdata->s_display_name.' '.$cdata->last_name;
 
-                //$this->db->where('id',$deal->copy_id)->delete('commercial_info');
+              $this->common_model->send_fcm($notimsg1,$notimsg2,$deal->createdby);
+
+              //$this->db->where('id',$deal->copy_id)->delete('commercial_info');
 
                 $this->db->set('approval','done');
                 $this->db->set('edited',0);
@@ -4090,6 +4095,12 @@ if(is_numeric($b_lastChar)){
                 $this->db->delete('commercial_info');
 
                 $this->session->set_flashdata('message','Deal Rejected.');
+
+
+                $notimsg1 = 'Deal Rejected';
+                $notimsg2 = $deal->quatation_number.' Deal Rejected By '.$cdata->s_display_name.' '.$cdata->last_name;
+                $this->common_model->send_fcm($notimsg1,$notimsg2,$deal->createdby);
+
                 redirect($_SERVER['HTTP_REFERER']);
            }
            else if($action=='resend' && $deal->createdby!=$this->session->user_id)
@@ -4106,6 +4117,12 @@ if(is_numeric($b_lastChar)){
 
                 // $this->db->where('id',$deal->id);
                 // $this->db->delete('commercial_info');
+
+
+                $notimsg1 = 'Deal Request';
+                $notimsg2 = $deal->quatation_number.'  Deal Request passed To '.$cdata->s_display_name.' '.$cdata->last_name;
+                $this->common_model->send_fcm($notimsg1,$notimsg2,$deal->createdby);
+
 
                 $this->session->set_flashdata('message','Send for Approval.');
                 redirect($_SERVER['HTTP_REFERER']);
