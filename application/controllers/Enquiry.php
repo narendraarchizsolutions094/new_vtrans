@@ -618,7 +618,7 @@ if($usr_ttl > 1){
                 'phone' => $this->input->post('mobileno', true),
                 'other_phone' => $other_phone,
                 'name_prefix' => $this->input->post('name_prefix', true),
-				'code_prefix' => $this->input->post('code_prefix', true),
+				//'code_prefix' => $this->input->post('code_prefix', true),
                 'name' => $name_w_prefix,
                 'lastname' => $this->input->post('lastname'),
                 'gender' => $this->input->post('gender'),
@@ -3648,6 +3648,7 @@ echo  $details1;
             $visit_type=$this->input->post('type');
             $visit_time=$this->input->post('visit_time');
             $visit_date=$this->input->post('visit_date');
+
             if($visit_type==1){
                $visit_time=date('H:i');
                $visit_date=date('Y-m-d');
@@ -3655,7 +3656,7 @@ echo  $details1;
                 $visit_date    =   $this->input->post('visit_date');
                 $visit_date = date("Y-m-d",strtotime($visit_date));
             }
-			
+		
 //For Finding user rate 			
 $user_data = $this->db->get_where('tbl_admin',array('pk_i_admin_id' => $this->session->user_id))->row_array();
 $rate_data = $this->db->get_where('discount_matrix',array('id' => $user_data['discount_id']))->row_array();

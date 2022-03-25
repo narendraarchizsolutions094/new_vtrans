@@ -25,7 +25,6 @@
 				    <option>#-Select Here</option>
 		            <option value="sundry">Sundry</option>
 		            <option value="ftl">FTL</option>
-					<option value="both">Both</option>
 		        </select>
 		    </div>
 		</div>
@@ -497,12 +496,24 @@ function final_rate_calculate(uid)
 
 function final_discount_calculate(uid)
 {
+	var max_discount = <?=$max_discount?>;
 		var rate =	$("#rate_"+uid).val();
 		var discount =	$("#discount_"+uid).val();
 		var final_rate =	$("#final_rate_"+uid).val();
 		var percent = ((rate - final_rate)*100) /rate ;
 		var dis_rate = percent.toFixed(1);
+if(dis_rate > max_discount)
+	{
+		Swal.fire({
+			title:'You are authorized to give discount upto '+max_discount+'% only. Please send this quotation to your reporting manager for further approval.',
+			icon:'warning',
+			type:'warning',
+			showConfirmButton:false,
+		});
+		$("#discount_"+uid).val(max_discount);
+	}else{
 		$("#discount_"+uid).val(dis_rate);
+	}
 }
 
 function rep_paymode()

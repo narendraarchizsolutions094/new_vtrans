@@ -1373,11 +1373,11 @@ if(user_access('1020'))
         </div>
 		<div class="form-group col-md-6 visit-date col-md-6">     
           <label>Visit Date</label>
-          <input type="date" name="visit_date" id="vdate" disabled class="form-control" value="<?= date('Y-m-d') ?>">
+          <input type="date" name="visit_date" id="vdate" readonly class="form-control" value="<?= date('Y-m-d') ?>">
         </div>
         <div class="form-group col-md-6 visit-time col-md-6">     
          <label>Visit Time</label>
-          <input type="time" name="visit_time" id="vtime" disabled class="form-control" value="<?= date('H:i') ?>">
+          <input type="time" name="visit_time" id="vtime" readonly class="form-control" value="<?= date('H:i') ?>">
         </div>
         <input type="hidden" name="visit_notification_id" value="">
          <div class="row" id="save_button">

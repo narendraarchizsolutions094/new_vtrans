@@ -32,11 +32,9 @@
 				<option>#-Select Here</option>
 		            <?php if($deal->booking_type=='sundry'){ ?>
 		            <option value="sundry" <?=$deal->booking_type=='sundry'?'selected':''?>>Sundry</option>
-		            <?php }else if($deal->booking_type=='ftl'){ ?>
-		            <option value="ftl" <?=$deal->booking_type=='ftl'?'selected':''?>>FTL</option>
 		            <?php }else{ ?>
-					<option value="both" <?=$deal->booking_type=='both'?'selected':''?>>Both</option>
-					<?php } ?>
+		            <option value="ftl" <?=$deal->booking_type=='ftl'?'selected':''?>>FTL</option>
+		            <?php } ?>
 		        </select>
 		    </div>
 		</div>
@@ -666,12 +664,26 @@ function final_rate_calculate(uid)
 
 function final_discount_calculate(uid)
 {
+	var max_discount = <?=$max_discount?>;
 		var rate =	$("#rate_"+uid).val();
 		var discount =	$("#discount_"+uid).val();
 		var final_rate =	$("#final_rate_"+uid).val();
 		var percent = ((rate - final_rate)*100) /rate ;
 		var dis_rate = percent.toFixed(1);
+if(dis_rate > max_discount)
+	{
+		Swal.fire({
+			title:'You are authorized to give discount upto '+max_discount+'% only. Please send this quotation to your reporting manager for further approval.',
+			icon:'warning',
+			type:'warning',
+			showConfirmButton:false,
+		});
+		$("#discount_"+uid).val(max_discount);
+		final_rate_calculate();
+	}else{
 		$("#discount_"+uid).val(dis_rate);
+		final_rate_calculate();
+	}
 }
 
 function rep_paymode()
