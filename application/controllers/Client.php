@@ -2009,10 +2009,8 @@ public function view_editable_aggrement()
             $this->load->view('layout/main_wrapper', $data);
         }else{
             $this->session->set_flashdata('message', 'Travel History not found');
-
             redirect('client/visits');
-        }
-       
+        }       
     }
 	
 	public function visit_live(){                
@@ -2293,20 +2291,44 @@ public function view_editable_aggrement()
 
 
    }
-public function update_expense_status()
-{
-    if($_POST)
-    {
-        $comp_id=$this->session->companey_id;
-        $user_id=$this->session->user_id;
-        foreach ($_POST['exp_ids'] as $key => $value) {
-        // echo $value;
-        $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
-        print_r($value);
-        $this->db->where(array('comp_id'=>$comp_id,'id'=>$value))->update('tbl_expense',$data);
+        public function update_expense_status(){
+            if($_POST){
+                $comp_id=$this->session->companey_id;
+                $user_id=$this->session->user_id;
+                foreach ($_POST['exp_ids'] as $key => $value) {
+                    $data=['uid'=>$user_id,'remarks'=>$_POST['remarks'],'approve_status'=>$_POST['status']];
+                    print_r($value);
+                    $this->db->where(array('comp_id'=>$comp_id,'id'=>$value))->update('tbl_expense',$data);
+                    $exp_row = $this->db->where('id',$value)->get('tbl_expense')->row_array();
+                    if(!empty($exp_row['visit_id'])){
+                        $visit_id = $exp_row['visit_id'];
+                        $visit_row = $this->db->select("enquiry.Enquery_id as comment_id,tbl_visit.user_id as visit_creator")
+                        ->from("tbl_visit")
+                        ->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left')
+                        ->where('tbl_visit.id', $visit_id)
+                        ->get()->row_array();
+                        $comment_id = $visit_row['comment_id'];
+                        $status = $_POST['status'];
+                        $approved_by_id = $this->session->user_id;
+                        $user_row = $this->db->where('pk_i_admin_id',$approved_by_id)->get('tbl_admin')->row_array();
+                        $approved_by_name = $user_row['s_display_name'].''.$user_row['last_name'];
+                        if($status == 1){
+                            $subject = 'Expence Rejected';
+                            $remarks = 'Visit expence rejected by '.$approved_by_name;
+                        }else if($status == 2){
+                            $subject = 'Expence Approve';
+                            $remarks = 'Visit expence approved by '.$approved_by_name;
+                        }
+                        $visit_creator = $visit_row['visit_creator'];
+                        $this->Leads_Model->add_comment_for_events_popup($remarks,date('d-m-Y'),'','','','',date('H:i:s'),$comment_id,0,$subject,1,0,$visit_creator);
+                        $this->common_model->send_fcm($subject,$remarks,$visit_creator);
+
+                        //echo $this->db->last_query();
+                    }
+                }
             }
-    }
-}
+        }
+
 public function visit_expense_status()
 {
     if($_POST)

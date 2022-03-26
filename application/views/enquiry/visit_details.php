@@ -543,7 +543,7 @@ function checkAll(ele) {
             <div class="col-md-12">
             <div class="form-group">
             <label>Rating</label>
-       	<select class="form-control v_filter" name="rating">
+       	    <select class="form-control v_filter" name="rating">
               <option value="">Select</option>
               <option value="1 star" <?php if($details->rating=="1 star"){echo'selected';} ?>> 1 star</option>
               <option value="2 star" <?php if($details->rating=="2 star"){echo'selected';} ?>> 2 star</option>
@@ -778,8 +778,8 @@ $(function() {
               url: '<?= base_url('client/update_expense_status') ?>',
               data: {exp_ids:x,status:approve_status,remarks:remarks},
               success:function(data){
-              //  alert(data);
-               location.reload();
+              //alert(data);
+                location.reload();
               } 
               });
 
