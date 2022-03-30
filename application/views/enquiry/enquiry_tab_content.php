@@ -1063,12 +1063,12 @@ var fill_id = '<?=$details->enq_salebrach;?>';
       var ischecked = $('input[name="allowbackdate"]:checked').val();
       if(ischecked){
          
-         $("input[name='visit_date']").removeAttr('disabled');
-         $("input[name='visit_time']").removeAttr('disabled');
+         $("input[name='visit_date']").removeAttr('readonly');
+         $("input[name='visit_time']").removeAttr('readonly');
       }else{
          console.log('unchecked');
-         $("input[name='visit_date']").prop("disabled", true);;
-         $("input[name='visit_time']").prop("disabled", true);;
+         $("input[name='visit_date']").prop("readonly", true);;
+         $("input[name='visit_time']").prop("readonly", true);;
       }
    })
   var src_id = $('#lead_source').val();
