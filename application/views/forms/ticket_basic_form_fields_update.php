@@ -200,7 +200,7 @@ echo'
                             foreach($clients as $ind => $clt)
                             {                              
                               $n = $clt->company_name;
-                              if(!empty($n)){                                
+                              if(!empty($n)){
                                 if($clt->enquiry_id==$ticket->client)
                                 echo "<option value =".$clt->enquiry_id." selected>".$n."</option>";                                
                               }
@@ -233,7 +233,7 @@ echo'
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Phone<span class="text-danger">*</span></label>
-                        <input type="text" name="phone" class="form-control" value="<?php  if(!empty($ticket->phone)){ echo $ticket->phone; } ?>" required>                        
+                        <input maxlength="10" type="text" name="phone" class="form-control" value="<?php  if(!empty($ticket->phone)){ echo $ticket->phone; } ?>" required>                        
                       </div>
                     </div>
 

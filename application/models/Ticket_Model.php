@@ -215,9 +215,76 @@ class Ticket_Model extends CI_Model
 	return $pdata;
 
    }
+
+   public function create_enq_by_ticket($ticket_code){
+		$ticket_row = $this->db->where('ticketno',$ticket_code)->get('tbl_ticket')->row_array();
+
+		$branch_id = $ticket_row['branch_for'];
+		$company_name = '';
+		if(!empty($ticket_row['comapny_id'])){
+			$comapny_id = $ticket_row['comapny_id'];
+			$company_row = $this->db->where('id', $comapny_id)->get('tbl_company')->row_array();
+			if(!empty($company_row['company_name'])){
+				$company_name = $company_row['company_name'];
+			}
+		}
+
+		if($branch_id){
+			$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$branch_id)->get('branch')->row();
+			$branch_id = $branch_id;
+			$area_id = $rab->area_id;
+			$region_id = $rab->region_id;
+			$client_name = $company_name.' '.$rab->branch_name;
+		}else{
+			$branch_id = '';
+			$area_id = '';
+			$region_id = '';
+			$client_name = $company_name;
+			$assign_to = '';
+		}
+		
+
+		$usr_br = $this->User_model->all_emp_list_assign($branch_id);
+		$usr_ttl = count($usr_br);
+		if($usr_ttl > 1){	
+			$usr_id = $usr_br[0]->pk_i_admin_id;
+			$reparr = $this->db->select('report_to')->where('pk_i_admin_id',$usr_id)->get('tbl_admin')->row();
+			$assign_to = $reparr->report_to??'';
+		}else{
+			$usr_id = $usr_br[0]->pk_i_admin_id;
+			$assign_to = $usr_id??'';	
+		} 
+
+
+		$encode = get_enquery_code();
+		$enq_arr = array(
+			'Enquery_id' 	=> $encode,
+			'comp_id' 		=> $this->session->companey_id,
+			'email' 		=> $ticket_row['email'],
+			'phone' 		=> $ticket_row['phone'],
+			'name' 			=> $ticket_row['name'],
+			'company'		=> $ticket_row['comapny_id'],
+			'sales_branch'	=> $branch_id,
+			'sales_region'	=> $region_id,
+			'sales_area'	=> $area_id,
+			'client_name'	=> $client_name,
+			'checked' 		=> 0,
+			'product_id' 	=> $_SESSION['process'][0],
+			'created_date' 	=> date("Y-m-d H:i:s"),
+			'status' 		=> 1,
+			'created_by' 	=> $this->session->user_id,
+			'aasign_to'     => $assign_to,
+			'enquiry_source'=> $ticket_row['sourse'],
+			'enquiry'		=> $ticket_row['message'],
+		);
+
+		$this->db->insert('enquiry',$enq_arr);
+
+   }
 	public function save($companey_id = '', $user_id = '')
 	{
 		$cid = '';
+		$newcompId = '';
 		if (!empty($companey_id) && !empty($user_id) && !empty($_POST['client_new']) && empty($_POST['client'])) {
 			if (isset($_SESSION['process']) && count($_SESSION['process']) == 1) {				
 				$company = $this->db->where('company_name',$_POST['client_new'])->get('tbl_company')->row();
@@ -273,7 +340,7 @@ class Ticket_Model extends CI_Model
 					$client_name = '';
 				}
 				//print_r($assign_to);exit;
-//End				
+				//End				
 				$encode = get_enquery_code();
 				$postData = array(
 					'Enquery_id' 	=> $encode,
@@ -287,25 +354,34 @@ class Ticket_Model extends CI_Model
 					'sales_area'	=> $area_id,
 					'client_name'	=> $client_name,
 					'checked' 		=> 0,
-					'product_id' 	=>  $_SESSION['process'][0],
-					'created_date' 	=>  date("Y-m-d H:i:s"),
+					'product_id' 	=> $_SESSION['process'][0],
+					'created_date' 	=> date("Y-m-d H:i:s"),
 					'status' 		=> 1,
 					'created_by' 	=> $this->session->user_id,
 					'aasign_to'     => $assign_to,
 					'phone'			=> $this->input->post('phone'),
 				);
+				
 				//print_r($postData);
-				$this->db->insert('enquiry', $postData);
-				$cid = $this->db->insert_id();
+				//$this->db->insert('enquiry', $postData);
+				//$cid = $this->db->insert_id();
 			} else {
 				//echo $this->session->userdata('process');
-				// 	echo count($_SESSION['process']);
-
+				//echo count($_SESSION['process']);
 				$this->session->set_flashdata('message', 'Please Select Atmost 1 process while creating a Ticket.');
 				return false;
 			}
 		}
 
+		if(empty($newcompId)){
+			$enquiry_id = $this->input->post("client");
+			if($enquiry_id){
+				$enq_row =  $this->db->select('company')->where('enquiry_id',$enquiry_id)->get('enquiry')->row_array();
+				if(!empty($enq_row)){
+					$newcompId = $enq_row['company'];
+				}
+			}
+		}
 		$cdate = explode("/", $this->input->post("complaindate", true));
 		$ndate = (!empty($cdate[2])) ? $cdate[2] . "-" . $cdate[0] . "-" . $cdate[1] : date("Y-m-d");
 		$arr = array(
@@ -330,7 +406,6 @@ class Ticket_Model extends CI_Model
 			if (!empty($retdata)) {
 				if (isset($_POST["ticketno"])) {
 					$old_ticket =  $this->db->where(array('id' => $_POST['ticketno']))->get('tbl_ticket')->row();
-
 					if (!empty($old_ticket->attachment)) {	//echo'sdf';
 						$new_res = json_decode($old_ticket->attachment);
 						$retdata = array_merge($new_res, $retdata);
@@ -345,6 +420,7 @@ class Ticket_Model extends CI_Model
 			$arr["name"]   		= ($this->input->post("name", true)) ? $this->input->post("name", true) : "";
 			$arr["email"]  		= ($this->input->post("email", true)) ? $this->input->post("email", true) : "";
 			$arr["client"]     	= ($this->input->post("client", true)) ? $this->input->post("client", true) : "";
+			$arr['comapny_id'] 	= $newcompId;
 			$arr["phone"]     	= ($this->input->post("phone", true)) ? $this->input->post("phone", true) : "";
 			$this->db->where("id", $this->input->post("ticketno", true));
 			$this->db->update("tbl_ticket", $arr);
@@ -369,6 +445,7 @@ class Ticket_Model extends CI_Model
 			$arr["ticket_status"] = $this->input->post("ticket_status", true);
 			$arr['process_id'] =  $_SESSION['process'][0];
 			$arr['branch_for'] =  $this->input->post("emp_branch", true)??'';
+			$arr['comapny_id'] = $newcompId;
 			// echo $arr['attachment'];
 			// exit();
 			$this->db->insert("tbl_ticket", $arr);
@@ -550,20 +627,20 @@ class Ticket_Model extends CI_Model
 		);
 		
 //For branch and region and area
-                $enq= $this->db->select('client')->where('id',$this->input->post("ticketno", true))->get('tbl_ticket')->row();
-				if(!empty($enq->client)){
-				$cmp_id= $this->db->select('company')->where('enquiry_id',$enq->client)->get('enquiry')->row();
-				}
-				if(!empty($cmp_id->company)){
-				$cmp= $this->db->select('company_name')->where('id',$cmp_id->company)->get('tbl_company')->row();
-				}
-				if(!empty($this->input->post("emp_branch", true) && $cmp->company_name)){
-				$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$this->input->post("emp_branch", true))->get('branch')->row();
-				$branch_id = $this->input->post("emp_branch", true);
-				$area_id = $rab->area_id;
-				$region_id = $rab->region_id;
-                $client_name = $cmp->company_name.' '.$rab->branch_name;	
-				}
+		$enq= $this->db->select('client')->where('id',$this->input->post("ticketno", true))->get('tbl_ticket')->row();
+		if(!empty($enq->client)){
+			$cmp_id= $this->db->select('company')->where('enquiry_id',$enq->client)->get('enquiry')->row();
+		}
+		if(!empty($cmp_id->company)){
+			$cmp= $this->db->select('company_name')->where('id',$cmp_id->company)->get('tbl_company')->row();
+		}
+		if(!empty($this->input->post("emp_branch", true) && !empty($cmp->company_name) && $cmp->company_name)){
+			$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$this->input->post("emp_branch", true))->get('branch')->row();
+			$branch_id = $this->input->post("emp_branch", true);
+			$area_id = $rab->area_id;
+			$region_id = $rab->region_id;
+			$client_name = $cmp->company_name.' '.$rab->branch_name;	
+		}
 
 if(!empty($client_name)){
 $this->db->set("client_name", $client_name);

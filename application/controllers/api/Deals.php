@@ -586,6 +586,7 @@ class Deals extends REST_Controller {
   			{
   				curl_close($ch);
   				$this->set_response(json_decode($result), REST_Controller::HTTP_OK);
+				
   			}
   		}
   		else

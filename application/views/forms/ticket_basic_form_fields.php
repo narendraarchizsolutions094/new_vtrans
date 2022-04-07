@@ -252,7 +252,7 @@ echo'<div class="trackingDetails"></div>';
                             <?php
                           }
                           ?>
-                          <input type = "text" class="form-control" name = "phone" id = "phone" <?=$required?> value="<?=!empty($_GET['phone'])?$_GET['phone']:''?>" onkeyup="autoFill('phone',this.value)"> 
+                          <input maxlength="10" type = "text" class="form-control" name = "phone" id = "phone" <?=$required?> value="<?=!empty($_GET['phone'])?$_GET['phone']:''?>" onkeyup="autoFill('phone',this.value)"> 
                           <div id="is-avl-mobile"></div>
                         </div>
                     </div>                   

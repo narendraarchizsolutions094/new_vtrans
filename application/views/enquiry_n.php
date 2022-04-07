@@ -2269,7 +2269,6 @@ function assign_enquiry(){
 
 
 function moveto_lead(){
-
   var expected_date = $("input[name=expected_date]").val();
   var lead_score = $("select[name=lead_score]").val();
   var comment = $("input[name=comment]").val();

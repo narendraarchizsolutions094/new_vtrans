@@ -3630,17 +3630,12 @@ echo  $details1;
             echo $this->email->print_debugger();
             echo "Something went wrong";			                	
         }
-       }
- 
-    public function add_visit()
-    {   
-        if(user_role('1020')==true)
-        {
-
-        }
+    }
+    public function add_visit(){
+        if(user_role('1020')==true){}
         $this->load->model(array('Client_Model','Enquiry_model'));
-        if($post = $this->input->post())
-        {
+        
+        if($post = $this->input->post()){
 			$m_purpose=$this->input->post('m_purpose');
 			$start_loc=$this->input->post('start_loc');
 			$end_loc=$this->input->post('end_loc');
@@ -3648,25 +3643,25 @@ echo  $details1;
             $visit_type=$this->input->post('type');
             $visit_time=$this->input->post('visit_time');
             $visit_date=$this->input->post('visit_date');
-
             if($visit_type==1){
-               $visit_time=date('H:i');
-               $visit_date=date('Y-m-d');
+               $visit_time = date('H:i');
+               $visit_date = date('Y-m-d');
             }else{
                 $visit_date    =   $this->input->post('visit_date');
-                $visit_date = date("Y-m-d",strtotime($visit_date));
+                $visit_date    =   date("Y-m-d",strtotime($visit_date));
             }
-		
-//For Finding user rate 			
-$user_data = $this->db->get_where('tbl_admin',array('pk_i_admin_id' => $this->session->user_id))->row_array();
-$rate_data = $this->db->get_where('discount_matrix',array('id' => $user_data['discount_id']))->row_array();
-   if(!empty($rate_data)){
-      $rate = $rate_data['rate_km'];
-   }else{
-      $rate = 10;
-   }
-//End
 
+            //For Finding user rate 			
+            $user_data = $this->db->get_where('tbl_admin',array('pk_i_admin_id' => $this->session->user_id))->row_array();
+            $rate_data = $this->db->get_where('discount_matrix',array('id' => $user_data['discount_id']))->row_array();
+
+            if(!empty($rate_data)){
+                $rate = $rate_data['rate_km'];
+            }else{
+                $rate = 10;
+            }
+
+            //End
             //print_r($_POST); 
             $data = array('enquiry_id'=>$this->input->post('enq_id'),
                             'contact_id'=>$this->input->post('contact_id'),
@@ -3681,8 +3676,7 @@ $rate_data = $this->db->get_where('discount_matrix',array('id' => $user_data['di
                             'user_id'=>$this->session->user_id,
                         );
 			//echo '<pre>';print_r($data);exit;
-            $res = $this->Enquiry_model->getEnquiry(array('Enquery_id'=>$data['enquiry_id']))->row();
-            
+            $res = $this->Enquiry_model->getEnquiry(array('Enquery_id'=>$data['enquiry_id']))->row();            
             $mobileno = $res->phone;
             $email = $res->email;
             //$stage_time = $this->input->post('next_visit_time');
@@ -3690,31 +3684,25 @@ $rate_data = $this->db->get_where('discount_matrix',array('id' => $user_data['di
             $data['enquiry_id'] = $res->enquiry_id;
             //print_r($data);exit;
             $notification_id = '';
-            if($visit_type==2)
-            {
+            if($visit_type==2){
                 $notification_id = $this->input->post('visit_notification_id');
             }
-        //   print_r($_POST);
-        //   echo $visit_date;
+            //print_r($_POST);
+            //echo $visit_date;
             $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', $mobileno, $email, '', $visit_time, $enq_code, $notification_id, 'Visit -'.$m_purpose,1,3);
-
-           $vis_ids = $this->Client_Model->add_visit($data);
-		   
-//For insert expence data
-$comp_id = $this->session->companey_id;
-$user_id = $this->session->user_id;
-$exp_data=['visit_id'=>$vis_ids,'type'=>1,'amount'=>($mannual_km)*$rate,'expense'=>0,'comp_id'=>$comp_id,'created_by'=>$user_id];
-$this->db->insert('tbl_expense',$exp_data);
-//End
-
-         $contact=  $this->db->where('cc_id',$data['contact_id'])->get('tbl_client_contacts')->row();
-         $cname ='';
-         if(!empty($contact))
+            $vis_ids = $this->Client_Model->add_visit($data);		   
+           //For insert expence data
+           $comp_id = $this->session->companey_id;
+           $user_id = $this->session->user_id;
+           $exp_data=['visit_id'=>$vis_ids,'type'=>1,'amount'=>($mannual_km)*$rate,'expense'=>0,'comp_id'=>$comp_id,'created_by'=>$user_id];
+           $this->db->insert('tbl_expense',$exp_data);
+           //End
+            $contact=  $this->db->where('cc_id',$data['contact_id'])->get('tbl_client_contacts')->row();
+            $cname ='';
+            if(!empty($contact))
             $cname = $contact->c_name;
             $this->db->set('remark','Visit Created for '.$cname);
-
             $this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id);
-
             $this->session->set_flashdata('message','Visit Saved Successfully');            
             if($this->input->post('redirect_url')){
                 redirect($this->input->post('redirect_url')); //updateclient                
@@ -4034,7 +4022,9 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
         if($colsall || in_array(27,$cols)){                 
             $sub[] = $rate??'NA'; 
         }   
-
+        if($colsall || in_array(32,$cols)){                 
+            $sub[] = $res->created_at;
+        }
             if($colsall || in_array(9,$cols))
             {
                $act  = "<a class='btn btn-xs btn-primary' href='".base_url('visits/visit_details/'.$res->vids.'/')."' ><i class='fa fa-map-marker'></i></a> ";

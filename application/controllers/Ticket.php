@@ -1823,65 +1823,65 @@ class Ticket extends CI_Controller
 
 
 	}
-	public function ticket_disposition($ticketno)
-	{
-		//print_r($_POST); exit();
+	public function ticket_disposition($ticketno){
 		$lead_stage	=	$this->input->post('lead_stage');
 		$stage_desc	=	$this->input->post('lead_description');
 		$stage_remark	=	$this->input->post('conversation');
-		$client	=	$this->input->post('client');
-		
-//For asign to according to sales branch
-if($stage_desc=='6'){
-$mobileno = $this->input->post('mobile');
-$email = $this->input->post('email');
-$enno = $this->db->select('Enquery_id,company')->where('phone',$mobileno)->where('email',$email)->get('enquiry')->row();
-$post_br = $this->input->post('brnh_id');
-if(!empty($post_br)){
-	
-//For client name generate
-$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$post_br)->get('branch')->row();
-$rab2= $this->db->select('company_name')->where('id',$enno->company)->get('tbl_company')->row();
+		$client	=	$this->input->post('client');		
+		$enq_code = $this->input->post('ticketno');
+		//For asign to according to sales branch
+		if($stage_desc == '6'){
+			$mobileno = $this->input->post('mobile');
+			$email = $this->input->post('email');
+			$enno = $this->db->select('Enquery_id,company')->where('phone',$mobileno)->where('email',$email)->get('enquiry')->row();
+
+			if(!empty($enno)){
+				$post_br = $this->input->post('brnh_id');
+				if(!empty($post_br)){				
+				//For client name generate
+				$rab = $this->db->select('branch_name,area_id,region_id')->where('branch_id',$post_br)->get('branch')->row();
+				$rab2 = $this->db->select('company_name')->where('id',$enno->company)->get('tbl_company')->row();
 				$branch_id = $post_br;
 				$area_id = $rab->area_id??'';
 				$region_id = $rab->region_id??'';
-if(!empty($rab2)){
-    $client_name = $rab2->company_name.' '.$rab->branch_name;
-}else{
-	$client_name = '';
-}
-				
-$usr_br = $this->User_model->all_emp_list_assign($post_br);
-$usr_ttl = count($usr_br);
-if($usr_ttl > 1){	
-	$usr_id = $usr_br[0]->pk_i_admin_id;
-	$reparr = $this->db->select('report_to')->where('pk_i_admin_id',$usr_id)->get('tbl_admin')->row();
-	$assign_to = $reparr->report_to??'';
-}else{
-	$usr_id = $usr_br[0]->pk_i_admin_id;
-	$assign_to = $usr_id??'';	
-} 
-}else{
-	$assign_to = '';
-}
-//print_r($assign_to);exit;
-$this->db->set('aasign_to', $assign_to);
-$this->db->set('client_name', $client_name);
-$this->db->set('sales_branch', $branch_id);
-$this->db->set('sales_region', $region_id);
-$this->db->set('sales_area', $area_id);
-$this->db->where('Enquery_id',$enno->Enquery_id);
-$this->db->update('enquiry');
+				if(!empty($rab2)){
+					$client_name = $rab2->company_name.' '.$rab->branch_name;
+				}else{
+					$client_name = '';
+				}							
+				$usr_br = $this->User_model->all_emp_list_assign($post_br);
+				$usr_ttl = count($usr_br);
+				if($usr_ttl > 1){	
+					$usr_id = $usr_br[0]->pk_i_admin_id;
+					$reparr = $this->db->select('report_to')->where('pk_i_admin_id',$usr_id)->get('tbl_admin')->row();
+					$assign_to = $reparr->report_to??'';
+				}else{
+					$usr_id = $usr_br[0]->pk_i_admin_id;
+					$assign_to = $usr_id??'';	
+				} 
+				}else{
+					$assign_to = '';
+				}
+				//print_r($assign_to);exit;
+				$this->db->set('aasign_to', $assign_to);
+				$this->db->set('client_name', $client_name);
+				$this->db->set('sales_branch', $branch_id);
+				$this->db->set('sales_region', $region_id);
+				$this->db->set('sales_area', $area_id);
+				$this->db->where('Enquery_id',$enno->Enquery_id);
+				$this->db->update('enquiry');
 
-//notification bell
-$enquiry_code = $enno->Enquery_id;
-if(!empty($enquiry_code && $assign_to)){
-$this->Leads_Model->add_comment_for_events(display("enquery_assigned"), $enquiry_code);
-$this->Leads_Model->add_bell_notification_ticket(display("enquery_assigned"),$enquiry_code,$assign_to);
-}
-}
-//End
-		
+				//notification bell
+				$enquiry_code = $enno->Enquery_id;
+				if(!empty($enquiry_code && $assign_to)){
+				$this->Leads_Model->add_comment_for_events(display("enquery_assigned"), $enquiry_code);
+				$this->Leads_Model->add_bell_notification_ticket(display("enquery_assigned"),$enquiry_code,$assign_to);
+				}
+			}else{   
+				$this->Ticket_Model->create_enq_by_ticket($enq_code);
+			}
+		}
+		//End		
 		$stage_date = date("d-m-Y", strtotime($this->input->post('c_date')));
 		$stage_time = date("H:i:s", strtotime($this->input->post('c_time')));
 		$user_id = $this->session->user_id;

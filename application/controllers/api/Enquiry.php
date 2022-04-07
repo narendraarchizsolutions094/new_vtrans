@@ -1233,7 +1233,7 @@ public function updateEnquiryTab_post()
                   $send_result =1;
               }
               else if($msg_type=='3')
-                $send_result = $this->Message_models->send_email($to,$msg,$Templat_subject,$company_id,$cc);
+                $send_result = $this->Message_models->send_email($to,$Templat_subject,$msg,$company_id,$cc);
 
 
               if($send_result)

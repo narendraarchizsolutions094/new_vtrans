@@ -1382,11 +1382,10 @@ if(user_access('1020'))
         <input type="hidden" name="visit_notification_id" value="">
          <div class="row" id="save_button">
             <div class="col-md-12 text-center">
-               <input id="visit_create_btn" type="submit" name="submit_only" class="btn btn-primary" value="Save">
+               <input id="visit_create_btn" type="submit" name="submit_only" class="btn btn-primary" value="Save" >
             </div>
          </div>
-
-</form>
+      </form>
             </div>
          </div>
          <div class="modal-footer">
@@ -1394,23 +1393,21 @@ if(user_access('1020'))
          </div>
       </div>
    </div>
-</div>   
-
-  
-    <div class="col-md-12"  style="margin-bottom: 25px; padding: 0px">   
-    
+</div>
+    <div class="col-md-12"  style="margin-bottom: 25px; padding: 0px">       
     <table id="visit_table" class="table table-bordered table-hover mobile-optimised" style="width:100%;">
       <thead>
       <tr>
-                  <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> S. No.</th>
+          <th width="7%"><INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" />Sr. No.</th>
 				  <th id="th-1" width="15%">Visit Date</th>
 				  <th id="th-2" width="15%">Visit Time</th>
 				  <th id="th-13" width="15%">Purpose of meeting</th>
+				  <th id="th-31" width="15%">Mobile</th>
 				  <th id="th-10">Company group name</th>
-                  <th id="th-14">Client Name</th>
-                  <th id="th-15">Contact Person</th>
-                  <th id="th-16">Start Location</th>
-                  <th id="th-17">End Location</th>
+          <th id="th-14">Client Name</th>
+          <th id="th-15">Contact Person</th>
+          <th id="th-16">Start Location</th>
+          <th id="th-17">End Location</th>
 				  <th id="th-4">Shortest Distance</th>
 				  <th id="th-5">Actual Distance</th>
 				  <th id="th-30">Manual Distance</th>
@@ -1430,13 +1427,13 @@ if(user_access('1020'))
 				  <th id="th-25">Time Spend</th>
 				  <th id="th-26">City</th>
 				  <th id="th-27">Rate</th>
-                  <th id="th-9">Action</th>
-                </tr>
+				  <th id="th-32">Created At</th>
+          <th id="th-9">Action</th>
+        </tr>
       </thead>
       <thead>
       </thead>
     </table>
-
     <div class="col-md-12">
             <div class="col-md-6" ></div>
             <div class="col-md-6" >
@@ -3783,5 +3780,4 @@ $(".nav-tabs li").on('click',function(){
             }
         })
     });
-    
 </script>

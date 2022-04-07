@@ -289,7 +289,6 @@ $(document).on('submit','#data_table',function(e){
 		data:formdata,
 		beforeSend:function(){
 			Swal.fire({
-
 				imageUrl:'https://mir-s3-cdn-cf.behance.net/project_modules/disp/35771931234507.564a1d2403b3a.gif',
 				showConfirmButton:false,
 				allowOutsideClick: false,
@@ -300,8 +299,7 @@ $(document).on('submit','#data_table',function(e){
 			res = res.trim();
 			Swal.close();
 			if(res=='1')
-			{
-				
+			{				
 				Swal.fire({
 					title:'Saved!',
 					icon:'success',

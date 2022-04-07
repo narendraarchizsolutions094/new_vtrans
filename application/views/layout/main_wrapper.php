@@ -2993,54 +2993,40 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
     $("#visit_create_btn").on('click', function(e) {
         e.preventDefault();
-
         var vform = $("#visit_create_form");
         var vtype =  $(vform).find('input[name=type]:checked').val();
-        
-        var _contact = $(vform).find("select[name='contact_id'] option:selected"); 
+        var _contact = $(vform).find("select[name='contact_id'] option:selected");
         var cname =  $(_contact).html();
-        var enquiry = $(vform).find("select[name='enq_id'] option:selected"); 
-      
-       var enq_id = $(enquiry).val();
-       var m_purpose = $(vform).find('input[name=m_purpose]').val();
+        var enquiry = $(vform).find("select[name='enq_id'] option:selected");
+        var enq_id = $(enquiry).val();
+        var m_purpose = $(vform).find('input[name=m_purpose]').val();
         time = $(vform).find("#vtime").val();
         task_date = $(vform).find("#vdate").val();
         subject = 'Visit : '+cname;
         var uid = "<?=$this->session->user_id?>";
 
-        if(cname=='' || enq_id=='' || time=='' || task_date=='' || subject=='' || uid=='' || m_purpose=='')
-        {
-            alert('Fill all the fields.');
+        if(cname=='' || enq_id=='' || time=='' || task_date=='' || subject=='' || uid=='' || m_purpose==''){
+            alert('Fill all the fields.');            
+            $("#visit_create_btn").removeAttr('disabled');
             return;
         }
 
-        if(vtype==2)
-        {   
-            // alert("UID:"+uid+" subj:"+subject+" enqid:"+enq_id+" task:"+task_date+" time:"+time); 
-           
+        if(vtype==2){
             $.ajax({
                 url:'<?=base_url('enquiry/enq_code_by_id/')?>'+enq_id,
                 type:'post',
-                success:function(res)
-                {
+                success:function(res){
+                    $("#visit_create_btn").attr('disabled','disabled');
                     id = writeUserData(uid, subject, res.trim(), task_date, time);
-                    //console.log(id);
-
                     $(vform).find("input[name='visit_notification_id']").val(id);
                     $("#visit_create_form").submit();
                 }
             });
-         
-        }
-        else
-        {
+        }else{
+            $("#visit_create_btn").attr('disabled','disabled');
             $("#visit_create_form").submit();
         }
-       //
-
     });
-
-
     $(document).on('click', '#task_update_btn', function(e) {
         e.preventDefault();
         //alert('abc');

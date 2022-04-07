@@ -8,7 +8,7 @@ if(!empty($company_list))
                         
                         <label> <?= ucwords($companylist['input_label'])?> <?php if($companylist['label_required']==1){echo '<i class="text-danger">*</i>';}?> </label>
                        
-                             <input type="text" name="enqueryfield[]" id="<?= $companylist['input_name']?>" placeholder="<?= $companylist['input_place']; ?>"  <?php if($companylist['label_required']==1){echo "required";}?> class="form-control" value="<?=!empty($res[$companylist['input_id']])?$res[$companylist['input_id']]:''?>">
+                             <input type="text" name="enqueryfield[]" id="<?= $companylist['input_name']?>" placeholder="<?= $companylist['input_place']; ?>"  <?php if($companylist['label_required']==1){echo "required";}?> class="form-control" value="<?=!empty($res[$companylist['input_id']])?$res[$companylist['input_id']]:(!empty($companylist['input_values'])?$companylist['input_values']:'')?>">
                           
                      
                   <?php }if($companylist['input_type']==2){?>

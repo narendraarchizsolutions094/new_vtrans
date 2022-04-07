@@ -3756,6 +3756,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
     }
     public function save_deal_data()
     {
+        
         $this->load->model(array('Branch_model','Enquiry_model','Leads_Model'));
         $current_user = $this->User_model->read_by_id($this->session->user_id);
         //print_r($this->input->post('current_stage'));exit;
@@ -3778,30 +3779,30 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
 		$uc = json_encode($this->input->post('uc'));
 		}
         $oc = json_encode($this->input->post('oc'));
-//For Region		
-$r_string = $enq->rnm;		
-$r_lastChar = $r_string[-1];
-if(is_numeric($r_lastChar)){
-	$r_add = $r_lastChar;
-}else{
-    $r_add = '';
-}
-//For Area
-$a_string = $enq->area_name;		
-$a_lastChar = $a_string[-1];
-if(is_numeric($a_lastChar)){
-	$a_add = $a_lastChar;
-}else{
-    $a_add = '';
-}
-//For Branch
-$b_string = $enq->branch_name;		
-$b_lastChar = $b_string[-1];
-if(is_numeric($b_lastChar)){
-	$b_add = $b_lastChar;
-}else{
-    $b_add = '';
-}
+        //For Region		
+        $r_string = $enq->rnm;		
+        $r_lastChar = $r_string[-1];
+        if(is_numeric($r_lastChar)){
+            $r_add = $r_lastChar;
+        }else{
+            $r_add = '';
+        }
+        //For Area
+        $a_string = $enq->area_name;		
+        $a_lastChar = $a_string[-1];
+        if(is_numeric($a_lastChar)){
+            $a_add = $a_lastChar;
+        }else{
+            $a_add = '';
+        }
+        //For Branch
+        $b_string = $enq->branch_name;		
+        $b_lastChar = $b_string[-1];
+        if(is_numeric($b_lastChar)){
+            $b_add = $b_lastChar;
+        }else{
+            $b_add = '';
+        }
 		
 		if(empty($unique)){
 		$branch = substr($enq->branch_name,0,2);

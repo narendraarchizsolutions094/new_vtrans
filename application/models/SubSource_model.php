@@ -47,12 +47,14 @@ class SubSource_model extends CI_Model {
     }
 
     public function get_subsource($id){
-
       $company=$this->session->userdata('companey_id');
-
       $this->db->select('subsource_id,subsource_name');
       $this->db->from('tbl_subsource');
-      $this->db->where('lead_source_id',$id);
+      if(is_array($id)){
+        $this->db->where_in('lead_source_id',$id);
+      }else{
+        $this->db->where('lead_source_id',$id);
+      }
       $this->db->where('comp_id',$company);
       return $this->db->get()->result_array();
     }

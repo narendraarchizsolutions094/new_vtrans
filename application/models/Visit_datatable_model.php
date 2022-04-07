@@ -47,13 +47,16 @@ class Visit_datatable_model extends CI_Model{
 
         $this->db->where("enquiry.comp_id",$this->session->companey_id);
         $where="";
-        $where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
+        //$where .= "( enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
+        //$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';
         if(!empty($_POST['specific_list']))
         {
-            $where.="AND tbl_visit.id IN (".$_POST['specific_list'].") ";   
+            $where.=" tbl_visit.id IN (".$_POST['specific_list'].") ";   
         }
-        $this->db->where($where);
+        if($where){
+            $this->db->where($where);
+        }
+
         return $this->db->count_all_results();
     }
     
@@ -123,9 +126,9 @@ class Visit_datatable_model extends CI_Model{
 		$where .= " AND enquiry.created_by IN (".implode(',', $all_reporting_ids).')';
         $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))'; */
 
-        $where .= "( tbl_visit.user_id IN (".implode(',', $all_reporting_ids).')';
-        $where .= " OR enquiry.created_by IN (".implode(',', $all_reporting_ids).')';		
-        $where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';		
+        $where .= " tbl_visit.user_id IN (".implode(',', $all_reporting_ids).')';
+        //$where .= " OR enquiry.created_by IN (".implode(',', $all_reporting_ids).')';		
+        //$where .= " OR enquiry.aasign_to IN (".implode(',', $all_reporting_ids).'))';		
 		
 /* $ids = array('40805', '40807', '40856');
 			$this->db->or_where_in('enquiry.company', $ids);

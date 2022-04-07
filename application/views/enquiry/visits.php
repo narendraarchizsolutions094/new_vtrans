@@ -503,7 +503,7 @@ $('input[name="filter_checkbox"]').click(function(){
                   <th id="th-17">End Location</th>
 				          <th id="th-4">Shortest Distance</th>
 				          <th id="th-5">Actual Distance</th>
-						  <th id="th-30">Manual Distance</th>
+						      <th id="th-30">Manual Distance</th>
 				          <th id="th-6">Rating</th>
 				          <th id="th-28">Remark</th>
 						      <th id="th-29">Employee Region</th>
@@ -520,6 +520,7 @@ $('input[name="filter_checkbox"]').click(function(){
 				          <th id="th-25">Time Spend</th>
 				          <th id="th-26">City</th>
 				          <th id="th-27">Rate</th>
+                  <th id='th-32'> Created Date </th>
                   <th id="th-9">Action</th>
 				        </tr>
 				      </thead>
@@ -1102,6 +1103,9 @@ $("select").select2();
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="27"> Rate</label>
             </div>
+            <div class="col-md-4">
+              <label class=""><input type="checkbox" class="choose-col" value="32"> Created At</label>
+            </div>
 
             <div class="col-md-4">
               <label class=""><input type="checkbox" class="choose-col" value="9">  Action</label>
@@ -1116,8 +1120,6 @@ $("select").select2();
 
 
 <script type="text/javascript">
-
-
   $("input[name='allowbackdate']").on('change', function(){
     var ischecked = $('input[name="allowbackdate"]:checked').val();
     if(ischecked){
@@ -1128,37 +1130,30 @@ $("select").select2();
       $("input[name='visit_time']").prop("readonly", true);;
     }
   })
-function add_contact()
-{
-  var enq = $("select[name=enq_id]").val();
-  if(enq!='')
-  {
-    $("#close_visit").click(); 
-    $.ajax({
-        url:"<?=base_url('client/contact_form_ajax/')?>",
-        type:"post",
-        data:{enq_id:enq},
-        success:function(res)
-        {
-              if(res){
-                $("#open_contact_form").click();
-                $("#contact_form").html(res);
-                $("#contact_form select").select2();
-              }
-        },
-        error:function(u,v,w)
-        {
-          alert(w);
-        }
-    });
+  function add_contact(){
+    var enq = $("select[name=enq_id]").val();
+    if(enq!=''){
+      $("#close_visit").click();
+      $.ajax({
+          url:"<?=base_url('client/contact_form_ajax/')?>",
+          type:"post",
+          data:{enq_id:enq},
+          success:function(res){
+            if(res){
+              $("#open_contact_form").click();
+              $("#contact_form").html(res);
+              $("#contact_form select").select2();
+            }
+          },
+          error:function(u,v,w){
+            alert(w);
+          }
+      });
+    }
+    else{
+      alert('Please Select Client Name First.');  
+    }
   }
-  else
-  { 
-    alert('Please Select Client Name First.');  
-  }
-
-}
-
 function checkvisit(visitid){
   $("#add_expense").find('input[name=visit_id]').val(visitid);
 }
