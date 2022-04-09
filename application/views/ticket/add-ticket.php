@@ -202,18 +202,20 @@
 //End	
 	
 //For find organization details 
-function enq_loadinfo(val) {		
-		$.ajax({
-			url     : "<?php echo base_url('ticket/loadinfo'); ?>",
-			type    : "post",
-			data    : {clientno : val},
-			success : function (resp){
-				var jdata = JSON.parse(resp);
-				$("input[name=name]").val(jdata.name);
-				$("input[name=email]").val(jdata.email);
-				$("input[name=phone]").val(jdata.phone);
-			}
-		})
+function enq_loadinfo(val) {	
+		if(val){
+			$.ajax({
+				url     : "<?php echo base_url('ticket/loadinfo'); ?>",
+				type    : "post",
+				data    : {clientno : val},
+				success : function (resp){
+					var jdata = JSON.parse(resp);
+					$("input[name=name]").val(jdata.name);
+					$("input[name=email]").val(jdata.email);
+					$("input[name=phone]").val(jdata.phone);
+				}
+			})
+		}
 	}
 //End
 	$(document).on("change", ".chg-productt", function(){

@@ -420,7 +420,7 @@ class Ticket_Model extends CI_Model
 			$arr["name"]   		= ($this->input->post("name", true)) ? $this->input->post("name", true) : "";
 			$arr["email"]  		= ($this->input->post("email", true)) ? $this->input->post("email", true) : "";
 			$arr["client"]     	= ($this->input->post("client", true)) ? $this->input->post("client", true) : "";
-			$arr['comapny_id'] 	= $newcompId;
+			//$arr['comapny_id'] 	= $newcompId;
 			$arr["phone"]     	= ($this->input->post("phone", true)) ? $this->input->post("phone", true) : "";
 			$this->db->where("id", $this->input->post("ticketno", true));
 			$this->db->update("tbl_ticket", $arr);

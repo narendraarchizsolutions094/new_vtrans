@@ -163,10 +163,9 @@ class Ticket_datatable_model extends CI_Model{
           $dacolarr  = explode(",", trim($_COOKIE["ticket_dallowcols"], ","));       
         }else{
           $dshowall = false;
-        }       
-
+        }
         $sel_string = array();
-        $sel_string[] = "tck.*"; 
+        $sel_string[] = "tck.*";
 
         // if($showall or in_array(1,$acolarr))
         // {
@@ -174,7 +173,7 @@ class Ticket_datatable_model extends CI_Model{
         // }
         if($showall or in_array(2,$acolarr))
         {            
-            $sel_string[] = " concat_ws(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname,enq.company as org_name,tbl_company.company_name ";
+            $sel_string[] = " concat_ws(enq.name_prefix,' ' , enq.name,' ', enq.lastname) as clientname,enq.company as org_name,tbl_company.company_name,tbl_company2.company_name as company_name2 ";
         }
         // if($showall or in_array(3,$acolarr))
         // {
@@ -253,6 +252,7 @@ class Ticket_datatable_model extends CI_Model{
         //->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT")
         $this->db->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT");
         $this->db->join("tbl_company","tbl_company.id=enq.company",'left');
+        $this->db->join("tbl_company as tbl_company2","tbl_company2.id=tck.comapny_id",'left');
         if($showall or count(array_intersect(array(2,4),$acolarr))>0)
         {
         }

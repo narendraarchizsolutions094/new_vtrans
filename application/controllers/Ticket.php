@@ -803,9 +803,12 @@ class Ticket extends CI_Controller
 				if($point->company_name){
 					$sub[] = $point->company_name??($point->company_name ?? "NA");
 					$colums[]  = 'Company';
-				}else{
+				}else if(!empty($point->org_name)){
 					$sub[] = $point->org_name??($point->org_name ?? "NA");
 					$colums[]  = 'Company';
+				}else{
+					$sub[] = $point->company_name2??($point->company_name2 ?? "NA");
+					$colums[]  = 'Company';					
 				}
 			}
 			if ($showall or in_array(3, $acolarr)) {
@@ -4357,20 +4360,24 @@ echo '</table>';
         $company_id = $this->session->companey_id;
         $user_id = -1; //$this->session->user_id;
         // $process = $this->session->process;
-        $where = 'comp.company_name LIKE "%'.$key.'%" ';
+        $res = array();
+		if($key){
+			$where = 'comp.company_name LIKE "%'.$key.'%" ';
 
-		$process = $this->session->userdata('process');
-        $this->db->select('enquiry.*,comp.company_name');
-        $this->db->from('enquiry');
-        $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
-        $this->db->where_in('product_id',$process);
+			$process = $this->session->userdata('process');
+			$this->db->select('enquiry.enquiry_id,enquiry.Enquery_id,enquiry.email,enquiry.phone,enquiry.name,comp.company_name,comp.id as comgrp_id');
+			$this->db->from('tbl_company comp');
+			$this->db->join('enquiry','enquiry.company=comp.id','left');
+			//$this->db->where_in('comp.process_id',$process);
+			if($where){
+				$this->db->where($where);
+			}   
 
-    	if($where){
-            $this->db->where($where);
-        }   
+			$this->db->where('comp.comp_id',$this->session->companey_id);
+			$res = $this->db->limit(30)->get()->result_array();
+			//echo $this->db->last_query();
 
-    	$this->db->where('enquiry.comp_id',$this->session->companey_id);
-		$res = $this->db->get()->result_array();
+		}
         //$res = $this->Client_Model->getCompanyList(0,$where,$company_id,$user_id,$process,'data',10,0)->result_array();
         //echo $this->db->last_query();exit();
 		// echo '<pre>';
@@ -4385,8 +4392,12 @@ echo '</table>';
 
 		$abc ='<ul id="country-list" style="z-index:1;max-height:150px;overflow-y:scroll;">';
 		foreach($res as $r) {
-			$name = "'".$r["company_name"].'('.$r['name'].')'."'" ;
-			$abc .='<li onClick="selectCountry('.$r["enquiry_id"].','.trim($name).');">'.$r["company_name"].'('.$r["name"].')'.'</li>';
+			$name = "'".$r["company_name"]."'";
+			if(!empty($r['name'])){
+				$name .= '('.$r['name'].')';
+			}
+			$enq_id = "'".$r["enquiry_id"]."'";
+			$abc .='<li onClick="selectCountry('.$enq_id.','.trim($name).','.$r['comgrp_id'].');">'.$r["company_name"].'('.$r["name"].')'.'</li>';
  		}
 		 $abc .='</ul>';
         echo json_encode($abc);

@@ -193,21 +193,39 @@ echo'
                     <div class="col-md-6">
                       <div class="form-group">
                         <label><?=display('problem_for')?></label>
-                        <select class="form-control add-select2 choose-client" name = "client" required readonly>
-                          <?php 
+                        <?php 
+                        $org_opt = '';
+                          $isorg = 1;
                           if(!empty($clients))
                           {
                             foreach($clients as $ind => $clt)
                             {                              
                               $n = $clt->company_name;
                               if(!empty($n)){
-                                if($clt->enquiry_id==$ticket->client)
-                                echo "<option value =".$clt->enquiry_id." selected>".$n."</option>";                                
+                                if($clt->enquiry_id==$ticket->client){
+                                  $isorg = 0;
+                                  $org_opt .= "<option value =".$clt->enquiry_id." selected>".$n."</option>";                                
+                                }
                               }
                             }
                           } 
+                          if($isorg){
+                          ?>     
+                            <select class="form-control add-select2 choose-client" readonly>
+                              <?php }else{
+                                ?>
+                              <select class="form-control add-select2 choose-client" name = "client" required readonly>
+                            <?php
+                          }
+                            ?>
+                            <?=$org_opt?>
+                            <?php
+                          if($isorg){
+                            $comp_row  = $this->db->select('company_name')->where('id',$ticket->comapny_id)->get('tbl_company')->row_array();
+                            echo "<option value ='0' selected>".$comp_row['company_name']."</option>";
+                          }
                           ?>
-                        </select>
+                          </select>
                       </div>
                     </div>
                    

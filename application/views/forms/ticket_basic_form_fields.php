@@ -463,7 +463,7 @@ echo'<div class="trackingDetails"></div>';
               url: "<?= base_url('ticket/suggest_company');?>",
               data:'search='+$(this).val(),
               beforeSend: function(){
-                $("#client").css("background","#FFF url(<?= base_url();?>assets/images/LoaderIcon.gif) no-repeat 165px");
+                $("#client").css("background","#FFF url(<?= base_url();?>assets/images/loader.gif) no-repeat 300px");
               },
               success: function(data){
                 obj = JSON.parse(data);
@@ -475,7 +475,7 @@ echo'<div class="trackingDetails"></div>';
             });
           });
           //To select country name
-          function selectCountry(val,name) {
+          function selectCountry(val,name,compgrpId) {
             // alert(name);
             $("#client").val(name);
             $("#client_val").val(val);
