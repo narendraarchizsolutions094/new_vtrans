@@ -1088,7 +1088,7 @@ if($usr_ttl > 1){
                         'enq_code' => $enquiry_code,
                         'assign_status' => 0
                     );
-                    $this->Leads_Model->add_comment_for_events(display("enquery_assigned"), $enquiry_code);
+                    $this->Leads_Model->add_comment_for_events(display("enquery_assign"), $enquiry_code);
 
                     $this->db->set('comp_id',$this->session->companey_id);
                     $this->db->set('query_id',$enquiry_code);
@@ -1103,7 +1103,7 @@ if($usr_ttl > 1){
                     $this->db->set('subject',display('enquiry').' Assigned');
                     $this->db->insert('query_response');
                     
-                    $noti_msg = display("enquery_assigned");
+                    $noti_msg = display("enquery_assign");
                     $this->common_model->send_fcm($noti_msg,$noti_msg,$assign_employee);
                 }
                 $this->db->update_batch('enquiry', $assign_data, 'enquiry_id');
@@ -1451,7 +1451,7 @@ if($usr_ttl > 1){
                 }
                 if ($assigned_user != NULL) {
                     if($countdassigned==1){
-                    if ($comments->comment_msg == display('enquery_assigned') OR $comments->comment_msg == display('lead_assigned') OR $comments->comment_msg == display('client_assigned') ) {
+                    if ($comments->comment_msg == display('enquery_assign') OR $comments->comment_msg == display('lead_assigned') OR $comments->comment_msg == display('client_assigned') ) {
                     $html .= '<br>Assigned To: '.$userFName.' '.$userlName.' ';
                     }
                 }

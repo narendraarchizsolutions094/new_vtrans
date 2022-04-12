@@ -2276,7 +2276,7 @@ public function updateEnquiryTab_post()
                 $this->enquiry_model->assign_enquery_api($key,$assign_employee,$enquiry_code,$assigner_user_id);
                 
                 if($enq_row->status == 1){
-                  $noti_msg = display('enquery_assigned');
+                  $noti_msg = display('enquery_assign');
                 }else if($enq_row->status == 2){
                   $noti_msg = display('lead_assigned');
                 }else if($enq_row->status == 3){

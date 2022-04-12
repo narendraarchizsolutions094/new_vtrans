@@ -1877,8 +1877,8 @@ class Ticket extends CI_Controller
 				//notification bell
 				$enquiry_code = $enno->Enquery_id;
 				if(!empty($enquiry_code && $assign_to)){
-				$this->Leads_Model->add_comment_for_events(display("enquery_assigned"), $enquiry_code);
-				$this->Leads_Model->add_bell_notification_ticket(display("enquery_assigned"),$enquiry_code,$assign_to);
+				$this->Leads_Model->add_comment_for_events(display("enquery_assign"), $enquiry_code);
+				$this->Leads_Model->add_bell_notification_ticket(display("enquery_assign"),$enquiry_code,$assign_to);
 				}
 			}else{   
 				$this->Ticket_Model->create_enq_by_ticket($enq_code);
@@ -4392,12 +4392,12 @@ echo '</table>';
 
 		$abc ='<ul id="country-list" style="z-index:1;max-height:150px;overflow-y:scroll;">';
 		foreach($res as $r) {
-			$name = "'".$r["company_name"]."'";
+			$name = $r["company_name"];
 			if(!empty($r['name'])){
 				$name .= '('.$r['name'].')';
 			}
 			$enq_id = "'".$r["enquiry_id"]."'";
-			$abc .='<li onClick="selectCountry('.$enq_id.','.trim($name).','.$r['comgrp_id'].');">'.$r["company_name"].'('.$r["name"].')'.'</li>';
+			$abc .='<li onClick="selectCountry('.$enq_id.',`'.trim($name).'`,'.$r['comgrp_id'].');">'.$r["company_name"].'('.$r["name"].')'.'</li>';
  		}
 		 $abc .='</ul>';
         echo json_encode($abc);
