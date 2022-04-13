@@ -2235,6 +2235,7 @@ function autoDial(){
 }
 
 function assign_enquiry(){
+
   if($('.checkbox1:checked').size() > 1000){
     alert('You can not assign more than 1000 <?=display('enquiry')?> at once');
   }else{
@@ -2246,7 +2247,10 @@ function assign_enquiry(){
     }else if(data_type == 2){
       var p_url = '<?php echo base_url();?>lead/assign_lead';
       var re_url = '<?php echo base_url();?>led/index';
-    }else if(data_type == 3){      
+    }else if(data_type >= 3){      
+      
+      //console.log(data_type);
+
       var p_url = '<?php echo base_url();?>client/assign_enquiry';
       var re_url = '<?php echo base_url();?>client/index';
     }    
@@ -2257,11 +2261,11 @@ function assign_enquiry(){
     url: p_url,
     data: $('#enquery_assing_from').serialize(),
     beforeSend: function(){
-                 $("#imgBack").html('uploading').show();
+      $("#imgBack").html('uploading').show();
     },
     success:function(data){
-         alert(data);         
-          window.location.href=re_url;
+         alert(data);                 
+        window.location.href=re_url;
     }});
   }
 }

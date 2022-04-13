@@ -200,31 +200,28 @@ class Task extends REST_Controller {
     }
   }
 
-public function create_post(){  
-      //new code
-      $ld_updt_by     = $this->input->post('user_id');
-      $lead_id        = $this->input->post('enq_code');      
-      $task_type      = $this->input->post('task_type');
-      $subject        = $this->input->post('subject');
-      $task_time      = $this->input->post('task_time');
-      $meeting_date   = $this->input->post('meeting_date');
-	    $end_time       = $this->input->post('end_time');
-      $end_date       = $this->input->post('end_date');
-      $contact_person = $this->input->post('contact_person');
-      $mobileno       = $this->input->post('mobileno');
-      $email          = $this->input->post('email');
-      $designation    = $this->input->post('designation');
-      $conversation   = trim($this->input->post('conversation'));
-     // $end_date       = $this->input->post('end_date');
-     // $end_time       = trim($this->input->post('end_time'));
-      $related_to     = $this->input->post('related_to');
-      $task_status    = trim($this->input->post('task_status'));
-      $update_task    = $this->input->post('update_task');
-	  
-	  $company_id    = $this->input->post('comp_id');
-      
-      $this->form_validation->set_rules('enq_code', 'Enquiry Code', 'trim|required');
-      
+  public function create_post(){  
+    //new code
+    $ld_updt_by     = $this->input->post('user_id');
+    $lead_id        = $this->input->post('enq_code');      
+    $task_type      = $this->input->post('task_type');
+    $subject        = $this->input->post('subject');
+    $task_time      = $this->input->post('task_time');
+    $meeting_date   = $this->input->post('meeting_date');
+    $end_time       = $this->input->post('end_time');
+    $end_date       = $this->input->post('end_date');
+    $contact_person = $this->input->post('contact_person');
+    $mobileno       = $this->input->post('mobileno');
+    $email          = $this->input->post('email');
+    $designation    = $this->input->post('designation');
+    $conversation   = trim($this->input->post('conversation'));
+    // $end_date       = $this->input->post('end_date');
+    // $end_time       = trim($this->input->post('end_time'));
+    $related_to     = $this->input->post('related_to');
+    $task_status    = trim($this->input->post('task_status'));
+    $update_task    = $this->input->post('update_task');	  
+    $company_id    = $this->input->post('comp_id');      
+    $this->form_validation->set_rules('enq_code', 'Enquiry Code', 'trim|required');      
       if($this->form_validation->run() == true){
         if(!empty($lead_id)){
           if(!empty($this->enquiry_model->enquiry_by_code($lead_id))){
@@ -237,8 +234,8 @@ public function create_post(){
         } 
         
         $cdate2       = str_replace('/' ,'-', $meeting_date);
-        $task_date  = $meeting_date;//nice_date($cdate2, 'd-m-Y');
-        $rem_date  = nice_date($cdate2, 'Y-m-d');
+        $task_date  = nice_date($cdate2, 'd-m-Y');
+        $rem_date  = nice_date($cdate2, 'd-m-Y');
 		    
         $tsktime=nice_date($task_time, 'H:i:s');
         
@@ -268,13 +265,13 @@ public function create_post(){
         $this->db->set('designation',$designation);
         $this->db->set('org_name',$org_name);
         $this->db->set('task_remark',$conversation);
-		//if(empty($update_task)){
+		    //if(empty($update_task)){
         $this->db->set('task_type',$task_type);
-		//}
+		    //}
 		    $this->db->set('task_date',$task_date);
 		    $this->db->set('task_time',$tsktime);
         //echo $update_task;
-          $this->load->model('Notification_model'); 
+        $this->load->model('Notification_model'); 
         if(!empty($update_task)){
           $this->db->where('resp_id',$update_task);
           $this->db->update('query_response');

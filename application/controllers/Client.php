@@ -1414,7 +1414,7 @@ public function updateclientpersonel() {
             $notification_data=array();$assign_data=array();
             if (!empty($move_enquiry)) {
                 foreach ($move_enquiry as $key) {
-                    $data['enquiry'] = $this->enquiry_model->enquiry_by_id($key);
+                    $data['enquiry']  = $enq_row = $this->enquiry_model->enquiry_by_id($key);
                     $enquiry_code = $data['enquiry']->Enquery_id;
                    // $this->enquiry_model->assign_enquery($key, $assign_employee, $enquiry_code);
                     $assign_data[]=array('aasign_to'=> $assign_employee,
@@ -1427,13 +1427,38 @@ public function updateclientpersonel() {
                         'enq_id'=> $key,
                         'enq_code'=>$enquiry_code,
                         'assign_status'=> 0);
-                    $this->Leads_Model->add_comment_for_events(display('client_assigned'), $enquiry_code);
-                    
-                    $noti_msg = display('client_assigned');
+                        
+                    if($enq_row->status == 3){
+                        $noti_msg = 'Negotiation Data Assigned';
+                    }else if($enq_row->status == 4){
+                        $noti_msg = 'Closure Data Assigned';                                   
+                    }else if($enq_row->status == 5){
+                        $noti_msg = 'Order Data Assigned';                                   
+                    }else if($enq_row->status == 6){
+                        $noti_msg = 'Future Opportunities Data Assigned';
+                    }else{
+                        $noti_msg = display('client_assigned');
+                    }
+                    $this->Leads_Model->add_comment_for_events($noti_msg, $enquiry_code);       
+
+
+
+                    $task_remark        = $noti_msg;
+                    $task_date          = date('d-m-Y');
+                    $contact_person     = $data['enquiry']->name.' '.$data['enquiry']->lastname;
+                    $mobileno           = $data['enquiry']->phone;
+                    $email              = $data['enquiry']->email;
+                    $designation        = '';
+                    $task_time          = date('H:i:s');
+                    $enq_code           = $enquiry_code;
+                    $notification_id    = '';
+                    $task_subject       = $noti_msg;
+                    $this->Leads_Model->add_comment_for_events_popup($task_remark,$task_date,$contact_person,$mobileno,$email,$designation,$task_time,$enq_code,$notification_id,$task_subject);
                     $this->common_model->send_fcm($noti_msg,$noti_msg,$assign_employee);
                 }
                 $this->db->update_batch('enquiry',$assign_data,'enquiry_id');
                 $this->db->insert_batch('tbl_assign_notification',$notification_data);
+                
                 echo display('save_successfully');
             } else {
                 echo display('please_try_again');

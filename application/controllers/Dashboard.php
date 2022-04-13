@@ -19,7 +19,7 @@ class Dashboard extends CI_Controller {
         ));
     }
     public function hello(){
-        //echo "hwllow worlkd";
+        echo date('Y-m-d H:i:s');
         
         
     }
