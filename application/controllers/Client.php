@@ -4637,9 +4637,11 @@ if(in_array($comp_id,$ids)){
       }
  ///////////////////// Charges Table Implented By Shivam ///////////////////      
 
-        $enq = $this->db->select('e.*,r.region_name,desg.desi_name,tbl_company.company_name')
+        $enq = $this->db->select('e.*,r.name as region_name,desg.desi_name,tbl_company.company_name,b.branch_name')
                         ->from('enquiry e')
-                        ->join('tbl_region r','r.region_id=e.region_id','left')
+                        //->join('tbl_region r','r.region_id=e.region_id','left')
+						->join('sales_region r','r.region_id=e.sales_region','left')
+						->join('branch b','b.branch_id=e.sales_branch','left')
                         ->join('tbl_designation desg','desg.id=e.designation','left')
                         ->join('tbl_company','tbl_company.id=e.company','left')
                         ->where('e.enquiry_id',$deal->enquiry_id)
@@ -4699,6 +4701,10 @@ $input['ip'][93] = $input['ip'][44]=$input['ip'][37] = $input['ip'][26] =$enq_de
 $email_list[0] = $input['ip'][49] = $enq->email;
  
         $input['ip'][39] = $deal->booking_type;
+		
+		$input['ip'][1] = $enq->client_name;
+		$input['ip'][2] = $enq->region_name;
+		$input['ip'][3] = $enq->branch_name;
 
 
 $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,designation')->from('tbl_admin')->where('companey_id',$this->session->companey_id)->get()->result();
@@ -4735,7 +4741,7 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $raw['deal_id'] = $deal_id;
         $raw['city_list'] = $this->location_model->city_list();
         $raw['emp_list'] = $user_list;
-        //print_r($raw['city_list']);exit();
+        //echo '<pre>';print_r($raw);exit();
        $data =  $this->load->view('aggrement/new-input-vtrans',$raw,TRUE);
 	   
 	    $data = str_replace('@freight_table', $freight_table,$data);
