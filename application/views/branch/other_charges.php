@@ -75,10 +75,10 @@
 					<label>Dynamic Fuel Surcharge in %</label>
 					<input type="text" name="dfs" class="form-control" value="<?=$oc->dfs?>">
 				</div>
-				<div class="form-group">
+				<!--<div class="form-group">
 					<label>Levy- in %</label>
 					<input type="text" name="l_in" class="form-control" value="<?=$oc->l_in?>">
-				</div>
+				</div>-->
 				<div class="form-group">
 					<label>E-way bill charge</label>
 					<input type="text" name="eway" class="form-control" value="<?=$oc->eway?>">

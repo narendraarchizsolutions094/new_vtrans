@@ -3638,13 +3638,19 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
   if(!empty($deal_id)){echo'<td><input name="uc[17]" value="'.$uc[17].'"></td>';}
                        echo'<td>% of basic freight</td>
                         </tr>
-                        <tr '.(($oc[18]!=$uc[18])?"style='background:#ffbaba;'":"").'>
+						
+						<input type="hidden" name="oc[18]" value="'.$oc[18].'" class="no_edit">';
+  if(!empty($deal_id)){echo'<input type="hidden" name="uc[18]" value="'.$uc[18].'">';}
+  
+                    }
+					
+					/* <tr '.(($oc[18]!=$uc[18])?"style='background:#ffbaba;'":"").'>
                             <td>Levy- in %</td>
                             <td><input name="oc[18]" value="'.$oc[18].'" class="no_edit"></td>';
   if(!empty($deal_id)){echo'<td><input name="uc[18]" value="'.$uc[18].'"></td>';}
                        echo'<td>% of basic freight</td>
-                        </tr>';
-                    }
+                        </tr>'; */
+						
                     echo'<tr '.(($oc[19]!=$uc[19])?"style='background:#ffbaba;'":"").'>
                             <td>E-way bill charge</td>
                             <td><input name="oc[19]" value="'.$oc[19].'" class="no_edit"></td>';
