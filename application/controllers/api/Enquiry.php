@@ -170,7 +170,7 @@ if (!in_array($user_row->user_permissions, $not_send)){
           if(empty($upd))
           { 
           	$this->form_validation->set_rules('mobileno', 'mobileno', 'required|max_length[20]');
-			$this->form_validation->set_rules('email', 'emailid', 'required|max_length[100]');
+			      $this->form_validation->set_rules('email', 'emailid', 'required|max_length[100]');
             $this->form_validation->set_rules('company_id','company_id', 'trim|required');
             $this->form_validation->set_rules('process_id','process_id', 'trim|required');
           }
@@ -268,30 +268,30 @@ if (!in_array($user_row->user_permissions, $not_send)){
                     $postData['company'] = $this->db->insert_id();
                   }
                 }
-			  
-//For make source comma seprated if details are same and source is different
-$enq_id = $this->db->select('enquiry_source,enquiry_id')->where('email',$this->input->post('email'))->where('phone',$this->input->post('mobileno'))->order_by('enquiry_id','DESC')->get('enquiry')->row();
-if(!empty($enq_id->enquiry_id)){
-$post_source = array();
-$find_source = array();
-$find_source = explode(',',$enq_id->enquiry_source);
-$post_source[] = $this->input->post('enquiry_source');
-$unset = array_merge($find_source,$post_source);
-$update_array = array_unique($unset);
-if(!empty($update_array)){
-	$enquiry_source = implode(',',$update_array);
-	
-$postData['enquiry_source'] = $enquiry_source;
-$this->db->where('Enquery_id',$this->input->post('update'));
-$insert_id = $this->db->update('enquiry',$postData);
-	
-}
-}else{
-//End
-$postData['enquiry_source'] = $this->input->post('enquiry_source');
-$this->db->where('Enquery_id',$this->input->post('update'));
-$insert_id = $this->db->update('enquiry',$postData);
-}
+                        
+                //For make source comma seprated if details are same and source is different
+                $enq_id = $this->db->select('enquiry_source,enquiry_id')->where('email',$this->input->post('email'))->where('phone',$this->input->post('mobileno'))->order_by('enquiry_id','DESC')->get('enquiry')->row();
+                if(!empty($enq_id->enquiry_id)){
+                $post_source = array();
+                $find_source = array();
+                $find_source = explode(',',$enq_id->enquiry_source);
+                $post_source[] = $this->input->post('enquiry_source');
+                $unset = array_merge($find_source,$post_source);
+                $update_array = array_unique($unset);
+                if(!empty($update_array)){
+                  $enquiry_source = implode(',',$update_array);
+                  
+                $postData['enquiry_source'] = $enquiry_source;
+                $this->db->where('Enquery_id',$this->input->post('update'));
+                $insert_id = $this->db->update('enquiry',$postData);
+                  
+                }
+                }else{
+                //End
+                $postData['enquiry_source'] = $this->input->post('enquiry_source');
+                $this->db->where('Enquery_id',$this->input->post('update'));
+                $insert_id = $this->db->update('enquiry',$postData);
+                }
         
             	$this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');
     			    $this->db->where('Enquery_id',$this->input->post('update'));
@@ -815,6 +815,10 @@ $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_
                                                           array(
                                                                   "key"=>"",
                                                                   "value"=>"LTL/Sundry"
+                                                                ),
+                                                                array(
+                                                                  "key"=>"",
+                                                                  "value"=>"both"
                                                                 ),
                                                      ),
                                   "parameter_name"=> "business_load"

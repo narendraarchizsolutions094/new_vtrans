@@ -463,7 +463,7 @@ $panel_menu = $this->db->select("tbl_user_role.user_permissions")
                               style="background:<?php echo $value['color'] ?> ;padding:4px;"><?php echo $value['title'] ?>
                            </a>
                            <a href="<?= base_url('enq/drop_tag/') . $value['id'] ?>"
-                              id="tagDrop" data-id="<?= $value['id'] ?>" data-enq="<?= $enquiry->enq_id; ?>"
+                              id="tagDrop" data-id="<?= $value['id'] ?>" data-enq="<?= $enquiry->enquiry_id; ?>"
                               class="text-danger" title="Drop Tag"><i
                                        class="fa fa-close"></i></a>
                        </div>

@@ -1399,9 +1399,9 @@ public function get_all_stage_deals() {
                     $task_subject       = $noti_msg;
                     $task_remark        = $noti_msg;
                     $task_date          = date('d-m-Y');
-                    $contact_person     = $data['enquiry']->name.' '.$data['enquiry']->lastname;
-                    $mobileno           = $data['enquiry']->phone;
-                    $email              = $data['enquiry']->email;
+                    $contact_person     = $data['details']->name.' '.$data['details']->lastname;
+                    $mobileno           = $data['details']->phone;
+                    $email              = $data['details']->email;
                     $designation        = '';
                     $task_time          = date('H:i:s');
                     $this->Leads_Model->add_comment_for_events_popup($task_remark,$task_date,$contact_person,$mobileno,$email,$designation,$task_time,$enq_code,$notification_id,$task_subject);

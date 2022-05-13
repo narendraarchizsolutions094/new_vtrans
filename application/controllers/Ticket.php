@@ -726,8 +726,7 @@ class Ticket extends CI_Controller
 		);
 		echo json_encode($output);
 	}
-	public function ticket_load_data()
-	{
+	public function ticket_load_data(){
 		//$this->output->enable_profiler(true);
 		$export_only = 0;
 		if(!empty($this->session->ticket_filters_sess['export_only'])){
@@ -758,8 +757,7 @@ class Ticket extends CI_Controller
 		$fieldval =  $this->enquiry_model->getfieldvalue(0,2); //2 for ticket
 		foreach ($res as $point) {
 			$sub = array();
-			$colums = array();
-			
+			$colums = array();	
 
 			if(!$export_only){
 				$sub[] = '<input type="checkbox" class="checkbox1" onclick="event.stopPropagation();" value="' . $point->id . '">';
@@ -855,8 +853,7 @@ class Ticket extends CI_Controller
 				}
 				$colums[]  = 'Priority';
 
-			}
-			
+			}		
 			
 			if ($showall or in_array(19, $acolarr)) {
 				$sub[] = $point->subject_title ?? 'NA';
@@ -960,7 +957,7 @@ class Ticket extends CI_Controller
 			);
 			echo json_encode($output);
 		}else{						
-			$this->array_to_csv_download($data,"numbers.csv");
+			$this->array_to_csv_download($data,"Ticket_report.csv");
 		}
 	}
 	function array_to_csv_download($array, $filename = "export.csv", $delimiter=",") {

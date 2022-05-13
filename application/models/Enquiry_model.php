@@ -506,6 +506,11 @@ $insid = $this->db->insert_id();
                                                                   "key"=>"",
                                                                   "value"=>"LTL/Sundry"
                                                                 ),
+                                                                array(
+                                                                  "key"=>"",
+                                                                  "value"=>"both"
+                                                                )
+                                                                
                                                      ),
                                   "parameter_name"=> "business_load",
                                   "current_value"=> $enquiry->business_load,

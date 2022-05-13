@@ -14,6 +14,10 @@ class Client extends CI_Controller {
             redirect('login');
         }
     }
+    public function test(){
+        echo "<pre>";
+        print_r($_SESSION);
+    }
     public function index() {
         $this->session->unset_userdata('enquiry_filters_sess');        
         if (user_role('80') == true) {}  
@@ -4414,12 +4418,12 @@ if(in_array($comp_id,$ids)){
     function prepare_vtrans($enq_code)
     {
         $ag_data = array('name'=>$this->input->post("agg_user", true),
-                            'mobile'=>$this->input->post("agg_mobile", true),
-                            'email'=>$this->input->post("agg_email", true),
-                            'address'=>$this->input->post("agg_adrs", true),
-                            'date'=>$this->input->post("agg_date", true),
-							'deal'=>$this->input->post("deal_id", true),
-                            );
+                         'mobile'=>$this->input->post("agg_mobile", true),
+                         'email'=>$this->input->post("agg_email", true),
+                         'address'=>$this->input->post("agg_adrs", true),
+                         'date'=>$this->input->post("agg_date", true),
+						 'deal'=>$this->input->post("deal_id", true),
+                        );
         $ag_encode = base64_encode(json_encode($ag_data));
 
         $this->load->model(array('Branch_model','Leads_Model','Location_model'));
@@ -4445,10 +4449,9 @@ if(in_array($comp_id,$ids)){
 
         $deal_data = $this->Branch_model->get_deal_data($deal_id);
 		
-///////////////////// Charges Table Implented By Shivam ///////////////////
+        ///////////////////// Charges Table Implented By Shivam ///////////////////
 		
-		if($deal->booking_type=='ftl')
-    {
+	if($deal->booking_type=='ftl'){
         $freight_table = '';
         $area_table='';
         $oda_table='';
@@ -4476,9 +4479,7 @@ if(in_array($comp_id,$ids)){
         }
         $freight_table.="</tbody></table>";
         $fuel_surcharge='';
-      }
-      else
-      {
+      }else{
 
           if($deal->btype=='branch' || $deal->btype=='zone')
           {
@@ -4635,7 +4636,7 @@ if(in_array($comp_id,$ids)){
                       }
 
       }
- ///////////////////// Charges Table Implented By Shivam ///////////////////      
+     ///////////////////// Charges Table Implented By Shivam ///////////////////      
 
         $enq = $this->db->select('e.*,r.name as region_name,desg.desi_name,tbl_company.company_name,b.branch_name')
                         ->from('enquiry e')
@@ -4658,7 +4659,7 @@ if(in_array($comp_id,$ids)){
 
 
         $input['ip'][0] = $input['ip'][5] = $ref_no;
-$input['ip'][50] = $input['ip'][38] = $input['ip'][1] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+        $input['ip'][50] = $input['ip'][38] = $input['ip'][1] = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
         $input['ip'][2] = $enq->region_name;
         $input['ip'][3] = '';
         $input['ip'][4] = '';
@@ -4671,7 +4672,7 @@ $input['ip'][50] = $input['ip'][38] = $input['ip'][1] = $enq->name_prefix.' '.$e
             $city_name = $city->city;
         $input['ip'][9] =  $city_name; //$enq->city_id;
 
-    $input['ip'][52] = $input['ip'][47] = $input['ip'][10] = $enq->company_name;
+        $input['ip'][52] = $input['ip'][47] = $input['ip'][10] = $enq->company_name;
     
         $input['ip'][48]= $input['ip'][11] = $enq->address;
         $input['ip'][12] = date('Y-m-d');
@@ -4686,51 +4687,51 @@ $input['ip'][50] = $input['ip'][38] = $input['ip'][1] = $enq->name_prefix.' '.$e
 
         //user Details 
 
-$input['ip'][95] = $input['ip'][94] = $input['ip'][90] =$input['ip'][46] =$input['ip'][41]=$input['ip'][34] = $input['ip'][23] = $user->s_display_name.' '.$user->last_name;
-$input['ip'][96] = $input['ip'][91] = $input['ip'][42]=$input['ip'][35] = $input['ip'][24] = $user->designation;
+        $input['ip'][95] = $input['ip'][94] = $input['ip'][90] =$input['ip'][46] =$input['ip'][41]=$input['ip'][34] = $input['ip'][23] = $user->s_display_name.' '.$user->last_name;
+        $input['ip'][96] = $input['ip'][91] = $input['ip'][42]=$input['ip'][35] = $input['ip'][24] = $user->designation;
 
-$input['ip'][97] = date('Y-m-d');
+        $input['ip'][97] = date('Y-m-d');
 
-$input['ip'][45]= $user->s_user_email;
+        $input['ip'][45]= $user->s_user_email;
 
-    ///enq details =
+            ///enq details =
 
-$input['ip'][92] = $input['ip'][43]=$input['ip'][36] = $input['ip'][25] =$enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
-$input['ip'][93] = $input['ip'][44]=$input['ip'][37] = $input['ip'][26] =$enq_designation;
+        $input['ip'][92] = $input['ip'][43]=$input['ip'][36] = $input['ip'][25] =$enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+        $input['ip'][93] = $input['ip'][44]=$input['ip'][37] = $input['ip'][26] =$enq_designation;
 
-$email_list[0] = $input['ip'][49] = $enq->email;
- 
-        $input['ip'][39] = $deal->booking_type;
-		
-		$input['ip'][1] = $enq->client_name;
-		$input['ip'][2] = $enq->region_name;
-		$input['ip'][3] = $enq->branch_name;
+        $email_list[0] = $input['ip'][49] = $enq->email;
+        
+                $input['ip'][39] = $deal->booking_type;
+                
+                $input['ip'][1] = $enq->client_name;
+                $input['ip'][2] = $enq->region_name;
+                $input['ip'][3] = $enq->branch_name;
 
 
-$user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,designation')->from('tbl_admin')->where('companey_id',$this->session->companey_id)->get()->result();
+        $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,designation')->from('tbl_admin')->where('companey_id',$this->session->companey_id)->get()->result();
 
         $raw['ip'] = $input['ip'];
         $raw['email_list'] = $email_list;
         $raw['charges'] = $oc;
         // Industries list
 
-    $this->db->select("tbl_input.*,input_types.title as type");
-    $this->db->from('tbl_input');
-    $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
-    $this->db->where('input_id','305'); //for v-trans dynamic field 4478 
-    $industries = $this->db->get()->row_array();
+        $this->db->select("tbl_input.*,input_types.title as type");
+        $this->db->from('tbl_input');
+        $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
+        $this->db->where('input_id','305'); //for v-trans dynamic field 4478 
+        $industries = $this->db->get()->row_array();
 
-    $this->db->select("tbl_input.*,input_types.title as type");
-    $this->db->from('tbl_input');
-    $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
-    $this->db->where('input_id','287');
-    $client_type = $this->db->get()->row_array();
+        $this->db->select("tbl_input.*,input_types.title as type");
+        $this->db->from('tbl_input');
+        $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
+        $this->db->where('input_id','287');
+        $client_type = $this->db->get()->row_array();
 
-    $this->db->select("tbl_input.*,input_types.title as type");
-    $this->db->from('tbl_input');
-    $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
-    $this->db->where('input_id','4478');
-    $compt = $this->db->get()->row_array();
+        $this->db->select("tbl_input.*,input_types.title as type");
+        $this->db->from('tbl_input');
+        $this->db->join('input_types','tbl_input.input_type=input_types.id','LEFT');
+        $this->db->where('input_id','4478');
+        $compt = $this->db->get()->row_array();
         
 		
 		
@@ -4742,7 +4743,7 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
         $raw['city_list'] = $this->location_model->city_list();
         $raw['emp_list'] = $user_list;
         //echo '<pre>';print_r($raw);exit();
-       $data =  $this->load->view('aggrement/new-input-vtrans',$raw,TRUE);
+        $data =  $this->load->view('aggrement/new-input-vtrans',$raw,TRUE);
 	   
 	    $data = str_replace('@freight_table', $freight_table,$data);
         $data = str_replace('@area_table', $area_table,$data);
@@ -4763,13 +4764,13 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
             '.$data.'
             </div>
             <center><button style="    padding: 15px 25px;
-    background: #209ed9;
-    color: white;
-    margin: 15px;
-    border: 0px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 15px;" onclick="">Generate PDF</button></center>
+                background: #209ed9;
+                color: white;
+                margin: 15px;
+                border: 0px;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 15px;" onclick="">Generate PDF</button></center>
             </form>
         </div>
         </body>
@@ -4779,22 +4780,26 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
 
     public function attach_agreement_data()
     {
+        
         // echo "<pre>";
         // print_r($_FILES);
         // print_r($_POST);
         // exit();
+
         if(empty($_POST)){
             die('Direct Access Not Allowed');
         }
         $this->load->model(array('Branch_model','Leads_Model','Location_model'));
         $deal_id = $this->input->post('deal_id');
         $deal   =    $this->Branch_model->get_deal($deal_id);
-       // $oc =(array) json_decode($deal->other_charges);
+       
+        // $oc =(array) json_decode($deal->other_charges);
+
 		if($deal->status==0 && $deal->approval!='done'){
-        $oc =(array) json_decode($deal->other_charges);
-	   }else{
-		$oc =(array) json_decode($deal->update_charges);
-	   }
+            $oc =(array) json_decode($deal->other_charges);
+	    }else{
+		    $oc =(array) json_decode($deal->update_charges);
+	    }
 
         for($i=110;$i<=115;$i++)
         {   
@@ -4809,21 +4814,21 @@ $user_list = $this->db->select('CONCAT(s_display_name," ",last_name) emp_name,de
 
                 $path = 'uploads/enquiry_documents/'.$this->session->companey_id;
 
-               if (!file_exists($path)) {
+                if (!file_exists($path)) {
                     mkdir($path, 0777, true);
                 }
                 $path= $path.'/'.$nf;
                 if(move_uploaded_file($_FILES['ip']['tmp_name'][$i],$path))
                     $_POST['ip'][$i] ='Yes';
-//INSERT DOCUMENT CODE
-$doc_ary = array(
-			'deal_id'=>$deal_id,
-            'comp_id'=>$this->session->companey_id,
-			'doc_id'=>$i,
-            'doc_url'=>$path,
-            'created_by'=>$this->session->user_id,
-        );
-$this->db->insert('tbl_aggriment_docs',$doc_ary);				
+                    //INSERT DOCUMENT CODE
+                    $doc_ary = array(
+                        'deal_id'=>$deal_id,
+                        'comp_id'=>$this->session->companey_id,
+                        'doc_id'=>$i,
+                        'doc_url'=>$path,
+                        'created_by'=>$this->session->user_id,
+                    );
+                    $this->db->insert('tbl_aggriment_docs',$doc_ary);				
             }
         }
 		
@@ -4831,22 +4836,20 @@ $this->db->insert('tbl_aggriment_docs',$doc_ary);
 		
 ///////////////////// Charges Table Implented By Shivam ///////////////////
 		
-		if($deal->booking_type=='ftl')
-    {
+	if($deal->booking_type=='ftl'){
         $freight_table = '';
-        $area_table='';
-        $oda_table='';
+        $area_table = '';
+        $oda_table = '';
         $freight_table .="<table border='1px' width='100%'>
-        <thead>
-          <tr>
+        <thead><tr>
             <th style='background:#00b0f0;'>From</th>
             <th style='background:#00b0f0;'>To</th>
             <th style='background:#00b0f0;'>Vehicle Type</th>
             <th style='background:#00b0f0;'>Freight</th>
           </tr>
         </thead>
-        <tbody>
-        ";
+        <tbody>";
+
         foreach ($deal_data as $key => $drow)
         {
             $freight_table.="
@@ -5019,7 +5022,7 @@ $this->db->insert('tbl_aggriment_docs',$doc_ary);
                       }
 
       }
- ///////////////////// Charges Table Implented By Shivam ///////////////////
+        //////////////// Charges Table Implented By Shivam ///////////////////
 
 		
         $data = $_POST;
@@ -5252,7 +5255,8 @@ $deal   =    $this->Branch_model->get_deal($deal_id);
             'enq_id'=>$enq_code,
 			'deal_id'=>$ag_data['deal'],
             'comp_id'=>$this->session->companey_id,
-            'agg_name'=>$ag_data['name'],
+            'pdf_json'=>json_encode($_POST),
+            'agg_name'=>$ag_data['name'],            
             'agg_phone'=>$ag_data['mobile'],
             'agg_email'=>$ag_data['email'],
             'agg_adrs'=>$ag_data['address'],
