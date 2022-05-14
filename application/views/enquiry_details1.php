@@ -1610,6 +1610,7 @@ if(user_access('1004'))
       <th class="th-sm">Email</th>
       <th class="th-sm">Address</th>
       <th class="th-sm">Agreement Date</th>
+      <th class="th-sm">Sync With ShipX</th>
     <th class="th-sm">Agreement</th>
 <?php if($details->status=='5'){ ?>
     <th class="th-sm">PO File</th>
@@ -1629,6 +1630,7 @@ if(user_access('1004'))
       <td><?php echo $val->agg_email;  ?></td>
       <td><?php echo $val->agg_adrs; ?></td>
     <td><?php echo $val->agg_date; ?></td>
+    <td><a href="javascript:void(0)" class="btn btn-xs btn-primary" onclick="sync_with_shipx('<?=$val->id?>')">Sync</a></td>
       <td>
 <?php if(!empty($val->file)){ 
   $fname= explode('/', $val->file);
@@ -2297,7 +2299,7 @@ if (document.getElementById('agg_same').checked)
             <div id="imgBack"></div>
             <select class="form-control"  name="assign_employee">   
                <option value="0">--Select--</option>                 
-            <?php foreach ($created_bylist as $user) { 
+            <?php if(!empty($created_bylist)){foreach ($created_bylist as $user) { 
                             
                           if (!empty($user->user_permissions)) {
                             $module=explode(',',$user->user_permissions);
@@ -2309,7 +2311,7 @@ if (document.getElementById('agg_same').checked)
                             </option>
                             <?php 
                           //}
-                        } ?>                                                      
+                        } } ?>                                                      
             </select> 
             </div>
                      <div class="form-group col-sm-12">  
@@ -2593,9 +2595,9 @@ $(function () {
                   <label>Drop Reason</label>                  
                   <select class="form-control"  name="drop_status">
                      <option value="" style="display:none">---Select---</option>
-                     <?php foreach ($drops as $drop) {   ?>
+                     <?php if(!empty($drops)){foreach ($drops as $drop) {   ?>
                      <option value="<?php echo $drop->d_id; ?>"><?php echo $drop->drop_reason; ?></option>
-                     <?php } ?>                                             
+                     <?php }} ?>                                             
                   </select>
                </div>
                <div class="form-group col-sm-12"> 
@@ -3780,4 +3782,15 @@ $(".nav-tabs li").on('click',function(){
             }
         })
     });
+    function sync_with_shipx(agreement_id){
+      if(confirm('Are you sure ? Your data will be send to shipx portal.') && agreement_id){
+        $.ajax({
+          url: "<?= base_url('shipx_integration/push_data/')?>"+agreement_id,
+          type: "POST",
+          success: function (response) {
+            console.log('Shipx Log',response);
+          }
+        });
+      }
+    }
 </script>

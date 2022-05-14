@@ -5,7 +5,7 @@ class Shipx_model extends CI_model{
 		$this->load->database();
 	}
 	public function get_json($agreement_id){
-        $agreement_row = $this->db->select('*')->from('tbl_aggriment')->get()->row_array();
+        $agreement_row = $this->db->select('*')->from('tbl_aggriment')->where('id',$agreement_id)->get()->row_array();
         
         $lead_id = $agreement_row['enq_id'];
 
@@ -13,26 +13,47 @@ class Shipx_model extends CI_model{
         if(!empty($pdf_json)){
             $pdf_json = json_decode($pdf_json, true);
         }
+        ///print_r($pdf_json);
         $company_type = $payment_terms = $tin = $gstin  = '';
-        if(!empty($pdf_json[53])){
-            $company_type = $pdf_json[53];
+        if(!empty($pdf_json['ip'][53])){
+            $company_type = $pdf_json['ip'][53];
         }
-        if(!empty($pdf_json[86])){
-            $payment_terms = $pdf_json[86];
+        if(!empty($pdf_json['ip'][86])){
+            $payment_terms = $pdf_json['ip'][86];
         }
-        if(!empty($pdf_json[79])){
-            $tin = $pdf_json[79];
+        if(!empty($pdf_json['ip'][79])){
+            $tin = $pdf_json['ip'][79];
         }
 
-        if(!empty($pdf_json[76])){
-            $gstin = $pdf_json[76];
+        if(!empty($pdf_json['ip'][76])){
+            $gstin = $pdf_json['ip'][76];
         }
 
         $this->db->select('*');
         $this->db->from('enquiry');
-        $this->db->where('enquiry.enquiry_id',$lead_id);
+        $this->db->where('enquiry.Enquery_id',$lead_id);
         $lead_row = $this->db->get()->row_array();
-      
+        //print_r($lead_row);
+        $city_name = $state_name = $company_group_name = '';
+
+        if(!empty($lead_row['state_id'])){
+            $state_row = $this->db->select('state')->where('id',$lead_row['state_id'])->get('state')->row_array();
+            if(!empty($state_row['state'])){
+                $state_name = $state_row['state'];
+            }
+        }
+        if(!empty($lead_row['city_id'])){
+            $city_row = $this->db->select('city')->where('id',$lead_row['city_id'])->get('city')->row_array();
+            if(!empty($city_row['city'])){
+                $city_name = $city_row['city'];
+            }
+        }
+        if(!empty($lead_row['company'])){
+            $company_row = $this->db->select('company_name')->where('id',$lead_row['company'])->get('tbl_company')->row_array();
+            if(!empty($company_row['company_name'])){
+                $company_group_name = $company_row['company_name'];
+            }
+        }
         $user_row = $this->db->select('designation')->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row_array();
         $username  = $this->session->fullname;
         $user_designation = $user_row['designation'];
@@ -50,6 +71,7 @@ class Shipx_model extends CI_model{
         }
 
         $client_name = $lead_row['client_name'];
+       // var_dump($lead_row);
         $shipx_arr = array(
                         'company'=>array(
                                 'name'=>$client_name??'',
@@ -68,9 +90,9 @@ class Shipx_model extends CI_model{
                                             'address-line1'	=>'',//optional
                                             'address-line2'	=>'',//optional
                                             'address-line3' =>'',//optional
-                                            'city' => '',
+                                            'city' => $city_name??'',
                                             'pin' => $pincode??'',
-                                            'state' => '',
+                                            'state' => $state_name??'',
                                             'payment_terms' => $payment_terms??'',
                                             'facility-ref1' => '',//optional
                                             'facility-ref2' => '',//optional
@@ -106,9 +128,9 @@ class Shipx_model extends CI_model{
                                     )
                                 ),	
                                 'company-group' => array(
-                                    'name'	=> '',
-                                    'description' => '',
-                                    'create_new_company_group'	=> ''
+                                    'name'	=> $company_group_name,
+                                    'description' => '',//optional
+                                    'create_new_company_group'	=> $company_group_name
                                     )
                             ));
         $shipx_json = json_encode($shipx_arr);

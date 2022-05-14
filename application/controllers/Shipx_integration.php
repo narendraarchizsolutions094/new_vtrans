@@ -45,10 +45,10 @@ class Shipx_integration extends CI_Controller{
         $json = $this->Shipx_model->get_json($agreement_id);
         
         
-        echo "<code><pre>";
-        print_r($json);
-        echo "</pre></code>";
-        exit;
+        // echo "<code><pre>";
+        // print_r($json);
+        // echo "</pre></code>";
+        // exit;
         
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -67,7 +67,14 @@ class Shipx_integration extends CI_Controller{
         ));
         $response = curl_exec($curl);
         curl_close($curl);
-        echo $response;
+        $response_arr = json_decode($response,true);
+        //echo $response; exit;
+        if(!empty($response_arr['exception']['errorcode'])){ 
+            echo $response;
+            echo $json;
+        }else{
+            echo $response;
+        }
 
 
     }
