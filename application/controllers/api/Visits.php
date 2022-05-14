@@ -347,11 +347,20 @@ if(!empty($result))
 //FIND START POINT END	 
 //FIND All POINTS START
 $where = " uid=$user_id AND DATE(created_date)=CURDATE()";
-$this->db->select('id,one_lead');
+$this->db->select('id,one_lead,waypoints');
 $this->db->where($where);    
 $res_rowsss  = $this->db->get('map_location_feed')->row_array();
 $clear_id = $res_rowsss['id'];
 $waypoints = $res_rowsss['one_lead'];
+if(empty($end_point)){
+	
+	$all = json_decode($res_rowsss['waypoints']);
+	$last = $all[count($all)-1];
+	$end_point = implode(',',$last);
+	
+}
+
+
 $l_lvalues = explode(',',$end_point);
 $latitude   = (float)$l_lvalues[0];
 $longitude  = (float)$l_lvalues[1];
@@ -364,7 +373,7 @@ if(empty($waypoints)){
 
 array_push($waypoints, $new_waypoint);
 //FIND ALL POINTS END	
-//print_r($waypoints);exit;		
+//print_r($waypoints);exit;	
 	  
     		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
 
