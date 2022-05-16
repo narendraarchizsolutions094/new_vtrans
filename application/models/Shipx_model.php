@@ -72,6 +72,9 @@ class Shipx_model extends CI_model{
 
         $client_name = $lead_row['client_name'];
        // var_dump($lead_row);
+        $company_type = '';
+        $payment_terms = '';
+        $sales_branch = '';
         $shipx_arr = array(
                         'company'=>array(
                                 'name'=>$client_name??'',
@@ -97,7 +100,7 @@ class Shipx_model extends CI_model{
                                             'facility-ref1' => '',//optional
                                             'facility-ref2' => '',//optional
                                             'facility-ref3' => '',//optional
-                                            'is-invoice-facility' => false,
+                                            'is-invoice-facility' => true,
                                             'is-ship-from-address' => true,
                                             'is-ship-to-address' => true,
                                             'facility-category' =>$sales_branch??'',
@@ -112,25 +115,13 @@ class Shipx_model extends CI_model{
                                                 )	
                                             ),                    
                                             'tin' => $tin??'',
-                                            'gst-no' => $gstin??'',                    
-                                            'holds-list' => array(
-                                                'hold'	=> array(
-                                                    'hold_type' =>'',//optional
-                                                    'hold_state' => ''//optional
-                                                )
-                                            )
-                                    )
-                                ),		
-                                'holds-list' => array(
-                                    'hold'=>	array(
-                                        'hold_type' =>	'', //optional
-                                        'hold_state' =>	''  //optional
+                                            'gst-no' => $gstin??''
                                     )
                                 ),	
                                 'company-group' => array(
                                     'name'	=> $company_group_name,
                                     'description' => '',//optional
-                                    'create_new_company_group'	=> $company_group_name
+                                    'create_new_company_group'	=> 'N'
                                     )
                             ));
         $shipx_json = json_encode($shipx_arr);
