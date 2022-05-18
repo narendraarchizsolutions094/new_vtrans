@@ -576,6 +576,7 @@ input[name=lead_stages]{
                       <?=($showall or in_array(9,$acolarr))?'<th>Date</th>':''?>
                       <?=($showall or in_array(18,$acolarr))?'<th>'.display('last_updated').'</th>':''?>
                       <?=($showall or in_array(20,$acolarr))?'<th>Name</th>':''?>    
+                      <?=($showall or in_array(20,$acolarr))?'<th>Branch</th>':''?>    
 											<?=($showall or in_array(2,$acolarr))?'<th>'.display('problem_for').'</th>':''?>
 										  <?=($showall or in_array(3,$acolarr))?'<th>Email</th>':''?>
 											<?=($showall or in_array(4,$acolarr))?'<th>Phone</th>':''?>

@@ -99,7 +99,7 @@
                    <?php echo form_open_multipart('ticket/ticket_disposition/'.$ticket->id,array('id'=>'ticket_disposition_form','class'=>'form-inner')) ?>                     
                    <input type="hidden" name="client" value="<?php if(!empty($enquiry->enquiry_id)) { echo $enquiry->enquiry_id;}?>">
                    <input type="hidden" name="ticketno" value="<?=$ticket->ticketno?>"> 
-                   <input type="hidden" name="brnh_id" id="brnh_for">				   
+                   <input type="hidden" name="brnh_id" id="brnh_for">
 
                     <div class="form-group">                 
                       <select class="form-control" id="lead_stage_change" name="lead_stage" onchange="find_description()">
@@ -109,9 +109,13 @@
                           {
                             foreach($ticket_stages as $single)
                             {  
+                              if(($ticket->complaint_type == 1 && $single->stg_id == 2) || ($ticket->complaint_type == 2 && $single->stg_id == 1)){
+                                
+                              
                               ?>                              
                               <option value="<?=$single->stg_id?>" <?=($single->stg_id==$ticket->ticket_stage?'selected':'')?>><?php echo $single->lead_stage_name; ?></option>
                               <?php 
+                              }
                             }
                           }
                            ?>

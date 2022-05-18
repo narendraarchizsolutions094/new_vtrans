@@ -165,7 +165,7 @@ class Ticket_datatable_model extends CI_Model{
           $dshowall = false;
         }
         $sel_string = array();
-        $sel_string[] = "tck.*";
+        $sel_string[] = "tck.*,branch.branch_name as branch_for_name";
 
         // if($showall or in_array(1,$acolarr))
         // {
@@ -251,6 +251,9 @@ class Ticket_datatable_model extends CI_Model{
         
         //->join("tbl_ticket_conv cnv", "cnv.tck_id = tck.id", "LEFT")
         $this->db->join("enquiry enq", "enq.enquiry_id = tck.client", "LEFT");
+        
+        $this->db->join("branch", "branch.branch_id = tck.branch_for", "LEFT");
+
         $this->db->join("tbl_company","tbl_company.id=enq.company",'left');
         $this->db->join("tbl_company as tbl_company2","tbl_company2.id=tck.comapny_id",'left');
         if($showall or count(array_intersect(array(2,4),$acolarr))>0)

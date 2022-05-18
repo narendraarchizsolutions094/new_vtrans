@@ -795,8 +795,13 @@ class Ticket extends CI_Controller
 			if ($showall or in_array(20, $acolarr)) {
 				$sub[] = $point->name ?? 'NA';
 				$colums[]  = 'Name';
-
 			}
+
+			if ($showall or in_array(20, $acolarr)) {
+				$sub[] = $point->branch_for_name ?? 'NA';
+				$colums[]  = 'Branch';
+			}
+			
 			if ($showall or in_array(2, $acolarr)) {
 				if($point->company_name){
 					$sub[] = $point->company_name??($point->company_name ?? "NA");
