@@ -1630,7 +1630,19 @@ if(user_access('1004'))
       <td><?php echo $val->agg_email;  ?></td>
       <td><?php echo $val->agg_adrs; ?></td>
     <td><?php echo $val->agg_date; ?></td>
-    <td><a href="javascript:void(0)" class="btn btn-xs btn-primary" onclick="sync_with_shipx('<?=$val->id?>')">Sync</a></td>
+    <td>
+    <?php
+    if($val->shipx_push_status == 200){
+      ?>
+      <a href="javascript:void(0)" class="btn btn-xs btn-primary" >Already Synced</a>
+      <?php      
+    }else{
+      ?>
+      <a href="javascript:void(0)" class="btn btn-xs btn-primary" onclick="sync_with_shipx('<?=$val->id?>')">Sync</a>
+      <?php
+    }
+    ?>  
+    </td>      
       <td>
 <?php if(!empty($val->file)){ 
   $fname= explode('/', $val->file);
@@ -3788,7 +3800,21 @@ $(".nav-tabs li").on('click',function(){
           url: "<?= base_url('shipx_integration/push_data/')?>"+agreement_id,
           type: "POST",
           success: function (response) {
-            console.log('Shipx Log',response);
+            res = JSON.parse(response);
+            if(res.status == 1){
+              Swal.fire(
+                    'Data Pushed To Shipx',
+                    '',
+                    'success'
+                );
+                location.reload();
+            }else{
+              Swal.fire(
+                'Error!',
+                res.msg,
+                'error'
+                );
+            }
           }
         });
       }

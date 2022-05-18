@@ -54,11 +54,11 @@ class Shipx_model extends CI_model{
                 $company_group_name = $company_row['company_name'];
             }
         }
-        $user_row = $this->db->select('designation')->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row_array();
-        $username  = $this->session->fullname;
-        $user_designation = $user_row['designation'];
-        $user_email = $this->session->email;
-        $user_mobile = $this->session->phone;
+        //$user_row = $this->db->select('designation')->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row_array();
+        $username  = $lead_row['client_name'];
+        $user_designation = '';//$user_row['designation'];
+        $user_email = $lead_row['email'];
+        $user_mobile = $lead_row['phone'];
 
         $website = get_val(4505,$lead_row['Enquery_id']);
         $pincode = get_val(4536,$lead_row['Enquery_id']);
@@ -72,56 +72,56 @@ class Shipx_model extends CI_model{
 
         $client_name = $lead_row['client_name'];
        // var_dump($lead_row);
-        $company_type = '';
+        $company_type = 'RETAIL';
         $payment_terms = '';
         $sales_branch = '';
         $shipx_arr = array(
                         'company'=>array(
                                 'name'=>$client_name??'',
                                 'code'=>'',//oracle code
-                                'type'=>'shipper',
+                                'type'=>'Shipper',
                                 'website'=>$website??'',
-                                'company-type'=>$company_type??'',
-                                'payment-terms'=>$payment_terms??'',
-                                'company-ref1'=>'',//optional
-                                'company-ref2'=>'',//optional
-                                'company-ref3'=>'',	//optional
-                                'facilities-attributes'=>array(
-                                    'facility' =>	array(
-                                            'Name' => $lead_row['name_prefix'].' '.$lead_row['name'].' '.$lead_row['lastname'],	
+                                'company_type'=>$company_type??'',
+                                'payment_terms'=>$payment_terms??'',
+                                'company_ref1'=>'',//optional
+                                'company_ref2'=>'',//optional
+                                'company_ref3'=>'',	//optional
+                                'facilities_attributes'=>array(
+                                    array(
+                                            'name' => $lead_row['name_prefix'].' '.$lead_row['name'].' '.$lead_row['lastname'],	
                                             'code' => '',//optional
-                                            'address-line1'	=>'',//optional
-                                            'address-line2'	=>'',//optional
-                                            'address-line3' =>'',//optional
+                                            'address_line1'	=>'',//optional
+                                            'address_line2'	=>'',//optional
+                                            'address_line3' =>'',//optional
                                             'city' => $city_name??'',
                                             'pin' => $pincode??'',
                                             'state' => $state_name??'',
                                             'payment_terms' => $payment_terms??'',
-                                            'facility-ref1' => '',//optional
-                                            'facility-ref2' => '',//optional
-                                            'facility-ref3' => '',//optional
-                                            'is-invoice-facility' => true,
-                                            'is-ship-from-address' => true,
-                                            'is-ship-to-address' => true,
-                                            'facility-category' =>$sales_branch??'',
-                                            'phone-number' =>$lead_row['phone']??'',
-                                            'is-sez' =>false,                
-                                            'users-attributes' => array(
-                                                'user' => array(
+                                            'facility_ref1' => '',//optional
+                                            'facility_ref2' => '',//optional
+                                            'facility_ref3' => '',//optional
+                                            'is_invoice_facility' => "true",
+                                            'is_ship_from_address' => "true",
+                                            'is_ship_to_address' => "true",
+                                            'facility_category' =>'BRANCH',
+                                            'phone_number' =>$lead_row['phone']??'',
+                                            'is_sez' =>"false",                
+                                            'users_attributes' => array(
+                                                array(
                                                     'name'    => $username??'',
                                                     'designation' => $user_designation??'',
                                                     'email' => $user_email??'',	
-                                                    'mobile-number' => $user_mobile??''
+                                                    'mobile_number' => $user_mobile??''
                                                 )	
                                             ),                    
                                             'tin' => $tin??'',
-                                            'gst-no' => $gstin??''
+                                            'gst_no' => $gstin??''
                                     )
-                                ),	
-                                'company-group' => array(
+                                ),
+                                'company_group' => array(
                                     'name'	=> $company_group_name,
                                     'description' => '',//optional
-                                    'create_new_company_group'	=> 'N'
+                                    'create_new_company_group'	=> 'Y'
                                     )
                             ));
         $shipx_json = json_encode($shipx_arr);

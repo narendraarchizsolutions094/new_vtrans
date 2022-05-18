@@ -62,7 +62,8 @@ class Shipx_integration extends CI_Controller{
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS =>$json,
             CURLOPT_HTTPHEADER => array(
-                'X-ShipX-API-Key: 1leVciAvveJvVv3RtiPDmWDXvASxeDJpQvBJcrJMbnQH3oHyuVCvCo7v1Voz'
+                'X-ShipX-API-Key: 1leVciAvveJvVv3RtiPDmWDXvASxeDJpQvBJcrJMbnQH3oHyuVCvCo7v1Voz',
+                'Content-Type: application/json'
             ),
         ));
         $response = curl_exec($curl);
@@ -70,12 +71,20 @@ class Shipx_integration extends CI_Controller{
         $response_arr = json_decode($response,true);
         //echo $response; exit;
         if(!empty($response_arr['exception']['errorcode'])){ 
-            echo $response;
-            echo $json;
+            $msg = $response_arr['exception']['message'];
+            echo json_encode(array('msg'=>$msg,'status'=>0));
         }else{
-            echo $response;
+            //echo $response;
+            $res_arr = json_decode($response,true);
+            if(!empty($res_arr['company']['id'])){
+                $this->db->where('id',$agreement_id);
+                $this->db->set('shipx_res',$response);
+                $this->db->set('shipx_push_status',200);
+                $this->db->update('tbl_aggriment');
+                echo json_encode(array('msg'=>'Success','status'=>1));
+            }else{
+                echo json_encode(array('msg'=>'Something went wrong !','status'=>0));
+            }
         }
-
-
     }
 }
