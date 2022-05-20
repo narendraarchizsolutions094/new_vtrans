@@ -1,7 +1,8 @@
 <div class="row">
 <div class="row">
     <?php
-        $visittable=$this->db->where(array('id'=>$att_id))->get('map_location_feed')->result();
+    $visittable=$this->db->where(array('id'=>$att_id))->get('map_location_feed')->result();
+    //print_r($visittable);
     ?>
 <div class="col-md-12">
 <?php 
@@ -73,7 +74,7 @@ $secondpoint=$newpoints[$lastKey];
 
       }
       var res = JSON.parse("<?=json_encode($newpoints)?>");
-
+      console.log(res);
       this.origin = {
       	lat: Number(res[0][0]),
       	lng: Number(res[0][1])

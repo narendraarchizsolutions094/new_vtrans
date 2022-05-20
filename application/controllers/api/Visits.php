@@ -317,7 +317,7 @@ if(!empty($result))
         $visit_date = $this->input->post('visit_date');
         $visit_time = $this->input->post('visit_time');
         $m_purpose = $this->input->post('m_purpose');
-	    $end_point = $this->input->post('end_point')??'';
+	     $end_point = $this->input->post('end_point')??'';
 
     	$this->form_validation->set_rules('company_id','company_id','required|trim');
     	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
@@ -327,7 +327,7 @@ if(!empty($result))
 
     	if($this->form_validation->run()==true)
     	{
-//FIND START POINT START			
+      //FIND START POINT START			
 		//$where = " user_id=$user_id AND enquiry_id=$enquiry_id AND DATE(created_at)=CURDATE()";
 		$where = " user_id=$user_id AND DATE(created_at)=CURDATE()";
 		$this->db->select('end_waypoints,id');
@@ -344,36 +344,31 @@ if(!empty($result))
 		}else{
 		$start_point = $visit_row['end_waypoints'];	
 		}
-//FIND START POINT END	 
-//FIND All POINTS START
-$where = " uid=$user_id AND DATE(created_date)=CURDATE()";
-$this->db->select('id,one_lead,waypoints');
-$this->db->where($where);    
-$res_rowsss  = $this->db->get('map_location_feed')->row_array();
-$clear_id = $res_rowsss['id'];
-$waypoints = $res_rowsss['one_lead'];
-if(empty($end_point)){
-	
-	$all = json_decode($res_rowsss['waypoints']);
-	$last = $all[count($all)-1];
-	$end_point = implode(',',$last);
-	
-}
-
-
-$l_lvalues = explode(',',$end_point);
-$latitude   = (float)$l_lvalues[0];
-$longitude  = (float)$l_lvalues[1];
-$new_waypoint = array($latitude,$longitude);
-$waypoints  = json_decode($waypoints);   
-
-if(empty($waypoints)){
-   $waypoints = array();
-}
-
-array_push($waypoints, $new_waypoint);
-//FIND ALL POINTS END	
-//print_r($waypoints);exit;	
+      //FIND START POINT END	 
+      //FIND All POINTS START
+      $where = " uid=$user_id AND DATE(created_date)=CURDATE()";
+      $this->db->select('id,one_lead,waypoints');
+      $this->db->where($where);    
+      $res_rowsss  = $this->db->get('map_location_feed')->row_array();
+      $clear_id = $res_rowsss['id'];
+      $waypoints = $res_rowsss['one_lead'];
+      
+      if(empty($end_point)){
+         $all = json_decode($res_rowsss['waypoints']);
+         $last = $all[count($all)-1];
+         $end_point = implode(',',$last);         
+      }
+      $l_lvalues = explode(',',$end_point);
+      $latitude   = (float)$l_lvalues[0];
+      $longitude  = (float)$l_lvalues[1];
+      $new_waypoint = array($latitude,$longitude);
+      $waypoints  = json_decode($waypoints);
+      if(empty($waypoints)){
+         $waypoints = array();
+      }
+      array_push($waypoints, $new_waypoint);
+      //FIND ALL POINTS END	
+      //print_r($waypoints);exit;
 	  
     		$this->load->model(array('Client_Model','Enquiry_model','Leads_Model'));
 

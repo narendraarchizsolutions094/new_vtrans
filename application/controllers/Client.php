@@ -2042,7 +2042,7 @@ public function view_editable_aggrement()
         }       
     }
 	
-	public function visit_live(){                
+	public function visit_live(){
         $id=$this->uri->segment('3');
         if($this->input->post('curr_date')){
             $curr_date = $this->input->post('curr_date');
@@ -2062,7 +2062,6 @@ public function view_editable_aggrement()
             echo json_encode(array('status'=>false,'msg'=>validation_errors()));
         }
         //echo $this->db->last_query();
-       
     }
     
 
