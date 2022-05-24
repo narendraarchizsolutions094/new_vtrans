@@ -113,7 +113,14 @@ class Ticket extends CI_Controller
 		$data['content'] = $this->load->view('ticket/list-ticket', $data, true);
 		$this->load->view('layout/main_wrapper', $data);
 	}
-	
+	function check_is_branch_selected($ticket_no){
+		$row_arr = $this->db->select('branch_for')->where('ticketno',$ticket_no)->get('tbl_ticket')->row_array();
+		if(!empty($row_arr['branch_for'])){
+			echo 1;
+		}else{
+			echo 0;
+		}
+	}
 	public function ftlfeedback()
 	{
 		$this->load->model('dash_model');

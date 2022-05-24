@@ -190,50 +190,59 @@
   $("#ticket_disposition_save").on('click',function(e){
     //alert('name');
     e.preventDefault();
-	if("<?=$this->session->companey_id?>"==65 && ($("#lead_description").val() == '6' || $("#lead_description").val() == '5')){
-	 if($("#emp_brnh").val() == ''){
-      alert('Please update Branch Name first in basic tab for business lead/Rate Enquiry.');
-      return;
-	 }else{
-		$("#brnh_for").val($("#emp_brnh").val())
-	 }
-    }
-    if("<?=$this->session->companey_id?>"==65 && $("#lead_description").val() == ''){
-      alert('Please select sub stage.');
-      return;
-    }
-    var disposition = getSelectedText('lead_stage_change');
-    var name = $("#ticket_holder").val();
-    var time  =   $("#disposition_c_time").val();      
-    var task_date =   $("#disposition_c_date").val();            
-    var uid = "<?=$this->session->user_id?>"; 
-    var msg = disposition+" : "+name;
     var ticketno = $("input[name=ticketno]").val();
-    var response_id = writeUserData(uid,msg,ticketno,task_date,time);
-    $("input[name=dis_notification_id]").val(response_id);
-    if("<?=$this->session->companey_id?>" == 82 && "<?=!empty($this->session->call_parameters['phone'])?>"){
-      var phone             =   "<?=$this->session->call_parameters['phone']??''?>";
-      var campaignId        =   "<?=$this->session->call_parameters['campaignId']??''?>";
-      var crtObjectId       =   "<?=$this->session->call_parameters['crtObjectId']??''?>";
-      var userCrtObjectId   =   "<?=$this->session->call_parameters['userCrtObjectId']??''?>";
-      var userId            =   "<?=$this->session->call_parameters['userId']??''?>";
-      var customerId        =   "<?=$this->session->call_parameters['customerId']??''?>";
-      var sessionId         =   "<?=$this->session->call_parameters['sessionId']??''?>";
-      var disposition       =   $("#lead_stage_change option:selected").text();
-      //alert(phone);
-      u = 'https://emergems.ameyo.net:8443/dacx/dispose?phone='+phone+'&campaignId='+campaignId+'&crtObjectId='+crtObjectId+'&userCrtObjectId='+userCrtObjectId+'&customerId='+customerId+'&dispositionCode='+disposition+'&sessionId='+sessionId;
-      
-      $.ajax({
-        url:u,
-        type:'get',
-        success:function(q){                               
-          alert('url '+u+" response "+q);
-        }
+    $.ajax({
+        url:"<?=base_url().'ticket/check_is_branch_selected/'?>"+ticketno,
+        type:'post',
+        success:function(q){
+          //alert('url '+u+" response "+q);       
+          if("<?=$this->session->companey_id?>"==65 && ($("#lead_description").val() == '6' || $("#lead_description").val() == '5')){
+          if($("#emp_brnh").val() == '' || q == 0){
+              alert('Please update Branch Name first in basic tab for business lead/Rate Enquiry.');
+              return;
+          }else{
+              $("#brnh_for").val($("#emp_brnh").val())
+          }
+          }
+            if("<?=$this->session->companey_id?>"==65 && $("#lead_description").val() == ''){
+              alert('Please select sub stage.');
+              return;
+            }
+            var disposition = getSelectedText('lead_stage_change');
+            var name = $("#ticket_holder").val();
+            var time  =   $("#disposition_c_time").val();      
+            var task_date =   $("#disposition_c_date").val();            
+            var uid = "<?=$this->session->user_id?>"; 
+            var msg = disposition+" : "+name;
+            var ticketno = $("input[name=ticketno]").val();
+            var response_id = writeUserData(uid,msg,ticketno,task_date,time);
+            $("input[name=dis_notification_id]").val(response_id);
+            if("<?=$this->session->companey_id?>" == 82 && "<?=!empty($this->session->call_parameters['phone'])?>"){
+              var phone             =   "<?=$this->session->call_parameters['phone']??''?>";
+              var campaignId        =   "<?=$this->session->call_parameters['campaignId']??''?>";
+              var crtObjectId       =   "<?=$this->session->call_parameters['crtObjectId']??''?>";
+              var userCrtObjectId   =   "<?=$this->session->call_parameters['userCrtObjectId']??''?>";
+              var userId            =   "<?=$this->session->call_parameters['userId']??''?>";
+              var customerId        =   "<?=$this->session->call_parameters['customerId']??''?>";
+              var sessionId         =   "<?=$this->session->call_parameters['sessionId']??''?>";
+              var disposition       =   $("#lead_stage_change option:selected").text();
+              //alert(phone);
+              u = 'https://emergems.ameyo.net:8443/dacx/dispose?phone='+phone+'&campaignId='+campaignId+'&crtObjectId='+crtObjectId+'&userCrtObjectId='+userCrtObjectId+'&customerId='+customerId+'&dispositionCode='+disposition+'&sessionId='+sessionId;
+              
+              $.ajax({
+                url:u,
+                type:'get',
+                success:function(q){                               
+                  alert('url '+u+" response "+q);
+                }
+              });
+              
+            }else{
+              $("#ticket_disposition_form").submit();
+            }
+          }
       });
-      
-    }else{
-      $("#ticket_disposition_form").submit();
-    }
+
   });
 
   <?php
