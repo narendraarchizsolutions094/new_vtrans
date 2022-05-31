@@ -1404,7 +1404,7 @@ class Ticket extends CI_Controller
 			$subject = $this->input->post("subjects", true);
 			$message = $this->input->post("reply", true);
 			$to = $this->input->post("email", true);
-			$this->Message_models->send_email($to,$message,$subject,$this->session->companey_id,$cc);
+			$this->Message_models->send_email($to,$message,$subject,$this->session->companey_id,$cc,6);
 			$this->Ticket_Model->saveconv();
 			redirect(base_url("ticket/view/" . $tckt), "refresh");
 		}
@@ -1946,7 +1946,7 @@ class Ticket extends CI_Controller
 				$message.="<p style='font-size:12px; font-style:italic;'><b>Updated By:</b> ".$username." <p>";
 				//echo $message;exit();
 				$to = $tckdata->email;
-				$_mail_ = $this->Message_models->send_email($to,$subject,$message,$this->session->companey_id);
+				$_mail_ = $this->Message_models->send_email($to,$subject,$message,$this->session->companey_id,'',6);
 				if($_mail_)
 				{
 					$this->session->set_flashdata('message','Email Notification Sent Successfully');
@@ -2019,7 +2019,7 @@ class Ticket extends CI_Controller
 				$message.="<p style='font-size:12px; font-style:italic;'><b>Updated By:</b> ".$username." <p>";
 				//echo $message;exit();
 				$to = $tckdata->email;
-				$_mail_ = $this->Message_models->send_email($to,$subject,$message,$this->session->companey_id);
+				$_mail_ = $this->Message_models->send_email($to,$subject,$message,$this->session->companey_id,'',6);
 				if($_mail_)
 				{
 					$this->session->set_flashdata('message','Email Notification Sent Successfully');

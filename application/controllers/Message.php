@@ -396,9 +396,15 @@ class Message extends CI_Controller {
             // $message = $this->input->post('message_name');
             //$email_subject = $this->input->post('email_subject');
 	        $move_enquiry = $this->input->post('enquiry_id');
-        	$this->db->where('comp_id',$this->session->companey_id);
+        	$this->db->where('comp_id',$this->session->companey_id);			
         	$this->db->where('status',1);
+			if($this->session->dept_name == 6){
+				$this->db->where('email_type',6);
+			}else{
+				$this->db->where('email_type',1);
+			}
         	$email_row	=	$this->db->get('email_integration')->row_array();
+
         	if(empty($email_row)){
   				echo "Email is not configured";
   				exit();

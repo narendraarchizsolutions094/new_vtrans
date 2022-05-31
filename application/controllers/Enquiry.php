@@ -3521,7 +3521,7 @@ echo  $details1;
             if(!empty($user_row)){
                 $this->message_models->smssend($user_row->s_phoneno, $notimsg);                
                 $this->message_models->sendwhatsapp($user_row->s_phoneno, $notimsg);
-                $this->message_models->send_email($user_row->s_user_email, 'Deal Notification', $notimsg);
+                $this->message_models->send_email($user_row->s_user_email, 'Deal Notification', $notimsg,'','',6);
             }
             
         }
@@ -3597,6 +3597,7 @@ echo  $details1;
         $move_enquiry = $this->input->post('enquiry_id');
         $this->db->where('comp_id',$this->session->companey_id);
         $this->db->where('status',1);
+        $this->db->where('email_type',6);
         $email_row	=	$this->db->get('email_integration')->row_array();                        
         if(empty($email_row)){
                 echo "Email is not configured";

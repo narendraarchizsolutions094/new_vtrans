@@ -19,9 +19,8 @@ class Dashboard extends CI_Controller {
         ));
     }
     public function hello(){
-        echo date('Y-m-d H:i:s');
-        
-        
+        echo "<pre>";
+        print_r($_SESSION);
     }
   
 //for santram only map view page start
@@ -3950,6 +3949,7 @@ $all_zones = array_chunk($all_zones,2);
         $move_enquiry = $enquiry_id;
         $this->db->where('comp_id',$company);
         $this->db->where('status',1);
+        $this->db->where('email_type',1);
         $email_row = $this->db->get('email_integration')->row_array();                        
         if(empty($email_row)){
                 echo'<script>alert("Email Integration Missing."); window.close();</script>';

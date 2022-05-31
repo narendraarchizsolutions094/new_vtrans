@@ -208,12 +208,17 @@ class Message_models extends CI_Model
     return $response = curl_exec($curl); 
   }
 
-  public function send_email($to, $subject, $message, $companey_id = '',$cc='')
+  public function send_email($to, $subject, $message, $companey_id = '',$cc='',$email_type=0)
   {
     $companey_id = ($companey_id == '') ? $this->session->companey_id : $companey_id;
 
     $this->db->where('comp_id', $companey_id);
     $this->db->where('status', 1);
+    if($email_type == 6){
+      $this->db->where('email_type',6);
+    }else{
+      $this->db->where('email_type',1);
+    }
     $email_row  = $this->db->get('email_integration')->row_array();
 
     if (!empty($email_row)) {

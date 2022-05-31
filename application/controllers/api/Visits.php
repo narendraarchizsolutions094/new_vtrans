@@ -309,41 +309,47 @@ if(!empty($result))
     }
     public function save_visit_post()
     {
-    	$visit_id = $this->input->post('visit_id');
-    	$comp_id = $this->input->post('company_id');
-    	$enquiry_id = $this->input->post('enquiry_id');
-    	$user_id = $this->input->post('user_id');
-        $contact_id  = $this->input->post('contact_id')??'';
-        $visit_date = $this->input->post('visit_date');
-        $visit_time = $this->input->post('visit_time');
-        $m_purpose = $this->input->post('m_purpose');
-	     $end_point = $this->input->post('end_point')??'';
+       $postjson  = json_encode($_POST);       
 
-    	$this->form_validation->set_rules('company_id','company_id','required|trim');
-    	$this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
-        $this->form_validation->set_rules('contact_id','contact_id','required|trim');
-    	$this->form_validation->set_rules('user_id','user_id','required|trim');
-        $this->form_validation->set_rules('m_purpose','m_purpose','required|trim');
+      $this->db->set('post_data',$postjson); 
+      $this->db->insert('visit_error_log');
+
+
+      $visit_id = $this->input->post('visit_id');
+      $comp_id = $this->input->post('company_id');
+      $enquiry_id = $this->input->post('enquiry_id');
+      $user_id = $this->input->post('user_id');
+      $contact_id  = $this->input->post('contact_id')??'';
+      $visit_date = $this->input->post('visit_date');
+      $visit_time = $this->input->post('visit_time');
+      $m_purpose = $this->input->post('m_purpose');
+      $end_point = $this->input->post('end_point')??'';
+
+      $this->form_validation->set_rules('company_id','company_id','required|trim');
+      $this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
+      $this->form_validation->set_rules('contact_id','contact_id','required|trim');
+      $this->form_validation->set_rules('user_id','user_id','required|trim');
+      $this->form_validation->set_rules('m_purpose','m_purpose','required|trim');
 
     	if($this->form_validation->run()==true)
     	{
-      //FIND START POINT START			
-		//$where = " user_id=$user_id AND enquiry_id=$enquiry_id AND DATE(created_at)=CURDATE()";
-		$where = " user_id=$user_id AND DATE(created_at)=CURDATE()";
-		$this->db->select('end_waypoints,id');
-        $this->db->where($where); 
-        $this->db->order_by('id','DESC');		
-        $visit_row  = $this->db->get('tbl_visit')->row_array();
-		if(empty($visit_row['end_waypoints'])){			
-		$where = " uid=$user_id AND DATE(created_date)=CURDATE()";
-		$this->db->select('waypoints,id,one_lead');
-        $this->db->where($where);    
-        $res_row  = $this->db->get('map_location_feed')->row_array();
-		$start_point = explode(']',$res_row['waypoints']); 
-        $start_point = $start_point[0].']]';		
-		}else{
-		$start_point = $visit_row['end_waypoints'];	
-		}
+         //FIND START POINT START			
+         //$where = " user_id=$user_id AND enquiry_id=$enquiry_id AND DATE(created_at)=CURDATE()";
+         $where = " user_id=$user_id AND DATE(created_at)=CURDATE()";
+         $this->db->select('end_waypoints,id');
+         $this->db->where($where); 
+         $this->db->order_by('id','DESC');		
+         $visit_row  = $this->db->get('tbl_visit')->row_array();
+         if(empty($visit_row['end_waypoints'])){
+            $where = " uid=$user_id AND DATE(created_date)=CURDATE()";
+            $this->db->select('waypoints,id,one_lead');
+            $this->db->where($where);    
+            $res_row  = $this->db->get('map_location_feed')->row_array();
+            $start_point = explode(']',$res_row['waypoints']); 
+            $start_point = $start_point[0].']]';		
+         }else{
+            $start_point = $visit_row['end_waypoints'];	
+         }
       //FIND START POINT END	 
       //FIND All POINTS START
       $where = " uid=$user_id AND DATE(created_date)=CURDATE()";
@@ -353,7 +359,7 @@ if(!empty($result))
       $clear_id = $res_rowsss['id'];
       $waypoints = $res_rowsss['one_lead'];
       
-      if(empty($end_point)){
+      if(empty($end_point) || $end_point == ","){
          $all = json_decode($res_rowsss['waypoints']);
          $last = $all[count($all)-1];
          $end_point = implode(',',$last);         
@@ -384,6 +390,11 @@ if(!empty($result))
                             'comp_id'=>$comp_id,
                             'user_id'=>$user_id,
                         );
+
+         if(!$end_point){
+
+         }
+
     		$done = 0;
             $res = $this->db->where(array('enquiry_id'=>$enquiry_id))->get('enquiry')->row();
 

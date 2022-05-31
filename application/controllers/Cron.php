@@ -204,7 +204,7 @@ public function msgsend_app()
         $config['charset']      = 'utf-8';
         $config['mailtype']     = 'html'; // or html
         $config['newline']      = "\r\n";        
-        //$config['validation']   = TRUE; // bool whether to validate email or not    
+        //$config['validation'] = TRUE; // bool whether to validate email or not    
     }
     // $this->email->initialize($config);
     $this->email->from($email_row['smtp_user']);
@@ -225,10 +225,10 @@ public function msgsend_app()
             $saveMsgTimelineId=$this->Message_models->AddMsgtimline($type,$from_id,$user_id,0,$message,'Send Mail');
             //save logs
             $this->Message_models->saveMsgLogs($type,$from_id,$user_id,0,$message,$to,'',$saveMsgTimelineId,' ');
-      }else{
-        $save_message=['message'=>$message,'media'=>''];
-        $saveMsgTimelineId=$this->Message_models->AddMsgtimlineEnquiry($from_id,$save_message,$user_id,' ','Send Mail');
-            }
+        }else{
+            $save_message=['message'=>$message,'media'=>''];
+            $saveMsgTimelineId=$this->Message_models->AddMsgtimlineEnquiry($from_id,$save_message,$user_id,' ','Send Mail');
+        }
     }else{
         echo $this->email->print_debugger();
         $response= "Something went wrong";	
@@ -300,7 +300,8 @@ public function run()
 
             //smtp config
             $this->db->where('comp_id', $company_id);
-                $this->db->where('status', 1);
+            $this->db->where('status', 1);
+            $this->db->where('email_type', 6);
             $smtp_config  = $this->db->get('email_integration')->row_array();
 
             if(empty($smtp_config))

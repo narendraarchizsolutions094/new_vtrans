@@ -1287,8 +1287,7 @@ echo json_encode($res);die;
           $data['get_today_order'] = $this->db->get_where('enquiry',array('status' => 6,'date(created_date)'=>$rdate))->num_rows();
           $data['get_today_fo'] = $this->db->get_where('enquiry',array('status' => 5,'date(created_date)'=>$rdate))->num_rows();
   
-      } else {
-        
+      } else {        
         $subject = 'Daily CRM Report';//'Ticket Report : ' . date("F jS, Y", strtotime($schdate));
 
         $data['created'] =  $this->db->where(array('company' => $comp_id, 'Date(coml_date)' => $rdate,'process_id'=>$filters['process_id']))->count_all_results('tbl_ticket');
@@ -1312,6 +1311,11 @@ echo json_encode($res);die;
       $data['links'] = base_url('report-view/' . $schid . '/' . $schdate . '/');;
       $this->db->where('comp_id', $comp_id);
       $this->db->where('status', 1);
+      if($type != 1){
+        $this->db->where('email_type',6);
+      }else{
+        $this->db->where('email_type',1);
+      }
       $email_row  =  $this->db->get('email_integration')->row_array();
       if (empty($email_row)) {
         echo "Email is not configured";
