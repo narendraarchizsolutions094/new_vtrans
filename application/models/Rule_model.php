@@ -86,7 +86,7 @@ $rule_id = $id;
                         }
                     } 
                 }else if ($rule_data['type'] == 3) {
-
+                    $email_type == 0;
                     $this->db->where('('.$rule_data['rule_sql'].')');
 
                     $rule_for = (substr($enquiry_code,0,3)=='TCK')?'ticket':'enquiry';
@@ -96,6 +96,7 @@ $rule_id = $id;
                     if ($enquiry_code)
                     {
                         if($rule_for == 'ticket'){
+                            $email_type = 6;
                             $this->db->select('tbl_ticket.*');
                             $this->db->join('enquiry','enquiry.enquiry_id=tbl_ticket.ticketno','left');
                             $this->db->where('tbl_ticket.ticketno',$enquiry_code); 
@@ -146,18 +147,15 @@ $rule_id = $id;
                             $this->load->model('Message_models');
                             $subject = $row['mail_subject'];
                             $message = $row['template_content'];
-
                             if($rule_for=='ticket')
                             {
-
-
                                 $find = array('@name',
-                                                '@phone',
-                                                '@username',
-                                                '@userphone',
-                                                '@designation',
-                                                  '@ticket_no',
-                                                    '@tracking_no'
+                                              '@phone',
+                                              '@username',
+                                              '@userphone',
+                                              '@designation',
+                                              '@ticket_no',
+                                              '@tracking_no'
                                             );
                                 $replace = array(
                                     $enq_row['name'],
@@ -169,28 +167,22 @@ $rule_id = $id;
                                     $enq_row['tracking_no'],
                                     );
                                 $message  =str_replace($find, $replace, $message);
-
                                 $subject  = str_replace($find, $replace, $subject);
                             }
-                            else
-                            {
+                            else{
                                 $name1 = $enq_row['name_prefix'].' '.$enq_row['name'].' '.$enq_row['lastname'];
-
                                 $message = str_replace('@name',$name1,str_replace('@org',$user_row['orgisation_name'],str_replace('@desg',$user_row['designation'],str_replace('@phone',$user_row['contact_phone'],str_replace('@desg',$user_row['designation'],str_replace('@user',$user_row['s_display_name'].' '.$user_row['last_name'],$message))))));
-
                                 $subject = str_replace('@name',$name1,str_replace('@org',$user_row['orgisation_name'],str_replace('@desg',$user_row['designation'],str_replace('@phone',$user_row['contact_phone'],str_replace('@desg',$user_row['designation'],str_replace('@user',$user_row['s_display_name'].' '.$user_row['last_name'],$subject))))));
-                            } 
-
-                            if($this->Message_models->send_email($enq_row['email'],$subject,$message,$comp_id,$cc)){
+                            }
+                            if($this->Message_models->send_email($enq_row['email'],$subject,$message,$comp_id,$cc,$email_type)){
                                 //$this->db->where('Enquery_id',$enquiry_code);
                                 //$this->db->update('enquiry',array('rule_executed'=>$id));
                             }
                         }
-
                     }
                 }else if($rule_data['type'] == 6){
                     $this->db->where('('.$rule_data['rule_sql'].')');
-                     $rule_for = (substr($enquiry_code,0,3)=='TCK')?'ticket':'enquiry';
+                    $rule_for = (substr($enquiry_code,0,3)=='TCK')?'ticket':'enquiry';
                     
                     
                      if ($enquiry_code)
