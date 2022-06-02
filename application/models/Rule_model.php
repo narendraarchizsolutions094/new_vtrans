@@ -86,7 +86,7 @@ $rule_id = $id;
                         }
                     } 
                 }else if ($rule_data['type'] == 3) {
-                    $email_type == 0;
+                    $email_type = 0;
                     $this->db->where('('.$rule_data['rule_sql'].')');
 
                     $rule_for = (substr($enquiry_code,0,3)=='TCK')?'ticket':'enquiry';
@@ -411,7 +411,7 @@ $rule_id = $id;
         $results    =   $this->get_rules($type,$comp_id);
         if (!empty($results)) {
             foreach ($results as $key => $value) {
-                $this->execute_rule($value['id'],$enquiry_code,$comp_id,$user_id);                
+               // $this->execute_rule($value['id'],$enquiry_code,$comp_id,$user_id);                
             }
         }
     }
