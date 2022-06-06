@@ -286,7 +286,7 @@ class Ticket_Model extends CI_Model
 		$cid = '';
 		$newcompId = '';
 		if (!empty($companey_id) && !empty($user_id) && !empty($_POST['client_new']) && empty($_POST['client'])) {
-			if (isset($_SESSION['process']) && count($_SESSION['process']) == 1) {				
+			if (isset($_SESSION['process']) && count($_SESSION['process']) == 1) {
 				$company = $this->db->where('company_name',$_POST['client_new'])->get('tbl_company')->row();
 				if(!empty($company)){
 					$newcompId = $company->id;
@@ -300,38 +300,38 @@ class Ticket_Model extends CI_Model
 					$this->db->insert('tbl_company',$new_company);
 					$newcompId = $this->db->insert_id();
 				}
-//For assign to new created lead				
+				//For assign to new created lead				
 				$branch = $this->input->post("emp_branch", true);
-				if(!empty($branch)){					
-//For branch and region and area
-				$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$branch)->get('branch')->row();
-				$branch_id = $branch;
-				$area_id = $rab->area_id;
-				$region_id = $rab->region_id;
-                $client_name = $_POST['client_new'].' '.$rab->branch_name;				
-//End				
-				/*$assign_users= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions','147')->where('b_status','1')->get('tbl_admin')->result();
-				if(!empty($assign_users)){
-				$ttl = count($assign_users);
-				if($ttl==1){
-					$assign_touser= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions','147')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
-					$assign_to = $assign_touser->pk_i_admin_id;
-				}else{					
-					$assign_repuser= $this->db->select('report_to')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions','147')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
-                    $assign_to = $assign_repuser->report_to;					
-				}
-				}else{
-				$assign_users= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->get('tbl_admin')->result();
-				$ttl = count($assign_users);
-				if($ttl==1){
-					$assign_touser= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
-					$assign_to = $assign_touser->pk_i_admin_id;
-				}else{					
-					$assign_repuser= $this->db->select('report_to')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
-                    $assign_to = $assign_repuser->report_to;					
-				}
-				}*/
-				$assign_to = '';
+				if(!empty($branch)){
+					//For branch and region and area
+					$rab= $this->db->select('branch_name,area_id,region_id')->where('branch_id',$branch)->get('branch')->row();
+					$branch_id = $branch;
+					$area_id = $rab->area_id;
+					$region_id = $rab->region_id;
+					$client_name = $_POST['client_new'].' '.$rab->branch_name;
+					//End
+					/*$assign_users= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions','147')->where('b_status','1')->get('tbl_admin')->result();
+					if(!empty($assign_users)){
+					$ttl = count($assign_users);
+					if($ttl==1){
+						$assign_touser= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions','147')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
+						$assign_to = $assign_touser->pk_i_admin_id;
+					}else{					
+						$assign_repuser= $this->db->select('report_to')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('user_permissions','147')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
+						$assign_to = $assign_repuser->report_to;					
+					}
+					}else{
+					$assign_users= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->get('tbl_admin')->result();
+					$ttl = count($assign_users);
+					if($ttl==1){
+						$assign_touser= $this->db->select('pk_i_admin_id')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
+						$assign_to = $assign_touser->pk_i_admin_id;
+					}else{					
+						$assign_repuser= $this->db->select('report_to')->where("FIND_IN_SET(".$branch.", sales_branch)")->where('dept_name!=','1')->where('b_status','1')->order_by('pk_i_admin_id','DESC')->get('tbl_admin')->row();
+						$assign_to = $assign_repuser->report_to;					
+					}
+					}*/
+					$assign_to = '';
 				}else{
 					$assign_to = '';
 					$branch_id = '';
@@ -340,30 +340,21 @@ class Ticket_Model extends CI_Model
 					$client_name = '';
 				}
 				//print_r($assign_to);exit;
-				//End				
-				$encode = get_enquery_code();
+				//End
+				$encode = 'tcklead';
 				$postData = array(
-					'Enquery_id' 	=> $encode,
-					'comp_id' 		=> $this->session->companey_id,
-					'email' 		=> $this->input->post("email", true)??'',
-					'phone' 		=> $this->input->post("phone", true),
-					'name' 			=> $this->input->post("name", true),
-					'company'		=> $newcompId,
-					'sales_branch'	=> $branch_id,
-					'sales_region'	=> $region_id,
-					'sales_area'	=> $area_id,
-					'client_name'	=> $client_name,
-					'checked' 		=> 0,
-					'product_id' 	=> $_SESSION['process'][0],
-					'created_date' 	=> date("Y-m-d H:i:s"),
-					'status' 		=> 1,
-					'created_by' 	=> $this->session->user_id,
-					'aasign_to'     => $assign_to,
-					'phone'			=> $this->input->post('phone'),
+					'Enquery_id' => $encode,
+					'enquiry_id' => 0000,
+					'email' 	 => $this->input->post("email", true)??'',
+					'phone' 	 => $this->input->post("phone", true),
+					'name' 		 => $this->input->post("name", true),
+					'company'	 => $newcompId,
+					'product_id' => $_SESSION['process'][0],
+					'created_by' => $this->session->user_id,
+					'phone'		 => $this->input->post('phone'),
 				);
-				
 				//print_r($postData);
-				//$this->db->insert('enquiry', $postData);
+				$this->db->insert('tbl_ticket_enquiry', $postData);
 				//$cid = $this->db->insert_id();
 			} else {
 				//echo $this->session->userdata('process');

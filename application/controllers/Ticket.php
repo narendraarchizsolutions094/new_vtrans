@@ -4360,8 +4360,7 @@ echo '</table>';
                         echo '</div>';
    	    }
     }
-
-//For ticket add organization field	
+    //For ticket add organization field
 	public function suggest_company()
     {
         $key = trim($this->input->post('search'));
@@ -4372,7 +4371,6 @@ echo '</table>';
         $res = array();
 		if($key){
 			$where = 'comp.company_name LIKE "%'.$key.'%" ';
-
 			$process = $this->session->userdata('process');
 			$this->db->select('enquiry.enquiry_id,enquiry.Enquery_id,enquiry.email,enquiry.phone,enquiry.name,comp.company_name,comp.id as comgrp_id');
 			$this->db->from('tbl_company comp');
@@ -4380,12 +4378,10 @@ echo '</table>';
 			//$this->db->where_in('comp.process_id',$process);
 			if($where){
 				$this->db->where($where);
-			}   
-
+			}
 			$this->db->where('comp.comp_id',$this->session->companey_id);
 			$res = $this->db->limit(30)->get()->result_array();
 			//echo $this->db->last_query();
-
 		}
         //$res = $this->Client_Model->getCompanyList(0,$where,$company_id,$user_id,$process,'data',10,0)->result_array();
         //echo $this->db->last_query();exit();
