@@ -2198,8 +2198,7 @@ $insid = $this->db->insert_id();
     }
     public function active_enqueries_api($id,$type,$user_role,$process='',$offset=-1,$limit=-1) 
     { 
-        $all_reporting_ids    =   $this->common_model->get_categories($id,$type);       
-        
+        $all_reporting_ids    =   $this->common_model->get_categories($id,$type);               
 
         $this->db->select('enquiry.*,comp.company_name,enquiry_tags.tag_ids');
         $this->db->from($this->table);    
@@ -2290,8 +2289,8 @@ $insid = $this->db->insert_id();
         }
 
        
-    //$this->db->order_by('enquiry.enquiry_id','DESC');
-	$this->db->order_by('enquiry.update_date','DESC');
+    $this->db->order_by('enquiry.enquiry_id','DESC');
+	//$this->db->order_by('enquiry.update_date','DESC');
     //for pagination api
 
     if($offset!=-1 && $limit!=-1)

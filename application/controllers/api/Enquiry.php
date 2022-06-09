@@ -1929,7 +1929,7 @@ public function updateEnquiryTab_post()
 				{
               		$user_role=$user_role1->user_roles;
              		$data['active_enquiry'] = $this->enquiry_model->active_enqueries_api($user_id,1,$user_role,$process);
-    
+    //echo $this->db->last_query();
 			   	if(!empty($data['active_enquiry']->result()))
 					{
 						$res= array();

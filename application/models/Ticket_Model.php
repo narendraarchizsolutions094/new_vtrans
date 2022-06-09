@@ -257,8 +257,11 @@ class Ticket_Model extends CI_Model
 
 
 		$encode = get_enquery_code();
+		$ticket_id = $ticket_row['id'];
+
 		$enq_arr = array(
 			'Enquery_id' 	=> $encode,
+			'ticket_id'		=> $ticket_id,
 			'comp_id' 		=> $this->session->companey_id,
 			'email' 		=> $ticket_row['email'],
 			'phone' 		=> $ticket_row['phone'],
@@ -277,10 +280,13 @@ class Ticket_Model extends CI_Model
 			'enquiry_source'=> $ticket_row['sourse'],
 			'enquiry'		=> $ticket_row['message'],
 		);
-
 		$this->db->insert('enquiry',$enq_arr);
+		
+		$this->db->where('ticket_id',$ticket_id);
+		$this->db->where('Enquery_id','tcklead');
+		$this->db->delete('tbl_ticket_enquiry');
+    }
 
-   }
 	public function save($companey_id = '', $user_id = '')
 	{
 		$cid = '';
@@ -351,11 +357,11 @@ class Ticket_Model extends CI_Model
 					'company'	 => $newcompId,
 					'product_id' => $_SESSION['process'][0],
 					'created_by' => $this->session->user_id,
-					'phone'		 => $this->input->post('phone'),
+					'phone'		 => $this->input->post('phone')
 				);
 				//print_r($postData);
 				$this->db->insert('tbl_ticket_enquiry', $postData);
-				//$cid = $this->db->insert_id();
+				$ticket_enquiry_id = $this->db->insert_id();
 			} else {
 				//echo $this->session->userdata('process');
 				//echo count($_SESSION['process']);
@@ -439,12 +445,26 @@ class Ticket_Model extends CI_Model
 			$arr['comapny_id'] = $newcompId;
 			// echo $arr['attachment'];
 			// exit();
+			if($this->session->user_id==286){
+				// echo "<pre>";
+				// print_r($arr);
+			}
 			$this->db->insert("tbl_ticket", $arr);
 			$insid = $this->db->insert_id();
+
+			
+
 			$tckno = "TCK" . $insid . strtotime(date("y-m-d h:i:s"));
 			$updarr = array("ticketno" => $tckno);
 			$this->db->where("id", $insid);
 			$this->db->update("tbl_ticket", $updarr);
+
+
+			$this->db->where('id',$ticket_enquiry_id);
+			$this->db->set('ticket_id',$insid);
+			$this->db->update("tbl_ticket_enquiry");
+
+
 			if (!empty($insid)) {
 				$insarr = array(
 					"tck_id" 	=> $insid,

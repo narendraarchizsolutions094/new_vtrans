@@ -1849,7 +1849,7 @@ class Ticket extends CI_Controller
 
 			if(!empty($enno)){
 				$post_br = $this->input->post('brnh_id');
-				if(!empty($post_br)){				
+				if(!empty($post_br)){
 				//For client name generate
 				$rab = $this->db->select('branch_name,area_id,region_id')->where('branch_id',$post_br)->get('branch')->row();
 				$rab2 = $this->db->select('company_name')->where('id',$enno->company)->get('tbl_company')->row();
@@ -1860,7 +1860,7 @@ class Ticket extends CI_Controller
 					$client_name = $rab2->company_name.' '.$rab->branch_name;
 				}else{
 					$client_name = '';
-				}							
+				}
 				$usr_br = $this->User_model->all_emp_list_assign($post_br);
 				$usr_ttl = count($usr_br);
 				if($usr_ttl > 1){	
@@ -2626,10 +2626,10 @@ class Ticket extends CI_Controller
 	public function loadinfo()
 	{
 		$usr = $this->input->post("clientno", true);
-		$user = $this->db->select("*")->where("enquiry_id", $usr)->get("enquiry")->row();
+		$user = $this->db->select("*")->where("enquiry_id", $usr)->get("tbl_ticket_enquiry")->row();
 		if (!empty($user)) {
 			$jarr = array(
-				"name"   => $user->name_prefix . " " . $user->name . " " . $user->lastname,
+				"name"   => $user->name . " " . $user->lastname,
 				"email"  => $user->email,
 				"phone"  => $user->phone
 			);
@@ -4372,9 +4372,9 @@ echo '</table>';
 		if($key){
 			$where = 'comp.company_name LIKE "%'.$key.'%" ';
 			$process = $this->session->userdata('process');
-			$this->db->select('enquiry.enquiry_id,enquiry.Enquery_id,enquiry.email,enquiry.phone,enquiry.name,comp.company_name,comp.id as comgrp_id');
+			$this->db->select('tbl_ticket_enquiry.enquiry_id,tbl_ticket_enquiry.Enquery_id,tbl_ticket_enquiry.email,tbl_ticket_enquiry.phone,tbl_ticket_enquiry.name,comp.company_name,comp.id as comgrp_id');
 			$this->db->from('tbl_company comp');
-			$this->db->join('enquiry','enquiry.company=comp.id','left');
+			$this->db->join('tbl_ticket_enquiry','tbl_ticket_enquiry.company=comp.id','left');
 			//$this->db->where_in('comp.process_id',$process);
 			if($where){
 				$this->db->where($where);
