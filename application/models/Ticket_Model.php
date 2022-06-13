@@ -350,7 +350,7 @@ class Ticket_Model extends CI_Model
 				$encode = 'tcklead';
 				$postData = array(
 					'Enquery_id' => $encode,
-					'enquiry_id' => 0000,
+					'enquiry_id' => 0,
 					'email' 	 => $this->input->post("email", true)??'',
 					'phone' 	 => $this->input->post("phone", true),
 					'name' 		 => $this->input->post("name", true),
@@ -371,13 +371,14 @@ class Ticket_Model extends CI_Model
 		}
 
 		if(empty($newcompId)){
-			$enquiry_id = $this->input->post("client");
-			if($enquiry_id){
-				$enq_row =  $this->db->select('company')->where('enquiry_id',$enquiry_id)->get('enquiry')->row_array();
-				if(!empty($enq_row)){
-					$newcompId = $enq_row['company'];
-				}
-			}
+			//$enquiry_id = $this->input->post("client");
+			$newcompId = $this->input->post("client");			
+			// if($enquiry_id){
+			// 	$enq_row =  $this->db->select('company')->where('enquiry_id',$enquiry_id)->get('enquiry')->row_array();
+			// 	if(!empty($enq_row)){
+			// 		$newcompId = $enq_row['company'];
+			// 	}
+			// }
 		}
 		$cdate = explode("/", $this->input->post("complaindate", true));
 		$ndate = (!empty($cdate[2])) ? $cdate[2] . "-" . $cdate[0] . "-" . $cdate[1] : date("Y-m-d");

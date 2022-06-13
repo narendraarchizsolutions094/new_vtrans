@@ -2626,7 +2626,7 @@ class Ticket extends CI_Controller
 	public function loadinfo()
 	{
 		$usr = $this->input->post("clientno", true);
-		$user = $this->db->select("*")->where("enquiry_id", $usr)->get("tbl_ticket_enquiry")->row();
+		$user = $this->db->select("*")->where("id", $usr)->get("tbl_ticket_enquiry")->row();
 		if (!empty($user)) {
 			$jarr = array(
 				"name"   => $user->name . " " . $user->lastname,
@@ -4361,18 +4361,23 @@ echo '</table>';
    	    }
     }
     //For ticket add organization field
-	public function suggest_company()
-    {
-        $key = trim($this->input->post('search'));
+	
+	public function suggest_company(){
+		
+		$key = trim($this->input->post('search'));
         $this->load->model('Client_Model');
         $company_id = $this->session->companey_id;
         $user_id = -1; //$this->session->user_id;
-        // $process = $this->session->process;
-        $res = array();
+        
+		//$process = $this->session->process;
+        
+		$res = array();
+		
 		if($key){
+			
 			$where = 'comp.company_name LIKE "%'.$key.'%" ';
 			$process = $this->session->userdata('process');
-			$this->db->select('tbl_ticket_enquiry.enquiry_id,tbl_ticket_enquiry.Enquery_id,tbl_ticket_enquiry.email,tbl_ticket_enquiry.phone,tbl_ticket_enquiry.name,comp.company_name,comp.id as comgrp_id');
+			$this->db->select('tbl_ticket_enquiry.id,tbl_ticket_enquiry.enquiry_id,tbl_ticket_enquiry.Enquery_id,tbl_ticket_enquiry.email,tbl_ticket_enquiry.phone,tbl_ticket_enquiry.name,comp.company_name,comp.id as comgrp_id');
 			$this->db->from('tbl_company comp');
 			$this->db->join('tbl_ticket_enquiry','tbl_ticket_enquiry.company=comp.id','left');
 			//$this->db->where_in('comp.process_id',$process);
@@ -4383,8 +4388,9 @@ echo '</table>';
 			$res = $this->db->limit(30)->get()->result_array();
 			//echo $this->db->last_query();
 		}
-        //$res = $this->Client_Model->getCompanyList(0,$where,$company_id,$user_id,$process,'data',10,0)->result_array();
-        //echo $this->db->last_query();exit();
+        
+		// $res = $this->Client_Model->getCompanyList(0,$where,$company_id,$user_id,$process,'data',10,0)->result_array();
+        // echo $this->db->last_query();exit();
 		// echo '<pre>';
 		// print_r($res);die;
         // $abc = array_column($res,'company');
@@ -4395,16 +4401,58 @@ echo '</table>';
 		// 	$abc .='<option value="'.$r['enquiry_id'].'">'.$r['company'].' ('.$r['name'].')</option>';
 		// }
 
-		$abc ='<ul id="country-list" style="z-index:1;max-height:150px;overflow-y:scroll;">';
+		$abc ='<ul id="country-list" style="z-index:1;max-height:150px;overflow-y:scroll;">';		
 		foreach($res as $r) {
 			$name = $r["company_name"];
 			if(!empty($r['name'])){
 				$name .= '('.$r['name'].')';
 			}
-			$enq_id = "'".$r["enquiry_id"]."'";
+			$enq_id = "'".$r["id"]."'";
 			$abc .='<li onClick="selectCountry('.$enq_id.',`'.trim($name).'`,'.$r['comgrp_id'].');">'.$r["company_name"].'('.$r["name"].')'.'</li>';
  		}
-		 $abc .='</ul>';
+
+		$abc .='</ul>';
         echo json_encode($abc);
+
     }
+
+	public function correct_ticket(){
+		$last_row = $this->db->get('test2')->row_array();
+		
+		$ticket_row = $this->db->where('id>',$last_row['last_id'])->limit(100000)->order_by('id','asc')->get('tbl_ticket')->result_array();
+
+		$t = 0;			
+		if(!empty($ticket_row)){
+			foreach($ticket_row as $key => $value){
+				$ticket_enquiry_row = $this->db->where('company',$value['client'])->get('tbl_ticket_enquiry')->row_array();
+				if(empty($ticket_enquiry_row)){					
+					
+					$ins_arr = array(
+						'enquiry_id' => 0,
+						'Enquery_id' => 'tcklead',
+						'ticket_id'  => $value['id'],
+						'email'		 => $value['email'],
+						'phone'	     => $value['phone'],
+						'name'	     => $value['name'],
+						'lastname'   => '',
+						'product_id' => 141,
+						'created_by' => $value['added_by'],
+						'company' 	 => $value['client'],
+					);
+					
+					$this->db->insert('tbl_ticket_enquiry1',$ins_arr);
+					$t++;
+				}
+			}
+			$this->db->where('id',1)->set('last_id',$value['id'])->update('test2');
+		}else{
+			echo "empty<br>";
+		}
+		echo $t.'<br>';
+
+		
+		
+	}
+
+
 }
