@@ -358,10 +358,14 @@ function get_leadstage_name($id) {
         return $query->result();
     }
     
-    function find_description() {
-        $this->db->select("*");
-        $this->db->from('lead_description');
-		$this->db->where('comp_id', $this->session->userdata('companey_id'));
+    function find_description($for=0) {
+        $this->db->select("lead_description.*");
+        $this->db->from('lead_description');        
+        if($for > 0){
+            $this->db->where("FIND_IN_SET($for,lead_stage.stage_for)>0");
+        }
+        $this->db->join('lead_stage','lead_description.lead_stage_id=lead_stage.stg_id','inner');
+		$this->db->where('lead_description.comp_id', $this->session->userdata('companey_id'));
         $query = $this->db->get();
         return $query->result();
     }

@@ -3195,7 +3195,7 @@ echo json_encode($res);die;
         $data['prodcntry_list'] = $this->enquiry_model->get_user_productcntry_list();
         $data['problem'] = $this->Ticket_Model->get_sub_list();        
         $data['stage'] =  $this->Leads_Model->stage_by_type(4);
-        $data['sub_stage'] = $this->Leads_Model->find_description();
+        $data['sub_stage'] = $this->Leads_Model->find_description(4);
         $data['ticket_status'] = $this->Ticket_Model->ticket_status()->result();        
         $data['dfields'] = $this->enquiry_model->getformfield(2);        
         $data['issues'] = $this->Ticket_Model->get_issue_list();     
