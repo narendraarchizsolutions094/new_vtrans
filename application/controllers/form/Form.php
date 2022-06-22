@@ -254,7 +254,11 @@ class Form extends CI_Controller {
 		$data["ticket"] = $this->Ticket_Model->get($tckt);
 		//print_r($data['ticket']); exit();
 		$data['source'] = $this->Leads_Model->get_leadsource_list();
-		$data["clients"] = $this->Enquiry_model->getEnquiry(array('enquiry_id'=>$data['ticket']->client))->result();
+		$this->db->select('comp.company_name,tbl_ticket_enquiry.id as enquiry_id');
+		$this->db->from('tbl_ticket_enquiry');
+		$this->db->join('tbl_company comp','comp.id=tbl_ticket_enquiry.company','left');
+		$data["clients"] = $this->db->where('tbl_ticket_enquiry.id',$data['ticket']->client)->get()->result();
+		
 		$data["product"] = $this->Ticket_Model->getproduct();
 		$data["referred_type"] = $this->Leads_Model->get_referred_by();
 		$data['problem'] = $this->Ticket_Model->get_sub_list($this->session->companey_id,$data['ticket']->process_id);
