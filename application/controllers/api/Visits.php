@@ -450,7 +450,7 @@ if(!empty($result))
 				   
 	            	$this->Leads_Model->add_comment_for_events('Visit Added',$res->Enquery_id,0,$user_id);
       
-                  $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', '', '', '', $visit_time, $res->Enquery_id, '', 'Visit -'.$m_purpose,1,3,$user_id,$comp_id);
+                 // $this->Leads_Model->add_comment_for_events_popup('Visit',$visit_date, '', '', '', '', $visit_time, $res->Enquery_id, '', 'Visit -'.$m_purpose,1,3,$user_id,$comp_id);
 
 	            }
 	            $done = 1;

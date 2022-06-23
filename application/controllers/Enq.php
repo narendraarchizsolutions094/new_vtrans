@@ -359,6 +359,8 @@ if(!empty($company)){
 
 				if(!empty($_POST['data_type']) && count(explode(',',$_POST['data_type']))>1)
 				{
+				$column[] = 'Account Status';
+
 					$sname ='';
 					if($each->status>3)
 					{
@@ -664,7 +666,7 @@ if(!empty($company)){
 		);
 		echo json_encode($output);
 	}
-	public function exports_data($data,$report_columns=0){        
+	public function exports_data($data,$report_columns=0){
         $file_data =  $data;        
         array_unshift($file_data, $report_columns);
         header("Content-type: application/csv");
