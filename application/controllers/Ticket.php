@@ -734,6 +734,7 @@ class Ticket extends CI_Controller
 		echo json_encode($output);
 	}
 	public function ticket_load_data(){
+		$this->currect_ticket_data();
 		//$this->output->enable_profiler(true);
 		$export_only = 0;
 		if(!empty($this->session->ticket_filters_sess['export_only'])){
@@ -810,16 +811,16 @@ class Ticket extends CI_Controller
 			}
 			
 			if ($showall or in_array(2, $acolarr)) {
-				if($point->company_name){
-					$sub[] = $point->company_name??($point->company_name ?? "NA");
-					$colums[]  = 'Company';
-				}else if(!empty($point->org_name)){
-					$sub[] = $point->org_name??($point->org_name ?? "NA");
-					$colums[]  = 'Company';
-				}else{
-					$sub[] = $point->company_name2??($point->company_name2 ?? "NA");
-					$colums[]  = 'Company';					
-				}
+				// if($point->company_name){
+				// 	$sub[] = $point->company_name??($point->company_name ?? "NA");
+				// 	$colums[]  = 'Company';
+				// }else if(!empty($point->org_name)){
+				// 	$sub[] = $point->org_name??($point->org_name ?? "NA");
+				// 	$colums[]  = 'Company';
+				// }else{
+				// }
+				$sub[] = $point->company_name2??($point->company_name2 ?? "NA");
+				$colums[]  = 'Company';					
 			}
 			if ($showall or in_array(3, $acolarr)) {
 				$sub[] = $point->email ?? "NA";
@@ -4453,6 +4454,25 @@ echo '</table>';
 		
 		
 	}
+  
+	function currect_ticket_data(){
+		
+		$this->db->where("tbl_ticket.`comapny_id` = tbl_ticket.`client` AND tbl_ticket.client > 0");
+		$ticket_res = $this->db->get('tbl_ticket')->result_array();
+		// echo "<pre>";
+		// print_r($ticket_res);
+		// echo "</pre>";
+		// //exit();
+		if(!empty($ticket_res)){
+			foreach($ticket_res as $key=>$value){
+				$ticket_enq_row = $this->db->select('company')->where('id',$value['client'])->get('tbl_ticket_enquiry')->row_array();
+				//print_r($ticket_enq_row);
+				if(!empty($ticket_enq_row)){
+					$this->db->where('id',$value['id'])->set('tbl_ticket.comapny_id',$ticket_enq_row['company'])->update('tbl_ticket');
 
-
+				}
+			}
+		}
+	}
+ 
 }
