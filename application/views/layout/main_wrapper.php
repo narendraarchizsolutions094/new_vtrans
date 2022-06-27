@@ -1912,6 +1912,14 @@ if($root=='https://student.spaceinternationals.com'){  ?>
 
                 }//menucount end
 
+                if(user_access('1111')){
+                    echo' <li class="'.($segment2=='Filemanager'?'active':'').'" >
+                        <a href="'.base_url("filemanager/Filemanager/index").'">
+                        <i class="fa fa-file icon-class"
+                                ></i>
+                         File Manager</a>
+                        </li>';
+                }
 
                 if(user_access('1020') || user_access('1021') || user_access('1022'))
                 {

@@ -8,11 +8,11 @@ class Filemanager extends CI_Controller {
         redirect('login'); 
     } 
     public function iframe_fun(){ 
-        $data['title'] = display('appointment');
+        $data['title'] = 'File Manager';
         $this->load->view('filemanager/dialog',$data);
     } 
     public function index(){
-        $data['title'] = display('appointment');     
+        $data['title'] = 'File Manager';
         
         $data['content'] = $this->load->view('filemanager/master_page',$data,true);
         $this->load->view('layout/main_wrapper',$data);
