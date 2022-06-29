@@ -2068,7 +2068,10 @@ echo json_encode($res);die;
     $data['datasourse'] = $this->report_model->all_datasource();
     $this->load->model('User_model');
     //$data['employee'] =$this->User_model->companey_users();
-    $data['employee'] = $this->User_model->read();
+    $data['employee'] = $this->User_model->read(array(143,144,145,146,147,215,219,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246));
+
+    //echo $this->db->last_query();
+    
     $data['process'] = $this->dash_model->product_list();
     $data["dfields"] = $this->report_model->get_dynfields();
     $this->load->model('Branch_model');

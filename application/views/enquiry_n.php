@@ -1060,7 +1060,7 @@ display: block;
             <th>Process</th>
              <?php } ?>
 			 <?php if ($showall == true or in_array(30, $acolarr)) {  ?>
-                  <th>Lead stage</th>
+                  <th>Disposition stage</th>
              <?php } ?>
               <?php if ($showall == true or in_array(8, $acolarr)) {  ?>
                   <th>Disposition</th>
@@ -1551,7 +1551,7 @@ display: block;
           <label class=""><input type="checkbox" class="choose-col"  value = "7"  <?php echo ($showall == true or in_array(7, $acolarr)) ? "checked" : ""; ?>> Process</label>  &nbsp;
           </div>
 		  <div class = "col-md-4">  
-          <label class=""><input type="checkbox" class="choose-col"  value = "30"  <?php echo ($showall == true or in_array(30, $acolarr)) ? "checked" : ""; ?>> Lead Stage</label>  &nbsp;
+          <label class=""><input type="checkbox" class="choose-col"  value = "30"  <?php echo ($showall == true or in_array(30, $acolarr)) ? "checked" : ""; ?>> Disposition Stage</label>  &nbsp;
           </div>
           <div class = "col-md-4">  
           <label class=""><input type="checkbox" class="choose-col"  value = "8"  <?php echo ($showall == true or in_array(8, $acolarr)) ? "checked" : ""; ?>>  Disposition</label>  &nbsp;

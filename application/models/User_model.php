@@ -169,7 +169,10 @@ class User_model extends CI_Model {
         }else{
             $where = "  tbl_admin.b_status=1";                                
         }
-        if (!empty($user_right)) {
+        if (!empty($user_right) && is_array($user_right)) {
+            $str_user_right = implode(',',$user_right);
+            $where .= "  AND tbl_admin.user_permissions IN($str_user_right)";                                            
+        }else if(!empty($user_right) && !is_array($user_right)){
             $where .= "  AND tbl_admin.user_permissions='".$user_right."'";                                            
         }
         $exclude = array();
@@ -182,7 +185,7 @@ class User_model extends CI_Model {
         //process wise user select
         if($proc_wise){
             foreach($process as $pid){
-                $where .= " AND (FIND_IN_SET($pid,process) >0)";
+              //  $where .= " AND (FIND_IN_SET($pid,process) >0)";
             }       
         }
         
