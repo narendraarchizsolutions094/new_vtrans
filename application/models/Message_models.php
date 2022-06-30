@@ -203,9 +203,9 @@ class Message_models extends CI_Model
       CURLOPT_TIMEOUT => 30,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "GET",
-    ));
+    )); 
 
-    return $response = curl_exec($curl); 
+    return $response = curl_exec($curl);  
   }
 
   public function send_email($to, $subject, $message, $companey_id = '',$cc='',$email_type=0)

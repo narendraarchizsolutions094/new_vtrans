@@ -3928,7 +3928,6 @@ $all_zones = array_chunk($all_zones,2);
 
         $pdfFilePath1 = $_SERVER['DOCUMENT_ROOT']."/uploads/quotations/quotations_".$info_id.".pdf";
         //$pdf=   $this->pdf->create($content,0,$pdfFilePath1);
-
         //get template of caf
 
         $temp = $this->db->where('auto_mail_for','5')
@@ -3972,9 +3971,25 @@ $all_zones = array_chunk($all_zones,2);
         $this->email->from($email_row['smtp_user']);
         $to=$enq->email;
 
+        //$to = 'kanhaiya@archizsolutions.com';
         $this->email->to($to);
-        $this->email->subject($email_subject); 
-        $this->email->message($message); 
+
+        $email_subject = $this->input->post('email_subject');
+        $email_body = $this->input->post('message_name');
+
+        $name1 = $enq->name_prefix.' '.$enq->name.' '.$enq->lastname;
+        
+        $this->db->where('pk_i_admin_id',$user_id);
+        $user_row  = $this->db->get('tbl_admin')->row_array();
+
+        $msg = str_replace('@name',$name1,str_replace('@org',$user_row['orgisation_name'],str_replace('@desg',$user_row['designation'],str_replace('@phone',$user_row['contact_phone'],str_replace('@desg',$user_row['designation'],str_replace('@user',$user_row['s_display_name'].' '.$user_row['last_name'],$email_body))))));
+              
+        //str_replace('@web',$user_row['website'],
+
+        $Templat_subject = str_replace('@name',$name1,str_replace('@org',$user_row['orgisation_name'],str_replace('@desg',$user_row['designation'],str_replace('@phone',$user_row['contact_phone'],str_replace('@desg',$user_row['designation'],str_replace('@user',$user_row['s_display_name'].' '.$user_row['last_name'],$email_subject))))));
+
+        $this->email->subject($Templat_subject); 
+        $this->email->message($msg); 
         $this->email->set_mailtype('html');
         $this->email->attach($pdfFilePath1);
 
@@ -3996,6 +4011,9 @@ $all_zones = array_chunk($all_zones,2);
             echo json_encode(array('status'=>false,'message'=>'Unable to Send Mail'));
             exit();
           }
+            //echo $email_row['smtp_user'];
+            //echo   $this->email->print_debugger();
+
              echo'<script>alert("Unable to send."); window.close();</script>';                    
         }
         exit(); 
@@ -4124,11 +4142,15 @@ public function quotation_preview($info_id)
                 <input type="hidden" name="task" value="1">
                 <button type="submit" class="btn">Download</button>
               </form>
-              <form action="'.base_url('dashboard/pdf_gen/').$info_id.'" method="post">
+              <form id="email-form" action="'.base_url('dashboard/pdf_gen/').$info_id.'" method="post">
                 <input type="hidden" name="submit" value="Email">
-                <button type="submit" class="btn">Email</button>
-              </form>
+                <input type="hidden" name="form_email_subject" value="">
+                <input type="hidden" name="form_email_content" value="">
+
+                </form>
+                <button  data-target="#sendsms" onclick="getTemplates(3,`Send Email`);" data-toggle="modal" class="btn">Email</button>
         </div>';
+        $this->load->view('aggrement/send-mail',array('info'=>$info,'info_id'=>$info_id));
     }
 }
 public function insert() 
