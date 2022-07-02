@@ -67,7 +67,7 @@ $config = array(
     | without final / (DON'T TOUCH)
     |
     */
-    'base_url' => ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http"). "://". @$_SERVER['HTTP_HOST'],
+    'base_url' => ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http"). "://". @$_SERVER['HTTP_HOST'].'/',
     /*
     |--------------------------------------------------------------------------
     | path from base_url to base of upload folder
@@ -76,7 +76,7 @@ $config = array(
     | with start and final /
     |
     */
-    'upload_dir' => FCPATH.'/uploads/filemanager/',
+    'upload_dir' => 'uploads/filemanager/',
     /*
     |--------------------------------------------------------------------------
     | relative path from filemanager folder to upload folder
@@ -107,7 +107,7 @@ $config = array(
     | DO NOT put inside upload folder
     |
     */
-    'thumbs_upload_dir' => FCPATH.'/uploads/filemanager_thumbs/',
+    'thumbs_upload_dir' => 'uploads/filemanager_thumbs/',
 
 
     /*
