@@ -3432,6 +3432,7 @@ public function set_layout_to_session() {
       {
           $note = array(
                   'enq_name'=>$evalue->name??'',
+                  'client_name'=>$evalue->client_name??'',
                   'mobile'=>$evalue->phone??'',
                   'email'=>$evalue->email??'',
                   'address'=>$evalue->address??'',
@@ -3444,10 +3445,11 @@ public function set_layout_to_session() {
           $content=  $this->load->view('quotation_temp/part-load',$note,true);
       }
 
-        $content = str_replace("@{fullname}",$evalue->name, $content);
+        $content = str_replace("@{fullname}",$evalue->client_name, $content);
         $content = str_replace("@{mobile}",$evalue->phone, $content);
         $content = str_replace("@{email}",$evalue->email, $content);
-        $content = str_replace("@{address}",$evalue->address, $content);
+        $address22 = wordwrap($evalue->address,35,'<br>');
+        $content = str_replace("@{address}",$address22, $content);
         $content = str_replace("@{creationdate}",$evalue->created_date, $content);
 
 

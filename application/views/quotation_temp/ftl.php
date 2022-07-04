@@ -81,7 +81,7 @@ body{
 <p class="c0"> </p>
 <p class="c9"><span class="c1"><strong>To,</strong></span></p>
 <p class="c9"><span class="c24 c1"><strong>M/s.</strong>&nbsp;  @{fullname}</span></p>
-<p class="c9"><span class="c24 c1"><strong>Address.</strong> </span><span class="c24 c12">&nbsp;  @{address}</span></p>
+<p class="c9" style="line-height:unset"><span class="c24 c1"><strong>Address.</strong> </span><span class="c24 c12">&nbsp;  @{address}</span></p>
 
 <p class="c9"><span class="c24 c1"><strong>Mobile No.</strong>&nbsp; @{mobile}</span></p>
 <p class="c9"><span class="c24 c1"><strong>Email ID.</strong>&nbsp;    @{email}</span></p>

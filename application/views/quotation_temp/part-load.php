@@ -2126,8 +2126,10 @@ body{
 	<p class="c72"><span class="c66">Ref No: </span><span class="c64">VT/HO/<?=date('Y')?>-<?=date('y')+1;?>/001</span><span class="c66">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Date: </span><span class="c64"><?=date('d-M-Y')?></span></p>
 	<p class="c9 c44"><span class="c36"></span></p>
 	<p class="c9"><span class="c22">To,</span></p>
-	<p class="c9"><span class="c17">M/s. </span><span class="c12"><?=$enq_name?></span></p>
-	<p class="c9"><span class="c17">Address. </span><span class="c12"><?=$address?></span></p>
+	<p class="c9"><span class="c17">M/s. </span><span class="c12">
+		<?=$client_name?>
+	</span></p>
+	<p class="c9"><span class="c17">Address. </span><span class="c12"><?=wordwrap($address,35,'<br>')?></span></p>
 	<p class="c9"><span class="c12"></span></p>
 	<p class="c9"><span class="c12"></span></p>
 	<p class="c9 c44"><span class="c22 c30"></span></p>
