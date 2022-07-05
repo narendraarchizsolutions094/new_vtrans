@@ -70,6 +70,9 @@ class Shipx_integration extends CI_Controller{
         curl_close($curl);
         $response_arr = json_decode($response,true);
         //echo $response; exit;
+
+        $this->db->insert('shipx_push_log',array('req'=>$json,'res'=>$response));
+
         if(!empty($response_arr['exception']['errorcode'])){ 
             $msg = $response_arr['exception']['message'];
             echo json_encode(array('msg'=>$msg,'status'=>0));
@@ -77,11 +80,17 @@ class Shipx_integration extends CI_Controller{
             //echo $response;
             $res_arr = json_decode($response,true);
             if(!empty($res_arr['company']['id'])){
+
                 $this->db->where('id',$agreement_id);
                 $this->db->set('shipx_res',$response);
+                
+                $this->db->set('shipx_id',$response_arr['company']['id']);
+                
+                
                 $this->db->set('shipx_push_status',200);
                 $this->db->update('tbl_aggriment');
                 echo json_encode(array('msg'=>'Success','status'=>1));
+                
             }else{
                 echo json_encode(array('msg'=>'Something went wrong !','status'=>0));
             }

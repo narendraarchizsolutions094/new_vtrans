@@ -54,7 +54,7 @@ class Shipx_model extends CI_model{
                 $company_group_name = $company_row['company_name'];
             }
         }
-        //$user_row = $this->db->select('designation')->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row_array();
+        $user_row = $this->db->select('*')->where('pk_i_admin_id',$this->session->user_id)->get('tbl_admin')->row_array();
         $username  = $lead_row['client_name'];
         $user_designation = '';//$user_row['designation'];
         $user_email = $lead_row['email'];
@@ -97,9 +97,9 @@ class Shipx_model extends CI_model{
                                             'pin' => $pincode??'',
                                             'state' => $state_name??'',
                                             'payment_terms' => $payment_terms??'',
-                                            'facility_ref1' => '',//optional
-                                            'facility_ref2' => '',//optional
-                                            'facility_ref3' => '',//optional
+                                            'facility_ref1' => $user_row['s_user_email'],//optional
+                                            'facility_ref2' => $user_row['s_display_name'].' '.$user_row['last_name'],//optional
+                                            'facility_ref3' => $user_row['employee_id'],//optional
                                             'is_invoice_facility' => "true",
                                             'is_ship_from_address' => "true",
                                             'is_ship_to_address' => "true",
