@@ -130,8 +130,8 @@ if (!function_exists('display')) {
         } 
     }
 	
-		function get_val($id,$id2){
-		 $ci =& get_instance();
+	function get_val($id,$id2){
+		$ci =& get_instance();
         $ci->load->database();	
 		$ci->db->select("fvalue");
 		$ci->db->from("extra_enquery");
@@ -141,7 +141,17 @@ if (!function_exists('display')) {
 		if(!empty($res)){
 			return $res->fvalue;
 		}	
+	}
 
+    function update_input_val($id,$id2,$input_val){
+		$ci =& get_instance();
+        $ci->load->database();	
+		$ci->db->where("extra_enquery.input",$id);
+		$ci->db->where("extra_enquery.enq_no",$id2);
+		$ci->db->set("extra_enquery.fvalue",$input_val);
+		$res = $ci->db->update("extra_enquery");		
+			return $res;
+		}	
 	}
     
     function generate_invoice_id(){
@@ -202,5 +212,5 @@ if (!function_exists('display')) {
     $ci = & get_instance();
     $ci->load->database();
     return $ci->db->get_where('tbl_product', array('sb_id'    => $id))->row_array() ['product_name'];
-}
+
 }
