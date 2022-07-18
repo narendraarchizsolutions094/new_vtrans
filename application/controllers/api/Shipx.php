@@ -55,17 +55,17 @@ class Shipx extends REST_Controller {
                 //$address2 = $this->input->post('address-line2');
                 //$address3 = $this->input->post('address-line3');
                 $city = $this->input->post('city');                
-                $city_row    = $this->db->where('city',$city)->get('city')->row_array();                
-                $city_id = $city_row['id']??'';
+                $city_row    = $this->db->where('branch_name',$city)->get('branch')->row_array();                
+                $city_id = $city_row['branch_id']??'';
                 if(!empty($city_id)){
-                    $this->db->where('enquiry_id',$enq_id)->set('city_id',$city_id)->update('enquiry');
+                    $this->db->where('enquiry_id',$enq_id)->set('sales_branch',$city_id)->update('enquiry');
                     $is_updated = true;
                 }                
                 $state = $this->input->post('state');
-                $state_row    = $this->db->where('state',$state)->get('state')->row_array();
-                $state_id = $state_row['id']??'';                
+                $state_row    = $this->db->where('area_name',$state)->get('sales_area')->row_array();
+                $state_id = $state_row['area_id']??'';                
                 if(!empty($state_id)){
-                    $this->db->where('enquiry_id',$enq_id)->set('state_id',$state_id)->update('enquiry');
+                    $this->db->where('enquiry_id',$enq_id)->set('sales_area',$state_id)->update('enquiry');
                     $is_updated = true;
                 }
                 $pin = $this->input->post('pin');
@@ -75,7 +75,20 @@ class Shipx extends REST_Controller {
                     
                     update_input_val(4536,$enquiry_code,$pin);
 
+                } 
+                $drop_status = $this->input->post('drop_status');
+                if(!empty($drop_status)){
+                    $drop_status = 181;
+                    $drop_reason = $this->input->post('drop_reason');
+
+                    $this->db->where('enquiry_id',$enq_id);
+                    $this->db->set('drop_status',$drop_status);
+                    $this->db->set('drop_reason',$drop_reason);
+                    $this->db->update('enquiry');
+                    
                 }
+
+
                 $email = $this->input->post('email');                
                 if(!empty($email)){
                     $this->db->where('enquiry_id',$enq_id)->set('email',$email)->update('enquiry');
