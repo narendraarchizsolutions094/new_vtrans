@@ -2472,9 +2472,54 @@ normal"><span style="font-size:2.5pt;mso-bidi-font-size:11.0pt"><o:p>&nbsp;</o:p
 </div>
 </body>
 </html>
+<script src="<?=base_url().'assets/js/sweetalert2@9.js'?>"></script>
+
+
 <script type="text/javascript">
-	$(document).ready(function(){
-			$("select").select2();
+		
+		$(document).ready(function(){
+			$("select").select2();			
+			//alert("hello world");
+			
+			$("input[name='ip[76]']").on('change', function(){
+				//alert('gstin');
+				pan = $("input[name='ip[77]']").val();
+				gst = $("input[name='ip[76]']").val();
+				check_pan_gst();
+			});
+
+
+			function check_pan_gst(){
+				pan = $("input[name='ip[77]']").val();
+				gst = $("input[name='ip[76]']").val();
+				$.ajax({
+					type: 'POST',
+					url: '<?php echo base_url();?>client/check_pan_gst',
+					data: {'pan':pan,'gst':gst},
+					success:function(data){
+						res = JSON.parse(data);
+						if(res.details != ''){
+							Swal.fire({
+								// icon: 'info',
+								html: '<strong>' + res.details + '</strong>',
+								showCancelButton: false,
+								confirmButtonColor: '#3085d6',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'ok'
+							})
+						}
+					}
+				});
+			}
+
+			$("input[name='ip[77]']").on('change', function(){
+				check_pan_gst();
+			})
+
+			/* 
+			$("input[name='ip[]79']").on('change', function(){
+				alert('tan');
+			}) */
 	});
 
 </script>
