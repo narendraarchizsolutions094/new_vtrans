@@ -4414,6 +4414,67 @@ if(in_array($comp_id,$ids)){
            echo json_encode(array('status'=>0));
     }
 
+    function check_pan_gst(){
+        $pan = $this->input->post('pan');
+        $gst = $this->input->post('gst');
+
+        $where = '';
+        if($gst && $pan){
+            $where = " pan = '$pan'";
+            $where .= " OR gst = '$gst'";
+        }
+        if($gst && $pan == ''){
+            $where = " gst = '$gst'";
+        }
+        if($pan && $gst == ''){
+            $where = " pan = '$pan'";
+        }
+        if($where){
+            $this->db->where($where);
+            $result = $this->db->get('tbl_aggriment')->row_array();
+        }else{
+            $result = array();
+        }
+        $html = '';
+        if(!empty($result)){            
+            $enq_code = $result['enq_id'];
+            $enq_row = $this->db->where('Enquery_id',$enq_code)->get('enquiry')->row_array();
+
+            $html = '<style>.table123 {
+                width:100%;
+                border:1px solid;
+                border-collapse: collapse;
+            }
+            .tablerow123 {                
+                border:1px solid;
+            }
+            </style><div><center>Data already found with same gst/pan</center></div> <center><table class="table123">';
+            $html .= '<thead>';
+            $html .= '<tr class="tablerow123">';
+            $html .= '<td>Name</td>';
+            $html .= '<td>Phone</td>';
+            $html .= '<td>Action</td>';
+            
+            $html .= '</tr>';
+            $html .= '</thead>';
+            $html .= '<tbody>';
+            $html .= '<tr class="tablerow123">';
+            
+            $html .= '<td   class="tablerow123">'.$enq_row['name'].'</td>';
+            $html .= '<td class="tablerow123">'.$enq_row['phone'].'</td>';
+            $enquiry_id = $enq_row['enquiry_id'];
+            $html .= '<td class="tablerow123"><a target="_blank" class="btn btn-xs btn-primary" href="'.base_url().'enquiry/enq_redirect/'.$enquiry_id.'">Go</a></td>';
+            
+            $html .= '</tr>';
+
+
+            $html .= '</tbody>';
+            $html .= '</table></center>';            
+            
+        }
+        echo  json_encode(array('details'=>$html));
+    }
+
     function prepare_vtrans($enq_code)
     {
         $ag_data = array('name'=>$this->input->post("agg_user", true),
@@ -5249,12 +5310,27 @@ $deal   =    $this->Branch_model->get_deal($deal_id);
         //print_r($ag_data);
         $enq_code = $data['enq_code'];
         $ag_path = 'assets/agreements/Agreement-'.time().rand(1111,9999).'.pdf';
-        
+
+        $tin = $gstin = $pan = '';
+        if(!empty($_POST['ip'][79])){
+            $tin = $_POST['ip'][79];
+        }
+
+        if(!empty($_POST['ip'][76])){
+            $gstin = $_POST['ip'][76];
+        }
+
+        if(!empty($_POST['ip'][77])){
+            $pan = $_POST['ip'][77];
+        }
         $ary = array(
             'enq_id'=>$enq_code,
 			'deal_id'=>$ag_data['deal'],
             'comp_id'=>$this->session->companey_id,
             'pdf_json'=>json_encode($_POST),
+            'pan' =>  $pan,
+            'gst' => $gstin,
+            'tan' => $tin,
             'agg_name'=>$ag_data['name'],            
             'agg_phone'=>$ag_data['mobile'],
             'agg_email'=>$ag_data['email'],

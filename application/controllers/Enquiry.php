@@ -3038,6 +3038,8 @@ if($filesop[11]=='Male'){
             $url = 'lead/lead_details/' . $id;
         } else if ($r['status']  == 3) {
             $url = 'client/view/' . $id;
+        }else{
+            $url = 'client/view/' . $id;
         }
         redirect($url, 'refresh');
     }
