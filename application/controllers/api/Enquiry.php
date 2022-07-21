@@ -491,19 +491,28 @@ $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_
     $company_id = $this->input->post('company_id');
     $process_id = $this->input->post('process_id')??141;
     
-
-    $new_company = array(
-      'company_name'=>$company_name,
-      'comp_id'=>$company_id,
-      'process_id'=>$process_id, 
-    );
-    $this->db->insert('tbl_company',$new_company);
-    $comp_id =  $this->db->insert_id();
-    
-    $this->set_response([
-      'status' => true,
-      'data' => $comp_id
+    $comp_row = $this->db->where('trim(company_name)',trim($company_name))->get('tbl_company')->row_array();
+    if(empty($comp_row)){      
+      $new_company = array(
+        'company_name'=>$company_name,
+        'comp_id'=>$company_id,
+        'process_id'=>$process_id, 
+      );
+      $this->db->insert('tbl_company',$new_company);
+      $comp_id =  $this->db->insert_id();
+      
+      $this->set_response([
+        'status' => true,
+        'data' => $comp_id,
+        'exist' => 0
       ], REST_Controller::HTTP_OK);
+    }else{
+      $this->set_response([
+        'status' => true,
+        'data' => $comp_row['id'],
+        'exist' => 1
+      ], REST_Controller::HTTP_OK);
+    }
   }
 
 // For return the enq detail Start
