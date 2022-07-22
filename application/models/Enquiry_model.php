@@ -5528,5 +5528,89 @@ public function insertComInfo($data)
 /***************************************Attendence List API End***********************************/
 
 
+  public function vxpress_push_shipx($data){
+    $endpoint_base = 'https://v-xpress.thecrm360.com/vxpress';
+
+    $curl = curl_init();
+    $company_name = $data['company_name'];
+    $req1 =  array(
+              'company_name' => $company_name,
+              'company_id' => '65'
+            );
+
+        
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => "$endpoint_base/api/enquiry/create_account",
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => $req1,
+      CURLOPT_HTTPHEADER => array(
+        'Cookie: ci_session=gpa2h229noj14gphba5ehpgho40gohim'
+      ),
+    ));
+    $response = curl_exec($curl);
+    //echo $response; exit;
+    curl_close($curl);
+    $res_arr = json_decode($response,true);
+    $curl = curl_init();
+    $res2 = '';
+    $req2 =  array();
+    if(!empty($res_arr) && $res_arr['exist'] == 0){
+
+      $company_id = $res_arr['data'];
+      $process_id = 198;
+      $user_id  = '0';
+      $mobileno = $data['mobileno'];
+      $email  = $data['email'];
+      $fname  = $data['fname'];
+      $lastname = $data['lastname'];
+      $enq_id = $data['enq_id'];
+
+      $req2 =  array(        
+                'company_id' => 65,
+                'org_name' => $company_id,
+                'process_id' => $process_id,
+                'user_id' => $user_id,
+                'mobileno' => $mobileno,
+                'email' => $email,
+                'fname' => $fname,
+                'lastname' =>$lastname,
+                'flag'  => 1,
+                'vt_enq_id' =>$enq_id
+              );
+
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => "$endpoint_base/api/enquiry/create",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => $req2,
+      ));      
+      $res2 = curl_exec($curl);      
+      curl_close($curl);
+      
+    }
+
+    // echo $response;
+    // echo $res2;
+
+    $ins_log_arr = array(
+      'req1' => json_encode($req1),
+      'res1' => $response,
+      'req2' => json_encode($req2),
+      'res2' => $res2
+    );
+    $this->db->insert('vt_vx_bridge_log',$ins_log_arr);
+  }
+
 }
  

@@ -656,6 +656,23 @@ if($usr_ttl > 1){
             ];
          //echo '<pre>';print_r($postData);exit;   
             $insert_id    =   $this->enquiry_model->create($postData);
+
+            $enq_row = $this->db->select('company')->where('enquiry_id',$insert_id)->get('enquiry')->row_array();
+            $enq_company_id = $enq_row['company'];
+            $enq_company_row = $this->db->select('company_name')->where('id',$enq_company_id)->get('tbl_company')->row_array();
+
+            $vx_shipx_data = array(
+                                'company_name' => $enq_company_row['company_name'],
+                                'mobileno' => $postdata['phone'],
+                                'email' => $postdata['email'],
+                                'fname' => $postdata['name'],
+                                'lastname' => $postdata['lastname'],
+                                'enq_id' => $insert_id,
+                            );
+
+            //$this->enquiry_model->vxpress_push_shipx($vx_shipx_data);
+
+
             if ($this->input->post('apply_with')) {
                 $course_apply = $this->Institute_model->readRowcrs($this->input->post('apply_with'));
                 $institute_data = array(
@@ -4477,4 +4494,16 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
         $this->db->insert_batch('tbl_company',$k);
 
     }
+    public function vx_test(){
+        $vx_shipx_data = array(
+            'company_name' => 'hello world5',
+            'mobileno' => 7847848484,
+            'email' => 'archizzzzzzz@archizsolutions.com',
+            'fname' => 'Hello world ',
+            'lastname' => 'lead',
+            'enq_id' => 93090,
+        );
+
+        $this->enquiry_model->vxpress_push_shipx($vx_shipx_data);
+    }    
 }
