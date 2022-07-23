@@ -5560,7 +5560,7 @@ public function insertComInfo($data)
     $curl = curl_init();
     $res2 = '';
     $req2 =  array();
-    if(!empty($res_arr) && $res_arr['exist'] == 0){
+    if(!empty($res_arr) && $res_arr['exist'] == 0 && !empty($data['mobileno'])){
 
       $company_id = $res_arr['data'];
       $process_id = 198;
@@ -5598,8 +5598,37 @@ public function insertComInfo($data)
       $res2 = curl_exec($curl);      
       curl_close($curl);
       
-    }
+    }else if(!empty($res_arr) && $res_arr['exist'] == 0){
 
+
+      $req2 = array(
+        'email' => $data['tck_email'],
+        'phone' => $data['tck_phone'],
+        'name' => $data['tck_name'],
+        'company_id' => $res_arr['data'],
+      );
+      
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "$endpoint_base/api/ticket/ticket_enquiry",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS => $req2,
+          CURLOPT_HTTPHEADER => array(
+            'Cookie: ci_session=c66gvc10j2ejciguhvdmcgj5s5notgbf'
+          ),
+        ));
+
+        $res2 = curl_exec($curl);
+
+        curl_close($curl);
+    }
     // echo $response;
     // echo $res2;
 

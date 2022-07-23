@@ -210,7 +210,7 @@ if (!in_array($user_row->user_permissions, $not_send)){
       			$crtdby = $this->input->post('user_id');
       			$user =$this->User_model->read_by_id($crtdby);
             $postData = [                
-                'user_role' => $user->user_roles,
+                'user_role' => $user->user_roles??0,
                 'email' => $this->input->post('email', true)??'',
         	    'phone' => $this->input->post('mobileno', true),
         		'other_phone' => $this->input->post('other_phone', true),				
@@ -370,8 +370,25 @@ $insert_id = $enq_id->enquiry_id;
 }else{
 //End
 $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_id'));
+
+  $enq_row = $this->db->select('company')->where('enquiry_id',$insert_id)->get('enquiry')->row_array();
+  $enq_company_id = $enq_row['company'];
+  $enq_company_row = $this->db->select('company_name')->where('id',$enq_company_id)->get('tbl_company')->row_array();
+
+  $vt_shipx_data = array(
+                      'company_name' => $enq_company_row['company_name'],
+                      'mobileno' => $postdata['phone'],
+                      'email' => $postdata['email'],
+                      'fname' => $postdata['name'],
+                      'lastname' => $postdata['lastname'],
+                      'enq_id' => $insert_id,
+                  );
+  //$this->enquiry_model->vxpress_push_shipx($vt_shipx_data);
+
 }
-    			    
+    	
+
+                 
     			    $this->db->select('enquiry.Enquery_id,enquiry.enquiry_id');
     			    $this->db->where('enquiry_id',$insert_id);
     			    $e_row	=	$this->db->get('enquiry')->row_array();

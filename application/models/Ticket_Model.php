@@ -293,6 +293,7 @@ class Ticket_Model extends CI_Model
 		$newcompId = '';
 		if (!empty($companey_id) && !empty($user_id) && !empty($_POST['client_new']) && empty($_POST['client'])) {
 			if (isset($_SESSION['process']) && count($_SESSION['process']) == 1) {
+
 				$company = $this->db->where('company_name',$_POST['client_new'])->get('tbl_company')->row();
 				if(!empty($company)){
 					$newcompId = $company->id;
@@ -305,6 +306,21 @@ class Ticket_Model extends CI_Model
 								);
 					$this->db->insert('tbl_company',$new_company);
 					$newcompId = $this->db->insert_id();
+
+
+					$this->load->model('enquiry_model');
+					$vt_shipx_data = array(
+						'company_name' => $new_company['company_name'],
+						'tck_email'   => $this->input->post("email", true)??'',
+						'tck_phone'   => $this->input->post("phone", true),
+						'tck_name'    => $this->input->post("name", true)
+					);
+					//$this->enquiry_model->vxpress_push_shipx($vt_shipx_data);
+				
+					
+
+
+
 				}
 				//For assign to new created lead				
 				$branch = $this->input->post("emp_branch", true);

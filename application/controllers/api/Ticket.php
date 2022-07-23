@@ -1148,4 +1148,37 @@ class Ticket extends REST_Controller {
       } 
   }
 
+  public function ticket_enquiry_post(){
+    
+    $encode = 'tcklead_vx';
+    $postData = array(
+      'Enquery_id' => $encode,
+      'enquiry_id' => 0,
+      'email' 	 => $this->input->post("email", true)??'',
+      'phone' 	 => $this->input->post("phone", true),
+      'name' 		 => $this->input->post("name", true),
+      'company'	 => $this->input->post("company_id", true),
+      'product_id' => 141,
+      'created_by' => 0,
+      'phone'		 => $this->input->post('phone')
+    );
+    $this->db->insert('tbl_ticket_enquiry', $postData);
+    $ticket_enquiry_id = $this->db->insert_id();
+
+    if($$ticket_enquiry_id)
+    {
+       $this->set_response([
+      'status'      => TRUE,           
+      'data'  => 'Enquiry Ticket added',
+      ], REST_Controller::HTTP_OK);
+    }
+    else
+    {
+      $msg = 'Something went wrong';
+      $this->set_response([
+        'status'  => false,
+        'msg'     => $msg,//"Please provide a company id"
+      ],REST_Controller::HTTP_OK);
+    } 
+  }
 }
