@@ -1109,7 +1109,7 @@ public function get_all_stage_deals() {
         // $next_stage = $stage + 1;
     if($next_stage == '3'){
 		$this->db->where('enquiry_id', $enquiry_id);
-		$this->db->where('status', '0');
+		//$this->db->where('status', '0');
         $query = $this->db->get('commercial_info');
         $all_row = $query->num_rows();
 		
