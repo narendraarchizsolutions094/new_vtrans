@@ -118,6 +118,12 @@ class Shipx_model extends CI_model{
                                             'gst_no' => $gstin??''
                                     )
                                 ),
+                                'additional_ref' => array(
+                                    'third_party_booking_allowed' => 'YES',
+                                    'vt' => 'YES',
+                                    'vx' => 'NO',
+                                    'vlogis' => 'NO'
+                                ),
                                 'company_group' => array(
                                     'name'	=> $company_group_name,
                                     'description' => '',//optional

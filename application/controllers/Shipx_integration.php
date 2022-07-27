@@ -80,15 +80,28 @@ class Shipx_integration extends CI_Controller{
             //echo $response;
             $res_arr = json_decode($response,true);
             if(!empty($res_arr['company']['id'])){
+                $shipx_id = $response_arr['company']['id'];
+                $shipx_facility_id = $response_arr['company']['facilities'][0]['id'];
 
                 $this->db->where('id',$agreement_id);
                 $this->db->set('shipx_res',$response);
                 
                 $this->db->set('shipx_id',$response_arr['company']['id']);
+                $this->db->set('shipx_facility_id',$shipx_facility_id);
                 
                 
                 $this->db->set('shipx_push_status',200);
                 $this->db->update('tbl_aggriment');
+
+                $agreement_row = $this->db->where('id',$agreement_id)->get('tbl_aggriment')->row_array();
+
+                
+
+                $this->db->where('Enquery_id',$agreement_row['enq_id']);
+                $this->db->set('shipx_id',$shipx_id);
+                $this->db->set('shipx_facility_id',$shipx_facility_id);
+                $this->db->update('enquiry');
+
                 echo json_encode(array('msg'=>'Success','status'=>1));
                 
             }else{
