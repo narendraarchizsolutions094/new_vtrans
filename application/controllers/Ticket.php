@@ -1367,6 +1367,96 @@ class Ticket extends CI_Controller
 			}
 		}
 	}
+
+
+	public function shipx_gc_details($gc_no='PV001'){
+
+
+		$curl = curl_init();
+		
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'https://vtrans-staging.shipx.co.in/integration/consignments/list.json',
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  CURLOPT_POSTFIELDS =>'{
+			"lr": {
+				"shipper-id": "",
+				"service-provider-id": "62628",
+				"shipper-company-code": "",
+				"service-provider-company-code": "",
+				"consignor-company-id": "",
+				"consignee-company-id": "",
+				"shipper-company-group": "",
+				"invoice-number": "",
+				"number": "'.$gc_no.'",
+				"state": "",
+				"ref1": "",
+				"from-delivered-at": "",
+				"to-delivered-at": "",
+				"delivery-order-number": "",
+				"from-last-event-at": "",
+				"to-last-event-at": "",
+				"show-trip-details": "Y",
+				"draft": "",
+				"show-consignment-invoice": "Y",
+				"include-canceled-lrs": ""
+			}
+		}',
+		  CURLOPT_HTTPHEADER => array(
+			'X-ShipX-API-Key: 1leVciAvveJvVv3RtiPDmWDXvASxeDJpQvBJcrJMbnQH3oHyuVCvCo7v1Voz',
+			'Content-Type: application/json',
+			'Cookie: _migration_31_session=BAh7CUkiD3Nlc3Npb25faWQGOgZFVEkiJWQ0YjExYWY2NjdmZmI5MGNiOTAxNDRlZjA1YzJiYmI0BjsAVEkiDHVzZXJfaWQGOwBGaQNGtgFJIg9jb21wYW55X2lkBjsARmkCpPRJIg91c2VyX3Rva2VuBjsARkkiIW12VDRsaHhva1FQV2VWM1dRZ1pSUEFoNmFGZz0GOwBG--3b4d0958f3370d50f73eb63043965b03978cad8b'
+		  ),
+		));
+		
+		$response = curl_exec($curl);
+		
+		curl_close($curl);
+		//echo $response;
+		
+		if(!empty($response)){
+			$res_arr = json_decode($response,true);
+
+			$consignment_no = $res_arr['lrs'][0]['lr']['id'];
+			//echo $consignment_no;
+
+			if(!empty($consignment_no)){
+				$curl = curl_init();
+				curl_setopt_array($curl, array(
+				CURLOPT_URL => 'https://vtrans-staging.shipx.co.in/integration/consignments/'.$consignment_no.'/detail.json',
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => 'GET',
+				CURLOPT_HTTPHEADER => array(
+					'X-ShipX-API-Key: 1leVciAvveJvVv3RtiPDmWDXvASxeDJpQvBJcrJMbnQH3oHyuVCvCo7v1Voz'
+				),
+				));
+
+				$detail_response = curl_exec($curl);
+
+				curl_close($curl);
+
+				if(!empty($detail_response)){
+					$detail_res_arr = json_decode($detail_response,true);
+					
+				}
+
+				$data = array('result'=>$detail_res_arr);
+				$data['content'] = $this->load->view('shipx_gc_details', $data, true);
+				$this->load->view('layout/main_wrapper', $data);
+			}
+		}
+	}
+
 	public function get_tracking()
 	{
 		if ($post = $this->input->post()) {

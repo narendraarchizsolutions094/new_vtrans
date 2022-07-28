@@ -501,5 +501,14 @@ public function run()
 
     }
 
+
+    public function view_log($id)
+    {
+        $data['title'] = 'Cron Jobs Log';
+        $data['crons']=$this->db->get_where('tbl_cron_logs',array('type' => $id))->result();
+        $data['content'] = $this->load->view('cron/cron-log-list',$data,true);
+        $this->load->view('layout/main_wrapper',$data);
+    }
+
 }
 

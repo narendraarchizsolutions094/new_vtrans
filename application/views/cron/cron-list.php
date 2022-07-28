@@ -51,10 +51,13 @@ a:hover, a:focus {
                             <td><?= $value->month ?></td>
                             <td><?= $value->weekday ?></td>
                             <td><?= $value->running_time ?></td>
-                            <td><?= $value->url ?></td>
+                            <td>
+                            <!-- <a href="<?= base_url('cron/view_log/'.$value->id);?>"><?= $value->url ?></a>     -->
+                            <?= $value->url ?>
+                            </td>
                             <td><?php if($value->status==0){  echo'Active'; }else{  echo'Inactive';  } ?></td>
                             <td class="center">
-                                   <a href="<?php echo base_url("cron/delete_cron/$value->id") ?>" onclick="return confirm('<?php echo display('are_you_sure') ?>')" class="btn btn-xs  btn-danger"><i class="fa fa-trash"></i></a> 
+                            <a href="<?php echo base_url("cron/delete_cron/$value->id") ?>" onclick="return confirm('<?php echo display('are_you_sure') ?>')" class="btn btn-xs  btn-danger"><i class="fa fa-trash"></i></a> 
                         </tr>
                         <?php } ?>
 
