@@ -3922,4 +3922,29 @@ public function get_enquiry_id_post(){
   }
 }
 //End
+
+  public function update_shipx_id_post(){
+    $enquiry_id = $this->input->post('enquiry_id');    
+    $shipx_id = $this->input->post('shipx_id');    
+    if(!empty($enquiry_id) && !empty($shipx_id)){
+      $this->db->where('vx_enq_id',$enquiry_id);
+      $this->db->set('shipx_id',$shipx_id);
+      if($this->db->update('enquiry')){
+        $this->set_response([
+          'status' => true,
+          'data' => "Updated",
+        ], REST_Controller::HTTP_OK);
+      }else{
+        $this->set_response([
+          'status' => false,
+          'data' => "no data mached",
+          ], REST_Controller::HTTP_OK);
+      }
+    }else{
+      $this->set_response([
+        'status' => false,
+        'data' => "enquiry id or shipx id required",
+        ], REST_Controller::HTTP_OK);
+    }
+  }
 }

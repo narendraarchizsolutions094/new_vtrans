@@ -102,6 +102,9 @@ class Shipx_integration extends CI_Controller{
                 $this->db->set('shipx_facility_id',$shipx_facility_id);
                 $this->db->update('enquiry');
 
+
+
+                
                 echo json_encode(array('msg'=>'Success','status'=>1));
                 
             }else{

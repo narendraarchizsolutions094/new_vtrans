@@ -8,16 +8,13 @@ class Shipx extends REST_Controller {
         parent::__construct();        
     }
 
-    public function update_customer_post(){
-
+    public function update_customer_post(){        
         $this->load->model('Leads_Model');
         $shipx_id = $this->input->post('id'); // shipx id
         $req = json_encode($_POST);
         $this->db->set('req',$req);
         $this->db->insert('shipx_customer_update_api_log');    
         
-        
-
         $facility_name = $this->input->post('facility_name'); //client name
         $company_group = $this->input->post('name'); // company group name
         
@@ -132,6 +129,34 @@ class Shipx extends REST_Controller {
                 }
             }else if($company_flag == 'vx'){
 
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://v-xpress.thecrm360.com/vxpress/api/shipx/update_customer',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => $_POST,
+                CURLOPT_HTTPHEADER => array(
+                    'Cookie: ci_session=fvfc33qkqfcbnn3sghonq42fub6ma859'
+                ),
+                ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+                //echo $response;
+
+
+                $this->set_response([
+                    'status' => true,
+                    'msg' => $response
+                    ], REST_Controller::HTTP_OK);
             }else{
                 $this->set_response([
                     'status' => true,

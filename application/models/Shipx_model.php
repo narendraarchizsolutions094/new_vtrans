@@ -73,11 +73,11 @@ class Shipx_model extends CI_model{
         $client_name = $lead_row['client_name'];
        // var_dump($lead_row);
         $company_type = 'RETAIL';
-        $payment_terms = '';
+        $payment_terms = 'Immediate';
         $sales_branch = '';
         $shipx_arr = array(
                         'company'=>array(
-                                'name'=>$client_name??'',
+                                'name'=>$company_group_name,
                                 'code'=>'',//oracle code
                                 'type'=>'Shipper',
                                 'website'=>$website??'',
@@ -88,7 +88,7 @@ class Shipx_model extends CI_model{
                                 'company_ref3'=>'',	//optional
                                 'facilities_attributes'=>array(
                                     array(
-                                            'name' => $lead_row['name_prefix'].' '.$lead_row['name'].' '.$lead_row['lastname'],	
+                                            'name' => $client_name,	
                                             'code' => '',//optional
                                             'address_line1'	=>'',//optional
                                             'address_line2'	=>'',//optional
@@ -108,7 +108,7 @@ class Shipx_model extends CI_model{
                                             'is_sez' =>"false",                
                                             'users_attributes' => array(
                                                 array(
-                                                    'name'    => $username??'',
+                                                    'name'    => $lead_row['name_prefix'].' '.$lead_row['name'].' '.$lead_row['lastname'],
                                                     'designation' => $user_designation??'',
                                                     'email' => $user_email??'',	
                                                     'mobile_number' => $user_mobile??''
@@ -130,6 +130,10 @@ class Shipx_model extends CI_model{
                                     'create_new_company_group'	=> 'Y'
                                     )
                             ));
+        
+        if(!empty($lead_row['shipx_id'])){
+            $shipx_arr['company']['id'] = $lead_row['shipx_id'];
+        }
         $shipx_json = json_encode($shipx_arr);
         return $shipx_json;
     }
