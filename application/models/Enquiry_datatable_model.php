@@ -186,11 +186,14 @@ class Enquiry_datatable_model extends CI_Model {
         }
 
         if(!empty($this->session->process) && empty($product_filter)){              
-            $arr = $this->session->process;           
+            $arr = $this->session->process;
             if(is_array($arr)){
+                //echo 'x';
                 $where.=" AND enquiry.product_id IN (".implode(',', $arr).')';
             }                       
         }else if (!empty($this->session->process) && !empty($product_filter)) {
+           // echo 'y';
+
             $where.=" AND enquiry.product_id IN (".implode(',', $product_filter).')';            
         }
         /* tag filter */
@@ -366,6 +369,8 @@ class Enquiry_datatable_model extends CI_Model {
         //$this->db->group_by('enquiry.Enquery_id');
 
         $i = 0;
+        if(!empty($_POST['search']['value'])) {// if datatable send POST for search
+            $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
      
         foreach ($this->column_search as $item) // loop column 
         {
@@ -396,6 +401,10 @@ class Enquiry_datatable_model extends CI_Model {
             $this->db->or_where("enquiry.enquiry_id IN (SELECT parent FROM extra_enquery WHERE cmp_no = '$compid' AND fvalue LIKE '%{$val}%')");
             
         }   
+        $this->db->group_end(); //close bracket
+
+
+    }
     
         if(isset($_POST['order'])) // here order processing
         {
