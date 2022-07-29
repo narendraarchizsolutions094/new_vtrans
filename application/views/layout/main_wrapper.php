@@ -1056,10 +1056,10 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                     <li class="<?php echo (($segment1 == 'dashboard') ? "active" : null) ?>">
                         <a href="<?php echo base_url('dashboard') ?>">
                             <i class="fa fa-home icon-class"></i>
-                            &nbsp;<?php echo display('dashboard') ?>
+                            &nbsp;<?php echo 'Dashboard'; ?>
                             <?php  if($this->session->menu==1){ ?></br>
                             <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
-                                <?php echo display('dashboard') ?></p> <?php } ?>
+                                <?php echo 'Dashboard'; ?></p> <?php } ?>
                         </a>
                     </li>
                     <?php } ?>
@@ -1711,6 +1711,18 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                 <?php echo 'TABS Settings' ?></p> <?php } ?>
                         </a>
                     </li>
+
+                    <li class="treeview <?php echo (($segment1 == "cron") ? "active" : null) ?>">
+                        <a href="<?php echo base_url("cron/index") ?>">
+                            <i class="fa fa-cogs icon-class"></i>
+                            &nbsp;<?php echo 'Manage Cron' ?>
+                            <?php  if($this->session->menu==1){ ?></br>
+                            <p style="color:#fff;font-size:9px;margin-left:-12px;padding-top:10px;">
+                                <?php echo 'Manage Cron' ?></p> <?php } ?>
+                        </a>
+                    </li>
+
+
                     <?php
                   }
                   ?>

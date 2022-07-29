@@ -510,5 +510,27 @@ public function run()
         $this->load->view('layout/main_wrapper',$data);
     }
 
+    public function update_cron_time(){
+        $next_running_time = $this->input->post('next_running_time');
+        $cron_id = $this->input->post('cron_id');
+        if(!empty($next_running_time) && $cron_id){
+            $this->db->where('id',$cron_id);
+            $this->db->set('running_time',$next_running_time);
+            $this->db->update('cronjobs');    
+            $this->session->set_flashdata('message','Cron Updated Successfully');
+        }else{
+            $this->session->set_flashdata('exception','Cron Not Updated ');
+        }
+        redirect('cron/index');        
+    }
+
+
+    public function get_cron_deails($cron_id){
+       $result  = $this->db->where('id',$cron_id)->get('cronjobs')->row_array();
+
+       if(!empty($result)){
+            echo  json_encode($result);
+       }
+    }
 }
 
