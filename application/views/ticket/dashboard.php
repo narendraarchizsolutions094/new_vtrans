@@ -1,3 +1,20 @@
+
+
+
+
+
+
+<?php
+if(!empty($_GET['view']) && $_GET['view'] == 'true'){
+?>
+
+
+<br>
+<br>
+<div class="text-center">
+    <a  class='btn btn-primary' href="<?=base_url().'ticket/dashboard'?>" >Back</a>
+</div>
+
 <br>
 <br>
 <div class="col-md-12">
@@ -985,3 +1002,15 @@ $(document).ready(function() {
 <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+<?php
+}else{
+    ?>
+
+<br>
+<br>
+<div class="text-center">
+    <a  class='btn btn-primary' href="<?=base_url().'ticket/dashboard?view=true'?>" >Click To View Dashboard</a>
+</div>
+    <?php
+}
+?>
