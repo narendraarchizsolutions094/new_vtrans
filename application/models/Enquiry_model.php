@@ -5628,6 +5628,12 @@ public function insertComInfo($data)
         $res2 = curl_exec($curl);
 
         curl_close($curl);
+    }else if(!empty($res_arr) && $res_arr['exist'] == 1 && !empty($data['mobileno'])){
+        $shipx_id  = $res_arr['shipx_id'];
+        $enq_id = $data['enq_id'];
+        $this->db->where('enquiry_id',$enq_id);
+        $this->db->set('shipx_id',$shipx_id);
+        $this->db->update('enquiry');
     }
     // echo $response;
     // echo $res2;

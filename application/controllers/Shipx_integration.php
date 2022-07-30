@@ -103,7 +103,17 @@ class Shipx_integration extends CI_Controller{
                 $this->db->update('enquiry');
 
 
+                $agreement_row = $this->db->select('*')->from('tbl_aggriment')->where('id',$agreement_id)->get()->row_array();
+                if(!empty($agreement_row['enq_id']) && !empty($shipx_id)){        
+                    $lead_code = $agreement_row['enq_id'];
 
+                    $this->db->select('*');
+                    $this->db->from('enquiry');
+                    $this->db->where('enquiry.Enquery_id',$lead_code);
+                    $lead_row = $this->db->get()->row_array();
+
+                    $this->push_shipx_id($lead_row['enquiry_id'],$shipx_id);
+                }
                 
                 echo json_encode(array('msg'=>'Success','status'=>1));
                 
@@ -111,5 +121,28 @@ class Shipx_integration extends CI_Controller{
                 echo json_encode(array('msg'=>'Something went wrong !','status'=>0));
             }
         }
+    }
+
+
+    function push_shipx_id($enq_id,$shipx_id){
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://v-xpress.thecrm360.com/vxpress/api/enquiry/update_shipx_id',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => array('enquiry_id' => $enq_id,'shipx_id' => $shipx_id),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        //echo $response;
     }
 }

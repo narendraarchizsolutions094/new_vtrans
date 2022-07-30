@@ -521,12 +521,25 @@ $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_
       $this->set_response([
         'status' => true,
         'data' => $comp_id,
+        'shipx_id' => 0,
         'exist' => 0
       ], REST_Controller::HTTP_OK);
     }else{
+
+      $company_id = $comp_row['id'];
+      $shipx_id = 0;
+      $this->db->where('shipx_id>',0);
+      $enq_shipx_rows = $this->db->where('company',$company_id)->get('enquiry')->row_array();
+
+      if(!empty($enq_shipx_rows['shipx_id']) && $enq_shipx_rows['shipx_id'] > 0){
+        $shipx_id = $enq_shipx_rows['shipx_id'];        
+      }
+
+
       $this->set_response([
         'status' => true,
         'data' => $comp_row['id'],
+        'shipx_id' => $shipx_id,
         'exist' => 1
       ], REST_Controller::HTTP_OK);
     }

@@ -14,7 +14,7 @@ class Shipx_model extends CI_model{
             $pdf_json = json_decode($pdf_json, true);
         }
         ///print_r($pdf_json);
-        $company_type = $payment_terms = $tin = $gstin  = '';
+        $pan = $company_type = $payment_terms = $tin = $gstin  = '';
         if(!empty($pdf_json['ip'][53])){
             $company_type = $pdf_json['ip'][53];
         }
@@ -27,6 +27,10 @@ class Shipx_model extends CI_model{
 
         if(!empty($pdf_json['ip'][76])){
             $gstin = $pdf_json['ip'][76];
+        }
+
+        if(!empty($pdf_json['ip'][77])){
+            $pan = $pdf_json['ip'][77];
         }
 
         $this->db->select('*');
@@ -97,8 +101,8 @@ class Shipx_model extends CI_model{
                                             'pin' => $pincode??'',
                                             'state' => $state_name??'',
                                             'payment_terms' => $payment_terms??'',
-                                            'facility_ref1' => $user_row['s_user_email'],//optional
-                                            'facility_ref2' => $user_row['s_display_name'].' '.$user_row['last_name'],//optional
+                                            'facility_ref1' => '',//optional
+                                            'facility_ref2' => '',//optional
                                             'facility_ref3' => $user_row['employee_id'],//optional
                                             'is_invoice_facility' => "true",
                                             'is_ship_from_address' => "true",
@@ -114,25 +118,35 @@ class Shipx_model extends CI_model{
                                                     'mobile_number' => $user_mobile??''
                                                 )	
                                             ),                    
-                                            'tin' => $tin??'',
+                                            'tin' => $pan??'',
                                             'gst_no' => $gstin??''
                                     )
                                 ),
                                 'additional_ref' => array(
-                                    'third_party_booking_allowed' => 'YES',
+                                    'third_party_booking_allowed' => '',
                                     'vt' => 'YES',
-                                    'vx' => 'NO',
-                                    'vlogis' => 'NO'
+                                    'vx' => '',
+                                    'vlogis' => ''
                                 ),
                                 'company_group' => array(
-                                    'name'	=> $company_group_name,
+                                    'name'	=> '',
                                     'description' => '',//optional
-                                    'create_new_company_group'	=> 'Y'
+                                    'create_new_company_group'	=> ''
                                     )
                             ));
         
-        if(!empty($lead_row['shipx_id'])){
+        if(!empty($lead_row['shipx_id']) && $lead_row['shipx_id'] >0){
             $shipx_arr['company']['id'] = $lead_row['shipx_id'];
+        }else{
+            $conpany_group_id = $lead_row['company'];
+            $this->db->where('shipx_id>',0);
+            $enq_shipx_rows = $this->db->where('company',$conpany_group_id)->get('enquiry')->row_array();
+
+            if(!empty($enq_shipx_rows['shipx_id']) && $enq_shipx_rows['shipx_id'] > 0){
+                $enq_shipx_id = $enq_shipx_rows['shipx_id'];
+                $shipx_arr['company']['id'] = $enq_shipx_id;
+            }
+
         }
         $shipx_json = json_encode($shipx_arr);
         return $shipx_json;

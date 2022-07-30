@@ -663,14 +663,14 @@ if($usr_ttl > 1){
 
             $vx_shipx_data = array(
                                 'company_name' => $enq_company_row['company_name'],
-                                'mobileno' => $postdata['phone'],
-                                'email' => $postdata['email'],
-                                'fname' => $postdata['name'],
-                                'lastname' => $postdata['lastname'],
+                                'mobileno' => $postData['phone'],
+                                'email' => $postData['email'],
+                                'fname' => $postData['name'],
+                                'lastname' => $postData['lastname'],
                                 'enq_id' => $insert_id,
                             );
 
-            //$this->enquiry_model->vxpress_push_shipx($vx_shipx_data);
+            $this->enquiry_model->vxpress_push_shipx($vx_shipx_data);
 
 
             if ($this->input->post('apply_with')) {
