@@ -68,17 +68,17 @@ class Shipx extends REST_Controller {
                     //$address3 = $this->input->post('address-line3');
                     
                     $city = $this->input->post('city');                
-                    $city_row    = $this->db->where('branch_name',$city)->get('branch')->row_array();                
-                    $city_id = $city_row['branch_id']??'';
+                    $city_row    = $this->db->where('city',$city)->get('city')->row_array();                
+                    $city_id = $city_row['id']??'';
                     if(!empty($city_id)){
-                        $this->db->where('enquiry_id',$enq_id)->set('sales_branch',$city_id)->update('enquiry');
+                        $this->db->where('enquiry_id',$enq_id)->set('city_id',$city_id)->update('enquiry');
                         $is_updated = true;
                     }                
                     $state = $this->input->post('state');
-                    $state_row    = $this->db->where('area_name',$state)->get('sales_area')->row_array();
-                    $state_id = $state_row['area_id']??'';                
+                    $state_row    = $this->db->where('state',$state)->get('state')->row_array();
+                    $state_id = $state_row['id']??'';                
                     if(!empty($state_id)){
-                        $this->db->where('enquiry_id',$enq_id)->set('sales_area',$state_id)->update('enquiry');
+                        $this->db->where('enquiry_id',$enq_id)->set('state_id',$state_id)->update('enquiry');
                         $is_updated = true;
                     }
                     $pin = $this->input->post('pin');
