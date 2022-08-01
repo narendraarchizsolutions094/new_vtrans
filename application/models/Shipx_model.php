@@ -79,10 +79,14 @@ class Shipx_model extends CI_model{
         $company_type = 'CONTRACTUAL';
         $payment_terms = 'Immediate';
         $sales_branch = '';
+        $oracle_code = '';
+        if(!empty($agreement_row)){
+            $oracle_code = $agreement_row['oracle_customer_code'];
+        }
         $shipx_arr = array(
                         'company'=>array(
                                 'name'=>$company_group_name,
-                                'code'=>'',//oracle code
+                                'code'=>$oracle_code,//oracle code
                                 'type'=>'Shipper',
                                 'website'=>$website??'',
                                 'company_type'=>$company_type??'',

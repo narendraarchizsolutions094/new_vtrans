@@ -522,24 +522,32 @@ $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_
         'status' => true,
         'data' => $comp_id,
         'shipx_id' => 0,
+        'oracle_code' => 0,
         'exist' => 0
       ], REST_Controller::HTTP_OK);
     }else{
 
       $company_id = $comp_row['id'];
-      $shipx_id = 0;
+      $shipx_id = $oracle_code = 0;
       $this->db->where('shipx_id>',0);
       $enq_shipx_rows = $this->db->where('company',$company_id)->get('enquiry')->row_array();
 
       if(!empty($enq_shipx_rows['shipx_id']) && $enq_shipx_rows['shipx_id'] > 0){
         $shipx_id = $enq_shipx_rows['shipx_id'];        
+
+        $agreement_row = $this->db->where('shipx_id',$shipx_id)->get('tbl_aggriment')->row_array();
+        if(!empty($agreement_row)){
+          $oracle_code = $agreement_row['oracle_customer_code'];
+        }
       }
+      
 
 
       $this->set_response([
         'status' => true,
         'data' => $comp_row['id'],
         'shipx_id' => $shipx_id,
+        'oracle_code' => $oracle_code,
         'exist' => 1
       ], REST_Controller::HTTP_OK);
     }

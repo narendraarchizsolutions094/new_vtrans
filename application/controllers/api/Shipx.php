@@ -46,6 +46,7 @@ class Shipx extends REST_Controller {
                     if(!empty($oracle_customer_code)){
                         $this->db->where('id',$agreement_row['id'])->set('oracle_customer_code',$oracle_customer_code)->update('tbl_aggriment');
                         $is_updated = true;
+                        $this->update_customer_oracle_code_to_vx($shipx_id,$oracle_customer_code);
                     }
 
                     if(!empty($lead_name)){
@@ -189,5 +190,32 @@ class Shipx extends REST_Controller {
         // email
         // mobile-number        
 
+    }
+
+    public function update_customer_oracle_code_to_vx($shipx_id,$oracle_code){
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://v-xpress.thecrm360.com/vxpress/api/shipx/update_customer_oracle_code',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => array('shipx_id' => $shipx_id,'oracle_customer_code' => $oracle_code),
+        CURLOPT_HTTPHEADER => array(
+            'Cookie: ci_session=89l0c7ilgvjalvlko7fg4lgjtgl085uc'
+        ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+    public function update_customer_oracle_code_post(){
+        $oracle_customer_code  = $this->input->post('oracle_customer_code');
+        $shipx_id = $this->input->post('shipx_id');
+        if(!empty($shipx_id) && !empty($shipx_customer_code)){
+            $this->db->where('shipx_id',$shipx_id)->set('oracle_customer_code',$oracle_customer_code)->update('tbl_aggriment');
+        }
     }
 }
