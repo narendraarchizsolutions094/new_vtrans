@@ -76,7 +76,7 @@ class Shipx_model extends CI_model{
 
         $client_name = $lead_row['client_name'];
        // var_dump($lead_row);
-        $company_type = 'RETAIL';
+        $company_type = 'CONTRACTUAL';
         $payment_terms = 'Immediate';
         $sales_branch = '';
         $shipx_arr = array(
@@ -93,7 +93,7 @@ class Shipx_model extends CI_model{
                                 'facilities_attributes'=>array(
                                     array(
                                             'name' => $client_name,	
-                                            'code' => '',//optional
+                                            'code' => 'VT'.$lead_row['Enquery_id'],//optional
                                             'address_line1'	=>'',//optional
                                             'address_line2'	=>'',//optional
                                             'address_line3' =>'',//optional
