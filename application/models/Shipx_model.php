@@ -128,6 +128,14 @@ class Shipx_model extends CI_model{
                                     'vx' => '',
                                     'vlogis' => ''
                                 ),
+                                "holds_list" => array(
+                                    "hold" => array(
+                                        array(
+                                            "hold_type"=> "onboarding",
+                                            "hold_state"=> true
+                                        )
+                                    )
+                                ),
                                 'company_group' => array(
                                     'name'	=> '',
                                     'description' => '',//optional
