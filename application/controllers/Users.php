@@ -96,7 +96,7 @@ class Users extends CI_Controller {
      
      
  	public function create()
-	{ 
+	{ exit;
 	  /*  if(user_role('130')==true){
 		}*/
 		$data['title'] = display('add_user');
