@@ -5417,7 +5417,7 @@ public function insertComInfo($data)
                         if($key=='clientName')
                           $this->db->where('tbl_visit.enquiry_id',$value);
 					    
-						if($key=='enquiry_id')
+						            if($key=='enquiry_id')
                            $this->db->where('enquiry.Enquery_id',$value);
 
                         // if($key=='phone')

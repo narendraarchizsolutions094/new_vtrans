@@ -80,13 +80,30 @@ class Shipx_model extends CI_model{
         $payment_terms = 'Immediate';
         $sales_branch = '';
         $oracle_code = '';
-        if(!empty($agreement_row)){
+        if(!empty($agreement_row['oracle_customer_code'])){
             $oracle_code = $agreement_row['oracle_customer_code'];
+        }else{
+            $company_data_vt = $this->get_oracle_code_api($company_group_name);
+            if(!empty($company_data_vt['oracle_code'])){
+                $oracle_code = $company_data_vt['oracle_code']??'';
+            }else{
+                $conpany_group_id = $lead_row['company'];
+                $this->db->where('shipx_id>',0);
+                $enq_shipx_rows = $this->db->where('company',$conpany_group_id)->get('enquiry')->row_array();
+
+                if(!empty($enq_shipx_rows['shipx_id']) && $enq_shipx_rows['shipx_id'] > 0){
+                    $enq_shipx_id_n = $enq_shipx_rows['shipx_id'];
+                    $agreement_row_n = $this->db->select('*')->from('tbl_aggriment')->where('shipx_id',$enq_shipx_id_n)->get()->row_array();
+                    if(!empty($agreement_row_n['oracle_customer_code'])){
+                        $oracle_code = $agreement_row_n['oracle_customer_code'];
+                    }
+                }
+            }
         }
         $shipx_arr = array(
                         'company'=>array(
                                 'name'=>$company_group_name,
-                                'code'=>$oracle_code,//oracle code
+                                'code'=>$oracle_code??'',//oracle code
                                 'type'=>'Shipper',
                                 'website'=>$website??'',
                                 'company_type'=>$company_type??'',
@@ -162,5 +179,32 @@ class Shipx_model extends CI_model{
         }
         $shipx_json = json_encode($shipx_arr);
         return $shipx_json;
+    }
+
+
+    public function get_oracle_code_api($companay){
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://v-xpress.thecrm360.com/vxpress/api/enquiry/create_account',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => array('company_name' => $companay),
+        CURLOPT_HTTPHEADER => array(
+            'Cookie: ci_session=pg4go6pss7dghkd6r1bivs58vvnveca3'
+        ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl); 
+        $res_arr = array();
+        if(!empty($response)){
+            $res_arr = json_decode($response, true);
+        }
+        return $res_arr;
     }
 }

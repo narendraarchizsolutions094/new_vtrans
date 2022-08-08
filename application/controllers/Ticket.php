@@ -4338,8 +4338,7 @@ class Ticket extends CI_Controller
 				}else{
 				$dbranch_id = $dbid->branch_id;
 				}
-				
-			
+						
 			
 						if($tracking_no){
 							$feed_data = array(											

@@ -509,11 +509,11 @@ $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_
     $process_id = $this->input->post('process_id')??141;
     
     $comp_row = $this->db->where('trim(company_name)',trim($company_name))->get('tbl_company')->row_array();
-    if(empty($comp_row)){      
+    if(empty($comp_row)){
       $new_company = array(
         'company_name'=>$company_name,
         'comp_id'=>$company_id,
-        'process_id'=>$process_id, 
+        'process_id'=>$process_id,
       );
       $this->db->insert('tbl_company',$new_company);
       $comp_id =  $this->db->insert_id();
@@ -523,33 +523,38 @@ $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_
         'data' => $comp_id,
         'shipx_id' => 0,
         'oracle_code' => 0,
+        'gst' => 0,
+        'pan' => 0,
         'exist' => 0
       ], REST_Controller::HTTP_OK);
     }else{
 
       $company_id = $comp_row['id'];
-      $shipx_id = $oracle_code = 0;
+      $shipx_id = $oracle_code = $gst = $pan =  0;
       $this->db->where('shipx_id>',0);
       $enq_shipx_rows = $this->db->where('company',$company_id)->get('enquiry')->row_array();
-
-      if(!empty($enq_shipx_rows['shipx_id']) && $enq_shipx_rows['shipx_id'] > 0){
+      
+      if(!empty($enq_shipx_rows['shipx_id']) && $enq_shipx_rows['shipx_id'] > 0){        
         $shipx_id = $enq_shipx_rows['shipx_id'];        
+        $agreement_row = $this->db->where('shipx_id',$shipx_id)->get('tbl_aggriment')->row_array();        
 
-        $agreement_row = $this->db->where('shipx_id',$shipx_id)->get('tbl_aggriment')->row_array();
         if(!empty($agreement_row)){
           $oracle_code = $agreement_row['oracle_customer_code'];
+          $pan = $agreement_row['pan'];
+          $gst = $agreement_row['gst'];
         }
       }
-      
-
 
       $this->set_response([
         'status' => true,
         'data' => $comp_row['id'],
         'shipx_id' => $shipx_id,
         'oracle_code' => $oracle_code,
+        'gst' => $gst,
+        'pan' => $pan,
         'exist' => 1
       ], REST_Controller::HTTP_OK);
+
     }
   }
 
