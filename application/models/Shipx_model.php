@@ -99,7 +99,8 @@ class Shipx_model extends CI_model{
                     }
                 }
             }
-        }
+        }        
+
         $shipx_arr = array(
                         'company'=>array(
                                 'name'=>$company_group_name,
@@ -107,23 +108,15 @@ class Shipx_model extends CI_model{
                                 'type'=>'Shipper',
                                 'website'=>$website??'',
                                 'company_type'=>$company_type??'',
-                                'payment_terms'=>$payment_terms??'',
-                                'company_ref1'=>'',//optional
-                                'company_ref2'=>'',//optional
-                                'company_ref3'=>'',	//optional
+                                'payment_terms'=>$payment_terms??'',                               
                                 'facilities_attributes'=>array(
                                     array(
                                             'name' => $client_name,	
-                                            'code' => 'VT'.$lead_row['Enquery_id'],//optional
-                                            'address_line1'	=>'',//optional
-                                            'address_line2'	=>'',//optional
-                                            'address_line3' =>'',//optional
+                                            'code' => 'VT'.$lead_row['Enquery_id'],//optional                                            
                                             'city' => $city_name??'',
                                             'pin' => $pincode??'',
                                             'state' => $state_name??'',
-                                            'payment_terms' => $payment_terms??'',
-                                            'facility_ref1' => '',//optional
-                                            'facility_ref2' => '',//optional
+                                            'payment_terms' => $payment_terms??'',                                          
                                             'facility_ref3' => $user_row['employee_id'],//optional
                                             'is_invoice_facility' => "true",
                                             'is_ship_from_address' => "true",
@@ -143,11 +136,8 @@ class Shipx_model extends CI_model{
                                             'gst_no' => $gstin??''
                                     )
                                 ),
-                                'additional_ref' => array(
-                                    'third_party_booking_allowed' => '',
-                                    'vt' => 'YES',
-                                    'vx' => '',
-                                    'vlogis' => ''
+                                'additional_ref' => array(                                  
+                                    'vt' => 'YES'
                                 ),
                                 "holds_list" => array(
                                     "hold" => array(

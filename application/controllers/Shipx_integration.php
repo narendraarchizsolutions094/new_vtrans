@@ -49,7 +49,7 @@ class Shipx_integration extends CI_Controller{
         // print_r($json);
         // echo "</pre></code>";
         // exit;
-        
+        //1leVciAvveJvVv3RtiPDmWDXvASxeDJpQvBJcrJMbnQH3oHyuVCvCo7v1Voz
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://vtrans-staging.shipx.co.in/integration/companies/manage.json',
