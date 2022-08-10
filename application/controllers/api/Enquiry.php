@@ -150,13 +150,13 @@ if (!in_array($user_row->user_permissions, $not_send)){
     }
 
     public function aging_rules_post(){
-      $this->load->model('rule_model');
-      $comp_id	=	$this->input->post('company_id');		
-      $aging_rule = $this->rule_model->get_rules(array(11),$comp_id);	
-      $this->set_response([
-        'status' => TRUE,
-        'message' => $aging_rule
-    ], REST_Controller::HTTP_OK);
+        $this->load->model('rule_model');
+        $comp_id	=	$this->input->post('company_id');		
+        $aging_rule = $this->rule_model->get_rules(array(11),$comp_id);	
+        $this->set_response([
+          'status' => TRUE,
+          'message' => $aging_rule
+      ], REST_Controller::HTTP_OK);
     }
     public function create_post()
     { 	
@@ -212,8 +212,8 @@ if (!in_array($user_row->user_permissions, $not_send)){
             $postData = [                
                 'user_role' => $user->user_roles??0,
                 'email' => $this->input->post('email', true)??'',
-        	    'phone' => $this->input->post('mobileno', true),
-        		'other_phone' => $this->input->post('other_phone', true),				
+        	      'phone' => $this->input->post('mobileno', true),
+        		    'other_phone' => $this->input->post('other_phone', true),				
                 'name_prefix' => $this->input->post('name_prefix', true),
                 'name' => $this->input->post('fname'),
                 'lastname' => $this->input->post('lastname'),
@@ -231,8 +231,8 @@ if (!in_array($user_row->user_permissions, $not_send)){
                 'center_id' => $this->input->post('center_id'),
                 'ip_address' => $this->input->ip_address(),
                 'city_id' => !empty($city_id->row())?$city_id->row()->id:'',
-        		'state_id' => !empty($city_id->row())?$city_id->row()->state_id:'',
-        		'country_id'  =>!empty($city_id->row())?$city_id->row()->country_id:'',
+        		    'state_id' => !empty($city_id->row())?$city_id->row()->state_id:'',
+        		    'country_id'  =>!empty($city_id->row())?$city_id->row()->country_id:'',
                 'region_id'  =>!empty($city_id->row())?$city_id->row()->region_id:'',
                 'territory_id'  =>!empty($city_id->row())?$city_id->row()->territory_id:'',
                 'pin_code' => $this->input->post('pin_code')??'',
@@ -246,9 +246,7 @@ if (!in_array($user_row->user_permissions, $not_send)){
                 //'status' => $this->input->post('status'),
               ];
                
-            if(!empty($upd))
-            {																
-            	
+            if(!empty($upd)){            	
 
                 if(!empty($postData['company']) && !is_numeric($postData['company']))
                 {
@@ -279,12 +277,11 @@ if (!in_array($user_row->user_permissions, $not_send)){
                 $unset = array_merge($find_source,$post_source);
                 $update_array = array_unique($unset);
                 if(!empty($update_array)){
-                  $enquiry_source = implode(',',$update_array);
-                  
-                $postData['enquiry_source'] = $enquiry_source;
-                $this->db->where('Enquery_id',$this->input->post('update'));
-                $insert_id = $this->db->update('enquiry',$postData);
-                  
+                  $enquiry_source = implode(',',$update_array);                  
+                  $postData['enquiry_source'] = $enquiry_source;
+                  $this->db->where('Enquery_id',$this->input->post('update'));
+                  $insert_id = $this->db->update('enquiry',$postData);
+                    
                 }
                 }else{
                 //End

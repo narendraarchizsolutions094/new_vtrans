@@ -229,8 +229,9 @@ class Shipx extends REST_Controller {
     public function get_oracle_code_post(){ // not completed
         $shipx_code = $this->input->post('shipx_id');
         $shipx_row = $this->db->where('shipx_id',$shipx_id)->get('tbl_aggriment');
-        if(!empty($shipx_row['oracle_customer_code'])){
-            echo $shipx_row['oracle_customer_code'];
+        
+        if(!empty($shipx_row['oracle_customer_code'])){            
+            echo $shipx_row['oracle_customer_code'];            
             $this->set_response([
                 'status' => true,
                 'msg' => array('oracle_customer_code'=>$shipx_row['oracle_customer_code'],'shipx_id',$shipx_id)
@@ -240,10 +241,6 @@ class Shipx extends REST_Controller {
                 'status' => false,
                 'msg' => array('oracle_customer_code'=>$shipx_row['oracle_customer_code'],'shipx_id',$shipx_id)
                 ], REST_Controller::HTTP_OK);
-        }
+        }        
     }
-
- 
-
-
 }
