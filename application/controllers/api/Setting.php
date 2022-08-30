@@ -25,11 +25,19 @@ class Setting extends REST_Controller {
         $this->db->where('comp_id',$comp_id);
 		$this->db->where('for_app','1');
         $lang    =  $this->db->get('language')->result_array();
+        if(!empty($lang)){
   
         $this->set_response([
-            'status' => false,
+            'status' => true,
             'message' => $lang  
-           ], REST_Controller::HTTP_OK);  
+           ], REST_Controller::HTTP_OK);
+            
+        }else{
+            $this->set_response([
+                'status' => false,
+                'message' => "No Data Found",  
+               ], REST_Controller::HTTP_OK);
+        } 
     }
 	
 	public function get_apk_post(){

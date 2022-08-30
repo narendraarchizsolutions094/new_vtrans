@@ -280,8 +280,8 @@ echo'<div class="trackingDetails"></div>';
                     <?php if($this->session->companey_id!=83){ ?>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <label>Product</label>
-                            <select class="form-control  chg-product" name = "product">
+                            <label>Product<i class="text-danger">*</i></label>
+                            <select class="form-control  chg-product" name = "product" id = "product">
 							<option value = "">-- Select Product --</option>
                               <?php if(!empty($product)) {
                                 foreach($product as $ind => $prd){
