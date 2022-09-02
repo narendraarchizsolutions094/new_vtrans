@@ -185,6 +185,7 @@
     });
   }
 
+  
 //Old function
 /* 	$(document).on("change", ".choose-client", function(){		
 		$.ajax({

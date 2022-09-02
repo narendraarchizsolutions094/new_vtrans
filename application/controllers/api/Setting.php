@@ -26,6 +26,7 @@ class Setting extends REST_Controller {
 		$this->db->where('for_app','1');
         $lang    =  $this->db->get('language')->result_array();
         if(!empty($lang)){
+            
   
         $this->set_response([
             'status' => true,

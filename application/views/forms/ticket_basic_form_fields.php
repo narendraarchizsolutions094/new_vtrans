@@ -275,7 +275,8 @@ echo'<div class="trackingDetails"></div>';
                    ?>  
                     <?php
                     if($companylist['field_id']==PRODUCT){
-                    ?>      
+                    ?> 
+                         
                     
                     <?php if($this->session->companey_id!=83){ ?>
                         <div class="col-md-6">
