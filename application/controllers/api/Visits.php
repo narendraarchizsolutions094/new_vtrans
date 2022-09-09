@@ -321,7 +321,7 @@ if(!empty($result))
       $user_id = $this->input->post('user_id');
       $contact_id  = $this->input->post('contact_id')??'';
       $visit_date = $this->input->post('visit_date');
-      $visit_time = $this->input->post('visit_time');
+      $visit_time = date('H:i',strtotime($this->input->post('visit_time')));
       $m_purpose = $this->input->post('m_purpose');
       $end_point = $this->input->post('end_point')??'';
 
@@ -382,7 +382,7 @@ if(!empty($result))
                             'contact_id'=>$contact_id,
                             'enquiry_id'=>$enquiry_id,
                             'visit_date'=>$this->input->post('visit_date'),
-                            'visit_time'=>$this->input->post('visit_time'),
+                            'visit_time'=>date('H:i',strtotime($this->input->post('visit_time'))),
 							'm_purpose'=>$this->input->post('m_purpose'),
 							'start_waypoints'=>$start_point,
 							'end_waypoints'=>'[['.$end_point.']]',

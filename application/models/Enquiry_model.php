@@ -28,7 +28,7 @@ class Enquiry_model extends CI_Model {
       }
     }
 //For make source comma seprated if details are same and source is different
-$enq_id = $this->db->select('enquiry_source,enquiry_id')->where('email',$data['email'])->where('phone',$data['phone'])->order_by('enquiry_id','DESC')->get('enquiry')->row();
+/* $enq_id = $this->db->select('enquiry_source,enquiry_id')->where('email',$data['email'])->where('phone',$data['phone'])->order_by('enquiry_id','DESC')->get('enquiry')->row();
 if(!empty($enq_id->enquiry_id)){
 $post_source = array();
 $find_source = array();
@@ -46,11 +46,11 @@ if(!empty($update_array)){
 	
 }
 $insid = $enq_id->enquiry_id;
-}else{
+}else{ */
 //End
 $this->db->insert($this->table, $data);
 $insid = $this->db->insert_id();
-}
+//}
   //echo $insid;exit();
 
     //=====Create default Contact for Enquiry

@@ -2877,7 +2877,7 @@ public function get_all_stage_deals() {
             }
     
             $retuser   = $this->common_model->get_categories($this->session->user_id);
-            $impuser   = implode(",", $retuser);
+             $impuser   = implode(",", $retuser);
     
             $qry    = "SELECT  cmpny.company_name,enq.*, concat(usr.s_display_name,' ' , usr.last_name) as username,  concat(asgn.s_display_name,' ' , asgn.last_name) as asignuser  FROM enquiry enq
                                                 LEFT JOIN tbl_admin usr ON usr.pk_i_admin_id = enq.created_by 

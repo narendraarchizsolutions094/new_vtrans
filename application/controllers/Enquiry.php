@@ -3661,7 +3661,7 @@ echo  $details1;
 			$end_loc=$this->input->post('end_loc');
 			$mannual_km=$this->input->post('mannual_km');
             $visit_type=$this->input->post('type');
-            $visit_time=$this->input->post('visit_time');
+            $visit_time=date('H:i',strtotime($this->input->post('visit_time')));
             $visit_date=$this->input->post('visit_date');
             if($visit_type==1){
                $visit_time = date('H:i');
@@ -3922,7 +3922,7 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
                 }
            
             $sub = array();
-            $time = $res->visit_time=='00:00:00'?null:date("g:i A", strtotime($res->visit_time));
+            $time = $res->visit_time=='00:00:00'?null:date("h:i A", strtotime($res->visit_time));
             
 			
 //open up line remove below $time 2 line when apk on play store

@@ -373,19 +373,20 @@ echo'<div class="trackingDetails"></div>';
                     
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Source</label>
-                        <select class="form-control " name = "source">
+                        <label>Source <i class="text-danger">*</i></label>
+                        <select class="form-control " name = "source" id="soourc_re">
 						<option value = "">-- Select Source --</option>
                           <?php
                            if(!empty($source)) {
                             foreach($source as $ind => $prblm){
+										if($prblm->lsid == 134 || $prblm->lsid == 136 || $prblm->lsid == 133 || $prblm->lsid == 129){
                               if(!empty($_GET['phone']) && $prblm->lsid == 134 && $this->session->companey_id == 65){
                                 $sel = 'selected';
                               }else{
                                 $sel = '';
                               }
                               ?><option <?=$sel?> value = "<?php echo $prblm->lsid ?>"><?php echo $prblm->lead_name ?> </option><?php
-                            } 
+                            } }
                           } ?>
                         </select>
                       </div>

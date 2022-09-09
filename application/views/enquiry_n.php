@@ -1803,7 +1803,7 @@ if(!empty($_GET['desposition']))
           "pagingType": "simple",
           "bInfo": false,
           "serverSide": true,          
-          "lengthMenu": [ [10,30, 50,100,500,1000, -1], [10,30, 50,100,500,1000, "All"] ],
+          "lengthMenu": [ [10,30, 50,100,500,3000], [10,30, 50,100,500,3000] ],
           "ajax": {
               "url": "<?=base_url().'Enq/enq_load_data'?>",
 			  //"url": "<?=base_url().'Enq/enq_load_data'?>",

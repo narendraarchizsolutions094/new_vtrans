@@ -1972,6 +1972,18 @@ public function view_editable_aggrement()
     /***********************end Generate aggriment*****************************/
     public function visits()
     {
+		/* $this->db->select('created_at,id,visit_time');
+		$this->db->where('manual_distence IS NOT NULL');
+		$visited=$this->db->get('tbl_visit')->result();
+		foreach($visited as $v){
+		if(date("h", strtotime($v->visit_time))<=8){
+		 	echo $v->visit_time;echo '_';
+			echo date("H:i", strtotime($v->visit_time.' + 12 hours'));echo '<br>'; 
+		$this->db->set('visit_time',date("H:i", strtotime($v->visit_time)));
+		$this->db->where('id',$v->id);
+		$this->db->update('tbl_visit');
+		}
+		} */ 
         if(user_role('1020') || user_role('1021') || user_role('1022')){
             
         }

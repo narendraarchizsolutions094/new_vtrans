@@ -305,11 +305,11 @@ if (!in_array($user_row->user_permissions, $not_send)){
               $postData['comp_id'] = $comp_id;
 
 //For asign to jitesh gautam
-		if($this->input->post('enquiry_source') == 129 || $this->input->post('enquiry_source') == 135){
+	/* 	if($this->input->post('enquiry_source') == 129 || $this->input->post('enquiry_source') == 135){
                 $postData['created_by'] ='2173';
-        }else{
+        }else{ */
                 $postData['created_by'] =$user_id;
-        }
+       // }
 //End
 
 //For asign to according to sales branch
@@ -346,7 +346,7 @@ if($usr_ttl > 1){
             	$postData['status'] = $data_type_id;
             	
 //For make source comma seprated if details are same and source is different
-$enq_id = $this->db->select('enquiry_source,enquiry_id')->where('email',$this->input->post('email'))->where('phone',$this->input->post('mobileno'))->order_by('enquiry_id','DESC')->get('enquiry')->row();
+/* $enq_id = $this->db->select('enquiry_source,enquiry_id')->where('email',$this->input->post('email'))->where('phone',$this->input->post('mobileno'))->order_by('enquiry_id','DESC')->get('enquiry')->row();
 if(!empty($enq_id->enquiry_id)){
 $post_source = array();
 $find_source = array();
@@ -364,7 +364,7 @@ if(!empty($update_array)){
 	
 }
 $insert_id = $enq_id->enquiry_id;
-}else{
+}else{ */
 //End
 $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_id'));
 
@@ -372,17 +372,17 @@ $insert_id = $this->enquiry_model->create($postData,$this->input->post('company_
   $enq_company_id = $enq_row['company'];
   $enq_company_row = $this->db->select('company_name')->where('id',$enq_company_id)->get('tbl_company')->row_array();
 
-  $vt_shipx_data = array(
+  /* $vt_shipx_data = array(
                       'company_name' => $enq_company_row['company_name'],
                       'mobileno' => $postdata['phone'],
                       'email' => $postdata['email'],
                       'fname' => $postdata['name'],
                       'lastname' => $postdata['lastname'],
                       'enq_id' => $insert_id,
-                  );
+                  ); */
   //$this->enquiry_model->vxpress_push_shipx($vt_shipx_data);
 
-}
+//}
     	
 
                  

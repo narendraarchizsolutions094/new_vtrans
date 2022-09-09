@@ -815,16 +815,15 @@ class location extends CI_Controller {
         if (!is_dir('assets/csv')) {
             mkdir('assets/csv', 0777, TRUE);
         }
-        $filename = "ratebdr_" . date('d-m-Y_H_i_s'); //"school_26-07-2018_16_17_51";
+        $filename = "ratebdr_" . date('d-m-Y_H_i_s');
         $config = array(
             'upload_path' => "assets/csv",
-            'allowed_types' => "text/plain|text/csv|csv",
+            'allowed_types' => "csv",
             'remove_spaces' => TRUE,
             'max_size' => "10000",
             'file_name' => $filename
         );
         $this->load->library('upload', $config);
-        // $this->upload->do_upload('file')
         if ($this->upload->do_upload('file')) {
             $upload = $this->upload->data();
             $json['success'] = 1;
@@ -832,37 +831,30 @@ class location extends CI_Controller {
             $filePath = $config['upload_path'] . '/' . $upload['file_name'];
             $file = $filePath;
             $handle = fopen($file, "r");
-            $c = 0;
-            while (($filesop = fgetcsv($handle, 1000, ",")) !== false) {
+            $c = 0;$not_upladed=array();
+            while(($filesop = fgetcsv($handle, 50000, ",")) !== false) {
                 if ($c > 0) {
-                    $this->db->where('branch_name', trim($filesop[0]));
+					$this->db->select('branch_id');
+                    $this->db->where('LOWER(branch_name)', strtolower(trim($filesop[0])));
                     $this->db->where('comp_id', $this->session->companey_id);
                     $id = $this->db->get('branch');
                     $id1 = $id->num_rows();
                     if ($id1 > 0) {
                         $b_branch_id = $id->row()->branch_id;
                     } else {
-                        $this->db->set('branch_name', trim($filesop[0]));
-						$this->db->set('branch_status', '1');
-						$this->db->set('type', 'branch');
-						$this->db->set('comp_id', $this->session->userdata('companey_id'));
-                        $this->db->insert('branch');
-                        $b_branch_id = $this->db->insert_id();
+                        $b_branch_id ='';
                     }
-                    //$this->db->where('branch_id', $b_branch_id);
-                    $this->db->where('branch_name', trim($filesop[1]));
+                    $this->db->select('branch_id');
+                    $this->db->where('LOWER(branch_name)', strtolower(trim($filesop[1])));
                     $id2 = $this->db->get('branch');
                     $id3 = $id2->num_rows();
                     if ($id3 > 0) {
                         $d_branch_id = $id2->row()->branch_id;
                     } else {
-						$this->db->set('comp_id', $this->session->userdata('companey_id'));
-						$this->db->set('branch_status', '1');
-						$this->db->set('type', 'branch');
-                        $this->db->set('branch_name', trim($filesop[1]));
-                        $this->db->insert('branch');
-                        $d_branch_id = $this->db->insert_id();
+                        $d_branch_id = '';
                     }
+					if(!empty($b_branch_id) && !empty($d_branch_id)){
+					$this->db->select('id');
                     $this->db->where('booking_branch', $b_branch_id);
                     $this->db->where('delivery_branch', $d_branch_id);
 					$this->db->where('type', 'branch');
@@ -874,6 +866,8 @@ class location extends CI_Controller {
                         $this->db->set('rate', trim($filesop[2]));
 						$this->db->where('id', $rate_id);
                         $this->db->update('branchwise_rate');
+					array_push($filesop,'Updated');
+                    array_push($not_upladed,$filesop);
                     } else {
                         $this->db->set('booking_branch', $b_branch_id);
                         $this->db->set('delivery_branch', $d_branch_id);
@@ -884,14 +878,44 @@ class location extends CI_Controller {
                         $this->db->set('rate', trim($filesop[2]));
                         $this->db->insert('branchwise_rate');
                         $rate_id = $this->db->insert_id();
+					array_push($filesop,'Inserted');
+                    array_push($not_upladed,$filesop);
                     }
+					}else{ 
+					array_push($filesop,'Branch not Found');
+                    array_push($not_upladed,$filesop);
+					}
                 }
                 $c++;
-            }
-            $this->session->set_flashdata('message', "Data successfully added.");
+              }
+			  $a='';
+
+			    if(!empty($not_upladed)){
+			    $this->load->library("excel");
+				$objPHPExcel = new PHPExcel();
+				$objPHPExcel->getActiveSheet()->fromArray($not_upladed);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+				$objPHPExcel->getActiveSheet()->getStyle('A1:I1')->applyFromArray(
+				array(
+				'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'e4e7ed')
+				)
+				)
+				);
+				$objPHPExcel->getActiveSheet()->getStyle("A1:I1")->getFont()->setSize(12);
+				header('Content-Type: application/vnd.ms-excel');
+				header('Content-Disposition: attachment;filename="Recored_Not_Uploaded'.date("d_M_y").'.xlsx"');
+				header('Cache-Control: max-age=0'); //no cache
+				$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+
+				$objWriter->save('assets/enquiry/Recored_Not_Uploaded'.date("d_M_y").'.xlsx'); 
+				$a="&nbsp;&nbsp;<h6><a href='".base_url()."assets/enquiry/Recored_Not_Uploaded".date("d_M_y").".xlsx'>Click Here Data Not uploaded</a><h6>";
+				 }  
+			
+            $this->session->set_flashdata('message', "Data successfully added.".$a);
             redirect(base_url() . 'setting/branch_rateList');
-            // echo '<pre>'; print_r ($discCodeArr); print_r ($stateArr); print_r ($cityArr); print_r ($blockArr); die;
-        } else {
+          } else {
             $this->session->set_flashdata('error', $this->upload->display_errors());
             
             redirect(base_url() . 'setting/branch_rateList');
