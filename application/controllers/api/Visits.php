@@ -22,6 +22,7 @@ class Visits extends REST_Controller {
       $user_id= $this->input->post('user_id');
       $process_id= $this->input->post('process_id');
       $company_id = $this->input->post('company_id');
+	   $visite_type = $this->input->post('visite_type');
       $offset = $this->input->post('offset')??0;
       $limit = $this->input->post('limit')??50;
 
@@ -37,10 +38,10 @@ class Visits extends REST_Controller {
 
        $res= array();
     
-        $total = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id)->num_rows();
+        $total = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id,$visite_type)->num_rows();
         $minus=0;
       $result =array();
-        $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id,$limit,$offset);
+        $data['result'] = $this->enquiry_model->visit_list_api($company_id,$user_id,$process,$visit_id,$visite_type,$limit,$offset);
          /* echo "<pre>";
         print_r($_POST);
         print_r($data['result']->result_array());
@@ -324,6 +325,7 @@ if(!empty($result))
       $visit_time = date('H:i',strtotime($this->input->post('visit_time')));
       $m_purpose = $this->input->post('m_purpose');
       $end_point = $this->input->post('end_point')??'';
+	   $visite_type = $this->input->post('visite_type')??'';
 
       $this->form_validation->set_rules('company_id','company_id','required|trim');
       $this->form_validation->set_rules('enquiry_id','enquiry_id','required|trim');
@@ -384,6 +386,7 @@ if(!empty($result))
                             'visit_date'=>$this->input->post('visit_date'),
                             'visit_time'=>date('H:i',strtotime($this->input->post('visit_time'))),
 							'm_purpose'=>$this->input->post('m_purpose'),
+							'visite_type'=>$visite_type,
 							'start_waypoints'=>$start_point,
 							'end_waypoints'=>'[['.$end_point.']]',
 							'all_waypoints'=>json_encode($waypoints),

@@ -88,8 +88,15 @@
 		<div class="col-lg-12 tablebox">
 		</div>
 </div>
-<script type="text/javascript">
-
+<script type="text/javascript">	
+function get_pton_ip(){
+	var sum=0;
+  $(".total_sum").each(function(k,v){
+      sum=parseFloat(sum)+parseFloat(this.value);
+		});
+		$(".g_total").html(sum); 
+		$(".g_total_dis").val(sum);
+}
 function set_type(t)
 {
 	if(t.value=='ftl')
@@ -275,11 +282,11 @@ function load_branch_particular(t)
 	      data:{area:area},
 	      type:'post',
 	      success:function(q){
-
+var a='<option value="All">All</option>';
 		      	if(type=='b_area'+did)
 		     		$('select[name="bbranch['+did+']"]').html(q);
 		     	else
-	     			$('select[id="dbranch_holder'+did+'"]').html(q);
+	     			$('select[id="dbranch_holder'+did+'"]').html(a+q);
 	     		//$('select[name="bbranch['+did+']"]').trigger('change');
 	      }
 	    });
@@ -311,24 +318,43 @@ function include_branch(t)
 {
 	var holder_list = $(t).find('option:selected');
 	var did = $(t).data('did');
-	//alert(JSON.stringify(holder_list));
+	const all =[];
+	$(holder_list).each(function(k,v){
+		var kv = $(v).attr('value');
+		all.push(kv);
+	});
 	var avail =$('select[name="dbranch['+did+']"]').val();
 	if(avail==null)
 		avail=[];
 
-	$(holder_list).each(function(k,v){
-		var kv = $(v).attr('value');
-		var vv = $(v).text();
-		if(!avail.includes(kv))
-		{
-			$('select[name="dbranch['+did+']"]').append('<option value="'+kv+'" selected>'+vv+'</option>');
-		}
-		else
-		{
-			$('select[name="dbranch['+did+']"]').find('option[value="'+kv+'"]').attr('selected','selected');
-		}
-	});
-	$('select[name="dbranch['+did+']"]').trigger('change');
+	if(!all.includes('All')){
+		$(holder_list).each(function(k,v){
+			var kv = $(v).attr('value');
+			var vv = $(v).text();
+			if(!avail.includes(kv))
+			{
+				$('select[name="dbranch['+did+']"]').append('<option value="'+kv+'" selected>'+vv+'</option>');
+			}
+			else
+			{
+				$('select[name="dbranch['+did+']"]').find('option[value="'+kv+'"]').attr('selected','selected');
+			}
+		   });
+	}else{
+	var holder_list = $(t).find('option');
+		$(holder_list).each(function(k,v){
+				var kv = $(v).attr('value');
+				var vv = $(v).text();
+				if(kv == 'All'){}else{
+					$('#dbranch_holder'+did).find('option[value="'+kv+'"]').attr('selected','selected');
+				   	$('select[name="dbranch['+did+']"]').append('<option value="'+kv+'" selected>'+vv+'</option>');
+					$('#dbranch_holder'+did).select2();
+				}   
+			   });
+			    $('select[name="dbranch_holder['+did+']"]').trigger('change');
+			   generate_table();
+		} 
+      $('select[name="dbranch['+did+']"]').trigger('change');
 }
 
 $('#booking_branch').on('change', function() {
@@ -403,6 +429,7 @@ return;
 	
 	$(f).find("input[name='eamnt["+qid+"]']").val(in_lakh_eamnt);
 	$(f).find("input[name='pamnt["+qid+"]']").val(in_lakh_pamnt);
+	 get_pton_ip();
 });
 
 function load_branch(t)
@@ -496,24 +523,42 @@ function final_rate_calculate(uid)
 
 function final_discount_calculate(uid)
 {
-	var max_discount = <?=$max_discount?>;
-		var rate =	$("#rate_"+uid).val();
+	var max_discount = 0;
+	/* 	var rate =	$("#rate_"+uid).val();
 		var discount =	$("#discount_"+uid).val();
 		var final_rate =	$("#final_rate_"+uid).val();
 		var percent = ((rate - final_rate)*100) /rate ;
-		var dis_rate = percent.toFixed(1);
-if(dis_rate > max_discount)
-	{
-		Swal.fire({
-			title:'You are authorized to give discount upto '+max_discount+'% only. Please send this quotation to your reporting manager for further approval.',
-			icon:'warning',
-			type:'warning',
-			showConfirmButton:false,
-		});
-		$("#discount_"+uid).val(max_discount);
-	}else{
-		$("#discount_"+uid).val(dis_rate);
-	}
+		var dis_rate = percent.toFixed(1); */
+		var g_total=$(".g_total").text();
+		var dis_rate = $(".g_discount").val();
+		$.ajax({
+		url:'<?php echo base_url("client/get_discount_value"); ?>',
+		type:'POST',
+		data:{	
+				g_total:g_total,
+			},
+		   success:function(res){
+			   const re = JSON.parse(res);
+			 max_discount = parseFloat(re.discount); 
+          if(dis_rate > max_discount)
+				{
+					Swal.fire({
+						title:'You are authorized to give discount upto '+max_discount+'% only. Please send this quotation to your reporting manager for further approval.',
+						icon:'warning',
+						type:'warning',
+						showConfirmButton:false,
+					});
+					$(".g_discount").val(max_discount);
+					$(".discount_ip").val(max_discount);
+					$(".discount_ip").trigger('change');
+				}else{
+					$(".g_discount").val(dis_rate);
+					$(".discount_ip").val(dis_rate);
+					$(".discount_ip").trigger('change');
+				}			
+		 }
+	    });
+
 }
 
 function rep_paymode()

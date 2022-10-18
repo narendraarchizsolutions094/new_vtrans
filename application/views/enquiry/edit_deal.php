@@ -199,6 +199,7 @@ foreach($list as $row)
                     </div>
                     <div class="col-md-12">
                         <select id="dbranch_holder'.$did.'" data-did="'.$did.'" onchange="include_branch(this)" multiple data-close-on-select="false">';
+						
 						$sel_res =	$this->Branch_model->branch_list(0,"branch.branch_id IN (".$row->dlist.")")->result();
 						$all = array();
 						foreach ($sel_res as $key => $val) {
@@ -206,7 +207,7 @@ foreach($list as $row)
 						}
 
 						$resbd =	$this->Branch_model->branch_list(0,"branch.area_id = (".$darea.")")->result();
-
+	                     echo'<option value="All">All</option>';
 							if(!empty($resbd))
 							{	
 								foreach ($resbd as $key => $value) {
@@ -264,6 +265,15 @@ $did++;
 </div>
 
 <script type="text/javascript">
+function get_pton_ip(){
+	var sum=0;
+  $(".total_sum").each(function(k,v){
+      sum=parseFloat(sum)+parseFloat(this.value);
+		});
+		$(".g_total").html(sum); 
+		$(".g_total_dis").val(sum); 
+		
+}
 $(document).ready(function(){
 	$('.panel-box').find('select').select2();
 });
@@ -401,8 +411,6 @@ function generate_table()
 		success:function(res){
 			$(".tablebox").html(res);
 			$(".tablebox").find('select:not(.exclude_select2)').select2();
-			// $("#delivery_branch").select2({ closeOnSelect: false});
-			// $("#booking_branch").select2({ closeOnSelect: false});
 		},
 		error:function(u,v,w)
 		{
@@ -453,12 +461,12 @@ function load_branch_particular(t)
 	      data:{area:area},
 	      type:'post',
 	      success:function(q){
-
+             var a='<option value="All">All</option>';
 		      	if(type=='b_area'+did)
 		     		$('select[name="bbranch['+did+']"]').html(q);
 		     	else{
 
-	     			$('select[id="dbranch_holder'+did+'"]').html(q);
+	     			$('select[id="dbranch_holder'+did+'"]').html(a+q);
 		     	}
 	     		//$('select[name="bbranch['+did+']"]').trigger('change');
 	      }
@@ -493,24 +501,43 @@ function include_branch(t)
 {
 	var holder_list = $(t).find('option:selected');
 	var did = $(t).data('did');
-	//alert(JSON.stringify(holder_list));
+	const all =[];
+	$(holder_list).each(function(k,v){
+		var kv = $(v).attr('value');
+		all.push(kv);
+	});
 	var avail =$('select[name="dbranch['+did+']"]').val();
 	if(avail==null)
 		avail=[];
-
-	$(holder_list).each(function(k,v){
-		var kv = $(v).attr('value');
-		var vv = $(v).text();
-		if(!avail.includes(kv))
-		{
-			$('select[name="dbranch['+did+']"]').append('<option value="'+kv+'" selected>'+vv+'</option>');
-		}
-		else
-		{
-			$('select[name="dbranch['+did+']"]').find('option[value="'+kv+'"]').attr('selected','selected');
-		}
-	});
-	$('select[name="dbranch['+did+']"]').trigger('change');
+	
+	if(!all.includes('All')){
+		$(holder_list).each(function(k,v){
+			var kv = $(v).attr('value');
+			var vv = $(v).text();
+			if(!avail.includes(kv))
+			{
+				$('select[name="dbranch['+did+']"]').append('<option value="'+kv+'" selected>'+vv+'</option>');
+			}
+			else
+			{
+				$('select[name="dbranch['+did+']"]').find('option[value="'+kv+'"]').attr('selected','selected');
+			}
+		   });
+	}else{
+	var holder_list = $(t).find('option');
+		$(holder_list).each(function(k,v){
+				var kv = $(v).attr('value');
+				var vv = $(v).text();
+				if(kv == 'All'){}else{
+					$('#dbranch_holder'+did).find('option[value="'+kv+'"]').attr('selected','selected');
+				   	$('select[name="dbranch['+did+']"]').append('<option value="'+kv+'" selected>'+vv+'</option>');
+					$('#dbranch_holder'+did).select2();
+				}   
+			   });
+			    $('select[name="dbranch_holder['+did+']"]').trigger('change');
+			   generate_table();
+		} 
+      $('select[name="dbranch['+did+']"]').trigger('change');
 }
 
 var max_discount = <?=$max_discount?>;
@@ -545,6 +572,7 @@ return;
 	
 	$(f).find("input[name='eamnt["+qid+"]']").val(in_lakh_eamnt);
 	$(f).find("input[name='pamnt["+qid+"]']").val(in_lakh_pamnt);
+	 get_pton_ip();
 });
 
 $(document).on('change keyup click','.discount_ip',function(e){
@@ -662,26 +690,42 @@ function final_rate_calculate(uid)
 
 function final_discount_calculate(uid)
 {
-	var max_discount = <?=$max_discount?>;
-		var rate =	$("#rate_"+uid).val();
+	var max_discount = 0;
+	/* 	var rate =	$("#rate_"+uid).val();
 		var discount =	$("#discount_"+uid).val();
 		var final_rate =	$("#final_rate_"+uid).val();
 		var percent = ((rate - final_rate)*100) /rate ;
-		var dis_rate = percent.toFixed(1);
-if(dis_rate > max_discount)
-	{
-		Swal.fire({
-			title:'You are authorized to give discount upto '+max_discount+'% only. Please send this quotation to your reporting manager for further approval.',
-			icon:'warning',
-			type:'warning',
-			showConfirmButton:false,
-		});
-		$("#discount_"+uid).val(max_discount);
-		final_rate_calculate();
-	}else{
-		$("#discount_"+uid).val(dis_rate);
-		final_rate_calculate();
-	}
+		var dis_rate = percent.toFixed(1); */
+		var g_total=$(".g_total").text();
+		var dis_rate = $(".g_discount").val();
+		$.ajax({
+		url:'<?php echo base_url("client/get_discount_value"); ?>',
+		type:'POST',
+		data:{	
+				g_total:g_total,
+			},
+		   success:function(res){
+			   const re = JSON.parse(res);
+			 max_discount = parseFloat(re.discount); 
+          if(dis_rate > max_discount)
+				{
+					Swal.fire({
+						title:'You are authorized to give discount upto '+max_discount+'% only. Please send this quotation to your reporting manager for further approval.',
+						icon:'warning',
+						type:'warning',
+						showConfirmButton:false,
+					});
+					$(".g_discount").val(max_discount);
+					$(".discount_ip").val(max_discount);
+					$(".discount_ip").trigger('change');
+				}else{
+					$(".g_discount").val(dis_rate);
+					$(".discount_ip").val(dis_rate);
+					$(".discount_ip").trigger('change');
+				}			
+		 }
+	    });
+
 }
 
 function rep_paymode()
@@ -851,6 +895,7 @@ Swal.fire(
           }
       });    
 }
+
 </script>
 <style type="text/css">
 	.tablebox input:not(input[type=radio])

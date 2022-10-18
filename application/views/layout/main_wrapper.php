@@ -1370,6 +1370,11 @@ if($root=='https://student.spaceinternationals.com'){  ?>
                                     Grade Master
                                 </a>
                             </li>
+							<li class="<?php echo (in_array($segment2,array('catageory_matrix')) ?"active":'') ?>">
+                                <a href="<?php echo base_url() ?>setting/catageory_matrix">
+                                    Category Master
+                                </a>
+                            </li>
                             <li class="<?php echo (in_array($segment2,array('oda_matrix')) ?"active":'') ?>">
                                 <a href="<?php echo base_url() ?>setting/oda_matrix">
                                     ODA Matrix

@@ -18,13 +18,6 @@
 							this.value=0;
 						}">
 				</div>
-				<div class="form-group">
-					<label>Rate/Km </label>
-					<input type="text" name="rate_km" class="form-control" required onkeyup="{
-						if(this.value <0)
-							this.value=0;
-						}">
-				</div>
 			</div>
 			<div class="panel-footer">
 				<div class="form-group">
@@ -41,7 +34,6 @@
 					<th>#</th>
 					<th>Name</th>
 					<th>Discount(%)</th>
-					<th>Rate/Km</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -55,7 +47,6 @@
 						<td>'.$i++.'</td>
 						<td>'.$value->name.'</td>
 						<td>'.$value->discount.'</td>
-						<td>'.$value->rate_km.'</td>
 						<td><div class="btn btn-group">
 						<a class="btn btn-xs btn-primary" onclick="update_d('.$value->id.')">Edit</a>
 

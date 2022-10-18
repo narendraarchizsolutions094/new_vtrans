@@ -1008,6 +1008,63 @@ public function discount_matrix()
 	}
 }
 
+
+public function catageory_matrix()
+{
+	if($this->input->post())
+	{
+		//echo json_encode($_POST);
+		//exit;
+		//if($_POST['discount']>100 || $_POST['discount']<0)
+				//$_POST['discount'] =0;
+
+		//if($_POST['rate_km']<0)
+				//$_POST['rate_km'] =0;
+			$min=$this->input->post('min[]');
+			$discount = $this->input->post('dis[]');
+			$update_id = $this->input->post('update_id');
+			$group_id = $this->input->post('group_id[]');
+			$group_id1=time();
+			$i=0;
+	    foreach($this->input->post('max[]') as $a){
+				if(!empty($a) > 0){
+		$data= array(
+				'name'=>$this->input->post('name'),
+				'max_a'=>$a,
+				'min_a'=>$min[$i],
+				'discount'=>$discount[$i],
+				'rate_km'=>$this->input->post('rate_km'),
+				'comp_id'=>$this->session->companey_id,
+		);
+			if(!empty($update_id[$i]) > 0){
+			$data['group_id']=$group_id[$i];
+            $group_id1=$group_id[$i];			
+			$this->db->where('id',$update_id[$i]);
+		    $this->db->update('discount_catageory',$data);				
+			}else{
+			$data['group_id']=$group_id1;
+			$this->db->insert('discount_catageory',$data);	
+			}
+			}
+         $i++;
+		} 
+		$this->session->set_flashdata('message','Saved! ');
+		redirect(base_url('setting/catageory_matrix'));
+	}
+	else
+	{
+
+		$data['title']= 'Discount Matrix';
+		if(!empty($this->input->get('data'))){
+		//	echo 'ss';
+		$data['list_aa'] = $this->db->where('comp_id',$this->session->companey_id)->where('group_id',$this->input->get('data'))->get('discount_catageory')->result();	
+		}
+		$data['list'] = $this->db->where('comp_id',$this->session->companey_id)->get('discount_catageory')->result();
+		$data['content'] = $this->load->view('category_matrix',$data,true);
+		$this->load->view('layout/main_wrapper',$data);
+	}
+}
+
 public function delete_grade($id)
 {
 	$this->db->where('id',$id)->delete('discount_matrix');
@@ -1015,6 +1072,12 @@ public function delete_grade($id)
 	redirect(base_url('setting/discount_matrix'));
 }
 
+public function delete_cat($id)
+{
+	$this->db->where('group_id',$id)->delete('discount_catageory');
+	$this->session->set_flashdata('message','catageory Deleted.');
+	redirect(base_url('setting/discount_matrix'));
+}
 public function delete_oda($id)
 {
 	$this->db->where('id',$id)->delete('oda_matrix');

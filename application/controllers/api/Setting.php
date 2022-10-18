@@ -29,7 +29,7 @@ class Setting extends REST_Controller {
             
   
         $this->set_response([
-            'status' => false,
+            'status' => true,
             'message' => $lang  
            ], REST_Controller::HTTP_OK);
             

@@ -391,14 +391,28 @@
                                 </div>
 								
                                 <div class="form-group col-md-4">
-                                    <label class="control-label">Grade</label>                  
+                                    <label class="control-label">Grad Master</label>                  
                                     <select class="form-control" name="discount_id" onchange="find_pkr();">
-									<option value="">---Select Grade---</option>
+									<option value="">---Select Grad Master</---</option>
                                       <?php
                                       if(!empty($discount_list))
                                       {
                                         foreach ($discount_list as $key => $value) {
                                          echo'<option value="'.$value->id.'" '.($value->id==$department->discount_id?'selected':'').'>'.$value->name.'</option>';
+                                        }
+                                      }
+                                      ?>
+                                    </select>
+                                </div>
+								 <div class="form-group col-md-4">
+                                    <label class="control-label">Category</label>                  
+                                    <select class="form-control" name="discount">
+									<option value="">---Select Category---</option>
+                                      <?php
+                                      if(!empty($discount_list1))
+                                      {
+                                        foreach ($discount_list1 as $key => $value) {
+                                         echo'<option value="'.$value->group_id.'" '.($value->group_id==$department->discount?'selected':'').'>'.$value->name.'</option>';
                                         }
                                       }
                                       ?>

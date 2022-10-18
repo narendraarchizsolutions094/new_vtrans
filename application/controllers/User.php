@@ -618,6 +618,7 @@ class User extends CI_Controller
             'telephony_agent_id' => $this->input->post('telephony_agent_id', true),
             'process' => !empty($this->input->post('process', true)) ? implode(',', $this->input->post('process', true)) : '',
             'products' => !empty($this->input->post('product', true)) ? implode(',', $this->input->post('product', true)) : '',
+			'discount' => $this->input->post('discount', true),
             'discount_id'=> $this->input->post('discount_id')??0,
         ];
         // print_r($data['department']);
@@ -692,7 +693,8 @@ class User extends CI_Controller
              $this->load->model('Branch_model');
 			 $data['region_lists']=$this->Branch_model->all_sales_region();
 			 $data['dept_lists']=$this->User_model->all_sales_dept();
-             $data['discount_list']= $this->Branch_model->discount_list();
+             $data['discount_list1']= $this->Branch_model->discount_list1();
+			 $data['discount_list']= $this->Branch_model->discount_list();
              //print_r($data['discount_list']);exit();
 
             $data['content'] = $this->load->view('user_from', $data, true);
@@ -878,7 +880,8 @@ class User extends CI_Controller
          $this->load->model('Branch_model');
         
         $data['user_meta'] = $this->user_model->get_user_meta($id,array('api_name','api_url'));
-        $data['discount_list']= $this->Branch_model->discount_list();
+        $data['discount_list1']= $this->Branch_model->discount_list1();
+		$data['discount_list']= $this->Branch_model->discount_list();
         if($this->session->companey_id == 65){
             
             $data['reporting_locations'] = $this->User_model->get_report_locations();

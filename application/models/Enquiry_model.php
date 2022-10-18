@@ -5330,7 +5330,7 @@ public function insertComInfo($data)
     return  $this->db->get('tags')->result_array();
 }
 
-  public function visit_list_api($company_id,$user_id,$process,$visit_id,$limit=-1,$offset=-1)
+  public function visit_list_api($company_id,$user_id,$process,$visit_id,$visite_type=0,$limit=-1,$offset=-1)
   {
        $all_reporting_ids    =   $this->common_model->get_categories($user_id);
      //print_r($all_reporting_ids);exit;
@@ -5354,7 +5354,7 @@ public function insertComInfo($data)
 		,visit_details2.meeting_status,visit_details2.id as vid,visit_details2.id as vid,CONCAT(tbl_admin.s_display_name, '.', 
 		tbl_admin.last_name) as created_by,visit_details2.visit_status,tbl_expense.amount as total_expence,enquiry.name,
 		enquiry.status as enq_type,enquiry.Enquery_id,enquiry.client_name,enquiry.company,comp.company_name,enquiry.client_name,
-		contact.c_name as contact_person');
+		contact.c_name as contact_person,tbl_visit.visite_type');
 		$this->db->from('tbl_visit');
         $this->db->join('enquiry','enquiry.enquiry_id=tbl_visit.enquiry_id','left');
         $this->db->join('tbl_company comp','comp.id=enquiry.company','left');
@@ -5370,6 +5370,9 @@ public function insertComInfo($data)
     $this->db->join('tbl_admin','tbl_admin.pk_i_admin_id=tbl_visit.user_id','left');
         $this->db->where("tbl_visit.comp_id",$company_id);
         $this->db->where("tbl_visit.user_id",$user_id);
+		if($visite_type!=0){
+		$this->db->where("tbl_visit.visite_type",$visite_type);
+		}
         $this->db->order_by("tbl_visit.created_at",'DESC');
         $this->db->group_by("tbl_visit.id");
         $this->db->where($where);

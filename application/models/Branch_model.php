@@ -330,6 +330,17 @@ class Branch_model extends CI_model
 		$this->db->where('comp_id',$comp_id);
 	return	$this->db->get('discount_matrix')->result();
 	}
+	public function discount_list1($id=0,$comp_id=0)
+	{
+		if(empty($comp_id))
+			$comp_id = $this->session->companey_id;
+
+		if($id)
+		$this->db->where('id',$id);
+		$this->db->where('comp_id',$comp_id);
+		$this->db->group_by('group_id');
+	return	$this->db->get('discount_catageory')->result();
+	}
 	public function oda_list($id=0,$comp_id=0)
 	{
 		if(empty($comp_id))

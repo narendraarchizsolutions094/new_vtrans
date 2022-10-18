@@ -4175,8 +4175,9 @@ $en_title = $this->db->select('title')->from('enquiry_status')->where('status_id
                             <label class="label label-warning text-black">Send For Approval</label>
                             </a>'; 
                         }else if($req_log['status'] == 'pending'){
-                            $sub[] ='<label class="label label-primary lfa">Waiting for approval</label>
-                            ';
+                            $sub[] = '<label class="label label-primary lfa">Waiting for approval</label>';
+                        }else{
+                            $sub[] = '<label class="label label-danger">Edited</label>';
                         }
                     }else{                     
                         $this->db->where('deal_id',$value->id);

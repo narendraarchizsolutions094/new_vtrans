@@ -3130,7 +3130,7 @@ public function all_update_expense_status()
                                         ->from('discount_matrix d')
                                         ->join('tbl_admin a','a.discount_id=d.id','left')
                                         ->where('a.pk_i_admin_id='.$this->session->user_id)
-                                        ->get()->row();
+                                        ->get()->row();     
         $data['max_discount'] = !empty($dis)?$dis->discount:100;
         $data['by'] = $by;
         $data['data_type'] = $data_type;
@@ -3161,32 +3161,7 @@ public function all_update_expense_status()
             $stage_for = $this->input->post('stage_for');
             //print_r($deal_id);exit;
             $deal_data = $this->Branch_model->get_deal($deal_id);
-           
-            // if($btype=='zone')
-            // {
-            //     $x = implode(',',$bbranch);
-            //     //echo $x;exit();
-            //     $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) and branch.type='area' ")->result();
-
-            //     $bbranch = array_column($fetch_list,'branch_id');
-            //     //print_r($bbranch);exit();
-            // }
-
-            // if($dtype=='zone')
-            // {
-            //     $x = implode(',',$dbranch);
-            //     //echo $x;exit();
-            //     $fetch_list  = $this->Branch_model->common_list(" branch.zone IN ($x) and branch.type='area' ")->result();
-            //    //echo $this->db->last_query();exit();;
-
-            //     $dbranch = array_column($fetch_list,'branch_id');
-            //     //print_r($bbranch);exit();
-            // }
-
-            // if(empty($bbranch))
-            //     $bbranch = array(0);
-            // if(empty($dbranch))
-            //     $dbranch = array(0);  
+ 
         
             $main_array = array();
             if(!empty($chain))
@@ -3226,7 +3201,7 @@ public function all_update_expense_status()
                                 'rate.delivery_branch' => $value,
                                 );
                                 $row = $this->Branch_model->rate_list($btype,$where)->row();
-								//print_r($row);exit;
+								//echo json_encode($row);
                                 if(!empty($row))
                                     $main_array[] = $row; 
                             }
@@ -3463,7 +3438,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     if($booking_type=='sundry')
                     {
                         echo'<td '.(($row->rate!=$old_rate)?"style='background:#ffbaba;'":"").'><input type="text" id="rate_'.$row->id.'" name="rate['.$row->id.']" data-id="'.$row->id.'" value="'.$row->rate.'"></td>
-                        <td class="disc-box" '.(($discount!=$old_discount)?"style='background:#ffbaba;'":"").'><input type="text" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');"></td>
+                        <td class="disc-box" '.(($discount!=$old_discount)?"style='background:#ffbaba;'":"").'><input type="text" id="discount_'.$row->id.'" class="discount_ip" name="discount['.$row->id.']" data-id="'.$row->id.'" value="'.$discount.'" onchange="final_rate_calculate('.$row->id.');" readonly></td>
 						<td '.(($old_final_rate!=$final_rate)?"style='background:#ffbaba;'":"").'><input type="text" id="final_rate_'.$row->id.'" class="final_rate" name="final_rate['.$row->id.']" data-id="'.$row->id.'" value="'.$final_rate.'" onchange="final_discount_calculate('.$row->id.');"></td>';
                     }
 
@@ -3495,16 +3470,16 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                             </td>';
 
                  if($booking_type=='sundry')
-                    echo' <td '.(($pton!=$old_pton)?"style='background:#ffbaba;'":"").'><input type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>';
-
-                    echo'<td '.(($pamnt!=$old_pamnt)?"style='background:#ffbaba;'":"").'><input type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').'></td>';
+                    echo' <td '.(($pton!=$old_pton)?"style='background:#ffbaba;'":"").'><input  type="number" name="pton['.$row->id.']" data-id="'.$row->id.'" value="'.$pton.'" class="pton_ip"></td>';
+ 
+                    echo'<td '.(($pamnt!=$old_pamnt)?"style='background:#ffbaba;'":"").'><input onchange="get_pton_ip()" type="text" name="pamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$pamnt.'"  '.($booking_type=='sundry'?'readonly':'').' ></td>';
 
 
                 if($booking_type=='sundry')
                     echo'<td '.(($eton!=$old_eton)?"style='background:#ffbaba;'":"").'>
                         <input type="number" name="eton['.$row->id.']" data-id="'.$row->id.'" value="'.$eton.'" class="eton_ip"></td>';
 
-                    echo'<td '.(($eamnt!=$old_eamnt)?"style='background:#ffbaba;'":"").'><input type="text" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" '.($booking_type=='sundry'?'readonly':'').'></td>';
+                    echo'<td '.(($eamnt!=$old_eamnt)?"style='background:#ffbaba;'":"").'><input type="text" onchange="get_pton_ip()" name="eamnt['.$row->id.']" data-id="'.$row->id.'" value="'.$eamnt.'" '.($booking_type=='sundry'?'readonly':'').'  class="total_sum"></td>';
 
                 
                 if($booking_type=='ftl')
@@ -3514,6 +3489,10 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
 
                     echo'</tr>';
                 }
+				$colspan=5;
+				if($booking_type=='sundry'){$colspan='7';$style='<th>Discount</th><th><input type="text" onchange="final_discount_calculate(1)" class="g_discount" name="discount"  value="'.$discount.'"></th>';}
+				if($booking_type=='ftl'){$colspan='7';$style='';} 
+				echo '<tr><td colspan="'.$colspan.'"></td>'.$style.'<th>Grand Total:</th><th><span class="g_total"></span><input type="text" style="display:none;" name="g_total_dis" class="g_total_dis"   value=""></th></tr>';
                 echo'</tbody>
                 </table>
                 </div>
@@ -3527,6 +3506,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                     <i class="fa fa-edit"></i> Edit
                  </span>'; */
 				 echo'<script>
+				 	 get_pton_ip();
                     $(".disc-box").find("input:not(.exip)").attr("readonly","readonly");
                     </script>';
 
@@ -3787,6 +3767,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                 ';
                 //if(empty($deal_id))
                     echo'<script>
+				get_pton_ip();
                         $("#oc-box").find("input:not(.exip)").attr("readonly","readonly");
                         </script>';
             }
@@ -3901,9 +3882,9 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                 $remark ='Approval Required<br>'.$edit_remark;
                 $deal['edit_remark'] = $edit_remark;
                 $deal['copy_id'] = $deal_id;
+				$deal['status']=(!empty($this->session->user_right)==231 || !empty($this->session->user_right)==227)?0:0;
                 $deal['edited']=1;
-                $deal['approval']='';
-                $deal['status']=0;
+                $deal['approval']=(!empty($this->session->user_right)==231 || !empty($this->session->user_right)==227)?'pending':'';	
                 $this->db->where('id',$deal_id);
                 if(empty($ddata->copy_id))
                 {
@@ -3924,17 +3905,19 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
                 $this->db->where('request_from_uid',$this->session->user_id);                
                 if($this->db->get('deal_approval_history')->num_rows()){
                     $this->db->where('deal_id',$deal_id);
-                    $this->db->where('request_from_uid',$this->session->user_id);                
-                    $this->db->set('status','');
+                    $this->db->where('request_from_uid',$this->session->user_id);
+                    $s=(!empty($this->session->user_right)==231 || !empty($this->session->user_right)==227)?'Edited':'';					
+                    $this->db->set('status',$s);
                     $this->db->update('deal_approval_history');
                 }else{
+					 $s=(!empty($this->session->user_right)==231 || !empty($this->session->user_right)==227)?'Edited':'';					
                     $this->db->insert('deal_approval_history',
                     array(
                         'comp_id' => $this->session->companey_id,
                         'deal_id' => $deal_id,
                         'request_from_uid' => $this->session->user_id,
                         'request_to_uid' => $current_user->report_to,
-                        'status' => ''
+                        'status' => $s
                         )
                     );
                 }
@@ -3997,7 +3980,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
 						'delivery_region'=>$dbrh->region_id??'',
                         'delivery_area'=>$bbrh->area_id??'',
                         'rate'=>$this->input->post('rate['.$link_id.']')??'',
-                        'discount'=>$this->input->post('discount['.$link_id.']')??'',
+                        'discount'=>$this->input->post('discount')??'',
 						'final_rate'=>$this->input->post('final_rate['.$link_id.']')??'',
                         'insurance'=>$this->input->post('insurance['.$link_id.']')??'',
                         'paymode'=>$this->input->post('paymode['.$link_id.']')??'',
@@ -4023,7 +4006,7 @@ $old_chk = $this->db->where('deal_id',$deal_data->copy_id)
         array(
             'potential_amount'  => $potential_amount,
             'potential_tonnage' => $potential_tonnage,
-            'expected_amount'   => $expected_amount,
+            'expected_amount'   => $this->input->post('g_total_dis'),
             'expected_tonnage'  => $expected_tonnage
             )
         );
@@ -5389,6 +5372,30 @@ $deal   =    $this->Branch_model->get_deal($deal_id);
         }else{
 			echo 0;
 		}			
+    }
+	function get_discount_value()
+    {
+		$company = $this->session->companey_id;
+		$g_total=$this->input->post('g_total');
+	    $this->db->select('group_id');
+		$this->db->from('tbl_admin');
+		$this->db->join('discount_catageory','discount_catageory.group_id=tbl_admin.discount');
+		$this->db->where('tbl_admin.companey_id',$company);
+		$this->db->where('tbl_admin.pk_i_admin_id',$this->session->user_id);
+		$group=$this->db->get()->row();
+		if(!empty($group->group_id)){
+        $this->db->select('discount,rate_km');
+		$this->db->where('comp_id',$company);
+		$this->db->where('group_id',$group->group_id);
+	    $this->db->where('min_a<=',$g_total);
+		$this->db->where('max_a>=',$g_total);
+        $res=$this->db->get('discount_catageory')->row();
+		echo json_encode($res);
+		//echo $this->db->last_query();
+		}else{
+			 echo json_encode(array('discount'=>0,'rate_km'=>0));
+		}
+       			
     }
 	
 	function get_aggdoc_list()
